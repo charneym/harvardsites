@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CavilinQ — Redesign Concept</title>
+<meta name="description" content="Redesign concept for CavilinQ: cavity-enhanced photonic links that let quantum processors operate together as modular clusters.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070809; --ink:#E9EBEE; --silver:#8D939C; --dim:#5A5F67; --coral:#FF7A5C;
+  --line:rgba(233,235,238,.09); --line2:rgba(233,235,238,.16); --surface:#0C0D0F;
+  --sans:"Geist","Geist Fallback",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --serif:"Instrument Serif",ui-serif,Georgia,serif;
+  --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --gut:max(24px,6vw); --max:1280px; --ease:cubic-bezier(.2,.7,0,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding-bottom:30px;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::selection{background:rgba(255,122,92,.3)}
+:focus-visible{outline:1px solid var(--coral);outline-offset:3px;border-radius:2px}
+.skip{position:absolute;left:-9999px;top:8px;background:var(--ink);color:var(--bg);padding:8px 12px;font-size:13px;z-index:100}
+.skip:focus{left:8px}
+.wrap{max-width:calc(var(--max) + 2*var(--gut));margin:0 auto;padding:0 var(--gut)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.label{font:500 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--silver)}
+.label .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--coral);margin-right:10px;vertical-align:1px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+em.s{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.confirm{font:400 11px/1.4 var(--mono);color:var(--dim);letter-spacing:.04em;white-space:nowrap}
+
+/* header */
+.hdr{position:fixed;inset:0 0 auto 0;z-index:40;height:64px;background:linear-gradient(var(--bg) 40%,rgba(7,8,9,0));}
+.hdr .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+.mark{font:500 17px/1 var(--sans);letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
+.mark svg{width:22px;height:22px}
+.nav{display:flex;align-items:center;gap:32px;font-size:13.5px;color:var(--silver)}
+.nav a{transition:color .3s}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border-radius:999px;font:500 14px/1 var(--sans);letter-spacing:-.005em;border:1px solid var(--line2);color:var(--ink);transition:background .35s var(--ease),border-color .35s,color .35s;will-change:transform}
+.btn:hover{border-color:rgba(233,235,238,.4)}
+.btn.solid{background:var(--ink);color:#0A0B0C;border-color:var(--ink)}
+.btn.solid:hover{background:#fff}
+.btn .arr{transition:transform .4s var(--ease)}
+.btn:hover .arr{transform:translateX(3px)}
+.btn.sm{height:34px;padding:0 14px;font-size:13px}
+
+/* reveal */
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+.in .ln>span{transform:none}
+.in .ln:nth-child(2)>span{transition-delay:.08s}
+.in .ln:nth-child(3)>span{transition-delay:.16s}
+.fade{opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease) .15s,transform 1.1s var(--ease) .15s}
+.in .fade,.fade.in{opacity:1;transform:none}
+
+/* story */
+.story{position:relative}
+.story .grid{position:relative}
+.col-text{grid-column:1/6;grid-row:1;position:relative;z-index:2}
+.col-stage{grid-column:6/13;grid-row:1;position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh}
+.stage canvas,.stage .fallback{position:absolute;left:0;top:13vh;width:calc(100% + var(--gut)*0.5);height:76vh;display:block}
+.stage canvas{opacity:0;transition:opacity 1.6s var(--ease);cursor:grab;touch-action:pan-y}
+.stage canvas.on{opacity:1}
+.stage canvas.drag{cursor:grabbing}
+.stage .fallback{display:none;align-items:center;justify-content:center}
+.fallback svg{width:86%;height:auto}
+.nogl .stage .fallback{display:flex}
+.nogl canvas{display:none}
+.cap{position:absolute;left:0;bottom:5vh;display:flex;gap:28px;align-items:center;z-index:3}
+.cap .label{color:var(--dim)}
+.rail{position:absolute;right:0;bottom:5vh;display:flex;align-items:center;gap:6px;z-index:3}
+.rail button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;padding:6px 4px}
+.rail button i{display:block;width:28px;height:1px;background:var(--line2);transition:background .5s,width .5s var(--ease)}
+.rail button b{font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--dim);transition:color .5s}
+.rail button.on i{background:var(--ink);width:40px}
+.rail button.on b{color:var(--ink)}
+.rail button:focus-visible{outline:1px solid var(--coral)}
+.hint{position:absolute;right:0;top:calc(13vh - 24px);z-index:3;color:var(--dim);transition:opacity .8s}
+.hint.gone{opacity:0}
+
+.block{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+.hero h1{font:500 clamp(34px,4.2vw,64px)/1.04 var(--sans);letter-spacing:-.032em;margin:22px 0 26px;max-width:12ch}
+.hero h1 em.s{font-size:1.06em}
+.hero p.lede{font-size:17px;line-height:1.55;color:#B9BDC3;max-width:40ch}
+.hero .acts{display:flex;gap:10px;margin-top:34px;flex-wrap:wrap}
+.hero .meta{margin-top:64px;display:flex;gap:28px;padding-top:18px;border-top:1px solid var(--line);max-width:420px}
+.hero .meta div{font-size:13px;color:var(--silver)}
+.hero .meta strong{display:block;font:500 20px/1.2 var(--sans);color:var(--ink);letter-spacing:-.01em;margin-bottom:2px}
+.hero .ln>span{animation:up 1.2s var(--ease) both}
+.hero .ln:nth-child(2)>span{animation-delay:.09s}
+@keyframes up{from{transform:translateY(55%);opacity:.0}to{transform:none;opacity:1}}
+
+.step .label{margin-bottom:22px}
+.step h2{font:500 clamp(28px,2.6vw,38px)/1.1 var(--sans);letter-spacing:-.025em;margin-bottom:20px;max-width:16ch}
+.step p{color:#AEB3BA;max-width:42ch;font-size:16px}
+.step .src{margin-top:22px;font:400 12px/1.5 var(--mono);color:var(--dim);letter-spacing:.02em;max-width:46ch}
+.step{opacity:.28;transition:opacity .8s var(--ease)}
+.step.act{opacity:1}
+
+/* sections */
+section.sec{padding:128px 0 0}
+.sec-head{grid-column:1/13;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:20px;margin-bottom:56px}
+.sec h2{font:500 clamp(28px,2.7vw,40px)/1.1 var(--sans);letter-spacing:-.025em}
+.statement{padding-top:200px}
+.statement blockquote{grid-column:2/12;font:400 clamp(26px,2.9vw,42px)/1.22 var(--sans);letter-spacing:-.022em;color:var(--ink);text-wrap:balance}
+.statement blockquote em.s{color:var(--ink)}
+.statement .who{grid-column:2/12;margin-top:36px}
+.apps .intro{grid-column:1/6}
+.apps .intro p{color:#AEB3BA;margin-top:22px;max-width:42ch}
+.apps ol{grid-column:7/13;list-style:none}
+.apps li{display:grid;grid-template-columns:64px 1fr;padding:26px 0;border-top:1px solid var(--line)}
+.apps li:last-child{border-bottom:1px solid var(--line)}
+.apps li .label{padding-top:5px}
+.apps li h3{font:500 19px/1.3 var(--sans);letter-spacing:-.01em}
+.apps li p{color:var(--silver);font-size:15px;margin-top:6px;max-width:46ch}
+.metrics{grid-column:1/13;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:140px}
+.metrics div{padding:36px 24px 34px 0}
+.metrics div+div{padding-left:24px;border-left:1px solid var(--line)}
+.metrics strong{display:block;font:400 clamp(30px,3vw,44px)/1 var(--sans);letter-spacing:-.03em;margin-bottom:14px}
+.metrics span{font-size:13.5px;color:var(--silver);display:block;max-width:24ch}
+.foot-note{grid-column:1/13;margin-top:16px;font:400 12px/1.5 var(--mono);color:var(--dim)}
+.papers{grid-column:1/13;list-style:none}
+.paper{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:34px 0;border-top:1px solid var(--line);transition:background .5s}
+.paper:last-child{border-bottom:1px solid var(--line)}
+.paper .yr{grid-column:1/3}
+.paper .yr strong{display:block;font:400 15px/1.3 var(--sans);color:var(--ink);margin-bottom:4px}
+.paper .t{grid-column:3/8}
+.paper h3{font:500 19px/1.3 var(--sans);letter-spacing:-.012em;max-width:34ch}
+.paper .au{color:var(--dim);font-size:13.5px;margin-top:10px;max-width:58ch}
+.paper .d{grid-column:8/12;color:#AEB3BA;font-size:15px}
+.paper .d a{display:inline-block;margin-top:14px;font:400 12px/1.4 var(--mono);color:var(--silver);border-bottom:1px solid var(--line2);padding-bottom:2px;transition:color .3s,border-color .3s}
+.paper .d a:hover{color:var(--ink);border-color:var(--ink)}
+.paper .go{grid-column:12/13;justify-self:end;color:var(--dim);transition:color .3s,transform .5s var(--ease)}
+.paper:hover .go{color:var(--ink);transform:translate(2px,-2px)}
+.tl{grid-column:1/13;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);column-gap:24px}
+.tl li{border-top:1px solid var(--line);padding:24px 24px 44px 0}
+.tl time{display:block;margin-bottom:12px}
+.tl p{font-size:15.5px;color:#C4C8CD;max-width:34ch}
+.team{grid-column:1/13;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);column-gap:40px}
+.person{display:grid;grid-template-columns:52px 1fr;column-gap:18px;align-items:start;padding:24px 0 26px;border-top:1px solid var(--line);min-width:0}
+.team .person:nth-last-child(-n+3){border-bottom:1px solid var(--line)}
+.av{position:relative;width:52px;height:52px;border-radius:50%;overflow:hidden;background:radial-gradient(120% 120% at 30% 20%,#1A1C20,#0D0E10 70%);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center}
+.av span{font:400 19px/1 var(--serif);font-style:italic;color:#C9CDD2}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter .6s var(--ease)}
+.person:hover .av img{filter:none}
+.person h3{font:500 20px/1.25 var(--sans);letter-spacing:-.012em;padding-top:2px}
+.person .role{margin-top:6px}
+.person .bio{font-size:14px;color:var(--silver);line-height:1.5;margin-top:10px;max-width:40ch}
+.inv{grid-column:1/13;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.inv div{height:112px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font:500 17px/1.2 var(--sans);letter-spacing:-.01em;color:#C9CDD2;transition:color .4s}
+.inv div+div{border-left:1px solid var(--line)}
+.inv div:hover{color:var(--ink)}
+.inv small{font:400 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.inv-cap{grid-column:1/13;display:flex;justify-content:space-between;margin-top:16px;gap:20px}
+.q2{grid-column:3/11;margin-top:130px;text-align:center}
+.q2 p{font:400 clamp(24px,2.4vw,34px)/1.25 var(--serif);font-style:italic;letter-spacing:-.005em;color:var(--ink)}
+.q2 .label{margin-top:24px}
+.contact{padding-bottom:160px}
+.contact .l{grid-column:1/7}
+.contact .l h2{font:500 clamp(34px,4.2vw,64px)/1.04 var(--sans);letter-spacing:-.032em}
+.contact .l p{color:#AEB3BA;margin-top:26px;max-width:44ch}
+.contact .l .acts{margin-top:34px;display:flex;gap:10px;flex-wrap:wrap}
+.contact .r{grid-column:8/13;align-self:end}
+.contact dl{display:grid;grid-template-columns:110px 1fr;row-gap:16px;font-size:15px;border-top:1px solid var(--line);padding-top:24px}
+.contact dt{padding-top:3px}
+.contact dd{color:#C4C8CD}
+.news-form{margin-top:36px;display:flex;border-bottom:1px solid var(--line2)}
+.news-form input{all:unset;flex:1;height:44px;font-size:15px;color:var(--ink)}
+.news-form input::placeholder{color:var(--dim)}
+.news-form button{all:unset;cursor:pointer;font:500 13px/1 var(--sans);color:var(--silver);padding:0 2px}
+.news-form button:hover{color:var(--ink)}
+footer{border-top:1px solid var(--line);padding:48px 0 56px}
+footer .grid{row-gap:28px}
+footer .fa{grid-column:1/5}
+footer .fa p{color:var(--dim);font-size:13.5px;margin-top:14px;max-width:34ch}
+footer nav{grid-column:6/9;display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:var(--silver)}
+footer nav a:hover{color:var(--ink)}
+footer .fs{grid-column:9/13;font-size:12.5px;color:var(--dim);line-height:1.6}
+footer .fs a{border-bottom:1px solid var(--line)}
+footer .fs a:hover{color:var(--silver)}
+footer .base{grid-column:1/13;display:flex;justify-content:space-between;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim)}
+.strip{position:fixed;left:0;right:0;bottom:0;height:30px;z-index:60;background:#040505;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);letter-spacing:.04em;color:var(--silver);padding:0 12px;text-align:center}
+
+@media (max-width:1080px){
+  .nav .hide-md{display:none}
+  .team{grid-template-columns:1fr 1fr}
+  .paper .t{grid-column:3/9}.paper .d{grid-column:9/12}
+}
+@media (max-width:860px){
+  :root{--gut:20px}
+  .nav a:not(.btn){display:none}
+  .grid{column-gap:16px}
+  .col-text,.col-stage{grid-column:1/13}
+  .col-stage{grid-row:1;position:sticky;top:0;z-index:4;height:52svh;align-self:start;margin:0 calc(-1 * var(--gut))}
+  .story .grid{display:block}
+  .stage{position:relative;height:52svh;background:var(--bg)}
+  .stage canvas,.stage .fallback{left:0;top:56px;width:100%;height:calc(52svh - 56px)}
+  .cap{left:var(--gut);top:66px;bottom:auto}
+  .rail{right:var(--gut);bottom:4px}
+  .rail button i{width:18px}.rail button.on i{width:26px}
+  .hint{display:none}
+  .cap .label:nth-child(2){display:none}
+  .block{min-height:72svh;justify-content:flex-start;padding:36px 0 60px}
+  .hero.block{min-height:42svh;padding-top:28px}
+  .hero h1{margin:16px 0 16px}
+  .hero .meta{margin-top:30px}
+  .apps .intro,.apps ol,.statement blockquote,.statement .who,.contact .l,.contact .r,.q2{grid-column:1/13}
+  .apps ol{margin-top:48px}
+  .metrics{grid-template-columns:1fr 1fr;margin-top:96px}
+  .metrics div:nth-child(3){border-left:0;padding-left:0}
+  .metrics div:nth-child(n+3){border-top:1px solid var(--line)}
+  .paper .yr,.paper .t,.paper .d{grid-column:1/12}
+  .paper .t{margin-top:10px}.paper .d{margin-top:14px}
+  .paper .go{grid-column:12/13;grid-row:1}
+  .tl{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr}
+  .team .person:nth-last-child(-n+3){border-bottom:0}
+  .team .person:last-child{border-bottom:1px solid var(--line)}
+  .inv{grid-template-columns:1fr 1fr}
+  .inv div{height:88px;border-top:1px solid var(--line)}
+  .inv div:nth-child(odd){border-left:0}
+  .inv div:first-child{grid-column:1/3;border-top:0}
+  .inv-cap{flex-direction:column;gap:6px}
+  .contact .r{margin-top:56px}
+  section.sec{padding-top:120px}
+  .sec-head{margin-bottom:48px}
+  footer .fa,footer nav,footer .fs{grid-column:1/13}
+  footer .base{flex-direction:column;gap:6px}
+  .strip{font-size:9.5px;letter-spacing:0;height:auto;min-height:30px;padding:6px 12px;line-height:1.35}
+  body{padding-bottom:44px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ln>span,.fade{transform:none!important;opacity:1!important;transition:none!important;animation:none!important}
+  .stage canvas{transition:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="hdr">
+  <div class="wrap">
+    <a class="mark" href="#top" aria-label="CavilinQ home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5a8.5 8.5 0 0 0 0 15" fill="none" stroke="#E9EBEE" stroke-width="1.4" stroke-linecap="round"/><path d="M18 4.5a8.5 8.5 0 0 1 0 15" fill="none" stroke="#E9EBEE" stroke-width="1.4" stroke-linecap="round"/><circle cx="12" cy="12" r="1.9" fill="#FF7A5C"/></svg>
+      CavilinQ
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#story">Technology</a>
+      <a href="#science">Science</a>
+      <a href="#team">Team</a>
+      <a class="hide-md" href="#news">News</a>
+      <a class="btn sm mag" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="story" id="story">
+  <div class="wrap">
+    <div class="grid">
+      <div class="col-stage">
+        <div class="stage" id="stage">
+          <canvas id="gl" aria-label="Interpretive visualization: two optical cavities joined by a thread of light carrying a single photon" role="img"></canvas>
+          <div class="fallback" aria-hidden="true">
+            <svg viewBox="0 0 600 340" fill="none">
+              <defs><radialGradient id="fg" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E9EBEE" stop-opacity=".9"/><stop offset="1" stop-color="#E9EBEE" stop-opacity="0"/></radialGradient></defs>
+              <g stroke="#8D939C" stroke-width="1.2"><path d="M110 120q-14 50 0 100"/><path d="M190 120q14 50 0 100"/><path d="M410 120q-14 50 0 100"/><path d="M490 120q14 50 0 100"/></g>
+              <path d="M205 170C260 120 340 120 395 170" stroke="#E9EBEE" stroke-opacity=".55" stroke-width="1"/>
+              <circle cx="150" cy="170" r="10" fill="url(#fg)"/><circle cx="450" cy="170" r="10" fill="url(#fg)"/><circle cx="300" cy="133" r="3.5" fill="#FF7A5C"/>
+            </svg>
+          </div>
+          <div class="cap"><span class="label">Interpretive visualization</span><span class="label">Not to scale</span></div>
+          <span class="hint label" id="hint">Drag to rotate</span>
+          <div class="rail" id="rail" role="group" aria-label="Showcase steps">
+            <button data-i="1" aria-label="Step 1, Limit"><i></i><b>01</b></button>
+            <button data-i="2" aria-label="Step 2, Emit"><i></i><b>02</b></button>
+            <button data-i="3" aria-label="Step 3, Cross"><i></i><b>03</b></button>
+            <button data-i="4" aria-label="Step 4, Herald"><i></i><b>04</b></button>
+            <button data-i="5" aria-label="Step 5, Scale"><i></i><b>05</b></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-text" id="steps">
+        <div class="block hero" id="top">
+          <p class="label"><span class="dot"></span>Quantum interconnects · Cambridge, MA</p>
+          <h1><span class="ln"><span>Quantum processors,</span></span><span class="ln"><span>linked by <em class="s">light.</em></span></span></h1>
+          <p class="lede">CavilinQ builds cavity-enhanced photonic links that let individual quantum processors operate together as modular, high-performance clusters.</p>
+          <div class="acts">
+            <a class="btn solid mag" href="#s1">How it works <span class="arr">↓</span></a>
+            <a class="btn mag" href="mailto:contact@cavilinq.com">contact@cavilinq.com</a>
+          </div>
+          <div class="meta">
+            <div><strong class="num">$8.8M</strong>Seed round, April 2026</div>
+            <div><strong>QVT</strong>Lead investor</div>
+          </div>
+        </div>
+        <article class="block step reveal" id="s1">
+          <p class="label">01 · Limit</p>
+          <h2><span class="ln"><span>One chip can only</span></span><span class="ln"><span>get so big.</span></span></h2>
+          <p class="fade">Quantum computers have reached remarkable milestones, but they struggle to scale beyond the limits of a single processor. Modularity splits the problem in two: engineering within a module, and engineering between modules.</p>
+        </article>
+        <article class="block step reveal" id="s2">
+          <p class="label">02 · Emit</p>
+          <h2><span class="ln"><span>Two mirrors, one atom,</span></span><span class="ln"><span>one mode.</span></span></h2>
+          <p class="fade">In free space an atom's light goes in every direction, and a lens catches only part of it. Between the curved mirrors of an optical cavity, the atom–light interaction is enhanced and the photon leaves in a single, well-defined mode that couples into fiber.</p>
+          <p class="src fade">CavilinQ's patented hardware: compact, ultra-low-loss photonic interfaces for direct QPU integration. Buckled-micromirror IP licensed from Harvard.</p>
+        </article>
+        <article class="block step reveal" id="s3">
+          <p class="label">03 · Cross</p>
+          <h2><span class="ln"><span>The photon crosses</span></span><span class="ln"><span>to a second module.</span></span></h2>
+          <p class="fade">The photon carries information about the atom's state. It travels through fiber to a second module and interacts with the atom in that module's cavity.</p>
+        </article>
+        <article class="block step reveal" id="s4">
+          <p class="label">04 · Herald</p>
+          <h2><span class="ln"><span>A detection heralds</span></span><span class="ln"><span>entanglement.</span></span></h2>
+          <p class="fade">Detecting the photon signals success: two atoms in different modules now share one entangled state. The atoms can then be moved into memory, freeing each cavity for the next link.</p>
+          <p class="src fade">Simplified for illustration; one of several possible protocols. Basis: Science 2021; Science 2025.</p>
+        </article>
+        <article class="block step reveal" id="s5">
+          <p class="label">05 · Scale</p>
+          <h2><span class="ln"><span>Grow by</span></span><span class="ln"><span>adding modules.</span></span></h2>
+          <p class="fade">High-fidelity, high-rate interconnects let systems scale by adding modules: a path toward fault-tolerant quantum computers and quantum data centers. Platform-agnostic by design, starting with neutral-atom processors.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="sec statement reveal" aria-label="Mission">
+  <div class="wrap"><div class="grid">
+    <blockquote><span class="fade" style="display:block">“We are building the interconnects that unify isolated processors into <em class="s">one distributed processor.</em>”</span></blockquote>
+    <p class="who label fade">Shankar G. Menon, CEO · The Quantum Insider, April 2026</p>
+  </div></div>
+</section>
+
+<section class="sec apps reveal" id="platform" aria-labelledby="h-apps">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label">Platform</span><span class="label">01</span></div>
+    <div class="intro">
+      <h2 id="h-apps"><span class="ln"><span>One interconnect layer,</span></span><span class="ln"><span>many machines.</span></span></h2>
+      <p class="fade">The same links that join processors can inject quantum information directly into them. CavilinQ will first demonstrate integration with neutral-atom quantum processors.</p>
+    </div>
+    <ol>
+      <li class="fade"><span class="label">A</span><div><h3>Distributed quantum computing</h3><p>Separate modules operating as one machine, toward fault-tolerant systems and quantum data centers.</p></div></li>
+      <li class="fade"><span class="label">B</span><div><h3>Quantum-enhanced sensing</h3><p>Quantum information delivered into processors and sensors over photonic links.</p></div></li>
+      <li class="fade"><span class="label">C</span><div><h3>Blind quantum computing</h3><p>Computation on a remote processor, enabled by injecting quantum information through the link.</p></div></li>
+    </ol>
+    <div class="metrics num fade" role="list">
+      <div role="listitem"><strong>$8.8M</strong><span>Seed round, April 2026, led by QVT</span></div>
+      <div role="listitem"><strong>99.960%</strong><span>Cavity-based atom readout fidelity, in about 10 µs*</span></div>
+      <div role="listitem"><strong>&gt;100</strong><span>Nanophotonic cavities on one millimetre-scale chip*</span></div>
+      <div role="listitem"><strong>64</strong><span>Optical tweezers alongside that chip*</span></div>
+    </div>
+    <p class="foot-note">* Academic results by the founders and collaborators (Science 2025; Nature Communications 2024). Not CavilinQ product specifications.</p>
+  </div></div>
+</section>
+
+<section class="sec reveal" id="science" aria-labelledby="h-sci">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label">Science</span><span class="label">02</span></div>
+    <div style="grid-column:1/8;margin-bottom:64px">
+      <h2 id="h-sci"><span class="ln"><span>Built on published</span></span><span class="ln"><span>light–matter research.</span></span></h2>
+      <p class="fade" style="color:#AEB3BA;margin-top:22px;max-width:52ch">CavilinQ's approach builds on work by its scientific co-founders, Mikhail Lukin (Harvard University) and Hannes Bernien (University of Chicago / University of Innsbruck), and on the founding team's own research.</p>
+    </div>
+    <ul class="papers">
+      <li class="paper fade">
+        <div class="yr"><strong class="num">2021</strong><span class="label">Science</span></div>
+        <div class="t"><h3>Entanglement transport and a nanophotonic interface for atoms in optical tweezers</h3><p class="au">T. Đorđević, P. Samutpraphoot, P. L. Ocola, H. Bernien, B. Grinkemeyer, I. Dimitrova, V. Vuletić, M. D. Lukin</p></div>
+        <div class="d">Two atoms entangled through a photonic-crystal cavity, then moved out into free space with the entanglement preserved.<br><a href="https://doi.org/10.1126/science.abi9917" target="_blank" rel="noopener">doi:10.1126/science.abi9917</a></div>
+        <span class="go" aria-hidden="true">↗</span>
+      </li>
+      <li class="paper fade">
+        <div class="yr"><strong class="num">2024</strong><span class="label">Nature Communications</span></div>
+        <div class="t"><h3>An integrated atom array–nanophotonic chip platform with background-free imaging</h3><p class="au">S. G. Menon, N. Glachman, M. Pompili, A. Dibos, H. Bernien</p></div>
+        <div class="d">Up to 64 tweezers next to a chip with more than 100 nanophotonic cavities; background-free imaging near the cavities at about 99.2% fidelity.<br><a href="https://doi.org/10.1038/s41467-024-50355-4" target="_blank" rel="noopener">doi:10.1038/s41467-024-50355-4</a></div>
+        <span class="go" aria-hidden="true">↗</span>
+      </li>
+      <li class="paper fade">
+        <div class="yr"><strong class="num">2025</strong><span class="label">Science 387</span></div>
+        <div class="t"><h3>Error-detected quantum operations with neutral atoms mediated by an optical cavity</h3><p class="au">B. Grinkemeyer, E. Guardado-Sanchez, I. Dimitrova, D. Shchepanovich, G. E. Mandopoulou, J. Borregaard, V. Vuletić, M. D. Lukin</p></div>
+        <div class="d">Rubidium atoms coupled to a fiber cavity: 99.960% readout fidelity in about 10 µs, and cavity-mediated entanglement with built-in error detection.<br><a href="https://arxiv.org/abs/2410.10787" target="_blank" rel="noopener">arXiv:2410.10787</a></div>
+        <span class="go" aria-hidden="true">↗</span>
+      </li>
+    </ul>
+  </div></div>
+</section>
+
+<section class="sec reveal" id="news" aria-labelledby="h-news">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label">News</span><span class="label">03</span></div>
+    <h2 id="h-news" style="grid-column:1/8;margin-bottom:56px"><span class="ln"><span>From the lab</span></span><span class="ln"><span>to a company.</span></span></h2>
+    <ol class="tl">
+      <li class="fade"><time class="label num">Jun 2025</time><p>Shankar Menon receives the George Shultz Innovation Fund award (UChicago Polsky Center).</p></li>
+      <li class="fade"><time class="label num">Jul 2025</time><p>CavilinQ is awarded Harvard's Grid Accelerator Fellowship.</p></li>
+      <li class="fade"><time class="label num">Jul 2025</time><p>Brandon Grinkemeyer is named a Chain Reaction Innovations Fellow at Argonne National Laboratory.</p></li>
+      <li class="fade"><time class="label num">Apr 2026</time><p>$8.8M seed round led by QVT, to build a Cambridge lab and grow the team.</p></li>
+      <li class="fade"><time class="label num">Apr 2026</time><p>Sophie Ding joins as Founding Engineer to lead photonics.</p></li>
+      <li class="fade"><time class="label num">Jun 2026</time><p>Brandon Grinkemeyer presents at DAMOP 2026 as a Deborah Jin Thesis Prize finalist.</p></li>
+    </ol>
+  </div></div>
+</section>
+
+<section class="sec reveal" id="team" aria-labelledby="h-team">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label">Team</span><span class="label">04</span></div>
+    <h2 id="h-team" style="grid-column:1/8;margin-bottom:48px"><span class="ln"><span>The people</span></span><span class="ln"><span>building the links.</span></span></h2>
+    <ul class="team">
+      <li class="person fade"><span class="av" aria-hidden="true"><span>SM</span><img src="https://polsky.uchicago.edu/wp-content/uploads/2025/04/shankar2-scaled-e1743794166263.jpg" alt="" loading="lazy" onerror="this.remove()"></span><div><h3>Shankar G. Menon</h3><p class="role label">Co-founder · CEO</p><p class="bio">PhD, University of Chicago (2025); atom arrays and nanophotonic cavities.</p></div></li>
+      <li class="person fade"><span class="av" aria-hidden="true"><span>BG</span></span><div><h3>Brandon Grinkemeyer</h3><p class="role label">Co-founder · CTO</p><p class="bio">Cavity interfaces for neutral atoms, Harvard; Deborah Jin Thesis Prize finalist.</p></div></li>
+      <li class="person fade"><span class="av" aria-hidden="true"><span>ML</span></span><div><h3>Mikhail Lukin</h3><p class="role label">Co-founder · Scientific advisor</p><p class="bio">Harvard University.</p></div></li>
+      <li class="person fade"><span class="av" aria-hidden="true"><span>HB</span></span><div><h3>Hannes Bernien</h3><p class="role label">Co-founder · Scientific advisor</p><p class="bio">University of Chicago / University of Innsbruck.</p></div></li>
+      <li class="person fade"><span class="av" aria-hidden="true"><span>SD</span></span><div><h3>Sophie Ding</h3><p class="role label">Founding engineer</p><p class="bio">Leads photonics; PhD, Harvard (Lončar group); previously Amazon Quantum.</p></div></li>
+      <li class="person fade"><span class="av" aria-hidden="true"><span>EQ</span></span><div><h3>Emily Qiu</h3><p class="role label">Founding engineer</p></div></li>
+    </ul>
+  </div></div>
+</section>
+
+<section class="sec reveal" id="investors" aria-labelledby="h-inv">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label" id="h-inv">Investors</span><span class="label">05</span></div>
+    <div class="inv fade">
+      <div>QVT<small>Lead</small></div>
+      <div>Safar Partners</div>
+      <div>MFV Partners</div>
+      <div>Serendipity Capital</div>
+      <div>Harper Court Ventures</div>
+    </div>
+    <div class="inv-cap"><span class="label">Seed · $8.8M · April 2026</span></div>
+    <div class="q2 fade">
+      <p>“Every path to meaningful scale will require a modular architecture.”</p>
+      <p class="label">Brandon Grinkemeyer, CTO · Seed announcement, April 2026</p>
+    </div>
+  </div></div>
+</section>
+
+<section class="sec contact reveal" id="contact" aria-labelledby="h-contact">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head"><span class="label">Careers &amp; contact</span><span class="label">06</span></div>
+    <div class="l">
+      <h2 id="h-contact"><span class="ln"><span>Building the</span></span><span class="ln"><span>interconnect layer.</span></span><span class="ln"><span><em class="s">Join us.</em></span></span></h2>
+      <p class="fade">CavilinQ is hiring across AMO physics, photonics and engineering. For roles, research collaborations and partnerships, write to us.</p>
+      <div class="acts fade"><a class="btn solid mag" href="mailto:contact@cavilinq.com">contact@cavilinq.com <span class="arr">→</span></a></div>
+    </div>
+    <div class="r fade">
+      <dl>
+        <dt class="label">Email</dt><dd><a href="mailto:contact@cavilinq.com">contact@cavilinq.com</a></dd>
+        <dt class="label">Lab</dt><dd>60 Oxford St<br>Cambridge, MA 02138, USA</dd>
+        <dt class="label">Roles</dt><dd>AMO physics · Photonics · Engineering</dd>
+      </dl>
+      <form class="news-form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Concept only'">
+        <label for="em" class="label" style="position:absolute;left:-9999px">Email for updates</label>
+        <input id="em" type="email" placeholder="Follow our journey: your email" autocomplete="email">
+        <button type="submit">Subscribe →</button>
+      </form>
+    </div>
+  </div></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap"><div class="grid">
+    <div class="fa"><span class="mark" style="font-size:16px">CavilinQ</span><p>Cavity-enhanced photonic interconnects for modular quantum computing.</p></div>
+    <nav aria-label="Footer"><a href="#story">Technology</a><a href="#science">Science</a><a href="#news">News</a><a href="#team">Team</a><a href="#contact">Careers &amp; contact</a></nav>
+    <div class="fs">Sources: cavilinq.com; <a href="https://thequantuminsider.com/2026/04/03/cavilinq-raises-8-8m-quantum-interconnect/" target="_blank" rel="noopener">The Quantum Insider</a>; <a href="https://polsky.uchicago.edu/2026/04/02/cavilinq-secures-8-8m-seed-round-to-unlock-utility-scale-quantum-computing/" target="_blank" rel="noopener">Polsky Center</a>.</div>
+    <div class="base"><span>© 2026 CavilinQ · 60 Oxford St, Cambridge, MA 02138</span><a href="mailto:contact@cavilinq.com">contact@cavilinq.com</a></div>
+  </div></div>
+</footer>
+<div class="strip" role="note">Redesign concept by Max C · Not affiliated with or endorsed by CavilinQ</div>
+
+<script>
+(function(){
+'use strict';
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+/* ---------- reveals ---------- */
+var io = new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} })},{rootMargin:'0px 0px -12% 0px'});
+$$('.reveal, .sec .fade').forEach(function(el){ io.observe(el) });
+
+/* ---------- smooth scroll (lerp) ---------- */
+var sTarget = scrollY, sCur = scrollY, sOn = false;
+function maxS(){ return document.documentElement.scrollHeight - innerHeight }
+function sStep(){
+  sCur += (sTarget - sCur) * 0.11;
+  if (Math.abs(sTarget - sCur) < 0.6){ sCur = sTarget; sOn = false; }
+  window.scrollTo(0, sCur);
+  if (sOn) requestAnimationFrame(sStep);
+}
+function sGo(y){ sTarget = Math.max(0, Math.min(maxS(), y)); if (RM){ window.scrollTo(0,sTarget); sCur=sTarget; return; } if(!sOn){ sOn = true; sCur = scrollY; requestAnimationFrame(sStep);} }
+if (!RM) addEventListener('wheel', function(e){
+  if (e.ctrlKey) return;
+  e.preventDefault();
+  if(!sOn) sTarget = scrollY;
+  sGo(sTarget + e.deltaY * (e.deltaMode === 1 ? 36 : 1));
+}, {passive:false});
+addEventListener('scroll', function(){ if(!sOn){ sTarget = sCur = scrollY; } }, {passive:true});
+$$('a[href^="#"]').forEach(function(a){ a.addEventListener('click', function(e){
+  var id = a.getAttribute('href').slice(1); var el = id === 'top' ? document.body : document.getElementById(id);
+  if(!el) return; e.preventDefault(); sGo(id==='top'?0:el.getBoundingClientRect().top + scrollY - (id.charAt(0)==='s' && id.length===2 ? 0 : 40));
+})});
+
+/* ---------- magnetic buttons ---------- */
+if (!RM && matchMedia('(hover:hover)').matches) $$('.mag').forEach(function(b){
+  b.addEventListener('pointermove', function(e){ var r=b.getBoundingClientRect(); var x=(e.clientX-r.left-r.width/2)/r.width, y=(e.clientY-r.top-r.height/2)/r.height; b.style.transform='translate('+(x*6).toFixed(2)+'px,'+(y*5).toFixed(2)+'px)'; });
+  b.addEventListener('pointerleave', function(){ b.style.transform=''; });
+});
+
+/* ---------- story progress ---------- */
+var story = $('#story'), stage = $('#stage'), steps = $$('.step'), railB = $$('#rail button');
+var P = 0, Pe = 0, vh = innerHeight, storyTop = 0, lastStep = -1;
+var centers = new Float32Array(6), mob = false;
+function measure(){ vh = innerHeight; mob = innerWidth <= 860;
+  for (var i=0;i<6;i++){ var el = i===0 ? $('#top') : document.getElementById('s'+i); var r = el.getBoundingClientRect(); centers[i] = r.top + scrollY + r.height*0.5; } }
+function computeP(){
+  var y = scrollY + vh*(mob ? 0.86 : 0.5);
+  if (y <= centers[0]) P = 0; else if (y >= centers[5]) P = 5;
+  else for (var i=0;i<5;i++){ if (y < centers[i+1]){ P = i + (y-centers[i])/(centers[i+1]-centers[i]); break; } }
+  var k = Math.floor(P), f2 = P - k; if (k>=5){k=5;f2=0}
+  var e = f2<0.15?0:f2>0.85?1:(function(x){return x*x*(3-2*x)})((f2-0.15)/0.7);
+  Pe = k + e;
+  var s = Math.round(P);
+  if (s !== lastStep){ lastStep = s;
+    steps.forEach(function(el,i){ el.classList.toggle('act', i+1===s) });
+    railB.forEach(function(b,i){ b.classList.toggle('on', i+1===s) });
+  }
+}
+railB.forEach(function(b){ b.addEventListener('click', function(){ var i=+b.dataset.i; var el=document.getElementById('s'+i); sGo(el.getBoundingClientRect().top + scrollY + el.offsetHeight*0.5 - vh*0.5); }) });
+addEventListener('resize', function(){ measure(); computeP(); requestDraw(); });
+addEventListener('scroll', function(){ computeP(); requestDraw(); }, {passive:true});
+measure(); computeP();
+if ('ResizeObserver' in window) new ResizeObserver(function(){ measure(); computeP(); requestDraw(); }).observe($('#steps'));
+addEventListener('load', function(){ measure(); computeP(); });
+
+/* ================= WebGL ================= */
+var canvas = $('#gl'), gl = null, ready = false, running = false, visible = true, onscreen = true, needDraw = true;
+var simT = 0, lastNow = 0, introT = 0, frames = 0;
+function requestDraw(){ needDraw = true; if (ready && RM) drawFrame(0); }
+
+var H = 0.92, CPL = 0.82; // cavity axis height, coupler tip
+var NMOD = 12, NLINK = 17;
+var modPos = new Float32Array(NMOD*3), modRank = new Float32Array(NMOD);
+var links = [];          // {a,b,samples Float32Array, len}
+(function buildLayout(){
+  var cols=[-5.7,-1.9,1.9,5.7], rows=[-3.3,0,3.3], list=[];
+  for (var r=0;r<3;r++) for (var c=0;c<4;c++) list.push({c:c,r:r,x:cols[c],z:rows[r]});
+  list.sort(function(a,b){
+    var pa = (a.c===1&&a.r===1)?-2:(a.c===2&&a.r===1)?-1:Math.hypot(a.x,a.z*1.1);
+    var pb = (b.c===1&&b.r===1)?-2:(b.c===2&&b.r===1)?-1:Math.hypot(b.x,b.z*1.1);
+    return pa-pb;
+  });
+  var idx = {};
+  list.forEach(function(m,i){ modPos[i*3]=m.x; modPos[i*3+1]=0; modPos[i*3+2]=m.z; modRank[i]= i<2?0:(i-2)/9; idx[m.c+','+m.r]=i; });
+  function bez(p0,p1,p2,p3,t,o){ var u=1-t; for(var k=0;k<3;k++) o[k]=u*u*u*p0[k]+3*u*u*t*p1[k]+3*u*t*t*p2[k]+t*t*t*p3[k]; }
+  function mk(a,b,type){
+    var A=[modPos[a*3],H,modPos[a*3+2]], B=[modPos[b*3],H,modPos[b*3+2]], p0,p1,p2,p3;
+    if (type===0){ p0=[A[0]+CPL,H,A[2]]; p3=[B[0]-CPL,H,B[2]]; p1=[p0[0]+0.6,H+0.05,p0[2]]; p2=[p3[0]-0.6,H+0.05,p3[2]]; }
+    else { p0=[A[0]-CPL,H,A[2]]; p3=[B[0]-CPL,H,B[2]]; p1=[p0[0]-0.75,H-0.45,p0[2]+0.55]; p2=[p3[0]-0.75,H-0.45,p3[2]-0.55]; }
+    var N=180, s=new Float32Array((N+1)*3), o=[0,0,0], len=0;
+    for (var i=0;i<=N;i++){ var t=i/N; bez(p0,p1,p2,p3,t,o); var lift=Math.sin(Math.PI*t);
+      if(type===0){ o[1]+=0.46*lift; o[2]-=0.12*lift; } else { o[0]-=0.05*lift; }
+      s[i*3]=o[0]; s[i*3+1]=o[1]; s[i*3+2]=o[2];
+      if(i) len+=Math.hypot(s[i*3]-s[i*3-3],s[i*3+1]-s[i*3-2],s[i*3+2]-s[i*3-1]); }
+    links.push({a:a,b:b,s:s,n:N,len:len,ph:Math.random()});
+  }
+  mk(idx['1,1'], idx['2,1'], 0);
+  for (var r2=0;r2<3;r2++) for (var c2=0;c2<3;c2++) if(!(r2===1&&c2===1)) mk(idx[c2+','+r2], idx[(c2+1)+','+r2], 0);
+  for (var c3=0;c3<4;c3++) for (var r3=0;r3<2;r3++) mk(idx[c3+','+r3], idx[c3+','+(r3+1)], 1);
+})();
+function linkPoint(L, t, o, oi){ var f=Math.max(0,Math.min(1,t))*L.n, i=Math.min(L.n-1, f|0), u=f-i, s=L.s;
+  o[oi]=s[i*3]+(s[i*3+3]-s[i*3])*u; o[oi+1]=s[i*3+1]+(s[i*3+4]-s[i*3+1])*u; o[oi+2]=s[i*3+2]+(s[i*3+5]-s[i*3+2])*u; }
+
+/* ----- geometry ----- */
+function Mesh(){ this.v=[]; this.i=[]; }
+Mesh.prototype.lathe = function(prof, segs, axis, flip){
+  var base = this.v.length/7, n = prof.length, v=this.v, I=this.i;
+  for (var j=0;j<=segs;j++){
+    var th = j/segs*Math.PI*2, c=Math.cos(th), s=Math.sin(th);
+    for (var k=0;k<n;k++){ var p=prof[k], a=p[0]*(flip?-1:1), na=p[2]*(flip?-1:1), r=p[1], nr=p[3], m=p[4];
+      if (axis==='x') v.push(a, r*c, r*s, na, nr*c, nr*s, m);
+      else v.push(r*c, a, r*s, nr*c, na, nr*s, m);
+    }
+  }
+  for (j=0;j<segs;j++) for (k=0;k<n-1;k++){
+    if (prof[k][5]) continue; // break between segments
+    var q0=base+j*n+k, q1=q0+1, q2=q0+n, q3=q2+1;
+    this.tri(q0,q2,q1); this.tri(q1,q2,q3);
+  }
+};
+Mesh.prototype.tri = function(a,b,c){
+  var v=this.v, A=a*7,B=b*7,C=c*7;
+  var ux=v[B]-v[A],uy=v[B+1]-v[A+1],uz=v[B+2]-v[A+2], wx=v[C]-v[A],wy=v[C+1]-v[A+1],wz=v[C+2]-v[A+2];
+  var nx=uy*wz-uz*wy, ny=uz*wx-ux*wz, nz=ux*wy-uy*wx;
+  var sx=v[A+3]+v[B+3]+v[C+3], sy=v[A+4]+v[B+4]+v[C+4], sz=v[A+5]+v[B+5]+v[C+5];
+  if (nx*nx+ny*ny+nz*nz < 1e-14) return;
+  if (nx*sx+ny*sy+nz*sz < 0) this.i.push(a,c,b); else this.i.push(a,b,c);
+};
+// profile builder: points [a, r, na, nr, mat, brk]
+function Prof(){ this.p=[]; }
+Prof.prototype.pt=function(a,r,na,nr,m){ this.p.push([a,r,na,nr,m,0]); return this; };
+Prof.prototype.line=function(a0,r0,a1,r1,m,steps){ var da=a1-a0, dr=r1-r0, l=Math.hypot(da,dr), na=dr/l, nr=-da/l; steps=steps||1;
+  for (var i=0;i<=steps;i++){ var t=i/steps; this.pt(a0+da*t, r0+dr*t, na, nr, m); } this.brk(); return this; };
+Prof.prototype.arc=function(ca,cr,rad,t0,t1,m,steps){ steps=steps||6; for (var i=0;i<=steps;i++){ var t=t0+(t1-t0)*i/steps, c=Math.cos(t), s=Math.sin(t); this.pt(ca+rad*c, cr+rad*s, c, s, m); } this.brk(); return this; };
+Prof.prototype.brk=function(){ this.p[this.p.length-1][5]=1; return this; };
+// a CCW rounded rectangle in (a,r)
+function rrect(pr,a0,a1,r0,r1,cr,m,st,me){
+  var PI=Math.PI, mm=m; if(me!==undefined) m=me; var ma=m; m=mm;
+  pr.line(a0+cr,r0,a1-cr,r0,m); pr.arc(a1-cr,r0+cr,cr,-PI/2,0,ma,st);
+  pr.line(a1,r0+cr,a1,r1-cr,m); pr.arc(a1-cr,r1-cr,cr,0,PI/2,ma,st);
+  pr.line(a1-cr,r1,a0+cr,r1,m); pr.arc(a0+cr,r1-cr,cr,PI/2,PI,ma,st);
+  pr.line(a0,r1-cr,a0,r0+cr,m); pr.arc(a0+cr,r0+cr,cr,PI,PI*1.5,ma,st);
+}
+var MX = 0.40, MR = 0.25, MT = 0.14, RC = 1.2;
+function mirrorProf(){
+  var pr=new Prof(), e=0.014, sag=function(r){return RC-Math.sqrt(RC*RC-r*r)}, s0=sag(MR-e), front=MT/2, ca;
+  // front concave face (coating mat 2) a = front - s0 + sag(r)
+  var aC = front - s0 + RC; // center of curvature (on +a side)
+  for (var i=0;i<=9;i++){ var r=(MR-e)*Math.pow(i/9,0.75), a=front-s0+sag(r), na=aC-a, nr=-r, l=Math.hypot(na,nr); pr.pt(a,r,na/l,nr/l,2); }
+  pr.brk();
+  // rounded edge to side
+  var PI=Math.PI, t0=Math.atan2(-(MR-e), aC-(front)); // normal angle at rim (approx)
+  pr.arc(front-e, MR-e, e, Math.max(t0,0.0)+0.0, PI/2, 1, 3);
+  pr.line(front-e, MR, -front+e, MR, 1);
+  pr.arc(-front+e, MR-e, e, PI/2, PI, 1, 3);
+  pr.line(-front, MR-e, -front, 0, 1, 1);
+  return pr.p;
+}
+function ringProf(){ var pr=new Prof(); rrect(pr, -0.105, 0.105, 0.252, 0.365, 0.028, 0, 3);
+  // thin front lip highlight ring
+  return pr.p; }
+function vcyl(pr, y0, y1, r, m){ pr.pt(y0, r, 0, 1, m); pr.pt(y1, r, 0, 1, m); pr.brk(); }
+// rounded box with machined fillets; mat = base + 0.9*edgeWeight (smooth varying)
+function rbox(M, cx,cy,cz, hx,hy,hz, r, mb){
+  var h=[hx,hy,hz];
+  function coords(hh){ var m=hh-r; return [-hh,-hh+0.3*r,-m,m,hh-0.3*r,hh]; }
+  var C=[coords(hx),coords(hy),coords(hz)];
+  for (var ax=0;ax<3;ax++) for (var sg=-1;sg<=1;sg+=2){
+    var u=(ax+1)%3, w=(ax+2)%3, cu=C[u], cw=C[w], base=M.v.length/7, n=cw.length;
+    for (var i=0;i<cu.length;i++) for (var j=0;j<n;j++){
+      var p=[0,0,0]; p[ax]=sg*h[ax]; p[u]=cu[i]; p[w]=cw[j];
+      var inn=[0,0,0], d=[0,0,0]; for (var k=0;k<3;k++){ var lim=h[k]-r; inn[k]=Math.max(-lim,Math.min(lim,p[k])); d[k]=p[k]-inn[k]; }
+      var l=Math.hypot(d[0],d[1],d[2])||1, nx=d[0]/l, ny=d[1]/l, nz=d[2]/l;
+      var e=Math.min(1, Math.max(Math.abs(d[u]),Math.abs(d[w]))/r*1.6);
+      M.v.push(cx+inn[0]+nx*r, cy+inn[1]+ny*r, cz+inn[2]+nz*r, nx,ny,nz, mb+0.9*e);
+    }
+    for (i=0;i<cu.length-1;i++) for (j=0;j<n-1;j++){ var q0=base+i*n+j, q1=q0+1, q2=q0+n, q3=q2+1; M.tri(q0,q2,q1); M.tri(q1,q2,q3); }
+  }
+}
+function lathe2(M, prof, segs, axis, flip, dx, dy, dz){ var vb=M.v.length/7; M.lathe(prof, segs, axis, flip); for (var k=vb*7;k<M.v.length;k+=7){ M.v[k]+=dx; M.v[k+1]+=dy; M.v[k+2]+=dz; } }
+var PLATE=0.30, POSTX=0.505;
+function buildModule(segs, small){
+  var M = new Mesh(), PI=Math.PI, mp = mirrorProf();
+  [[-1,false],[1,true]].forEach(function(sd){
+    var sg=sd[0], flip=sd[1], off=sg*MX;
+    // mirror substrate
+    lathe2(M, mp, segs, 'x', flip, off, H, 0);
+    // retaining ring around the mirror (anodized, machined edges)
+    var rr=new Prof(); rrect(rr, -0.075, 0.045, 0.252, 0.29, 0.012, 6, 3, 6.9);
+    lathe2(M, rr.p, segs, 'x', flip, off, H, 0);
+    // front + back plates of a kinematic mount
+    rbox(M, sg*0.505, H, 0, 0.035, PLATE, PLATE, 0.013, 6);
+    rbox(M, sg*0.592, H, 0, 0.028, PLATE*0.97, PLATE*0.97, 0.011, 6);
+    // two fine adjuster knobs at opposite corners of the back plate
+    var kp=new Prof();
+    kp.pt(0,0.014,0,1,3).pt(0.035,0.014,0,1,3).brk();
+    rrect(kp, 0.035, 0.105, 0.0, 0.04, 0.01, 6, 3, 6.9);
+    [[0.215,0.215],[-0.215,-0.215]].forEach(function(c){ lathe2(M, kp.p, small, 'x', !flip, sg*0.62, H+c[0], c[1]*sg); });
+    // fiber coupler out of the back plate centre
+    var cp=new Prof();
+    cp.pt(0.22,0,-1,0,5).pt(0.22,0.034,-1,0,5).brk();
+    cp.arc(0.228,0.034,0.008,PI,PI/2,5,2);
+    cp.pt(0.228,0.042,0,1,5).pt(0.365,0.042,0,1,5).brk();
+    cp.arc(0.365,0.032,0.01,PI/2,0,5,2);
+    cp.pt(0.375,0.032,0.24,0.97,5).pt(0.415,0.022,0.24,0.97,5).brk();
+    cp.arc(0.415,0.016,0.006,PI/2,0,3,2);
+    cp.pt(0.421,0.016,1,0,3).pt(0.421,0,1,0,3).brk();
+    lathe2(M, cp.p, small, 'x', !flip, sg*MX, H, 0);
+    // slim post, post holder and base clamp
+    var pp=new Prof();
+    rrect(pp, 0.03, 0.22, 0.0, 0.040, 0.008, 6, 3, 6.9);     // holder (a=height)
+    pp.pt(0.22,0.026,0,1,3).pt(H-PLATE+0.01,0.026,0,1,3).brk(); // steel post
+    lathe2(M, pp.p, small, 'y', false, sg*POSTX, 0, 0);
+    rbox(M, sg*POSTX, 0.016, 0, 0.055, 0.016, 0.15, 0.007, 6);
+    rbox(M, sg*POSTX, 0.036, 0.105, 0.022, 0.006, 0.022, 0.004, 6);
+    rbox(M, sg*POSTX, 0.036, -0.105, 0.022, 0.006, 0.022, 0.004, 6);
+  });
+  return M;
+}
+// Note: lathe 'y' builds pos=(r cos, a, r sin) with a=height; profiles above give (a=height, r=radius).
+function buildSpindle(segs){
+  var M=new Mesh(), pr=[], w0=0.036, zR=0.18, xs=0.300, n=26;
+  for (var i=0;i<=n;i++){ var a=-xs+2*xs*i/n, w=1.8*w0*Math.sqrt(1+(a/zR)*(a/zR)), dw=1.8*w0*(a/(zR*zR))/Math.sqrt(1+(a/zR)*(a/zR)), l=Math.hypot(dw,1);
+    pr.push([a, w, -dw/l, 1/l, 0, 0]); }
+  M.lathe(pr, segs, 'x', false);
+  for (var k=0;k<M.v.length;k+=7) M.v[k+1]+=H;
+  return M;
+}
+
+/* ----- shaders ----- */
+var VS_SOLID = '#version 300 es\n'+
+'layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNrm; layout(location=2) in float aMat;'+
+'layout(location=3) in vec4 iPS; layout(location=4) in vec4 iFx;'+
+'uniform mat4 uVP; out vec3 vW; out vec3 vN; out vec3 vL; out float vMatS; flat out float vMat; flat out vec4 vFx; flat out vec3 vAtom;'+
+'void main(){ vec3 p=aPos*iPS.w+iPS.xyz; vW=p; vN=aNrm; vL=aPos; vMat=aMat; vMatS=aMat; vFx=iFx; vAtom=iPS.xyz+vec3(0.,'+H.toFixed(3)+'*iPS.w,0.); gl_Position=uVP*vec4(p,1.); }';
+
+var ENV = ''+
+'vec3 TM(vec3 x){ x*=1.0; return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.); }'+
+'float box(vec3 d, vec3 c, vec3 T, vec2 hs, float w){ float k=dot(d,c); if(k<=0.) return 0.; vec3 B=cross(T,c); vec3 q=d/k-c; float u=abs(dot(q,T)), v=abs(dot(q,B)); return (1.-smoothstep(hs.x-w,hs.x+w,u))*(1.-smoothstep(hs.y-w,hs.y+w,v)); }'+
+'vec3 env(vec3 d, float r){ float w=0.012+r*0.5; float att=mix(1.,0.42,r);'+
+' vec3 c=mix(vec3(0.006,0.0065,0.007), vec3(0.06,0.064,0.07), smoothstep(-0.1,0.9,d.y));'+
+' c+=vec3(0.16,0.165,0.175)*exp(-(d.y-0.08)*(d.y-0.08)*30.)*mix(1.,0.7,r);'+
+' const vec3 K=vec3(0.2357,0.8838,0.4038); const vec3 KT=vec3(0.9636,-0.2571,0.); '+
+' c+=vec3(2.7,2.62,2.5)*att*box(d,K,KT,vec2(0.62,0.34),w);'+
+' const vec3 R1=vec3(-0.8704,0.2176,-0.4417); const vec3 R1T=vec3(0.4523,0.,-0.8919);'+
+' c+=vec3(1.55,1.75,2.0)*att*box(d,R1,R1T,vec2(0.045,0.9),w*0.8);'+
+' const vec3 R2=vec3(0.8378,0.1676,0.5199); const vec3 R2T=vec3(-0.5272,0.,0.8498);'+
+' c+=vec3(0.75,0.72,0.70)*att*box(d,R2,R2T,vec2(0.035,0.7),w*0.8);'+
+' return c; }';
+
+var FS_SOLID = '#version 300 es\nprecision highp float;'+
+'in vec3 vW; in vec3 vN; in vec3 vL; in float vMatS; flat in float vMat; flat in vec4 vFx; flat in vec3 vAtom;'+
+'uniform vec3 uCam; uniform vec3 uCoral; uniform vec3 uFogBg; uniform float uFogR; out vec4 o;'+ ENV +
+'void main(){ vec3 N=normalize(vN); vec3 V=normalize(uCam-vW); if(dot(N,V)<0.) N=-N; float NV=max(dot(N,V),1e-3); vec3 R=reflect(-V,N);'+
+' const vec3 K=vec3(0.2357,0.8838,0.4038); float kd=max(dot(N,K),0.);'+
+' float m=vMat+0.5; vec3 col; vec3 F0; float rough;'+
+' vec3 glowC=mix(vec3(0.8,0.86,1.0), uCoral, vFx.y); vec3 Lv=vAtom-vW; float d2=dot(Lv,Lv); float spill=vFx.x*max(dot(N,Lv*inversesqrt(d2)),0.)*0.022/(d2+0.012);'+
+' float ao=mix(0.55,1.,smoothstep(0.,0.35,vW.y));'+
+' if(m<1.){ rough=0.3; F0=vec3(0.80,0.81,0.83); vec3 Fr=F0+(1.-F0)*pow(1.-NV,5.); col=env(R,rough)*Fr + F0*0.03*kd + glowC*spill*0.5; }'+
+' else if(m<2.){ rough=0.03; float F=0.04+0.96*pow(1.-NV,5.); vec3 inner=env(normalize(-N*0.6-V*0.4+vec3(0.,0.25,0.)),0.5)*vec3(0.45,0.58,0.66)*0.08; float rr=dot(vL.yz-vec2('+H.toFixed(3)+',0.),vL.yz-vec2('+H.toFixed(3)+',0.)); float leak=exp(-rr/0.0035)*vFx.x; col=env(R,rough)*F + inner*(1.-F)*(0.5+0.5*smoothstep(0.,0.06,rr)) + vec3(0.003,0.0035,0.004) + glowC*leak*0.22 + glowC*spill*0.35; }'+
+' else if(m<3.){ rough=0.025; vec3 film=0.5+0.5*cos(6.2832*(vec3(0.0,0.33,0.67)+NV*1.35+0.15)); vec3 tint=mix(vec3(0.93,0.94,0.96), film, 0.28); vec3 Fr=tint*0.86+(1.-tint*0.86)*pow(1.-NV,5.); col=env(R,rough)*Fr + glowC*spill*1.6; }'+
+' else if(m<4.){ rough=0.16; F0=vec3(0.78,0.79,0.80); vec3 Fr=F0+(1.-F0)*pow(1.-NV,5.); col=env(R,rough)*Fr + glowC*spill*0.4; }'+
+' else if(m<5.){ rough=0.42; float F=0.04+0.96*pow(1.-NV,5.); col=vec3(0.035,0.036,0.04)*(0.25+kd*0.9) + env(R,rough)*F*0.9; }'+
+' else if(m<6.){ rough=0.30; float F=0.04+0.96*pow(1.-NV,5.); col=vec3(0.012,0.013,0.015)*(0.3+kd) + env(R,rough)*F*0.8 + glowC*spill*0.3; }'+
+' else { float e=clamp((vMatS-6.)/0.9,0.,1.); e=e*e*(3.-2.*e); float Fa=0.05+0.95*pow(1.-NV,5.); vec3 Ev=env(R,mix(0.36,0.16,e)); vec3 an=vec3(0.011,0.0115,0.013)*(0.35+kd*0.9) + Ev*Fa*0.75 + glowC*spill*0.25; vec3 Fm=vec3(0.86,0.87,0.88)+(1.-vec3(0.86,0.87,0.88))*pow(1.-NV,5.); vec3 ed=Ev*Fm + glowC*spill*0.5; col=mix(an,ed,e); }'+
+' col*=ao; col=TM(col*1.05); col=pow(col,vec3(1./2.2));'+
+' float fg=smoothstep(uFogR*0.6,uFogR,length(vW.xz)); col=mix(col,uFogBg,fg*0.85);'+
+' o=vec4(col,1.); }';
+
+var VS_TABLE = '#version 300 es\nlayout(location=0) in vec2 aP; uniform mat4 uVP; uniform float uFogR; out vec2 vP; void main(){ vP=aP*uFogR/18.; gl_Position=uVP*vec4(vP.x,0.,vP.y,1.); }';
+var FS_TABLE = '#version 300 es\nprecision highp float; in vec2 vP; uniform sampler2D uHole; uniform vec3 uBg; uniform float uFogR; out vec4 o;'+
+'void main(){ float r=length(vP); if(r>uFogR){ o=vec4(uBg,1.); return; } vec3 c=uBg; float pool=exp(-r*r/(uFogR*uFogR*0.22));'+
+' float pk=exp(-r*r/9.); c+=vec3(0.020,0.021,0.024)*pool + vec3(0.030,0.031,0.034)*pk;'+
+' float hv=exp(-r*r/(uFogR*uFogR*0.16)); vec2 h=texture(uHole, vP*2.).rg;'+
+' c+=vec3(0.026,0.027,0.030)*hv; c=c*(1.-h.r*0.8*hv)+vec3(0.05,0.052,0.058)*h.g*hv;'+
+' c=mix(c,uBg,smoothstep(uFogR*0.55,uFogR,r));'+
+' c+=(fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)/255.;'+
+' o=vec4(c,1.); }';
+var VS_DEC = '#version 300 es\nlayout(location=0) in vec2 aC; layout(location=1) in vec4 iPS; layout(location=2) in vec4 iFx; uniform mat4 uVP; out vec2 vD; flat out vec4 vFx; flat out float vS;'+
+'void main(){ vD=aC*vec2(1.6,1.0); vFx=iFx; vS=iPS.w; vec3 p=iPS.xyz+vec3(vD.x,0.002,vD.y)*iPS.w; gl_Position=uVP*vec4(p,1.); }';
+var FS_SHD = '#version 300 es\nprecision highp float; in vec2 vD; flat in vec4 vFx; flat in float vS; out vec4 o;'+
+'void main(){ vec2 d=vD; vec2 dl=d-vec2(-0.505,0.), dr=d-vec2(0.505,0.); float e=1.-smoothstep(0.6,1.,length(d/vec2(1.6,1.)));'+
+' float sh=(0.85*exp(-dot(dl,dl*vec2(1.,0.5))/0.02)+0.85*exp(-dot(dr,dr*vec2(1.,0.5))/0.02)+0.32*exp(-dot(d,d*vec2(0.55,1.6))/0.4))*e*vS*vS;'+
+' o=vec4(vec3(1.-clamp(sh,0.,0.9)),1.); }';
+var FS_GLW = '#version 300 es\nprecision highp float; in vec2 vD; flat in vec4 vFx; flat in float vS; uniform vec3 uCoral; out vec4 o;'+
+'void main(){ vec2 d=vD; float e=1.-smoothstep(0.6,1.,length(d/vec2(1.6,1.))); vec3 c=mix(vec3(0.7,0.78,0.9),uCoral,vFx.y)*vFx.x*exp(-dot(d,d*vec2(0.7,1.3))/0.35)*0.05*e*vS; o=vec4(c,1.); }';
+
+var FS_SPIN = '#version 300 es\nprecision highp float; in vec3 vW; in vec3 vN; in vec3 vL; flat in float vMat; flat in vec4 vFx; flat in vec3 vAtom; uniform vec3 uCam; uniform vec3 uCoral; uniform float uTime; out vec4 o;'+
+'uniform float uFr; void main(){ vec3 N=normalize(vN); vec3 V=normalize(uCam-vW); float f=abs(dot(N,V)); float core=pow(f,3.0)*0.55+pow(f,16.)*1.3; float ax=smoothstep(0.30,0.25,abs(vL.x)); float q=vL.x/0.18; float I=1./(1.+q*q); float sw=1.-uFr*0.35*(0.5+0.5*cos(vL.x*150.));'+
+' vec3 c=mix(vec3(0.62,0.70,0.82), uCoral, vFx.y)*vFx.x*core*ax*sw*(0.25+0.75*I)*0.6; o=vec4(c,1.); }';
+
+var VS_SPR = '#version 300 es\nlayout(location=0) in vec2 aC; layout(location=1) in vec4 iP; layout(location=2) in vec4 iC; uniform mat4 uVP; uniform vec3 uR; uniform vec3 uU; out vec2 vUV; out vec4 vC;'+
+'void main(){ vUV=aC; vC=iC; vec3 p=iP.xyz+(uR*aC.x+uU*aC.y)*iP.w; gl_Position=uVP*vec4(p,1.); }';
+var FS_SPR = '#version 300 es\nprecision highp float; in vec2 vUV; in vec4 vC; out vec4 o;'+
+'void main(){ float r2=dot(vUV,vUV); if(r2>1.) discard; float core=exp(-r2*60.); float halo=exp(-r2*7.)*0.42; float fade=1.-smoothstep(0.55,1.,r2); vec3 c=mix(vC.rgb, vec3(1.), core*0.55)*(core*1.6+halo)*fade*vC.a; o=vec4(c,1.); }';
+
+var VS_RIB = '#version 300 es\nlayout(location=0) in vec3 aP; layout(location=1) in vec3 aT; layout(location=2) in vec2 aS; uniform mat4 uVP; uniform vec3 uCam; uniform float uW; out vec2 vS; flat out int vId;'+
+'void main(){ vec3 V=normalize(uCam-aP); vec3 b=normalize(cross(aT,V)); vec3 p=aP+b*aS.x*uW; vS=vec2(aS.x, fract(aS.y)); vId=int(floor(aS.y)); vS.y=aS.y-floor(aS.y); gl_Position=uVP*vec4(p,1.); }';
+var FS_RIB = '#version 300 es\nprecision highp float; in vec2 vS; flat in int vId; uniform vec4 uLink['+NLINK+']; uniform vec3 uCoral; out vec4 o;'+
+'void main(){ vec4 L=uLink[vId]; float t=vS.y*0.999; float u=vS.x; float core=exp(-u*u*140.); float halo=exp(-u*u*7.)*0.16;'+
+' float rev=1.-smoothstep(L.x-0.02,L.x,t); float ends=smoothstep(0.,0.02,t)*smoothstep(1.,0.98,t);'+
+' vec3 c=vec3(0.78,0.82,0.88)*(core*0.75+halo)*L.y*rev*ends;'+
+' float dp=(t-L.z)/0.03; float g=exp(-dp*dp)*L.w; float tail=exp(-max(L.z-t,0.)/0.06)*step(t,L.z)*L.w*0.35;'+
+' c+=uCoral*(core*2.4+halo*3.0)*(g+tail*0.6)*rev; o=vec4(c,1.); }';
+
+var VS_EDGE = '#version 300 es\nlayout(location=0) in vec2 aP; layout(location=1) in float aA; out float vA; void main(){ vA=aA; gl_Position=vec4(aP,0.,1.); }';
+var FS_EDGE = '#version 300 es\nprecision mediump float; in float vA; uniform vec3 uBg; out vec4 o; void main(){ float a=vA*vA*(3.-2.*vA); o=vec4(uBg,a); }';
+
+/* ----- GL state ----- */
+var prog = {}, vao = {}, buf = {}, cnt = {}, tex = {};
+var MSIZE = 8, modInst = new Float32Array(NMOD*MSIZE), spr = new Float32Array(48*8), nSpr = 0, linkU = new Float32Array(NLINK*4), modU = new Float32Array(48), glowU = new Float32Array(48);
+var VP = new Float32Array(16), PR = new Float32Array(16), VW = new Float32Array(16), cam = new Float32Array(3), camR=new Float32Array(3), camU=new Float32Array(3), tmp3 = new Float32Array(3);
+var BG = [7/255, 8/255, 9/255], CORAL = [1.0, 0.36, 0.24];
+var segHi = 128, segLo = 60;
+
+function sh(type, src){ var s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){ console.warn(gl.getShaderInfoLog(s)); } return s; }
+function mkProg(vs, fs, unis){ var p=gl.createProgram(); gl.attachShader(p,sh(gl.VERTEX_SHADER,vs)); gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error('link: '+gl.getProgramInfoLog(p));
+  var u={p:p}; unis.forEach(function(n){ u[n]=gl.getUniformLocation(p,n) }); return u; }
+function vbo(data, target){ var b=gl.createBuffer(); gl.bindBuffer(target||gl.ARRAY_BUFFER,b); gl.bufferData(target||gl.ARRAY_BUFFER,data,gl.STATIC_DRAW); return b; }
+function meshVAO(M, instBuf){
+  var a=gl.createVertexArray(); gl.bindVertexArray(a);
+  vbo(new Float32Array(M.v)); var st=28;
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,3,gl.FLOAT,false,st,0);
+  gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,3,gl.FLOAT,false,st,12);
+  gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,1,gl.FLOAT,false,st,24);
+  gl.bindBuffer(gl.ARRAY_BUFFER, instBuf);
+  gl.enableVertexAttribArray(3); gl.vertexAttribPointer(3,4,gl.FLOAT,false,32,0); gl.vertexAttribDivisor(3,1);
+  gl.enableVertexAttribArray(4); gl.vertexAttribPointer(4,4,gl.FLOAT,false,32,16); gl.vertexAttribDivisor(4,1);
+  vbo(new Uint32Array(M.i), gl.ELEMENT_ARRAY_BUFFER);
+  gl.bindVertexArray(null); return {vao:a, n:M.i.length};
+}
+var geoCache = null;
+function buildGeo(){
+  if (!geoCache) geoCache = { hi: buildModule(segHi, 56), mid: buildModule(96, 40), lo: buildModule(segLo, 28), sp: buildSpindle(56) };
+  return geoCache;
+}
+function initGL(){
+  gl = canvas.getContext('webgl2', {antialias:true, alpha:false, depth:true, stencil:false, premultipliedAlpha:false, preserveDrawingBuffer:false, powerPreference:'high-performance'});
+  if (!gl){ document.documentElement.classList.add('nogl'); return false; }
+  var G = buildGeo();
+  prog.solid = mkProg(VS_SOLID, FS_SOLID, ['uVP','uCam','uCoral','uFogBg','uFogR']);
+  prog.table = mkProg(VS_TABLE, FS_TABLE, ['uVP','uHole','uBg','uFogR']);
+  prog.shd = mkProg(VS_DEC, FS_SHD, ['uVP']); prog.glw = mkProg(VS_DEC, FS_GLW, ['uVP','uCoral']);
+  // breadboard hole tile (mipmapped: clean at any distance)
+  var TS=128, td=new Uint8Array(TS*TS*2);
+  for (var ty=0;ty<TS;ty++) for (var tx=0;tx<TS;tx++){ var fx=(tx+0.5)/TS-0.5, fy=(ty+0.5)/TS-0.5, dd=Math.hypot(fx,fy)*0.5;
+    var hole=1-Math.max(0,Math.min(1,(dd-0.026)/0.004)); var rim=Math.exp(-Math.pow((dd-0.031)/0.003,2));
+    td[(ty*TS+tx)*2]=Math.round(hole*255); td[(ty*TS+tx)*2+1]=Math.round(rim*255); }
+  tex.hole=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tex.hole); gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RG8,TS,TS,0,gl.RG,gl.UNSIGNED_BYTE,td); gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  prog.spin = mkProg(VS_SOLID, FS_SPIN, ['uVP','uCam','uCoral','uTime','uFr']);
+  prog.spr = mkProg(VS_SPR, FS_SPR, ['uVP','uR','uU']);
+  prog.rib = mkProg(VS_RIB, FS_RIB, ['uVP','uCam','uW','uLink','uCoral']);
+  prog.edge = mkProg(VS_EDGE, FS_EDGE, ['uBg']);
+  buf.inst = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf.inst); gl.bufferData(gl.ARRAY_BUFFER, modInst.byteLength, gl.DYNAMIC_DRAW);
+  vao.hi = meshVAO(G.hi, buf.inst); vao.mid = meshVAO(G.mid, buf.inst); vao.lo = meshVAO(G.lo, buf.inst); vao.sp = meshVAO(G.sp, buf.inst);
+  // table
+  vao.table = gl.createVertexArray(); gl.bindVertexArray(vao.table); var S=18; vbo(new Float32Array([-S,-S, -S,S, S,-S, S,S])); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0); gl.bindVertexArray(null);
+  // sprites
+  vao.spr = gl.createVertexArray(); gl.bindVertexArray(vao.spr); vbo(new Float32Array([-1,-1, 1,-1, -1,1, 1,1])); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+  buf.spr = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf.spr); gl.bufferData(gl.ARRAY_BUFFER, spr.byteLength, gl.DYNAMIC_DRAW);
+  gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,4,gl.FLOAT,false,32,0); gl.vertexAttribDivisor(1,1);
+  gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,4,gl.FLOAT,false,32,16); gl.vertexAttribDivisor(2,1);
+  gl.bindVertexArray(null);
+  vao.dec = gl.createVertexArray(); gl.bindVertexArray(vao.dec); vbo(new Float32Array([-1,-1, 1,-1, -1,1, 1,1])); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf.inst);
+  gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,4,gl.FLOAT,false,32,0); gl.vertexAttribDivisor(1,1);
+  gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,4,gl.FLOAT,false,32,16); gl.vertexAttribDivisor(2,1);
+  gl.bindVertexArray(null);
+  // ribbons
+  var rv=[], ri=[], base=0;
+  links.forEach(function(L,li){ var s=L.s, n=L.n;
+    for (var i=0;i<=n;i++){ var a=Math.max(0,i-1), b=Math.min(n,i+1); var tx=s[b*3]-s[a*3], ty=s[b*3+1]-s[a*3+1], tz=s[b*3+2]-s[a*3+2], l=Math.hypot(tx,ty,tz); tx/=l;ty/=l;tz/=l;
+      var tt = li + Math.min(i/n, 0.9999);
+      rv.push(s[i*3],s[i*3+1],s[i*3+2],tx,ty,tz,-1,tt, s[i*3],s[i*3+1],s[i*3+2],tx,ty,tz,1,tt);
+      if (i<n){ var q=base+i*2; ri.push(q,q+1,q+2, q+1,q+3,q+2); } }
+    base += (n+1)*2; });
+  vao.rib = gl.createVertexArray(); gl.bindVertexArray(vao.rib); vbo(new Float32Array(rv));
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,3,gl.FLOAT,false,32,0);
+  gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,3,gl.FLOAT,false,32,12);
+  gl.enableVertexAttribArray(2); gl.vertexAttribPointer(2,2,gl.FLOAT,false,32,24);
+  vbo(new Uint32Array(ri), gl.ELEMENT_ARRAY_BUFFER); gl.bindVertexArray(null); cnt.rib = ri.length;
+  cnt.ribPer = links[0].n*6;
+  // edge vignette ring (NDC), 3 rings for smooth ramp
+  var ev=[], ei=[], rings=[[1.0,1.0,1],[0.93,0.90,0.55],[0.84,0.78,0.0]];
+  // per ring 4 corners
+  for (var r=0;r<rings.length;r++){ var x=rings[r][0], y=rings[r][1], aA=rings[r][2]; ev.push(-x,-y,aA, x,-y,aA, x,y,aA, -x,y,aA); }
+  for (r=0;r<rings.length-1;r++) for (var k=0;k<4;k++){ var o0=r*4+k, o1=r*4+(k+1)%4, i0=(r+1)*4+k, i1=(r+1)*4+(k+1)%4; ei.push(o0,o1,i1, o0,i1,i0); }
+  vao.edge = gl.createVertexArray(); gl.bindVertexArray(vao.edge); vbo(new Float32Array(ev));
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,12,0); gl.enableVertexAttribArray(1); gl.vertexAttribPointer(1,1,gl.FLOAT,false,12,8);
+  vbo(new Uint16Array(ei), gl.ELEMENT_ARRAY_BUFFER); gl.bindVertexArray(null); cnt.edge = ei.length;
+  gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE); gl.cullFace(gl.BACK);
+  return true;
+}
+canvas.addEventListener('webglcontextlost', function(e){ e.preventDefault(); ready=false; running=false; });
+canvas.addEventListener('webglcontextrestored', function(){ try{ if(initGL()){ ready=true; resize(); start(); } }catch(err){ document.documentElement.classList.add('nogl'); } });
+
+/* ----- math ----- */
+function persp(o,fy,asp,n,f){ var t=1/Math.tan(fy/2); o.fill(0); o[0]=t/asp; o[5]=t; o[10]=(f+n)/(n-f); o[11]=-1; o[14]=2*f*n/(n-f); }
+function lookAt(o,e,c){ var zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2],l=Math.hypot(zx,zy,zz); zx/=l;zy/=l;zz/=l;
+  var xx=zz, xy=0, xz=-zx; l=Math.hypot(xx,xz); xx/=l; xz/=l; // up=(0,1,0): x = up × z
+  var yx=zy*xz-zz*xy, yy=zz*xx-zx*xz, yz=zx*xy-zy*xx;
+  o[0]=xx;o[1]=yx;o[2]=zx;o[3]=0; o[4]=xy;o[5]=yy;o[6]=zy;o[7]=0; o[8]=xz;o[9]=yz;o[10]=zz;o[11]=0;
+  o[12]=-(xx*e[0]+xy*e[1]+xz*e[2]); o[13]=-(yx*e[0]+yy*e[1]+yz*e[2]); o[14]=-(zx*e[0]+zy*e[1]+zz*e[2]); o[15]=1;
+  camR[0]=xx;camR[1]=xy;camR[2]=xz; camU[0]=yx;camU[1]=yy;camU[2]=yz; }
+function mul(o,a,b){ for(var i=0;i<4;i++) for(var j=0;j<4;j++){ var s=0; for(var k=0;k<4;k++) s+=a[k*4+j]*b[i*4+k]; o[i*4+j]=s; } }
+
+/* ----- choreography ----- */
+// keyframes: tx,ty,tz,dist,yaw,pitch, thread, grid, fogR
+var KF = [
+  [ 0.55,0.66,0.00,  9.3, 0.30,0.22,  1, 0, 9.0],  // hero: two pairs
+  [-1.90,0.78,0.00,  3.9, 0.74,0.24,  0, 0, 6.5],  // 01 limit: lone module
+  [-1.90,0.86,0.00,  3.1, 0.16,0.15,  0, 0, 6.5],  // 02 emit: close, side-on
+  [ 0.00,0.72,0.00, 10.4, 0.10,0.22,  1, 0, 9.0],  // 03 cross
+  [ 0.10,0.76,0.00,  9.6,-0.22,0.30,  1, 0, 9.0],  // 04 herald
+  [ 0.20,0.00,0.30, 25.0, 0.50,0.86,  1, 1, 20.]   // 05 scale
+];
+var K = new Float32Array(9);
+function ss(a,b,x){ var t=Math.max(0,Math.min(1,(x-a)/(b-a))); return t*t*(3-2*t); }
+var yawOff = 0, yawVel = 0, pitchOff = 0, pitchVel = 0, dragging=false, lastX=0, lastY=0, idleT = 0;
+function sample(){ var i=Math.min(4,Math.floor(Pe)), f=Pe-i; if(Pe>=5){i=4;f=1;} for(var k=0;k<9;k++) K[k]=KF[i][k]+(KF[i+1][k]-KF[i][k])*f; }
+
+function setSprite(x,y,z,size,r,g,b,a){ if(a<0.004||nSpr>=48) return; var o=nSpr*8; spr[o]=x;spr[o+1]=y;spr[o+2]=z;spr[o+3]=size;spr[o+4]=r;spr[o+5]=g;spr[o+6]=b;spr[o+7]=a; nSpr++; }
+var pp = new Float32Array(3);
+function update(dt){
+  simT += dt; introT += dt;
+  if (!dragging){ yawOff += yawVel*dt; yawVel *= Math.pow(0.04, dt); pitchVel*=Math.pow(0.04,dt); pitchOff += pitchVel*dt; pitchOff *= Math.pow(0.5, dt); }
+  pitchOff = Math.max(-0.2, Math.min(0.25, pitchOff));
+  sample();
+  var asp = canvas.width/canvas.height, dist = K[3]*Math.max(1, 1.3/asp)*(asp<1.1?1.16:1);
+  var intro = RM ? 0 : 1 - ss(0, 2.8, introT); dist *= 1 + 0.22*intro;
+  var yaw = K[4] + yawOff + (RM?0:0.05*Math.sin(simT*0.13)) - intro*0.35, pitch = Math.max(0.04, K[5] + pitchOff + intro*0.04);
+  cam[0]=K[0]+dist*Math.sin(yaw)*Math.cos(pitch); cam[1]=K[1]+dist*Math.sin(pitch); cam[2]=K[2]+dist*Math.cos(yaw)*Math.cos(pitch);
+  tmp3[0]=K[0]; tmp3[1]=K[1]; tmp3[2]=K[2];
+  persp(PR, 30*Math.PI/180, asp, 0.1, 80); lookAt(VW, cam, tmp3); mul(VP, PR, VW);
+
+  var thread = K[6], grid = K[7];
+  var stepN = Math.round(Pe), fr = Pe - Math.floor(Pe);
+  // photon cycle
+  var T = 3.8, ph = (simT / T) % 1;
+  var mode = stepN; // 0 hero,1 limit,2 emit,3 cross,4 herald,5 scale
+  var pAlpha = mode===1 ? 0 : 1;
+  pAlpha *= ss(0.06, 0.2, Math.abs(fr-0.5));
+  if (mode===2){ ph = ((simT/(T*0.42))%1)*0.34; }
+  var cx = modPos[0], bx = modPos[3];
+  var excA=0, excB=0, sync=0, inCavA=0, inCavB=0, herald=0;
+  nSpr = 0;
+  // photon position
+  var px=cx, py=H, pz=0, pVis=pAlpha, onLink=-1;
+  if (ph < 0.05){ excA = 1 - ph/0.05*0.4; px=cx; pVis*= ph/0.05; inCavA=1; }
+  else if (ph < 0.27){ var u=(ph-0.05)/0.22; inCavA=1; px = cx + 0.29*Math.sin(u*Math.PI*7)*(0.35+0.65*u); excA = 0.6*(1-u);
+    if (u>0.86){ px = cx + 0.29 + (u-0.86)/0.14*0.53; } }
+  else if (ph < 0.34){ px = cx + 0.82; inCavA = 0.4; }
+  else if (ph < 0.72){ onLink = 0; }
+  else if (ph < 0.80){ var u2=(ph-0.72)/0.08; px = bx - 0.82 + u2*0.82; inCavB=1; excB = ss(0.5,1,u2); }
+  else if (ph < 0.86){ var u3=(ph-0.80)/0.06; px = bx + u3*0.82; inCavB=1; excB = 1; }
+  else { herald = 1 - (ph-0.86)/0.14; px = bx+0.82; pVis *= Math.max(0, 1-(ph-0.86)/0.03); }
+  if (mode===2 && ph>0.30) pVis *= ss(0.34,0.30,ph);
+  var crossOK = thread > 0.5;
+  if (!crossOK && ph>0.30) pVis = 0;
+  if (ph>0.86 || ph<0.05) sync = ph>0.86 ? 1 : (1 - ph/0.05);
+  if (mode===4) sync = Math.max(sync, 0.75);
+  if (mode===5) sync = Math.max(sync, 0.5);
+  // link uniforms
+  for (var l=0;l<NLINK;l++){ var L=links[l], o=l*4;
+    if (l===0){ linkU[o]=thread*1.03; linkU[o+1]=Math.min(1,thread*2.5); linkU[o+2]= onLink===0 ? ss(0.34,0.72,ph) : -1; linkU[o+3]= onLink===0 ? pVis : 0; }
+    else { var ga = Math.min(gGrow(L.a,grid), gGrow(L.b,grid)); var rev = ss(0.0,1.0,(ga-0.4)/0.6); linkU[o]=rev*1.02; linkU[o+1]=grid; var t2=(simT*0.22+L.ph)%1; linkU[o+2]=t2; linkU[o+3]= grid*ss(0.98,0.9,t2)*ss(0.0,0.06,t2)*(rev>0.99?1:0); }
+  }
+  // modules
+  var nVis = 0;
+  for (var m=0;m<NMOD;m++){ var o2=m*MSIZE, sc = m===0 ? 1 : m===1 ? ss(0.0,0.7,Math.max(thread,grid)) : gGrow(m,grid);
+    modInst[o2]=modPos[m*3]; modInst[o2+1]=0; modInst[o2+2]=modPos[m*3+2]; modInst[o2+3]=sc;
+    var mi, co, ex;
+    if (m===0){ mi = 0.55 + 0.9*inCavA + 0.6*excA; co = Math.min(1, inCavA*0.9 + sync*0.9 + excA); ex=excA; }
+    else if (m===1){ mi = (0.55 + 0.9*inCavB + 0.5*excB)*Math.max(thread, grid); co = Math.min(1, inCavB*0.9 + sync*0.9 + excB); ex=excB; }
+    else { var pulse = 0.5+0.5*Math.sin(simT*1.3 + m*1.7); mi = sc*(0.5+0.35*pulse); co = 0.25*pulse*grid; ex=0; }
+    modInst[o2+4]=mi; modInst[o2+5]=co; modInst[o2+6]=ex; modInst[o2+7]=0;
+    modU[m*4]=modPos[m*3]; modU[m*4+1]=0; modU[m*4+2]=modPos[m*3+2]; modU[m*4+3]=sc;
+    glowU[m*4]=mi; glowU[m*4+1]=co;
+    if (sc>0.001) nVis = m+1;
+    // atom sprite
+    if (sc > 0.02){
+      var breath = 0.85 + 0.15*Math.sin(simT*2.2 + m);
+      var syncP = (m<2) ? sync*(0.75+0.25*Math.sin(simT*5.0)) : 0;
+      var cr = Math.min(1, co*0.9 + syncP), base = (0.9*breath + ex*0.9 + syncP*0.6) * sc * (m===1 ? Math.max(thread,grid) : 1);
+      setSprite(modPos[m*3], H*sc, modPos[m*3+2], (0.065 + 0.05*ex + 0.035*syncP)*sc, 0.86+(CORAL[0]-0.86)*cr, 0.9+(CORAL[1]-0.9)*cr, 1.0+(CORAL[2]-1.0)*cr, base);
+    }
+  }
+  cnt.nMod = nVis;
+  // photon sprite
+  if (onLink===0){ linkPoint(links[0], ss(0.34,0.72,ph), pp, 0); px=pp[0]; py=pp[1]; pz=pp[2]; }
+  setSprite(px,py,pz, 0.075, CORAL[0],CORAL[1],CORAL[2], pVis*1.1);
+  // herald flash at B's far coupler
+  if (herald>0 && crossOK) setSprite(bx+0.86, H, 0, 0.12+0.3*(1-herald), CORAL[0],CORAL[1],CORAL[2], herald*herald*0.9*pAlpha);
+  // grid photons heads
+  if (grid>0.01) for (l=1;l<NLINK;l++){ var w = linkU[l*4+3]; if (w<0.01) continue; linkPoint(links[l], linkU[l*4+2], pp, 0); setSprite(pp[0],pp[1],pp[2], 0.11, CORAL[0],CORAL[1],CORAL[2], w*0.9); }
+}
+function gGrow(m, grid){ if (m<2) return 1; var d=modRank[m]; return ss(d*0.55, d*0.55+0.45, grid); }
+
+function resize(){
+  if (!gl) return;
+  var r = canvas.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio||1, 2);
+  var w = Math.max(2, Math.round(r.width*dpr)), h = Math.max(2, Math.round(r.height*dpr));
+  if (canvas.width!==w || canvas.height!==h){ canvas.width=w; canvas.height=h; }
+  needDraw = true;
+}
+function render(){
+  gl.viewport(0,0,canvas.width,canvas.height);
+  gl.clearColor(BG[0],BG[1],BG[2],1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  gl.disable(gl.BLEND); gl.depthMask(true); gl.enable(gl.DEPTH_TEST);
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf.inst); gl.bufferSubData(gl.ARRAY_BUFFER, 0, modInst);
+  var mv = K[3] > 14 ? vao.lo : K[3] > 6 ? vao.mid : vao.hi;
+  // modules
+  var P1 = prog.solid; gl.useProgram(P1.p);
+  gl.uniformMatrix4fv(P1.uVP,false,VP); gl.uniform3fv(P1.uCam,cam); gl.uniform3fv(P1.uCoral,CORAL); gl.uniform3fv(P1.uFogBg,BG); gl.uniform1f(P1.uFogR,K[8]+2.);
+  var SK=window.__skip||0;
+  if(!(SK&1)) gl.bindVertexArray(mv.vao), gl.drawElementsInstanced(gl.TRIANGLES, mv.n, gl.UNSIGNED_INT, 0, cnt.nMod);
+  // table (after solids: depth rejects hidden fragments)
+  var P2 = prog.table; gl.useProgram(P2.p);
+  gl.uniformMatrix4fv(P2.uVP,false,VP); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,tex.hole); gl.uniform1i(P2.uHole,0); gl.uniform3fv(P2.uBg,BG); gl.uniform1f(P2.uFogR,K[8]);
+  if(!(SK&2)) gl.bindVertexArray(vao.table), gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  // contact shadows (multiply) and mode light spill (additive) as small decals
+  gl.enable(gl.BLEND); gl.depthMask(false); gl.disable(gl.CULL_FACE);
+  gl.bindVertexArray(vao.dec);
+  gl.blendFunc(gl.ZERO, gl.SRC_COLOR); gl.useProgram(prog.shd.p); gl.uniformMatrix4fv(prog.shd.uVP,false,VP); gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,cnt.nMod);
+  gl.blendFunc(gl.ONE, gl.ONE); gl.useProgram(prog.glw.p); gl.uniformMatrix4fv(prog.glw.uVP,false,VP); gl.uniform3fv(prog.glw.uCoral,CORAL); gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,cnt.nMod);
+  gl.enable(gl.CULL_FACE);
+  // additive
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE); gl.depthMask(false);
+  var P3 = prog.spin; gl.useProgram(P3.p);
+  gl.uniformMatrix4fv(P3.uVP,false,VP); gl.uniform3fv(P3.uCam,cam); gl.uniform3fv(P3.uCoral,CORAL); gl.uniform1f(P3.uTime,simT); gl.uniform1f(P3.uFr, Math.max(0,Math.min(1,(5.5-K[3])/2.5)));
+  if(!(SK&4)) gl.bindVertexArray(vao.sp.vao), gl.drawElementsInstanced(gl.TRIANGLES, vao.sp.n, gl.UNSIGNED_INT, 0, cnt.nMod);
+  gl.disable(gl.CULL_FACE);
+  var P4 = prog.rib; gl.useProgram(P4.p);
+  gl.uniformMatrix4fv(P4.uVP,false,VP); gl.uniform3fv(P4.uCam,cam); gl.uniform1f(P4.uW, 0.0085*K[3]*Math.max(1,1.3/(canvas.width/canvas.height))); gl.uniform4fv(P4.uLink,linkU); gl.uniform3fv(P4.uCoral,CORAL);
+  gl.bindVertexArray(vao.rib);
+  if (SK&8) {} else if (K[7] > 0.01) gl.drawElements(gl.TRIANGLES, cnt.rib, gl.UNSIGNED_INT, 0);
+  else if (K[6] > 0.01) gl.drawElements(gl.TRIANGLES, cnt.ribPer, gl.UNSIGNED_INT, 0);
+  if (nSpr && !(SK&16)){
+    var P5 = prog.spr; gl.useProgram(P5.p);
+    gl.uniformMatrix4fv(P5.uVP,false,VP); gl.uniform3fv(P5.uR,camR); gl.uniform3fv(P5.uU,camU);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf.spr); gl.bufferSubData(gl.ARRAY_BUFFER, 0, spr, 0, nSpr*8);
+    gl.bindVertexArray(vao.spr); gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, nSpr);
+  }
+  // edge fade
+  gl.disable(gl.DEPTH_TEST); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  var P6 = prog.edge; gl.useProgram(P6.p); gl.uniform3fv(P6.uBg,BG);
+  if(!(SK&32)) gl.bindVertexArray(vao.edge), gl.drawElements(gl.TRIANGLES, cnt.edge, gl.UNSIGNED_SHORT, 0);
+  gl.bindVertexArray(null); gl.enable(gl.CULL_FACE); gl.depthMask(true);
+  frames++;
+}
+function drawFrame(dt){ if(!ready) return; update(dt); render(); needDraw=false; }
+function loop(now){
+  if (!running) return;
+  var dt = lastNow ? Math.min(0.05, (now-lastNow)/1000) : 0.016; lastNow = now;
+  drawFrame(dt);
+  requestAnimationFrame(loop);
+}
+var frozen=false;
+function start(){ if (!ready || running || RM || frozen || !visible || !onscreen) return; running = true; lastNow = 0; requestAnimationFrame(loop); }
+function stop(){ running = false; }
+document.addEventListener('visibilitychange', function(){ visible = !document.hidden; visible ? start() : stop(); });
+new IntersectionObserver(function(es){ onscreen = es[0].isIntersecting; onscreen ? start() : stop(); }).observe(canvas);
+if ('ResizeObserver' in window) new ResizeObserver(function(){ resize(); if(RM) requestDraw(); }).observe(canvas);
+
+// drag to rotate
+var hint = $('#hint');
+canvas.addEventListener('pointerdown', function(e){ if(e.pointerType==='touch') return; dragging=true; lastX=e.clientX; lastY=e.clientY; yawVel=0; canvas.classList.add('drag'); canvas.setPointerCapture(e.pointerId); hint.classList.add('gone'); });
+canvas.addEventListener('pointermove', function(e){ if(!dragging) return; var dx=e.clientX-lastX, dy=e.clientY-lastY; lastX=e.clientX; lastY=e.clientY; yawOff -= dx*0.006; pitchOff += dy*0.003; yawVel = -dx*0.006*60; pitchVel = dy*0.003*30; if(RM) requestDraw(); });
+function endDrag(){ dragging=false; canvas.classList.remove('drag'); }
+canvas.addEventListener('pointerup', endDrag); canvas.addEventListener('pointercancel', endDrag);
+
+function boot(){
+  try { if (!initGL()) return; } catch(err){ console.warn(err); document.documentElement.classList.add('nogl'); return; }
+  ready = true; resize();
+  if (RM){ simT = 3.8*0.55; introT = 9; drawFrame(0); }
+  canvas.classList.add('on');
+  start();
+}
+if (document.readyState === 'complete') setTimeout(boot, 30); else addEventListener('load', function(){ (window.requestIdleCallback||setTimeout)(boot, {timeout:400}); });
+
+window.__concept = {
+  pause: function(){ frozen=true; stop(); canvas.style.transition='none'; canvas.style.opacity='1'; },
+  advance: function(s){ var n=Math.max(1,Math.round(s/0.033)); for(var i=0;i<n;i++) update(s/n); if(ready) render(); return simT; },
+  storyP: function(p){ measure(); if(p<=0) return this.setScroll(0); var i=Math.floor(p), f=p-i; var c = i>=5 ? centers[5] : centers[i]+(centers[i+1]-centers[i])*f; return this.setScroll((c - vh*(mob?0.86:0.5))/maxS()); },
+  setScroll: function(f){ sOn=false; var y=f*maxS(); window.scrollTo(0,y); sTarget=sCur=y; measure(); computeP(); $$('.reveal').forEach(function(el){ var r=el.getBoundingClientRect(); if(r.top<innerHeight*0.9) el.classList.add('in'); }); $$('.sec .fade').forEach(function(el){ var r=el.getBoundingClientRect(); if(r.top<innerHeight*0.95) el.classList.add('in'); }); if(ready){ update(0); render(); } return P; },
+  stats: function(){ return { P:+P.toFixed(3), Pe:+Pe.toFixed(3), ready:ready, frames:frames, modules:cnt.nMod, canvas:[canvas.width,canvas.height], tris: geoCache? geoCache.hi.i.length/3 : 0, sprites:nSpr }; }
+};
+})();
+</script>
+</body>
+</html>

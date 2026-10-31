@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ceretype Neuromedicine — Redesign Concept</title>
+<meta name="description" content="Redesign concept for Ceretype Neuromedicine: standardized functional MRI measures of brain network activity, drawn as a celestial atlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070B16; --s1:#0C1222; --ink:#ECE6D8; --mut:#8A90A2; --gold:#D6B36F;
+  --line:rgba(236,230,216,.10); --line2:rgba(236,230,216,.18);
+  --serif:'Newsreader','TeX Gyre Pagella','Palatino Linotype',Palatino,Georgia,serif;
+  --sans:'Hanken Grotesk','Helvetica Neue','Liberation Sans',Arial,sans-serif;
+  --mono:'IBM Plex Mono','DejaVu Sans Mono',ui-monospace,monospace;
+  --gut:max(6vw,20px); --max:1280px; --strip:30px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color-scheme:dark;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding-bottom:var(--strip);overflow-x:hidden;font-feature-settings:"kern","liga"}
+a{color:inherit}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:rgba(214,179,111,.3)}
+:focus-visible{outline:1px solid var(--gold);outline-offset:3px}
+.wrap{width:min(var(--max),calc(100% - 2*var(--gut)));margin:0 auto}
+.grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.lbl{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.lbl b{color:var(--gold);font-weight:500}
+.num{font-feature-settings:"tnum","lnum";font-variant-numeric:tabular-nums lining-nums}
+h1,h2,h3{font-family:var(--serif);font-weight:300;letter-spacing:-.02em;font-optical-sizing:auto}
+h1{font-size:clamp(34px,4.2vw,60px);line-height:1.04;letter-spacing:-.026em}
+h2{font-size:clamp(26px,2.6vw,38px);line-height:1.1}
+h3{font-size:19px;line-height:1.25;letter-spacing:-.01em;font-weight:400}
+em{font-style:italic}
+p{max-width:60ch}
+.lede{font-size:17px;color:rgba(236,230,216,.78)}
+.muted{color:var(--mut)}
+.fine{font-size:13px;line-height:1.55;color:var(--mut)}
+.confirm{font:400 11px/1.4 var(--mono);letter-spacing:.04em;color:rgba(214,179,111,.75);white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border:1px solid var(--line2);border-radius:2px;font:500 14px/1 var(--sans);text-decoration:none;letter-spacing:.005em;transition:border-color .4s var(--ease),background .4s var(--ease),color .4s var(--ease);will-change:transform}
+.btn:hover{border-color:rgba(236,230,216,.45)}
+.btn.pri{background:var(--gold);border-color:var(--gold);color:#16120A}
+.btn.pri:hover{background:#E2C384}
+.btn .ar{display:inline-block;transition:transform .5s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+
+/* masked reveals */
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:block;transform:translateY(125%);transition:transform 1.1s var(--ease)}
+.in .ln>span,.ln.in>span{transform:none}
+.in .ln:nth-child(2)>span{transition-delay:.08s}.in .ln:nth-child(3)>span{transition-delay:.16s}.in .ln:nth-child(4)>span{transition-delay:.24s}
+.rv{opacity:0;transform:translateY(14px);transition:opacity 1.1s var(--ease),transform 1.1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.22s}.rv.d3{transition-delay:.32s}
+@keyframes up{from{transform:translateY(125%)}to{transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero .ln>span{transform:none;animation:up 1.2s var(--ease) both}
+.hero .ln:nth-child(2)>span{animation-delay:.09s}
+.hero .hf{animation:fade 1.2s var(--ease) .25s both}
+.hero .hf2{animation:fade 1.2s var(--ease) .38s both}
+
+/* header */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:30;height:72px;transition:background .5s var(--ease),border-color .5s var(--ease),transform .6s var(--ease);border-bottom:1px solid transparent}
+.hdr.solid{background:rgba(7,11,22,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.hdr .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;text-decoration:none;height:24px}
+.logo img{height:22px;width:auto;filter:brightness(0) invert(.93) sepia(.12)}
+.logo .wm{display:none;font:400 21px/1 var(--serif);letter-spacing:-.01em}
+.logo.fb img{display:none}.logo.fb .wm{display:block}
+.nav{display:flex;gap:30px;align-items:center}
+.nav a{font-size:13.5px;text-decoration:none;color:rgba(236,230,216,.7);transition:color .3s;position:relative}
+.nav a:hover{color:var(--ink)}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.nav a:hover::after{transform:scaleX(1)}
+.hdr .btn{height:40px;padding:0 16px;font-size:13.5px}
+.menu{display:none;width:40px;height:40px;position:relative}
+.menu i{position:absolute;left:11px;right:11px;height:1px;background:var(--ink);transition:transform .4s var(--ease)}
+.menu i:first-child{top:16px}.menu i:last-child{top:23px}
+.menu[aria-expanded=true] i:first-child{transform:translateY(3.5px) rotate(45deg)}
+.menu[aria-expanded=true] i:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+
+/* ===== atlas (hero + pinned showcase) ===== */
+#atlas{position:relative;height:calc(780vh)}
+.stage{position:sticky;top:0;height:calc(100vh - var(--strip));overflow:hidden}
+.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(60vw 60vw at 72% 50%,rgba(30,44,82,.38),rgba(7,11,22,0) 60%);pointer-events:none}
+.obj{position:absolute;top:0;bottom:0;right:0;width:60%;touch-action:pan-y}
+.obj canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;opacity:0;transition:opacity 1.6s var(--ease)}
+.obj canvas.on{opacity:1}
+.obj canvas:active{cursor:grabbing}
+.ring{position:absolute;left:50%;top:50%;width:var(--rd,640px);height:var(--rd,640px);margin:calc(var(--rd,640px)/-2) 0 0 calc(var(--rd,640px)/-2);pointer-events:none;opacity:0;transition:opacity 2s var(--ease) .3s}
+.ring.on{opacity:1}
+.ring svg{width:100%;height:100%;display:block;overflow:visible}
+.poster{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity 1.4s var(--ease);pointer-events:none}
+.poster svg{width:min(76%,560px);height:auto}
+.poster.off{opacity:0}
+.figcap{position:absolute;left:50%;bottom:max(34px,5vh);transform:translateX(-50%);width:min(88%,420px);text-align:center;font:400 11px/1.5 var(--mono);letter-spacing:.06em;color:var(--mut);pointer-events:none;transition:opacity .8s var(--ease)}
+.figcap b{color:var(--ink);font-weight:500;letter-spacing:.1em}
+.tag{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .7s var(--ease)}
+.tag.on{opacity:1}
+.tag .ld{position:absolute;left:0;top:0;width:60px;height:1px;background:linear-gradient(90deg,rgba(214,179,111,.75),rgba(214,179,111,.12));transform-origin:0 0;will-change:transform}
+.tag .tx{position:absolute;left:0;top:0;white-space:nowrap;text-align:right;will-change:transform}
+.tag .tx i{display:block;font:italic 300 21px/1.1 var(--serif);color:var(--ink);letter-spacing:-.005em}
+.tag .tx small{display:block;font:500 10px/1.4 var(--mono);letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:3px}
+.nogl{position:absolute;left:50%;top:18%;transform:translateX(-50%);font:400 11px var(--mono);color:var(--mut);display:none}
+
+.hero{position:absolute;top:0;left:0;right:0;height:100vh;z-index:2;pointer-events:none}
+.hero .wrap{height:100%;display:flex;flex-direction:column;justify-content:center}
+.hero .copy{width:min(520px,42%);pointer-events:auto;padding-top:20px}
+.hero .lbl{margin-bottom:28px}
+.hero h1{margin-bottom:26px}
+.hero .lede{max-width:44ch;margin-bottom:34px}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .meta{margin-top:56px;display:flex;gap:28px}
+.hero .meta div{font:400 12px/1.5 var(--mono);color:var(--mut);letter-spacing:.04em}
+.hero .meta b{display:block;color:var(--ink);font:400 13px/1.4 var(--sans);letter-spacing:0;margin-top:3px}
+.scrollcue{position:absolute;left:var(--gut);bottom:max(40px,6vh);display:flex;align-items:center;gap:12px;font:500 10.5px/1 var(--mono);letter-spacing:.14em;color:var(--mut);text-transform:uppercase;pointer-events:none}
+.scrollcue i{width:1px;height:36px;background:linear-gradient(var(--line2),transparent);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--gold);animation:cue 2.6s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+
+/* captions inside the pinned stage */
+.caps{position:absolute;top:0;bottom:0;left:0;right:0;pointer-events:none}
+.caps .wrap{position:relative;height:100%}
+.cap{position:absolute;left:0;top:50%;transform:translateY(-50%);width:min(440px,38%);pointer-events:none}
+.cap.on{pointer-events:auto}
+.cap .lbl{margin-bottom:22px;display:flex;gap:14px;align-items:center}
+.cap .lbl::after{content:"";width:36px;height:1px;background:var(--line2)}
+.cap h2{margin-bottom:20px}
+.cap p{font-size:15.5px;color:rgba(236,230,216,.74);max-width:40ch}
+.cap .rv{transition-duration:.8s}
+.cap:not(.on) .rv{opacity:0;transform:translateY(8px);transition-duration:.45s;transition-delay:0s}
+.cap{visibility:hidden;transition:visibility 0s linear .55s}
+.cap.on{visibility:visible;transition:visibility 0s}
+.cap:not(.on) .ln>span{transform:translateY(125%);transition-duration:.5s;transition-delay:0s}
+.cap.on .ln>span{transform:none}
+.cap.on .rv{opacity:1;transform:none}
+.cap.on .ln:nth-child(2)>span{transition-delay:.07s}.cap.on .ln:nth-child(3)>span{transition-delay:.14s}
+.prog{position:absolute;left:var(--gut);bottom:max(40px,6vh);display:flex;gap:18px;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
+.prog.on{opacity:1}
+.prog span{font:500 10.5px/1 var(--mono);letter-spacing:.12em;color:rgba(138,144,162,.55);display:flex;flex-direction:column;gap:9px;transition:color .5s}
+.prog span::before{content:"";width:28px;height:1px;background:currentColor}
+.prog span.on{color:var(--gold)}
+
+/* catalogue of networks (state 02) */
+.cat{list-style:none;margin-top:28px;border-top:1px solid var(--line);max-width:340px}
+.cat li{display:grid;grid-template-columns:34px 1fr auto;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:rgba(236,230,216,.42);transition:color .5s var(--ease)}
+.cat li .n{font:400 10.5px var(--mono);letter-spacing:.06em}
+.cat li .k{font:400 10.5px var(--mono);letter-spacing:.08em;opacity:0;transition:opacity .5s}
+.cat li.seen{color:rgba(236,230,216,.7)}
+.cat li.on{color:var(--ink)}
+.cat li.on .n,.cat li.on .k{color:var(--gold);opacity:1}
+
+/* reference chart (state 03) */
+.ref{margin-top:28px;max-width:360px}
+.ref .row{display:grid;grid-template-columns:118px 1fr 40px;gap:14px;align-items:center;height:25px}
+.ref .nm{font-size:12.5px;color:rgba(236,230,216,.7);white-space:nowrap}
+.ref .tr{position:relative;height:9px}
+.ref .tr::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--line)}
+.ref .band{position:absolute;top:0;bottom:0;background:rgba(214,179,111,.13);border-left:1px solid rgba(214,179,111,.35);border-right:1px solid rgba(214,179,111,.35)}
+.ref .dot{position:absolute;top:1px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px rgba(236,230,216,.08);transition:left 1.2s var(--ease)}
+.ref .v{font:400 11.5px var(--mono);color:var(--mut);text-align:right}
+.ref .axis{display:grid;grid-template-columns:118px 1fr 40px;gap:14px;margin-top:8px}
+.ref .axis div{display:flex;justify-content:space-between;font:400 10px var(--mono);color:rgba(138,144,162,.7);letter-spacing:.04em}
+.legend{display:flex;gap:18px;margin-top:16px;font:400 10.5px/1.4 var(--mono);color:var(--mut);letter-spacing:.04em}
+.legend i{display:inline-block;width:14px;height:7px;background:rgba(214,179,111,.13);border:1px solid rgba(214,179,111,.35);vertical-align:-1px;margin-right:7px}
+.legend i.d{width:7px;border-radius:50%;background:var(--ink);border:0}
+
+/* trial timeline (state 04) */
+.trial{margin-top:30px;max-width:360px}
+.trial .read{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+.trial .wk{font:300 34px/1 var(--serif);letter-spacing:-.02em}
+.trial .wk small{font:500 10.5px var(--mono);letter-spacing:.12em;color:var(--mut);margin-right:10px;text-transform:uppercase}
+.trial .ix{font:400 12px var(--mono);color:var(--mut);text-align:right}
+.trial .ix b{color:var(--gold);font-weight:500;font-size:15px}
+.trial .tl{position:relative;height:28px}
+.trial .tl::before{content:"";position:absolute;left:0;right:0;top:6px;height:1px;background:var(--line2)}
+.trial .fill{position:absolute;left:0;top:6px;height:1px;background:var(--gold);width:0}
+.trial .knob{position:absolute;top:2px;width:9px;height:9px;margin-left:-4.5px;border-radius:50%;background:var(--bg);border:1px solid var(--gold);left:0}
+.trial .tk{position:absolute;top:16px;font:400 10px var(--mono);color:var(--mut);transform:translateX(-50%)}
+.trial .tk::before{content:"";position:absolute;left:50%;top:-12px;width:1px;height:5px;background:var(--line2)}
+.trial .tk:first-of-type{transform:none}.trial .tk:last-of-type{transform:translateX(-100%)}
+.trial .tk:first-of-type::before{left:0}.trial .tk:last-of-type::before{left:auto;right:0}
+
+/* steps (state 05) */
+.mini{list-style:none;margin-top:28px;max-width:380px;border-top:1px solid var(--line)}
+.mini li{display:grid;grid-template-columns:34px 1fr;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:rgba(236,230,216,.8)}
+.mini li span{font:400 10.5px/1.9 var(--mono);color:var(--gold);letter-spacing:.06em}
+.cap .btn{margin-top:28px}
+.note{position:absolute;right:var(--gut);bottom:max(40px,6vh);font:400 10.5px/1.4 var(--mono);letter-spacing:.06em;color:rgba(138,144,162,.75);text-align:right;opacity:0;transition:opacity .6s}
+.note.on{opacity:1}
+
+/* ===== editorial sections ===== */
+section.s{padding:150px 0 0}
+.sh{margin-bottom:64px}
+.sh .lbl{margin-bottom:22px}
+.statement{padding-top:160px}
+.statement .grid12>div{grid-column:2 / span 10}
+.statement .q{font:300 clamp(30px,3.6vw,52px)/1.12 var(--serif);letter-spacing:-.022em;max-width:22ch}
+.statement .q em{color:var(--gold);font-style:italic}
+.statement .lbl{margin-bottom:34px}
+.statement .sub{margin-top:36px;font-size:16px;color:rgba(236,230,216,.66);max-width:56ch}
+
+.challenge .grid12>.l{grid-column:1 / span 4}
+.challenge .grid12>.r{grid-column:6 / span 7}
+.challenge .r p{color:rgba(236,230,216,.74);margin-bottom:18px}
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:56px}
+.pillar{border-top:1px solid var(--line2);padding-top:22px}
+.pillar .lbl{margin-bottom:14px}
+.pillar h3{margin-bottom:12px}
+.pillar p{font-size:14.5px;color:rgba(236,230,216,.66)}
+
+.tabs{display:flex;gap:32px;border-bottom:1px solid var(--line);margin-bottom:48px}
+.tabs button{position:relative;height:44px;font-size:14px;color:var(--mut);transition:color .3s;display:flex;gap:10px;align-items:center}
+.tabs button span{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(138,144,162,.75)}
+.tabs button[aria-selected=true]{color:var(--ink)}
+.tabs button::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.tabs button[aria-selected=true]::after{transform:scaleX(1)}
+.proc{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:72px}
+.proc.c3{grid-template-columns:repeat(3,1fr)}
+.proc li{border-top:1px solid var(--line2);padding-top:20px;position:relative}
+.proc li::before{content:"";position:absolute;top:-1px;left:0;width:0;height:1px;background:var(--gold);transition:width 1.4s var(--ease)}
+.panel.in .proc li::before{width:38px}
+.proc .lbl{margin-bottom:16px;color:var(--gold)}
+.proc h3{margin-bottom:10px;font-size:18px}
+.proc p{font-size:14px;color:rgba(236,230,216,.62)}
+.feat{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.feat>div{padding:26px 24px 30px 0;border-right:1px solid var(--line);margin-right:0}
+.feat>div+div{padding-left:24px}
+.feat>div:last-child{border-right:0}
+.feat h4{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-bottom:12px}
+.feat p{font-size:14px;color:rgba(236,230,216,.62)}
+.panel .fine{margin-top:28px}
+[hidden]{display:none!important}
+
+.offer{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:120px}
+.offer>div{padding:28px 0 0;border-top:1px solid var(--line2)}
+.offer .ic{width:30px;height:30px;margin-bottom:22px;opacity:.9}
+.offer h3{margin-bottom:10px;font-size:18px}
+.offer p{font-size:14px;color:rgba(236,230,216,.62)}
+
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.metrics>div{padding:40px 24px 38px 0}
+.metrics>div+div{padding-left:24px;border-left:1px solid var(--line)}
+.metrics .v{font:300 clamp(34px,3.4vw,48px)/1 var(--serif);letter-spacing:-.025em;font-feature-settings:"lnum","tnum";margin-bottom:14px}
+.metrics .v small{font-size:.5em;margin-left:4px;color:var(--mut)}
+.metrics p{font-size:13.5px;color:var(--mut);max-width:28ch}
+
+.ev .grid12>.l{grid-column:1 / span 5}
+.ev .grid12>.r{grid-column:7 / span 6}
+.feature{border:1px solid var(--line);padding:32px;background:linear-gradient(180deg,rgba(12,18,34,.9),rgba(12,18,34,.4))}
+.feature .lbl{margin-bottom:18px}
+.feature h3{font-size:22px;line-height:1.25;margin-bottom:14px}
+.feature p{font-size:14.5px;color:rgba(236,230,216,.7)}
+.feature .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+.feature .tags span{font:400 10.5px/1 var(--mono);letter-spacing:.06em;padding:7px 9px;border:1px solid var(--line);color:var(--mut)}
+.news{list-style:none;border-top:1px solid var(--line)}
+.news li a{display:grid;grid-template-columns:104px 1fr 18px;gap:20px;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:padding .5s var(--ease)}
+.news time{font:400 11.5px/1.7 var(--mono);color:var(--mut);letter-spacing:.03em}
+.news .t{font-size:15px;line-height:1.45;color:rgba(236,230,216,.88);transition:color .3s}
+.news .t small{display:block;font-size:13px;color:var(--mut);margin-top:5px}
+.news .ar{color:var(--mut);transition:transform .5s var(--ease),color .3s;align-self:start;margin-top:2px}
+.news li a:hover .t{color:var(--ink)}
+.news li a:hover .ar{transform:translate(3px,-3px);color:var(--gold)}
+.news li a:hover{padding-left:6px}
+
+.logos{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.logos>div{height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:0 10px;transition:background .5s}
+.logos>div+div{border-left:1px solid var(--line)}
+.logos>div:hover{background:rgba(236,230,216,.025)}
+.logos .nm{font:400 17px/1.15 var(--serif);letter-spacing:-.005em;color:rgba(236,230,216,.82)}
+.logos img{height:24px;width:auto;filter:brightness(0) invert(.86);opacity:.85}
+.logos small{font:400 10px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+
+.team .sub2{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px;margin:72px 0 28px}
+.team .sub2 h3{font-size:20px}
+.people{display:grid;grid-template-columns:repeat(4,1fr);gap:40px 24px}
+.person .ph{position:relative;aspect-ratio:1/1;max-width:220px;background:linear-gradient(180deg,#121a30,#0c1222);overflow:hidden;margin-bottom:18px}
+.person .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(1) contrast(1.02) brightness(.92);transition:filter .9s var(--ease),transform 1.2s var(--ease)}
+.person:hover .ph img{filter:grayscale(0) brightness(1);transform:scale(1.025)}
+.person .ini{position:absolute;inset:0;display:none;align-items:center;justify-content:center;font:300 44px/1 var(--serif);color:rgba(214,179,111,.75);letter-spacing:.02em}
+.person .ph.fb img{display:none}.person .ph.fb .ini{display:flex}
+.person .ph::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(236,230,216,.06);pointer-events:none}
+.person h3{font-size:17px;margin-bottom:4px}
+.person .role{font-size:13px;line-height:1.45;color:var(--mut);margin-bottom:12px;min-height:2.9em}
+.person details summary{list-style:none;cursor:pointer;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:rgba(236,230,216,.7);display:inline-flex;gap:8px;align-items:center}
+.person details summary::-webkit-details-marker{display:none}
+.person details summary::after{content:"+";color:var(--gold);font-size:13px}
+.person details[open] summary::after{content:"–"}
+.person details p{font-size:13.5px;line-height:1.6;color:rgba(236,230,216,.66);margin-top:12px}
+.person .li{font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);text-decoration:none;margin-left:18px}
+.person .li:hover{color:var(--gold)}
+.person .links{display:flex;align-items:center}
+
+.contact .grid12>.l{grid-column:1 / span 5}
+.contact .grid12>.r{grid-column:7 / span 6}
+.contact h2{margin-bottom:20px}
+form label{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:22px}
+form input,form textarea{display:block;width:100%;margin-top:10px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);font:400 16px/1.4 var(--sans);padding:8px 0 10px;outline:0;transition:border-color .3s;border-radius:0}
+form input:focus,form textarea:focus{border-color:var(--gold)}
+form textarea{height:92px;resize:vertical}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.addr{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:28px 24px;border-top:1px solid var(--line);padding-top:28px}
+.addr .lbl{margin-bottom:8px}
+.addr p,.addr a{font-size:14.5px;color:rgba(236,230,216,.82);text-decoration:none}
+.addr a:hover{color:var(--gold)}
+
+footer{margin-top:150px;border-top:1px solid var(--line);padding:56px 0 48px}
+footer .grid12>div:first-child{grid-column:1 / span 4}
+footer .grid12>div:nth-child(2){grid-column:6 / span 3}
+footer .grid12>div:nth-child(3){grid-column:9 / span 4}
+footer .logo{margin-bottom:18px}
+footer p,footer a{font-size:13px;color:var(--mut);text-decoration:none;line-height:1.9}
+footer a:hover{color:var(--ink)}
+footer ul{list-style:none}
+footer .small{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:24px;font:400 11px/1.6 var(--mono);color:rgba(138,144,162,.8);letter-spacing:.03em}
+
+.strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);z-index:40;background:rgba(5,8,16,.94);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);letter-spacing:.06em;color:var(--mut);padding:0 12px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* label specificity guard */
+.cap p.lbl,.feature p.lbl,.pillar p.lbl,.addr p.lbl,.proc p.lbl{font:500 11px/1.4 var(--mono);letter-spacing:.1em;color:var(--mut);max-width:none}
+.proc p.lbl{color:var(--gold)}
+.cap p.fine{font-size:12px;line-height:1.5;color:var(--mut)}
+/* team groups: heading column + portraits */
+.grp{display:grid;grid-template-columns:3fr 9fr;column-gap:24px;margin-top:80px;border-top:1px solid var(--line);padding-top:28px}
+.grp .gh h3{font-size:20px;max-width:15ch;margin-bottom:10px;hyphens:none}
+.grp .people{grid-template-columns:repeat(4,1fr)}
+
+/* ===== responsive ===== */
+@media (max-width:1100px){
+  .nav{gap:22px}
+  .proc{grid-template-columns:repeat(2,1fr);row-gap:40px}
+  .feat,.offer{grid-template-columns:repeat(2,1fr)}
+  .feat>div:nth-child(2){border-right:0}.feat>div:nth-child(3){padding-left:0}
+  .feat>div:nth-child(n+3){border-top:1px solid var(--line)}
+  .logos{grid-template-columns:repeat(3,1fr)}
+  .logos>div:nth-child(4){border-left:0}.logos>div:nth-child(n+4){border-top:1px solid var(--line)}
+  .grp{grid-template-columns:1fr}.grp .gh{margin-bottom:28px}
+  .grp .people{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:820px){
+  :root{--strip:44px}
+  .strip{white-space:normal;line-height:1.45;font-size:10.5px}
+  .hdr{height:60px}
+  .nav{position:fixed;inset:60px 0 auto 0;flex-direction:column;align-items:flex-start;gap:0;background:rgba(7,11,22,.97);border-bottom:1px solid var(--line);padding:8px var(--gut) 20px;transform:translateY(-8px);opacity:0;pointer-events:none;transition:opacity .4s var(--ease),transform .4s var(--ease)}
+  .nav.open{opacity:1;transform:none;pointer-events:auto}
+  .nav a{font-size:17px;padding:13px 0;width:100%;border-bottom:1px solid var(--line)}
+  .menu{display:block}
+  .hdr .btn{display:none}
+  .obj{width:100%;top:60px;bottom:auto;height:50%}
+  .stage::before{background:radial-gradient(90vw 70vw at 50% 30%,rgba(30,44,82,.4),rgba(7,11,22,0) 62%)}
+  .figcap{bottom:auto;top:4px;font-size:10px;width:100%}
+  .figcap .f1{display:none}
+  .note{display:none}
+  .ref .legend,.ref p.fine,.ref .axis{display:none}
+  .hero .wrap{justify-content:flex-end;padding-bottom:calc(var(--strip) + 54px)}
+  .hero .copy{width:100%}
+  .hero .lbl{margin-bottom:16px}
+  .hero h1{margin-bottom:16px}
+  .hero .lede{font-size:15.5px;margin-bottom:24px}
+  .hero .meta{display:none}
+  .scrollcue{display:none}
+  .cap{top:auto;bottom:calc(var(--strip) + 30px);transform:none;width:100%}
+  .cap h2{font-size:25px;margin-bottom:12px}
+  .cap p{font-size:14.5px}
+  .cap .lbl{margin-bottom:14px}
+  .cat{display:none}
+  .ref,.trial,.mini{margin-top:18px}
+  .ref .row{height:21px;grid-template-columns:104px 1fr 36px}
+  .ref .axis{grid-template-columns:104px 1fr 36px}
+  .ref .nm{font-size:11.5px}
+  .mini li{padding:7px 0;font-size:13px}
+  .cap .btn{display:none}
+  .cap[data-i="2"] p:not(.lbl),.cap[data-i="3"] p:not(.lbl),.cap[data-i="4"] p:not(.lbl){display:none}
+  .prog{display:none}
+  .note{left:var(--gut);right:auto;top:calc(60px + 50vh - 36px);bottom:auto;text-align:left}
+  .tag .tx i{font-size:17px}
+  .tag .ld{display:none}
+  .tag .tx{text-align:left}
+  section.s{padding-top:120px}
+  .statement .grid12>div,.challenge .grid12>.l,.challenge .grid12>.r,.ev .grid12>.l,.ev .grid12>.r,.contact .grid12>.l,.contact .grid12>.r{grid-column:1 / -1}
+  .challenge .r,.ev .r,.contact .r{margin-top:36px}
+  .pillars,.proc,.proc.c3,.feat,.offer,.f2,.addr{grid-template-columns:1fr}
+  .feat>div,.feat>div+div{padding:22px 0;border-right:0;border-top:1px solid var(--line)}
+  .metrics{grid-template-columns:1fr 1fr}
+  .metrics>div:nth-child(3){padding-left:0;border-left:0}
+  .metrics>div:nth-child(n+3){border-top:1px solid var(--line)}
+  .logos{grid-template-columns:1fr 1fr}
+  .logos>div{height:104px}
+  .logos>div:nth-child(odd){border-left:0}.logos>div:nth-child(4){border-left:1px solid var(--line)}
+  .logos>div:nth-child(n+3){border-top:1px solid var(--line)}
+  .people,.grp .people{grid-template-columns:1fr 1fr;gap:32px 16px}
+  .grp{margin-top:56px}
+  .person .role{min-height:0}
+  .news li a{grid-template-columns:1fr 18px;gap:6px 14px}
+  .news time{grid-column:1 / -1}
+  footer .grid12>div{grid-column:1 / -1!important;margin-bottom:28px}
+  footer .small{flex-direction:column}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01s!important;transition-delay:0s!important}
+  .ln>span{transform:none!important}.rv{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <a class="logo" id="logo" href="#top" aria-label="Ceretype Neuromedicine, home">
+      <img src="https://ceretype.com/wp-content/uploads/2023/03/Ceretype-Logo-1.svg" alt="Ceretype Neuromedicine" width="132" height="22" onerror="this.parentNode.classList.add('fb')">
+      <span class="wm">Ceretype</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#atlas-s">The atlas</a><a href="#platform">Platform</a><a href="#evidence">Evidence</a><a href="#team">Team</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="btn mag" href="#contact">Let's chat</a>
+    <button class="menu" id="menu" aria-label="Menu" aria-expanded="false" aria-controls="nav"><i></i><i></i></button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ===================== ATLAS: hero + pinned showcase ===================== -->
+<div id="atlas">
+  <div class="stage" id="stage">
+    <div class="obj" id="obj">
+      <div class="poster" id="poster" aria-hidden="true">
+        <svg viewBox="0 0 600 460" fill="none">
+          <ellipse cx="300" cy="230" rx="236" ry="168" stroke="rgba(214,179,111,.28)" stroke-width="1"/>
+          <path d="M300 64 C292 120 296 180 300 230" stroke="rgba(236,230,216,.10)"/>
+          <g stroke="rgba(214,179,111,.5)" stroke-width="1"><path d="M170 170 L232 132 L300 150 L352 118 L420 150"/><path d="M180 290 L248 262 L300 300"/><path d="M380 260 L440 230 L470 280"/></g>
+          <g fill="#E9D7AE"><circle cx="170" cy="170" r="2.4"/><circle cx="232" cy="132" r="1.8"/><circle cx="300" cy="150" r="2.8"/><circle cx="352" cy="118" r="1.8"/><circle cx="420" cy="150" r="2.4"/><circle cx="180" cy="290" r="2"/><circle cx="248" cy="262" r="2.6"/><circle cx="300" cy="300" r="1.8"/><circle cx="380" cy="260" r="2"/><circle cx="440" cy="230" r="2.6"/><circle cx="470" cy="280" r="1.8"/></g>
+          <g stroke="rgba(233,215,174,.55)"><circle cx="300" cy="150" r="7"/><circle cx="248" cy="262" r="7"/><circle cx="440" cy="230" r="7"/></g>
+        </svg>
+      </div>
+      <div class="ring" id="ring" aria-hidden="true"><svg id="ringsvg" viewBox="-500 -500 1000 1000"></svg></div>
+      <canvas id="gl" aria-label="Interpretive visualization: a glass brain with seven functional networks drawn as constellations. Drag to turn." role="img"></canvas>
+      <div class="tag" id="tag" aria-hidden="true"><div class="ld" id="tagl"></div><div class="tx" id="tagt"><small id="tagk">Network 01</small><i id="tagn">Default mode</i></div></div>
+      <div class="figcap" id="figcap"><b>FIG. 1</b> &nbsp;<span class="f1">Seven brain networks drawn as constellations.<br></span>Interpretive visualization, not patient data.</div>
+      <div class="nogl" id="nogl">Still image: WebGL 2 is unavailable in this browser.</div>
+    </div>
+
+    <div class="caps" id="caps">
+      <div class="wrap">
+        <div class="cap" data-i="0">
+          <p class="lbl rv"><b>01</b> The gap</p>
+          <h2><span class="ln"><span>Medicine measures the organ</span></span><span class="ln"><span>it treats. Psychiatry</span></span><span class="ln"><span>has not been able to.</span></span></h2>
+          <p class="rv d1">Therapies for psychiatric and many neurological disorders have not benefited from brain-based biological evidence. Care still leans on symptoms, self-report and trial-and-error.</p>
+        </div>
+        <div class="cap" data-i="1">
+          <p class="lbl rv"><b>02</b> Networks</p>
+          <h2><span class="ln"><span>The brain keeps its</span></span><span class="ln"><span>own constellations.</span></span></h2>
+          <p class="rv d1">Functional MRI follows the blood-oxygen signal of neural activity. Regions that rise and fall together form large-scale networks, and that is where disease, and treatment, show up.</p>
+          <ol class="cat rv d2" id="cat"></ol>
+        </div>
+        <div class="cap" data-i="2">
+          <p class="lbl rv"><b>03</b> Standardized</p>
+          <h2><span class="ln"><span>Read against a reference,</span></span><span class="ln"><span>not an impression.</span></span></h2>
+          <p class="rv d1">Ceretype corrects artifacts for results reproducible across scanners, sites and individuals, then compares whole-brain, region- and circuit-specific activity with age-specific normal values.</p>
+          <div class="ref rv d2" id="ref"></div>
+        </div>
+        <div class="cap" data-i="3">
+          <p class="lbl rv"><b>04</b> Over a trial</p>
+          <h2><span class="ln"><span>See a treatment at work,</span></span><span class="ln"><span>scan by scan.</span></span></h2>
+          <p class="rv d1">Subjects are scanned before and while taking the study drug. Longitudinal measures show treatment effects over minutes to years.</p>
+          <div class="trial rv d2">
+            <div class="read"><div class="wk num"><small>Week</small><span id="wk">0</span></div><div class="ix num">Salience network index<br><b id="ix">0.94</b></div></div>
+            <div class="tl"><div class="fill" id="tfill"></div><div class="knob" id="tknob"></div><span class="tk" style="left:0">0</span><span class="tk" style="left:23.08%">12</span><span class="tk" style="left:50%">26</span><span class="tk" style="left:100%">52</span></div>
+          </div>
+        </div>
+        <div class="cap" data-i="4">
+          <p class="lbl rv"><b>05</b> For drug developers</p>
+          <h2><span class="ln"><span>From protocol to</span></span><span class="ln"><span>Brain Insight Report.</span></span></h2>
+          <ol class="mini rv d1">
+            <li><span>i</span>Circuit maps specified to the trial's indication</li>
+            <li><span>ii</span>fMRI before and while taking the study drug</li>
+            <li><span>iii</span>Biomarker measurement in the Ceretype Cloud</li>
+            <li><span>iv</span>Individual-level Brain Insight Report, every phase</li>
+          </ol>
+          <a class="btn mag rv d2" href="#platform">How it works <span class="ar">↓</span></a>
+        </div>
+      </div>
+    </div>
+    <div class="prog" id="prog" aria-hidden="true"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div>
+    <div class="note" id="note">Interpretive visualization<br>Conventional network labels · illustrative values</div>
+  </div>
+
+  <section class="hero" aria-label="Introduction">
+    <div class="wrap">
+      <div class="copy">
+        <p class="lbl hf">Functional MRI biomarkers</p>
+        <h1><span class="ln"><span>Actionable visibility</span></span><span class="ln"><span>into brain circuitry.</span></span></h1>
+        <p class="lede hf">Ceretype turns functional MRI into standardized, quantitative measures of brain network activity, so drug developers can see a treatment working in the brain, and clinicians one day can too.</p>
+        <div class="ctas hf2"><a class="btn pri mag" href="#atlas-s">Explore the atlas <span class="ar">→</span></a><a class="btn mag" href="#contact">Let's chat</a></div>
+        <div class="meta hf2"><div>Founded<b class="num">2020</b></div><div>Headquarters<b>Cambridge, Massachusetts</b></div><div>Platform<b>In market for drug development</b></div></div>
+      </div>
+    </div>
+    <div class="scrollcue"><i></i>Scroll</div>
+  </section>
+  <div id="atlas-s" style="position:absolute;top:100vh"></div>
+</div>
+
+<!-- ===================== STATEMENT ===================== -->
+<section class="s statement" aria-label="Mission">
+  <div class="wrap grid12">
+    <div class="rvp">
+      <p class="lbl rv">Our mission</p>
+      <p class="q rv d1">Actionable individual and population insights, from <em>detailed, commercially viable</em> visibility into brain circuitry.</p>
+      <p class="sub rv d2">Ceretype grew out of its physician-scientist co-founders' wish to translate years of academic work in psychiatric neurobiology and imaging methods into tools for drug development and clinical care, bringing new therapeutics to market faster and changing how psychiatric and neurological disorders are treated.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CHALLENGE ===================== -->
+<section class="s challenge" id="why" aria-label="The challenge">
+  <div class="wrap grid12">
+    <div class="l">
+      <p class="lbl rv">The challenge in psychiatry and neurology care</p>
+    </div>
+    <div class="r">
+      <h2 class="rvh"><span class="ln"><span>Biomarkers transformed cardiology</span></span><span class="ln"><span>and oncology. The brain has waited.</span></span></h2>
+      <div style="height:28px"></div>
+      <p class="rv">In nearly every area of medicine, biological evidence is imperative for diagnosis and treatment. Therapies for psychiatric and many neurological disorders have not benefited from brain-based biological evidence, despite years of research.</p>
+      <p class="rv d1">Functional MRI can show neural activity, but its commercial translation had not been successful. Ceretype set out to change that.</p>
+      <div class="pillars">
+        <div class="pillar rv"><p class="lbl"><b>i</b> &nbsp;Solution</p><h3>Biological measurement of mechanism and markers of treatment effect</h3><p>Drug and device developers and clinicians often observe symptoms or rely on self-reporting to judge efficacy. A biological basis complements the patient interview with a fuller, patient-specific picture.</p></div>
+        <div class="pillar rv d1"><p class="lbl"><b>ii</b> &nbsp;Solution</p><h3>Disease segmentation</h3><p>Psychiatric diagnoses vary widely and overlap. Biological evidence helps segment disease subtypes, and the ability to cohort patients enables better therapeutic solutions for underserved populations.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PLATFORM ===================== -->
+<section class="s" id="platform" aria-label="Platform">
+  <div class="wrap">
+    <div class="sh grid12"><div style="grid-column:1 / span 8">
+      <p class="lbl rv">How it works</p>
+      <h2 class="rvh"><span class="ln"><span>Brain circuit profiles across</span></span><span class="ln"><span>the healthcare ecosystem.</span></span></h2>
+    </div></div>
+    <div class="tabs rv" role="tablist" aria-label="Applications">
+      <button role="tab" id="t-dd" aria-controls="p-dd" aria-selected="true">Drug development <span>In market</span></button>
+      <button role="tab" id="t-cp" aria-controls="p-cp" aria-selected="false" tabindex="-1">Clinical practice <span>In development</span></button>
+    </div>
+    <div class="panel rvp" id="p-dd" role="tabpanel" aria-labelledby="t-dd">
+      <ol class="proc">
+        <li class="rv"><p class="lbl num">01</p><h3>Protocol development</h3><p>Circuit maps are specified to the needs of the trial: specific regions, or whole-brain networks tied to the indication.</p></li>
+        <li class="rv d1"><p class="lbl num">02</p><h3>fMRI before and on drug</h3><p>Subjects undergo fMRI before and while taking the study drug; longitudinal scans show treatment effects over minutes to years.</p></li>
+        <li class="rv d2"><p class="lbl num">03</p><h3>Discovery in the Ceretype Cloud</h3><p>Biomarker discovery and measurement, with advanced processing that corrects artifacts for reproducible results across scanners and sites.</p></li>
+        <li class="rv d3"><p class="lbl num">04</p><h3>Brain Insight Report</h3><p>An individual-level functional brain map designed by Ceretype's clinical neuroscientists, delivered across all trial phases.</p></li>
+      </ol>
+      <div class="feat rv">
+        <div><h4>Precision</h4><p>Maps of brain activity and circuitry with resolution to the millimeter scale, measured precisely over time.</p></div>
+        <div><h4>Comparison</h4><p>Whole-brain, region-specific and circuit-specific measurements, compared against age-specific normal values.</p></div>
+        <div><h4>Specificity</h4><p>Neural circuit maps specific to the trial, such as dopamine circuits or the networks involved in treating depression.</p></div>
+        <div><h4>Integration</h4><p>Imaging integrates with behavioral, electrophysiology, structural and peripheral data, and with a sponsor's own algorithms.</p></div>
+      </div>
+      <p class="fine">Offered directly and through Ceretype's partnership with Calyx, which describes the platform as an in-market, audit-cleared biomarker engine (April 2023).</p>
+    </div>
+    <div class="panel" id="p-cp" role="tabpanel" aria-labelledby="t-cp" hidden>
+      <ol class="proc c3">
+        <li><p class="lbl num">01</p><h3>Patient presents with symptoms</h3><p>The starting point is the same clinical visit as today.</p></li>
+        <li><p class="lbl num">02</p><h3>Interview and next-generation fMRI</h3><p>The clinician interviews the patient, who undergoes Ceretype's next-generation fMRI.</p></li>
+        <li><p class="lbl num">03</p><h3>Clinician assesses key biomarkers</h3><p>Ceretype biomarkers help determine and monitor treatment, in conjunction with clinical evaluation.</p></li>
+      </ol>
+      <div class="feat">
+        <div><h4>Broad applicability</h4><p>Disease- and patient-agnostic: usable for any person of any age with any disease.</p></div>
+        <div><h4>Decision support</h4><p>Clear metrics assess brain function in multiple dimensions, such as circuit activity over time and the number of active circuits.</p></div>
+        <div><h4>Platform</h4><p>A biomarker engine that continuously analyzes data and reports on brain health and treatment response.</p></div>
+        <div><h4>Integration</h4><p>Compliant integration into any RIS or DICOM system, with clear treatment-response reporting for clinics, studies, patients and payers.</p></div>
+      </div>
+      <p class="fine">Vision for the future: the clinical application is under development. These statements have not been evaluated by the Food and Drug Administration.</p>
+    </div>
+
+    <div class="offer">
+      <div class="rv"><svg class="ic" viewBox="0 0 30 30" fill="none" stroke="#D6B36F" stroke-width="1"><rect x="6.5" y="3.5" width="17" height="23"/><path d="M10 10h10M10 14h10M10 18h6"/></svg><h3>Brain Insight Report</h3><p>An individual-level functional brain map, designed by Ceretype's clinical neuroscientists.</p></div>
+      <div class="rv d1"><svg class="ic" viewBox="0 0 30 30" fill="none" stroke="#D6B36F" stroke-width="1"><path d="M8 21h15a5 5 0 0 0 0-10 7 7 0 0 0-13.5 1.5A4.3 4.3 0 0 0 8 21z"/></svg><h3>All-in-one cloud platform</h3><p>Artifact correction for results reproducible across scanners, sites and individuals.</p></div>
+      <div class="rv d2"><svg class="ic" viewBox="0 0 30 30" fill="none" stroke="#D6B36F" stroke-width="1"><path d="M4 24h22M7 24V15M12 24V9M17 24v-7M22 24V5"/></svg><h3>Decision support</h3><p>Clear metrics such as circuit activity over time and the number of active circuits.</p></div>
+      <div class="rv d3"><svg class="ic" viewBox="0 0 30 30" fill="none" stroke="#D6B36F" stroke-width="1"><circle cx="15" cy="15" r="10.5"/><circle cx="15" cy="15" r="2"/><path d="M15 2v5M15 23v5M2 15h5M23 15h5"/></svg><h3>Key applications</h3><p>Agnostic to disease and intervention; initial focus on anxiety, mood disorders and neurodegenerative disease.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== METRICS ===================== -->
+<section class="s" aria-label="In numbers">
+  <div class="wrap">
+    <div class="metrics rv">
+      <div><div class="v num">2020</div><p>Founded by physician-scientists; headquartered in Cambridge, Massachusetts.</p></div>
+      <div><div class="v num">52<small>weeks</small></div><p>Functional MRI study in Novo Nordisk's CagriSema trial, whose fMRI component Ceretype led.</p></div>
+      <div><div class="v num">$2M</div><p>Second seed round target, closed oversubscribed in January 2024.</p></div>
+      <div><div class="v num">2026</div><p>Best Abstract Award, European Association for the Study of Diabetes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EVIDENCE ===================== -->
+<section class="s ev" id="evidence" aria-label="Evidence and news">
+  <div class="wrap grid12">
+    <div class="l">
+      <p class="lbl rv" style="margin-bottom:22px">Evidence &amp; news</p>
+      <h2 class="rvh" style="margin-bottom:40px"><span class="ln"><span>Measured over a 52-week</span></span><span class="ln"><span>trial. Recognized by the field.</span></span></h2>
+      <div class="feature rv d1">
+        <p class="lbl"><b>Featured</b> &nbsp;Clinical research</p>
+        <h3>Ceretype led the fMRI component of Novo Nordisk's CagriSema trial.</h3>
+        <p>A 52-week functional MRI study, also supported by Perceptive iCRO, identified a novel neural mechanism associated with drug effect. The results were presented at the American Diabetes Association 2026 and earned a Best Abstract Award at the European Association for the Study of Diabetes 2026.</p>
+        <div class="tags"><span>ADA 2026</span><span>EASD 2026</span><span>52 weeks</span><span>Perceptive iCRO</span></div>
+      </div>
+    </div>
+    <div class="r">
+      <ol class="news rv d1">
+        <li><a href="https://ceretype.com/article/american-diabetes-association-2026-ceretype-leads-fmri-component-of-novo-nordisk-cagrisema-trial-2/"><time class="num">Oct 20, 2026</time><span class="t">Best Abstract Award at EASD 2026: CagriSema trial results presented by Novo Nordisk highlight Ceretype fMRI work</span><span class="ar">↗</span></a></li>
+        <li><a href="https://ceretype.com/article/american-diabetes-association-2026-ceretype-leads-fmri-component-of-novo-nordisk-cagrisema-trial/"><time class="num">Jun 10, 2026</time><span class="t">American Diabetes Association 2026: Ceretype leads fMRI component of Novo Nordisk CagriSema trial</span><span class="ar">↗</span></a></li>
+        <li><a href="https://ceretype.com/article/ceretype-presents-reference-ranges-of-healthy-brain-network-activity-to-inform-cns-treatment-development-at-fall-2024-meeting-of-isctm/"><time class="num">Oct 9, 2024</time><span class="t">Reference ranges of healthy brain network activity to inform CNS treatment development<small>Poster, ISCTM Fall 2024 meeting</small></span><span class="ar">↗</span></a></li>
+        <li><a href="https://ceretype.com/article/ceretype-neuromedicine-unveils-groundbreaking-methods-to-quantify-and-standardize-measures-of-brain-activity-at-the-20th-annual-meeting-of-isctm/"><time class="num">Mar 4, 2024</time><span class="t">Methods to quantify and standardize measures of brain activity, 20th Annual Meeting of ISCTM<small>"Quantitative, Standardized Brain Network Activity Measures to Inform CNS Treatment Development," presented by co-first author Roni Setton, PhD</small></span><span class="ar">↗</span></a></li>
+        <li><a href="https://ceretype.com/article/ceretype-neuromedicine-closes-second-round-of-seed-financing-to-accelerate-growth/"><time class="num">Jan 4, 2024</time><span class="t">Second seed round closes, oversubscribed against a $2 million target<small>Led by Cedar Street Group, with Leafy Tunnel, The One Mind Accelerator and private investors</small></span><span class="ar">↗</span></a></li>
+        <li><a href="https://ceretype.com/article/calyx-delivers-imaging-biomarkers-to-advance-neuropsychiatric-treatment-developmen/"><time class="num">Apr 14, 2023</time><span class="t">Calyx delivers imaging biomarkers to advance neuropsychiatric treatment development<small>Calyx Medical Imaging offers Ceretype's fMRI platform to its sponsors</small></span><span class="ar">↗</span></a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PARTNERS ===================== -->
+<section class="s" aria-label="Partners and investors" style="padding-top:140px">
+  <div class="wrap">
+    <div class="sh" style="margin-bottom:32px;display:flex;justify-content:space-between;align-items:baseline;gap:24px;flex-wrap:wrap"><p class="lbl rv">Partners &amp; investors</p><p class="fine rv">Ceretype has also worked with several pharmaceutical and biotech sponsors.</p></div>
+    <div class="logos rv">
+      <div><img src="https://ceretype.com/wp-content/uploads/2023/03/Calyx_Logo-2.png" alt="Calyx" loading="lazy" width="96" height="24" onerror="this.outerHTML='<span class=nm>Calyx</span>'"><small>Strategic partner</small></div>
+      <div><span class="nm">Perceptive iCRO</span><small>Study support</small></div>
+      <div><span class="nm">Cedar Street Group</span><small>Lead, seed 2</small></div>
+      <div><span class="nm">Leafy Tunnel</span><small>Investor</small></div>
+      <div><span class="nm">The One Mind Accelerator</span><small>Investor</small></div>
+      <div><span class="nm">Catalytic Impact Foundation</span><small>Investor</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TEAM ===================== -->
+<section class="s team" id="team" aria-label="Team">
+  <div class="wrap">
+    <div class="sh grid12"><div style="grid-column:1 / span 8">
+      <p class="lbl rv">About Ceretype</p>
+      <h2 class="rvh"><span class="ln"><span>Physician-scientists who built</span></span><span class="ln"><span>hospital fMRI programs.</span></span></h2>
+    </div></div>
+    <div class="grp"><div class="gh rv"><h3>World-leading scientific expertise</h3><span class="lbl num">04 people</span></div><div class="people" id="team1"></div></div>
+    <div class="grp"><div class="gh rv"><h3>Industry-leading commercial acceleration</h3><span class="lbl num">03 people</span></div><div class="people" id="team2"></div></div>
+    <p class="fine rv" style="margin-top:56px">Prantik Kundu, PhD, was quoted as Chief Technology Officer in Ceretype's February 2024 release, and Corey MacGregor was listed as Head of Business Development; neither appears on the current team page. &nbsp;Open positions:</p>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="s contact" id="contact" aria-label="Contact">
+  <div class="wrap grid12">
+    <div class="l">
+      <p class="lbl rv" style="margin-bottom:22px">Contact</p>
+      <h2 class="rvh"><span class="ln"><span>Find out how Ceretype</span></span><span class="ln"><span>can help you.</span></span></h2>
+      <p class="rv d1 muted">Ceretype is revolutionizing psychiatric and neurological medicine. Tell us about your program, trial or question.</p>
+      <div class="addr rv d2">
+        <div><p class="lbl">Office</p><p>1 Broadway, 14th Floor<br>Cambridge, MA 02142</p></div>
+        <div><p class="lbl">Email</p><a href="mailto:info@ceretype.com">info@ceretype.com</a></div>
+        <div><p class="lbl">LinkedIn</p><a href="https://www.linkedin.com/company/ceretype">linkedin.com/company/ceretype</a></div>
+        <div><p class="lbl">Existing customers</p><a href="https://ceretype.com/support/">Support request ↗</a></div>
+      </div>
+    </div>
+    <div class="r">
+      <form class="rv d1" onsubmit="return false" aria-label="Contact form (concept only, not connected)">
+        <div class="f2"><label>First name<input type="text" autocomplete="off"></label><label>Last name<input type="text" autocomplete="off"></label></div>
+        <label>Email<input type="email" autocomplete="off"></label>
+        <label>Message<textarea></textarea></label>
+        <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap"><button class="btn pri mag" type="button">Send message <span class="ar">→</span></button><span class="fine">Concept only: this form is not connected.</span></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid12">
+      <div>
+        <a class="logo" id="logo2" href="#top" aria-label="Ceretype Neuromedicine, back to top"><img src="https://ceretype.com/wp-content/uploads/2023/03/Ceretype-Logo-1.svg" alt="Ceretype Neuromedicine" width="132" height="22" loading="lazy" onerror="this.parentNode.classList.add('fb')"><span class="wm">Ceretype</span></a>
+        <p>Standardized functional MRI measures of brain network activity for drug development and, in future, clinical care.</p>
+      </div>
+      <div><ul><li><a href="#atlas-s">The atlas</a></li><li><a href="#platform">Platform</a></li><li><a href="#evidence">News &amp; resources</a></li><li><a href="#team">About</a></li><li><a href="#contact">Contact</a></li><li><a href="https://ceretype.com/support/">Support</a></li></ul></div>
+      <div><ul><li><a href="https://ceretype.com/privacy-policy-2">Privacy Policy</a></li><li><a href="https://ceretype.com/terms-of-use/">Terms of Use</a></li><li><a href="https://ceretype.com/financial-conflict-of-interest-policy/">Financial COI Policy</a></li><li><a href="https://www.linkedin.com/company/ceretype">LinkedIn</a></li></ul></div>
+    </div>
+    <div class="small"><span>© 2026 Ceretype Neuromedicine · 1 Broadway, 14th Floor, Cambridge, MA 02142</span><span>The constellation brain is an interpretive visualization made for this concept: not patient data, not a Ceretype output, not a trial result.</span></div>
+  </div>
+</footer>
+
+<div class="strip" role="note">Redesign concept by Max C · Not affiliated with or endorsed by Ceretype Neuromedicine</div>
+
+<script>
+(function(){
+'use strict';
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s=>document.querySelector(s), $$ = s=>[...document.querySelectorAll(s)];
+
+/* ---------------- content ---------------- */
+const NETS=[
+ {n:'Default mode',k:'DMN'},{n:'Salience',k:'SAL'},{n:'Dorsal attention',k:'DAN'},{n:'Frontoparietal control',k:'FPN'},
+ {n:'Sensorimotor',k:'SMN'},{n:'Visual',k:'VIS'},{n:'Limbic',k:'LIM'}];
+// illustrative reference rows: [low, high, value] on a 0.5–1.5 index axis
+const REF=[[.82,1.16,1.02],[.80,1.14,.94],[.84,1.18,1.07],[.79,1.13,.99],[.86,1.2,1.09],[.83,1.17,1.04],[.78,1.12,.91]];
+$('#cat').innerHTML=NETS.map((n,i)=>`<li><span class="n num">0${i+1}</span>${n.n}<span class="k">${n.k}</span></li>`).join('');
+$('#ref').innerHTML=REF.map((r,i)=>{const L=x=>((x-.5)*100).toFixed(1)+'%';return `<div class="row"><span class="nm">${NETS[i].n}</span><span class="tr"><span class="band" style="left:${L(r[0])};width:${((r[1]-r[0])*100).toFixed(1)}%"></span><span class="dot" style="left:${L(r[2])}"></span></span><span class="v num">${r[2].toFixed(2)}</span></div>`}).join('')+
+ `<div class="axis"><span></span><div class="num"><span>0.5</span><span>1.0</span><span>1.5</span></div><span></span></div><div class="legend"><span><i></i>Age-matched reference range</span><span><i class="d"></i>Subject</span></div><p class="fine" style="margin-top:10px">Illustrative values. Ceretype presented reference ranges of healthy network activity at ISCTM, Fall 2024.</p>`;
+
+const TEAM1=[
+ {n:'Emily Stern, MD',r:'Chief Executive Officer, Co-Founder',img:'https://ceretype1.wpengine.com/wp-content/uploads/2023/03/Emily-Stern.png',li:'https://www.linkedin.com/in/emily-stern-m-d-a5308694/',b:"Radiologist and psychiatric neuroimaging researcher. Directed neuroimaging research laboratories at Brigham and Women's Hospital / Harvard Medical School and Weill Cornell Medical College; as Director of Functional and Molecular Neuroimaging at BWH/HMS she built the institution's fMRI program and its physical infrastructure, and co-chaired the Brigham Research Institute's Neuroscience Research Center."},
+ {n:'Roni Setton, PhD',r:'Scientific Director',img:'https://ceretype.com/wp-content/uploads/2024/01/Roni-website-4.png',li:'https://www.linkedin.com/in/roni-setton/',b:"Cognitive neuroscientist with more than ten years in neuroimaging, spanning memory, decision-making and healthy aging. PhD from McGill University (Neurology and Neurosurgery); postdoctoral work in the Department of Psychology at Harvard University. Co-first author and presenter of Ceretype's ISCTM posters."},
+ {n:'David Silbersweig, MD',r:'Chair, Scientific Advisory Board, Co-Founder',img:'https://ceretype1.wpengine.com/wp-content/uploads/2023/03/David.png',li:'https://www.linkedin.com/in/david-silbersweig-689963161/',b:"Psychiatrist and neurologist, a pioneer of functional neuroimaging research in psychiatry and systems-level neuropathophysiology. Chairman of the Department of Psychiatry and Co-Director of the Center for the Neurosciences at Brigham and Women's Hospital; Stanley Cobb Professor of Psychiatry at Harvard Medical School."},
+ {n:'Mark Corrigan, MD',r:'Strategic Advisor',img:'https://ceretype1.wpengine.com/wp-content/uploads/2023/03/Mark.png',li:'https://www.linkedin.com/in/mark-corrigan-m-d-57485316/',b:"Life-sciences executive trained in psychiatry (former UNC faculty). About a decade at Pharmacia, rising to Group VP, Clinical Research and Experimental Medicine; led R&D at Sepracor; first CEO role at Zalicus; co-founded Tremeau Pharmaceuticals, where he is President of R&D; led Correvio Pharma through its 2021 acquisition by Advanz. Boards: Wave Biosciences, Nabriva; Chairman of Exacis and Elios Therapeutics. Visiting Professor of Psychiatry, BWH."}];
+const TEAM2=[
+ {n:'Niraj Doshi, PhD, JD',r:'Chief Operating Officer',img:'https://ceretype1.wpengine.com/wp-content/uploads/2023/03/Niraj.png',li:'https://www.linkedin.com/in/niraj-doshi-phd-jd-pmp/',b:"More than 25 years of leadership in the medical device and healthcare industries, from Fortune 500 companies to private-equity-backed startups including Hyperfine Research and Butterfly Network. Quality and regulatory processes, bringing devices and biotech products from concept through validation to market, talent acquisition and growth strategy."},
+ {n:'Kristen Garner Amanti, PhD',r:'Head of Strategy and Partnerships',img:'https://ceretype.com/wp-content/uploads/2026/08/KA_v3.png',li:'https://www.linkedin.com/in/kristen-garner-amanti-a0521111/',b:"More than 16 years advising biopharma and diagnostics leaders on precision-medicine commercialization: strategic planning, business development and market evaluation across therapeutic areas. Former partner at two life-science consulting firms. PhD in Pharmacology from Dartmouth College, researching novel cancer therapeutic targets."},
+ {n:'Richard Lipkin',r:'Board Member, Catalytic Impact Foundation',img:'https://ceretype1.wpengine.com/wp-content/uploads/2023/03/Richard.png',li:'',b:"Co-Founder, Co-Chair and Co-Manager of the Investment Committee of the Catalytic Impact Foundation; Managing Director, Easton Capital; Co-Founder and Co-Chair, Princeton Alumni Angels; Board Director at Epivax Therapeutics and Ceretype; Board Observer at Deck Therapeutics. Formerly Partner at Commerce Health Ventures (NewSpring Capital) and Laird & Company, biotech analyst for a Goldman Sachs hedge fund, Executive Director of the Strang Cancer Prevention Center, and Senior Staff Associate at Columbia's Zuckerman Institute. Science writer and editor with more than 400 articles, chapters and books; American Chemical Society Grady-Stack Award. Princeton honors graduate; MBA, Columbia Business School."}];
+function people(id,list){
+  $(id).innerHTML=list.map((p,i)=>{
+    const ini=p.n.split(',')[0].split(' ').map(w=>w[0]).join('').slice(0,3);
+    return `<article class="person rv${i?' d'+Math.min(i,3):''}"><div class="ph"><img src="${p.img}" alt="Portrait of ${p.n}" loading="lazy" width="400" height="500" onerror="this.parentNode.classList.add('fb')"><div class="ini" aria-hidden="true">${ini}</div></div>
+    <h3>${p.n}</h3><p class="role">${p.r}</p><div class="links"><details><summary>Biography</summary><p>${p.b}</p></details>${p.li?`<a class="li" href="${p.li}" aria-label="${p.n} on LinkedIn">LinkedIn ↗</a>`:''}</div></article>`}).join('');
+}
+people('#team1',TEAM1);people('#team2',TEAM2);
+// details opening shouldn't break the inline links row
+$$('.person details').forEach(d=>d.addEventListener('toggle',()=>{d.parentNode.style.flexDirection=d.open?'column':'';d.parentNode.style.alignItems=d.open?'flex-start':'';const a=d.parentNode.querySelector('.li');if(a)a.style.margin=d.open?'14px 0 0':'';}));
+
+/* ring: graduated circle, an atlas plate border */
+(function(){
+  let s='<circle r="470" stroke="rgba(236,230,216,.10)" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>';
+  s+='<circle r="440" stroke="rgba(214,179,111,.22)" fill="none" stroke-width="1" vector-effect="non-scaling-stroke"/>';
+  s+='<g id="ticks">';
+  for(let d=0;d<360;d+=2){const a=d*Math.PI/180,L=d%30===0?18:d%10===0?10:5,r0=440,r1=440+L,c=Math.cos(a),sn=Math.sin(a);
+    s+=`<line x1="${(r0*c).toFixed(1)}" y1="${(r0*sn).toFixed(1)}" x2="${(r1*c).toFixed(1)}" y2="${(r1*sn).toFixed(1)}" stroke="rgba(214,179,111,${d%30===0?.55:d%10===0?.32:.18})" stroke-width="1" vector-effect="non-scaling-stroke"/>`;}
+  s+='</g>';
+  $('#ringsvg').innerHTML=s;
+})();
+
+/* ---------------- header, menu, tabs ---------------- */
+const hdr=$('#hdr'),menu=$('#menu'),nav=$('#nav');
+menu.addEventListener('click',()=>{const o=nav.classList.toggle('open');menu.setAttribute('aria-expanded',o);});
+nav.addEventListener('click',e=>{if(e.target.tagName==='A'){nav.classList.remove('open');menu.setAttribute('aria-expanded','false');}});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&nav.classList.contains('open')){nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.focus();}});
+const tabs=$$('[role=tab]');
+tabs.forEach(t=>{t.addEventListener('click',()=>sel(t));t.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){const n=tabs[(tabs.indexOf(t)+1)%2];sel(n);n.focus();}});});
+function sel(t){tabs.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;const p=document.getElementById(x.getAttribute('aria-controls'));p.hidden=!on;if(on){p.classList.add('in');p.querySelectorAll('.rv').forEach(r=>r.classList.add('in'));}});}
+
+/* ---------------- reveals ---------------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{rootMargin:'0px 0px -12% 0px'});
+$$('main .s .rv, main .s .rvh, main .s .rvp, footer .rv').forEach(el=>io.observe(el));
+
+/* ---------------- magnetic buttons ---------------- */
+if(!RM && matchMedia('(pointer:fine)').matches){
+  $$('.mag').forEach(b=>{
+    b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${((e.clientX-r.left-r.width/2)*.16).toFixed(1)}px,${((e.clientY-r.top-r.height/2)*.28).toFixed(1)}px)`;});
+    b.addEventListener('pointerleave',()=>{b.style.transition='transform .7s cubic-bezier(.2,.7,.1,1),border-color .4s,background .4s';b.style.transform='';setTimeout(()=>b.style.transition='',700);});
+  });
+}
+
+/* ---------------- smooth scroll (wheel lerp) ---------------- */
+let sTarget=scrollY,sCur=scrollY,sOn=false,sLast=0;
+function maxY(){return document.documentElement.scrollHeight-innerHeight;}
+function sTick(t){
+  const dt=Math.min(.05,(t-(sLast||t))/1000)||.016;sLast=t;
+  sCur+=(sTarget-sCur)*(1-Math.exp(-dt*9));
+  if(Math.abs(sTarget-sCur)<.5){sCur=sTarget;sOn=false;}
+  scrollTo(0,sCur);
+  if(sOn)requestAnimationFrame(sTick);
+}
+function glide(y){sTarget=Math.max(0,Math.min(maxY(),y));if(RM){scrollTo(0,sTarget);return;}if(!sOn){sOn=true;sCur=scrollY;sLast=0;requestAnimationFrame(sTick);}}
+if(!RM){
+  addEventListener('wheel',e=>{if(e.ctrlKey||e.defaultPrevented)return;e.preventDefault();const k=e.deltaMode===1?36:e.deltaMode===2?innerHeight:1;if(!sOn)sTarget=scrollY;glide(sTarget+e.deltaY*k);},{passive:false});
+}
+addEventListener('scroll',()=>{if(!sOn){sTarget=scrollY;}},{passive:true});
+document.addEventListener('click',e=>{const a=e.target.closest('a[href^="#"]');if(!a)return;const id=a.getAttribute('href').slice(1);const el=id==='top'?document.body:document.getElementById(id);if(!el)return;e.preventDefault();const y=id==='top'?0:el.getBoundingClientRect().top+scrollY-(id==='atlas-s'?0:72);if(RM||Math.abs(y-scrollY)>innerHeight*6){scrollTo(0,y);sTarget=y;}else glide(y);});
+
+/* ---------------- atlas state (scroll) ---------------- */
+const atlas=$('#atlas'),caps=$$('.cap'),progEl=$('#prog'),progS=$$('#prog span'),noteEl=$('#note'),figcap=$('#figcap'),catLi=()=>$$('#cat li');
+// p = scroll in viewports from the atlas top. Segments: hero, s1..s5
+const SEG=[0,.62,1.55,3.75,4.75,6.0,6.8]; // boundaries
+const ST={p:0,step:-1,sub:0,net:-1,week:0};
+function readScroll(){
+  const vh=innerHeight;const top=atlas.offsetTop;ST.p=(scrollY-top)/vh;
+  let s=-1;for(let i=1;i<SEG.length-1;i++)if(ST.p>=SEG[i])s=i-1;
+  ST.step=s;ST.sub=s>=0?Math.min(1,Math.max(0,(ST.p-SEG[s+1])/(SEG[s+2]-SEG[s+1]))):0;
+}
+let lastStep=-2,lastNet=-2,lastWeek=-1;const wkEl=$('#wk'),ixEl=$('#ix'),tfill=$('#tfill'),tknob=$('#tknob');
+function applyUI(){
+  if(ST.step!==lastStep){
+    caps.forEach((c,i)=>c.classList.toggle('on',i===ST.step));
+    progS.forEach((s,i)=>s.classList.toggle('on',i===ST.step));
+    progEl.classList.toggle('on',ST.step>=0);noteEl.classList.toggle('on',ST.step>=0);
+    figcap.style.opacity=ST.step>=0&&!mobile?0:1;
+    lastStep=ST.step;
+  }
+  hdr.classList.toggle('solid',ST.p>6.6||scrollY>atlas.offsetTop+atlas.offsetHeight-innerHeight*1.2);
+  const net=ST.step===1?Math.min(6,Math.floor(ST.sub*7)):-1;
+  if(net!==lastNet){catLi().forEach((l,i)=>{l.classList.toggle('on',i===net);l.classList.toggle('seen',net>=0&&i<net);});lastNet=net;}
+  if(ST.step===3){
+    const k=Math.min(1,Math.max(0,(ST.sub-.08)/.8));ST.week=Math.round(k*52);
+    if(ST.week!==lastWeek){lastWeek=ST.week;const kk=ST.week/52;wkEl.textContent=ST.week;ixEl.textContent=(0.94+0.3*Math.pow(kk,1.2)).toFixed(2);
+      tfill.style.width=(kk*100).toFixed(2)+'%';tknob.style.left=(kk*100).toFixed(2)+'%';}
+  }
+}
+
+/* ======================= WebGL constellation brain ======================= */
+const canvas=$('#gl'),obj=$('#obj'),ring=$('#ring'),poster=$('#poster'),tag=$('#tag'),tagn=$('#tagn'),tagk=$('#tagk'),tagl=$('#tagl'),tagt=$('#tagt');let ticksEl=null,lastRot=1e9,mobile=false;
+const sm=(a,b,x)=>{x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x);};
+// Brain silhouette as a smooth signed-distance field (x right, y up, z anterior):
+// cerebrum lobes and temporal lobes blended with a soft union, a small cerebellum tucked
+// under the occipital pole, a shallow interhemispheric groove. No gyri: an engraved glass form.
+const ELL=[ // centre xyz, radii xyz, blend k
+ [0,.07,-.02, .69,.55,.96, 0],     // cerebrum body
+ [0,.11,.40, .63,.50,.58, .14],    // frontal lobe (blunt, high pole)
+ [0,.22,-.16, .65,.50,.62, .14],   // parietal dome
+ [0,.02,-.60, .50,.40,.42, .12],   // occipital lobe (lower, tapering pole)
+ [.47,-.26,.10, .26,.23,.50, .15], // temporal lobe R
+ [-.47,-.26,.10, .26,.23,.50, .15],// temporal lobe L
+ [0,-.40,-.56, .45,.22,.30, .09]]; // cerebellum
+function sdE(x,y,z,e){const qx=(x-e[0])/e[3],qy=(y-e[1])/e[4],qz=(z-e[2])/e[5];const k0=Math.sqrt(qx*qx+qy*qy+qz*qz);const k1=Math.sqrt(qx*qx/(e[3]*e[3])+qy*qy/(e[4]*e[4])+qz*qz/(e[5]*e[5]))||1e-6;return k0*(k0-1)/k1;}
+function smin(a,b,k){if(k<=0)return Math.min(a,b);const h=Math.max(k-Math.abs(a-b),0)/k;return Math.min(a,b)-h*h*k*.25;}
+function sdf(x,y,z){
+  let d=sdE(x,y,z,ELL[0]);
+  for(let i=1;i<ELL.length;i++)d=smin(d,sdE(x,y,z,ELL[i]),ELL[i][6]);
+  d+=.026*Math.exp(-(x*x)/(.045*.045))*sm(-.15,.25,y); // interhemispheric groove
+  return d;
+}
+// radius of the outermost surface along a unit direction
+function shape(dx,dy,dz){
+  let hi=1.4,lo=1.4;
+  while(lo>.05&&sdf(dx*lo,dy*lo,dz*lo)>0){hi=lo;lo-=.025;}
+  for(let i=0;i<22;i++){const m=(lo+hi)*.5;if(sdf(dx*m,dy*m,dz*m)>0)hi=m;else lo=m;}
+  return (lo+hi)*.5;
+}
+function P(d,out,lift){const l=Math.hypot(d[0],d[1],d[2]);const x=d[0]/l,y=d[1]/l,z=d[2]/l;const r=shape(x,y,z);const L=lift||0;out[0]=x*r;out[1]=y*r;out[2]=z*r;
+  if(L){const n=grad(out[0],out[1],out[2],[0,0,0]);out[0]+=n[0]*L;out[1]+=n[1]*L;out[2]+=n[2]*L;}return out;}
+function grad(x,y,z,out){const e=.003;let nx=sdf(x+e,y,z)-sdf(x-e,y,z),ny=sdf(x,y+e,z)-sdf(x,y-e,z),nz=sdf(x,y,z+e)-sdf(x,y,z-e);const l=Math.hypot(nx,ny,nz)||1;out[0]=nx/l;out[1]=ny/l;out[2]=nz/l;return out;}
+function normalAt(d,out){const p=P(d,[0,0,0]);return grad(p[0],p[1],p[2],out);}
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};
+
+function icosphere(level){
+  const t=(1+Math.sqrt(5))/2;let V=[[-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],[0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],[t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]].map(v=>{const l=Math.hypot(...v);return v.map(c=>c/l);});
+  let F=[[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+  for(let l=0;l<level;l++){const cache=new Map(),NF=[];
+    const mid=(a,b)=>{const k=a<b?a*1e6+b:b*1e6+a;let m=cache.get(k);if(m===undefined){const p=V[a],q=V[b];let x=p[0]+q[0],y=p[1]+q[1],z=p[2]+q[2];const ln=Math.hypot(x,y,z);V.push([x/ln,y/ln,z/ln]);m=V.length-1;cache.set(k,m);}return m;};
+    for(const f of F){const a=mid(f[0],f[1]),b=mid(f[1],f[2]),c=mid(f[2],f[0]);NF.push([f[0],a,c],[f[1],b,a],[f[2],c,b],[a,b,c]);}F=NF;}
+  return {V,F};
+}
+
+// network seed nodes: [x,y,z, magnitude, bilateral]
+const SEEDS=[
+ [[.06,.30,1,1,0],[.05,.62,-.62,1,0],[.86,.30,-.46,.85,1],[.9,-.42,.05,.6,1],[.05,.78,.45,.55,0]],      // default mode: mPFC, PCC/precuneus, angular, lateral temporal, dmPFC
+ [[.93,-.06,.36,1,1],[.05,.82,.36,.8,0],[.86,.34,-.12,.6,1]],                                         // salience: anterior insula/operculum, dACC, supramarginal
+ [[.55,.74,.36,1,1],[.52,.76,-.40,.9,1],[.84,-.12,-.58,.65,1]],                                       // dorsal attention: FEF, IPS/SPL, MT+
+ [[.76,.44,.58,1,1],[.82,.40,-.34,.8,1],[.44,.20,.95,.6,1]],                                          // frontoparietal: DLPFC, IPL, rostral PFC
+ [[.80,.56,.04,1,1],[.22,.97,-.02,.8,1],[.96,.12,-.02,.55,1]],                                        // sensorimotor: hand area, vertex, S2
+ [[.12,.10,-1,1,1],[.36,.36,-.88,.7,1],[.46,-.10,-.88,.7,1]],                                         // visual: V1 pole, dorsal and ventral stream
+ [[.55,-.40,.70,1,1],[.28,-.42,.86,.8,1],[.52,-.62,-.12,.6,1]]];                                      // limbic: temporal pole, orbitofrontal, parahippocampal
+function buildScene(){
+  // ---- glass mesh
+  const ico=icosphere(5);const nv=ico.V.length;
+  const gpos=new Float32Array(nv*3),gnrm=new Float32Array(nv*3),tmp=[0,0,0],tn=[0,0,0];
+  for(let i=0;i<nv;i++){P(ico.V[i],tmp);normalAt(ico.V[i],tn);gpos.set(tmp,i*3);gnrm.set(tn,i*3);}
+  const gidx=new Uint32Array(ico.F.length*3);ico.F.forEach((f,i)=>{gidx[i*3]=f[0];gidx[i*3+1]=f[1];gidx[i*3+2]=f[2];});
+  // ---- stars
+  const stars=[];// [x,y,z,nx,ny,nz,net,mag,phase,kind]
+  const nets=[];// per net: list of node positions and right-hemisphere anchor
+  seed=11;
+  SEEDS.forEach((list,ni)=>{
+    const nodes=[];
+    list.forEach(s=>{
+      const sides=s[4]?[1,-1]:[1];
+      sides.forEach(sg=>{
+        const d=[s[0]*sg,s[1],s[2]];nodes.push({d,mag:s[3]});
+        const k=s[3]>.7?2:1;
+        for(let j=0;j<k;j++){const jd=[d[0]+(rnd()-.5)*.26,d[1]+(rnd()-.5)*.26,d[2]+(rnd()-.5)*.26];nodes.push({d:jd,mag:.32+rnd()*.22});}
+      });
+    });
+    nodes.forEach(n=>{const p=P(n.d,[0,0,0],.006),q=normalAt(n.d,[0,0,0]);n.p=p;stars.push([p[0],p[1],p[2],q[0],q[1],q[2],ni,n.mag,rnd(),1]);});
+    // anchor: brightest right-side (or medial) node
+    let anc=nodes.filter(n=>n.d[0]>=-.01).sort((a,b)=>b.mag-a.mag)[0];
+    nets.push({nodes,anchor:anc.p.slice()});
+  });
+  // field stars
+  for(let i=0;i<620;i++){let x,y,z,l;do{x=rnd()*2-1;y=rnd()*2-1;z=rnd()*2-1;l=x*x+y*y+z*z;}while(l>1||l<.01);
+    const d=[x,y,z],p=P(d,[0,0,0],.004),q=normalAt(d,[0,0,0]);const m=Math.pow(rnd(),2.6);stars.push([p[0],p[1],p[2],q[0],q[1],q[2],-1,.15+m*.55,rnd(),0]);}
+  const sdat=new Float32Array(stars.length*10);stars.forEach((s,i)=>sdat.set(s,i*10));
+  // ---- ribbons: constellation arcs (MST per network) + graticule
+  const R=[];// per vertex: ax,ay,az,bx,by,bz, end, side, t, net
+  const seg=(a,b,t0,t1,net)=>{for(const[e,sd]of[[0,-1],[0,1],[1,-1],[1,1]])R.push(a[0],a[1],a[2],b[0],b[1],b[2],e,sd,e?t1:t0,net);};
+  nets.forEach((N,ni)=>{
+    const ns=N.nodes,n=ns.length,inT=new Array(n).fill(false),best=new Array(n).fill(1e9),par=new Array(n).fill(-1);best[0]=0;
+    const edges=[];
+    for(let it=0;it<n;it++){let u=-1;for(let i=0;i<n;i++)if(!inT[i]&&(u<0||best[i]<best[u]))u=i;inT[u]=true;if(par[u]>=0)edges.push([par[u],u]);
+      for(let v=0;v<n;v++)if(!inT[v]){const d=Math.hypot(ns[u].p[0]-ns[v].p[0],ns[u].p[1]-ns[v].p[1],ns[u].p[2]-ns[v].p[2]);if(d<best[v]){best[v]=d;par[v]=u;}}}
+    // order edges so draw-on grows outward from the root
+    edges.forEach((E,ei)=>{
+      const a=ns[E[0]].d,b=ns[E[1]].d;const la=Math.hypot(...a),lb=Math.hypot(...b);
+      const A=[a[0]/la,a[1]/la,a[2]/la],B=[b[0]/lb,b[1]/lb,b[2]/lb];
+      const om=Math.acos(Math.min(1,A[0]*B[0]+A[1]*B[1]+A[2]*B[2]));const steps=Math.max(10,Math.ceil(om*90));
+      const chord=Math.hypot(ns[E[0]].p[0]-ns[E[1]].p[0],ns[E[0]].p[1]-ns[E[1]].p[1],ns[E[0]].p[2]-ns[E[1]].p[2]);
+      let prev=null;const t0=ei/edges.length,t1=(ei+1)/edges.length;
+      for(let s=0;s<=steps;s++){const u=s/steps;let d;
+        if(om<1e-4)d=A;else{const k0=Math.sin((1-u)*om)/Math.sin(om),k1=Math.sin(u*om)/Math.sin(om);d=[A[0]*k0+B[0]*k1,A[1]*k0+B[1]*k1,A[2]*k0+B[2]*k1];}
+        const p=P(d,[0,0,0],.007+Math.sin(Math.PI*u)*.08*chord);
+        if(prev)seg(prev,p,t0+(t1-t0)*(s-1)/steps,t0+(t1-t0)*s/steps,ni);prev=p;}
+    });
+  });
+  // engraved fissures (net 8): Sylvian fissure and, fainter, the central sulcus, on both hemispheres
+  for(const sg of[1,-1]){
+    let prev=null;for(let s=0;s<=110;s++){const t=s/110;const d=[sg*.95,-.17+.22*t+.18*Math.pow(t,3),.66-1.1*t];const p=P(d,[0,0,0],.004);if(prev)seg(prev,p,1,1,8);prev=p;}
+    prev=null;for(let s=0;s<=90;s++){const t=s/90;const d=[sg*(.12+.86*t),.98-.92*t,.06-.20*t];const p=P(d,[0,0,0],.004);if(prev)seg(prev,p,0,0,8);prev=p;}
+  }
+  // graticule: meridians + parallels on the glass (atlas coordinate grid)
+  for(let m=0;m<12;m++){const ph=m/12*Math.PI*2;let prev=null;for(let s=0;s<=96;s++){const th=.12+s/96*(Math.PI-.24);const d=[Math.sin(th)*Math.sin(ph),Math.cos(th),Math.sin(th)*Math.cos(ph)];const p=P(d,[0,0,0],.003);if(prev)seg(prev,p,0,0,7);prev=p;}}
+  for(const lat of[-.5,-.2,.1,.4,.7]){let prev=null;for(let s=0;s<=160;s++){const ph=s/160*Math.PI*2;const cy=Math.sin(lat),cr=Math.cos(lat);const d=[cr*Math.sin(ph),cy,cr*Math.cos(ph)];const p=P(d,[0,0,0],.003);if(prev)seg(prev,p,0,0,7);prev=p;}}
+  const rdat=new Float32Array(R);const nq=rdat.length/40;const ridx=new Uint32Array(nq*6);for(let i=0;i<nq;i++){const b=i*4;ridx.set([b,b+1,b+2,b+1,b+3,b+2],i*6);}
+  return {gpos,gnrm,gidx,sdat,nStars:stars.length,rdat,ridx,nets};
+}
+
+const VS_GLASS=`#version 300 es
+in vec3 aP;in vec3 aN;uniform mat4 uMVP;uniform mat4 uM;out vec3 vN;out vec3 vW;
+void main(){vec4 w=uM*vec4(aP,1.);vW=w.xyz;vN=mat3(uM)*aN;gl_Position=uMVP*vec4(aP,1.);}`;
+const FS_GLASS=`#version 300 es
+precision highp float;in vec3 vN;in vec3 vW;uniform vec3 uEye;uniform float uGlass;out vec4 o;
+void main(){vec3 N=normalize(vN);vec3 V=normalize(uEye-vW);float ndv=clamp(dot(N,V),0.,1.);
+ float fres=pow(1.-ndv,3.2);float soft=smoothstep(0.,.2,ndv);
+ vec3 L=normalize(vec3(-.55,.62,.56));vec3 L2=normalize(vec3(.7,-.25,.45));
+ float spec=pow(max(dot(N,normalize(L+V)),0.),320.);float sheen=pow(max(dot(N,normalize(L+V)),0.),9.);float fill=pow(max(dot(N,normalize(L2+V)),0.),14.);
+ vec3 film=.5+.5*cos(6.2831*(vec3(.0,.12,.3)+ndv*.9+.55));
+ vec3 rimc=mix(vec3(.84,.69,.42),film*vec3(.9,.85,1.),.28);
+ vec3 c=rimc*fres*soft*.55+vec3(1.,.95,.86)*spec*.2+vec3(.75,.68,.55)*sheen*.006+vec3(.45,.55,.85)*fill*.03+vec3(.010,.016,.034)*ndv;
+ c*=uGlass;o=vec4(1.-exp(-c*1.25),0.);}`;
+const VS_PTS=`#version 300 es
+in vec3 aP;in vec3 aN;in vec4 aI;in float aK;uniform mat4 uMVP;uniform mat4 uM;uniform vec3 uEye;uniform float uNet[9];uniform float uField;uniform float uDpr;uniform float uTime;
+out float vB;out float vCore;out float vRingR;out float vRing;out float vSize;out float vHot;
+void main(){vec3 w=(uM*vec4(aP,1.)).xyz;vec3 n=mat3(uM)*aN;float facing=dot(n,normalize(uEye-w));
+ float fa=mix(.09,1.,smoothstep(.04,.5,facing));
+ int ni=int(aI.x+.5);float inten=aK<.5?uField:uNet[clamp(ni,0,8)];
+ float tw=.86+.14*sin(uTime*1.1+aI.z*40.);
+ vB=inten*fa*tw;vHot=aK*smoothstep(.55,1.,inten);
+ float mag=aI.y;
+ vCore=(aK<.5?(.8+mag*.7):(1.1+mag*1.5*(.7+.3*inten)))*uDpr;
+ vRing=aK*step(.72,mag)*smoothstep(.45,.95,inten)*fa;
+ vRingR=vCore*2.6+1.6*uDpr;
+ vSize=(vRing>0.?vRingR+2.2*uDpr:vCore*3.2)*2.;
+ gl_PointSize=vSize;gl_Position=uMVP*vec4(aP,1.);}`;
+const FS_PTS=`#version 300 es
+precision highp float;in float vB;in float vCore;in float vRingR;in float vRing;in float vSize;in float vHot;uniform float uDpr;out vec4 o;
+void main(){float r=length(gl_PointCoord-.5)*vSize;
+ float core=1.-smoothstep(vCore-.75,vCore+.75,r);
+ float halo=exp(-r*r/(vCore*vCore*4.5))*.32;
+ float ring=vRing*(1.-smoothstep(.3*uDpr,1.05*uDpr,abs(r-vRingR)))*.55;
+ vec3 gold=vec3(.84,.70,.44),ivory=vec3(.93,.90,.84),hot=vec3(1.,.93,.78);
+ vec3 c=mix(ivory*.85,mix(gold,hot,.55*vHot),step(.001,vHot+vRing));
+ c=c*(core+halo)*vB+gold*ring*vB;
+ if(c.r+c.g+c.b<.002)discard;o=vec4(1.-exp(-c*1.5),0.);}`;
+const VS_RIB=`#version 300 es
+in vec3 aA;in vec3 aB;in vec2 aES;in vec2 aTN;uniform mat4 uMVP;uniform mat4 uM;uniform vec3 uEye;uniform vec2 uRes;uniform float uW;
+out float vD;out float vT;out float vNet;out float vFace;
+void main(){vec4 ca=uMVP*vec4(aA,1.),cb=uMVP*vec4(aB,1.);
+ vec2 sa=ca.xy/ca.w*uRes*.5,sb=cb.xy/cb.w*uRes*.5;vec2 dir=sb-sa;float l=length(dir);dir=l>1e-4?dir/l:vec2(1.,0.);vec2 nr=vec2(-dir.y,dir.x);
+ vec4 c=aES.x>.5?cb:ca;float hw=uW*.5+1.;
+ c.xy+=nr*aES.y*hw/(uRes*.5)*c.w;
+ vD=aES.y*hw;vT=aTN.x;vNet=aTN.y;
+ vec3 p=aES.x>.5?aB:aA;vec3 w=(uM*vec4(p,1.)).xyz;vec3 n=normalize(mat3(uM)*p);vFace=dot(n,normalize(uEye-w));
+ gl_Position=c;}`;
+const FS_RIB=`#version 300 es
+precision highp float;in float vD;in float vT;in float vNet;in float vFace;uniform float uNet[9];uniform float uDraw[9];uniform float uW;out vec4 o;
+void main(){int ni=int(vNet+.5);float inten=uNet[ni];float dr=uDraw[ni]*1.04;
+ float aa=1.-smoothstep(uW*.5-.6,uW*.5+.8,abs(vD));
+ float drawm=ni>=7?1.:1.-smoothstep(dr-.035,dr,vT);
+ float fa=mix(.1,1.,smoothstep(.0,.45,vFace));
+ vec3 col=ni==7?vec3(.80,.82,.88)*.55:(ni==8?vec3(.86,.72,.46):vec3(.84,.70,.44)*mix(.55,1.,inten));
+ float a=aa*drawm*fa*(ni==7?inten:(ni==8?inten*(.45+.4*vT):inten*.62));
+ if(a<.002)discard;o=vec4(col*a,0.);}`;
+
+let gl=null,G=null,scene=null,raf=0,running=false,visible=true,glOK=false,frames=0,lastT=0,simT=0;
+const S={yaw:-1.27,yawT:-1.27,drift:0,pitch:.2,pitchT:.2,dragV:0,dragging:false,net:new Float32Array(9),draw:new Float32Array(9),field:.5,glass:1,
+  netT:new Float32Array(9),drawT:new Float32Array(9),fieldT:.5,glassT:1,label:-1,labelA:0};
+const mats={P:new Float32Array(16),M:new Float32Array(16),MVP:new Float32Array(16),eye:new Float32Array([0,0,6])};
+let W=0,H=0,dpr=1,camD=6;
+
+function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+function prog(vs,fs){const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));
+  const u={},n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);for(let i=0;i<n;i++){const inf=gl.getActiveUniform(p,i);const nm=inf.name.replace('[0]','');u[nm]=gl.getUniformLocation(p,nm);}return {p,u};}
+function vao(progObj,attrs,idx){const v=gl.createVertexArray();gl.bindVertexArray(v);
+  for(const a of attrs){const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,a.data,gl.STATIC_DRAW);
+    for(const f of a.fields){const loc=gl.getAttribLocation(progObj.p,f[0]);if(loc<0)continue;gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,f[1],gl.FLOAT,false,a.stride*4,f[2]*4);}}
+  if(idx){const b=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,b);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,idx,gl.STATIC_DRAW);}
+  gl.bindVertexArray(null);return v;}
+
+function initGL(){
+  gl=canvas.getContext('webgl2',{antialias:true,alpha:true,premultipliedAlpha:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
+  if(!gl){$('#nogl').style.display='block';return false;}
+  if(!scene)scene=buildScene();
+  const pg=prog(VS_GLASS,FS_GLASS),pp=prog(VS_PTS,FS_PTS),pr=prog(VS_RIB,FS_RIB);
+  G={pg,pp,pr,
+    vg:vao(pg,[{data:scene.gpos,stride:3,fields:[['aP',3,0]]},{data:scene.gnrm,stride:3,fields:[['aN',3,0]]}],scene.gidx),ng:scene.gidx.length,
+    vp:vao(pp,[{data:scene.sdat,stride:10,fields:[['aP',3,0],['aN',3,3],['aI',3,6],['aK',1,9]]}]),np:scene.nStars,
+    vr:vao(pr,[{data:scene.rdat,stride:10,fields:[['aA',3,0],['aB',3,3],['aES',2,6],['aTN',2,8]]}],scene.ridx),nr:scene.ridx.length};
+  gl.disable(gl.DEPTH_TEST);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);
+  gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);
+  resize();return true;
+}
+function resize(){
+  const r=obj.getBoundingClientRect();W=Math.max(1,r.width);H=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);mobile=innerWidth<=820;
+  const rd=Math.min(W*.84,H*.74);obj.style.setProperty('--rd',rd.toFixed(0)+'px');
+  if(!gl)return;
+  canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);gl.viewport(0,0,canvas.width,canvas.height);
+  // fit: brain extent ~1.08 should fill ~0.66 of the ring diameter
+  const fov=30*Math.PI/180,asp=W/H;const want=(rd*.76)/Math.min(W,H);// fraction of min dimension
+  const half=1.08/want;camD=(asp<1?half/asp:half)/Math.tan(fov/2);
+  const f=1/Math.tan(fov/2),n=.1,fr=50;const P_=mats.P;P_.fill(0);P_[0]=f/asp;P_[5]=f;P_[10]=(fr+n)/(n-fr);P_[11]=-1;P_[14]=2*fr*n/(n-fr);
+  mats.eye[2]=camD;
+}
+function compose(){
+  const a=S.pitch,b=S.yaw,ca=Math.cos(a),sa=Math.sin(a),cb=Math.cos(b),sb=Math.sin(b),M=mats.M;
+  // M = Rx(a) * Ry(b), column-major
+  M[0]=cb;M[1]=sa*sb;M[2]=-ca*sb;M[3]=0;M[4]=0;M[5]=ca;M[6]=sa;M[7]=0;M[8]=sb;M[9]=-sa*cb;M[10]=ca*cb;M[11]=0;M[12]=0;M[13]=0;M[14]=0;M[15]=1;
+  // MVP = P * T(0,0,-D) * M
+  const P_=mats.P,O=mats.MVP;
+  for(let c=0;c<4;c++){const x=M[c*4],y=M[c*4+1],z=M[c*4+2]-(c===3?camD:0),w=M[c*4+3];
+    O[c*4]=P_[0]*x;O[c*4+1]=P_[5]*y;O[c*4+2]=P_[10]*z+P_[14]*w;O[c*4+3]=-z;}
+}
+const proj=[0,0,0];
+function project(p){const O=mats.MVP;const x=p[0],y=p[1],z=p[2];const cw=O[3]*x+O[7]*y+O[11]*z+O[15];
+  proj[0]=((O[0]*x+O[4]*y+O[8]*z+O[12])/cw*.5+.5)*W;proj[1]=(1-((O[1]*x+O[5]*y+O[9]*z+O[13])/cw*.5+.5))*H;
+  const M=mats.M;proj[2]=M[2]*x+M[6]*y+M[10]*z; return proj;}
+
+function render(){
+  if(!gl||!G)return;
+  compose();
+  gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+  // glass
+  gl.useProgram(G.pg.p);gl.uniformMatrix4fv(G.pg.u.uMVP,false,mats.MVP);gl.uniformMatrix4fv(G.pg.u.uM,false,mats.M);gl.uniform3fv(G.pg.u.uEye,mats.eye);gl.uniform1f(G.pg.u.uGlass,S.glass);
+  gl.bindVertexArray(G.vg);gl.drawElements(gl.TRIANGLES,G.ng,gl.UNSIGNED_INT,0);
+  gl.disable(gl.CULL_FACE);
+  // ribbons
+  gl.useProgram(G.pr.p);gl.uniformMatrix4fv(G.pr.u.uMVP,false,mats.MVP);gl.uniformMatrix4fv(G.pr.u.uM,false,mats.M);gl.uniform3fv(G.pr.u.uEye,mats.eye);
+  gl.uniform2f(G.pr.u.uRes,canvas.width,canvas.height);gl.uniform1f(G.pr.u.uW,1.0*dpr);gl.uniform1fv(G.pr.u.uNet,S.net);gl.uniform1fv(G.pr.u.uDraw,S.draw);
+  gl.bindVertexArray(G.vr);gl.drawElements(gl.TRIANGLES,G.nr,gl.UNSIGNED_INT,0);
+  // stars
+  gl.useProgram(G.pp.p);gl.uniformMatrix4fv(G.pp.u.uMVP,false,mats.MVP);gl.uniformMatrix4fv(G.pp.u.uM,false,mats.M);gl.uniform3fv(G.pp.u.uEye,mats.eye);
+  gl.uniform1fv(G.pp.u.uNet,S.net);gl.uniform1f(G.pp.u.uField,S.field);gl.uniform1f(G.pp.u.uDpr,dpr);gl.uniform1f(G.pp.u.uTime,simT);
+  gl.bindVertexArray(G.vp);gl.drawArrays(gl.POINTS,0,G.np);
+  gl.bindVertexArray(null);gl.enable(gl.CULL_FACE);
+  frames++;
+  if(frames===1){canvas.classList.add('on');poster.classList.add('off');}
+}
+
+// targets per state. LAT shows the right hemisphere in lateral view, frontal pole to the left,
+// turned slightly three-quarter; the form sways gently rather than spinning.
+const LAT=-Math.PI/2+.20;
+function anchorYaw(ni){const a=scene.nets[ni].anchor;let d=-Math.atan2(a[0],a[2])-.35;d=nearest(d,LAT)-LAT;return LAT+Math.max(-.7,Math.min(.7,d));}
+function sway(a,f){return LAT+a*Math.sin(simT*f);}
+function setTargets(dt){
+  const st=ST.step;const T=S.netT,D=S.drawT;
+  S.label=-1;T[8]=.9;
+  if(st<0){ // hero: slow survey, one constellation brightening at a time
+    const cyc=simT/3.4,act=Math.floor(cyc)%7,ph=cyc-Math.floor(cyc);
+    for(let i=0;i<7;i++){T[i]=.42;D[i]=1;}T[act]=.42+.56*Math.sin(Math.PI*Math.min(1,ph*1.05));
+    T[7]=0;S.fieldT=.3;S.glassT=1;S.yawT=sway(.26,.17);S.pitchT=.06;
+  }else if(st===0){
+    for(let i=0;i<7;i++){T[i]=.0;D[i]=0;}T[7]=.0;T[8]=.7;S.fieldT=.42;S.glassT=.85;S.yawT=sway(.18,.12);S.pitchT=.08;
+  }else if(st===1){
+    const k=ST.sub*7,act=Math.min(6,Math.floor(k)),fr=k-act;
+    for(let i=0;i<7;i++){if(i<act){T[i]=.3;D[i]=1;}else if(i===act){T[i]=1;D[i]=Math.min(1,.15+fr*1.6);}else{T[i]=0;D[i]=0;}}
+    T[7]=.0;T[8]=.55;S.fieldT=.24;S.glassT=.9;S.label=act;S.yawT=anchorYaw(act);S.pitchT=Math.max(-.04,Math.min(.3,.08+scene.nets[act].anchor[1]*.2));
+  }else if(st===2){
+    for(let i=0;i<7;i++){T[i]=.58;D[i]=1;}T[7]=.12;S.fieldT=.22;S.glassT=1;S.yawT=sway(.22,.14);S.pitchT=.12;
+  }else if(st===3){
+    const k=Math.min(1,Math.max(0,(ST.sub-.08)/.8));
+    for(let i=0;i<7;i++){T[i]=.07;D[i]=1;}T[1]=.18+.82*Math.pow(k,1.2);T[7]=.03;T[8]=.6;S.fieldT=.2;S.glassT=.95;S.label=1;S.yawT=anchorYaw(1);S.pitchT=.1;
+  }else{
+    for(let i=0;i<7;i++){T[i]=.5;D[i]=1;}T[1]=.62;T[7]=.05;S.fieldT=.26;S.glassT=1;S.yawT=sway(.26,.15);S.pitchT=.12;
+  }
+}
+function nearest(target,ref){const tp=Math.PI*2;return target+Math.round((ref-target)/tp)*tp;}
+function damp(a,b,k,dt){return a+(b-a)*(1-Math.exp(-k*dt));}
+function step(dt){
+  simT+=dt;setTargets(dt);
+  const fast=RM?1e3:1;
+  for(let i=0;i<9;i++){S.net[i]=damp(S.net[i],S.netT[i],3.2*fast,dt);S.draw[i]=damp(S.draw[i],S.drawT[i],(S.drawT[i]>S.draw[i]?2.4:4)*fast,dt);}
+  S.field=damp(S.field,S.fieldT,2*fast,dt);S.glass=damp(S.glass,S.glassT,2*fast,dt);
+  if(S.dragging){S.dragV*=Math.exp(-dt*14);}
+  else{S.yawOff=(S.yawOff||0)+S.dragV*dt;S.dragV*=Math.exp(-dt*2.2);S.yawOff*=Math.exp(-dt*(S.dragV*S.dragV>.01?.2:.9));}
+  const yt=S.yawT+(S.yawOff||0);
+  S.yaw=damp(S.yaw,yt,RM?1e3:1.6,dt);S.pitch=damp(S.pitch,S.pitchT+(S.pitchOff||0),RM?1e3:2,dt);
+  if(!S.dragging&&S.pitchOff)S.pitchOff*=Math.exp(-dt*2.5);
+}
+function updateOverlay(){
+  // ring rotation follows the yaw, slowly
+  if(!ticksEl)ticksEl=document.getElementById('ticks');
+  const rot=Math.round(S.yaw*57.2958*.25*20)/20;if(ticksEl&&rot!==lastRot){lastRot=rot;ticksEl.setAttribute('transform','rotate('+(rot%360).toFixed(2)+')');}
+  if(S.label>=0&&scene){
+    const a=scene.nets[S.label].anchor;project(a);
+    const vis=proj[2]>-.15;const ax=proj[0],ay=proj[1];
+    if(mobile){tagt.style.transform='translate(16px,40px)';}
+    else{
+      const rd=Math.min(W*.84,H*.74),cx=W/2;
+      const lx=Math.min(ax-56,cx-rd*.35),ly=ay-30;
+      tagt.style.transform='translate('+lx.toFixed(1)+'px,'+ly.toFixed(1)+'px) translate(-100%,-50%)';
+      const dx=lx+8-ax,dy=ly-ay,len=Math.hypot(dx,dy),ux=dx/len,uy=dy/len;
+      tagl.style.width=Math.max(0,len-10).toFixed(1)+'px';
+      tagl.style.transform='translate('+(ax+ux*10).toFixed(1)+'px,'+(ay+uy*10).toFixed(1)+'px) rotate('+Math.atan2(dy,dx).toFixed(4)+'rad)';
+    }
+    if(S.label!==S._lastLabel){tagn.textContent=NETS[S.label].n+(S.label===3?'':' network');tagk.textContent='Network 0'+(S.label+1)+' · '+NETS[S.label].k;S._lastLabel=S.label;}
+    tag.classList.toggle('on',vis);
+  }else tag.classList.remove('on');
+}
+function loop(t){
+  raf=0;if(!running)return;
+  const dt=Math.min(.05,lastT?(t-lastT)/1000:.016);lastT=t;
+  readScroll();applyUI();step(dt);render();updateOverlay();
+  if(!RM)raf=requestAnimationFrame(loop);
+}
+function start(){if(running||!glOK)return;running=true;lastT=0;raf=requestAnimationFrame(loop);}
+function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=0;}
+function poke(){ // used in reduced motion: render on demand
+  if(!glOK)return;if(RM){readScroll();applyUI();step(.5);render();updateOverlay();}
+}
+const vio=new IntersectionObserver(es=>{visible=es[0].isIntersecting;if(visible&&!document.hidden){RM?poke():start();}else stop();},{rootMargin:'80px'});
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else if(visible)RM?poke():start();});
+addEventListener('scroll',()=>{if(!running){readScroll();applyUI();}if(RM)poke();},{passive:true});
+let rzT=0;addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{resize();readScroll();applyUI();RM&&poke();},120);});
+canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();stop();glOK=false;G=null;canvas.classList.remove('on');poster.classList.remove('off');frames=0;});
+canvas.addEventListener('webglcontextrestored',()=>{try{glOK=initGL();}catch(err){glOK=false;}if(glOK){RM?poke():start();}});
+
+// drag to turn, with inertia
+let px=0,py=0,pid=null,lt=0;
+canvas.addEventListener('pointerdown',e=>{pid=e.pointerId;canvas.setPointerCapture(pid);px=e.clientX;py=e.clientY;lt=performance.now();S.dragging=true;S.dragV=0;});
+canvas.addEventListener('pointermove',e=>{if(e.pointerId!==pid)return;const now=performance.now(),dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;
+  const k=3.2/Math.max(300,W);S.yawOff=(S.yawOff||0)+dx*k;S.pitchOff=Math.max(-.35,Math.min(.35,(S.pitchOff||0)+dy*k*.6));
+  const el=Math.max(8,now-lt);S.dragV=dx*k/(el/1000)*.5+S.dragV*.5;lt=now;if(RM)poke();});
+const endDrag=e=>{if(e.pointerId!==pid)return;pid=null;S.dragging=false;S.dragV=Math.max(-3,Math.min(3,S.dragV));};
+canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
+
+function boot(){
+  try{glOK=initGL();}catch(err){console.warn('GL init failed',err);glOK=false;}
+  if(!glOK){$('#nogl').style.display='block';ring.classList.add('on');return;}
+  ring.classList.add('on');
+  readScroll();applyUI();
+  // settle to the current state instantly so the first frame is composed
+  setTargets(0);for(let i=0;i<9;i++){S.net[i]=S.netT[i];S.draw[i]=S.drawT[i];}S.yaw=S.yawT;S.pitch=S.pitchT;S.field=S.fieldT;
+  vio.observe(atlas);
+  if(RM)poke();
+}
+readScroll();applyUI();resize();
+const kick=()=>('requestIdleCallback' in window)?requestIdleCallback(boot,{timeout:600}):setTimeout(boot,60);
+if(document.readyState==='complete')kick();else addEventListener('load',kick);
+
+/* test hooks */
+window.__concept={
+  advance(s){const n=Math.max(1,Math.round(s*60));readScroll();applyUI();for(let i=0;i<n;i++)step(1/60);render();updateOverlay();return simT;},
+  setScroll(f){const y=f<=1?f*maxY():f;scrollTo(0,y);sTarget=y;readScroll();applyUI();return y;},
+  atlasP(p){const y=atlas.offsetTop+p*innerHeight;scrollTo(0,y);sTarget=y;readScroll();applyUI();return y;},
+  freeze(b){if(b)stop();else if(visible)start();return running;},
+  stats(){return {glOK,frames,step:ST.step,sub:+ST.sub.toFixed(3),p:+ST.p.toFixed(3),tris:G?G.ng/3:0,stars:scene?scene.nStars:0,ribbonQuads:scene?scene.ridx.length/6:0,canvas:[canvas.width,canvas.height],dpr};}
+};
+})();
+</script>
+</body>
+</html>

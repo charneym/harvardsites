@@ -1,0 +1,1038 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modulight Biotherapeutics — Redesign Concept</title>
+<meta name="description" content="Redesign concept for Modulight Biotherapeutics: precision optogenetics for neurology. Concept by Max C, not affiliated with or endorsed by Modulight Biotherapeutics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Instrument+Sans:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root{
+  --bg:#07090C; --ink:#ECEAE5; --mut:rgba(236,234,229,.60); --mut2:rgba(236,234,229,.40);
+  --line:rgba(236,234,229,.10); --line2:rgba(236,234,229,.18);
+  --amber:#E2A26E; --light:#A8D8F0;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'Instrument Sans',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:'Geist Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:max(6vw,20px); --strip:28px; --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding-bottom:var(--strip);overflow-x:hidden}
+a{color:inherit}
+img{display:block}
+h1,h2,h3,h4{font-weight:400;margin:0}
+p{margin:0}
+::selection{background:rgba(168,216,240,.28)}
+.wrap{width:min(1280px,calc(100% - 2*var(--g)));margin:0 auto}
+.g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.eyebrow{font:400 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.mono{font-family:var(--mono)}
+h1{font:400 clamp(34px,4.2vw,64px)/1.04 var(--serif);letter-spacing:-.02em}
+h2{font:400 clamp(28px,2.7vw,40px)/1.1 var(--serif);letter-spacing:-.015em}
+h3{font:500 17px/1.35 var(--sans);letter-spacing:-.005em}
+.body{color:var(--mut);max-width:60ch;font-size:16px}
+.body + .body{margin-top:14px}
+.small{font-size:12.5px;line-height:1.5;color:var(--mut2)}
+.tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.confirm{font:400 11px/1.4 var(--mono);letter-spacing:.04em;color:var(--mut2);white-space:nowrap}
+.hair{height:1px;background:var(--line);border:0;margin:0}
+section{position:relative}
+.sec{padding:180px 0 0}
+
+/* ---------- header ---------- */
+#hdr{position:fixed;top:0;left:0;right:0;z-index:40;height:64px;border-bottom:1px solid transparent;transition:background .6s var(--ease),border-color .6s var(--ease)}
+#hdr.sc{background:rgba(7,9,12,.74);-webkit-backdrop-filter:blur(16px) saturate(1.15);backdrop-filter:blur(16px) saturate(1.15);border-color:var(--line)}
+#hdr .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;text-decoration:none;height:40px}
+.logo img{height:22px;width:auto;filter:brightness(0) invert(1);opacity:.94}
+.logo .wm{display:none;font:500 16px/1 var(--sans);letter-spacing:-.01em}
+.logo .wm span{color:var(--mut);font-weight:400}
+.logo.nf img{display:none}.logo.nf .wm{display:block}
+#nav{display:flex;align-items:center;gap:30px}
+#nav a{font-size:13.5px;color:var(--mut);text-decoration:none;transition:color .3s}
+#nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;height:40px;padding:0 18px;border-radius:6px;font:500 14px/1 var(--sans);text-decoration:none;cursor:pointer;border:1px solid transparent;transition:background .35s var(--ease),border-color .35s var(--ease),color .35s;will-change:transform;white-space:nowrap}
+.btn.solid{background:var(--ink);color:#0A0C0F}
+.btn.solid:hover{background:#fff}
+.btn.line{border-color:var(--line2);color:var(--ink);background:transparent}
+.btn.line:hover{border-color:rgba(236,234,229,.45)}
+.btn .ar{display:inline-block;transition:transform .4s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+#nav .btn{height:34px;padding:0 14px;font-size:13px;color:var(--ink)}
+
+/* ---------- stage (WebGL object) ---------- */
+#stage{position:fixed;top:0;right:0;width:56vw;height:100vh;z-index:1;will-change:transform;touch-action:pan-y;cursor:grab}
+#stage.drag{cursor:grabbing}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.6s var(--ease)}
+#gl.on{opacity:1}
+#poster{position:absolute;inset:0;pointer-events:none;transition:opacity 1.2s}
+#poster::before{content:"";position:absolute;left:50%;top:46%;width:34vmin;height:34vmin;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(168,216,240,.16),rgba(226,162,110,.05) 45%,transparent 70%)}
+#poster.off{opacity:0}
+.stage-cap{position:absolute;left:28px;bottom:calc(var(--strip) + 30px);display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.stage-cap .eyebrow{color:var(--mut2)}
+#hint{color:var(--light)!important;opacity:.8;transition:opacity .6s}
+.nogl #hint{display:none}
+#nodes{position:absolute;inset:0;pointer-events:none}
+.nl{position:absolute;left:0;top:0;width:150px;margin-left:-75px;text-align:center;opacity:0;transition:opacity .5s}
+.nl .eyebrow{color:var(--light);opacity:.85}
+.nl b{display:block;margin-top:6px;font:400 14px/1.3 var(--sans);color:var(--ink)}
+#fallnote{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;color:var(--mut2)}
+.nogl #fallnote{display:block}
+
+/* ---------- hero ---------- */
+#hero{height:100vh;min-height:640px;z-index:2}
+#hero .wrap{height:100%;position:relative;display:flex;flex-direction:column;justify-content:center}
+.hero-copy{max-width:min(500px,36vw);position:relative}
+.hero-copy .eyebrow{margin-bottom:26px}
+.hero-copy .lead{margin-top:26px;font-size:17px;line-height:1.55;color:var(--mut);max-width:40ch}
+.cta{margin-top:34px;display:flex;gap:10px;flex-wrap:wrap}
+.hero-meta{position:absolute;left:0;bottom:calc(var(--strip) + 30px);width:min(500px,36vw);display:grid;grid-template-columns:repeat(3,1fr);gap:20px;border-top:1px solid var(--line);padding-top:16px}
+.hero-meta div{font-size:13.5px;line-height:1.35}
+.hero-meta .eyebrow{display:block;margin-bottom:6px;color:var(--mut2)}
+
+/* ---------- showcase ---------- */
+#show{height:600vh;z-index:2}
+.pin{position:sticky;top:0;height:100vh;pointer-events:none}
+.pin .wrap{height:100%;position:relative}
+.caps{position:absolute;left:0;top:50%;transform:translateY(-50%);width:min(400px,30vw);height:360px}
+.caps .eyebrow.top{position:absolute;top:-56px;left:0;color:var(--mut2)}
+.cap{position:absolute;left:0;top:0;right:0}
+.cap .num{font:400 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--light);display:flex;gap:10px;align-items:center}
+.cap .num i{display:inline-block;width:18px;height:1px;background:currentColor;opacity:.6}
+.cap h2{margin-top:20px}
+.cap p{margin-top:18px;font-size:15.5px;color:var(--mut);max-width:42ch}
+.cap .src{margin-top:16px;display:block}
+.cap .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.cap .ln>span{display:block;transform:translateY(110%);transition:transform 1s var(--ease)}
+.cap .fd{opacity:0;transform:translateY(10px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.cap.on .ln>span{transform:none;transition-delay:calc(var(--i,0)*70ms + 120ms)}
+.cap.on .fd{opacity:1;transform:none;transition-delay:.32s}
+.cap.out .ln>span{transform:translateY(-110%);transition-duration:.6s}
+.cap .num{opacity:0;transition:opacity .6s}
+.cap.on .num{opacity:1}
+.rail{position:absolute;left:0;bottom:calc(var(--strip) + 30px);display:flex;align-items:center;gap:6px;pointer-events:auto}
+.rail button{all:unset;cursor:pointer;width:44px;height:28px;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.rail button i{display:block;height:1px;background:var(--line2);position:relative;overflow:hidden}
+.rail button i::after{content:"";position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(var(--f,0))}
+.rail button span{font:400 10.5px/1 var(--mono);letter-spacing:.06em;color:var(--mut2);transition:color .3s}
+.rail button.on span{color:var(--ink)}
+.rail button:focus-visible{outline:1px solid var(--light);outline-offset:4px}
+
+/* ---------- reveal ---------- */
+.js .rv .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.js .rv .ln>span{display:block;transform:translateY(108%);transition:transform 1.15s var(--ease);transition-delay:calc(var(--i,0)*80ms)}
+.js .rv.in .ln>span{transform:none}
+.js .fu{opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:calc(var(--d,0)*1ms)}
+.js .fu.in{opacity:1;transform:none}
+.js #hero .ln>span{animation:rise 1.25s var(--ease) both;animation-delay:calc(var(--i,0)*90ms + 80ms)}
+.js #hero .fu{animation:fade 1.2s var(--ease) both;animation-delay:calc(var(--d,0)*1ms + 300ms);transition:none;opacity:1;transform:none}
+#hero .ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+#hero .ln>span{display:block}
+@keyframes rise{from{transform:translateY(38%)}to{transform:none}}
+@keyframes fade{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- lower page ---------- */
+.lower{position:relative;z-index:3;background:var(--bg)}
+.head{align-items:start}
+.head .eyebrow{grid-column:1/span 3;padding-top:14px}
+.head h2{grid-column:4/span 7}
+.head .body{grid-column:4/span 6;margin-top:22px}
+
+#statement .g12{align-items:end}
+.stmt{grid-column:1/span 8;font:400 clamp(28px,2.9vw,42px)/1.14 var(--serif);letter-spacing:-.015em;color:var(--ink)}
+.stmt em{font-style:italic;color:var(--light)}
+.stmt-side{grid-column:10/span 3}
+.stmt-side .body{font-size:15px}
+.stmt-side .small{margin-top:20px;display:block}
+
+.steps{margin-top:96px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px}
+.step{border-top:1px solid var(--line);padding-top:20px}
+.step .n{font:400 11px/1 var(--mono);letter-spacing:.08em;color:var(--light)}
+.step h3{margin-top:36px}
+.step p{margin-top:10px;font-size:15px;color:var(--mut);max-width:30ch}
+
+.quote{margin-top:120px;grid-column:4/span 8}
+.quote blockquote{margin:0;font:400 clamp(24px,2.3vw,32px)/1.22 var(--serif);letter-spacing:-.01em}
+.quote blockquote::before{content:"“";color:var(--mut2)}
+.quote blockquote::after{content:"”";color:var(--mut2)}
+.quote .who{margin-top:20px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.quote .who b{font:500 14px/1.4 var(--sans)}
+.quote .who span{font-size:13px;color:var(--mut)}
+
+.deliv{margin-top:120px;border-top:1px solid var(--line);padding-top:28px}
+.deliv .eyebrow{grid-column:1/span 3}
+.deliv .c1{grid-column:4/span 4}
+.deliv .c2{grid-column:9/span 4}
+.deliv h3{font:400 24px/1.2 var(--serif);letter-spacing:-.01em;margin-bottom:14px}
+.deliv .body{font-size:15px}
+.src-line{margin-top:28px;grid-column:4/span 9}
+
+.metrics{margin-top:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px}
+.metric{border-top:1px solid var(--line);padding-top:22px}
+.metric .v{font:400 clamp(38px,3.6vw,52px)/1 var(--serif);letter-spacing:-.02em}
+.metric .v small{font-size:.5em;margin-left:2px;color:var(--mut)}
+.metric .l{margin-top:14px;font-size:14px;color:var(--mut);max-width:24ch}
+
+.ptable{margin-top:80px}
+.prow{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;border-top:1px solid var(--line);padding:30px 0}
+.prow:last-child{border-bottom:1px solid var(--line)}
+.prow .pn{grid-column:1/span 5}
+.prow .pn .eyebrow{color:var(--mut2)}
+.prow .pn h3{font:400 24px/1.2 var(--serif);letter-spacing:-.01em;margin-top:10px}
+.prow .pn p{margin-top:10px;font-size:14.5px;color:var(--mut);max-width:48ch}
+.prow .ps{grid-column:7/span 6;display:grid;grid-template-columns:repeat(4,1fr);align-self:center;position:relative}
+.ps .tr{position:absolute;left:6px;right:calc(25% - 6px);top:5px;height:1px;background:var(--line2)}
+.ps .fl{position:absolute;left:6px;top:5px;height:1px;background:linear-gradient(90deg,rgba(168,216,240,.2),var(--light))}
+.ps .ck{position:relative;padding-top:24px;font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut2)}
+.ps .ck::before{content:"";position:absolute;left:0;top:0;width:11px;height:11px;border-radius:50%;border:1px solid var(--line2);background:var(--bg);box-sizing:border-box}
+.ps .ck.on{color:var(--mut)}
+.ps .ck.on::before{border-color:var(--light);background:var(--light)}
+.ps .ck.now{color:var(--ink)}
+@media (min-width:861px){.ps .ck:not(.now){color:transparent}}
+.ps .ck.now::before{box-shadow:0 0 0 4px rgba(168,216,240,.14)}
+.phead{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding-bottom:14px}
+.phead .eyebrow{color:var(--mut2)}
+.phead .s{grid-column:7/span 6;display:grid;grid-template-columns:repeat(4,1fr)}
+
+.tl{margin-top:56px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:24px}
+.tl div{border-top:1px solid var(--line);padding-top:18px}
+.tl .eyebrow{color:var(--light)}
+.tl h3{margin-top:12px;font-size:16px}
+.tl p{margin-top:6px;font-size:14px;color:var(--mut)}
+
+.team-h{margin-top:88px;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:18px;margin-bottom:28px}
+.team-h h3{font:400 22px/1.2 var(--serif);letter-spacing:-.01em}
+.people{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));column-gap:56px;row-gap:44px}
+.person{text-decoration:none;display:block}
+.ph{position:relative;aspect-ratio:4/5;background:rgba(236,234,229,.022);border-radius:3px;overflow:hidden}
+.ph .ini{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 22px/1 var(--serif);color:rgba(236,234,229,.2);letter-spacing:.04em}
+.ph::after{content:"";position:absolute;inset:0;border:1px solid rgba(236,234,229,.08);border-radius:3px;pointer-events:none}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.04) brightness(.9);transition:filter .8s var(--ease),transform 1.2s var(--ease)}
+.person:hover .ph img,.person:focus-visible .ph img{filter:none;transform:scale(1.025)}
+.person .nm{margin-top:14px;font:500 14px/1.3 var(--sans);color:var(--ink)}
+.person .ti{margin-top:4px;font-size:12.5px;line-height:1.4;color:var(--mut)}
+a.person:hover .nm::after{content:" ↗";color:var(--mut2)}
+
+.inv{margin-top:72px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.inv div{border-right:1px solid var(--line);border-bottom:1px solid var(--line);height:112px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:8px;text-align:center;padding:0 12px;transition:background .5s}
+.inv div:hover{background:rgba(236,234,229,.025)}
+.inv b{font:500 16px/1.2 var(--sans);letter-spacing:-.01em;color:rgba(236,234,229,.82)}
+.inv span{font:400 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut2)}
+.inv .ld b{color:var(--ink)}
+.inv .ld span{color:var(--light)}
+
+.news{margin-top:72px;border-top:1px solid var(--line)}
+.nr{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:26px 0;border-bottom:1px solid var(--line);text-decoration:none;align-items:baseline;transition:background .5s}
+.nr .s{grid-column:1/span 3;font:400 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mut2)}
+.nr .t{grid-column:4/span 8;font:400 22px/1.25 var(--serif);letter-spacing:-.005em;transition:color .3s}
+.nr .t small{display:block;margin-top:10px;font:400 14.5px/1.55 var(--sans);color:var(--mut);max-width:62ch;letter-spacing:0}
+.nr .a{grid-column:12;text-align:right;color:var(--mut2);transition:transform .5s var(--ease),color .3s}
+.nr:hover .a{transform:translateX(4px);color:var(--ink)}
+.nr:hover .t{color:#fff}
+
+#contact .g12{align-items:start}
+.ct-l{grid-column:1/span 5}
+.ct-l h2{font-size:clamp(34px,4vw,56px);line-height:1.04;letter-spacing:-.02em}
+.ct-l .body{margin-top:22px}
+.ct-r{grid-column:7/span 6}
+.fld{display:block;width:100%;height:44px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);font:400 15px/1 var(--sans);padding:0;outline:none;transition:border-color .3s;border-radius:0}
+.fld::placeholder{color:var(--mut2)}
+.fld:focus{border-color:var(--light)}
+textarea.fld{height:92px;padding-top:12px;resize:none;line-height:1.5}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.form{display:grid;gap:14px}
+.form .btn{justify-self:start;margin-top:14px}
+.cmeta{margin-top:64px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 24px}
+.cmeta div{font-size:14.5px;line-height:1.5}
+.cmeta .eyebrow{display:block;margin-bottom:6px;color:var(--mut2)}
+.cmeta a{text-decoration:none;border-bottom:1px solid var(--line2);transition:border-color .3s}
+.cmeta a:hover{border-color:var(--ink)}
+.nlb{margin-top:56px;border-top:1px solid var(--line);padding-top:22px}
+.nlb .row{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-top:6px}
+.nlb label{display:flex;gap:10px;align-items:center;margin-top:14px;font-size:13px;color:var(--mut)}
+.nlb input[type=checkbox]{appearance:none;width:14px;height:14px;border:1px solid var(--line2);border-radius:3px;margin:0;display:grid;place-content:center}
+.nlb input[type=checkbox]:checked{background:var(--light);border-color:var(--light)}
+.note{margin-top:10px;font:400 11px/1.4 var(--mono);color:var(--mut2);letter-spacing:.04em}
+
+footer{margin-top:180px;border-top:1px solid var(--line);padding:40px 0 48px}
+footer .g12{align-items:start;row-gap:28px}
+footer .f1{grid-column:1/span 4}
+footer .f1 p{margin-top:16px;font-size:13.5px;color:var(--mut);max-width:34ch}
+footer .f2{grid-column:6/span 2}
+footer .f3{grid-column:8/span 2}
+footer .f4{grid-column:10/span 3}
+footer .eyebrow{color:var(--mut2);margin-bottom:12px;display:block}
+footer ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+footer li a,footer li{font-size:13.5px;color:var(--mut);text-decoration:none}
+footer li a:hover{color:var(--ink)}
+.legal{margin-top:56px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:400 11px/1.5 var(--mono);letter-spacing:.04em;color:var(--mut2)}
+.legal a{color:var(--mut2)}
+
+#strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);z-index:50;background:#07090C;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);letter-spacing:.04em;color:var(--mut);white-space:nowrap;overflow:hidden;padding:0 12px}
+#strip b{font-weight:500;color:var(--ink)}
+#grain{position:fixed;inset:0;z-index:45;pointer-events:none;opacity:.018;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+#hero,#show{pointer-events:none}.hero-copy,.hero-meta,.rail{pointer-events:auto}
+.cap:not(.on):not(.out) .ln>span{transition:none}
+.btn{transition:background .35s var(--ease),border-color .35s var(--ease),color .35s,transform .45s var(--ease)}
+@media (max-width:860px){:root{--strip:36px}.stage-cap{top:auto;left:20px;right:20px}.stage-cap .eyebrow{font-size:9.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#strip{white-space:normal;text-align:center;line-height:1.35}#strip span{max-width:330px}}
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .people{grid-template-columns:repeat(5,minmax(0,1fr));column-gap:32px}
+  .inv{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  :root{--g:20px}
+  #nav a:not(.btn){display:none}
+  #stage{width:100vw;height:44vh;top:64px}
+  #hero{height:auto;min-height:0}
+  #hero .wrap{display:block;height:auto}
+  .hero-panel{position:relative;margin-top:calc(44vh + 40px);background:linear-gradient(180deg,rgba(7,9,12,0),var(--bg) 48px);padding:28px 0 calc(var(--strip) + 48px)}
+  .hero-copy{max-width:none}
+  .hero-meta{position:relative;bottom:auto;width:auto;margin-top:48px}
+  .stage-cap{bottom:16px}
+  #hint{display:none}
+  .pin .wrap{width:100%}
+  .caps{top:auto;bottom:var(--strip);transform:none;left:0;right:0;width:auto;height:40vh;background:linear-gradient(180deg,rgba(7,9,12,0),var(--bg) 36px);padding:40px 20px 0}
+  .caps .eyebrow.top{display:none}
+  .cap{left:20px;right:20px;top:40px}
+  .cap h2{margin-top:14px;font-size:26px}
+  .cap p{margin-top:12px;font-size:14.5px}
+  .rail{left:20px;bottom:calc(var(--strip) + 14px)}
+  .rail button{width:38px}
+  .nl{width:84px;margin-left:-42px}
+  .nl b{font-size:11.5px}
+  .sec{padding-top:120px}
+  .head .eyebrow,.head h2,.head .body{grid-column:1/-1}
+  .head h2{margin-top:16px}
+  .stmt,.stmt-side{grid-column:1/-1}
+  .stmt-side{margin-top:36px}
+  .steps,.metrics,.tl{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+  .quote{grid-column:1/-1;margin-top:88px}
+  .deliv .eyebrow,.deliv .c1,.deliv .c2,.src-line{grid-column:1/-1}
+  .deliv .c1{margin-top:22px}.deliv .c2{margin-top:28px}
+  .phead{display:none}
+  .prow .pn,.prow .ps{grid-column:1/-1}
+  .prow .ps{margin-top:24px}
+  .people{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px;row-gap:28px}
+  .inv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inv div{height:88px}
+  .nr .s,.nr .t{grid-column:1/-1}
+  .nr .t{margin-top:8px;font-size:19px}
+  .nr .a{display:none}
+  .ct-l,.ct-r{grid-column:1/-1}
+  .ct-r{margin-top:48px}
+  .cmeta{grid-template-columns:1fr}
+  footer .f1,footer .f2,footer .f3,footer .f4{grid-column:span 6}
+  footer .f1{grid-column:1/-1}
+  #strip{font-size:9.5px;letter-spacing:.02em}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .rv .ln>span,.js .fu,.cap .ln>span,.cap .fd{transition:none!important}
+  .js #hero .ln>span,.js #hero .fu{animation:none!important}
+}
+</style>
+</head>
+<body>
+<header id="hdr">
+  <div class="wrap">
+    <a class="logo" id="logo" href="#hero" aria-label="Modulight Biotherapeutics, home">
+      <img src="https://static.wixstatic.com/media/1504f7_85137f62e660406ebbb13d041df66f73~mv2.png" alt="Modulight Biotherapeutics" width="150" height="22" onerror="this.parentNode.classList.add('nf')">
+      <span class="wm">Modulight <span>Biotherapeutics</span></span>
+    </a>
+    <nav id="nav" aria-label="Primary">
+      <a href="#show">Science</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#team">Team</a>
+      <a href="#news">News</a>
+      <a href="#contact" class="btn line mag">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div id="stage" aria-hidden="true">
+  <canvas id="gl"></canvas>
+  <div id="poster"></div>
+  <div id="nodes">
+    <div class="nl"><span class="eyebrow">Now</span><b>Preclinical</b></div>
+    <div class="nl"><span class="eyebrow">Next</span><b>Pre-IND meeting</b></div>
+    <div class="nl"><span class="eyebrow">2027</span><b>IND-enabling studies</b></div>
+    <div class="nl"><span class="eyebrow">Then</span><b>IND filing</b></div>
+  </div>
+  <div class="stage-cap"><span id="hint" class="eyebrow">Move the cursor · you hold the light</span><span class="eyebrow" id="capt">Interpretive visualization · one neuron, not to scale</span></div>
+  <div id="fallnote" class="eyebrow">Interactive visualization unavailable on this device</div>
+</div>
+
+<main>
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-panel">
+      <div class="hero-copy">
+        <div class="eyebrow fu" style="--d:0">Precision optogenetics for neurology</div>
+        <h1><span class="ln" style="--i:0"><span>Restoring balance,</span></span><span class="ln" style="--i:1"><span>transforming neurology.</span></span></h1>
+        <p class="lead fu" style="--d:250">Modulight is developing gene therapies that make an overactive neural pathway respond to light, so it can be silenced precisely, in space and in time.</p>
+        <div class="cta fu" style="--d:400">
+          <a class="btn solid mag" href="#show">See how it works <span class="ar">→</span></a>
+          <a class="btn line mag" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="hero-meta fu" style="--d:600">
+        <div><span class="eyebrow">Lead program</span>Trigeminal neuropathic pain</div>
+        <div><span class="eyebrow">Platform</span>eOPN3 opsin</div>
+        <div><span class="eyebrow">Seed round</span><span class="tnum">$12.2M</span> · 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="show" aria-label="How it works">
+  <div class="pin">
+    <div class="wrap">
+      <div class="caps">
+        <div class="eyebrow top">How it works · Interpretive visualization</div>
+        <div class="cap on" data-i="0">
+          <div class="num">01 <i></i> The overactive pathway</div>
+          <h2><span class="ln" style="--i:0"><span>A pathway that</span></span><span class="ln" style="--i:1"><span>will not rest.</span></span></h2>
+          <p class="fd">In disorders such as trigeminal neuropathic pain, a defined neural pathway fires relentlessly, causing sudden, intense pain that is often drug-resistant. Today's treatments act broadly, on whole networks.</p>
+        </div>
+        <div class="cap" data-i="1">
+          <div class="num">02 <i></i> eOPN3</div>
+          <h2><span class="ln" style="--i:0"><span>A light sensor, placed</span></span><span class="ln" style="--i:1"><span>only in chosen cells.</span></span></h2>
+          <p class="fd">Gene therapy delivers eOPN3, a proprietary, highly sensitive and stable inhibitory GPCR opsin from Prof. Ofer Yizhar's lab at the Weizmann Institute of Science, into targeted neurons. Seven helices span the membrane.</p>
+        </div>
+        <div class="cap" data-i="2">
+          <div class="num">03 <i></i> Light arrives</div>
+          <h2><span class="ln" style="--i:0"><span>Light switches</span></span><span class="ln" style="--i:1"><span>the sensor on.</span></span></h2>
+          <p class="fd">Activated by light, eOPN3 engages the cell's own Gi/o signalling at the presynaptic terminal and inhibits neurotransmitter release. The signal is stopped at the synapse.</p>
+        </div>
+        <div class="cap" data-i="3">
+          <div class="num">04 <i></i> The pathway quiets</div>
+          <h2><span class="ln" style="--i:0"><span>Silence the pathway.</span></span><span class="ln" style="--i:1"><span>Spare the rest.</span></span></h2>
+          <p class="fd">Only neurons that carry the opsin respond, and only when light is delivered. Neighbouring cells keep working normally. Precision in space and time.</p>
+        </div>
+        <div class="cap" data-i="4">
+          <div class="num">05 <i></i> The path to IND</div>
+          <h2><span class="ln" style="--i:0"><span>From platform</span></span><span class="ln" style="--i:1"><span>toward the clinic.</span></span></h2>
+          <p class="fd">The $12.2M seed advances the trigeminal pain program: a pre-IND meeting with the FDA, IND-enabling studies expected to complete in 2027, then an IND filing.</p>
+          <span class="src small fd">Pharmaceutical-Technology and PR Newswire, 12 Nov 2025</span>
+        </div>
+      </div>
+      <div class="rail" id="rail" role="group" aria-label="Choose a step">
+        <button data-i="0" class="on" aria-label="Step 1, the overactive pathway"><i></i><span>01</span></button>
+        <button data-i="1" aria-label="Step 2, eOPN3"><i></i><span>02</span></button>
+        <button data-i="2" aria-label="Step 3, light arrives"><i></i><span>03</span></button>
+        <button data-i="3" aria-label="Step 4, the pathway quiets"><i></i><span>04</span></button>
+        <button data-i="4" aria-label="Step 5, the path to IND"><i></i><span>05</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lower">
+<section id="statement" class="sec">
+  <div class="wrap g12">
+    <p class="stmt rv"><span class="ln" style="--i:0"><span>The human brain holds more than 86 billion</span></span><span class="ln" style="--i:1"><span>neurons. Most treatments reach whole networks.</span></span><span class="ln" style="--i:2"><span>Modulight is built to reach <em>one pathway.</em></span></span></p>
+    <div class="stmt-side fu">
+      <p class="body">Drugs, surgery and electrical stimulation act broadly, affecting large regions of the brain, with limited benefit and unwanted side effects. Optogenetics enables precise control of brain activity using light.</p>
+      <span class="small">Optogenetics research featured in Nature, Science and Cell.</span>
+    </div>
+  </div>
+</section>
+
+<section id="platform" class="sec">
+  <div class="wrap">
+    <div class="g12 head">
+      <div class="eyebrow fu">The platform · eOPN3</div>
+      <h2 class="rv"><span class="ln" style="--i:0"><span>A new generation of optogenetics,</span></span><span class="ln" style="--i:1"><span>built for medicine.</span></span></h2>
+      <p class="body fu" style="--d:150">eOPN3 is a proprietary, highly sensitive and stable inhibitory GPCR opsin developed in the laboratory of Prof. Ofer Yizhar at the Weizmann Institute of Science and licensed from YEDA. Modulight describes it as the first opsin that can be used to modulate pathological activity and treat neurological disorders in humans. The approach is disease-mechanism-agnostic: it applies wherever excess activity in a defined pathway drives symptoms.</p>
+    </div>
+    <div class="steps">
+      <div class="step fu" style="--d:0"><div class="n">01</div><h3>Deliver</h3><p>Gene therapy carries eOPN3 into the targeted neurons.</p></div>
+      <div class="step fu" style="--d:90"><div class="n">02</div><h3>Express</h3><p>Neurons express the opsin across the cell body and its projections.</p></div>
+      <div class="step fu" style="--d:180"><div class="n">03</div><h3>Illuminate</h3><p>Light silences neural activity at the targeted synapses.</p></div>
+      <div class="step fu" style="--d:270"><div class="n">04</div><h3>Inhibit</h3><p>A natural G-protein (Gi/o) pathway inhibits neurotransmitter release.</p></div>
+    </div>
+    <div class="g12">
+      <figure class="quote fu" style="margin-left:0;margin-right:0">
+        <blockquote>Optogenetics gave us the ability to control specific neural circuits with extraordinary precision…</blockquote>
+        <figcaption class="who"><b>Ofer Yizhar, PhD</b><span>Scientific Co-Founder and Chief Scientist · modulight.bio, Oct 2026</span></figcaption>
+      </figure>
+    </div>
+    <div class="deliv g12">
+      <div class="eyebrow fu">Delivery</div>
+      <div class="c1 fu"><h3>Where it matters most</h3><p class="body">For trigeminal pain, eOPN3 can be delivered directly into the trigeminal ganglion in a simple outpatient procedure, then activated by light on demand.</p></div>
+      <div class="c2 fu" style="--d:120"><h3>Light that reaches</h3><p class="body">eOPN3 is red-shifted, and red light penetrates tissue well, so trigeminal pain conditions allow for minimally invasive light delivery.</p></div>
+      <p class="small src-line fu">Mechanism after Mahn M. et al., <i>Neuron</i>, 2021, optogenetic silencing of neurotransmitter release with a mosquito rhodopsin. Delivery: PR Newswire and Pharmaceutical-Technology, 12 Nov 2025.</p>
+    </div>
+  </div>
+</section>
+
+<section id="numbers" class="sec" aria-label="Key figures">
+  <div class="wrap">
+    <div class="metrics tnum">
+      <div class="metric fu" style="--d:0"><div class="v">$12.2<small>M</small></div><div class="l">Seed round, November 2025</div></div>
+      <div class="metric fu" style="--d:90"><div class="v">86<small>B</small></div><div class="l">Neurons in the human brain</div></div>
+      <div class="metric fu" style="--d:180"><div class="v">3</div><div class="l">Therapeutic areas: pain, movement disorders, epilepsy</div></div>
+      <div class="metric fu" style="--d:270"><div class="v">2027</div><div class="l">IND-enabling studies expected to complete</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="pipeline" class="sec">
+  <div class="wrap">
+    <div class="g12 head">
+      <div class="eyebrow fu">Pipeline</div>
+      <h2 class="rv"><span class="ln" style="--i:0"><span>Translating optogenetics into</span></span><span class="ln" style="--i:1"><span>new therapeutic frontiers.</span></span></h2>
+      <p class="body fu" style="--d:150">One platform, developed across neurological diseases where overactive neurons drive symptoms. Early preclinical studies show promising results in models of pain, epilepsy and movement disorders.</p>
+    </div>
+    <div class="ptable">
+      <div class="phead"><div class="eyebrow" style="grid-column:1/span 5">Program</div><div class="s"><span class="eyebrow">Discovery</span><span class="eyebrow">Preclinical</span><span class="eyebrow">IND-enabling</span><span class="eyebrow">IND</span></div></div>
+      <div class="prow fu" style="--d:0"><div class="pn"><span class="eyebrow">Lead · proof of concept</span><h3>Trigeminal Neuropathic Pain</h3><p>A chronic, episodic pain condition affecting the trigeminal nerve: sudden, intense facial pain, usually on one side, and often drug-resistant.</p></div><div class="ps"><span class="tr"></span><span class="fl" style="width:calc(25% )"></span><span class="ck on">Discovery</span><span class="ck on now">Preclinical</span><span class="ck">IND-enabling</span><span class="ck">IND</span></div></div><div class="prow fu" style="--d:80"><div class="pn"><span class="eyebrow">Therapeutic target</span><h3>Movement Disorders</h3><p>Brain-related neurological conditions, including Parkinson&#x27;s disease and essential tremor, in which faults in motor pathways cause involuntary or impaired movement.</p></div><div class="ps"><span class="tr"></span><span class="fl" style="width:calc(25% )"></span><span class="ck on">Discovery</span><span class="ck on now">Preclinical</span><span class="ck">IND-enabling</span><span class="ck">IND</span></div></div><div class="prow fu" style="--d:160"><div class="pn"><span class="eyebrow">Therapeutic target</span><h3>Drug-Resistant Epilepsy</h3><p>Epilepsy in which seizures continue despite two or more anti-seizure medications.</p></div><div class="ps"><span class="tr"></span><span class="fl" style="width:calc(25% )"></span><span class="ck on">Discovery</span><span class="ck on now">Preclinical</span><span class="ck">IND-enabling</span><span class="ck">IND</span></div></div><div class="prow fu" style="--d:240"><div class="pn"><span class="eyebrow">Novel therapeutics platform</span><h3>eOPN3 Pipeline</h3><p>Also explored: neuropathic pain, narcolepsy and other conditions where excess activity in a defined pathway drives symptoms.</p></div><div class="ps"><span class="tr"></span><span class="ck on now">Discovery</span><span class="ck">Preclinical</span><span class="ck">IND-enabling</span><span class="ck">IND</span></div></div>
+    </div>
+    <p class="small fu" style="margin-top:20px">Company sources describe the programs as preclinical; per-program stages are not published.</p>
+    <div class="tl">
+      <div class="fu" style="--d:0"><span class="eyebrow">Now</span><h3>Preclinical</h3><p>Advancing the trigeminal pain program.</p></div>
+      <div class="fu" style="--d:90"><span class="eyebrow">Next</span><h3>Pre-IND meeting</h3><p>Alignment with the FDA on the development path.</p></div>
+      <div class="fu" style="--d:180"><span class="eyebrow">2027</span><h3>IND-enabling studies</h3><p>Studies and manufacturing expected to complete.</p></div>
+      <div class="fu" style="--d:270"><span class="eyebrow">Then</span><h3>IND filing</h3><p>Submission to open the first clinical studies.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="team" class="sec">
+  <div class="wrap">
+    <div class="g12 head">
+      <div class="eyebrow fu">Team</div>
+      <h2 class="rv"><span class="ln" style="--i:0"><span>The right mission needs</span></span><span class="ln" style="--i:1"><span>the right team.</span></span></h2>
+    </div>
+    <div class="team-h fu"><h3>Leadership</h3><span class="eyebrow">14</span></div><div class="people"><a class="person fu" style="--d:0" href="https://www.linkedin.com/in/ofir-levi-205a306" target="_blank" rel="noopener"><div class="ph"><span class="ini">OL</span><img src="https://static.wixstatic.com/media/1504f7_183454b3988e4a23ae6eb47160a97fae~mv2.png" alt="Ofir Levi" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Ofir Levi, PhD</div><div class="ti">Co-Founder and Chairman of the Board</div></a><a class="person fu" style="--d:60" href="https://www.linkedin.com/in/yotam-eldar-697707a4" target="_blank" rel="noopener"><div class="ph"><span class="ini">YE</span><img src="https://static.wixstatic.com/media/1504f7_3d14d5999eef44449fa154c821d4ad3f~mv2.png" alt="Yotam Eldar" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Yotam Eldar, MD</div><div class="ti">Co-Founder and Chief Executive Officer</div></a><a class="person fu" style="--d:120" href="https://www.weizmann.ac.il/brain-sciences/labs/yizhar/" target="_blank" rel="noopener"><div class="ph"><span class="ini">OY</span><img src="https://static.wixstatic.com/media/1504f7_a0713160cbda4f92bd83f149fe1aa6f1~mv2.png" alt="Ofer Yizhar" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Ofer Yizhar, PhD</div><div class="ti">Scientific Co-Founder and Chief Scientist</div></a><a class="person fu" style="--d:180" href="https://www.linkedin.com/in/yoav-kfir-5782bb15" target="_blank" rel="noopener"><div class="ph"><span class="ini">YK</span><img src="https://static.wixstatic.com/media/1504f7_692bfca87ab34b679a8d7da084a45eaf~mv2.png" alt="Yoav Kfir" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Yoav Kfir, PhD</div><div class="ti">VP of Research and Development</div></a><a class="person fu" style="--d:240" href="https://www.linkedin.com/in/genine-winslow-06233412" target="_blank" rel="noopener"><div class="ph"><span class="ini">GW</span><img src="https://static.wixstatic.com/media/1504f7_b35240ab7f424a718470aed2eb3713bc~mv2.png" alt="Genine Winslow" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Genine Winslow</div><div class="ti">Head of Gene Therapy</div></a><a class="person fu" style="--d:300" href="https://www.linkedin.com/in/tamar-shai-granot-9aa803197" target="_blank" rel="noopener"><div class="ph"><span class="ini">TG</span><img src="https://static.wixstatic.com/media/1504f7_055e3e3adcb6433182ae18599919ade2~mv2.png" alt="Tamar Shai Granot" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Tamar Shai Granot</div><div class="ti">Director of Product</div></a><a class="person fu" style="--d:360" href="https://www.linkedin.com/in/sasha-devore-pass-19911b7" target="_blank" rel="noopener"><div class="ph"><span class="ini">SD</span><img src="https://static.wixstatic.com/media/1504f7_748e106893c44fb5900dc644410a0491~mv2.png" alt="Sasha Devore" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Sasha Devore, PhD</div><div class="ti">Director of Scientific Communications and Engagement</div></a><a class="person fu" style="--d:0" href="https://www.linkedin.com/in/evyatar-swissa-458283240" target="_blank" rel="noopener"><div class="ph"><span class="ini">ES</span><img src="https://static.wixstatic.com/media/1504f7_b7c18f522a4e449f9e317d018a29c4b0~mv2.png" alt="Evyatar Swissa" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Evyatar Swissa, PhD</div><div class="ti">Director of In-vivo Research</div></a><a class="person fu" style="--d:60" href="https://www.linkedin.com/in/dahlia-kushinsky-phd" target="_blank" rel="noopener"><div class="ph"><span class="ini">DK</span><img src="https://static.wixstatic.com/media/1504f7_e12d64d68bdc4936a7c87362b1b66ad2~mv2.png" alt="Dahlia Kushinsky" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Dahlia Kushinsky, PhD</div><div class="ti">Scientific Director of Collaborative Research</div></a><a class="person fu" style="--d:120" href="https://www.linkedin.com/in/noam-shuv-92114a242" target="_blank" rel="noopener"><div class="ph"><span class="ini">NS</span><img src="https://static.wixstatic.com/media/1504f7_3c00499eb92648a89b8fb7e8398664ce~mv2.png" alt="Noam Shuv" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Noam Shuv, MD</div><div class="ti">Chief of Staff</div></a><a class="person fu" style="--d:180" href="https://www.linkedin.com/in/ziv-spada-523294205" target="_blank" rel="noopener"><div class="ph"><span class="ini">ZS</span><img src="https://static.wixstatic.com/media/1504f7_c97416c9709e451db76158c3a7071dcf~mv2.png" alt="Ziv Spada" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Ziv Spada</div><div class="ti">Director of Operations</div></a><a class="person fu" style="--d:240" href="https://www.linkedin.com/in/shelly-burda-546a1120b" target="_blank" rel="noopener"><div class="ph"><span class="ini">SB</span><img src="https://static.wixstatic.com/media/1504f7_ee47af08d66b4f95bb154b24333153c3~mv2.png" alt="Shelly Burda" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Shelly Burda</div><div class="ti">System Engineer</div></a><a class="person fu" style="--d:300" href="https://www.linkedin.com/in/gal-toren-a290a22b1" target="_blank" rel="noopener"><div class="ph"><span class="ini">GT</span><img src="https://static.wixstatic.com/media/1504f7_478ff3cdae8e4bf98f5bc09185b43089~mv2.png" alt="Gal Toren" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Gal Toren</div><div class="ti">R&amp;D Analyst</div></a><div class="person fu" style="--d:360"><div class="ph"><span class="ini">SS</span><img src="https://static.wixstatic.com/media/1504f7_84de2454a26d46bea3f40da9d01567ce~mv2.png" alt="Shoshan Sharon" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Shoshan Sharon, MD</div><div class="ti">Clinical Analyst</div></div></div><div class="team-h fu"><h3>Board of Directors</h3><span class="eyebrow">06</span></div><div class="people"><a class="person fu" style="--d:0" href="https://www.linkedin.com/in/ofir-levi-205a306" target="_blank" rel="noopener"><div class="ph"><span class="ini">OL</span><img src="https://static.wixstatic.com/media/1504f7_183454b3988e4a23ae6eb47160a97fae~mv2.png" alt="Ofir Levi" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Ofir Levi, PhD</div><div class="ti">Chairman of the Board</div></a><a class="person fu" style="--d:60" href="https://www.linkedin.com/in/yotam-eldar-697707a4" target="_blank" rel="noopener"><div class="ph"><span class="ini">YE</span><img src="https://static.wixstatic.com/media/1504f7_3d14d5999eef44449fa154c821d4ad3f~mv2.png" alt="Yotam Eldar" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Yotam Eldar, MD</div><div class="ti">Modulight Biotherapeutics</div></a><a class="person fu" style="--d:120" href="https://www.linkedin.com/in/dannyhadar" target="_blank" rel="noopener"><div class="ph"><span class="ini">DH</span><img src="https://static.wixstatic.com/media/1504f7_aaeb56925ecb4b0090687f0fb8cbb2de~mv2.png" alt="Danny Hadar" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Danny Hadar</div><div class="ti">Jibe Ventures</div></a><a class="person fu" style="--d:180" href="https://www.linkedin.com/in/juliahawkins01" target="_blank" rel="noopener"><div class="ph"><span class="ini">JH</span><img src="https://static.wixstatic.com/media/1504f7_26becc9cb43c47ccb77796be105232d8~mv2.png" alt="Julia Hawkins" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Julia Hawkins</div><div class="ti">LocalGlobe</div></a><a class="person fu" style="--d:240" href="https://www.linkedin.com/in/jacob-orry-fierer" target="_blank" rel="noopener"><div class="ph"><span class="ini">JF</span><img src="https://static.wixstatic.com/media/1504f7_c0434f8f8b474cce9f4087e3f82dcb31~mv2.png" alt="Jacob Orry Fierer" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Jacob Orry Fierer, PhD</div><div class="ti">Yeda Technology Transfer</div></a><a class="person fu" style="--d:300" href="https://www.linkedin.com/in/maria-kousi-phd-09268629" target="_blank" rel="noopener"><div class="ph"><span class="ini">MK</span><img src="https://static.wixstatic.com/media/1504f7_962692fd189f46d69632f63dabf7aaa7~mv2.png" alt="Maria Kousi" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Maria Kousi, PhD</div><div class="ti">Director of Life Science Investments, CNS, at a private family office based in Silicon Valley</div></a></div><div class="team-h fu"><h3>Scientific Advisory Board</h3><span class="eyebrow">07</span></div><div class="people"><a class="person fu" style="--d:0" href="https://profiles.stanford.edu/karl-deisseroth" target="_blank" rel="noopener"><div class="ph"><span class="ini">KD</span><img src="https://static.wixstatic.com/media/1504f7_0dfbff99c4cb4698afab99939427dd35~mv2.png" alt="Karl Deisseroth" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Karl Deisseroth, MD, PhD</div><div class="ti">Stanford University</div></a><a class="person fu" style="--d:60" href="https://www.linkedin.com/in/hagai-bergman-3234381a" target="_blank" rel="noopener"><div class="ph"><span class="ini">HB</span><img src="https://static.wixstatic.com/media/1504f7_8b43d78ec9d0481cb2f5ac97d9633931~mv2.png" alt="Hagai Bergman" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Hagai Bergman, MD, PhD</div><div class="ti">Hebrew University</div></a><a class="person fu" style="--d:120" href="https://www.linkedin.com/in/andreasghorn" target="_blank" rel="noopener"><div class="ph"><span class="ini">AH</span><img src="https://static.wixstatic.com/media/1504f7_6240a56145c74e73947cb1e118bce624~mv2.png" alt="Andreas Horn" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Andreas Horn, MD, PhD</div><div class="ti">Harvard Medical School</div></a><a class="person fu" style="--d:180" href="https://www.linkedin.com/in/irisgrossman" target="_blank" rel="noopener"><div class="ph"><span class="ini">IG</span><img src="https://static.wixstatic.com/media/1504f7_75c728f28f9041c0be57381784c43f31~mv2.png" alt="Iris Grossman" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Iris Grossman, PhD</div><div class="ti">Eleven Therapeutics</div></a><a class="person fu" style="--d:240" href="https://www.linkedin.com/in/lief-fenno-20437120" target="_blank" rel="noopener"><div class="ph"><span class="ini">LF</span><img src="https://static.wixstatic.com/media/1504f7_3d6efe83debc4c4081c9e74f2837ac5e~mv2.png" alt="Lief Fenno" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Lief Fenno, MD, PhD</div><div class="ti">University of Texas</div></a><a class="person fu" style="--d:300" href="https://www.linkedin.com/in/alexanderrotenberg" target="_blank" rel="noopener"><div class="ph"><span class="ini">AR</span><img src="https://static.wixstatic.com/media/1504f7_7e519a812a624639aea679b6f96ae2b2~mv2.png" alt="Alex Rotenberg" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Alex Rotenberg, MD, PhD</div><div class="ti">Boston Children&#x27;s Hospital</div></a><a class="person fu" style="--d:360" href="https://www.linkedin.com/in/steven-goetz-64851b1a" target="_blank" rel="noopener"><div class="ph"><span class="ini">SG</span><img src="https://static.wixstatic.com/media/1504f7_9fe25bb5d5b5421da94f32bc1029f990~mv2.png" alt="Steven Goetz" loading="lazy" decoding="async" onerror="this.remove()"></div><div class="nm">Steven Goetz</div><div class="ti">Motif Neurotech</div></a></div>
+    <div class="g12">
+      <figure class="quote fu" style="margin-left:0;margin-right:0">
+        <blockquote>The brain is extraordinarily complex and we cannot continue to treat it nonspecifically.</blockquote>
+        <figcaption class="who"><b>Yotam Eldar, MD</b><span>Co-Founder and Chief Executive Officer · PR Newswire, 12 Nov 2025</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="investors" class="sec">
+  <div class="wrap">
+    <div class="g12 head">
+      <div class="eyebrow fu">Investors</div>
+      <h2 class="rv"><span class="ln" style="--i:0"><span>Backed by a <span class="tnum">$12.2M</span> seed round.</span></span></h2>
+      <p class="body fu" style="--d:150">Announced 12 November 2025, co-led by Jibe Ventures and LocalGlobe, to advance the trigeminal pain program, IND-enabling studies, manufacturing and discussions with the FDA.</p>
+    </div>
+    <div class="inv fu">
+      <div class="ld"><b>Jibe Ventures</b><span>Co-lead</span></div>
+      <div class="ld"><b>LocalGlobe</b><span>Co-lead</span></div>
+      <div><b>Nexus NeuroTech Ventures</b><span>Participant</span></div>
+      <div><b>RedSeed VC</b><span>Participant</span></div>
+      <div><b>Secret Chord Ventures</b><span>Participant</span></div>
+      <div><b>Fresh Fund</b><span>Participant</span></div>
+      <div><b>Saras Capital</b><span>Participant</span></div>
+      <div><b>SilverArc Capital</b><span>Participant</span></div>
+      <div><b>Sha'ar Mivnim</b><span>Participant</span></div>
+      <div><span class="confirm">Investor logos</span></div>
+    </div>
+    <div class="g12">
+      <figure class="quote fu" style="margin-left:0;margin-right:0">
+        <blockquote>Modulight's optogenetic neuromodulation platform represents a fundamentally new way to target neural circuits with cell-type and pathway-level precision…</blockquote>
+        <figcaption class="who"><b>John Propst, PhD, MBA</b><span>Principal, Nexus NeuroTech Ventures · PR Newswire, 12 Nov 2025</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="news" class="sec">
+  <div class="wrap">
+    <div class="g12 head">
+      <div class="eyebrow fu">News</div>
+      <h2 class="rv"><span class="ln" style="--i:0"><span>Recognition and coverage.</span></span></h2>
+    </div>
+    <div class="news">
+      <a class="nr fu" style="--d:0" href="https://www.modulight.bio/nobel" target="_blank" rel="noopener"><span class="s">Modulight · Oct 2026</span><span class="t">As Optogenetics Earns Nobel Recognition, Modulight Biotherapeutics Advances Precision Neuromodulation Toward the Clinic<small>The 2026 Nobel Prize in Physiology or Medicine recognised optogenetics. Scientific co-founder Ofer Yizhar helped develop next-generation optogenetic tools; Modulight is now carrying inhibitory optogenetics toward the clinic, starting with trigeminal pain.</small></span><span class="a">↗</span></a><a class="nr fu" style="--d:60" href="https://www.themarker.com/magazine/2026-06-02/ty-article-magazine/.highlight/0000019e-5dd9-d515-afbf-7ddfeddb0000?gift=cf05337e78db49bbba3da40d5f6e88fd" target="_blank" rel="noopener"><span class="s">The Marker · 2026</span><span class="t">The Startup Selection 2026: The Companies Thinking Beyond the Mainstream</span><span class="a">↗</span></a><a class="nr fu" style="--d:120" href="https://www.science.org/content/article/can-adding-light-sensors-nerve-cells-switch-pain-epilepsy-and-other-disorders" target="_blank" rel="noopener"><span class="s">Science · 2025</span><span class="t">Can adding light sensors to nerve cells switch off pain, epilepsy, and other disorders?</span><span class="a">↗</span></a><a class="nr fu" style="--d:180" href="https://www.prnewswire.com/news-releases/modulight-biotherapeutics-announces-12-million-seed-funding-for-novel-optogenetic-therapy-to-treat-neurological-disorders-302612850.html" target="_blank" rel="noopener"><span class="s">PR Newswire · 2025</span><span class="t">Modulight Biotherapeutics announces $12 million seed funding for novel optogenetic therapy to treat neurological disorders</span><span class="a">↗</span></a><a class="nr fu" style="--d:240" href="https://www.haaretz.co.il/health/2025-06-15/ty-article-magazine/.premium/00000197-53c7-d906-add7-dbf7c98e0000" target="_blank" rel="noopener"><span class="s">Haaretz · 2025</span><span class="t">Light Medicine: How the Flip of a Switch Could Replace Surgery, Medication and Hospitalization</span><span class="a">↗</span></a><a class="nr fu" style="--d:300" href="https://www.modulight.bio/_files/ugd/1504f7_a449b17e6ff147b5bc6b95dcbb011601.pdf" target="_blank" rel="noopener"><span class="s">SPIE Photonics West Daily · 2025</span><span class="t">Novel OptoGPCRs open new avenues in optogenetic modulation</span><span class="a">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="sec">
+  <div class="wrap g12">
+    <div class="ct-l">
+      <div class="eyebrow fu">Contact</div>
+      <h2 class="rv" style="margin-top:22px"><span class="ln" style="--i:0"><span>Let's talk.</span></span></h2>
+      <p class="body fu">Modulight Biotherapeutics is a preclinical company developing precision treatments for severe neurological disorders.</p>
+      <div class="cmeta fu">
+        <div><span class="eyebrow">General</span><a href="mailto:info@modulight.bio">info@modulight.bio</a></div>
+        <div><span class="eyebrow">Location</span>Boston, MA</div>
+        <div><span class="eyebrow">Media</span>Sasha Devore · <a href="mailto:sasha@modulight.bio">sasha@modulight.bio</a></div>
+        <div><span class="eyebrow">Global media liaison</span>Tsipi Haitovsky · <span class="tnum">+972-525-989892</span></div>
+        <div><span class="eyebrow">Careers</span>Open roles</div>
+        <div><span class="eyebrow">Follow</span><a href="https://www.linkedin.com/company/modulight-bio/" target="_blank" rel="noopener">LinkedIn</a></div>
+      </div>
+    </div>
+    <div class="ct-r fu">
+      <form class="form" onsubmit="return false" aria-label="Contact form">
+        <div class="frow"><input class="fld" placeholder="First name" aria-label="First name"><input class="fld" placeholder="Last name" aria-label="Last name"></div>
+        <input class="fld" type="email" placeholder="Email" aria-label="Email">
+        <textarea class="fld" placeholder="Message" aria-label="Message"></textarea>
+        <button class="btn solid mag" type="submit">Send message <span class="ar">→</span></button>
+        <div class="note">Concept only · form not connected</div>
+      </form>
+      <form class="nlb" onsubmit="return false" aria-label="Newsletter">
+        <span class="eyebrow">Subscribe to our newsletter</span>
+        <div class="row"><input class="fld" type="email" placeholder="Email*" aria-label="Email for newsletter"><button class="btn line mag" type="submit">Submit</button></div>
+        <label><input type="checkbox"> Yes, subscribe me to your newsletter.</label>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="g12">
+      <div class="f1">
+        <a class="logo" id="logo2" href="#hero" aria-label="Modulight Biotherapeutics, back to top">
+          <img src="https://static.wixstatic.com/media/1504f7_85137f62e660406ebbb13d041df66f73~mv2.png" alt="Modulight Biotherapeutics" width="150" height="22" loading="lazy" onerror="this.parentNode.classList.add('nf')">
+          <span class="wm">Modulight <span>Biotherapeutics</span></span>
+        </a>
+        <p>Restoring balance, transforming neurology. Technology licensed from YEDA, the commercial arm of the Weizmann Institute of Science.</p>
+      </div>
+      <div class="f2"><span class="eyebrow">Company</span><ul><li><a href="#show">Science</a></li><li><a href="#pipeline">Pipeline</a></li><li><a href="#team">Team</a></li><li><a href="#news">News</a></li></ul></div>
+      <div class="f3"><span class="eyebrow">Connect</span><ul><li><a href="#contact">Contact</a></li><li><a href="https://www.linkedin.com/company/modulight-bio/" target="_blank" rel="noopener">LinkedIn</a></li><li><a href="mailto:info@modulight.bio">info@modulight.bio</a></li></ul></div>
+      <div class="f4"><span class="eyebrow">Office</span><ul><li>Boston, MA</li><li><a href="https://www.modulight.bio/policy" target="_blank" rel="noopener">Privacy Policy</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 Modulight Biotherapeutics</span><span>3D scenes are interpretive visualizations, not data, and not to scale.</span></div>
+  </div>
+</footer>
+</div>
+</main>
+
+<div id="grain" aria-hidden="true"></div>
+<div id="strip" role="note"><span><b>Redesign concept by Max C</b> · Not affiliated with or endorsed by Modulight Biotherapeutics</span></div>
+
+<script>
+(()=>{'use strict';
+const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(x,a,b)=>x<a?a:x>b?b:x,mix=(a,b,t)=>a+(b-a)*t;
+const ss=(a,b,x)=>{x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x)};
+const hdr=$('#hdr'),stage=$('#stage'),cv=$('#gl'),hint=$('#hint'),poster=$('#poster');
+const capt=$('#capt'),caps=$$('.cap'),railB=$$('#rail button'),nls=$$('.nl');
+
+/* ---------- reveals ---------- */
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -8% 0px'});
+  $$('.lower .rv,.lower .fu').forEach(el=>io.observe(el));
+}else $$('.rv,.fu').forEach(el=>el.classList.add('in'));
+
+/* ---------- magnetic buttons ---------- */
+$$('.mag').forEach(b=>{
+  b.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||RM)return;const r=b.getBoundingClientRect();b.style.transform=`translate(${((e.clientX-r.left)/r.width-.5)*6}px,${((e.clientY-r.top)/r.height-.5)*5}px)`});
+  b.addEventListener('pointerleave',()=>{b.style.transform=''});
+});
+
+/* ---------- smooth scroll (light lerp, wheel only) ---------- */
+const SS={cur:0,tgt:0,on:false};
+const maxS=()=>document.documentElement.scrollHeight-innerHeight;
+if(!RM){
+  addEventListener('wheel',e=>{
+    if(e.ctrlKey||e.defaultPrevented)return;
+    const dy=e.deltaY*(e.deltaMode===1?32:e.deltaMode===2?innerHeight:1);
+    if(!SS.on){SS.cur=SS.tgt=scrollY}
+    SS.tgt=clamp(SS.tgt+dy,0,maxS());SS.on=true;e.preventDefault();kick();
+  },{passive:false});
+}
+function scrollToY(y,instant){y=clamp(y,0,maxS());if(RM||instant){SS.on=false;scrollTo(0,y);return}if(!SS.on)SS.cur=scrollY;SS.tgt=y;SS.on=true;kick()}
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href');const t=id==='#hero'?null:$(id);if(id!=='#hero'&&!t)return;
+  e.preventDefault();scrollToY(t?t.getBoundingClientRect().top+scrollY:0);
+}));
+
+/* ---------- layout ---------- */
+let showTop=0,showH=1,vh=innerHeight,mob=false,stW=1,stH=1,G=-1,U=0,stageY=0,stageVis=true;
+function measure(){
+  const s=$('#show');showTop=s.offsetTop;showH=s.offsetHeight;vh=innerHeight;mob=innerWidth<=860;
+  const r=stage.getBoundingClientRect();stW=r.width;stH=r.height;resizeGL();
+}
+function gOf(y){
+  if(y<showTop)return -1+clamp(y/Math.max(1,showTop),0,1);
+  const p=clamp((y-showTop)/Math.max(1,showH-vh),0,1);U=p*5;
+  const i=Math.min(4,Math.floor(U));return i>=4?4:i+ss(.55,1,U-i);
+}
+let capI=0;
+function setCap(i){
+  if(i===capI)return;const o=caps[capI];o.classList.remove('on');o.classList.add('out');
+  setTimeout(()=>o.classList.remove('out'),650);caps[i].classList.remove('out');caps[i].classList.add('on');capI=i;
+  railB.forEach((b,k)=>b.classList.toggle('on',k===i));
+}
+function updateUI(y){
+  hdr.classList.toggle('sc',y>24);
+  G=gOf(y);if(y<showTop)U=0;
+  setCap(clamp(Math.floor(G+.5),0,4));
+  railB.forEach((b,k)=>b.style.setProperty('--f',clamp(U-k,0,1).toFixed(3)));
+  const end=showTop+showH-vh;stageY=y>end?-(y-end):0;stageVis=stageY>-stH-4;
+  stage.style.transform=stageY?`translate3d(0,${stageY.toFixed(1)}px,0)`:'';
+  hint.style.opacity=G<-.75?.8:0;
+  const ct=G>3.4?'Interpretive visualization · program milestones':(G>.5&&G<2.5)?'Interpretive visualization · eOPN3 in the membrane, not to scale':G>-.4?'Interpretive visualization · targeted pathway and neighbours, not to scale':'Interpretive visualization · one neuron, not to scale';
+  const cx=mob?'Interpretive visualization · not to scale':ct;if(capt.textContent!==cx)capt.textContent=cx;
+}
+railB.forEach((b,i)=>b.addEventListener('click',()=>scrollToY(showTop+(i+.25)/5*(showH-vh))));
+
+/* ---------- math ---------- */
+const V={add:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],sub:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],sc:(a,s)=>[a[0]*s,a[1]*s,a[2]*s],
+  n:a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l]},cr:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]};
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function persp(o,fy,a,n,f){const t=1/Math.tan(fy/2);o.fill(0);o[0]=t/a;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);return o}
+function look(o,e,c){let zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2],l=Math.hypot(zx,zy,zz);zx/=l;zy/=l;zz/=l;
+  let xx=zz,xy=0,xz=-zx;l=Math.hypot(xx,xz)||1;xx/=l;xz/=l;
+  const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
+  o[0]=xx;o[1]=yx;o[2]=zx;o[3]=0;o[4]=xy;o[5]=yy;o[6]=zy;o[7]=0;o[8]=xz;o[9]=yz;o[10]=zz;o[11]=0;
+  o[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);o[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);o[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);o[15]=1;return o}
+function mdl(o,off,tx,ty,tz,ry,rx){const cy=Math.cos(ry),sy=Math.sin(ry),cx=Math.cos(rx),sx=Math.sin(rx);
+  o[off]=cy;o[off+1]=0;o[off+2]=-sy;o[off+3]=0;o[off+4]=sy*sx;o[off+5]=cx;o[off+6]=cy*sx;o[off+7]=0;
+  o[off+8]=sy*cx;o[off+9]=-sx;o[off+10]=cy*cx;o[off+11]=0;o[off+12]=tx;o[off+13]=ty;o[off+14]=tz;o[off+15]=1}
+function xf(m,off,p,o){o[0]=m[off]*p[0]+m[off+4]*p[1]+m[off+8]*p[2]+m[off+12];o[1]=m[off+1]*p[0]+m[off+5]*p[1]+m[off+9]*p[2]+m[off+13];o[2]=m[off+2]*p[0]+m[off+6]*p[1]+m[off+10]*p[2]+m[off+14];return o}
+function mul(o,a,b){for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];return o}
+
+/* ---------- geometry ---------- */
+function grow(R,start,dir,len,r0,depth,s0,out,sd,o){
+  const st=.05,n=Math.max(5,Math.round(len/st));let d=V.n(dir),p=start.slice(),c=[0,0,0];const pts=[p],dirs=[d];
+  for(let i=0;i<n;i++){
+    c=[c[0]*.82+(R()-.5)*.6,c[1]*.82+(R()-.5)*.6,c[2]*.82+(R()-.5)*.6];
+    d=V.n([d[0]+c[0]*o.w+o.b[0],d[1]+c[1]*o.w+o.b[1],d[2]+c[2]*o.w+o.b[2]]);
+    p=[p[0]+d[0]*st,p[1]+d[1]*st,p[2]+d[2]*st];pts.push(p);dirs.push(d);
+  }
+  const br={pts,r0,s0,sd,depth,tip:true};out.push(br);
+  if(depth<o.md){const nc=depth===0?(o.nc||3):2;
+    for(let k=0;k<nc;k++){if(depth>0&&R()<.25)continue;
+      const idx=Math.min(n-3,Math.floor(n*(.2+.62*R())));const pd=dirs[idx];const q=V.n(V.cr(pd,[R()-.5,R()-.5,R()-.5]));
+      grow(R,pts[idx],V.n(V.add(V.sc(pd,.62),V.sc(q,.85))),len*(.42+.26*R()),r0*.66,depth+1,s0+idx*st,out,sd,o);}}
+  return br;
+}
+function crs(P,sp){const out=[],n=P.length;
+  for(let i=0;i<n-1;i++){const p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(n-1,i+2)];
+    const m=Math.max(1,Math.ceil(Math.hypot(p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2])/sp));
+    for(let j=0;j<m;j++){const t=j/m,t2=t*t,t3=t2*t,q=[0,0,0];
+      for(let k=0;k<3;k++)q[k]=.5*(2*p1[k]+(-p0[k]+p2[k])*t+(2*p0[k]-5*p1[k]+4*p2[k]-p3[k])*t2+(-p0[k]+3*p1[k]-3*p2[k]+p3[k])*t3);out.push(q)}}
+  out.push(P[n-1].slice());return out}
+const FS=17;
+function emit(F,pts,o){const n=pts.length,cum=[0];let L=0;
+  for(let i=1;i<n;i++){L+=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1],pts[i][2]-pts[i-1][2]);cum.push(L)}
+  const base=F.v.length/FS;
+  for(let i=0;i<n;i++){const a=pts[Math.max(0,i-1)],b=pts[Math.min(n-1,i+1)],t=V.n(V.sub(b,a)),u=cum[i]/(L||1);
+    const r=o.r0*(1-(1-o.r1)*u),q=o.Q?o.Q(u):pts[i],p=pts[i];
+    for(const s of[-1,1])F.v.push(p[0],p[1],p[2],t[0],t[1],t[2],q[0],q[1],q[2],s,o.s0+cum[i],r,o.nid,o.h,o.sd,o.dl,o.tip?u:0)}
+  for(let i=0;i<n-1;i++){const k=base+i*2;F.i.push(k,k+1,k+2,k+1,k+3,k+2)}}
+const SPS=14,CORN=[[-1,-1],[1,-1],[1,1],[-1,-1],[1,1],[-1,1]];
+function sph(S,c,q,r,rq,nid,kind,h,quad){for(const k of CORN)S.push(c[0],c[1],c[2],q[0],q[1],q[2],k[0],k[1],h,kind,r,rq,nid,quad)}
+const NODES=[[-2.4,0,0],[-.8,0,0],[.8,0,0],[2.4,0,0]];
+function neuron(seed,nid,F,S,morph){
+  const R=rng(seed),R2=rng(seed*7+3),B=[],sr=.15;
+  grow(R,[0,sr*.7,0],[.06,1,.03],2.05,.0105,0,0,B,1,{w:.15,b:[0,.05,0],md:3,nc:4});
+  for(let i=0;i<5;i++){const a=i/5*6.283+R()*.6,d=V.n([Math.cos(a),-.2-R()*.5,Math.sin(a)]);
+    grow(R,V.sc(d,sr*.75),d,.95+R()*.55,.0086,0,0,B,1,{w:.2,b:[0,-.012,0],md:2,nc:3})}
+  const ax=grow(R,[0,-sr*.75,0],[.03,-1,.04],2.5,.0074,0,0,B,-1,{w:.08,b:[0,-.02,0],md:0});ax.tip=false;
+  const P=ax.pts,end=P[P.length-1],ed=V.n(V.sub(end,P[P.length-5]));
+  for(let j=0;j<7;j++){const q=V.n([R()-.5,R()-.5,R()-.5]);grow(R,end,V.n(V.add(ed,V.sc(q,1.35))),.34+R()*.38,.0048,1,2.5,B,-1,{w:.22,b:[0,0,0],md:2})}
+  const bout=[];
+  B.forEach(b=>{const pts=crs(b.pts,.014);let Q=null,dl=R2();
+    if(morph){const full=R2()<.4,x0=full?-3.1:-3.1+R2()*4.3,x1=full?3.1:Math.min(3.1,x0+1.4+R2()*3.2),yo=(R2()-.5)*.075,zo=(R2()-.5)*.075,ph=R2()*6.28;
+      Q=u=>[mix(x0,x1,u),yo+Math.sin(u*7+ph)*.006,zo]}
+    emit(F,pts,{r0:b.r0,r1:.5,s0:b.s0,nid,h:R2(),sd:b.sd,dl,tip:b.tip,Q});
+    if(b.sd<0&&b.depth>=1){const e=b.pts[b.pts.length-1];bout.push(e)}});
+  const n0=morph?NODES[0]:[0,0,0];
+  sph(S,[0,0,0],morph?n0:[0,0,0],sr,morph?0:sr,nid,0,R2(),2.1);
+  bout.forEach(e=>sph(S,e,morph?[mix(-3,3,R2()),0,0]:e,.03,morph?0:.03,nid,1,R2(),1));
+  const tc=[0,0,0];bout.forEach(e=>{tc[0]+=e[0]/bout.length;tc[1]+=e[1]/bout.length;tc[2]+=e[2]/bout.length});
+  return tc;
+}
+function buildNeurons(){const F={v:[],i:[]},S=[];
+  const term=neuron(11,0,F,S,true);const r0=[F.i.length,S.length/SPS];neuron(29,1,F,S,false);neuron(47,2,F,S,false);const r1=[F.i.length,S.length/SPS];
+  NODES.forEach((p,i)=>sph(S,p,p,0,.072,4,i===0?2:5,.34+i*.12,1.3));
+  return{F,S,term,r0,r1}}
+function buildMembrane(){
+  const F={v:[],i:[]},S=[],M={v:[],i:[]};const rods=[];
+  for(let i=0;i<7;i++){const a=i/7*6.283+.3,ctr=[.42*Math.cos(a),0,.42*Math.sin(a)],rad=[Math.cos(a),0,Math.sin(a)],tan=[-Math.sin(a),0,Math.cos(a)];
+    const tl=(i%2?1:-1)*.17,ax=V.n([tan[0]*Math.sin(tl)+rad[0]*.07,Math.cos(tl),tan[2]*Math.sin(tl)+rad[2]*.07]);
+    const e1=V.n(V.cr(ax,[1,0,0])),e2=V.cr(ax,e1);rods.push({ctr,ax,e1,e2,rad,top:i%2===0})}
+  const H=.74,HR=.128,turns=2*H/.16,chain=[];
+  const hel=(rb,i)=>{const pts=[],N=Math.round(turns*72);for(let j=0;j<=N;j++){const u=j/N,axl=rb.top?H-2*H*u:-H+2*H*u,th=u*turns*6.2832+i;
+    pts.push(V.add(V.add(rb.ctr,V.sc(rb.ax,axl)),V.add(V.sc(rb.e1,Math.cos(th)*HR),V.sc(rb.e2,Math.sin(th)*HR))))}return pts};
+  const bez=(p0,p1,p2,p3,n)=>{const o=[];for(let j=1;j<n;j++){const t=j/n,m=1-t;o.push([0,1,2].map(k=>m*m*m*p0[k]+3*m*m*t*p1[k]+3*m*t*t*p2[k]+t*t*t*p3[k]))}return o};
+  const H0=rods.map(hel);
+  {const s=H0[0][0],rb=rods[0];const t0=V.add(s,V.add(V.sc(rb.rad,.42),[0,.4,0]));const tail=bez(t0,V.add(s,V.add(V.sc(rb.rad,.34),[0,.36,0])),V.add(s,[0,.22,0]),s,40);chain.push(t0,...tail)}
+  for(let i=0;i<7;i++){chain.push(...H0[i]);
+    if(i<6){const e=H0[i][H0[i].length-1],s=H0[i+1][0],sg=rods[i].top?-1:1;
+      chain.push(...bez(e,V.add(e,V.add([0,.36*sg,0],V.sc(rods[i].rad,.2))),V.add(s,V.add([0,.36*sg,0],V.sc(rods[i+1].rad,.2))),s,56))}}
+  {const e=H0[6][H0[6].length-1],rb=rods[6];chain.push(...bez(e,V.add(e,[0,-.35,0]),V.add(e,V.add(V.sc(rb.rad,.5),[0,-.55,0])),V.add(e,V.add(V.sc(rb.rad,.9),[0,-.75,0])),48))}
+  emit(F,chain,{r0:.0042,r1:1,s0:0,nid:3,h:.5,sd:1,dl:0,tip:false});
+  // capsules
+  const seg=64,r=.116,h=.62,rings=[];
+  for(let j=0;j<=14;j++){const f=j/14*Math.PI/2;rings.push([h+r*Math.cos(f),r*Math.sin(f),Math.sin(f),Math.cos(f)])}
+  for(let j=1;j<28;j++){rings.push([h-2*h*j/28,r,1,0])}
+  for(let j=0;j<=14;j++){const f=Math.PI/2+j/14*Math.PI/2;rings.push([-h+r*Math.cos(f),r*Math.sin(f),Math.sin(f),Math.cos(f)])}
+  rods.forEach(rb=>{const base=M.v.length/6;
+    rings.forEach(g=>{for(let k=0;k<=seg;k++){const th=k/seg*6.2832,rd=V.add(V.sc(rb.e1,Math.cos(th)),V.sc(rb.e2,Math.sin(th)));
+      const p=V.add(V.add(rb.ctr,V.sc(rb.ax,g[0])),V.sc(rd,g[1])),nn=V.add(V.sc(rd,g[2]),V.sc(rb.ax,g[3]));M.v.push(p[0],p[1],p[2],nn[0],nn[1],nn[2])}});
+    for(let j=0;j<rings.length-1;j++)for(let k=0;k<seg;k++){const a=base+j*(seg+1)+k,b=a+seg+1;M.i.push(a,b,a+1,a+1,b,b+1)}});
+  sph(S,[0,.02,0],[0,.02,0],.075,.075,3,3,0,1.6);
+  [[-.12,-.98,.05],[.15,-1.0,-.06],[.02,-1.02,.13]].forEach((p,i)=>sph(S,p,p,.05,.05,3,4,i/3,1));
+  // sheet grid
+  const G={v:[],i:[]},N=120,E=3.3;
+  for(let j=0;j<=N;j++)for(let i=0;i<=N;i++)G.v.push(-E+2*E*i/N,0,-E+2*E*j/N,0,1,0);
+  for(let j=0;j<N;j++)for(let i=0;i<N;i++){const a=j*(N+1)+i,b=a+N+1;G.i.push(a,b,a+1,a+1,b,b+1)}
+  return{F,S,M,G}}
+
+/* ---------- shaders ---------- */
+const HDR='#version 300 es\nprecision highp float;\n';
+const COMMON=`uniform mat4 uP,uV;uniform mat4 uM[4];uniform vec2 uRes;uniform float uDpr,uMorph,uRun,uFocus,uTime,uLight;
+uniform float uAl[5],uCalm[5],uPh[5];uniform vec4 uHist[16];uniform vec4 uBeam;uniform vec3 uBD,uWarm,uCool,uIvory;
+float beamCalm(vec3 p){float h=0.;for(int i=0;i<16;i++){vec3 q=p-uHist[i].xyz;q-=uBD*dot(q,uBD);h=max(h,uHist[i].w*exp(-dot(q,q)*2.4));}return h;}
+`;
+const FADE=`uniform vec2 uFade;float edgeF(){vec2 f=max(uFade*uRes,vec2(1.));return smoothstep(0.,f.x,gl_FragCoord.x)*smoothstep(0.,f.y,gl_FragCoord.y);}
+vec4 outc(vec3 c){c=1.-exp(-c*1.2);c*=edgeF();return vec4(c,max(c.r,max(c.g,c.b)));}
+`;
+const FIL_VS=HDR+`layout(location=0)in vec3 aP;layout(location=1)in vec3 aT;layout(location=2)in vec3 aQ;layout(location=3)in vec4 aA;layout(location=4)in vec4 aB;
+`+COMMON+`out vec2 vD;out vec3 vC;
+void main(){int id=int(aA.w+.5);mat4 M=uM[min(id,3)];
+vec3 p=(M*vec4(aP,1.)).xyz;vec3 t=mat3(M)*aT;float m=0.;
+if(id==0){m=clamp((uMorph-aB.z*.45)/.55,0.,1.);m=m*m*(3.-2.*m);}
+vec3 pw=p;p=mix(p,aQ,m);t=normalize(mix(t,vec3(1.,0.,0.),m)+1e-5);
+mat4 PV=uP*uV;vec4 c0=PV*vec4(p,1.);vec4 c1=PV*vec4(p+t*.02,1.);
+vec2 d=(c1.xy/c1.w-c0.xy/c0.w)*uRes;float L=length(d);d=L>1e-4?d/L:vec2(1.,0.);vec2 n=vec2(-d.y,d.x);
+float ppu=uP[1][1]*uRes.y*.5/c0.w;float w=aA.z*2.*ppu;float core=max(w,.9*uDpr);float en=w/core;float hw=core*.5+2.4*uDpr;
+c0.xy+=n*aA.x*hw*2./uRes*c0.w;gl_Position=c0;vD=vec2(aA.x*hw,core*.5);
+float calm=uCalm[id];if(id==0)calm=clamp(calm+beamCalm(pw),0.,1.);
+float ph=uPh[id];float f=fract(aA.y*1.6+ph*aB.y+aB.x*7.);float x=f-.5;float pulse=exp(-x*x*(x>0.?1800.:150.));
+float gate=.5+.5*sin(ph*.5*(.6+aB.x)+aB.x*40.);gate*=gate;
+vec3 act=uIvory*.09+uWarm*.10+uWarm*pulse*(.25+gate)*2.1;vec3 cal=uCool*.25+uCool*pulse*.16;
+if(id==3){act=uIvory*.15+uWarm*.05;cal=uCool*.2+uCool*pulse*.8;}
+vec3 col=mix(act,cal,calm);vec3 bq=pw-uBeam.xyz;bq-=uBD*dot(bq,uBD);col+=uCool*uBeam.w*exp(-dot(bq,bq)*2.)*.4;
+if(id==0){float rq=p.x-uRun;float r=exp(-rq*rq*3.);col=mix(col,uCool*(.12+r*.9),m);}
+float vz=-(uV*vec4(p,1.)).z;float fog=clamp(1.3-(vz-uFocus)*.12,.3,1.15);float tip=1.-smoothstep(.84,1.,aB.w);
+vC=col*uAl[id]*en*fog*tip*(id==0?mix(1.,.3,m):1.);}`;
+const FIL_FS=HDR+`in vec2 vD;in vec3 vC;uniform vec2 uRes;`+FADE+`out vec4 o;
+void main(){float d=abs(vD.x),c=vD.y;float core=1.-smoothstep(c-.65,c+.65,d);float halo=exp(-d*d/(c*c*2.5+3.2));o=outc(vC*(core+halo*.42));}`;
+const SPH_VS=HDR+`layout(location=0)in vec3 aC;layout(location=1)in vec3 aQ;layout(location=2)in vec4 aK;layout(location=3)in vec4 aR;
+`+COMMON+`out vec2 vU;out vec3 vC;out float vF;out float vQ;flat out int vK;
+void main(){int id=int(aR.z+.5);int k=int(aK.w+.5);mat4 M=uM[min(id,3)];
+vec3 c=(M*vec4(aC,1.)).xyz;float m=0.;if(id==0||id==4){m=clamp((uMorph-aK.z*.45)/.55,0.,1.);m=m*m*(3.-2.*m);}
+vec3 cw=c;c=mix(c,aQ,m);float r=mix(aR.x,aR.y,m);float al=uAl[id];float calm=uCalm[id];if(id==0)calm=clamp(calm+beamCalm(cw),0.,1.);
+float ph=uPh[id];float fl=pow(.5+.5*sin(ph*2.3+aK.z*6.28),10.)*(1.-calm);
+vec3 col=mix(mix(uIvory,uWarm,.6),uCool,calm)*.9;
+if(k==1){fl=pow(.5+.5*sin(ph*3.1+aK.z*20.),12.)*(1.-calm);col=mix(uWarm,uCool,calm)*.8;}
+if(k==4){float cy=fract(uTime*.28+aK.z);c+=vec3((aK.z-.33)*cy*.6,-cy*.9,0.);al*=uLight*sin(cy*3.14159);col=uCool;fl=.4;}
+if(k==3){col=mix(uWarm*.85,vec3(.95,.98,1.),uLight*.8);fl=uLight;}
+if(k==2||k==5){col=uCool;fl=0.;}
+vec4 v=uV*vec4(c,1.);v.xy+=aK.xy*r*aR.w;gl_Position=uP*v;vU=aK.xy*aR.w;vQ=aR.w;vC=col*al;vF=fl;vK=k;}`;
+const SPH_FS=HDR+`in vec2 vU;in vec3 vC;in float vF;in float vQ;flat in int vK;uniform vec2 uRes;`+FADE+`out vec4 o;
+void main(){float r=length(vU);float e=max(fwidth(r),1e-3);vec3 col=vec3(0.);float win=1.-smoothstep(vQ*.8,vQ,r);
+if(vK==0){float body=1.-smoothstep(1.-e,1.+e,r);float z=sqrt(max(0.,1.-r*r));vec3 n=vec3(vU,z);float fr=pow(1.-z,2.2);
+float sp=pow(max(dot(n,normalize(vec3(-.45,.55,.7))),0.),46.);float nuc=exp(-r*r*4.5);
+col=vC*((.12+fr*.95+nuc*(.55+vF*1.2))*body)+vec3(sp*.5*body)*length(vC);col+=vC*.2*exp(-max(r-1.,0.)*3.2)*(1.-body);}
+else if(vK==1||vK==4){col=vC*exp(-r*r*4.5)*(.55+vF*1.3);}
+else if(vK==3){col=vC*exp(-r*r*2.6)*(.45+vF*1.6);}
+else{float ring=1.-smoothstep(.055-e,.055+e,abs(r-.92));float disc=vK==2?1.-smoothstep(.5-e,.5+e,r):0.;col=vC*(disc*1.1+ring*.85+exp(-r*r*1.6)*(vK==2?.35:.08));}
+o=outc(col*win);}`;
+const MESH_VS=HDR+`layout(location=0)in vec3 aP;layout(location=1)in vec3 aN;uniform mat4 uP,uV,uMr;uniform float uMode,uLeaf,uTime;out vec3 vW,vN;
+float wv(vec2 p){return .05*sin(p.x*.9+uTime*.35)+.04*sin(p.y*1.2-uTime*.27+1.3)+.022*sin((p.x+p.y)*1.9+uTime*.5);}
+void main(){vec3 p=aP,n=aN;
+if(uMode<.5){float rr=length(p.xz);p.y=uLeaf*.42+wv(p.xz)-uLeaf*.07*exp(-(rr-.78)*(rr-.78)*9.);float e=.03;
+n=normalize(vec3(-(wv(p.xz+vec2(e,0.))-wv(p.xz-vec2(e,0.)))/(2.*e),1.,-(wv(p.xz+vec2(0.,e))-wv(p.xz-vec2(0.,e)))/(2.*e)));}
+else{p=(uMr*vec4(p,1.)).xyz;n=mat3(uMr)*n;}
+vW=p;vN=n;gl_Position=uP*uV*vec4(p,1.);}`;
+const MESH_FS=HDR+`in vec3 vW,vN;uniform vec3 uEye,uWarm,uCool;uniform float uMode,uLight,uRip,uRipA,uA,uLeaf;uniform vec2 uRes;`+FADE+`out vec4 o;
+void main(){vec3 V=normalize(uEye-vW);vec3 N=normalize(vN);if(dot(N,V)<0.)N=-N;float nv=max(dot(N,V),0.);
+vec3 L=normalize(vec3(-.5,1.,.35));vec3 H=normalize(L+V);vec3 col;
+if(uMode<.5){float rr=length(vW.xz);float a=smoothstep(.64,.9,rr)*(1.-smoothstep(.9,2.7,rr));
+float fr=pow(1.-nv,3.);float sp=pow(max(dot(N,H),0.),110.);vec3 iri=.5+.5*cos(6.2832*(fr*.8+vec3(0.,.1,.22)+.55+rr*.04));
+col=mix(uCool,iri,.35)*fr*.16*(uLeaf>0.?1.:.55)+vec3(sp*.07);
+float rd=rr-uRip;float ring=exp(-rd*rd*7.)*uRipA;col+=uCool*ring*.3;col*=a*uA;}
+else{float fr=pow(1.-nv,2.1);float sp=pow(max(dot(N,H),0.),70.);vec3 iri=.5+.5*cos(6.2832*(fr*1.1+vec3(0.,.12,.25)+.5));
+vec3 tint=mix(vec3(.86,.84,.80),uCool,.35+uLight*.6);fr*=smoothstep(0.,.12,nv);col=(tint*(.012+fr*.36)+iri*fr*.10+vec3(sp*.4))*uA;col+=uCool*uLight*fr*.22*uA;}
+o=outc(col);}`;
+const BEAM_VS=HDR+`layout(location=0)in vec3 aV;uniform mat4 uP,uV;uniform vec3 uA,uB,uW;out vec2 vU;flat out float vM;
+void main(){vM=aV.z;vec3 a=(uV*vec4(uA,1.)).xyz,b=(uV*vec4(uB,1.)).xyz;vec3 p;
+if(aV.z<.5){float t=aV.x;p=mix(a,b,t);vec3 d=normalize(b-a);vec3 s=normalize(cross(d,normalize(p)));p+=s*aV.y*mix(uW.x,uW.y,t);vU=vec2(t,aV.y);}
+else{p=b+vec3(aV.xy*uW.z,0.);vU=aV.xy;}gl_Position=uP*vec4(p,1.);}`;
+const BEAM_FS=HDR+`in vec2 vU;flat in float vM;uniform float uI;uniform vec3 uCol;uniform vec2 uRes;`+FADE+`out vec4 o;
+void main(){vec3 c;if(vM<.5){float ac=1.-abs(vU.y);float I=ac*ac*ac*smoothstep(0.,.8,vU.x)*(.2+.8*vU.x)*(1.-smoothstep(.86,1.,vU.x));c=uCol*I*uI*.3;}
+else{float r=length(vU);c=uCol*uI*exp(-r*r*5.)*.5*(1.-smoothstep(.7,1.,r));}o=outc(c);}`;
+
+/* ---------- GL ---------- */
+let gl=null,glOK=false,P={},GEO={},term=[0,0,0],RG={},QS=2,QLOCK=0;
+const dpr=()=>Math.min(window.devicePixelRatio||1,2,QLOCK||QS);
+function prog(vs,fs){const mk=(t,s)=>{const sh=gl.createShader(t);gl.shaderSource(sh,s);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(sh));return sh};
+  const p=gl.createProgram();gl.attachShader(p,mk(gl.VERTEX_SHADER,vs));gl.attachShader(p,mk(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));
+  const u={},n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);for(let i=0;i<n;i++){const a=gl.getActiveUniform(p,i),nm=a.name.replace(/\[0\]$/,'');u[nm]=gl.getUniformLocation(p,a.name)}
+  return{p,u}}
+function vao(data,idx,layout,stride){const va=gl.createVertexArray();gl.bindVertexArray(va);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(data),gl.STATIC_DRAW);
+  let off=0;layout.forEach((sz,i)=>{gl.enableVertexAttribArray(i);gl.vertexAttribPointer(i,sz,gl.FLOAT,false,stride*4,off*4);off+=sz});
+  let n=data.length/stride,type=0;if(idx){const big=n>65535;const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,big?new Uint32Array(idx):new Uint16Array(idx),gl.STATIC_DRAW);n=idx.length;type=big?gl.UNSIGNED_INT:gl.UNSIGNED_SHORT}
+  gl.bindVertexArray(null);return{va,n,type}}
+let VERTS=0;
+function initGL(){
+  try{
+    gl=cv.getContext('webgl2',{antialias:true,alpha:true,premultipliedAlpha:true,powerPreference:'high-performance'});
+    if(!gl)throw new Error('no webgl2');
+    P.fil=prog(FIL_VS,FIL_FS);P.sph=prog(SPH_VS,SPH_FS);P.mesh=prog(MESH_VS,MESH_FS);P.beam=prog(BEAM_VS,BEAM_FS);
+    const N=buildNeurons(),Mb=buildMembrane();term=N.term;RG={f0:N.r0[0],s0:N.r0[1],f1:N.r1[0],s1:N.r1[1],sN:N.S.length/SPS};
+    GEO.nf=vao(N.F.v,N.F.i,[3,3,3,4,4],FS);GEO.ns=vao(N.S,null,[3,3,4,4],SPS);
+    GEO.mf=vao(Mb.F.v,Mb.F.i,[3,3,3,4,4],FS);GEO.ms=vao(Mb.S,null,[3,3,4,4],SPS);
+    GEO.rod=vao(Mb.M.v,Mb.M.i,[3,3],6);GEO.sheet=vao(Mb.G.v,Mb.G.i,[3,3],6);
+    GEO.beam=vao([0,-1,0,0,1,0,1,-1,0,1,1,0,-1,-1,1,1,-1,1,-1,1,1,1,1,1],[0,1,2,1,3,2,4,5,6,5,7,6],[3],3);
+    VERTS=(N.F.v.length+Mb.F.v.length)/FS+(N.S.length+Mb.S.length)/SPS+(Mb.M.v.length+Mb.G.v.length)/6;
+    gl.disable(gl.DEPTH_TEST);gl.disable(gl.CULL_FACE);gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(gl.ONE,gl.ONE_MINUS_SRC_COLOR,gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+    glOK=true;resizeGL();return true;
+  }catch(err){console.warn('[modulight] WebGL unavailable:',err&&err.message);glOK=false;document.documentElement.classList.add('nogl');return false}
+}
+function resizeGL(){if(!glOK)return;const d=dpr(),w=Math.max(2,Math.round(stW*d)),h=Math.max(2,Math.round(stH*d));if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}}
+cv.addEventListener('webglcontextlost',e=>{e.preventDefault();glOK=false},false);
+cv.addEventListener('webglcontextrestored',()=>{P={};GEO={};initGL();kick()},false);
+
+/* ---------- simulation state ---------- */
+const S={t:0,yaw:.6,vel:0,byaw:0,ph:new Float32Array(5),hist:new Float32Array(64),histAcc:0,B:[0,0,0],Bt:[0,0,0],beamI:0,
+  ptr:{x:0,y:0,on:false,last:-1e9},drag:null,frames:0,draws:0};
+const WARM=[0.886,0.635,0.431],COOL=[0.659,0.847,0.941],IVORY=[0.925,0.918,0.898],BCOL=[0.82,0.92,0.98];
+const BD=V.n([-.42,1,.28]);
+const PM=new Float32Array(16),VM=new Float32Array(16),PV=new Float32Array(16),PMm=new Float32Array(16),VMm=new Float32Array(16),
+  MM=new Float32Array(64),MMm=new Float32Array(64),MR=new Float32Array(16),AL=new Float32Array(5),CA=new Float32Array(5),
+  T0=[0,-.45,0],tmp=[0,0,0],tW=[0,0,0],eye=[0,0,0],tgt=[0,0,0],eyeM=[0,0,0],ID=new Float32Array([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+const FOV=30*Math.PI/180;let cam={D:12,asp:1};
+function sceneParams(){const g=G;
+  const dive=g<0?0:g<3?Math.min(ss(0,1,g),1-ss(2,3,g)):0;
+  const memA=g<0?0:g<2.5?ss(.2,1,g):1-ss(2,2.8,g);
+  const morph=ss(3.05,3.9,g);
+  return{g,dive,memA,morph,calm0:g<2?0:ss(2.3,2.85,g),light:ss(1.25,1.85,g)*(1-ss(2.05,2.6,g)),
+    neigh:ss(-.7,0,g)*.48*(1-ss(.3,.7,dive))*(1-ss(3,3.5,g)),heroBeam:1-ss(-.55,-.15,g),b4:ss(2.3,2.8,g)*(1-ss(3.1,3.5,g)),nodes:ss(3.4,3.95,g)}}
+let SP=sceneParams();
+function step(dt){
+  S.t+=dt;SP=sceneParams();const sp=SP;
+  if(!S.drag){S.yaw+=S.vel*dt;S.vel*=Math.exp(-dt*2.6)}
+  S.yaw+=dt*.055*(1-sp.morph);S.byaw+=dt*.11;
+  const cg=[0,0,0,0,sp.light];cg[0]=sp.calm0;cg[3]=sp.light;
+  for(let i=0;i<5;i++){S.ph[i]+=dt*(i===3?.22+sp.light*.55:mix(1,.18,cg[i]))}
+  // camera (neuron)
+  const asp=stW/Math.max(1,stH);cam.asp=asp;
+  const D0=mob?11.2:12.6/Math.max(.75,Math.min(1,asp*1.1)),D1=D0*1.42,D5=3.6/(Math.tan(FOV/2)*asp);
+  let D=mix(D0,D1,ss(-1,0,sp.g)),el=.1;tgt[0]=T0[0];tgt[1]=T0[1];tgt[2]=T0[2];
+  if(sp.dive>0){mdl(MM,0,0,0,0,S.yaw,.08);xf(MM,0,term,tW);const z=Math.pow(sp.dive,1.4);D=mix(D1,.9,z);for(let k=0;k<3;k++)tgt[k]=mix(T0[k],tW[k],Math.min(1,sp.dive*1.3))}
+  if(sp.g>3){const a=ss(3,4,sp.g);D=mix(D1,D5,a);tgt[1]=mix(T0[1],0,a);el=mix(.1,0,a)}
+  cam.D=D;eye[0]=tgt[0];eye[1]=tgt[1]+D*Math.sin(el);eye[2]=tgt[2]+D*Math.cos(el);
+  // beam target (hero: pointer or drift)
+  const now=S.t;let bx,by;
+  if(S.ptr.on&&now-S.ptr.last<2.5){bx=S.ptr.x;by=S.ptr.y}else{bx=Math.sin(now*.23)*.2+Math.sin(now*.41)*.06;by=Math.sin(now*.17+.8)*.32+.12}
+  const th=Math.tan(FOV/2),rx=bx*th*asp*D,ry=by*th*D;
+  // camera right=(1,0,0) (yaw 0), up≈(0,cos el,-sin el)
+  S.Bt[0]=tgt[0]+rx;S.Bt[1]=tgt[1]+ry*Math.cos(el);S.Bt[2]=tgt[2]-ry*Math.sin(el);
+  if(sp.b4>0){const w=sp.b4;S.Bt[0]=mix(S.Bt[0],0,w);S.Bt[1]=mix(S.Bt[1],.15,w);S.Bt[2]=mix(S.Bt[2],0,w)}
+  const k=1-Math.exp(-dt*5);for(let i=0;i<3;i++)S.B[i]+=(S.Bt[i]-S.B[i])*k;
+  const ramp=RM?1:ss(1.2,3.4,S.t);S.beamI=Math.max(sp.heroBeam*ramp,sp.b4);
+  S.histAcc+=dt;if(S.histAcc>.25){S.histAcc=0;S.hist.copyWithin(4,0,60)}
+  S.hist[0]=S.B[0];S.hist[1]=S.B[1];S.hist[2]=S.B[2];S.hist[3]=sp.heroBeam*ramp;
+}
+function histW(o){for(let i=0;i<16;i++){const age=i*.25+S.histAcc;const w=i===0?S.hist[3]:S.hist[i*4+3]*Math.pow(clamp(1-age/4.6,0,1),1.5);o[i*4]=S.hist[i*4];o[i*4+1]=S.hist[i*4+1];o[i*4+2]=S.hist[i*4+2];o[i*4+3]=w}return o}
+const HW=new Float32Array(64);
+function common(pr,PMx,VMx,MMx,focus){const u=pr.u;gl.useProgram(pr.p);
+  const f1=(n,v)=>{if(u[n])gl.uniform1f(u[n],v)},fv=(n,v)=>{if(u[n])gl.uniform1fv(u[n],v)},f3=(n,v)=>{if(u[n])gl.uniform3fv(u[n],v)};
+  gl.uniformMatrix4fv(u.uP,false,PMx);gl.uniformMatrix4fv(u.uV,false,VMx);if(u.uM)gl.uniformMatrix4fv(u.uM,false,MMx);
+  if(u.uRes)gl.uniform2f(u.uRes,cv.width,cv.height);if(u.uFade)gl.uniform2f(u.uFade,mob?0:.17,mob?.2:0);
+  f1('uDpr',dpr());f1('uMorph',SP.morph);f1('uRun',-3.4+((S.t*.16)%1)*6.8);f1('uFocus',focus);f1('uTime',S.t);f1('uLight',SP.light);
+  fv('uAl',AL);fv('uCalm',CA);fv('uPh',S.ph);if(u.uHist)gl.uniform4fv(u.uHist,HW);if(u.uBeam)gl.uniform4f(u.uBeam,S.B[0],S.B[1],S.B[2],S.beamI);
+  f3('uBD',BD);f3('uWarm',WARM);f3('uCool',COOL);f3('uIvory',IVORY)}
+function draw(g,a,c){gl.bindVertexArray(g.va);const f=a||0,n=c===undefined?g.n-f:c;if(n<=0)return;if(g.type)gl.drawElements(gl.TRIANGLES,n,g.type,f*(g.type===gl.UNSIGNED_INT?4:2));else gl.drawArrays(gl.TRIANGLES,f,n);S.draws++}
+function beam(PMx,VMx,A,B,wA,wB,spot,I){if(I<.003)return;const u=P.beam.u;gl.useProgram(P.beam.p);gl.uniformMatrix4fv(u.uP,false,PMx);gl.uniformMatrix4fv(u.uV,false,VMx);
+  gl.uniform3fv(u.uA,A);gl.uniform3fv(u.uB,B);gl.uniform3f(u.uW,wA,wB,spot);gl.uniform1f(u.uI,I);gl.uniform3fv(u.uCol,BCOL);gl.uniform2f(u.uRes,cv.width,cv.height);gl.uniform2f(u.uFade,mob?0:.17,mob?.2:0);draw(GEO.beam)}
+const BA=[0,0,0],MBA=[-1.2,5.2,1.0],MBB=[0,.92,0];
+function render(){
+  if(!glOK)return;S.draws=0;const sp=SP;
+  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);histW(HW);
+  const nA=1-ss(.45,.9,sp.dive);
+  // neuron pass
+  if(nA>.002){
+    persp(PM,FOV,cam.asp,.05,80);look(VM,eye,tgt);
+    mdl(MM,0,0,0,0,S.yaw,.08);mdl(MM,16,-2.8,.6,-2.6,S.yaw*.6+1.7,-.1);mdl(MM,32,2.9,-.4,-3.2,-S.yaw*.5+3.9,.06);MM.set(ID,48);
+    AL[0]=nA;AL[1]=AL[2]=sp.neigh*nA;AL[3]=0;AL[4]=sp.nodes;CA[0]=sp.morph>0?Math.max(sp.calm0,sp.morph):sp.calm0;CA[1]=CA[2]=0;CA[3]=0;CA[4]=1;
+    const nb=AL[1]>.003;common(P.fil,PM,VM,MM,cam.D);draw(GEO.nf,0,nb?RG.f1:RG.f0);common(P.sph,PM,VM,MM,cam.D);draw(GEO.ns,0,nb?RG.s1:RG.s0);if(sp.nodes>.003)draw(GEO.ns,RG.s1,RG.sN-RG.s1);
+    BA[0]=S.B[0]+BD[0]*9;BA[1]=S.B[1]+BD[1]*9;BA[2]=S.B[2]+BD[2]*9;
+    beam(PM,VM,BA,S.B,.05,.36,.55,S.beamI*nA*(1-sp.morph));
+    if(sp.nodes>.01){mul(PV,PM,VM);for(let i=0;i<4;i++){const p=NODES[i];const x=PV[0]*p[0]+PV[4]*p[1]+PV[8]*p[2]+PV[12],y=PV[1]*p[0]+PV[5]*p[1]+PV[9]*p[2]+PV[13],w=PV[3]*p[0]+PV[7]*p[1]+PV[11]*p[2]+PV[15];
+      const sx=(x/w*.5+.5)*stW,sy=(1-(y/w*.5+.5))*stH;nls[i].style.transform=`translate(${sx.toFixed(1)}px,${(sy+(mob?18:26)).toFixed(1)}px)`;nls[i].style.opacity=clamp((sp.nodes-.4-i*.12)*3,0,1).toFixed(2)}}
+    else nls.forEach(n=>{if(n.style.opacity!=='0')n.style.opacity='0'});
+  }else nls.forEach(n=>{if(n.style.opacity!=='0')n.style.opacity='0'});
+  // membrane pass
+  if(sp.memA>.002){const a=sp.memA;
+    persp(PMm,FOV,cam.asp,.05,80);const Dm=mix(20,mob?9:9.6,a)/Math.max(.8,Math.min(1,cam.asp*1.15)),el=.38;
+    eyeM[0]=0;eyeM[1]=-.1+Dm*Math.sin(el);eyeM[2]=Dm*Math.cos(el);look(VMm,eyeM,[0,-.12,0]);
+    mdl(MR,0,0,0,0,S.byaw,.04);MMm.set(ID,0);MMm.set(ID,16);MMm.set(ID,32);MMm.set(MR,48);
+    const m=P.mesh,u=m.u;gl.useProgram(m.p);gl.uniformMatrix4fv(u.uP,false,PMm);gl.uniformMatrix4fv(u.uV,false,VMm);gl.uniformMatrix4fv(u.uMr,false,MR);
+    gl.uniform1f(u.uTime,S.t);gl.uniform3fv(u.uEye,eyeM);if(u.uWarm)gl.uniform3fv(u.uWarm,WARM);gl.uniform3fv(u.uCool,COOL);gl.uniform1f(u.uLight,sp.light);
+    const rc=(S.t*.24)%1;gl.uniform1f(u.uRip,.8+rc*3.2);gl.uniform1f(u.uRipA,sp.light*(1-rc));gl.uniform1f(u.uA,a);
+    gl.uniform2f(u.uRes,cv.width,cv.height);gl.uniform2f(u.uFade,mob?0:.17,mob?.2:0);
+    gl.uniform1f(u.uMode,0);gl.uniform1f(u.uLeaf,-1);draw(GEO.sheet);gl.uniform1f(u.uLeaf,1);draw(GEO.sheet);
+    gl.uniform1f(u.uMode,1);draw(GEO.rod);
+    AL[0]=AL[1]=AL[2]=AL[4]=0;AL[3]=a;CA[3]=sp.light;
+    common(P.fil,PMm,VMm,MMm,Dm);draw(GEO.mf);common(P.sph,PMm,VMm,MMm,Dm);draw(GEO.ms);
+    beam(PMm,VMm,MBA,MBB,.04,.34,.5,sp.light*a);
+  }
+  S.frames++;
+}
+
+/* ---------- pointer ---------- */
+stage.addEventListener('pointermove',e=>{
+  const r=stage.getBoundingClientRect();
+  if(S.drag){const dx=e.clientX-S.drag.x;S.drag.x=e.clientX;const d=dx*.0055;if(SP.memA>.5)S.byaw+=d;else S.yaw+=d;S.vel=S.vel*.6+d*24;return}
+  if(e.pointerType==='mouse'){S.ptr.x=((e.clientX-r.left)/r.width)*2-1;S.ptr.y=1-((e.clientY-r.top)/r.height)*2;S.ptr.on=true;S.ptr.last=S.t}
+});
+stage.addEventListener('pointerleave',()=>{S.ptr.on=false});
+stage.addEventListener('pointerdown',e=>{if(e.button!==0)return;S.drag={x:e.clientX};stage.classList.add('drag');try{stage.setPointerCapture(e.pointerId)}catch(_){}});
+const endDrag=()=>{if(!S.drag)return;S.drag=null;stage.classList.remove('drag');if(SP.memA>.5){S.vel=0}};
+stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
+
+/* ---------- loop ---------- */
+let raf=0,last=0,FT=.016,FN=0,FROZEN=false;
+function kick(){if(!raf)raf=requestAnimationFrame(frame)}
+function frame(now){raf=0;const dt=Math.min(.05,last?(now-last)/1000:1/60);last=now;
+  if(SS.on){SS.cur+=(SS.tgt-SS.cur)*(1-Math.pow(1-.09,dt*60));if(Math.abs(SS.tgt-SS.cur)<.5){SS.cur=SS.tgt;SS.on=false}scrollTo(0,SS.cur)}
+  updateUI(SS.on?SS.cur:scrollY);
+  const vis=glOK&&!document.hidden&&stageVis&&!FROZEN;
+  if(vis){if(!RM)step(dt);else{SP=sceneParams();step(0)}render();
+    if(!QLOCK&&!RM&&dt>0){FT=FT*.94+dt*.06;FN++;if(FN>45&&FT>.034&&QS>1){QS=Math.max(1,QS-.25);FN=0;resizeGL()}else if(FN>240&&FT<.017&&QS<2){QS=Math.min(2,QS+.25);FN=0;resizeGL()}}}
+  if(SS.on||(vis&&!RM))kick();else last=0;
+}
+addEventListener('scroll',()=>{if(!SS.on){SS.cur=SS.tgt=scrollY}kick()},{passive:true});
+addEventListener('resize',()=>{measure();kick()});
+document.addEventListener('visibilitychange',()=>{last=0;kick()});
+
+/* ---------- boot ---------- */
+measure();updateUI(scrollY);
+function boot(){
+  if(!initGL()){poster.classList.add('off');return}
+  if(RM){for(let i=0;i<240;i++)step(1/30)}
+  step(1/60);render();requestAnimationFrame(()=>{cv.classList.add('on');poster.classList.add('off')});kick();
+}
+if(document.readyState==='complete')setTimeout(boot,30);else addEventListener('load',()=>setTimeout(boot,30));
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{measure();kick()});
+
+window.__concept={
+  advance(s){const n=Math.ceil(s*30);for(let i=0;i<n;i++)step(1/30);render();return this.stats()},
+  setScroll(f){const y=clamp(f,0,1)*maxS();SS.on=false;scrollTo(0,y);updateUI(y);SP=sceneParams();if(glOK){step(0);render()}return this.stats()},
+  scrollY(y){SS.on=false;scrollTo(0,y);updateUI(y);SP=sceneParams();if(glOK){step(0);render()}return this.stats()},
+  stateY(i){return showTop+(i+.25)/5*(showH-vh)},
+  freeze(f){FROZEN=!!f;if(!f)kick();return this.stats()},
+  quality(q){QLOCK=q||0;resizeGL();render();return this.stats()},
+  stats(){return{glOK,q:dpr(),g:+G.toFixed(3),frames:S.frames,draws:S.draws,verts:VERTS|0,canvas:[cv.width,cv.height],t:+S.t.toFixed(2),reduced:RM}}
+};
+})();
+
+</script>
+</body>
+</html>

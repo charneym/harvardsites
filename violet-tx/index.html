@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Violet Therapeutics — Redesign Concept</title>
+<meta name="description" content="Redesign concept for Violet Therapeutics: mapping cell-to-cell signaling in the brain to find the conversations that drive neurodegeneration. Lead program: a small-molecule EphB3 inhibitor.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ivory:#F5F2EA; --ivory2:#EEEADF; --ink:#1A1430; --ink2:#2A2346; --mute:#6F6A80; --mute2:#9A95A8;
+  --lime:#C9F25B; --line:rgba(26,20,48,.12); --line2:rgba(26,20,48,.2);
+  --serif:'Newsreader','Iowan Old Style','Times New Roman',Georgia,serif;
+  --sans:'Geist','Helvetica Neue','Liberation Sans',Arial,sans-serif;
+  --mono:'Geist Mono','JetBrains Mono','DejaVu Sans Mono',ui-monospace,monospace;
+  --ease:cubic-bezier(.22,.8,.18,1);
+  --gut:max(20px,6vw); --max:1280px; --strip:28px;
+}
+*{box-sizing:border-box}
+html{background:var(--ivory);color:var(--ink);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ivory);font:400 16px/1.55 var(--sans);overflow-x:clip;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding-bottom:var(--strip)}
+a{color:inherit}
+img{display:block;max-width:100%}
+::selection{background:var(--ink);color:var(--ivory)}
+:focus-visible{outline:1.5px solid var(--ink);outline-offset:3px;border-radius:3px}
+.lbl{font:500 11.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--ink);color:var(--ivory);padding:8px 12px;border-radius:6px}
+.skip:focus{left:8px}
+.tbc{font:400 10.5px/1.4 var(--mono);letter-spacing:.04em;color:var(--mute2);white-space:nowrap}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:21px;font:500 14px/1 var(--sans);letter-spacing:-.005em;text-decoration:none;border:1px solid var(--line2);color:var(--ink);background:transparent;cursor:pointer;transition:background .35s var(--ease),color .35s var(--ease),border-color .35s,transform .5s var(--ease)}
+.btn:hover{border-color:var(--ink)}
+.btn.solid{background:var(--ink);color:var(--ivory);border-color:var(--ink)}
+.btn.solid:hover{background:var(--ink2)}
+.btn .ar{display:inline-block;transition:transform .45s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+.btn.sm{height:36px;padding:0 14px;font-size:13.5px}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto 0;z-index:40;height:64px;transition:background .5s var(--ease),border-color .5s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(245,242,234,.94);border-color:var(--line)}
+.nav .wrap{height:100%;display:flex;align-items:center;gap:36px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;margin-right:auto}
+.brand svg{width:26px;height:14px;flex:none}
+.brand b{font:400 21px/1 var(--serif);letter-spacing:-.01em}
+.brand span{font:500 9.5px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);margin-top:2px}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0}
+.nav ul a{text-decoration:none;font-size:14px;color:var(--mute);transition:color .3s}
+.nav ul a:hover{color:var(--ink)}
+
+/* showcase */
+.show{position:relative;height:640vh}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.stage .wrap{height:100%;padding-top:88px;padding-bottom:calc(var(--strip) + 32px)}
+.stage .grid{height:100%;align-items:center}
+.copy{grid-column:1/span 5;position:relative;height:100%;display:flex;flex-direction:column;justify-content:center}
+.panel{grid-column:6/span 7;position:relative;height:100%;max-height:820px;border-radius:20px;overflow:hidden;background:radial-gradient(70% 70% at 50% 46%,#2A2148 0%,#1A1430 58%,#120D22 100%);isolation:isolate}
+.panel canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s var(--ease);touch-action:pan-y;cursor:grab}
+.panel canvas.on{opacity:1}
+.panel canvas:active{cursor:grabbing}
+.panel .meta{position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:space-between;gap:12px;pointer-events:none;z-index:2}
+.panel .meta span{font:400 10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(245,242,234,.42)}
+.panel .tag{position:absolute;left:22px;top:20px;z-index:2;display:flex;align-items:center;gap:8px;font:400 10.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(245,242,234,.6);pointer-events:none}
+.panel .tag i{width:5px;height:5px;border-radius:50%;background:var(--lime)}
+.fb{position:absolute;inset:0;transition:opacity 1s var(--ease)}
+.panel.ready .fb{opacity:0}
+.fb::before,.fb::after{content:"";position:absolute;top:50%;width:26%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%)}
+.fb::before{left:31%;background:radial-gradient(circle at 38% 34%,rgba(190,170,255,.5),rgba(110,90,200,.18) 55%,rgba(110,90,200,0) 72%);box-shadow:inset 0 0 0 1px rgba(200,185,255,.25)}
+.fb::after{left:69%;width:29%;background:radial-gradient(circle at 38% 34%,rgba(250,240,225,.5),rgba(200,190,220,.15) 55%,rgba(200,190,220,0) 72%);box-shadow:inset 0 0 0 1px rgba(250,240,225,.22)}
+.fb svg{position:absolute;inset:0;width:100%;height:100%}
+
+.hero,.cap{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%)}
+.hero .lbl{margin:0 0 26px;display:flex;align-items:center;gap:10px}
+.hero .lbl i{width:5px;height:5px;border-radius:50%;background:var(--ink)}
+h1{font:300 clamp(34px,3.7vw,56px)/1.04 var(--serif);letter-spacing:-.025em;margin:0}
+h1 em,h2 em{font-style:italic}
+.lede{margin:26px 0 0;max-width:38ch;color:var(--mute);font-size:16px}
+.lede strong{color:var(--ink);font-weight:500}
+.ctas{display:flex;gap:10px;margin-top:34px;flex-wrap:wrap}
+.ln{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.ln>span{display:block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+.hero .ln>span{animation:rise 1.2s var(--ease) both}
+.hero .ln:nth-child(2)>span{animation-delay:.08s}.hero .ln:nth-child(3)>span{animation-delay:.16s}
+.hero .fade{animation:fadeup 1.2s var(--ease) .3s both}
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{transition:opacity .7s var(--ease),transform .9s var(--ease)}
+.hero.out{opacity:0;transform:translateY(calc(-50% - 28px));pointer-events:none}
+.snap *,.snap *::before,.snap *::after{transition:none!important;animation:none!important}
+.cap{pointer-events:none;opacity:0;transition:opacity .45s var(--ease)}
+.cap.on{opacity:1;transition:opacity .6s var(--ease) .12s}
+.cap .lbl{display:block;margin-bottom:22px}
+.cap .lbl b{color:var(--ink);font-weight:500}
+.cap h2{font:300 clamp(28px,2.7vw,40px)/1.1 var(--serif);letter-spacing:-.02em;margin:0;max-width:13em}
+.cap p{margin:20px 0 0;color:var(--mute);max-width:40ch;font-size:15.5px}
+.cap p.src{font:400 11px/1.5 var(--mono);letter-spacing:.02em;color:var(--mute2);margin-top:16px}
+.cap .fade{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .8s var(--ease)}
+.cap.on{pointer-events:auto}
+.cap.on .ln>span{transform:none}
+.cap.on .ln:nth-child(2)>span{transition-delay:.06s}.cap.on .ln:nth-child(3)>span{transition-delay:.12s}
+.cap.on .fade{opacity:1;transform:none;transition-delay:.18s}
+.cap.past .ln>span{transform:translateY(-105%)}
+.cap.past .fade{opacity:0;transform:translateY(-8px);transition-duration:.4s}
+.stagesmini{display:flex;gap:0;margin-top:22px;max-width:40ch}
+.stagesmini span{flex:1;border-top:1px solid var(--line2);padding-top:8px;font:500 10px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute2)}
+.stagesmini span.now{border-top:1px solid var(--ink);color:var(--ink)}
+.steps{position:absolute;left:0;bottom:0;display:flex;align-items:center;gap:18px;transition:opacity .6s}
+.steps button{background:none;border:0;padding:6px 0;cursor:pointer;font:500 11px/1 var(--mono);letter-spacing:.06em;color:var(--mute2);transition:color .3s}
+.steps button.on{color:var(--ink)}
+.steps .bar{width:120px;height:1px;background:var(--line2);position:relative;overflow:hidden}
+.steps .bar i{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0)}
+
+/* sections */
+section.s{padding:160px 0 0}
+.head{margin-bottom:64px}
+.head .lbl{display:block;margin-bottom:18px}
+h2.h{font:300 clamp(28px,2.7vw,40px)/1.1 var(--serif);letter-spacing:-.02em;margin:0;max-width:16em}
+.head p{color:var(--mute);max-width:58ch;margin:18px 0 0}
+.js [data-r] .ln>span{transform:translateY(105%)}
+.js [data-r].in .ln>span{transform:none}
+.js [data-r] .rv{opacity:0;transform:translateY(14px);transition:opacity .9s var(--ease),transform 1.1s var(--ease)}
+.js [data-r].in .rv{opacity:1;transform:none}
+.js [data-r].in .rv:nth-child(2){transition-delay:.08s}.js [data-r].in .rv:nth-child(3){transition-delay:.16s}.js [data-r].in .rv:nth-child(4){transition-delay:.24s}
+
+.statement{padding-top:200px}
+.statement blockquote{grid-column:2/span 10;margin:0}
+.statement blockquote p{font:300 clamp(28px,3.1vw,44px)/1.18 var(--serif);letter-spacing:-.018em;margin:0}
+.statement blockquote p em{font-style:italic;color:var(--mute)}
+.statement cite{display:block;margin-top:30px;font-style:normal}
+
+.proc{border-top:1px solid var(--line)}
+.proc li{list-style:none}
+.proc{margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}
+.proc li{padding:28px 32px 0 0;border-right:1px solid var(--line)}
+.proc li:last-child{border-right:0}
+.proc li .lbl{display:block;margin-bottom:40px}
+.proc h3{font:400 19px/1.3 var(--sans);letter-spacing:-.01em;margin:0 0 10px}
+.proc p{margin:0;color:var(--mute);font-size:15px;max-width:34ch}
+.tissues{display:flex;flex-wrap:wrap;align-items:center;gap:8px 28px;margin:56px 0 0;padding:20px 0 0;border-top:1px solid var(--line);list-style:none}
+.tissues .lbl{margin-right:12px}
+.tissues li{font-size:14.5px;color:var(--mute)}
+.tissues li:nth-child(2){color:var(--ink)}
+.found{margin-top:120px;align-items:start}
+.found .l{grid-column:1/span 5}
+.found .r{grid-column:7/span 6}
+.found h3{font:300 clamp(24px,2.1vw,30px)/1.2 var(--serif);letter-spacing:-.015em;margin:0}
+.found p{margin:0 0 16px;color:var(--mute);max-width:60ch}
+.found p a{color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--line2)}
+
+.metrics{margin-top:140px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.metrics .m{grid-column:span 3;padding:34px 0 30px;border-right:1px solid var(--line);padding-left:0}
+.metrics .m:not(:first-child){padding-left:24px;margin-left:-24px}
+.metrics .m:last-child{border-right:0}
+.metrics b{display:block;font:300 clamp(34px,3.2vw,46px)/1 var(--sans);letter-spacing:-.03em;font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.metrics span.lbl{display:block;margin-top:14px}
+
+.pipe{margin:8px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:0}
+.pipe div{position:relative;padding:22px 20px 0 0;border-top:1px solid var(--line2)}
+.pipe div.done{border-top-color:var(--ink)}
+.pipe div::before{content:"";position:absolute;left:0;top:-4px;width:7px;height:7px;border-radius:50%;background:var(--ivory);border:1px solid var(--line2)}
+.pipe div.done::before{background:var(--ink);border-color:var(--ink)}
+.pipe div.now::before{width:9px;height:9px;top:-5px;background:var(--lime);border-color:var(--ink)}
+.pipe b{display:block;font:500 11.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.pipe div:not(.done):not(.now) b{color:var(--mute)}
+.pipe p{margin:0;font-size:14.5px;color:var(--mute);max-width:24ch}
+.pipe .tbc{display:block;margin-top:6px;white-space:normal}
+.prog-name{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:0 0 26px}
+.prog-name h3{font:400 19px/1.3 var(--sans);margin:0;letter-spacing:-.01em}
+
+.tl{margin:120px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.tl li{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:26px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.tl .d{grid-column:1/span 2}
+.tl .f{grid-column:3/span 2;font:300 24px/1 var(--sans);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tl h3{grid-column:5/span 3;margin:0;font:400 16px/1.4 var(--sans)}
+.tl p{grid-column:8/span 5;margin:0;color:var(--mute);font-size:15px}
+.tl p a{color:var(--ink);text-underline-offset:3px;text-decoration-color:var(--line2)}
+
+.pubs{margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.pubs a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none;align-items:baseline;transition:background .4s var(--ease)}
+.pubs .d{grid-column:1/span 2}
+.pubs .v{grid-column:3/span 2;font-size:14px;color:var(--mute)}
+.pubs .t{grid-column:5/span 7;font-size:15.5px;line-height:1.45}
+.pubs .ar{grid-column:12;justify-self:end;color:var(--mute);transition:transform .45s var(--ease),color .3s}
+.pubs a:hover .ar{transform:translate(3px,-3px);color:var(--ink)}
+.pubs a:hover .t{text-decoration:underline;text-decoration-color:var(--line2);text-underline-offset:4px}
+.pubnote{margin-top:14px;display:block}
+
+.team{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px 24px}
+.p{margin:0}
+.ph{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:var(--ivory2);margin-bottom:18px}
+.ph .fbm{position:absolute;inset:0;display:grid;place-items:center;background:#ECE7DB;transition:background .8s var(--ease)}
+.ph .fbm::before{content:"";position:absolute;left:50%;top:50%;width:26%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);border:1px solid rgba(26,20,48,.14);transition:border-color .8s var(--ease),transform 1.2s var(--ease),background .8s}
+.ph .fbm span{position:relative;font:300 24px/1 var(--serif);color:rgba(26,20,48,.5);letter-spacing:-.01em;transition:color .6s}
+.p:hover .fbm{background:#E6E0F0}
+.p:hover .fbm::before{border-color:rgba(90,70,180,.45);transform:translate(-50%,-50%) scale(1.06);background:radial-gradient(circle at 40% 35%,rgba(201,242,91,.18),rgba(201,242,91,0) 60%)}
+.p:hover .fbm span{color:var(--ink)}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter .8s var(--ease)}
+.p:hover .ph img{filter:none}
+.p h3{margin:0;font:500 16px/1.3 var(--sans);letter-spacing:-.01em}
+.p .lbl{display:block;margin-top:6px}
+.p p{margin:10px 0 0;font-size:14px;color:var(--mute);line-height:1.5}
+.p a.li{display:inline-block;margin-top:12px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line2);padding-bottom:3px;transition:border-color .3s}
+.p a.li:hover{border-color:var(--ink)}
+.sub{display:block;margin:0 0 28px}
+.subsec{margin-top:96px}
+.board{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px;border-top:1px solid var(--line)}
+.board li{display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+.board h3{margin:0;font:400 16px/1.3 var(--sans)}
+.board span.r{display:block;font-size:14px;color:var(--mute);margin-top:4px}
+.board a{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);text-decoration:none;white-space:nowrap}
+.board a:hover{color:var(--ink)}
+
+.inv{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.inv li{padding:36px 20px 30px 0;border-right:1px solid var(--line);min-height:150px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.inv li:not(:first-child){padding-left:20px}
+.inv li:last-child{border-right:0}
+.inv b{font:500 17px/1.25 var(--sans);letter-spacing:-.015em;color:var(--mute);transition:color .4s}
+.inv li:hover b{color:var(--ink)}
+
+section.s.contact{padding-bottom:160px}
+.contact .l{grid-column:1/span 7}
+.contact .r{grid-column:9/span 4;align-self:end}
+.contact h2{font:300 clamp(30px,3.2vw,46px)/1.08 var(--serif);letter-spacing:-.022em;margin:0}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:36px}
+.mail a.addr{font:400 19px/1 var(--sans);letter-spacing:-.01em;text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:5px;margin-right:10px}
+.mail a.addr:hover{border-color:var(--ink)}
+.contact .r p{margin:0 0 18px;color:var(--mute);font-size:15px}
+.contact .r p b{display:block;color:var(--ink);font-weight:500;margin-bottom:4px}
+
+footer{background:var(--ink);color:rgba(245,242,234,.62);padding:72px 0 56px}
+footer .grid{row-gap:40px}
+footer .fl{grid-column:1/span 5}
+footer .fl .brand b{color:var(--ivory)}
+footer .fl p{margin:20px 0 0;font-size:14px;max-width:40ch}
+footer nav{grid-column:7/span 3;display:flex;flex-direction:column;gap:10px;font-size:14px}
+footer nav a{text-decoration:none;color:rgba(245,242,234,.62)}
+footer nav a:hover{color:var(--ivory)}
+footer .fr{grid-column:10/span 3;font-size:14px}
+footer .fr p{margin:0 0 10px}
+footer .bot{grid-column:1/-1;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:28px;border-top:1px solid rgba(245,242,234,.1);font:400 11px/1.5 var(--mono);letter-spacing:.04em;color:rgba(245,242,234,.42)}
+
+.strip{position:fixed;left:0;right:0;bottom:0;z-index:60;height:var(--strip);display:flex;align-items:center;justify-content:center;background:var(--ink);color:rgba(245,242,234,.78);font:400 10.5px/1 var(--mono);letter-spacing:.06em;padding:0 12px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@media (max-width:1100px){
+  .team{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .inv{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .inv li:nth-child(3){border-right:0}
+  .inv li:nth-child(4){padding-left:0}
+}
+@media (max-width:820px){
+  .nav ul{display:none}
+  .stage .wrap{padding-top:72px;padding-bottom:calc(var(--strip) + 16px)}
+  .stage .grid{display:flex;flex-direction:column;align-items:stretch;gap:22px}
+  .panel{order:-1;flex:0 0 auto;height:44svh;border-radius:16px}
+  .copy{flex:1;height:auto}
+  .hero,.cap{top:0;transform:none}
+  .hero.out{transform:translateY(-20px)}
+  .hero .lbl{margin-bottom:14px}
+  .lede{margin-top:14px;font-size:15px}
+  .ctas{margin-top:20px}
+  .cap .lbl{margin-bottom:12px}
+  .cap p{margin-top:12px;font-size:14.5px}
+  .cap p.src{display:none}
+  .steps{bottom:0}
+  .steps .bar{width:80px}
+  .statement{padding-top:140px}
+  section.s{padding-top:120px}
+  .statement blockquote{grid-column:1/-1}
+  .proc{grid-template-columns:1fr}
+  .proc li{border-right:0;border-bottom:1px solid var(--line);padding:24px 0}
+  .proc li .lbl{margin-bottom:16px}
+  .found .l,.found .r{grid-column:1/-1}
+  .found .r{margin-top:28px}
+  .metrics .m{grid-column:span 6;padding-left:0!important;margin-left:0!important;border-right:0;border-bottom:1px solid var(--line)}
+  .pipe{grid-template-columns:1fr}
+  .pipe div{border-top:0;border-left:1px solid var(--line2);padding:0 0 26px 22px}
+  .pipe div.done{border-left-color:var(--ink)}
+  .pipe div::before{left:-4px;top:2px}
+  .pipe div.now::before{left:-5px}
+  .tl li{grid-template-columns:1fr 1fr;row-gap:8px}
+  .tl .d{grid-column:1}.tl .f{grid-column:2;text-align:right}
+  .tl h3,.tl p{grid-column:1/-1}
+  .pubs a{grid-template-columns:1fr auto;row-gap:6px}
+  .pubs .d{grid-column:1}.pubs .v{grid-column:1;}.pubs .t{grid-column:1}.pubs .ar{grid-column:2;grid-row:1}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 16px}
+  .board{grid-template-columns:1fr}
+  .inv{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .inv li{padding:24px 12px 20px 0!important;border-right:0;border-bottom:1px solid var(--line);min-height:110px}
+  .inv li:nth-child(odd){padding-right:12px!important}
+  .inv li:nth-child(even){padding-left:12px!important;border-left:1px solid var(--line)}
+  .contact .l,.contact .r{grid-column:1/-1}
+  .contact .r{margin-top:48px}
+  footer .fl,footer nav,footer .fr{grid-column:1/-1}
+  :root{--strip:36px}
+  .strip{font:400 10px/1.35 var(--sans);letter-spacing:0;white-space:normal;padding:0 20px}
+  .steps{display:none}
+  #hint{display:none}
+  .tbc{white-space:normal}
+  .team{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
+  .ln>span,.js [data-r] .ln>span{transform:none!important}
+  .js [data-r] .rv{opacity:1!important;transform:none!important}
+}
+</style>
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Violet Therapeutics home">
+      <svg viewBox="0 0 26 14" aria-hidden="true"><circle cx="5" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="21" cy="7" r="4" fill="currentColor"/><path d="M9 7 C 12 3.8, 14 3.8, 17 7" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+      <b>Violet</b><span>Therapeutics</span>
+    </a>
+    <nav aria-label="Primary"><ul>
+      <li><a href="#science">Science</a></li>
+      <li><a href="#program">Program</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#team">Team</a></li>
+    </ul></nav>
+    <a class="btn sm mag" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="main">
+<div class="show" id="show">
+  <div class="stage" id="top">
+    <div class="wrap"><div class="grid">
+      <div class="copy" id="copy">
+        <div class="hero" id="hero">
+          <p class="lbl fade"><i aria-hidden="true"></i>Cell-to-cell signaling in the brain</p>
+          <h1><span class="ln"><span>Quieting the harmful</span></span><span class="ln"><span>conversations</span></span><span class="ln"><span>between <em>brain cells.</em></span></span></h1>
+          <p class="lede fade">Violet Therapeutics maps how brain cells signal to one another with the <strong>C-to-C Engine</strong>, to find the interactions that drive neurodegeneration. Our lead program is a small-molecule inhibitor of EphB3, the first target the engine identified.</p>
+          <div class="ctas fade"><a class="btn solid mag" href="#science">The science <span class="ar" aria-hidden="true">→</span></a><a class="btn mag" href="#program">Our program</a></div>
+        </div>
+
+        <section class="cap" data-i="1" aria-labelledby="c1">
+          <span class="lbl"><b>01</b> · Conversation</span>
+          <h2 id="c1"><span class="ln"><span>Brain cells talk</span></span><span class="ln"><span><em>constantly.</em></span></span></h2>
+          <p class="fade">Microglia and astrocytes, the brain's immune and support cells, signal to each other all the time. In neurodegenerative disease some of that crosstalk turns harmful and fuels neuroinflammation, which is “not only a result of neurodegeneration but also a crucial player.”</p>
+          <p class="src fade">Zhang et al., as cited on violettx.com</p>
+        </section>
+        <section class="cap" data-i="2" aria-labelledby="c2">
+          <span class="lbl"><b>02</b> · The C-to-C Engine</span>
+          <h2 id="c2"><span class="ln"><span>A map of who is</span></span><span class="ln"><span><em>talking to whom.</em></span></span></h2>
+          <p class="fade">Violet builds 3D C-to-C Communication Maps of how cells interact in healthy and diseased tissue. The engine then mines those maps for the interactions that drive disease, and for targets drugs can reach.</p>
+        </section>
+        <section class="cap" data-i="3" aria-labelledby="c3">
+          <span class="lbl"><b>03</b> · Target</span>
+          <h2 id="c3"><span class="ln"><span>One harmful exchange:</span></span><span class="ln"><span><em>EphB3.</em></span></span></h2>
+          <p class="fade">EphB3 is a receptor tyrosine kinase that mediates the microglia–astrocyte interactions driving neuroinflammation. It is the first target the C-to-C Engine identified.</p>
+          <p class="src fade">Shown: ephrin-B on microglia signaling to EphB3 on astrocytes. Schematic, not to scale.</p>
+        </section>
+        <section class="cap" data-i="4" aria-labelledby="c4">
+          <span class="lbl"><b>04</b> · Inhibit</span>
+          <h2 id="c4"><span class="ln"><span>A small molecule</span></span><span class="ln"><span><em>quiets the exchange.</em></span></span></h2>
+          <p class="fade">Violet's lead program is a small-molecule EphB3 inhibitor, designed to interrupt harmful glial signaling and preserve synapses. In a 2021 <em>Science</em> study from founder Francisco Quintana's lab, a CNS-penetrant EphB3 inhibitor reduced disease in a mouse model of multiple sclerosis.</p>
+          <p class="src fade">The molecule shown is not Violet's compound or its binding mode.</p>
+        </section>
+        <section class="cap" data-i="5" aria-labelledby="c5">
+          <span class="lbl"><b>05</b> · Program</span>
+          <h2 id="c5"><span class="ln"><span>Now in IND-enabling</span></span><span class="ln"><span><em>studies.</em></span></span></h2>
+          <p class="fade">A $4.75M seed extension, led by Lifespan Vision Ventures in May 2026, funds IND-enabling work on the lead program for neurodegenerative disease.</p>
+          <div class="stagesmini fade" aria-hidden="true"><span>Discovery</span><span>Chemistry</span><span class="now">IND-enabling</span><span>IND</span></div>
+        </section>
+
+        <div class="steps" id="steps" aria-label="Showcase steps">
+          <button data-s="1">01</button><button data-s="2">02</button><button data-s="3">03</button><button data-s="4">04</button><button data-s="5">05</button>
+          <span class="bar" aria-hidden="true"><i id="bar"></i></span>
+        </div>
+      </div>
+
+      <div class="panel" id="panel">
+        <div class="fb" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M40 48 C 46 41, 54 41, 59 48" fill="none" stroke="rgba(245,242,234,.5)" stroke-width=".35"/></svg></div>
+        <canvas id="gl" role="img" aria-label="Interpretive visualization: a microglia and an astrocyte exchanging signals along a luminous thread. Scroll to see the C-to-C map, the EphB3 exchange and a small molecule quieting it. Drag to rotate."></canvas>
+        <div class="tag" aria-hidden="true"><i></i><span id="tagtxt">Microglia · Astrocyte</span></div>
+        <div class="meta"><span>Interpretive visualization</span><span id="hint">Drag to rotate</span></div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<section class="s statement" aria-label="Statement">
+  <div class="wrap grid" data-r>
+    <blockquote>
+      <p><span class="ln"><span>“Dysfunctional communication between cells</span></span><span class="ln"><span>is a <em>central driver</em> of neurodegeneration.”</span></span></p>
+      <cite class="lbl rv">Michael Wheeler · Advisor &amp; co-inventor, C-to-C Communication Maps</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="s" id="science" aria-labelledby="h-sci">
+  <div class="wrap">
+    <div class="head" data-r>
+      <span class="lbl rv">Platform</span>
+      <h2 class="h" id="h-sci"><span class="ln"><span>The C-to-C Engine</span></span></h2>
+      <p class="rv">A proprietary platform that turns maps of cell-to-cell communication into drug targets.</p>
+    </div>
+    <ol class="proc" data-r>
+      <li class="rv"><span class="lbl">01 · Map</span><h3>3D C-to-C Communication Maps</h3><p>Maps of how cells interact with one another in healthy and diseased tissue, at single-cell resolution.</p></li>
+      <li class="rv"><span class="lbl">02 · Mine</span><h3>Find the interactions that drive disease</h3><p>The engine mines those maps for the cell-to-cell exchanges that drive pathology.</p></li>
+      <li class="rv"><span class="lbl">03 · Target</span><h3>Choose targets drugs can reach</h3><p>Interactions are prioritized for druggability. EphB3 was the first target the engine identified.</p></li>
+    </ol>
+    <ul class="tissues" aria-label="Tissues the approach applies to"><li class="lbl">Applicable to</li><li>Brain</li><li>Spinal cord</li><li>Lung</li><li>Liver</li><li>Gut</li><li>Skin</li><li>Tumors</li></ul>
+
+    <div class="grid found" data-r>
+      <div class="l"><span class="lbl rv" style="display:block;margin-bottom:18px">Founding science</span><h3 class="rv">Built on research from Brigham and Women's Hospital.</h3></div>
+      <div class="r">
+        <p class="rv">Violet was founded in 2021 by Mass General Brigham Ventures with scientists from Brigham and Women's Hospital. Founder Francisco Quintana, Professor of Neurology at Brigham and Women's Hospital and Harvard Medical School, invented the C-to-C Communication Maps and SPEAC-seq. Michael Wheeler, Assistant Professor of Neurology at Brigham and Women's, co-invented the maps.</p>
+        <p class="rv">The work builds on methods such as RABID-seq, which traces cell-to-cell interactions at single-cell resolution. In that 2021 <a href="https://doi.org/10.1126/science.abf1230" rel="noopener">Science study</a>, ephrin-B–EphB3 signaling between microglia and astrocytes promoted CNS pathology in a mouse model of multiple sclerosis.</p>
+        <p class="rv">Violet believes EphB3 inhibitors have the potential to reduce inflammation and improve cognition and synaptic health in neurodegenerative disease.</p>
+      </div>
+    </div>
+
+    <div class="grid metrics" data-r>
+      <div class="m rv"><b>2021</b><span class="lbl">Founded · Boston area</span></div>
+      <div class="m rv"><b>$10.6M</b><span class="lbl">Seed · 2023</span></div>
+      <div class="m rv"><b>$4.75M</b><span class="lbl">Seed extension · 2026</span></div>
+      <div class="m rv"><b>EphB3</b><span class="lbl">Lead target · small molecule</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="program" aria-labelledby="h-prog">
+  <div class="wrap">
+    <div class="head" data-r>
+      <span class="lbl rv">Program</span>
+      <h2 class="h" id="h-prog"><span class="ln"><span>EphB3 inhibitor, <em>now IND-enabling.</em></span></span></h2>
+      <p class="rv">Our lead small-molecule program targets glial-mediated synaptic preservation and repair. Synaptic loss is among the strongest predictors of cognitive decline in Alzheimer's disease.</p>
+    </div>
+    <div class="prog-name" data-r><h3 class="rv">Small-molecule EphB3 inhibitor · Neurodegenerative disease</h3><span class="lbl rv">Lead program</span></div>
+    <div class="pipe" data-r>
+      <div class="done rv"><b>Target discovery</b><p>C-to-C Engine identifies EphB3.</p></div>
+      <div class="done rv"><b>Chemistry</b><p>Novel small-molecule EphB3 inhibitors.</p></div>
+      <div class="now rv"><b>IND-enabling</b><p>Funded by the 2026 seed extension.</p></div>
+      <div class="rv"><b>IND</b><p>Next milestone.</p></div>
+      <div class="rv"><b>Clinic</b><p>Neurodegenerative disease.</p></div>
+    </div>
+
+    <ol class="tl" data-r aria-label="Milestones">
+      <li class="rv"><span class="lbl d">May 2026</span><span class="f">$4.75M</span><h3>Seed extension</h3><p>Led by Lifespan Vision Ventures, with the Dementia Discovery Fund, UTEC, Ono Venture Investment and Mass General Brigham Ventures, to fund IND-enabling activities. <a href="https://pharmexec.com/view/funding-roundup-violet-therapeutics-4-million-seed-extension-full-life-technologies-financing" rel="noopener">Coverage</a></p></li>
+      <li class="rv"><span class="lbl d">Jan 2026</span><span class="f">Grant</span><h3>Alzheimer's Association</h3><p>Part the Cloud grant to advance a novel small-molecule program.</p></li>
+      <li class="rv"><span class="lbl d">May 2023</span><span class="f">$10.6M</span><h3>Seed financing</h3><p>Led by the Dementia Discovery Fund and co-led by UTEC, with Mass General Brigham Ventures and Ono Venture Investment.</p></li>
+      <li class="rv"><span class="lbl d">2021</span><span class="f">Founded</span><h3>Company formed</h3><p>By Mass General Brigham Ventures with scientists from Brigham and Women's Hospital.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section class="s" id="publications" aria-labelledby="h-pub">
+  <div class="wrap">
+    <div class="head" data-r>
+      <span class="lbl rv">Publications &amp; presentations</span>
+      <h2 class="h" id="h-pub"><span class="ln"><span>Recent work</span></span></h2>
+    </div>
+    <ul class="pubs">
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Jul 2026</span><span class="v">AAIC 2026</span><span class="t">Novel EPHB3 inhibitors to protect and restore function in key neuron cell types, synapses, and networks impacted by Alzheimer's disease</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Mar 2026</span><span class="v">AD/PD 2026 · Talk</span><span class="t">Development of novel small molecule EPHB3 inhibitors to attenuate synapse deficits and neuroinflammation in Alzheimer's disease</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Nov 2025</span><span class="v">SfN · Poster</span><span class="t">SfN 2025 poster</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Jul 2025</span><span class="v">AAIC 2025 · Talk</span><span class="t">Novel small molecule EPHB3 inhibitors to treat neurodegenerative disease</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Jun 2025</span><span class="v">Author manuscript</span><span class="t">Barcoded viral tracing identifies immunosuppressive astrocyte–glioma interactions</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://www.violettx.com/our-science/" rel="noopener"><span class="lbl d">Apr 2025</span><span class="v">AD/PD 2025 · Talk</span><span class="t">Novel small molecule EPHB3 inhibitors to treat neurodegenerative disease</span><span class="ar" aria-hidden="true">↗</span></a></li>
+      <li><a href="https://doi.org/10.1126/science.abf1230" rel="noopener"><span class="lbl d">Apr 2021</span><span class="v"><em>Science</em></span><span class="t">Clark, Gutiérrez-Vázquez, Wheeler et al. Barcoded viral tracing of single-cell interactions in central nervous system inflammation.</span><span class="ar" aria-hidden="true">↗</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="s" id="team" aria-labelledby="h-team">
+  <div class="wrap">
+    <div class="head" data-r>
+      <span class="lbl rv">Team</span>
+      <h2 class="h" id="h-team"><span class="ln"><span>The people <em>behind the map.</em></span></span></h2>
+      <p class="rv">Drug hunters, computational biologists and the neuroimmunologists who invented the maps.</p>
+    </div>
+    <span class="lbl sub">Leadership, founders &amp; advisors</span>
+    <div class="team">
+      <figure class="p"><div class="ph"><div class="fbm"><span>MF</span></div></div><figcaption><h3>Meredith Fisher</h3><span class="lbl">Chief Executive Officer</span><p>Partner at Mass General Brigham Ventures.</p><a class="li" href="https://www.linkedin.com/in/meredithcfisher/" rel="noopener">LinkedIn</a></figcaption></figure>
+      <figure class="p"><div class="ph"><div class="fbm"><span>DS</span></div></div><figcaption><h3>Darby Schmidt</h3><span class="lbl">Chief Science Officer</span><p>About 20 years in industry; previously VP of Drug Discovery at Sonata Therapeutics.</p><a class="li" href="https://www.linkedin.com/in/darbyschmidt/" rel="noopener">LinkedIn</a></figcaption></figure>
+      <figure class="p"><div class="ph"><div class="fbm"><span>KH</span></div></div><figcaption><h3>Kevin Hodgetts</h3><span class="lbl">Founder</span><p>Laboratory for Drug Discovery in Neurodegeneration, Brigham and Women's Hospital.</p><a class="li" href="https://www.bwhneurosciences.org/lddn/" rel="noopener">LDDN</a></figcaption></figure>
+      <figure class="p"><div class="ph"><div class="fbm"><span>DK</span></div></div><figcaption><h3>Dilip Kodira</h3><span class="lbl">VP, Platform &amp; Analytics</span><p>Leads development of the C-to-C Engine; two decades in bioinformatics and computational biology.</p><a class="li" href="https://www.linkedin.com/in/cdkodira/" rel="noopener">LinkedIn</a></figcaption></figure>
+      <figure class="p"><div class="ph"><div class="fbm"><span>EL</span></div></div><figcaption><h3>Evan Lebois</h3><span class="lbl">Sr. Director, Head of Biology</span><p>About 10 years in CNS small-molecule drug discovery; PhD, Emory University.</p><a class="li" href="https://www.linkedin.com/in/evan-lebois/" rel="noopener">LinkedIn</a></figcaption></figure>
+      <figure class="p"><div class="ph"><div class="fbm"><span>FQ</span></div></div><figcaption><h3>Francisco Quintana</h3><span class="lbl">Founder &amp; Advisor</span><p>Professor of Neurology, Brigham and Women's Hospital and Harvard Medical School. Inventor of C-to-C Communication Maps and SPEAC-seq.</p><a class="li" href="https://www.linkedin.com/in/franciscojquintana/" rel="noopener">LinkedIn</a></figcaption></figure>
+        <figure class="p"><div class="ph"><div class="fbm"><span>MW</span></div></div><figcaption><h3>Michael Wheeler</h3><span class="lbl">Advisor &amp; Co-Inventor</span><p>Assistant Professor of Neurology, Brigham and Women's Hospital. Co-inventor of C-to-C Communication Maps.</p></figcaption></figure>
+        <figure class="p"><div class="ph"><div class="fbm"><span>JS</span></div></div><figcaption><h3>James Summers</h3><span class="lbl">Advisor</span><p>Former VP of Neuroscience Research at AbbVie; more than 30 years in drug discovery.</p><a class="li" href="https://www.linkedin.com/in/james-summers-9b0649bb/" rel="noopener">LinkedIn</a></figcaption></figure>
+    </div>
+
+    <div class="subsec">
+      <span class="lbl sub">Board of directors</span>
+      <ul class="board">
+        <li><div><h3>Paul J. Sekhri</h3><span class="r">CEO, vTv Therapeutics</span></div><a href="https://www.linkedin.com/in/paul-sekhri-a1947/" rel="noopener">LinkedIn</a></li>
+        <li><div><h3>Meredith Fisher</h3><span class="r">Partner, Mass General Brigham Ventures</span></div><a href="https://www.linkedin.com/in/meredithcfisher/" rel="noopener">LinkedIn</a></li>
+        <li><div><h3>Bill Yelle</h3><span class="r">Independent director · CEO, FireCyte Therapeutics</span></div><a href="https://www.linkedin.com/in/billyelle/" rel="noopener">LinkedIn</a></li>
+        <li><div><h3>Atsushi Usami</h3><span class="r">Partner, UTEC</span></div><a href="https://www.linkedin.com/in/atsushi-usami-77b24398/" rel="noopener">LinkedIn</a></li>
+        <li><div><h3>Miles Gerson</h3><span class="r">Partner, SV Health Investors · Dementia Discovery Fund</span></div></li>
+        <li><div><h3>Lifespan Vision Ventures</h3><span class="r">Board representative</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="investors" aria-labelledby="h-inv">
+  <div class="wrap">
+    <div class="head" data-r>
+      <span class="lbl rv">Investors</span>
+      <h2 class="h" id="h-inv"><span class="ln"><span>Backed by specialist investors.</span></span></h2>
+    </div>
+    <ul class="inv">
+      <li><b>Lifespan Vision Ventures</b><span class="lbl">Lead · 2026 extension</span></li>
+      <li><b>Dementia Discovery Fund</b><span class="lbl">Lead · 2023 seed</span></li>
+      <li><b>UTEC</b><span class="lbl">Co-lead · 2023 seed</span></li>
+      <li><b>Ono Venture Investment</b><span class="lbl">Investor</span></li>
+      <li><b>Mass General Brigham Ventures</b><span class="lbl">Founding investor</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="s contact" id="contact" aria-labelledby="h-contact">
+  <div class="wrap grid" data-r>
+    <div class="l">
+      <span class="lbl rv" style="display:block;margin-bottom:18px">Contact</span>
+      <h2 id="h-contact"><span class="ln"><span>Let's talk about</span></span><span class="ln"><span><em>cell-to-cell signaling.</em></span></span></h2>
+      <div class="mail rv"><a class="addr" href="mailto:info@violet-tx.com">info@violet-tx.com</a><button class="btn sm mag" id="copy" type="button">Copy email</button></div>
+    </div>
+    <div class="r">
+      <p class="rv"><b>Violet Therapeutics</b>399 Revolution Drive, Suite 999<br>Somerville, MA 02145</p>
+      <p class="rv"><b>Careers</b>Open roles</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap grid">
+    <div class="fl">
+      <a class="brand" href="#top" aria-label="Violet Therapeutics home"><svg viewBox="0 0 26 14" aria-hidden="true" style="color:#F5F2EA"><circle cx="5" cy="7" r="4" fill="none" stroke="currentColor" stroke-width="1.1"/><circle cx="21" cy="7" r="4" fill="currentColor"/><path d="M9 7 C 12 3.8, 14 3.8, 17 7" fill="none" stroke="currentColor" stroke-width="1"/></svg><b>Violet</b><span style="color:rgba(245,242,234,.5)">Therapeutics</span></a>
+      <p>Mapping cell-to-cell signaling in the brain to treat neurodegenerative disease.</p>
+    </div>
+    <nav aria-label="Footer"><a href="#science">Science</a><a href="#program">Program</a><a href="#publications">Publications</a><a href="#team">Team</a><a href="#investors">Investors</a><a href="#contact">Contact</a></nav>
+    <div class="fr"><p>399 Revolution Drive, Suite 999<br>Somerville, MA 02145</p><p><a href="mailto:info@violet-tx.com" style="color:inherit">info@violet-tx.com</a></p></div>
+    <div class="bot"><span>© 2026 Violet Therapeutics</span><span>Visualizations are interpretive, not data</span></div>
+  </div>
+</footer>
+
+<div class="strip" role="note">Redesign concept by Max C · Not affiliated with or endorsed by Violet Therapeutics</div>
+
+<script>
+(()=>{
+'use strict';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=id=>document.getElementById(id);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v, lerp=(a,b,t)=>a+(b-a)*t;
+const ease=t=>t*t*(3-2*t);
+const show=$('show'), hero=$('hero'), caps=[...document.querySelectorAll('.cap')], stepBtns=[...document.querySelectorAll('#steps button')], bar=$('bar'), nav=$('nav'), tagtxt=$('tagtxt');
+
+/* ---------- smooth scroll (wheel lerp) ---------- */
+let sy=scrollY, ty=scrollY, wheeling=false;
+if(!RM){
+  addEventListener('wheel',e=>{
+    if(e.ctrlKey||e.deltaMode!==0||Math.abs(e.deltaX)>Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    if(!wheeling){sy=scrollY;ty=scrollY;}
+    ty=clamp(ty+e.deltaY,0,document.documentElement.scrollHeight-innerHeight);
+    wheeling=true;
+  },{passive:false});
+}
+addEventListener('scroll',()=>{ if(!wheeling){sy=ty=scrollY;} },{passive:true});
+
+/* ---------- scroll state ---------- */
+let sT=0, sC=0, capI=-1;
+function readScroll(){
+  const top=show.offsetTop, len=show.offsetHeight-innerHeight;
+  const p=clamp((scrollY-top)/Math.max(1,len),0,1);
+  sT=clamp(p*5.7-.35,0,5);
+}
+const tags=['Microglia · Astrocyte','Many cells, many signals','C-to-C communication map','ephrin-B → EphB3','EphB3 inhibitor docked','Lead program'];
+function setCaption(i){
+  if(i===capI) return; capI=i;
+  hero.classList.toggle('out',i>0);
+  caps.forEach(c=>{const k=+c.dataset.i; c.classList.toggle('on',k===i); c.classList.toggle('past',k<i);});
+  stepBtns.forEach(b=>b.classList.toggle('on',+b.dataset.s===i));
+  tagtxt.textContent=tags[i];
+}
+function updateUI(){
+  const i=sT<.5?0:Math.min(5,Math.round(sT));
+  setCaption(i);
+  bar.style.transform='scaleX('+(sC/5).toFixed(4)+')';
+  nav.classList.toggle('scrolled',scrollY>8);
+}
+function scrollToStage(s){
+  const top=show.offsetTop, len=show.offsetHeight-innerHeight;
+  const y=top+((s+.35)/5.7)*len;
+  if(RM) scrollTo(0,y); else {sy=scrollY; ty=y; wheeling=true;}
+}
+stepBtns.forEach(b=>b.addEventListener('click',()=>scrollToStage(+b.dataset.s)));
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href').slice(1); const el=id&&document.getElementById(id); if(!el) return;
+  e.preventDefault(); const y=id==='top'?0:el.getBoundingClientRect().top+scrollY-(id==='science'||id==='program'?40:0);
+  if(RM) scrollTo(0,y); else {sy=scrollY; ty=clamp(y,0,document.documentElement.scrollHeight-innerHeight); wheeling=true;}
+}));
+
+/* ---------- reveals ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{rootMargin:'0px 0px -12% 0px'});
+document.querySelectorAll('[data-r]').forEach(el=>io.observe(el));
+
+/* ---------- magnetic buttons ---------- */
+if(matchMedia('(pointer:fine)').matches&&!RM){
+  document.querySelectorAll('.mag').forEach(b=>{
+    b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();const dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2);b.style.transform=`translate(${(dx*.18).toFixed(1)}px,${(dy*.28).toFixed(1)}px)`;});
+    b.addEventListener('pointerleave',()=>{b.style.transform='';});
+  });
+}
+/* copy email */
+$('copy').addEventListener('click',()=>{const b=$('copy');const done=()=>{b.textContent='Copied';setTimeout(()=>b.textContent='Copy email',1600)};try{navigator.clipboard.writeText('info@violet-tx.com').then(done,done)}catch(e){done()}});
+
+/* =====================================================================
+   WebGL2 scene
+   ===================================================================== */
+const panel=$('panel'), cv=$('gl');
+let gl=null, ok=false, running=false, onscreen=true, lost=false;
+let W=1,H=1,DPR=1;
+const P={}; // programs
+let geo={};
+let T=0, intro=RM?1:0, needRender=true, frames=0, ftSum=0;
+
+// math (preallocated)
+const proj=new Float32Array(16), view=new Float32Array(16), vp=new Float32Array(16);
+const eye=new Float32Array(3), tgt=new Float32Array(3), camR=new Float32Array(3), camU=new Float32Array(3);
+function perspective(o,fy,a,n,f){const t=1/Math.tan(fy/2),nf=1/(n-f);o.fill(0);o[0]=t/a;o[5]=t;o[10]=(f+n)*nf;o[11]=-1;o[14]=2*f*n*nf;}
+function lookAt(o,e,c){let zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2];let l=1/Math.hypot(zx,zy,zz);zx*=l;zy*=l;zz*=l;
+  let xx=zz,xy=0,xz=-zx; l=1/Math.hypot(xx,xy,xz); xx*=l;xy*=l;xz*=l; // up=(0,1,0)
+  const yx=zy*xz-zz*xy, yy=zz*xx-zx*xz, yz=zx*xy-zy*xx;
+  o[0]=xx;o[1]=yx;o[2]=zx;o[3]=0;o[4]=xy;o[5]=yy;o[6]=zy;o[7]=0;o[8]=xz;o[9]=yz;o[10]=zz;o[11]=0;
+  o[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);o[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);o[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);o[15]=1;
+  camR[0]=xx;camR[1]=xy;camR[2]=xz;camU[0]=yx;camU[1]=yy;camU[2]=yz;}
+function mul(o,a,b){for(let i=0;i<4;i++)for(let j=0;j<4;j++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+j]*b[i*4+k];o[i*4+j]=s;}}
+
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* ---------- geometry ---------- */
+function ico(level){
+  const t=(1+Math.sqrt(5))/2, v=[-1,t,0,1,t,0,-1,-t,0,1,-t,0,0,-1,t,0,1,t,0,-1,-t,0,1,-t,t,0,-1,t,0,1,-t,0,-1,-t,0,1];
+  let f=[0,11,5,0,5,1,0,1,7,0,7,10,0,10,11,1,5,9,5,11,4,11,10,2,10,7,6,7,1,8,3,9,4,3,4,2,3,2,6,3,6,8,3,8,9,4,9,5,2,4,11,6,2,10,8,6,7,9,8,1];
+  const norm=i=>{const x=v[i*3],y=v[i*3+1],z=v[i*3+2],l=Math.hypot(x,y,z);v[i*3]=x/l;v[i*3+1]=y/l;v[i*3+2]=z/l;};
+  for(let i=0;i<12;i++)norm(i);
+  for(let L=0;L<level;L++){
+    const cache=new Map(), nf=[];
+    const mid=(a,b)=>{const k=a<b?a*100000+b:b*100000+a;let m=cache.get(k);if(m!==undefined)return m;
+      v.push((v[a*3]+v[b*3])/2,(v[a*3+1]+v[b*3+1])/2,(v[a*3+2]+v[b*3+2])/2);m=v.length/3-1;norm(m);cache.set(k,m);return m;};
+    for(let i=0;i<f.length;i+=3){const a=f[i],b=f[i+1],c=f[i+2],ab=mid(a,b),bc=mid(b,c),ca=mid(c,a);nf.push(a,ab,ca,b,bc,ab,c,ca,bc,ab,bc,ca);}
+    f=nf;
+  }
+  // enforce outward CCW
+  for(let i=0;i<f.length;i+=3){const a=f[i]*3,b=f[i+1]*3,c=f[i+2]*3;
+    const ux=v[b]-v[a],uy=v[b+1]-v[a+1],uz=v[b+2]-v[a+2],wx=v[c]-v[a],wy=v[c+1]-v[a+1],wz=v[c+2]-v[a+2];
+    const nx=uy*wz-uz*wy,ny=uz*wx-ux*wz,nz=ux*wy-uy*wx; if(nx*v[a]+ny*v[a+1]+nz*v[a+2]<0){const tmp=f[i+1];f[i+1]=f[i+2];f[i+2]=tmp;}}
+  return {v:new Float32Array(v), i:new Uint16Array(f)};
+}
+
+/* ---------- shaders ---------- */
+const BG_VS=`#version 300 es
+in vec2 aP;out vec2 vU;void main(){vU=aP*.5+.5;gl_Position=vec4(aP,0.,1.);}`;
+const BG_FS=`#version 300 es
+precision highp float;in vec2 vU;out vec4 o;uniform vec2 uRes;uniform float uT,uFoc;
+float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
+void main(){vec2 p=vU-vec2(.5,.52);p.x*=uRes.x/uRes.y;float r=length(p);
+vec3 c=mix(vec3(.158,.125,.268),vec3(.066,.05,.12),smoothstep(.0,.9,r));
+c+=vec3(.05,.04,.085)*exp(-r*r*7.)*(1.+uFoc*.6);
+c+=(h(gl_FragCoord.xy+fract(uT*7.)*113.)-.5)*.012;
+o=vec4(c,1.);}`;
+const CELL_VS=`#version 300 es
+in vec3 aP;uniform mat4 uVP;uniform vec3 uC;uniform float uR,uK,uT,uWob,uSeed;uniform vec4 uL[8];
+out vec3 vN;out vec3 vW;out float vH;
+float D(vec3 d){float s=0.;for(int i=0;i<8;i++){float c=max(dot(d,uL[i].xyz),0.);s+=uL[i].w*pow(c+1e-5,uK);}
+float w=sin(d.x*2.3+uT*.8+uSeed)*sin(d.y*2.9-uT*.63+uSeed*1.7)*sin(d.z*2.1+uT*.71+uSeed*.6);return 1.+s+uWob*w*.085;}
+void main(){vec3 d=normalize(aP);vec3 t=normalize(cross(d,abs(d.y)<.95?vec3(0.,1.,0.):vec3(1.,0.,0.)));vec3 b=cross(d,t);
+float r0=D(d);vec3 p=d*r0;vec3 d1=normalize(d+t*.01),d2=normalize(d+b*.01);vec3 p1=d1*D(d1),p2=d2*D(d2);
+vec3 n=normalize(cross(p1-p,p2-p));if(dot(n,d)<0.)n=-n;vec3 w=uC+p*uR;vN=n;vW=w;vH=r0-1.;gl_Position=uVP*vec4(w,1.);}`;
+const CELL_FS=`#version 300 es
+precision highp float;in vec3 vN;in vec3 vW;in float vH;out vec4 o;
+uniform vec3 uCam,uTint,uTint2,uC;uniform float uA,uGlow,uCore,uHue,uFilm;
+vec3 aces(vec3 x){return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),0.,1.);}
+void main(){vec3 N=normalize(vN);vec3 V=normalize(uCam-vW);float ndv=clamp(dot(N,V),0.,1.);float f=pow(1.-ndv,2.3);
+vec3 L1=normalize(vec3(-.5,.8,.55)),L2=normalize(vec3(.75,-.2,.35));
+float dif=max(dot(N,L1),0.);vec3 Ns=normalize(N+1.3*normalize(vW-uC));float sp=pow(max(dot(Ns,normalize(L1+V)),0.),220.)*.9;float sp2=pow(max(dot(N,normalize(L2+V)),0.),22.);
+vec3 film=.6+.4*cos(6.2831*(vec3(0.,.33,.67)+f*.85+vH*.9+uHue));
+film=mix(vec3(1.),film,uFilm);vec3 col=uTint*(.09+.34*dif)+film*uTint2*f*1.15+uTint2*f*.25+uTint2*sp2*.1;
+col+=vec3(1.,.975,.94)*sp*1.5;
+col+=uTint2*uGlow*(.25+ndv*ndv*.75)*.75;
+col=mix(col,uTint2*(.35+.65*ndv*ndv)*1.05,uCore);
+float a=clamp(.14+f*.9+sp+uGlow*.2+uCore,0.,1.)*uA;
+col=aces(col*1.1);o=vec4(col*a,a);}`;
+const RIB_VS=`#version 300 es
+in vec2 aP;uniform mat4 uVP;uniform vec3 uP0,uP1,uP2,uP3,uCam,uRt,uUp;uniform float uW,uRad;uniform int uMode;
+out float vT;out float vS;
+void main(){float t=aP.x;vec3 P,Tg;
+if(uMode==0){float m=1.-t;P=m*m*m*uP0+3.*m*m*t*uP1+3.*m*t*t*uP2+t*t*t*uP3;Tg=3.*m*m*(uP1-uP0)+6.*m*t*(uP2-uP1)+3.*t*t*(uP3-uP2);}
+else{float a=t*6.2831853;P=uP0+(uRt*cos(a)+uUp*sin(a))*uRad;Tg=-uRt*sin(a)+uUp*cos(a);}
+vec3 V=normalize(uCam-P);vec3 S=normalize(cross(normalize(Tg),V));
+float tp=uMode==0?(.35+.65*smoothstep(0.,.15,t)*(1.-smoothstep(.85,1.,t))):1.;
+P+=S*aP.y*uW*tp;vT=t;vS=aP.y;gl_Position=uVP*vec4(P,1.);}`;
+const RIB_FS=`#version 300 es
+precision highp float;in float vT;in float vS;out vec4 o;
+uniform vec3 uCol,uPCol;uniform float uA,uPh,uN,uBlock,uPulse,uLen,uDraw,uEnd;
+void main(){float s=abs(vS);float core=exp(-s*s*30.);float glow=exp(-s*s*5.)*.3;
+float p=0.;for(int i=0;i<4;i++){if(float(i)>=uN)break;float c=fract(uPh+float(i)/uN);float d=(vT-c)*uLen;
+p+=exp(-d*d*1.6)*(1.-smoothstep(uBlock-.05,uBlock+.01,c))*(1.-smoothstep(uBlock-.03,uBlock+.005,vT));}
+p*=uPulse;
+vec3 col=uCol*(core*.6+glow)*uA+uPCol*p*(core*1.3+glow*1.5);
+float e=mix(1.,smoothstep(0.,.06,vT)*(1.-smoothstep(.94,1.,vT)),uEnd);
+e*=1.-smoothstep(uDraw-.08,uDraw,vT);
+o=vec4(col*e*(1.-smoothstep(.92,1.,s)),1.);}`;
+const MESH_VS=`#version 300 es
+in vec3 aP;in vec3 aN;uniform mat4 uVP;uniform vec3 uC;uniform float uR,uT,uSeed,uWob;
+out vec3 vN;out vec3 vW;out float vH;
+void main(){vec3 p=aP;float l=length(p);float k=max(l-.7,0.)*uWob;
+p+=vec3(sin(uT*.55+p.y*1.7+uSeed),cos(uT*.47+p.x*1.5+uSeed*1.3),sin(uT*.41+p.x+p.y+uSeed))*.045*k;
+vec3 w=uC+p*uR;vN=aN;vW=w;vH=l*.12;gl_Position=uVP*vec4(w,1.);}`;
+const DUST_VS=`#version 300 es
+in vec4 aP;uniform mat4 uVP;uniform float uT,uPx;out float vA;
+void main(){vec3 p=aP.xyz+vec3(sin(uT*.07+aP.w*6.)*.35,sin(uT*.05+aP.w*9.)*.25,cos(uT*.06+aP.w*4.)*.3);
+vec4 c=uVP*vec4(p,1.);gl_Position=c;gl_PointSize=max(2.,uPx*(.6+aP.w)/c.w);vA=(.35+.65*fract(aP.w*17.))*clamp(1.6-c.w/26.,0.,1.);}`;
+const DUST_FS=`#version 300 es
+precision highp float;in float vA;out vec4 o;uniform float uA;
+void main(){vec2 q=gl_PointCoord*2.-1.;float r=dot(q,q);if(r>1.)discard;float a=exp(-r*3.2)*(1.-r)*vA*uA;o=vec4(vec3(.95,.92,1.)*a,1.);}`;
+
+function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){throw new Error(gl.getShaderInfoLog(s));}return s;}
+function prog(vs,fs,names){const p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.bindAttribLocation(p,0,'aP');gl.bindAttribLocation(p,1,'aN');gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));const u={p};names.forEach(n=>u[n]=gl.getUniformLocation(p,n));return u;}
+
+/* ---------- scene data ---------- */
+const cells=[]; const NNET=12;
+const edges=[];
+const mol=[[0,0,0,.115],[.15,.05,.02,.085],[-.13,.07,.05,.09],[.03,-.14,.02,.08],[.23,.17,-.03,.062],[-.22,-.07,-.05,.068]];
+const lobeTmp=new Float32Array(32);
+function vnorm(a){const l=Math.hypot(a[0],a[1],a[2])||1;a[0]/=l;a[1]/=l;a[2]/=l;return a;}
+function buildScene(){
+  const r=rng(7);
+  const mk=(type,R,K,tint,tint2,hue)=>({type,R,K,tint,tint2,hue,x:0,y:0,z:0,cx:0,cy:0,cz:0,mx:0,my:0,mz:0,lobes:[],seed:r()*6,vis:1,depth:0,glow:0});
+  // main microglia: fine processes, one reaching toward partner (+x)
+  const M=mk(0,.46,6,[.30,.24,.58],[.74,.62,1.0],0);
+  M.lobes=[[1,0,0,.22],[.5,.87,.3,.2],[-.42,.9,-.28,.2],[-.9,.25,.22,.2],[-.75,-.6,-.3,.2],[-.2,-.95,.28,.2],[.6,-.75,-.22,.2],[0,0,1,0]];
+  const A=mk(1,.56,7,[.42,.38,.5],[1.0,.93,.86],.18);
+  A.lobes=[[-1,0,0,.52],[.5,.85,.1,.42],[.55,-.8,.15,.4],[-.45,.85,-.2,.36],[-.4,-.85,.2,.34],[1,.05,-.1,.36],[.1,.1,.95,.16],[.1,-.1,-.95,.16]];
+  [M,A].forEach(c=>c.lobes.forEach(l=>{vnorm(l);}));
+  cells.push(M,A);
+  for(let i=0;i<NNET;i++){
+    const t=i%3, R=.2+r()*.1;
+    const c=t===0?mk(0,R*.85,6,[.30,.24,.58],[.74,.62,1.0],r()*.2):t===1?mk(1,R,9,[.42,.38,.5],[1.0,.93,.86],.18):mk(2,R*.9,5,[.36,.3,.52],[.86,.8,1.0],.4);
+    for(let k=0;k<8;k++){const l=[r()*2-1,r()*2-1,r()*2-1,0];vnorm(l);l[3]=t===2?(k<2?.45:0):(t===0?(k<6?.12:0):(k<7?.28+r()*.14:0));c.lobes.push(l);}
+    const a=i/NNET*Math.PI*2+.26;
+    c.mx=Math.cos(a)*3.05; c.my=Math.sin(a)*2.6; c.mz=Math.sin(a*2)*.2;
+    let x,y,z,g=0; do{ x=(r()*2-1)*3.7; y=(r()*2-1)*2.5; z=-2.6+r()*3.6; g++; }while(g<50&&Math.abs(y)<1.1&&Math.abs(x)<2.6);
+    c.cx=x;c.cy=y;c.cz=z;
+    cells.push(c);
+  }
+  {let sx=0,sy=0;for(let i=2;i<cells.length;i++){sx+=cells[i].cx;sy+=cells[i].cy;}sx/=NNET;sy/=NNET;for(let i=2;i<cells.length;i++){cells[i].cx-=sx;cells[i].cy-=sy;}}
+  const E=[[0,1],[0,2],[0,7],[1,9],[1,13],[2,3],[4,5],[6,7],[8,9],[10,11],[12,13],[3,10],[5,12],[6,11],[8,13],[4,9]];
+  E.forEach((e,k)=>edges.push({a:e[0],b:e[1],ph:r(),spdC:.45+r()*.8,spdM:.16,nC:2+(r()*2|0),seed:r()*6,main:k===0}));
+}
+
+/* ---------- state keyframes (s = 0..5) ---------- */
+const K={
+  dist:[12.6,21.5,18.2,12.0,11.6,12.8],
+  tx:[-.3,.2,0,-.2,-.08,-.28], ty:[0,0,0,0,.05,0],
+  pitch:[.1,.36,.06,.14,.1,.16],
+  yaw:[-.14,.5,0,-.3,-.46,.2],
+  net:[0,1,1,.06,.02,0],
+  map:[0,0,1,1,1,1],
+  chat:[.3,1,.2,.3,.15,.05],
+  harm:[0,0,0,1,.15,0],
+  dock:[0,0,0,0,1,1],
+  ring:[0,0,0,1,.0,0],
+  calm:[0,0,0,0,1,1],
+  foc:[0,0,0,1,.6,0]
+};
+const S={};
+function sample(s){const i=Math.min(4,Math.floor(s)), f=ease(clamp(s-i,0,1));for(const k in K){S[k]=lerp(K[k][i],K[k][i+1],f);}}
+
+/* ---------- user rotation ---------- */
+let uy=0,up=0,vy=0,vpch=0,drag=false,lx=0,ly=0;
+cv.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;ly=e.clientY;vy=vpch=0;cv.setPointerCapture(e.pointerId);});
+cv.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;vy=dx*.006;vpch=dy*.004;uy+=vy;up=clamp(up+vpch,-.45,.45);needRender=true;$('hint').style.opacity=0;});
+const endDrag=()=>{drag=false;};
+cv.addEventListener('pointerup',endDrag);cv.addEventListener('pointercancel',endDrag);
+
+/* ---------- init / resources ---------- */
+let dustN=0;
+function initGL(){
+  try{
+    gl=cv.getContext('webgl2',{antialias:true,alpha:false,depth:true,premultipliedAlpha:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
+    if(!gl) throw new Error('no webgl2');
+    initResources();
+    ok=true;
+  }catch(err){ ok=false; panel.classList.add('nogl'); console.warn('[concept] WebGL unavailable, static fallback:',err.message); return; }
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();lost=true;ok=false;},false);
+  cv.addEventListener('webglcontextrestored',()=>{try{initResources();lost=false;ok=true;needRender=true;kick();}catch(e){panel.classList.remove('ready');}},false);
+  resize(); new ResizeObserver(()=>{resize();needRender=true;kick();}).observe(panel);
+  new IntersectionObserver(es=>{onscreen=es[0].isIntersecting;kick();},{rootMargin:'0px'}).observe(show);
+  document.addEventListener('visibilitychange',kick);
+  kick();
+}
+/* ramified microglia processes: tapered bezier tubes, gently branched, rounded tips (local units = soma radius) */
+const tip0=new Float32Array(3);
+function buildProcesses(){
+  const r=rng(21), V=[], N=[], I=[];
+  const RAD=14, SEG=34, CAP=6;
+  function tube(p0,p1,p2,p3,r0,r1){
+    const base=V.length/3, rows=[];
+    const bez=(t,o)=>{const m=1-t;for(let k=0;k<3;k++)o[k]=m*m*m*p0[k]+3*m*m*t*p1[k]+3*m*t*t*p2[k]+t*t*t*p3[k];return o;};
+    const der=(t,o)=>{const m=1-t;for(let k=0;k<3;k++)o[k]=3*m*m*(p1[k]-p0[k])+6*m*t*(p2[k]-p1[k])+3*t*t*(p3[k]-p2[k]);const l=Math.hypot(o[0],o[1],o[2]);o[0]/=l;o[1]/=l;o[2]/=l;return o;};
+    let nx=0,ny=0,nz=1; // reference normal, transported
+    const P=[0,0,0],T=[0,0,0];
+    const ring=(c,t,rad,nrm)=>{ // nrm: blend of radial and tangent for caps
+      // frame
+      let bx=T[1]*nz-T[2]*ny, by=T[2]*nx-T[0]*nz, bz=T[0]*ny-T[1]*nx; let l=Math.hypot(bx,by,bz)||1; bx/=l;by/=l;bz/=l;
+      nx=by*T[2]-bz*T[1]; ny=bz*T[0]-bx*T[2]; nz=bx*T[1]-by*T[0];
+      for(let j=0;j<RAD;j++){const a=j/RAD*Math.PI*2, ca=Math.cos(a), sa=Math.sin(a);
+        const rx=nx*ca+bx*sa, ry=ny*ca+by*sa, rz=nz*ca+bz*sa;
+        V.push(c[0]+rx*rad,c[1]+ry*rad,c[2]+rz*rad);
+        const k1=Math.cos(nrm),k2=Math.sin(nrm); N.push(rx*k1+T[0]*k2,ry*k1+T[1]*k2,rz*k1+T[2]*k2);}
+    };
+    const prof=t=>r0+(r1-r0)*Math.pow(t,.8);
+    for(let i=0;i<=SEG;i++){const t=i/SEG;bez(t,P);der(t,T);ring(P,t,prof(t),0);}
+    // rounded tip
+    const rt=r1;
+    for(let k=1;k<=CAP;k++){const ph=k/CAP*Math.PI/2*.97;const c=[P[0]+T[0]*rt*Math.sin(ph),P[1]+T[1]*rt*Math.sin(ph),P[2]+T[2]*rt*Math.sin(ph)];ring(c,1,rt*Math.cos(ph),ph);}
+    const rowsN=SEG+1+CAP;
+    for(let i=0;i<rowsN-1;i++)for(let j=0;j<RAD;j++){const a=base+i*RAD+j,b=base+i*RAD+(j+1)%RAD,c=a+RAD,d=b+RAD;I.push(a,c,b,b,c,d);}
+    // tip vertex
+    const tipI=V.length/3; V.push(P[0]+T[0]*rt,P[1]+T[1]*rt,P[2]+T[2]*rt); N.push(T[0],T[1],T[2]);
+    const last=base+(rowsN-1)*RAD; for(let j=0;j<RAD;j++)I.push(last+j,tipI,last+(j+1)%RAD);
+    return [P[0]+T[0]*rt,P[1]+T[1]*rt,P[2]+T[2]*rt];
+  }
+  const rot=(v,ang)=>[v[0]*Math.cos(ang)-v[1]*Math.sin(ang),v[0]*Math.sin(ang)+v[1]*Math.cos(ang),v[2]];
+  const prim=[[0,1.55,0],[60,2.35,.14],[115,2.6,-.12],[165,2.3,.1],[208,2.55,-.14],[255,2.4,.12],[308,2.5,-.1]];
+  prim.forEach((q,pi)=>{
+    const a=q[0]*Math.PI/180, L=q[1];
+    const d=[Math.cos(a),Math.sin(a),q[2]]; const dl=Math.hypot(d[0],d[1],d[2]); d[0]/=dl;d[1]/=dl;d[2]/=dl;
+    const side=[-d[1],d[0],0], bend=(r()-.5)*.5*(pi?1:.3);
+    const p0=[d[0]*.82,d[1]*.82,d[2]*.82];
+    const p3=[d[0]*L+side[0]*bend,d[1]*L+side[1]*bend,d[2]*L];
+    const p1=[d[0]*(.82+L*.28),d[1]*(.82+L*.28),d[2]*(.82+L*.28)];
+    const p2=[d[0]*L*.72+side[0]*bend*.9,d[1]*L*.72+side[1]*bend*.9,d[2]*L*.72];
+    const tp=tube(p0,p1,p2,p3,.34,pi?.095:.11);
+    if(pi===0){tip0[0]=tp[0];tip0[1]=tp[1];tip0[2]=tp[2];return;}
+    // secondary branches
+    const nb=1+(r()<.55?1:0);
+    for(let b=0;b<nb;b++){
+      const t=.42+r()*.25, m=1-t;
+      const s0=[0,1,2].map(k=>m*m*m*p0[k]+3*m*m*t*p1[k]+3*m*t*t*p2[k]+t*t*t*p3[k]);
+      const sgn=b===0?(r()<.5?1:-1):-1*(r()<.5?1:-1);
+      const bd=rot(d,sgn*(.55+r()*.35)); bd[2]+= (r()-.5)*.25;
+      const bl=.8+r()*.5;
+      const e=[s0[0]+bd[0]*bl,s0[1]+bd[1]*bl,s0[2]+bd[2]*bl];
+      const c1=[s0[0]+(d[0]*.6+bd[0]*.4)*bl*.4,s0[1]+(d[1]*.6+bd[1]*.4)*bl*.4,s0[2]+(d[2]*.6+bd[2]*.4)*bl*.4];
+      const c2=[s0[0]+bd[0]*bl*.75,s0[1]+bd[1]*bl*.75,s0[2]+bd[2]*bl*.75];
+      tube(s0,c1,c2,e,.15,.075);
+    }
+  });
+  // enforce outward winding using normals
+  for(let i=0;i<I.length;i+=3){const a=I[i]*3,b=I[i+1]*3,c=I[i+2]*3;
+    const ux=V[b]-V[a],uy=V[b+1]-V[a+1],uz=V[b+2]-V[a+2],wx=V[c]-V[a],wy=V[c+1]-V[a+1],wz=V[c+2]-V[a+2];
+    const cx=uy*wz-uz*wy,cy=uz*wx-ux*wz,cz=ux*wy-uy*wx; if(cx*N[a]+cy*N[a+1]+cz*N[a+2]<0){const t=I[i+1];I[i+1]=I[i+2];I[i+2]=t;}}
+  const vao=gl.createVertexArray();gl.bindVertexArray(vao);
+  let b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(V),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);
+  b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(N),gl.STATIC_DRAW);gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,0,0);
+  b=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,b);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(I),gl.STATIC_DRAW);
+  gl.bindVertexArray(null);
+  return {vao,n:I.length};
+}
+function initResources(){
+  P.bg=prog(BG_VS,BG_FS,['uRes','uT','uFoc']);
+  P.cell=prog(CELL_VS,CELL_FS,['uVP','uC','uR','uK','uT','uWob','uSeed','uL','uCam','uTint','uTint2','uA','uGlow','uCore','uHue','uFilm']);
+  P.rib=prog(RIB_VS,RIB_FS,['uVP','uP0','uP1','uP2','uP3','uCam','uRt','uUp','uW','uRad','uMode','uCol','uPCol','uA','uPh','uN','uBlock','uPulse','uLen','uDraw','uEnd']);
+  P.dust=prog(DUST_VS,DUST_FS,['uVP','uT','uPx','uA']);
+  P.mesh=prog(MESH_VS,CELL_FS,['uVP','uC','uR','uT','uWob','uSeed','uCam','uTint','uTint2','uA','uGlow','uCore','uHue','uFilm']);
+  geo.proc=buildProcesses();
+  const mkMesh=(lvl)=>{const g=ico(lvl);const vao=gl.createVertexArray();gl.bindVertexArray(vao);const vb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,g.v,gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,0,0);const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,g.i,gl.STATIC_DRAW);gl.bindVertexArray(null);return {vao,n:g.i.length};};
+  geo.hi=mkMesh(5); geo.mid=mkMesh(4); geo.lo=mkMesh(3);
+  // fullscreen tri
+  geo.bg=gl.createVertexArray();gl.bindVertexArray(geo.bg);let b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+  // ribbon strip
+  const SEG=180, rv=new Float32Array((SEG+1)*4); for(let i=0;i<=SEG;i++){rv[i*4]=i/SEG;rv[i*4+1]=-1;rv[i*4+2]=i/SEG;rv[i*4+3]=1;}
+  geo.rib=gl.createVertexArray();gl.bindVertexArray(geo.rib);b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,rv,gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);geo.ribN=(SEG+1)*2;
+  // dust
+  const r=rng(3); dustN=innerWidth<820?90:150; const dv=new Float32Array(dustN*4);
+  for(let i=0;i<dustN;i++){dv[i*4]=(r()*2-1)*6.5;dv[i*4+1]=(r()*2-1)*4.2;dv[i*4+2]=-5+r()*8;dv[i*4+3]=r();}
+  geo.dust=gl.createVertexArray();gl.bindVertexArray(geo.dust);b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,dv,gl.STATIC_DRAW);gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,4,gl.FLOAT,false,0,0);
+  gl.bindVertexArray(null);
+}
+function resize(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  const w=Math.max(1,Math.round(panel.clientWidth*DPR)), h=Math.max(1,Math.round(panel.clientHeight*DPR));
+  if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}
+  W=w;H=h;
+}
+
+/* ---------- per-frame ---------- */
+const order=new Int8Array(32); let nOrder=0;
+const dockP=new Float32Array(3), molP=new Float32Array(3);
+let molSpin=0;
+function step(dt){
+  T+=dt*(RM?0:1);
+  if(!RM) intro=Math.min(1,intro+dt/2.4);
+  const k=RM?1:1-Math.exp(-dt*4.2);
+  sC+= (sT-sC)*k; if(Math.abs(sT-sC)<1e-4) sC=sT;
+  sample(sC);
+  if(!drag){uy+=vy;up=clamp(up+vpch,-.45,.45);vy*=Math.exp(-dt*3);vpch*=Math.exp(-dt*3);up*=Math.exp(-dt*.6);}
+  const chat=S.chat, calm=S.calm;
+  // positions
+  const bob=RM?0:1;
+  const M=cells[0],A=cells[1];
+  M.x=-1.45; M.y=Math.sin(T*.5)*.04*bob; M.z=0;
+  A.x=1.4; A.y=Math.sin(T*.43+1)*.04*bob; A.z=0;
+  for(let i=2;i<cells.length;i++){const c=cells[i];const m=S.map;
+    c.x=lerp(c.cx,c.mx,m)+Math.sin(T*.3+c.seed)*.12*chat*bob;
+    c.y=lerp(c.cy,c.my,m)+Math.cos(T*.27+c.seed*1.3)*.1*chat*bob;
+    c.z=lerp(c.cz,c.mz,m);
+    c.vis=S.net;}
+  // edge phases
+  for(const e of edges){
+    let spd;
+    if(e.main){spd=lerp(.26,.62,S.harm)*(1-calm*.55);}
+    else spd=lerp(e.spdM,e.spdC,chat);
+    e.ph=(e.ph+dt*spd*(RM?0:1))%1;
+  }
+  // dock position: astrocyte tip facing microglia
+  dockP[0]=A.x-A.R*1.36; dockP[1]=A.y+.13; dockP[2]=A.z+.06;
+  const d=ease(clamp(S.dock*1.15,0,1));
+  molSpin+=dt*(1-d)*1.6;
+  molP[0]=lerp(dockP[0]+1.9,dockP[0],d); molP[1]=lerp(dockP[1]+1.5,dockP[1],d)+Math.sin(d*Math.PI)*.25; molP[2]=lerp(dockP[2]+1.4,dockP[2],d);
+  // camera
+  const asp=W/H, fit=Math.pow(Math.max(1,1.05/asp),.9);
+  const dist=S.dist*fit*(1+(1-ease(intro))*.12);
+  const yaw=S.yaw+uy+Math.sin(T*.06)*.06*bob, pitch=clamp(S.pitch+up,-.6,.7);
+  tgt[0]=S.tx; tgt[1]=S.ty; tgt[2]=0;
+  eye[0]=tgt[0]+dist*Math.cos(pitch)*Math.sin(yaw); eye[1]=tgt[1]+dist*Math.sin(pitch); eye[2]=tgt[2]+dist*Math.cos(pitch)*Math.cos(yaw);
+  perspective(proj,28*Math.PI/180,asp,.1,80); lookAt(view,eye,tgt); mul(vp,proj,view);
+}
+function setLobes(c){
+  for(let i=0;i<8;i++){const l=c.lobes[i]||NOL[0];lobeTmp[i*4]=l[0];lobeTmp[i*4+1]=l[1];lobeTmp[i*4+2]=l[2];lobeTmp[i*4+3]=l[3];}
+  gl.uniform4fv(P.cell.uL,lobeTmp);
+}
+const zeroL=new Float32Array(24);
+function drawCellMesh(mesh,x,y,z,R,K,wob,seed,tint,tint2,a,glow,core,hue,film){
+  const u=P.cell;gl.uniform1f(u.uFilm,film===undefined?1:film);
+  gl.uniform3f(u.uC,x,y,z);gl.uniform1f(u.uR,R);gl.uniform1f(u.uK,K);gl.uniform1f(u.uWob,wob);gl.uniform1f(u.uSeed,seed);
+  gl.uniform3f(u.uTint,tint[0],tint[1],tint[2]);gl.uniform3f(u.uTint2,tint2[0],tint2[1],tint2[2]);
+  gl.uniform1f(u.uA,a);gl.uniform1f(u.uGlow,glow);gl.uniform1f(u.uCore,core);gl.uniform1f(u.uHue,hue);
+  gl.bindVertexArray(mesh.vao);gl.drawElements(gl.TRIANGLES,mesh.n,gl.UNSIGNED_SHORT,0);
+}
+const NUC=[.55,.5,.75], NUC2=[.95,.9,1.0], LIME=[.5,.62,.2], LIME2=[.79,.95,.36];
+function render(){
+  gl.viewport(0,0,W,H);
+  gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);
+  gl.clearColor(.07,.05,.12,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  gl.useProgram(P.bg.p);gl.uniform2f(P.bg.uRes,W,H);gl.uniform1f(P.bg.uT,T);gl.uniform1f(P.bg.uFoc,S.foc);
+  gl.bindVertexArray(geo.bg);gl.drawArrays(gl.TRIANGLES,0,3);
+  const fade=ease(intro);
+  // dust
+  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);gl.enable(gl.DEPTH_TEST);gl.depthMask(false);
+  gl.useProgram(P.dust.p);gl.uniformMatrix4fv(P.dust.uVP,false,vp);gl.uniform1f(P.dust.uT,T);gl.uniform1f(P.dust.uPx,H*.022);gl.uniform1f(P.dust.uA,.32*fade*(1-S.foc*.5));
+  gl.bindVertexArray(geo.dust);gl.drawArrays(gl.POINTS,0,dustN);
+  // cells sorted back to front
+  nOrder=0;
+  for(let i=0;i<cells.length;i++){const c=cells[i]; if(i>1&&c.vis<.01)continue;
+    c.depth=(c.x-eye[0])**2+(c.y-eye[1])**2+(c.z-eye[2])**2; order[nOrder++]=i;}
+  for(let i=1;i<nOrder;i++){const v=order[i];let j=i-1;while(j>=0&&cells[order[j]].depth<cells[v].depth){order[j+1]=order[j];j--;}order[j+1]=v;}
+  gl.useProgram(P.cell.p);const u=P.cell;
+  gl.uniformMatrix4fv(u.uVP,false,vp);gl.uniform3f(u.uCam,eye[0],eye[1],eye[2]);gl.uniform1f(u.uT,T);
+  gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);
+  const foc=S.foc, harm=S.harm, calm=S.calm;
+  const mainDim=1-S.net*.0;
+  for(let n=0;n<nOrder;n++){const i=order[n],c=cells[i];
+    const main=i<2;
+    const a=main?fade*mainDim:c.vis*fade;
+    const sc=main?(.82+.18*ease(intro)):(.6+.4*c.vis);
+    const wob=main?lerp(.9,.25,calm)*(1+S.chat*.5):.8;
+    const glow=main?(i===1?harm*.35*(.6+.4*Math.sin(T*6)):harm*.15):0;
+    // nucleus
+    gl.depthMask(true);
+    setLobes(NOLC);
+    drawCellMesh(main?geo.mid:geo.lo,c.x,c.y,c.z,c.R*.3*sc,1,.3,c.seed+2,NUC,c.type===1?NUC2:c.tint2,a*.32,.0,.3,c.hue);
+    gl.depthMask(false);
+    setLobes(c);
+    drawCellMesh(main?geo.hi:geo.mid,c.x,c.y,c.z,c.R*sc,c.K,wob,c.seed,c.tint,c.tint2,a,glow,0,c.hue);
+    if(c.type===0){
+      const m=P.mesh; gl.useProgram(m.p);
+      gl.uniformMatrix4fv(m.uVP,false,vp);gl.uniform3f(m.uCam,eye[0],eye[1],eye[2]);gl.uniform1f(m.uT,T);
+      gl.uniform3f(m.uC,c.x,c.y,c.z);gl.uniform1f(m.uR,c.R*sc);gl.uniform1f(m.uWob,main?wob:.6);gl.uniform1f(m.uSeed,c.seed);
+      gl.uniform3f(m.uTint,c.tint[0],c.tint[1],c.tint[2]);gl.uniform3f(m.uTint2,c.tint2[0],c.tint2[1],c.tint2[2]);
+      gl.uniform1f(m.uA,a);gl.uniform1f(m.uGlow,.22+glow*.6);gl.uniform1f(m.uCore,.06);gl.uniform1f(m.uHue,c.hue);gl.uniform1f(m.uFilm,1);
+      gl.bindVertexArray(geo.proc.vao);gl.drawElements(gl.TRIANGLES,geo.proc.n,gl.UNSIGNED_SHORT,0);
+      gl.useProgram(P.cell.p);
+    }
+  }
+  gl.disable(gl.CULL_FACE);
+  // molecule
+  if(S.dock>.002){
+    const a=clamp(S.dock*3,0,1)*fade;
+    gl.depthMask(true);
+    const cs=Math.cos(molSpin),sn=Math.sin(molSpin);
+    setLobes(NOLC);
+    for(const b of mol){const x=b[0]*cs-b[2]*sn, z=b[0]*sn+b[2]*cs;
+      drawCellMesh(geo.lo,molP[0]+x,molP[1]+b[1],molP[2]+z,b[3],1,.0,0,LIME,LIME2,a,.55,.2,.05,0);}
+    gl.depthMask(false);
+  }
+  // ribbons
+  gl.blendFunc(gl.ONE,gl.ONE);
+  gl.useProgram(P.rib.p);const r=P.rib;
+  gl.uniformMatrix4fv(r.uVP,false,vp);gl.uniform3f(r.uCam,eye[0],eye[1],eye[2]);gl.uniform1i(r.uMode,0);gl.uniform1f(r.uEnd,1);
+  gl.bindVertexArray(geo.rib);
+  const chat=S.chat;
+  for(const e of edges){
+    const A=cells[e.a],B=cells[e.b];
+    let x0,y0,z0,x3,y3,z3, vis, w, col0,col1,col2, pc0,pc1,pc2, pulse, n, block, draw;
+    if(e.main){
+      x0=A.x+tip0[0]*A.R;y0=A.y+tip0[1]*A.R;z0=A.z+tip0[2]*A.R; x3=dockP[0]-.02;y3=B.y+.02;z3=B.z;
+      vis=fade; w=.085*(1+harm*.5);
+      const hp=harm; // harmful tint
+      col0=lerp(.55,.72,hp)*(1-calm*.55);col1=lerp(.52,.5,hp)*(1-calm*.55);col2=lerp(.62,.95,hp)*(1-calm*.55);
+      pc0=lerp(.95,.85,hp);pc1=lerp(.92,.5,hp);pc2=lerp(.88,1.0,hp);
+      pulse=lerp(1,1.6,hp)*(1-calm*.82)*fade; n=lerp(2,4,hp); block=lerp(1.2,.9,ease(clamp((S.dock-.55)/.45,0,1)));
+      draw=intro*1.15;
+    } else {
+      x0=A.x;y0=A.y;z0=A.z;x3=B.x;y3=B.y;z3=B.z;
+      vis=Math.min(A.vis,B.vis)*(1-foc*.6)*fade; if(vis<.01)continue;
+      w=.045; col0=.3;col1=.28;col2=.48; pc0=.75;pc1=.72;pc2=.9;
+      pulse=vis*lerp(.7,1,chat); n=e.nC; block=1.2; draw=1.1;
+      if(A===cells[0]||A===cells[1]){/* edge from main cell */}
+    }
+    // control points: map -> bow toward origin; chatter -> wobble
+    const mx=(x0+x3)/2,my=(y0+y3)/2,mz=(z0+z3)/2, dx=x3-x0,dy=y3-y0,dz=z3-z0;
+    let ox,oy,oz;
+    if(e.main){ox=0;oy=.42+Math.sin(T*.6)*.03;oz=.05;}
+    else{const ml=Math.hypot(mx,my)||1, bow=.32*S.map, wob=chat*.55;
+      ox=-mx/ml*bow+Math.sin(T*1.3+e.seed)*wob*.6; oy=-my/ml*bow+Math.cos(T*1.1+e.seed*2)*wob*.6; oz=Math.sin(T*.9+e.seed*3)*wob*.5;}
+    gl.uniform3f(r.uP0,x0,y0,z0);
+    gl.uniform3f(r.uP1,x0+dx*.3+ox,y0+dy*.3+oy,z0+dz*.3+oz);
+    gl.uniform3f(r.uP2,x0+dx*.7+ox,y0+dy*.7+oy,z0+dz*.7+oz);
+    gl.uniform3f(r.uP3,x3,y3,z3);
+    gl.uniform1f(r.uW,w);gl.uniform3f(r.uCol,col0*vis,col1*vis,col2*vis);gl.uniform1f(r.uA,1);
+    gl.uniform3f(r.uPCol,pc0,pc1,pc2);gl.uniform1f(r.uPulse,pulse);gl.uniform1f(r.uN,n);gl.uniform1f(r.uPh,e.ph);
+    gl.uniform1f(r.uBlock,block);gl.uniform1f(r.uLen,e.main?14:18);gl.uniform1f(r.uDraw,draw);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,geo.ribN);
+  }
+  // target ring (lime)
+  const ring=S.ring*fade;
+  if(ring>.01){
+    gl.uniform1i(r.uMode,1);gl.uniform1f(r.uEnd,0);gl.uniform1f(r.uDraw,1.2);gl.uniform1f(r.uPulse,0);gl.uniform1f(r.uN,0);
+    gl.uniform3f(r.uRt,camR[0],camR[1],camR[2]);gl.uniform3f(r.uUp,camU[0],camU[1],camU[2]);
+    gl.uniform3f(r.uP0,dockP[0],dockP[1]-.1,dockP[2]);gl.uniform1f(r.uRad,.24+Math.sin(T*2.2)*.012);gl.uniform1f(r.uW,.028);
+    gl.uniform3f(r.uCol,.79*ring*1.3,.95*ring*1.3,.36*ring*1.3);
+    gl.drawArrays(gl.TRIANGLE_STRIP,0,geo.ribN);
+  }
+  gl.bindVertexArray(null);
+}
+const NOL=[[1,0,0,0],[0,1,0,0],[0,0,1,0],[-1,0,0,0],[0,-1,0,0],[0,0,-1,0],[1,0,0,0],[0,1,0,0]];
+const NOLC={lobes:NOL};
+
+/* ---------- loop ---------- */
+let last=0, raf=0, first=true;
+function active(){return ok&&!lost&&onscreen&&!document.hidden;}
+function kick(){ if(!raf) raf=requestAnimationFrame(tick); }
+function tick(now){
+  raf=0;
+  const dt=last?Math.min(.05,(now-last)/1000):1/60; last=now;
+  // smooth scroll
+  if(wheeling){ sy+= (ty-sy)*(1-Math.exp(-dt*9)); if(Math.abs(ty-sy)<.6){sy=ty;wheeling=false;} scrollTo(0,sy); }
+  readScroll();
+  const moving=Math.abs(sT-sC)>1e-4;
+  if(active()&&(!RM||needRender||moving)){
+    const t0=performance.now();
+    step(dt); updateUI(); render(); needRender=false; frames++; ftSum+=performance.now()-t0;
+    if(first){first=false;panel.classList.add('ready');cv.classList.add('on');}
+  } else { sC=sT; sample(sC); updateUI(); }
+  if(wheeling||(active()&&!RM)||moving) raf=requestAnimationFrame(tick);
+}
+addEventListener('scroll',()=>{needRender=true;kick();},{passive:true});
+addEventListener('resize',()=>{needRender=true;kick();});
+
+/* ---------- boot ---------- */
+buildScene(); readScroll(); sC=sT; sample(sC); updateUI();
+const boot=()=>setTimeout(initGL,60);
+if(document.readyState==='complete') boot(); else addEventListener('load',boot,{once:true});
+
+window.__concept={
+  advance(sec){ if(!ok){return;} const n=Math.round(sec*60); for(let i=0;i<n;i++){ readScroll(); step(1/60);} updateUI(); render(); },
+  setScroll(f){ this.snap(); wheeling=false; const y=f*(document.documentElement.scrollHeight-innerHeight); scrollTo(0,y); sy=ty=y; readScroll(); sC=sT; if(ok){step(0);updateUI();render();} else updateUI(); },
+  snap(){const h=document.documentElement;h.classList.add('snap');setTimeout(()=>h.classList.remove('snap'),600);},
+  setStage(s){this.snap(); const top=show.offsetTop,len=show.offsetHeight-innerHeight; const y=top+((s+.35)/5.7)*len; wheeling=false; scrollTo(0,y); sy=ty=y; readScroll(); sC=sT; if(ok){step(0);updateUI();render();} },
+  stats(){ return {gl:ok, frames, avgMs:frames?+(ftSum/frames).toFixed(2):0, s:+sC.toFixed(3), canvas:[W,H], dpr:DPR}; }
+};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DaCapo Brainscience — Redesign Concept</title>
+<meta name="description" content="Redesign concept for DaCapo Brainscience by Max C. Not affiliated with or endorsed by DaCapo Brainscience.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F1EA; --sweep:#E7E1D6; --ink:#15130F; --ink2:#3A3631; --muted:#8B857A;
+  --line:rgba(21,19,15,.12); --line2:rgba(21,19,15,.07); --crimson:#A8122A;
+  --serif:"Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --sans:"Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --gut:max(24px, 6vw); --max:1280px; --strip:30px; --nav:64px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--paper);-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;padding-bottom:var(--strip);overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--ink);color:var(--paper)}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 12px;z-index:100;font-size:13px}
+.skip:focus{left:8px}
+:focus-visible{outline:1px solid var(--crimson);outline-offset:3px}
+
+/* type */
+.label{font:500 11px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.label b{color:var(--ink);font-weight:500}
+.label .dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--crimson);margin-right:8px;vertical-align:1px}
+h1,.display{font:400 clamp(34px,4.2vw,58px)/1.04 var(--serif);letter-spacing:-.022em;color:var(--ink)}
+h2,.h2{font:400 clamp(28px,2.65vw,38px)/1.1 var(--serif);letter-spacing:-.018em}
+h3{font:500 17px/1.35 var(--sans);letter-spacing:-.005em}
+em{font-style:italic}
+.serif-i{font-family:var(--serif);font-style:italic}
+p{max-width:60ch}
+.body{font-size:16px;line-height:1.6;color:var(--ink2)}
+.small{font-size:14px;line-height:1.55;color:var(--ink2)}
+.tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.confirm{font:500 10.5px/1 var(--mono);letter-spacing:.06em;color:var(--muted);border:1px solid var(--line);border-radius:3px;padding:3px 5px;white-space:nowrap;vertical-align:2px}
+
+/* masked lines */
+.ln{display:block;overflow:hidden;padding-bottom:.08em;margin-bottom:-.08em}
+.ln>span{display:block;transform:translateY(105%);transition:transform 1.1s var(--ease)}
+.in .ln>span,.on .ln>span{transform:none}
+.ln:nth-child(2)>span{transition-delay:.07s}.ln:nth-child(3)>span{transition-delay:.14s}.ln:nth-child(4)>span{transition-delay:.21s}
+.fade{opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease) .15s,transform 1.1s var(--ease) .15s}
+.in .fade,.in.fade,.on .fade{opacity:1;transform:none}
+
+/* layout */
+.wrap{max-width:calc(var(--max) + 2*var(--gut));margin:0 auto;padding:0 var(--gut)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+section.sec{padding:168px 0 0}
+.rule{height:1px;background:var(--line);border:0}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto 0;height:var(--nav);z-index:40;transition:background .5s,border-color .5s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(244,241,234,.86);-webkit-backdrop-filter:saturate(1.2) blur(14px);backdrop-filter:saturate(1.2) blur(14px);border-bottom-color:var(--line2)}
+.nav .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.logo{display:flex;align-items:center;height:30px;min-width:120px}
+.logo img{height:30px;width:auto;mix-blend-mode:multiply}
+.wordmark{font:400 21px/1 var(--serif);letter-spacing:-.01em}
+.wordmark i{color:var(--muted)}
+.links{display:flex;gap:30px;align-items:center}
+.links a{font-size:13.5px;color:var(--ink2);position:relative;padding:4px 0}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+.links a:hover::after{transform:scaleX(1);transform-origin:left}
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:21px;font:500 14px/1 var(--sans);letter-spacing:-.003em;border:1px solid var(--ink);color:var(--ink);transition:background .35s,color .35s,border-color .35s;will-change:transform}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid:hover{background:#2b2721}
+.btn.ghost{border-color:rgba(21,19,15,.22)}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn.sm{height:36px;padding:0 15px;font-size:13px}
+.btn .ar{transition:transform .4s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+.menu-btn{display:none}
+
+/* showcase */
+.show{position:relative;height:620vh}
+.sticky{position:sticky;top:0;height:calc(100vh - var(--strip));min-height:560px;overflow:hidden}
+.sticky .wrap{height:100%}
+.sticky .grid{height:100%;align-items:center}
+.copy{grid-column:1/span 5;position:relative;height:500px;align-self:center;margin-top:calc(var(--nav)*.5)}
+.panel{position:absolute;inset:0 0 auto 0;pointer-events:none}
+.panel.on{pointer-events:auto}
+.panel .label{margin-bottom:26px}
+.panel h2{margin-bottom:22px}
+.panel p.body{max-width:44ch}
+.panel .note{margin-top:20px;font:400 12px/1.5 var(--mono);color:var(--muted);max-width:46ch}
+.panel .fade{transition-delay:.12s}
+.panel.past .ln>span{transform:translateY(-105%);transition-duration:.7s}
+.panel:not(.on) .fade{opacity:0;transform:translateY(-8px);transition-duration:.5s;transition-delay:0s}
+.hero h1{margin-bottom:28px}
+.hero .lede{max-width:42ch;margin-bottom:34px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.stage{grid-column:6/span 7;position:relative;height:min(76vh,760px);align-self:center;margin-top:calc(var(--nav)*.5)}
+.stage{background:radial-gradient(56% 50% at 50% 55%,#E4DDD1 0%,#E8E2D8 38%,rgba(231,225,214,.55) 62%,rgba(244,241,234,0) 80%)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+.stage canvas:active{cursor:grabbing}
+.stage .cap{position:absolute;left:8%;right:8%;bottom:0;display:flex;justify-content:space-between;gap:16px;pointer-events:none}
+.stage .cap .label{font-size:10.5px}
+.rail{position:absolute;left:0;bottom:-40px;display:flex;align-items:center;gap:18px;transition:opacity .6s}
+.rail.off{opacity:0;pointer-events:none}
+.rail button{font:500 11px/1 var(--mono);letter-spacing:.08em;color:var(--muted);padding:6px 0;transition:color .4s}
+.rail button.on{color:var(--ink)}
+.rail .bar{width:120px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.rail .bar i{position:absolute;inset:0;background:var(--ink);transform-origin:left;transform:scaleX(0)}
+.rail .lbl{display:none}
+
+/* sections */
+.statement{grid-column:2/span 9}
+.statement .display{font-size:clamp(30px,3.3vw,48px);line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.statement .display .mut{color:var(--muted)}
+.cols2{grid-column:2/span 10;display:grid;grid-template-columns:1fr 1fr;gap:24px 72px;margin-top:64px}
+.sec-head{grid-column:1/span 12;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;margin-bottom:64px;align-items:last baseline}
+.sec-head .label{grid-column:1/span 3;align-self:start;padding-top:12px}
+.sec-head h2{grid-column:4/span 6}
+.sec-head .aside{grid-column:10/span 3;font-size:14px;color:var(--ink2)}
+
+.steps{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.step{padding:28px 28px 8px 0;border-right:1px solid var(--line2);min-height:250px;position:relative}
+.step + .step{padding-left:28px}
+.step:last-child{border-right:0}
+.step .n{font:500 11px/1 var(--mono);color:var(--muted);letter-spacing:.08em;margin-bottom:52px;display:block}
+.step h3{font:400 23px/1.15 var(--serif);letter-spacing:-.01em;margin-bottom:14px}
+.step p{font-size:14.5px;color:var(--ink2);line-height:1.55}
+.step::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:0;background:var(--ink);transition:width .9s var(--ease)}
+.step + .step::before{left:28px}
+.step:hover::before{width:42px}
+
+.quote{grid-column:3/span 8;text-align:left}
+.quote blockquote{font:400 clamp(26px,2.5vw,36px)/1.18 var(--serif);letter-spacing:-.014em}
+.quote blockquote::before{content:"\201C";color:var(--crimson);margin-left:-.42em;margin-right:.04em}
+.quote figcaption{margin-top:26px;display:flex;gap:14px;align-items:center}
+
+.target-copy{grid-column:4/span 6}
+.target-copy p + p{margin-top:16px}
+.metrics{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:96px}
+.metric{padding:30px 24px 30px 0}
+.metric + .metric{padding-left:24px;border-left:1px solid var(--line2)}
+.metric .v{font:400 clamp(40px,3.6vw,52px)/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums;display:block;margin-bottom:14px}
+.metric .v sup{font-size:.42em;vertical-align:.95em;margin-left:2px;color:var(--muted)}
+.metric .k{font-size:13.5px;color:var(--ink2);line-height:1.45;max-width:24ch}
+.metric .src{display:block;margin-top:10px;font:400 10.5px/1.4 var(--mono);color:var(--muted);letter-spacing:.04em}
+
+.program{grid-column:4/span 9}
+.prow{display:grid;grid-template-columns:56px 1fr 1.3fr 110px;gap:24px;padding:22px 0;border-top:1px solid var(--line);align-items:baseline}
+.prow:last-child{border-bottom:1px solid var(--line)}
+.prow .n{font:500 11px/1 var(--mono);color:var(--muted)}
+.prow h3{font:400 22px/1.2 var(--serif)}
+.prow p{font-size:14px;color:var(--ink2)}
+.prow .st{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:right}
+.prow.now .st{color:var(--crimson)}
+.prow.now .st::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--crimson);margin-right:8px;vertical-align:1px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+.prow.done .st{color:var(--ink)}
+
+.pubs{grid-column:4/span 9;margin-top:120px}
+.pub{display:grid;grid-template-columns:150px 1fr auto;gap:24px;padding:20px 0;border-top:1px solid var(--line);align-items:baseline}
+.pub:last-child{border-bottom:1px solid var(--line)}
+.pub .j{font:italic 400 19px/1.2 var(--serif)}
+.pub .t{font-size:15px;line-height:1.5}
+
+.leaders{grid-column:4/span 9;display:grid;grid-template-columns:repeat(4,minmax(0,240px));gap:48px 24px;justify-content:start}
+.person .ph{position:relative;aspect-ratio:4/5;max-width:240px;background:var(--paper);overflow:hidden;margin-bottom:16px;border-radius:2px;box-shadow:inset 0 0 0 1px var(--line)}
+.person .ph::after{content:"";position:absolute;inset:0;border:1px solid rgba(21,19,15,.14);border-radius:2px;pointer-events:none;z-index:2}
+.person .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) sepia(.12) contrast(1.03) brightness(1.02);transition:filter .9s var(--ease),transform 1.4s var(--ease);transform:scale(1.015)}
+.person:hover .ph img{filter:grayscale(0) contrast(1) brightness(1);transform:scale(1.04)}
+.person .mono{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:400 28px/1 var(--serif);color:var(--ink);letter-spacing:.02em;background:var(--paper)}
+.person .mono small{position:absolute;bottom:12px;left:12px;right:12px;font:500 10px/1 var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.person h3{font:400 19px/1.2 var(--serif);letter-spacing:-.01em}
+.person .role{margin-top:6px}
+.person .bio-t{margin-top:14px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);display:inline-flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.person .bio-t span{transition:transform .5s var(--ease);display:inline-block}
+.person .bio-t[aria-expanded=true] span{transform:rotate(45deg)}
+.person .bio{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.person .bio>div{overflow:hidden}
+.person .bio p{font-size:14px;color:var(--ink2);padding-top:14px;line-height:1.55}
+.person.open .bio{grid-template-rows:1fr}
+
+.team{grid-column:1/-1;margin-top:120px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.team .label{grid-column:1/span 3;padding-top:20px}
+.team ul{grid-column:4/span 9;list-style:none;display:grid;grid-template-columns:1fr 1fr;column-gap:24px}
+.team li{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-top:1px solid var(--line);font-size:15px}
+.team li span{color:var(--muted);font-size:13.5px;text-align:right}
+
+.support{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:40px 0}
+.support .label{grid-column:1/span 3}
+.support .logos{grid-column:4/span 9;display:flex;justify-content:space-between;gap:32px;align-items:center;flex-wrap:wrap}
+.lg{display:flex;flex-direction:column;gap:6px;opacity:.72;transition:opacity .5s}
+.lg:hover{opacity:1}
+.lg b{font:400 22px/1 var(--serif);letter-spacing:-.01em;font-weight:400;color:var(--ink)}
+.lg.sans b{font:600 16px/1 var(--sans);letter-spacing:.01em}
+.lg.caps b{font:500 14px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+.lg span{font:400 10.5px/1.3 var(--mono);color:var(--muted);letter-spacing:.04em}
+
+.news{grid-column:4/span 9}
+.nrow{display:grid;grid-template-columns:170px 1fr 24px;gap:24px;padding:24px 0;border-top:1px solid var(--line);align-items:baseline;transition:padding .5s var(--ease)}
+.nrow:last-child{border-bottom:1px solid var(--line)}
+.nrow .d{font:400 11px/1.4 var(--mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.nrow .t{font:400 21px/1.25 var(--serif);letter-spacing:-.008em}
+.nrow .a{color:var(--muted);transition:transform .5s var(--ease),color .3s}
+.nrow:hover{padding-left:10px}
+.nrow:hover .a{transform:translate(3px,-3px);color:var(--crimson)}
+
+.contact{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding-bottom:120px}
+.contact .big{grid-column:1/span 7}
+.contact .mail{display:inline-block;margin-top:34px;font:400 clamp(24px,2.4vw,34px)/1.1 var(--serif);border-bottom:1px solid var(--line);padding-bottom:6px;transition:border-color .4s}
+.contact .mail:hover{border-color:var(--crimson)}
+.contact .info{grid-column:9/span 4;display:grid;gap:28px;align-content:start;padding-top:10px}
+.contact .info p{font-size:14.5px;color:var(--ink2)}
+.contact .info .label{margin-bottom:8px}
+.contact .info a{border-bottom:1px solid var(--line)}
+
+footer{border-top:1px solid var(--line);padding:28px 0 36px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+footer .fl{display:flex;gap:28px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--ink2)}
+.dc{display:inline-flex;align-items:center;gap:12px;font:500 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.dc svg{width:22px;height:22px}
+
+.strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);z-index:50;background:var(--ink);color:#CFC9BE;display:flex;align-items:center;justify-content:center;font:400 10.5px/1 var(--mono);letter-spacing:.06em;padding:0 16px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.noscript-note{position:absolute;inset:auto 0 0 0}
+
+@media (max-width:1100px){
+  .copy{grid-column:1/span 6}.stage{grid-column:7/span 6}
+  .steps{grid-template-columns:1fr 1fr}.step:nth-child(2){border-right:0}.step:nth-child(3){padding-left:0}
+  .leaders{grid-template-columns:repeat(4,minmax(0,1fr));grid-column:1/-1}
+}
+@media (max-width:820px){
+  :root{--nav:56px;--strip:34px}
+  .links{display:none}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:16px}
+  section.sec{padding-top:112px}
+  .show{height:640vh}
+  .sticky .grid{display:block;height:100%}
+  .stage{position:absolute;left:0;right:0;top:calc(var(--nav) - 10px);height:40%;margin:0}
+  #hint{display:none}
+  .stage .cap .label{white-space:nowrap}
+  .hero .cta .ghost{display:none}
+  .hero .cta .btn{height:40px;font-size:13.5px}
+  .strip{white-space:normal;line-height:1.35;font-size:9.5px;letter-spacing:.03em;height:var(--strip)}
+  .stage .cap{left:var(--gut);right:var(--gut);bottom:-2px}
+  .copy{position:absolute;left:var(--gut);right:var(--gut);top:calc(40% + var(--nav) + 18px);height:auto;margin:0}
+  .panel h2{font-size:26px;margin-bottom:12px;max-width:none}
+  .hero h1{font-size:34px;margin-bottom:14px}
+  .hero .lede{font-size:15px;margin-bottom:18px}
+  .panel .label{margin-bottom:12px}
+  .panel p.body{font-size:14.5px;line-height:1.55}
+  .panel .note{display:none}
+  .rail{display:none}
+  .sec-head,.leaders,.statement,.cols2,.sec-head h2,.sec-head .label,.sec-head .aside,.target-copy,.program,.pubs,.news,.quote,.team .label,.team ul,.support .label,.support .logos,.contact .big,.contact .info{grid-column:1/-1}
+  .sec-head,.team,.support,.contact{grid-template-columns:1fr}
+  .sec-head{margin-bottom:40px;row-gap:16px}
+  .cols2{grid-template-columns:1fr;margin-top:36px}
+  .steps{grid-template-columns:1fr}.step,.step + .step{padding:24px 0 22px;border-right:0;min-height:0;border-bottom:1px solid var(--line2)}
+  .step .n{margin-bottom:20px}.step + .step::before{left:0}
+  .metrics{grid-template-columns:1fr 1fr;margin-top:56px}
+  .metric:nth-child(3){padding-left:0;border-left:0}.metric:nth-child(n+3){border-top:1px solid var(--line2)}
+  .prow{grid-template-columns:40px 1fr;row-gap:6px}.prow p{grid-column:2}.prow .st{grid-column:2;text-align:left}
+  .pub{grid-template-columns:1fr;gap:6px}
+  .leaders{grid-template-columns:1fr 1fr;gap:32px 16px}
+  .person h3{font-size:18px}
+  .person .role{font-size:9.5px;letter-spacing:.06em}
+  .team ul{grid-template-columns:1fr;margin-top:16px}
+  .support .logos{margin-top:24px;justify-content:flex-start;gap:28px}
+  .nrow{grid-template-columns:1fr 20px;row-gap:6px}.nrow .d{grid-column:1/-1}
+  .contact .info{margin-top:56px}
+  .quote blockquote::before{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .ln>span,.fade{transition:none!important}
+  .prow.now .st::before{animation:none}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="DaCapo Brainscience, back to top">
+      <img src="https://cdn.filestackcontent.com/AG3wH2AR3SP2Mo58NZitaz/rotate=exif:true/resize=width:400/ODIFZNuUSfSwFIFoAeka" alt="DaCapo Brainscience" width="120" height="30"
+        onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'wordmark',innerHTML:'DaCapo <i>Brainscience</i>'}))">
+    </a>
+    <nav class="links" aria-label="Primary">
+      <a href="#science">Science</a>
+      <a href="#platform">Platform</a>
+      <a href="#program">Program</a>
+      <a href="#team">Team</a>
+      <a href="#news">News</a>
+    </nav>
+    <a class="btn sm ghost mag" href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="main">
+<!-- ===== Hero + pinned showcase: one object, five states ===== -->
+<section class="show" id="top" aria-label="DaCapo science, in five states">
+  <div class="sticky">
+    <div class="wrap"><div class="grid">
+      <div class="copy" id="copy">
+        <div class="panel hero on" data-i="0">
+          <div class="label fade"><span class="dot"></span>Sporadic Parkinson's · Cambridge, MA</div>
+          <h1><span class="ln"><span>Halting</span></span><span class="ln"><span>neurodegeneration</span></span><span class="ln"><span>at the point of <em>progression.</em></span></span></h1>
+          <p class="body lede fade">DaCapo Brainscience develops therapies to halt the progression of neurodegenerative disease. We combine data science with aged human neurons to find small molecules that may slow or stop it: a trial in a dish.</p>
+          <div class="cta fade">
+            <a class="btn solid mag" href="#s1" data-p="0.95">See the science <span class="ar">→</span></a>
+            <a class="btn ghost mag" href="mailto:hello@dacapobrain.com">hello@dacapobrain.com</a>
+          </div>
+        </div>
+        <div class="panel" data-i="1" id="s1">
+          <div class="label fade"><b>01</b> · Progression</div>
+          <h2><span class="ln"><span>Parkinson's is a disease</span></span><span class="ln"><span>of <em>progression</em>.</span></span></h2>
+          <p class="body fade">Most approaches address risk factors, or only rare inherited forms. The largest unmet need is a medicine that changes what happens after diagnosis, especially in sporadic disease, where there is no known inherited cause.</p>
+          <p class="note fade">Distal branches fade and retract: the neuron's reach is lost first.</p>
+        </div>
+        <div class="panel" data-i="2">
+          <div class="label fade"><b>02</b> · A trial in a dish</div>
+          <h2><span class="ln"><span>Aged human neurons,</span></span><span class="ln"><span>many patients at once.</span></span></h2>
+          <p class="body fade">Neurons made from human iPS cells are modeled in an aged state, where disease phenotypes such as α‑synuclein inclusions can emerge. A Michael J. Fox Foundation–funded program pools up to 100 iPSC lines from PPMI participants to compare fast and slow progressors.</p>
+          <p class="note fade">Some lines hold their branches and some lose them. Susceptibility differs from patient to patient.</p>
+        </div>
+        <div class="panel" data-i="3">
+          <div class="label fade"><b>03</b> · Network biology</div>
+          <h2><span class="ln"><span>Network biology</span></span><span class="ln"><span>finds the <em>target</em>.</span></span></h2>
+          <p class="body fade">Progression analytics draw insight from small, sparse human datasets. Network biology maps those signals across gene and protein networks to prioritize the drivers. DaCapo reports a novel target, present in an estimated 20–30% of people with Parkinson's.</p>
+          <p class="note fade">The highlighted node is illustrative. The target's identity is proprietary.</p>
+        </div>
+        <div class="panel" data-i="4">
+          <div class="label fade"><b>04</b> · Chemistry</div>
+          <h2><span class="ln"><span>A molecule enters.</span></span><span class="ln"><span>The branches <em>return</em>.</span></span></h2>
+          <p class="body fade">DaCapo is screening brain‑penetrant small molecules against its target. Mechanism‑linked phenotypic assays move the work from target to lead.</p>
+          <p class="note fade">This shows the program's goal, not a result.</p>
+        </div>
+        <div class="panel" data-i="5">
+          <div class="label fade"><b>05</b> · Da capo</div>
+          <h2><span class="ln"><span>From the</span></span><span class="ln"><span><em>beginning</em>.</span></span></h2>
+          <p class="body fade">In music, <em>da capo</em> tells the players to return to the opening bar. We start with human data and don't assume that existing ideas about disease biology are correct. Every program begins there again.</p>
+        </div>
+        <div class="rail off" id="rail" aria-label="Showcase steps">
+          <button data-p="0.95">01</button><button data-p="1.95">02</button><button data-p="2.95">03</button><button data-p="3.95">04</button><button data-p="4.95">05</button>
+          <span class="bar"><i id="railbar"></i></span>
+        </div>
+      </div>
+      <figure class="stage" id="stage">
+        <canvas id="gl" aria-label="Interpretive visualization: a glass dish holding a single neuron, drawn in ink" role="img"></canvas>
+        <figcaption class="cap"><span class="label">Interpretive visualization · not data</span><span class="label" id="hint">Drag to rotate</span></figcaption>
+      </figure>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== Statement ===== -->
+<section class="sec" id="science">
+  <div class="wrap"><div class="grid">
+    <div class="statement" data-reveal>
+      <div class="label fade" style="margin-bottom:34px">The unmet need</div>
+      <p class="display" style="max-width:none"><span class="ln"><span>Medicines for <em>progression</em>, not just risk.</span></span><span class="ln"><span class="mut">Treatments for the many people whose</span></span><span class="ln"><span class="mut">Parkinson's has no inherited cause.</span></span></p>
+    </div>
+    <div class="cols2" data-reveal>
+      <p class="body fade">The largest unmet need in neurodegeneration is a medicine that treats disease progression, especially in sporadic disease. Most approaches address risk factors after symptoms appear, or target only rare inherited forms.</p>
+      <p class="body fade">To reach progression, new targets have to be found and drugged. Parkinson's is heterogeneous, so DaCapo's approach is built to identify patient subgroups and match treatments to them.</p>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== Platform ===== -->
+<section class="sec" id="platform">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head" data-reveal>
+      <div class="label fade">Platform</div>
+      <h2><span class="ln"><span>Four disciplines,</span></span><span class="ln"><span>one line of evidence.</span></span></h2>
+      <p class="aside fade">The work begins with human data and ends with human cells. Nothing is borrowed from models built on assumptions.</p>
+    </div>
+    <div class="steps" data-reveal>
+      <div class="step fade"><span class="n">01</span><h3>Progression analytics</h3><p>Insight from small, sparse human datasets: who progresses fast, who slowly, and what sets them apart.</p></div>
+      <div class="step fade" style="transition-delay:.22s"><span class="n">02</span><h3>Network biology</h3><p>Progression‑associated signals mapped across gene and protein networks to prioritize the drivers of disease.</p></div>
+      <div class="step fade" style="transition-delay:.29s"><span class="n">03</span><h3>Aged human iPS‑cell neurons</h3><p>Mature, aged human neurons in which phenotypes such as α‑synuclein inclusions emerge: a clinical trial in a dish.</p></div>
+      <div class="step fade" style="transition-delay:.36s"><span class="n">04</span><h3>Chemistry &amp; phenotypic screening</h3><p>Mechanism‑linked assays move from target to lead with brain‑penetrant small molecules.</p></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== Studer quote ===== -->
+<section class="sec">
+  <div class="wrap"><div class="grid">
+    <figure class="quote" data-reveal>
+      <blockquote class="fade">This platform functions as a true ‘trial in a dish.’</blockquote>
+      <figcaption class="fade"><span class="label"><b>Lorenz Studer, MD</b> · Cofounder</span><span class="label">January 2026</span></figcaption>
+    </figure>
+  </div></div>
+</section>
+
+<!-- ===== Target ===== -->
+<section class="sec" id="program">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head" data-reveal style="margin-bottom:40px">
+      <div class="label fade">Targeting sporadic Parkinson's</div>
+      <h2><span class="ln"><span>The first known drug target linked</span></span><span class="ln"><span>specifically to <em>progression</em>.</span></span></h2>
+    </div>
+    <div class="target-copy" data-reveal>
+      <p class="body fade">The target connects to α‑synuclein biology and a disease‑associated pathway. When that pathway is disrupted, it can lead to protein misfolding, synaptic dysfunction and neurodegeneration. Sporadic Parkinson's is the most common form of the disease and arises without a defined inherited mutation.</p>
+      <p class="body fade">The target may also serve as a biomarker to stratify patients, so that clinical trials enroll the people predicted to respond. That makes trials more precise and more likely to succeed. The work is supported in part by a grant from The Michael J. Fox Foundation for Parkinson's Research.</p>
+    </div>
+    <div class="metrics tnum" data-reveal>
+      <div class="metric fade"><span class="v" data-count="1.1" data-dec="1">1.1<sup>M</sup></span><span class="k">people in the United States live with Parkinson's</span><span class="src">Our science</span></div>
+      <div class="metric fade"><span class="v"><span data-count="30">30</span><sup>%</sup></span><span class="k">up to this share of sporadic patients could be affected by a therapy against the target</span><span class="src">Company estimate</span></div>
+      <div class="metric fade"><span class="v" data-count="100">100</span><span class="k">PPMI participant iPSC lines, up to this number, pooled in the MJFF‑funded program</span><span class="src">MJFF grant</span></div>
+      <div class="metric fade"><span class="v" data-count="2022" data-plain="1">2022</span><span class="k">began operations, at LabCentral in Cambridge, MA</span><span class="src">About us</span></div>
+    </div>
+
+    <div class="program" data-reveal style="margin-top:120px">
+      <div class="label fade" style="margin-bottom:28px">Where the program stands</div>
+      <div class="prow done fade"><span class="n">01</span><h3>Target identified</h3><p>A progression‑linked target in sporadic PD, found with network biology and AI.</p><span class="st">Done</span></div>
+      <div class="prow now fade"><span class="n">02</span><h3>Screening</h3><p>Brain‑penetrant small molecules against the target.</p><span class="st">Now</span></div>
+      <div class="prow fade"><span class="n">03</span><h3>Lead optimization</h3><p>New molecules, with assays to support them (an MJFF program goal).</p><span class="st">Next</span></div>
+      <div class="prow fade"><span class="n">04</span><h3>Clinic</h3><p>Leadership's stated aim: to become a clinical‑stage drug developer.</p><span class="st">Aim</span></div>
+    </div>
+
+    <div class="pubs" data-reveal>
+      <div class="label fade" style="margin-bottom:28px">Publications</div>
+      <div class="pub fade"><span class="j">Cell Stem Cell</span><span class="t">Genome‑wide CRISPR screen identifies neddylation as a regulator of neuronal aging and AD neurodegeneration</span></div>
+      <div class="pub fade"><span class="j">Neuron</span><span class="t">Rapid iPSC inclusionopathy models shed light on formation, consequence, and molecular subtype of α‑synuclein inclusions</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== Team ===== -->
+<section class="sec" id="team">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head" data-reveal>
+      <div class="label fade">Leadership</div>
+      <h2><span class="ln"><span>Drug hunters, stem‑cell biologists</span></span><span class="ln"><span>and quants, in <em>one room</em>.</span></span></h2>
+      <p class="aside fade">DaCapo began operations in 2022 and is based at LabCentral in Cambridge, MA.</p>
+    </div>
+    <div class="leaders" data-reveal>
+      <article class="person fade">
+        <div class="ph"><div class="mono">LW</div><img loading="lazy" alt="Leslie Williams" src="https://cdn.filestackcontent.com/AG3wH2AR3SP2Mo58NZitaz/rotate=exif:true/resize=width:600/2Hykj1gmQLC65bFTM4zS" onerror="this.remove()"></div>
+        <h3>Leslie Williams</h3><div class="label role">President &amp; Chief Executive Officer</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>More than 25 years founding and leading life science companies, including HC Bioscience, ImmusanT, Ventaira Pharmaceuticals and INO Therapeutics, raising more than $300 million in venture and non‑dilutive funding. Board service includes BIO, MassBio, Ocular Therapeutix and Axelyf. Former Operating Partner at Accelerator Life Science Partners; trained as a critical‑care nurse. MBA, Olin School of Business, Washington University; B.S. in Nursing/Biology, University of Iowa.</p></div></div>
+      </article>
+      <article class="person fade">
+        <div class="ph"><div class="mono">WH</div><img loading="lazy" alt="Warren Hirst, PhD" src="https://cdn.filestackcontent.com/AG3wH2AR3SP2Mo58NZitaz/rotate=exif:true/resize=width:600/ByM3Fd4NSAGcOUsKyVqa" onerror="this.remove()"></div>
+        <h3>Warren Hirst, PhD</h3><div class="label role">Chief Scientific Officer</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>More than 25 years of neurodegeneration drug R&amp;D at Biogen, Pfizer, Wyeth, GSK and SmithKline Beecham; joined DaCapo in January 2024. Has led teams that advanced three molecules into clinical trials and published more than 90 peer‑reviewed papers. Longstanding relationship with The Michael J. Fox Foundation (2019 Bill Langston Award); member of the Parkinson's Foundation Executive Scientific Advisory Board. B.Sc. in biochemistry and Ph.D. in molecular neurobiology, Imperial College London.</p></div></div>
+      </article>
+      <article class="person fade">
+        <div class="ph"><div class="mono">MM</div><img loading="lazy" alt="Mridul Mehta, PhD" src="https://cdn.filestackcontent.com/AG3wH2AR3SP2Mo58NZitaz/rotate=exif:true/resize=width:600/laNXNNQrOB0xrAajMVsA" onerror="this.remove()"></div>
+        <h3>Mridul Mehta, PhD</h3><div class="label role">Chief Technology Officer</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>Also Head of Computational Research; with DaCapo since 2021. Previously more than 15 years in quantitative finance, including as European head of equity high‑frequency trading at Citadel Investment Group. Advises several AI/ML startups. PhD in mathematics (algebraic geometry), University of Chicago; research fellow, Max Planck Institute.</p></div></div>
+      </article>
+      <article class="person fade">
+        <div class="ph"><div class="mono">MP</div><img loading="lazy" alt="Matthew Peck" src="https://cdn.filestackcontent.com/AG3wH2AR3SP2Mo58NZitaz/rotate=exif:true/resize=width:600/JMlPGd3BS0ite8ofLwnr" onerror="this.remove()"></div>
+        <h3>Matthew Peck</h3><div class="label role">Founder &amp; Senior Advisor</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>Cofounder and former interim CEO. At macro hedge fund Caxton Associates from 2007 to 2019 (Partner from 2013), running an emerging‑markets macro book; earlier roles at Dimaio Ahmad Capital, Citigroup and Salomon Brothers. Dartmouth College, 1994.</p></div></div>
+      </article>
+      <article class="person fade">
+        <div class="ph"><div class="mono">LS</div></div>
+        <h3>Lorenz Studer, MD</h3><div class="label role">Founder &amp; Consultant</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>Scientific cofounder. Director of the Center for Stem Cell Biology at Memorial Sloan Kettering Cancer Center, whose lab studies how human stem‑cell‑derived neurons mature and age.</p></div></div>
+      </article>
+      <article class="person fade">
+        <div class="ph"><div class="mono">VK</div></div>
+        <h3>Vikram (Vik) Khurana, MD, PhD</h3><div class="label role">Founder &amp; Senior Advisor</div>
+        <button class="bio-t" aria-expanded="false">Bio <span>+</span></button>
+        <div class="bio"><div><p>Cofounder. Tracy T. Batchelor Endowed Chair and Chief, Division of Movement Disorders, Massachusetts General and Brigham and Women's Hospitals, where his group built rapid iPSC “inclusionopathy” models of α‑synuclein inclusions.</p></div></div>
+      </article>
+    </div>
+
+    <div class="team" data-reveal>
+      <div class="label fade">The team</div>
+      <ul class="fade">
+        <li>Elizabeth Calder, PhD <span>Senior Scientist</span></li>
+        <li>Menachem Drogin, MSc <span>Research Associate II</span></li>
+        <li>Allison R. McLean, MSc <span>Senior Computational Biologist</span></li>
+        <li>Tejashree Modak, PhD <span>Bioinformatics Scientist II</span></li>
+        <li>Ashwin Shankar Shetty, PhD <span>Senior Scientist</span></li>
+        <li>Sreelipi Sreebhashyam, MSc <span>Senior Research Associate</span></li>
+        <li>Harish Swaminathan, PhD <span>Senior Computational Scientist</span></li>
+        <li>Ping Xu, BSc <span>Staff Scientist II</span></li>
+      </ul>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== Peck quote + support ===== -->
+<section class="sec">
+  <div class="wrap"><div class="grid">
+    <figure class="quote" data-reveal>
+      <blockquote class="fade">From inception, our vision has been to address neurodegenerative diseases at the point of progression.</blockquote>
+      <figcaption class="fade"><span class="label"><b>Matthew Peck</b> · Cofounder &amp; Senior Advisor</span><span class="label">January 2026</span></figcaption>
+    </figure>
+  </div></div>
+  <div class="wrap" style="margin-top:140px"><div class="grid">
+    <div class="support" data-reveal>
+      <div class="label fade">Funding &amp; home</div>
+      <div class="logos fade">
+        <div class="lg"><b>The Michael J. Fox Foundation</b><span>Research grant</span></div>
+        <div class="lg caps"><b>LabCentral</b><span>Cambridge, MA</span></div>
+        <div class="lg sans"><b>DNS Capital</b><span>Seed, reported $20M · June 2025</span></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== News ===== -->
+<section class="sec" id="news">
+  <div class="wrap"><div class="grid">
+    <div class="sec-head" data-reveal>
+      <div class="label fade">News &amp; press</div>
+      <h2><span class="ln"><span>In the news.</span></span></h2>
+    </div>
+    <div class="news" data-reveal>
+      <a class="nrow fade" href="https://www.biospace.com/press-releases/dacapo-brainscience-appoints-leslie-williams-as-president-chief-executive-officer-announces-mridul-mehta-phd-as-chief-technology-officer-and-promotes-warren-hirst-phd-to-chief-scientific-officer" target="_blank" rel="noopener"><span class="d">Jan 12, 2026 · Press release</span><span class="t">DaCapo appoints Leslie Williams President &amp; CEO, names Mridul Mehta, PhD, CTO and promotes Warren Hirst, PhD, to CSO</span><span class="a">↗</span></a>
+      <a class="nrow fade" href="https://www.michaeljfox.org/grant/novel-small-molecules-slow-pd-progression-genetically-defined-subset-people-pd" target="_blank" rel="noopener"><span class="d">Michael J. Fox Foundation · Grant</span><span class="t">Novel small molecules to slow PD progression in a genetically defined subset of people with PD</span><span class="a">↗</span></a>
+      <a class="nrow fade" href="https://news.harvard.edu/gazette/story/2024/08/advanced-parkinsons-in-a-dish-model-accelerates-research/" target="_blank" rel="noopener"><span class="d">Harvard Gazette · Aug 2024</span><span class="t">Faster ‘in a dish’ model may speed up treatment for Parkinson's</span><span class="a">↗</span></a>
+      <a class="nrow fade" href="https://www.mskcc.org/news/msk-researchers-hack-neurons-internal-clocks-to-accelerate-study-of-neurological-diseases" target="_blank" rel="noopener"><span class="d">Memorial Sloan Kettering</span><span class="t">MSK researchers hack neurons' internal clocks to accelerate the study of neurological diseases</span><span class="a">↗</span></a>
+    </div>
+  </div></div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="sec" id="contact">
+  <div class="wrap"><div class="grid">
+    <div class="contact" data-reveal>
+      <div class="big">
+        <div class="label fade" style="margin-bottom:30px">D.C. · Contact</div>
+        <h2><span class="ln"><span>Start a conversation,</span></span><span class="ln"><span><em>from the beginning</em>.</span></span></h2>
+        <a class="mail fade" href="mailto:hello@dacapobrain.com">hello@dacapobrain.com</a>
+      </div>
+      <div class="info">
+        <div class="fade"><div class="label">Lab</div><p>LabCentral<br>238 Main Street, Cambridge, MA 02142</p></div>
+        <div class="fade"><div class="label">Careers</div><p>We're not actively hiring right now, but we'd like to hear from smart, curious people: <a href="mailto:careers@dacapobrain.com">careers@dacapobrain.com</a></p></div>
+        <div class="fade"><div class="label">Elsewhere</div><p><a href="https://www.linkedin.com/company/dacapo-brainscience/" target="_blank" rel="noopener">LinkedIn ↗</a></p></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fl"><span class="wordmark" style="font-size:18px">DaCapo <i>Brainscience</i></span><span>© 2026 DaCapo Brainscience</span></div>
+    <button class="dc mag" id="dacapo" aria-label="Da capo: return to the beginning and regrow the neuron">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><path d="M7 4v16M10 4v16"/><circle cx="16" cy="9.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="16" cy="14.5" r="1.1" fill="currentColor" stroke="none"/></svg>
+      Da capo · from the beginning
+    </button>
+  </div>
+</footer>
+<div class="strip" role="note">Redesign concept by Max C · Not affiliated with or endorsed by DaCapo Brainscience</div>
+
+<script>
+(()=>{
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = s=>document.querySelector(s), $$ = s=>Array.from(document.querySelectorAll(s));
+const clamp=(x,a,b)=>x<a?a:x>b?b:x;
+const ss=(a,b,x)=>{x=clamp((x-a)/(b-a),0,1);return x*x*(3-2*x)};
+const nav=$('#nav'), show=$('.show'), panels=$$('.panel'), railBtns=$$('#rail button'), railbar=$('#railbar');
+const PMAX=5.2;
+
+/* ---------- smooth wheel scroll (lerp), native everywhere else ---------- */
+let sT=scrollY, sC=scrollY, smoothing=false;
+const maxScroll=()=>document.documentElement.scrollHeight-innerHeight;
+function sTick(){ sC+=(sT-sC)*0.11; if(Math.abs(sT-sC)<0.6){sC=sT;smoothing=false;} scrollTo(0,sC); if(smoothing) requestAnimationFrame(sTick); }
+function scrollToY(y,instant){ sT=clamp(y,0,maxScroll()); if(reduce||instant){sC=sT;smoothing=false;scrollTo(0,sT);return;} if(!smoothing){smoothing=true;sC=scrollY;requestAnimationFrame(sTick);} }
+if(!reduce) addEventListener('wheel',e=>{ if(e.ctrlKey||e.defaultPrevented) return; e.preventDefault(); if(!smoothing) sC=scrollY; sT=clamp((smoothing?sT:scrollY)+e.deltaY*(e.deltaMode===1?36:e.deltaMode===2?innerHeight:1),0,maxScroll()); if(!smoothing){smoothing=true;requestAnimationFrame(sTick);} },{passive:false});
+addEventListener('scroll',()=>{ if(!smoothing){sT=sC=scrollY;} onScroll(); },{passive:true});
+
+const showTop=()=>show.offsetTop, showLen=()=>show.offsetHeight-innerHeight;
+function yForP(p){ return showTop()+p/PMAX*showLen(); }
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const id=a.getAttribute('href'); if(id==='#'||id==='#main') return;
+  e.preventDefault();
+  if(a.dataset.p){scrollToY(yForP(+a.dataset.p));return;}
+  if(id==='#top'){scrollToY(0);return;}
+  const el=$(id); if(el) scrollToY(el.getBoundingClientRect().top+scrollY-(id==='#s1'?0:40));
+}));
+railBtns.forEach(b=>b.addEventListener('click',()=>scrollToY(yForP(+b.dataset.p))));
+
+/* ---------- panels ---------- */
+let pTarget=0, curPanel=0;
+const ranges=[0.42,1.42,2.42,3.42,4.42];
+function panelFor(p){ let i=0; for(let k=0;k<5;k++) if(p>=ranges[k]) i=k+1; return i; }
+function onScroll(){
+  nav.classList.toggle('solid', scrollY>24);
+  const L=showLen(); pTarget=clamp((scrollY-showTop())/L,0,1)*PMAX;
+  const i=panelFor(pTarget);
+  if(i!==curPanel){ panels.forEach((el,k)=>{el.classList.toggle('on',k===i);el.classList.toggle('past',k<i);}); railBtns.forEach((b,k)=>b.classList.toggle('on',k+1===i)); $('#rail').classList.toggle('off',i===0); curPanel=i; }
+  railbar.style.transform='scaleX('+clamp((pTarget-0.42)/(PMAX-0.42),0,1).toFixed(4)+')';
+  GL.wake();
+}
+
+/* ---------- reveal on enter ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); countUp(e.target);} }),{rootMargin:'0px 0px -12% 0px'});
+$$('[data-reveal]').forEach(el=>io.observe(el));
+function countUp(root){
+  root.querySelectorAll('[data-count]').forEach(el=>{
+    const tgt=+el.dataset.count, dec=+(el.dataset.dec||0), plain=el.dataset.plain, sup=el.querySelector('sup'), supH=sup?sup.outerHTML:'';
+    if(reduce||plain) return;
+    const t0=performance.now(), from=dec?0:Math.round(tgt*0.6);
+    const step=t=>{ const k=clamp((t-t0)/1400,0,1), e=1-Math.pow(1-k,4); el.innerHTML=(from+(tgt-from)*e).toFixed(dec)+supH; if(k<1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
+}
+
+/* ---------- bios ---------- */
+$$('.bio-t').forEach(b=>b.addEventListener('click',()=>{ const p=b.closest('.person'); const o=!p.classList.contains('open'); p.classList.toggle('open',o); b.setAttribute('aria-expanded',o); }));
+
+/* ---------- magnetic buttons ---------- */
+if(!reduce && matchMedia('(pointer:fine)').matches) $$('.mag').forEach(el=>{
+  el.addEventListener('pointermove',e=>{ const r=el.getBoundingClientRect(); const x=(e.clientX-r.left-r.width/2)/r.width, y=(e.clientY-r.top-r.height/2)/r.height; el.style.transform=`translate(${(x*7).toFixed(2)}px,${(y*6).toFixed(2)}px)`; });
+  el.addEventListener('pointerleave',()=>{ el.style.transition='transform .6s cubic-bezier(.2,.7,.1,1)'; el.style.transform=''; setTimeout(()=>el.style.transition='',600); });
+});
+
+/* =====================================================================
+   WebGL2: glass dish + ink neuron
+   ===================================================================== */
+const GL=(()=>{
+const cv=$('#gl'), stage=$('#stage');
+let gl=null, ok=false, lost=false, W=1, H=1, DPR=1, running=false, visible=true, dirty=true;
+let pS=0, t=0, last=0, intro=reduce?1:0, introT0=-1, dcReplay=-1;
+let yaw=0.62, yawV=0, drag=false, dragX=0, autoYaw=0;
+let frames=0, failed=false, frozen=false, introOff=0;
+const AGAR=0.072, SOMA_Y=AGAR+0.034;
+
+/* ---- deterministic RNG ---- */
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+
+/* ---- neuron geometry: tapered branching filaments ---- */
+function buildNeuron(){
+  const R=mulberry(20221);
+  const br=[]; let maxD=0;
+  const yAt=(d,x,z)=>AGAR+0.0015+0.031*Math.exp(-d/0.045)+0.004*Math.sin(x*23+z*17)*Math.min(1,d*8);
+  function grow(x,z,ang,len,w,depth,d,curv0,axon){
+    const step=axon?0.012:0.0105, n=Math.max(4,Math.round(len/step));
+    const pts=[]; let a=ang, cx=x, cz=z, curv=curv0;
+    pts.push([cx,yAt(d,cx,cz),cz,w,d]);
+    for(let i=1;i<=n;i++){
+      curv+=(R()-.5)*(axon?0.03:0.06); curv*=0.86; a+=curv;
+      const r=Math.hypot(cx,cz);
+      if(r>0.74){ const toC=Math.atan2(-cz,-cx); let da=toC-a; da=Math.atan2(Math.sin(da),Math.cos(da)); a+=da*0.12*(r-0.74)/0.1; }
+      cx+=Math.cos(a)*step; cz+=Math.sin(a)*step; d+=step;
+      const ww=w*(1-0.42*i/n);
+      pts.push([cx,yAt(d,cx,cz),cz,ww,d]);
+    }
+    if(d>maxD) maxD=d;
+    br.push(pts);
+    if(depth>0){
+      const k=R()<0.88?2:1;
+      for(let j=0;j<k;j++){
+        const sp=(0.28+R()*0.34)*(j?1:-1)+(k===1?(R()-.5)*0.6:0);
+        grow(cx,cz,a+sp,len*(0.6+R()*0.22),w*0.64,depth-1,d,curv*0.5,false);
+      }
+    } else { const L=pts.length; for(let q=1;q<=Math.min(4,L-1);q++) pts[L-q][3]*=0.18+0.2*(q-1); }
+  }
+  const axAng=-0.35;
+  const NP=7;
+  for(let i=0;i<NP;i++){
+    let a=axAng+Math.PI*0.32+i*(Math.PI*1.36*2/2/NP)*1.05+(R()-.5)*0.25;
+    grow(Math.cos(a)*0.03,Math.sin(a)*0.03,a,0.12+R()*0.07,0.0105,4,0.03,0,false);
+  }
+  // axon: long, thin, then a terminal arbor
+  (function(){
+    const pts=[]; let a=axAng, cx=Math.cos(a)*0.035, cz=Math.sin(a)*0.035, d=0.035, curv=0; const w0=0.0062;
+    const n=58;
+    for(let i=0;i<=n;i++){
+      if(i){ curv+=(R()-.5)*0.025; curv*=0.9; a+=curv+0.006; cx+=Math.cos(a)*0.0118; cz+=Math.sin(a)*0.0118; d+=0.0118; }
+      pts.push([cx,yAt(d,cx,cz),cz,w0*(1-0.35*i/n),d]);
+    }
+    br.push(pts);
+    for(let j=0;j<3;j++) grow(cx,cz,a+(j-1)*0.55,0.075+R()*0.04,0.0034,3,d,0,true);
+  })();
+  // pack: per point two verts. layout: pos3 prev3 next3 side w d  = 12 floats
+  let nv=0, ni=0; for(const b of br){ nv+=b.length*2; ni+=(b.length-1)*6; }
+  const V=new Float32Array(nv*12), I=new Uint16Array(ni); let v=0, ix=0, base=0;
+  for(const b of br){
+    const m=b.length;
+    for(let i=0;i<m;i++){
+      const p=b[i], pp=b[Math.max(0,i-1)], pn=b[Math.min(m-1,i+1)];
+      for(let s=-1;s<=1;s+=2){
+        V[v++]=p[0];V[v++]=p[1];V[v++]=p[2]; V[v++]=pp[0];V[v++]=pp[1];V[v++]=pp[2]; V[v++]=pn[0];V[v++]=pn[1];V[v++]=pn[2];
+        V[v++]=s; V[v++]=p[3]; V[v++]=p[4]/maxD;
+      }
+    }
+    for(let i=0;i<m-1;i++){ const a=base+i*2; I[ix++]=a;I[ix++]=a+1;I[ix++]=a+2; I[ix++]=a+1;I[ix++]=a+3;I[ix++]=a+2; }
+    base+=m*2;
+  }
+  return {V,I,count:ni,branches:br,maxD};
+}
+
+/* ---- network above the dish ---- */
+function buildNetwork(){
+  const R=mulberry(77);
+  const N=30, nodes=[];
+  for(let i=0;i<N;i++){ let x,z; do{ x=(R()*2-1)*0.78; z=(R()*2-1)*0.78; }while(x*x+z*z>0.6); nodes.push([x,0.66+(R()-.5)*0.2+0.05*Math.cos(x*3),z,0]); }
+  // target: nearest to a chosen spot
+  let tgt=0, best=9; for(let i=0;i<N;i++){ const n=nodes[i]; const d=Math.hypot(n[0]-0.06,n[2]+0.02); if(d<best){best=d;tgt=i;} }
+  const edges=new Set(); const key=(a,b)=>a<b?a+'-'+b:b+'-'+a;
+  for(let i=0;i<N;i++){
+    const ds=nodes.map((n,j)=>[Math.hypot(n[0]-nodes[i][0],n[1]-nodes[i][1],n[2]-nodes[i][2]),j]).sort((a,b)=>a[0]-b[0]);
+    edges.add(key(i,ds[1][1])); edges.add(key(i,ds[2][1])); if(R()<0.35) edges.add(key(i,ds[3][1]));
+  }
+  const E=[...edges].map(s=>s.split('-').map(Number));
+  // BFS reveal order from 3 seeds
+  const adj=nodes.map(()=>[]); E.forEach(([a,b])=>{adj[a].push(b);adj[b].push(a);});
+  const dist=new Array(N).fill(99), q=[]; [3,17,26].forEach(s=>{dist[s]=0;q.push(s);});
+  while(q.length){ const a=q.shift(); for(const b of adj[a]) if(dist[b]>dist[a]+1){dist[b]=dist[a]+1;q.push(b);} }
+  let md=0; dist.forEach(d=>{ if(d<99&&d>md) md=d; });
+  nodes.forEach((n,i)=>n[3]=(dist[i]>=99?md:dist[i])/(md+1)*0.9);
+  const SEG=10; const nv=E.length*(SEG+1)*2, V=new Float32Array(nv*12), I=new Uint16Array(E.length*SEG*6); let v=0,ix=0,base=0;
+  const P=new Float32Array((SEG+1)*3), Dd=new Float32Array(SEG+1);
+  for(let [a,b] of E){
+    if(nodes[a][3]>nodes[b][3]){const t=a;a=b;b=t;}
+    const A=nodes[a], B=nodes[b];
+    const mx=(A[0]+B[0])/2, my=(A[1]+B[1])/2+0.035, mz=(A[2]+B[2])/2;
+    for(let k=0;k<=SEG;k++){ const u=k/SEG, iu=1-u;
+      P[k*3]=iu*iu*A[0]+2*iu*u*mx+u*u*B[0]; P[k*3+1]=iu*iu*A[1]+2*iu*u*my+u*u*B[1]; P[k*3+2]=iu*iu*A[2]+2*iu*u*mz+u*u*B[2];
+      Dd[k]=A[3]+(B[3]-A[3]+0.08)*u; }
+    for(let k=0;k<=SEG;k++){ const kp=Math.max(0,k-1), kn=Math.min(SEG,k+1);
+      for(let s=-1;s<=1;s+=2){ V[v++]=P[k*3];V[v++]=P[k*3+1];V[v++]=P[k*3+2]; V[v++]=P[kp*3];V[v++]=P[kp*3+1];V[v++]=P[kp*3+2]; V[v++]=P[kn*3];V[v++]=P[kn*3+1];V[v++]=P[kn*3+2]; V[v++]=s;V[v++]=0.0024;V[v++]=Dd[k]; } }
+    for(let k=0;k<SEG;k++){ const q0=base+k*2; I[ix++]=q0;I[ix++]=q0+1;I[ix++]=q0+2;I[ix++]=q0+1;I[ix++]=q0+3;I[ix++]=q0+2; }
+    base+=(SEG+1)*2;
+  }
+  return {nodes,tgt,V,I,count:I.length};
+}
+
+/* ---- lathe meshes (dish, agar) ---- */
+function lathe(prof,seg){
+  const n=prof.length, nrm=[];
+  for(let i=0;i<n;i++){ const a=prof[Math.max(0,i-1)], b=prof[Math.min(n-1,i+1)]; let tx=b[0]-a[0], ty=b[1]-a[1]; const l=Math.hypot(tx,ty)||1; nrm.push([ty/l,-tx/l]); }
+  const V=new Float32Array((seg+1)*n*7), I=new Uint32Array(seg*(n-1)*6); let v=0, ix=0;
+  for(let j=0;j<=seg;j++){ const th=j/seg*Math.PI*2, c=Math.cos(th), s=Math.sin(th);
+    for(let i=0;i<n;i++){ const p=prof[i], q=nrm[i]; V[v++]=p[0]*c;V[v++]=p[1];V[v++]=p[0]*s; V[v++]=q[0]*c;V[v++]=q[1];V[v++]=q[0]*s; V[v++]=p[2]; } }
+  for(let j=0;j<seg;j++) for(let i=0;i<n-1;i++){ const a=j*n+i, b=(j+1)*n+i; I[ix++]=a;I[ix++]=b;I[ix++]=a+1;I[ix++]=a+1;I[ix++]=b;I[ix++]=b+1; }
+  return {V,I,count:I.length};
+}
+function arc(out,cx,cy,r,a0,a1,steps,part){ for(let k=0;k<=steps;k++){ const a=a0+(a1-a0)*k/steps; out.push([cx+Math.cos(a)*r,cy+Math.sin(a)*r,part]); } }
+function dishProfile(){
+  const P=[]; const F=0.034;
+  P.push([0,F,0],[0.45,F,0],[0.86,F,0],[0.93,F,0]);
+  arc(P,0.93,F+0.028,0.028,-Math.PI/2,0,10,1);          // inner fillet
+  P.push([0.958,0.11,1],[0.958,0.17,1]);
+  arc(P,0.9705,0.198,0.0125,Math.PI,0,16,1);           // rounded lip (bottom of half circle at inner wall)
+  P.push([0.983,0.17,1],[0.983,0.09,1]);
+  arc(P,0.953,0.03,0.03,0,-Math.PI/2,10,1);             // outer fillet
+  P.push([0.86,0,0],[0.45,0,0],[0,0,0]);
+  // fix wall continuity: replace the straight segment ends to meet the lip
+  return P;
+}
+function agarProfile(){ const P=[[0,AGAR,0],[0.5,AGAR,0],[0.86,AGAR,0],[0.92,AGAR+0.002,0],[0.945,AGAR+0.007,0],[0.955,AGAR+0.016,0]]; return P; }
+
+/* ---- shaders ---- */
+const HDR='#version 300 es\nprecision highp float;\n';
+const ACES='vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.);}\n';
+const VS_FS=HDR+`const vec2 P[3]=vec2[3](vec2(-1,-1),vec2(3,-1),vec2(-1,3));void main(){gl_Position=vec4(P[gl_VertexID],0,1);}`;
+const FS_BLIT=HDR+`uniform sampler2D uT;out vec4 o;void main(){o=texelFetch(uT,ivec2(gl_FragCoord.xy),0);}`;
+const VS_RIP=HDR+`layout(location=0) in vec2 aP;uniform mat4 uVP;uniform float uY;out vec2 vX;void main(){vX=aP*.955;gl_Position=uVP*vec4(vX.x,uY,vX.y,1.);}`;
+const FS_RIP=HDR+`in vec2 vX;uniform vec4 uRip;uniform vec3 uCr;out vec4 o;void main(){
+  float rr=length(vX); if(rr>.955) discard;
+  float aa=fwidth(rr)*1.2;
+  float ring=smoothstep(.010+aa,.0,abs(rr-uRip.z))*uRip.w;
+  float ring2=smoothstep(.008+aa,.0,abs(rr-uRip.z*.62))*uRip.w*.45;
+  float haze=exp(-rr*rr/max(uRip.z*uRip.z*.45,.0004))*uRip.w*smoothstep(0.,.2,uRip.z);
+  float k=clamp(ring*.5+ring2*.35+haze*.16,0.,1.)*smoothstep(.955,.93,rr);
+  o=vec4(uCr*k,k);}`;
+const VS_GROUND=HDR+`layout(location=0) in vec2 aP;uniform mat4 uVP;out vec2 vX;void main(){vX=aP*1.7;gl_Position=uVP*vec4(vX.x,0.,vX.y,1.);}`;
+const FS_GROUND=HDR+`in vec2 vX;uniform vec2 uSh;out vec4 o;void main(){
+  vec2 p=vX-uSh; float r=length(p);
+  float body=.30*(1.-smoothstep(.70,1.22,r));
+  float contact=.30*exp(-pow((length(vX)-.985)/.03,2.));
+  float occl=.16*exp(-pow(max(length(vX)-.98,0.)/.10,2.))*step(.96,length(vX));
+  float a=clamp(body*.55+contact+occl,0.,.6);
+  // caustic: glass focuses the key into a crescent inside the shadow
+  vec2 cp=vX+uSh*1.6; float cr=length(cp);
+  float caus=exp(-pow((cr-.82)/.05,2.))*smoothstep(.1,-.6,dot(normalize(cp+1e-4),normalize(uSh)))*.5;
+  caus+=exp(-pow((cr-.55)/.12,2.))*.08;
+  float fade=1.-smoothstep(1.05,1.62,r);
+  a*=fade; caus*=fade;
+  vec3 tint=vec3(.12,.10,.08);
+  o=vec4(tint*a+vec3(1.,.97,.9)*caus*.32,a);}`;
+const VS_GLASS=HDR+`layout(location=0) in vec3 aP;layout(location=1) in vec3 aN;layout(location=2) in float aPart;uniform mat4 uVP;out vec3 vW;out vec3 vN;out float vPart;void main(){vW=aP;vN=aN;vPart=aPart;gl_Position=uVP*vec4(aP,1.);}`;
+const ENV=`vec3 env(vec3 R){
+  float sky=smoothstep(-.15,.85,R.y);
+  vec3 c=mix(vec3(.16,.15,.14),vec3(.86,.84,.80),sky);
+  c+=smoothstep(.80,.95,dot(R,normalize(vec3(-.5,.78,.38))))*2.6;
+  c+=smoothstep(.90,.985,dot(R,normalize(vec3(.72,.32,-.62))))*1.6;
+  c+=smoothstep(.93,.99,dot(R,normalize(vec3(.1,.25,.96))))*0.9;
+  return c;}`;
+const FS_GLASS=HDR+ACES+ENV+`in vec3 vW;in vec3 vN;in float vPart;uniform vec3 uEye;uniform vec2 uCam;uniform float uPass;out vec4 o;void main(){
+  float side=dot(normalize(vW.xz+1e-5),uCam);
+  if(uPass<.5){ if(vPart>.5&&side>0.) discard; } else { if(vPart<.5||side<=0.) discard; }
+  vec3 V=normalize(uEye-vW); vec3 N=normalize(vN); if(dot(N,V)<0.) N=-N;
+  float ct=clamp(dot(N,V),0.,1.);
+  float F=.04+.96*pow(1.-ct,5.);
+  vec3 R=reflect(-V,N);
+  vec3 e=env(R);
+  float absorb=1.-exp(-(vPart>.5?.045:.008)/max(ct,.05));
+  vec3 tint=vec3(.30,.35,.34);
+  float a=1.-(1.-F)*(1.-absorb);
+  vec3 col=aces(e*F*1.1)+tint*absorb*(1.-F);
+  // key light glint
+  vec3 L=normalize(vec3(-.5,.78,.38)); float sp=pow(max(dot(N,normalize(L+V)),0.),220.);
+  col+=vec3(1.)*sp*.9;
+  o=vec4(col,clamp(a+sp*.25,0.,1.));}`;
+const FS_AGAR=HDR+ACES+ENV+`in vec3 vW;in vec3 vN;in float vPart;uniform vec3 uEye;uniform vec4 uRip;uniform vec3 uCr;out vec4 o;void main(){
+  vec3 V=normalize(uEye-vW); vec3 N=normalize(vN); if(N.y<0.) N=-N;
+  float ct=clamp(dot(N,V),0.,1.); float F=.02+.98*pow(1.-ct,5.);
+  vec3 e=env(reflect(-V,N));
+  float r=length(vW.xz);
+  float a=.035+F*.45;
+  vec3 col=vec3(.99,.97,.93)*.035 + aces(e*F*.9);
+  o=vec4(col,a);}`;
+const VS_RIB=HDR+`layout(location=0) in vec3 aP;layout(location=1) in vec3 aPr;layout(location=2) in vec3 aNx;layout(location=3) in vec3 aS;
+layout(location=4) in vec4 iA;layout(location=5) in vec4 iB;
+uniform mat4 uVP;uniform vec2 uRes;uniform float uPx;uniform float uDpr;uniform float uShadow;uniform vec2 uSh;uniform float uAgar;uniform float uWMul;
+out float vSide;out float vHalf;out float vA;out float vD;out float vH;
+vec3 xf(vec3 p){ p.x*=iB.z; p.xz*=iA.w; p.y=uAgar+(p.y-uAgar)*max(iA.w,.35);
+  float c=cos(iA.z),s=sin(iA.z); p.xz=vec2(c*p.x-s*p.z,s*p.x+c*p.z); p.xz+=iA.xy;
+  if(uShadow>.5){ float h=max(p.y-uAgar,0.); p.xz+=uSh*h*2.2; p.y=uAgar+.0008; }
+  return p;}
+void main(){
+  vec4 c=uVP*vec4(xf(aP),1.), cp=uVP*vec4(xf(aPr),1.), cn=uVP*vec4(xf(aNx),1.);
+  vec2 hr=uRes*.5; vec2 s=c.xy/c.w*hr, sp=cp.xy/cp.w*hr, sn=cn.xy/cn.w*hr;
+  vec2 d=sn-sp; float L=length(d); d=L>1e-4?d/L:vec2(1.,0.);
+  vec2 n=vec2(-d.y,d.x);
+  float wpx=aS.y*abs(iA.w)*uPx/c.w*uWMul;
+  float mw=1.05*uDpr;
+  float wd=max(wpx,mw);
+  vA=iB.y*clamp(wpx/mw,.18,1.);
+  vHalf=wd*.5; vSide=aS.x*(vHalf+1.);
+  s+=n*vSide;
+  gl_Position=vec4(s/hr*c.w,c.z,c.w);
+  vD=aS.z; vH=iB.x;}`;
+const FS_RIB=HDR+`in float vSide;in float vHalf;in float vA;in float vD;in float vH;
+uniform float uGrow;uniform vec3 uCol;uniform vec3 uCol2;uniform float uAlpha;uniform float uShadow;out vec4 o;void main(){
+  float edge;
+  if(uShadow>.5){ float u=abs(vSide)/(vHalf+1.); edge=1.-u*u; } else edge=clamp(vHalf+.5-abs(vSide),0.,1.);
+  float cutH=mix(.30,1.06,vH);
+  float cut=min(uGrow*1.06,cutH);
+  float vis=smoothstep(cut,cut-.07,vD);
+  float dying=smoothstep(cutH-.32,cutH,vD)*(1.-vH);
+  vec3 col=mix(uCol,uCol2,clamp(dying*1.3+(1.-vH)*.22,0.,1.));
+  float a=edge*vis*vA*uAlpha*(1.-dying*.35);
+  o=vec4(col*a,a);}`;
+const VS_SPR=HDR+`layout(location=0) in vec2 aQ;layout(location=1) in vec4 iP;layout(location=2) in vec4 iC;layout(location=3) in float iK;
+uniform mat4 uVP;uniform vec3 uRight;uniform vec3 uUp;uniform float uPx;out vec2 vQ;out vec4 vC;out float vK;out float vPx;
+void main(){ float g=iK>1.5?2.2:1.12; vec3 w=iP.xyz+(uRight*aQ.x+uUp*aQ.y)*iP.w*g; gl_Position=uVP*vec4(w,1.); vQ=aQ*g; vC=iC; vK=iK; vPx=iP.w*uPx/gl_Position.w; }`;
+const FS_SPR=HDR+ACES+`in vec2 vQ;in vec4 vC;in float vK;in float vPx;out vec4 o;void main(){
+  float r=length(vQ); float aa=1.4/max(vPx,1.);
+  if(vK>1.5){ // halo ring
+    float ring=exp(-pow((r-1.55)/.06,2.))*.8+exp(-pow((r-1.05)/.04,2.))*.25; float a=ring*vC.a; o=vec4(vC.rgb*a,a); return; }
+  float m=1.-smoothstep(1.-aa,1.,r);
+  if(m<=0.) discard;
+  vec3 n=vec3(vQ,sqrt(max(0.,1.-r*r)));
+  vec3 L=normalize(vec3(-.55,.62,.56));
+  float dif=max(dot(n,L),0.); float sp=pow(max(dot(n,normalize(L+vec3(0,0,1))),0.),vK>.5?90.:60.);
+  float fr=pow(1.-n.z,3.);
+  vec3 col;
+  if(vK>.5){ col=vC.rgb*(.42+.75*dif)+vec3(1.,.92,.9)*sp*1.3+vec3(1.,.55,.55)*fr*.35; }
+  else { col=vC.rgb*(.55+.6*dif)+vec3(1.)*sp*.55+vec3(.6,.58,.55)*fr*.25; }
+  col=aces(col*1.05);
+  float a=m*vC.a; o=vec4(col*a,a);}`;
+
+/* ---- GL resources ---- */
+let P={}, B={}, U={};
+let neuron, net, dishM, agarM;
+const NI=18; // hero + 17 field neurons
+const inst=new Float32Array(NI*8), field=[];
+const NS=1+17+30+2; const spr=new Float32Array(NS*9);
+const VP=new Float32Array(16), Vm=new Float32Array(16), Pm=new Float32Array(16);
+const eye=new Float32Array(3), right=new Float32Array(3), up=new Float32Array(3);
+let pxScale=1;
+
+function sh(type,src){ const s=gl.createShader(type); gl.shaderSource(s,src); gl.compileShader(s); if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+function prog(vs,fs,names){ const p=gl.createProgram(); gl.attachShader(p,sh(gl.VERTEX_SHADER,vs)); gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(p); if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); const u={}; names.forEach(n=>u[n]=gl.getUniformLocation(p,n)); return {p,u}; }
+function vao(setup){ const a=gl.createVertexArray(); gl.bindVertexArray(a); setup(); gl.bindVertexArray(null); return a; }
+function buf(target,data,usage){ const b=gl.createBuffer(); gl.bindBuffer(target,b); gl.bufferData(target,data,usage||gl.STATIC_DRAW); return b; }
+
+function initGeometry(){
+  neuron=buildNeuron(); net=buildNetwork();
+  dishM=lathe(dishProfile(),192); agarM=lathe(agarProfile(),192);
+  // field neurons (poisson-ish)
+  const R=mulberry(5); let tries=0;
+  while(field.length<17&&tries<4000){ tries++; const a=R()*Math.PI*2, r=0.34+Math.sqrt(R())*0.52; const x=Math.cos(a)*r, z=Math.sin(a)*r; if(Math.hypot(x,z)>0.86) continue; if(field.some(f=>Math.hypot(f[0]-x,f[1]-z)<0.25)) continue; field.push([x,z,R()*Math.PI*2,0.2+R()*0.07,field.length%2?1:0,R()<.5?-1:1]); }
+}
+function initGL(){
+  try{
+    gl=cv.getContext('webgl2',{antialias:true,alpha:true,premultipliedAlpha:true,depth:false,stencil:false,powerPreference:'high-performance',preserveDrawingBuffer:false});
+  }catch(e){gl=null}
+  if(!gl) return false;
+  try{
+    P.blit=prog(VS_FS,FS_BLIT,['uT']);
+    P.rip=prog(VS_RIP,FS_RIP,['uVP','uY','uRip','uCr']);
+    P.ground=prog(VS_GROUND,FS_GROUND,['uVP','uSh']);
+    P.glass=prog(VS_GLASS,FS_GLASS,['uVP','uEye','uCam','uPass']);
+    P.agar=prog(VS_GLASS,FS_AGAR,['uVP','uEye']);
+    P.rib=prog(VS_RIB,FS_RIB,['uVP','uRes','uPx','uDpr','uShadow','uSh','uAgar','uWMul','uGrow','uCol','uCol2','uAlpha']);
+    P.spr=prog(VS_SPR,FS_SPR,['uVP','uRight','uUp','uPx']);
+  }catch(e){ console.warn('shader',e); gl=null; return false; }
+  B.empty=gl.createVertexArray();
+  B.ground=vao(()=>{ buf(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1])); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0); });
+  const lat=(m)=>vao(()=>{ buf(gl.ARRAY_BUFFER,m.V); gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,28,0); gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,28,12); gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,1,gl.FLOAT,false,28,24); buf(gl.ELEMENT_ARRAY_BUFFER,m.I); });
+  B.dish=lat(dishM); B.agar=lat(agarM);
+  B.inst=null;
+  const ribV=(m,instanced)=>vao(()=>{ buf(gl.ARRAY_BUFFER,m.V); const S=48;
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,S,0);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,S,12);
+    gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,3,gl.FLOAT,false,S,24);
+    gl.enableVertexAttribArray(3);gl.vertexAttribPointer(3,3,gl.FLOAT,false,S,36);
+    if(instanced){ B.instBuf=buf(gl.ARRAY_BUFFER,inst,gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(4);gl.vertexAttribPointer(4,4,gl.FLOAT,false,32,0);gl.vertexAttribDivisor(4,1);
+      gl.enableVertexAttribArray(5);gl.vertexAttribPointer(5,4,gl.FLOAT,false,32,16);gl.vertexAttribDivisor(5,1); }
+    buf(gl.ELEMENT_ARRAY_BUFFER,m.I); });
+  B.neuron=ribV(neuron,true); B.net=ribV(net,false);
+  // drop line (target -> soma), rebuilt geometry-free: 2-point strip updated per frame
+  B.lineData=new Float32Array(2*2*12); B.line=vao(()=>{ B.lineBuf=buf(gl.ARRAY_BUFFER,B.lineData,gl.DYNAMIC_DRAW); const S=48;
+    for(let k=0;k<4;k++){ gl.enableVertexAttribArray(k); gl.vertexAttribPointer(k,3,gl.FLOAT,false,S,k*12); }
+    buf(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array([0,1,2,1,3,2])); });
+  B.spr=vao(()=>{ buf(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1])); gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    B.sprBuf=buf(gl.ARRAY_BUFFER,spr,gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,4,gl.FLOAT,false,36,0);gl.vertexAttribDivisor(1,1);
+    gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,4,gl.FLOAT,false,36,16);gl.vertexAttribDivisor(2,1);
+    gl.enableVertexAttribArray(3);gl.vertexAttribPointer(3,1,gl.FLOAT,false,36,32);gl.vertexAttribDivisor(3,1); });
+  gl.disable(gl.DEPTH_TEST); gl.disable(gl.CULL_FACE);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+  return true;
+}
+
+/* ---- math ---- */
+function perspective(o,fy,asp,n,f){ const t=1/Math.tan(fy/2); o.fill(0); o[0]=t/asp; o[5]=t; o[10]=(f+n)/(n-f); o[11]=-1; o[14]=2*f*n/(n-f); }
+function lookAt(o,ex,ey,ez,cx,cy,cz){
+  let zx=ex-cx,zy=ey-cy,zz=ez-cz,l=Math.hypot(zx,zy,zz); zx/=l;zy/=l;zz/=l;
+  let xx=zz,xy=0,xz=-zx; l=Math.hypot(xx,xz); xx/=l;xz/=l; // cross(up(0,1,0), z)
+  const yx=zy*xz-zz*xy, yy=zz*xx-zx*xz, yz=zx*xy-zy*xx;
+  o[0]=xx;o[1]=yx;o[2]=zx;o[3]=0;o[4]=xy;o[5]=yy;o[6]=zy;o[7]=0;o[8]=xz;o[9]=yz;o[10]=zz;o[11]=0;
+  o[12]=-(xx*ex+xy*ey+xz*ez);o[13]=-(yx*ex+yy*ey+yz*ez);o[14]=-(zx*ex+zy*ey+zz*ez);o[15]=1;
+  right[0]=xx;right[1]=xy;right[2]=xz; up[0]=yx;up[1]=yy;up[2]=yz;
+}
+function mul(o,a,b){ for(let i=0;i<4;i++) for(let j=0;j<4;j++){ o[j*4+i]=a[i]*b[j*4]+a[4+i]*b[j*4+1]+a[8+i]*b[j*4+2]+a[12+i]*b[j*4+3]; } }
+
+/* ---- choreography (all state is a pure function of p and time) ---- */
+const S={health:1,grow:1,alpha:1,field:0,heroScale:1,net:0,tgt:0,line:0,drop:0,rip:0,ripA:0,elev:.56,dist:3.55,ty:.06};
+function choreo(p,time){
+  const fade=ss(0.45,1.25,p), heal=ss(3.95,4.45,p);
+  S.health=1-0.70*fade+0.70*heal;
+  S.field=ss(1.45,1.95,p)*(1-ss(2.3,2.6,p));
+  S.heroScale=1-0.56*ss(1.45,1.95,p)*(1-ss(2.3,2.65,p));
+  S.net=ss(2.5,3.1,p)*(1-ss(3.75,4.15,p));
+  S.tgt=ss(3.0,3.2,p);
+  S.line=ss(3.12,3.38,p)*(1-ss(3.5,3.75,p));
+  S.drop=ss(3.42,3.86,p);
+  const rp=clamp((p-3.86)/0.62,0,1); S.rip=rp; S.ripA=(p>3.86&&p<4.6)?Math.pow(1-rp,1.4)*(1-ss(4.4,4.6,p)):0;
+  // da capo: fade out, then regrow from the soma
+  const out=ss(4.42,4.56,p), regrow=ss(4.6,5.12,p);
+  let g=intro;
+  if(p>4.42){ g=p<4.58?1:regrow; }
+  if(dcReplay>=0){ g=Math.min(g,clamp((time-dcReplay)/3.2,0,1)); if(time-dcReplay>3.3) dcReplay=-1; }
+  S.grow=g; S.alpha=p<4.58?1-out:ss(4.58,4.64,p);
+  const tilt=ss(2.4,2.9,p)*(1-ss(3.55,4.05,p));
+  S.elev=0.6-0.21*tilt; S.dist=4.05+0.4*tilt; S.ty=0.06+0.26*tilt;
+}
+
+function frame(now){
+  if(!ok||lost) return;
+  const time=now/1000; const dt=Math.min(0.05,last?time-last:0.016); last=time;
+  if(!reduce){
+    if(introT0<0) introT0=time;
+    intro=Math.min(1,(time-introT0+introOff)/3.0); intro=1-Math.pow(1-intro,2.2);
+    pS+=(pTarget-pS)*(1-Math.exp(-dt*7));
+    if(!drag){ yawV*=Math.exp(-dt*2.2); autoYaw+=dt*0.045; }
+    yaw+=yawV*dt;
+  } else { pS=pTarget; intro=1; }
+  t=time; choreo(pS,time); render(); frames++;
+  const settling=Math.abs(pTarget-pS)>1e-4||Math.abs(yawV)>1e-3||intro<1||dcReplay>=0||drag;
+  dirty=false;
+  if(running&&visible&&!frozen&&!document.hidden&&(!reduce||settling)) requestAnimationFrame(frame); else running=false;
+}
+
+/* ---- cached glass layers: the dish is rotationally symmetric and lit from the
+   camera rig (a turntable), so the far and near glass only change with the
+   camera's elevation/distance. They are rendered with MSAA into textures and
+   composited each frame inside a scissor box. ---- */
+let T={w:0,h:0}; const ck=new Float64Array(5); ck[0]=-1; const bbox=new Int32Array(4); const prj=new Float32Array(4);
+function mkTex(w,h){ const t=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,t); gl.texStorage2D(gl.TEXTURE_2D,1,gl.RGBA8,w,h);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  const f=gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER,f); gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,t,0); return {t,f}; }
+function ensureTargets(w,h){
+  if(T.w===w&&T.h===h) return;
+  if(T.w){ gl.deleteRenderbuffer(T.rb); gl.deleteFramebuffer(T.msf); [T.far,T.near].forEach(x=>{gl.deleteTexture(x.t);gl.deleteFramebuffer(x.f);}); }
+  T.rb=gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER,T.rb);
+  gl.renderbufferStorageMultisample(gl.RENDERBUFFER,Math.min(4,gl.getParameter(gl.MAX_SAMPLES)),gl.RGBA8,w,h);
+  T.msf=gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER,T.msf); gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.RENDERBUFFER,T.rb);
+  T.far=mkTex(w,h); T.near=mkTex(w,h); gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  T.w=w; T.h=h; ck[0]=-1;
+}
+function project(x,y,z,w,h){ const m=VP; const cw=m[3]*x+m[7]*y+m[11]*z+m[15];
+  prj[0]=((m[0]*x+m[4]*y+m[8]*z+m[12])/cw*.5+.5)*w; prj[1]=((m[1]*x+m[5]*y+m[9]*z+m[13])/cw*.5+.5)*h; }
+const px1=new Uint8Array(4);
+function resolveTo(dst,w,h){ gl.bindFramebuffer(gl.READ_FRAMEBUFFER,T.msf); gl.bindFramebuffer(gl.DRAW_FRAMEBUFFER,dst.f); gl.blitFramebuffer(0,0,w,h,0,0,w,h,gl.COLOR_BUFFER_BIT,gl.NEAREST);
+  gl.bindFramebuffer(gl.READ_FRAMEBUFFER,dst.f); gl.readPixels(w>>1,h>>1,1,1,gl.RGBA,gl.UNSIGNED_BYTE,px1); }
+let statics=0;
+function renderStatic(w,h,ex,ey,ez,shx,shz){
+  statics++;
+  gl.disable(gl.SCISSOR_TEST); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,null);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,T.msf); gl.viewport(0,0,w,h); gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.useProgram(P.ground.p); gl.uniformMatrix4fv(P.ground.u.uVP,false,VP); gl.uniform2f(P.ground.u.uSh,shx*0.08,shz*0.08);
+  gl.bindVertexArray(B.ground); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  gl.useProgram(P.glass.p); gl.uniformMatrix4fv(P.glass.u.uVP,false,VP); gl.uniform3f(P.glass.u.uEye,ex,ey,ez); gl.uniform2f(P.glass.u.uCam,0,1);
+  gl.bindVertexArray(B.dish); gl.uniform1f(P.glass.u.uPass,0); gl.drawElements(gl.TRIANGLES,dishM.count,gl.UNSIGNED_INT,0);
+  gl.useProgram(P.agar.p); gl.uniformMatrix4fv(P.agar.u.uVP,false,VP); gl.uniform3f(P.agar.u.uEye,ex,ey,ez);
+  gl.bindVertexArray(B.agar); gl.drawElements(gl.TRIANGLES,agarM.count,gl.UNSIGNED_INT,0);
+  resolveTo(T.far,w,h);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,T.msf); gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.useProgram(P.glass.p); gl.bindVertexArray(B.dish); gl.uniform1f(P.glass.u.uPass,1); gl.drawElements(gl.TRIANGLES,dishM.count,gl.UNSIGNED_INT,0);
+  resolveTo(T.near,w,h);
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  // screen bbox of dish + shadow
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  for(let k=0;k<32;k++){ const a=k/32*Math.PI*2, c=Math.cos(a), s=Math.sin(a);
+    for(let j=0;j<2;j++){ const r=j?1.0:1.62, y=j?0.215:0; project(c*r+(j?0:shx*0.08),y,s*r+(j?0:shz*0.08),w,h);
+      if(prj[0]<x0)x0=prj[0]; if(prj[0]>x1)x1=prj[0]; if(prj[1]<y0)y0=prj[1]; if(prj[1]>y1)y1=prj[1]; } }
+  bbox[0]=Math.max(0,Math.floor(x0)-4); bbox[1]=Math.max(0,Math.floor(y0)-4); bbox[2]=Math.min(w,Math.ceil(x1)+4)-bbox[0]; bbox[3]=Math.min(h,Math.ceil(y1)+4)-bbox[1];
+}
+function blit(tex){ gl.enable(gl.SCISSOR_TEST); gl.scissor(bbox[0],bbox[1],bbox[2],bbox[3]); gl.useProgram(P.blit.p); gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,tex.t); gl.uniform1i(P.blit.u.uT,0); gl.bindVertexArray(B.empty); gl.drawArrays(gl.TRIANGLES,0,3); gl.disable(gl.SCISSOR_TEST); }
+
+let rot=0;
+function render(){
+  const w=cv.width,h=cv.height;
+  ensureTargets(w,h);
+  rot=-(yaw+autoYaw+pS*0.32);
+  const cr=Math.cos(rot), sr=Math.sin(rot);
+  const asp=w/h;
+  const fy=asp<1?0.62:0.52;
+  const dist=S.dist*(asp<1?1.05/Math.max(asp,.62):Math.max(1,1.18/asp));
+  const ex=0, ey=Math.sin(S.elev)*dist+S.ty, ez=Math.cos(S.elev)*dist;
+  eye[0]=ex;eye[1]=ey;eye[2]=ez;
+  perspective(Pm,fy,asp,0.1,30); lookAt(Vm,ex,ey,ez,0,S.ty,0); mul(VP,Pm,Vm);
+  pxScale=Pm[5]*h*0.5;
+  const shx=0.62, shz=-0.40;
+  if(ck[0]!==w||ck[1]!==h||ck[2]!==S.elev||ck[3]!==dist||ck[4]!==S.ty){ ck[0]=w;ck[1]=h;ck[2]=S.elev;ck[3]=dist;ck[4]=S.ty; renderStatic(w,h,ex,ey,ez,shx,shz); }
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null); gl.viewport(0,0,w,h); gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+  blit(T.far);
+  if(S.ripA>0.002){
+    gl.useProgram(P.rip.p); gl.uniformMatrix4fv(P.rip.u.uVP,false,VP); gl.uniform1f(P.rip.u.uY,AGAR+0.0012);
+    gl.uniform4f(P.rip.u.uRip,0,0,0.04+S.rip*0.88,S.ripA); gl.uniform3f(P.rip.u.uCr,0.66,0.07,0.16);
+    gl.bindVertexArray(B.ground); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  }
+  // instances (the specimen turns; the rig stays put)
+  const nI=S.field>0.003?NI:1;
+  const hs=S.heroScale;
+  inst[0]=0;inst[1]=0;inst[2]=rot;inst[3]=hs; inst[4]=S.health;inst[5]=S.alpha;inst[6]=1;inst[7]=0;
+  const sick=1-0.72*S.field;
+  for(let i=0;i<17;i++){ const f=field[i], o=(i+1)*8, rev=ss(i/17*0.6,i/17*0.6+0.4,S.field);
+    inst[o]=cr*f[0]-sr*f[1];inst[o+1]=sr*f[0]+cr*f[1];inst[o+2]=f[2]+rot;inst[o+3]=f[3]*(0.85+0.15*rev);
+    inst[o+4]=f[4]?sick:1-0.12*S.field; inst[o+5]=rev*S.alpha; inst[o+6]=f[5]; inst[o+7]=0; }
+  gl.bindBuffer(gl.ARRAY_BUFFER,B.instBuf); gl.bufferSubData(gl.ARRAY_BUFFER,0,inst,0,nI*8);
+  gl.useProgram(P.rib.p); const u=P.rib.u;
+  gl.uniformMatrix4fv(u.uVP,false,VP); gl.uniform2f(u.uRes,w,h); gl.uniform1f(u.uPx,pxScale); gl.uniform1f(u.uDpr,DPR);
+  gl.uniform2f(u.uSh,shx,shz); gl.uniform1f(u.uAgar,AGAR); gl.uniform1f(u.uGrow,S.grow);
+  gl.bindVertexArray(B.neuron);
+  gl.uniform1f(u.uShadow,1); gl.uniform1f(u.uWMul,2.6); gl.uniform3f(u.uCol,0.16,0.12,0.08); gl.uniform3f(u.uCol2,0.3,0.27,0.22); gl.uniform1f(u.uAlpha,0.10);
+  gl.drawElementsInstanced(gl.TRIANGLES,neuron.count,gl.UNSIGNED_SHORT,0,1);
+  gl.uniform1f(u.uShadow,0); gl.uniform1f(u.uWMul,1); gl.uniform3f(u.uCol,0.075,0.062,0.05); gl.uniform3f(u.uCol2,0.56,0.53,0.48); gl.uniform1f(u.uAlpha,0.96);
+  gl.drawElementsInstanced(gl.TRIANGLES,neuron.count,gl.UNSIGNED_SHORT,0,nI);
+  // target -> soma hairline (enters the dish, so before the near glass)
+  const Tn=net.nodes[net.tgt];
+  const tnx=cr*Tn[0]-sr*Tn[2], tnz=sr*Tn[0]+cr*Tn[2];
+  const dy=S.drop, tx=tnx*(1-dy), ty=Tn[1]+(SOMA_Y+0.05-Tn[1])*dy*dy, tz=tnz*(1-dy);
+  if(S.line>0.003){
+    const L=B.lineData; let v=0;
+    for(let k=0;k<2;k++){ const px=k?0:tnx, py=k?SOMA_Y+0.03:Tn[1]-0.03, pz=k?0:tnz; for(let s=-1;s<=1;s+=2){ L[v++]=px;L[v++]=py;L[v++]=pz; L[v++]=tnx;L[v++]=Tn[1]-0.03;L[v++]=tnz; L[v++]=0;L[v++]=SOMA_Y+0.03;L[v++]=0; L[v++]=s;L[v++]=0.0016;L[v++]=k; } }
+    gl.bindVertexArray(B.line); gl.bindBuffer(gl.ARRAY_BUFFER,B.lineBuf); gl.bufferSubData(gl.ARRAY_BUFFER,0,L);
+    gl.vertexAttrib4f(4,0,0,0,1); gl.vertexAttrib4f(5,1,1,1,0);
+    gl.uniform1f(u.uGrow,S.line); gl.uniform3f(u.uCol,0.66,0.07,0.16); gl.uniform3f(u.uCol2,0.66,0.07,0.16); gl.uniform1f(u.uAlpha,0.8*S.line);
+    gl.drawElements(gl.TRIANGLES,6,gl.UNSIGNED_SHORT,0);
+  }
+  // somas (inside the dish)
+  let n=0;
+  const put=(x,y,z,r,cR,cG,cB,a,k)=>{ const o=n*9; spr[o]=x;spr[o+1]=y;spr[o+2]=z;spr[o+3]=r;spr[o+4]=cR;spr[o+5]=cG;spr[o+6]=cB;spr[o+7]=a;spr[o+8]=k; n++; };
+  const sa=S.alpha*ss(0.0,0.06,S.grow);
+  put(0,SOMA_Y,0,0.034*Math.max(hs,0.5),0.09,0.075,0.06,sa,0);
+  if(nI>1) for(let i=0;i<17;i++){ const o=(i+1)*8, a=inst[o+5]; if(a>0.01) put(inst[o],AGAR+0.012,inst[o+1],0.034*inst[o+3]*1.05,0.09,0.075,0.06,a,0); }
+  gl.useProgram(P.spr.p); gl.uniformMatrix4fv(P.spr.u.uVP,false,VP); gl.uniform3f(P.spr.u.uRight,right[0],right[1],right[2]); gl.uniform3f(P.spr.u.uUp,up[0],up[1],up[2]); gl.uniform1f(P.spr.u.uPx,pxScale);
+  gl.bindVertexArray(B.spr); gl.bindBuffer(gl.ARRAY_BUFFER,B.sprBuf); gl.bufferSubData(gl.ARRAY_BUFFER,0,spr,0,n*9);
+  gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,n);
+  // near glass, in front of the specimen
+  blit(T.near);
+  // network floats above the dish
+  if(S.net>0.003){
+    gl.useProgram(P.rib.p);
+    gl.bindVertexArray(B.net);
+    gl.vertexAttrib4f(4,0,0,rot,1); gl.vertexAttrib4f(5,1,1,1,0);
+    gl.uniform1f(u.uGrow,S.net); gl.uniform3f(u.uCol,0.25,0.23,0.2); gl.uniform3f(u.uCol2,0.25,0.23,0.2); gl.uniform1f(u.uAlpha,0.55*(1-ss(3.75,4.1,pS)));
+    gl.drawElements(gl.TRIANGLES,net.count,gl.UNSIGNED_SHORT,0);
+  }
+  n=0;
+  if(S.net>0.003){
+    for(let i=0;i<net.nodes.length;i++){ if(i===net.tgt) continue; const N=net.nodes[i]; const rv=ss(N[3]-0.02,N[3]+0.06,S.net*1.04);
+      put(cr*N[0]-sr*N[2],N[1],sr*N[0]+cr*N[2],0.0125,0.16,0.15,0.13,rv*(1-0.45*S.tgt)*(1-ss(3.75,4.1,pS)),0); }
+  }
+  const tv=Math.max(ss(Tn[3]-0.02,Tn[3]+0.06,S.net*1.04),S.drop>0?1:0)*(pS<3.88?1:0);
+  if(tv>0.003){
+    const tr=0.0135+0.013*S.tgt+0.004*S.drop;
+    put(tx,ty,tz,tr,0.16+0.50*S.tgt,0.15-0.08*S.tgt,0.13+0.03*S.tgt,tv,S.tgt>0.5?1:0);
+    if(S.tgt>0.01&&S.drop<0.2) put(tx,ty,tz,tr,0.66,0.07,0.16,0.55*S.tgt*(1-S.drop*5)*(0.75+0.25*Math.sin(t*2.4)),2);
+  }
+  if(n){ gl.useProgram(P.spr.p); gl.bindVertexArray(B.spr); gl.bindBuffer(gl.ARRAY_BUFFER,B.sprBuf); gl.bufferSubData(gl.ARRAY_BUFFER,0,spr,0,n*9); gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,n); }
+  gl.bindVertexArray(null);
+}
+
+/* ---- 2D fallback (no WebGL2): a still drawing of the hero frame ---- */
+function draw2D(){
+  const c=cv.getContext('2d'); if(!c) return; const w=cv.width,h=cv.height;
+  c.fillStyle='#F4F1EA'; c.fillRect(0,0,w,h);
+  const g=c.createRadialGradient(w/2,h*.55,0,w/2,h*.55,Math.min(w,h)*.55); g.addColorStop(0,'#E9E3D8'); g.addColorStop(1,'rgba(244,241,234,0)'); c.fillStyle=g; c.fillRect(0,0,w,h);
+  const s=Math.min(w,h)*0.40, cx=w/2, cy=h*0.54, k=0.5;
+  const pr=(x,y,z)=>[cx+x*s, cy+z*s*k-y*s*0.9];
+  c.lineCap='round'; c.lineJoin='round';
+  c.strokeStyle='rgba(60,70,68,.45)'; c.lineWidth=1.2*DPR;
+  c.beginPath(); c.ellipse(cx,cy,s*0.985,s*0.985*k,0,0,Math.PI*2); c.stroke();
+  c.beginPath(); c.ellipse(cx,cy-0.2*s*0.9,s*0.985,s*0.985*k,0,0,Math.PI*2); c.stroke();
+  c.strokeStyle='#15130F';
+  for(const b of neuron.branches){ c.beginPath(); for(let i=0;i<b.length;i++){ const q=pr(b[i][0],b[i][1],b[i][2]); if(i) c.lineTo(q[0],q[1]); else c.moveTo(q[0],q[1]); } c.lineWidth=Math.max(0.8*DPR,b[0][3]*s*0.9); c.stroke(); }
+  const q=pr(0,SOMA_Y,0); c.fillStyle='#15130F'; c.beginPath(); c.arc(q[0],q[1],0.034*s,0,Math.PI*2); c.fill();
+}
+
+/* ---- sizing ---- */
+function resize(){
+  const r=cv.getBoundingClientRect(); DPR=Math.min(devicePixelRatio||1,2);
+  const nw=Math.max(2,Math.round(r.width*DPR)), nh=Math.max(2,Math.round(r.height*DPR));
+  if(nw!==cv.width||nh!==cv.height){ cv.width=nw; cv.height=nh; }
+  if(ok) wake(); else if(failed) draw2D();
+}
+let rT=0; addEventListener('resize',()=>{ clearTimeout(rT); rT=setTimeout(resize,120); });
+
+/* ---- drag to rotate with inertia ---- */
+let lastX=0,lastT=0;
+cv.addEventListener('pointerdown',e=>{ if(e.pointerType==='touch') return; drag=true; lastX=e.clientX; lastT=performance.now(); cv.setPointerCapture(e.pointerId); yawV=0; $('#hint').style.opacity=0; wake(); });
+cv.addEventListener('pointermove',e=>{ if(!drag) return; const now=performance.now(), dx=e.clientX-lastX; const d=dx*0.0065; yaw+=d; yawV=yawV*0.6+(d/Math.max(0.008,(now-lastT)/1000))*0.4; lastX=e.clientX; lastT=now; wake(); });
+const end=()=>{ drag=false; yawV=clamp(yawV,-3,3); };
+cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end);
+// touch: horizontal swipe rotates, vertical scroll passes through
+let tx0=0,ty0=0,tmode=0;
+cv.addEventListener('touchstart',e=>{ const p=e.touches[0]; tx0=p.clientX; ty0=p.clientY; tmode=0; lastX=tx0; lastT=performance.now(); },{passive:true});
+cv.addEventListener('touchmove',e=>{ const p=e.touches[0]; if(!tmode) tmode=Math.abs(p.clientX-tx0)>Math.abs(p.clientY-ty0)+4?1:(Math.abs(p.clientY-ty0)>6?2:0); if(tmode===1){ const now=performance.now(), d=(p.clientX-lastX)*0.008; yaw+=d; yawV=d/Math.max(0.008,(now-lastT)/1000)*0.5; lastX=p.clientX; lastT=now; wake(); } },{passive:true});
+
+/* ---- lifecycle ---- */
+function wake(){ dirty=true; if(ok&&!lost&&visible&&!frozen&&!document.hidden&&!running){ running=true; requestAnimationFrame(frame); } }
+new IntersectionObserver(es=>{ visible=es[0].isIntersecting; if(visible) wake(); },{rootMargin:'80px'}).observe(stage);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden){ last=0; wake(); } });
+cv.addEventListener('webglcontextlost',e=>{ e.preventDefault(); lost=true; running=false; });
+cv.addEventListener('webglcontextrestored',()=>{ lost=false; T={w:0,h:0}; ok=initGL(); wake(); });
+
+function start(){
+  initGeometry();
+  resize();
+  ok=initGL();
+  if(!ok){ failed=true; draw2D(); return; }
+  onScroll(); wake();
+}
+return { start, wake, replay(){ dcReplay=t||performance.now()/1000; wake(); }, get ok(){return ok}, stats:()=>({ok,frames,p:+pS.toFixed(3),pTarget:+pTarget.toFixed(3),neuronTris:neuron?neuron.count/3:0,statics,canvas:[cv.width,cv.height]}),
+  _freeze(b){ frozen=!!b; if(!b) wake(); }, _advance(s){ introOff+=s; }, _snap(){ pS=pTarget; } };
+})();
+
+$('#dacapo').addEventListener('click',()=>{ scrollToY(0); setTimeout(()=>GL.replay(), reduce?0:900); });
+
+onScroll();
+const boot=()=>setTimeout(()=>(window.requestIdleCallback||setTimeout)(()=>GL.start(),{timeout:1200}),500);
+if(document.readyState==='complete') boot(); else addEventListener('load',boot,{once:true});
+
+window.__concept={
+  advance(s){ GL._advance(s); GL.wake(); },
+  setScroll(f){ scrollToY(f*maxScroll(),true); onScroll(); GL._snap(); GL.wake(); },
+  setP(p){ scrollToY(yForP(p),true); onScroll(); GL._snap(); GL.wake(); },
+  stats(){ return GL.stats(); },
+  freeze(b){ GL._freeze(b); }
+};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SanaHeal — Redesign Concept</title>
+<meta name="description" content="Redesign concept for SanaHeal, a bioadhesive company that seals wet tissue in seconds. Concept by Max C; not affiliated with SanaHeal.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,300;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0C0F; --surface:#111419; --surface2:#151920; --ink:#E8EAE7; --muted:#8C939B; --dim:#5D646C;
+  --line:rgba(232,234,231,.09); --line2:rgba(232,234,231,.16); --accent:#CBB68E;
+  --sans:'Geist',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Geist Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+  --serif:'Newsreader',Georgia,serif;
+  --g:max(24px,6vw); --max:1280px; --hdr:64px; --strip:30px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);-webkit-text-size-adjust:100%}
+body{font:400 16px/1.55 var(--sans);background:var(--bg);color:var(--ink);padding-bottom:var(--strip);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden;font-feature-settings:"ss01","cv11"}
+a{color:inherit}
+img{display:block;max-width:100%}
+::selection{background:rgba(203,182,142,.3)}
+.wrap{max-width:calc(var(--max) + 2*var(--g));margin:0 auto;padding:0 var(--g)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.eyebrow{font:500 11px/1.4 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{color:var(--ink);font-weight:500}
+h1,h2,h3{font-weight:500;letter-spacing:-.025em}
+h1{font-size:clamp(34px,3.7vw,58px);line-height:1.04;font-weight:500}
+.hero h1 .m{white-space:nowrap}
+h2{font-size:clamp(26px,2.6vw,38px);line-height:1.1;letter-spacing:-.022em}
+h3{font-size:17px;line-height:1.3;letter-spacing:-.01em;font-weight:500}
+p{max-width:60ch}
+.muted{color:var(--muted)}
+.num{font-feature-settings:"tnum" 1,"lnum" 1;font-variant-numeric:tabular-nums lining-nums}
+.supply{font:400 11px/1.4 var(--mono);letter-spacing:.04em;color:var(--accent);opacity:.85;white-space:nowrap}
+.fine{font-size:13px;line-height:1.55;color:var(--dim)}
+.fine a{color:var(--muted)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:999px;font:500 14px/1 var(--sans);letter-spacing:-.005em;text-decoration:none;border:1px solid var(--line2);color:var(--ink);background:transparent;cursor:pointer;transition:background .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease);will-change:transform}
+.btn:hover{border-color:rgba(232,234,231,.4)}
+.btn.solid{background:var(--ink);color:#0A0C0F;border-color:var(--ink)}
+.btn.solid:hover{background:#fff}
+.btn .ar{width:12px;height:12px;transition:transform .4s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+.link{font:500 14px/1 var(--sans);color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:4px;transition:border-color .3s}
+.link:hover{border-color:var(--ink)}
+
+/* header */
+#hdr{position:fixed;inset:0 0 auto 0;height:var(--hdr);z-index:30;transition:background .5s var(--ease),border-color .5s;border-bottom:1px solid transparent}
+#hdr.solid{background:#0A0C0F;border-bottom-color:var(--line)}
+#hdr .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;height:26px;text-decoration:none}
+.logo img{height:24px;width:auto;filter:brightness(0) invert(1);opacity:.95}
+.logo .wm{display:none;font:500 18px/1 var(--sans);letter-spacing:-.03em}
+.logo.fb img{display:none}.logo.fb .wm{display:block}
+nav.main{display:flex;gap:28px}
+nav.main a{font:400 13px/1 var(--sans);color:var(--muted);text-decoration:none;transition:color .3s}
+nav.main a:hover,nav.main a.on{color:var(--ink)}
+#hdr .btn{height:34px;font-size:13px;padding:0 14px}
+#menuBtn{display:none}
+#mnav{display:none}
+
+/* ========== SHOWCASE (hero + pinned sequence) ========== */
+#show{position:relative;height:640vh}
+.pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.pin .wrap{height:100%}
+.pin .grid{height:100%;align-items:center;padding-top:var(--hdr);padding-bottom:var(--strip)}
+.copy{grid-column:1/6;position:relative;height:100%}
+.stage{grid-column:6/13;position:relative;height:min(74vh,740px)}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:pan-y}
+#gl.drag{cursor:grabbing}
+.stage .fbk{position:absolute;inset:0;display:none}
+.stage.nogl .fbk{display:block}
+.stage.nogl #gl{display:none}
+.fbk::before{content:"";position:absolute;left:22%;right:22%;top:30%;bottom:34%;border-radius:22%;background:conic-gradient(from 210deg,rgba(150,210,230,.22),rgba(200,160,230,.18),rgba(230,205,150,.22),rgba(150,230,200,.18),rgba(150,210,230,.22));filter:blur(.5px);transform:perspective(900px) rotateX(58deg);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.fbk::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 30% 70%,rgba(255,255,255,.5) 0 3px,transparent 4px),radial-gradient(circle at 62% 76%,rgba(255,255,255,.45) 0 4px,transparent 5px),radial-gradient(circle at 78% 64%,rgba(255,255,255,.4) 0 2px,transparent 3px),radial-gradient(ellipse at 50% 64%,#151920 0,var(--bg) 62%)}
+.stage .cap{position:absolute;left:0;right:0;bottom:-6px;white-space:nowrap;display:flex;justify-content:space-between;gap:16px;font:400 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);pointer-events:none}
+.stage .cap .gap{opacity:0;transition:opacity .6s}
+.stage .cap .gap.on{opacity:1}
+
+.state{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);pointer-events:none;visibility:hidden;transition:visibility 0s linear .7s}
+.state.on{pointer-events:auto;visibility:visible;transition-delay:0s}
+.state .eyebrow{margin-bottom:22px}
+.state h2{margin-bottom:20px}
+.state p{color:var(--muted);font-size:16px}
+.state .src{margin-top:22px;font:400 11px/1.6 var(--mono);letter-spacing:.04em;color:var(--dim);max-width:52ch}
+.state .src a{color:var(--muted)}
+.state .k{display:flex;gap:28px;margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}
+.state .k div{display:flex;flex-direction:column;gap:6px}
+.state .k b{font:400 26px/1 var(--sans);letter-spacing:-.02em}
+.state .k small{font:400 11px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.state blockquote{font:300 italic clamp(19px,1.6vw,23px)/1.4 var(--serif);color:var(--ink);letter-spacing:-.005em;max-width:46ch}
+.state cite{display:block;margin-top:16px;font:400 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-style:normal}
+
+/* fade + mask transitions for states */
+.state .fx{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease),transform .7s var(--ease)}
+.state.on .fx{opacity:1;transform:none;transition:opacity .9s var(--ease) calc(var(--d,0)*1ms + 120ms),transform 1.1s var(--ease) calc(var(--d,0)*1ms + 120ms)}
+.m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.m>span{display:inline-block;transform:translateY(105%);transition:transform .6s var(--ease)}
+.state.on .m>span,.in .m>span{transform:none;transition:transform 1.15s var(--ease) calc(var(--i,0)*45ms + 80ms)}
+/* hero visible at first paint: CSS-only reveal */
+#s0{transform:translateY(-55%)}
+#s0 .m>span{animation:rise 1.2s var(--ease) both;animation-delay:calc(var(--i,0)*70ms + 60ms)}
+#s0.on .m>span{transition:none}
+#s0.off .m>span{animation:none;transform:translateY(105%);transition:transform .6s var(--ease)}
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+#s0 .fx{animation:fade 1.2s var(--ease) both;animation-delay:calc(var(--d,0)*1ms + 300ms)}
+#s0.off .fx{animation:none}
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.hero h1{margin-bottom:22px}
+.hero .lede{font-size:17px;color:var(--muted);max-width:42ch}
+.hero .ctas{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.chips{display:flex;flex-direction:column;gap:2px;margin-top:34px;padding-top:18px;border-top:1px solid var(--line);max-width:440px}
+.chip{display:flex;align-items:baseline;gap:14px;padding:8px 0;text-decoration:none;font-size:13px;color:var(--muted);transition:color .3s}
+.chip:hover{color:var(--ink)}
+.chip .t{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);min-width:74px}
+
+/* rail */
+.rail{position:absolute;left:var(--g);bottom:calc(var(--strip) + 26px);display:flex;align-items:center;gap:18px;z-index:2;opacity:0;transition:opacity .6s}
+.rail.on{opacity:1}
+.rail button{background:none;border:0;cursor:pointer;color:var(--dim);font:400 11px/1 var(--mono);letter-spacing:.06em;padding:8px 0;position:relative;transition:color .3s}
+.rail button::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.rail button.on{color:var(--ink)}
+.rail button.on::after{transform:scaleX(1)}
+.rail button:hover{color:var(--ink)}
+.hint{position:absolute;right:var(--g);bottom:calc(var(--strip) + 30px);font:400 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:10px}
+.hint i{width:18px;height:1px;background:var(--dim);display:inline-block}
+
+/* ========== SECTIONS ========== */
+section.sec{padding:160px 0 0}
+.sec-h{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;margin-bottom:64px}
+.sec-h .eyebrow{grid-column:1/4;padding-top:10px}
+.sec-h h2{grid-column:4/11;font-size:clamp(26px,2.4vw,36px)}
+.sec-h p{grid-column:4/10;margin-top:18px;color:var(--muted)}
+.rule{height:1px;background:var(--line);margin:0}
+
+/* statement */
+.statement{padding-top:180px}
+.statement .q{grid-column:2/12;font:400 clamp(26px,3vw,44px)/1.18 var(--sans);letter-spacing:-.025em;max-width:none}
+.statement .q em{font:300 italic 1.06em/1 var(--serif);letter-spacing:-.01em;color:var(--accent)}
+.statement .meta{grid-column:2/12;margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;border-top:1px solid var(--line);padding-top:26px}
+.statement .meta p{font-size:15px;color:var(--muted)}
+.statement .meta .s{display:block;margin-top:10px;font:400 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+
+/* nature */
+.duo{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.duo article{grid-column:span 6;border-top:1px solid var(--line2);padding-top:26px;display:grid;grid-template-columns:120px 1fr;gap:28px}
+.duo svg{width:120px;height:120px}
+.duo h3{margin-bottom:10px}
+.duo p{font-size:15px;color:var(--muted)}
+.duo .t{font:400 11px/1 var(--mono);letter-spacing:.08em;color:var(--dim);display:block;margin-bottom:12px;text-transform:uppercase}
+.note{margin-top:40px;grid-column:4/11}
+
+/* platform */
+.plat{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px}
+.plat .ph{grid-column:1/7;position:relative;aspect-ratio:3/2;border-radius:6px;overflow:hidden;background:var(--surface)}
+.plat .ph img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) contrast(1.02);transition:filter .8s}
+.plat .ph:hover img{filter:none}
+.ph .pf{position:absolute;inset:0;display:none;align-items:flex-end;padding:18px;border:1px solid var(--line);border-radius:6px;background:radial-gradient(40% 30% at 62% 46%,rgba(201,179,230,.10),transparent 70%),radial-gradient(45% 35% at 40% 56%,rgba(159,213,226,.10),transparent 70%),radial-gradient(120% 90% at 70% 30%,#151a21,#0e1115);font:400 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.ph.fb .pf{display:flex}.ph.fb img{display:none}
+.ph figcaption{position:absolute;left:14px;bottom:12px;font:400 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(232,234,231,.7);text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.ph.fb figcaption{display:none}
+.forms{grid-column:8/13;display:flex;flex-direction:column}
+.form{padding:24px 0;border-top:1px solid var(--line)}
+.form:last-child{border-bottom:1px solid var(--line)}
+.form .n{font:400 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;display:block}
+.form h3{font-size:22px;letter-spacing:-.02em;margin-bottom:8px}
+.form p{font-size:15px;color:var(--muted)}
+.funcs{margin-top:18px;font-size:13px;color:var(--muted)}
+
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:120px}
+.metrics div{padding:34px 24px 30px 0;border-right:1px solid var(--line)}
+.metrics div+div{padding-left:24px}
+.metrics div:last-child{border-right:0}
+.metrics b{display:block;font:300 clamp(34px,3.4vw,52px)/1 var(--sans);letter-spacing:-.035em;margin-bottom:14px}
+.metrics b sup{font-size:.4em;letter-spacing:0;vertical-align:.9em;margin-left:4px;color:var(--muted)}
+.metrics small{display:block;font-size:13px;line-height:1.45;color:var(--muted);max-width:26ch}
+.metrics .s{display:block;margin-top:8px;font:400 10.5px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+
+/* industries */
+.ind{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ind article{background:var(--surface);border-radius:6px;padding:28px 26px 26px;border:1px solid var(--line);transition:border-color .4s,background .4s}
+.ind article:hover{border-color:var(--line2);background:var(--surface2)}
+.ind .pct{font:300 44px/1 var(--sans);letter-spacing:-.04em;display:block;margin-bottom:18px}
+.ind h3{margin-bottom:14px}
+.ind ul{list-style:none;border-top:1px solid var(--line)}
+.ind li{font-size:14px;color:var(--muted);padding:10px 0;border-bottom:1px solid var(--line)}
+.ind .fine{margin-top:14px}
+
+/* prize */
+.prize{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:end;padding:56px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.prize .yr{grid-column:1/5;font:200 clamp(70px,9vw,132px)/.85 var(--sans);letter-spacing:-.05em;background:linear-gradient(100deg,#9fd5e2 0%,#c9b3e6 35%,#e8d3a4 65%,#a6e3cf 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.prize .tx{grid-column:6/12}
+.prize blockquote{font:300 italic clamp(22px,2vw,30px)/1.3 var(--serif);margin:14px 0 18px}
+
+/* news + pubs */
+.two{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.two>.a{grid-column:1/6}.two>.b{grid-column:7/13}
+.list{list-style:none;border-top:1px solid var(--line)}
+.list li{display:grid;grid-template-columns:96px 1fr;gap:18px;padding:16px 0;border-bottom:1px solid var(--line)}
+.list time,.list .j{font:400 11.5px/1.5 var(--mono);letter-spacing:.03em;color:var(--dim);padding-top:2px}
+.list a{text-decoration:none;font-size:15px;line-height:1.45;transition:color .3s}
+.list a:hover{color:var(--accent)}
+.list small{display:block;margin-top:4px;font-size:12.5px;color:var(--dim)}
+.list.pubs li{grid-template-columns:28px 1fr}
+.list.pubs .j{display:block;margin-top:4px;padding:0}
+.colh{max-width:none;font:500 11px/1 var(--mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;justify-content:space-between}
+
+/* team */
+.team{display:grid;grid-template-columns:repeat(3,1fr);column-gap:24px;row-gap:0}
+.person{border-top:1px solid var(--line);padding:24px 0 30px;display:grid;grid-template-columns:56px 1fr;column-gap:18px;align-items:start}
+.av{width:56px;height:56px;border-radius:50%;position:relative;overflow:hidden;background:var(--surface2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:300 italic 22px/1 var(--serif);color:var(--muted);filter:grayscale(1);transition:filter .6s var(--ease),color .6s}
+.av::before{content:"";position:absolute;inset:-2px;background:conic-gradient(from 200deg,#9fd5e2,#c9b3e6,#e8d3a4,#a6e3cf,#9fd5e2);opacity:0;transition:opacity .6s var(--ease)}
+.av span{position:relative}
+.person:hover .av{filter:none;color:#0A0C0F}
+.person:hover .av::before{opacity:.85}
+.person b{display:block;font-weight:500;font-size:15.5px;letter-spacing:-.01em}
+.person .role{font:400 11px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:5px 0 12px}
+.person p{font-size:13.5px;line-height:1.55;color:var(--dim);transition:color .5s}
+.person:hover p{color:var(--muted)}
+.person .ln{display:flex;gap:14px;margin-top:12px}
+.person .ln a{font:400 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:3px}
+.person .ln a:hover{color:var(--ink)}
+.advh{margin:56px 0 0}
+.adv{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:18px}
+.adv a{display:block;text-decoration:none;border-top:1px solid var(--line);padding-top:20px}
+.adv b{font-weight:500;font-size:15px;display:block}
+.adv .role{font:400 11px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:6px 0 10px;opacity:.9}
+.adv p{font-size:13.5px;color:var(--dim)}
+.adv a:hover p{color:var(--muted)}
+
+/* backers */
+.backers{display:flex;flex-wrap:wrap;align-items:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.backers span{flex:1 1 0;min-width:150px;text-align:center;padding:30px 12px;font:500 14px/1.25 var(--sans);letter-spacing:-.01em;color:var(--muted);border-right:1px solid var(--line);transition:color .4s}
+.backers span:last-child{border-right:0}
+.backers span:hover{color:var(--ink)}
+.backers span small{display:block;font:400 10px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-top:6px}
+
+/* careers */
+.perks{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.perk{border-top:1px solid var(--line);padding:20px 0 22px;display:grid;grid-template-columns:28px 1fr;gap:14px}
+.perk .ic{width:22px;height:22px;opacity:.75}
+.perk .ic img{width:22px;height:22px;filter:brightness(0) invert(1)}
+.perk .ic.fb{background:radial-gradient(circle,var(--accent) 0 3px,transparent 4px)}
+.perk .ic.fb img{display:none}
+.perk b{font-weight:500;font-size:14.5px;display:block;margin-bottom:4px}
+.perk p{font-size:13.5px;color:var(--dim)}
+.job{margin-top:34px;padding:26px;border:1px solid var(--line2);border-radius:6px;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;transition:border-color .4s}
+.job:hover{border-color:rgba(232,234,231,.32)}
+.job h3{font-size:22px;letter-spacing:-.02em;margin:10px 0 8px}
+.job p{font-size:14px;color:var(--muted)}
+
+/* contact */
+.contact{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.contact .a{grid-column:1/6}.contact form{grid-column:7/13}
+.addr{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px;font-size:14px;color:var(--muted)}
+.addr b{color:var(--ink);font-weight:500;display:block;margin-bottom:6px}
+.addr a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line2)}
+form.inert{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+form label{display:block;font:400 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);padding-top:18px}
+form .full{grid-column:1/-1}
+form input,form textarea{display:block;width:100%;margin-top:10px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);font:400 15px/1.4 var(--sans);padding:6px 0 10px;outline:none;transition:border-color .3s;border-radius:0}
+form textarea{min-height:88px;resize:vertical}
+form input:focus,form textarea:focus{border-bottom-color:var(--ink)}
+.formrow{display:flex;align-items:center;gap:18px;margin-top:28px}
+
+footer.site{margin-top:160px;border-top:1px solid var(--line);padding:40px 0 48px}
+footer.site .grid{row-gap:24px}
+footer.site .logo{grid-column:1/4}
+footer.site .c{grid-column:4/7;font-size:13px;color:var(--dim)}
+footer.site nav{grid-column:7/13;display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:flex-end}
+footer.site nav a{font-size:13px;color:var(--muted);text-decoration:none}
+footer.site nav a:hover{color:var(--ink)}
+
+#strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);z-index:40;background:#07080A;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:14px;font:400 11px/1 var(--mono);letter-spacing:.05em;color:var(--muted)}
+#strip .s{display:none}
+
+/* section reveals */
+.js .rv{opacity:0;transform:translateY(18px);transition:opacity 1s var(--ease),transform 1.2s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+.js .split .m>span{transform:translateY(105%)}
+.js .split.in .m>span{transform:none}
+
+@media (max-width:1100px){
+  nav.main{gap:20px}
+}
+@media (max-width:900px){
+  :root{--hdr:56px;--strip:28px}
+  nav.main{display:none}
+  #hdr .btn.ct{display:none}
+  #menuBtn{display:inline-flex}
+  #mnav{position:fixed;top:var(--hdr);left:0;right:0;z-index:29;background:rgba(10,12,15,.98);border-bottom:1px solid var(--line);display:none;flex-direction:column;padding:8px var(--g) 18px}
+  #mnav.open{display:flex}
+  #mnav a{padding:12px 0;border-bottom:1px solid var(--line);text-decoration:none;font-size:15px}
+  #show{height:600vh}
+  .pin .grid{display:block;padding:0}
+  .stage{position:absolute;left:0;right:0;top:var(--hdr);height:44svh;margin:0}
+  .stage .cap{bottom:auto;top:10px;left:var(--g);right:var(--g);font-size:10px}
+  .stage .cap .gap{display:none}
+  .copy{position:absolute;left:var(--g);right:var(--g);top:calc(var(--hdr) + 44svh + 8px);bottom:calc(var(--strip) + 54px);height:auto}
+  .state,#s0{top:0;transform:none}
+  .state .eyebrow{margin-bottom:12px}
+  .state h2{font-size:25px;margin-bottom:12px}
+  .state p{font-size:15px}
+  .state .src{display:none}
+  .state .k{margin-top:14px;padding-top:14px}
+  .state .k b{font-size:21px}
+  .state blockquote{font-size:17px}
+  .hero h1{font-size:34px;margin-bottom:12px}
+  .hero .lede{font-size:15px}
+  .hero .ctas{margin-top:18px}
+  .chips{margin-top:16px;padding-top:8px}
+  .chips .chip:nth-child(2){display:none}
+  .rail{left:var(--g);bottom:calc(var(--strip) + 14px);gap:14px}
+  .hint{display:none}
+  section.sec{padding-top:110px}
+  .sec-h{display:block;margin-bottom:40px}
+  .sec-h .eyebrow{margin-bottom:16px}
+  .statement{padding-top:120px}
+  .statement .meta{grid-template-columns:1fr;gap:24px}
+  .duo article{grid-column:1/-1;grid-template-columns:72px 1fr;gap:18px;margin-bottom:28px}
+  .duo svg{width:72px;height:72px}
+  .plat .ph,.forms{grid-column:1/-1}
+  .metrics{grid-template-columns:1fr 1fr;margin-top:80px}
+  .metrics div{padding:24px 14px 22px 0!important;border-right:0;border-bottom:1px solid var(--line)}
+  .metrics div:nth-child(odd){border-right:1px solid var(--line)}
+  .metrics div:nth-child(even){padding-left:14px!important}
+  .metrics div:nth-last-child(-n+2){border-bottom:0}
+  .ind{grid-template-columns:1fr}
+  .prize .yr,.prize .tx{grid-column:1/-1}
+  .prize .tx{margin-top:20px}
+  .two>.a,.two>.b{grid-column:1/-1}
+  .two>.b{margin-top:56px}
+  .team{grid-template-columns:1fr}
+  .adv{grid-template-columns:1fr 1fr}
+  .backers span{flex:1 1 50%;border-bottom:1px solid var(--line)}
+  .perks{grid-template-columns:1fr}
+  .job{flex-direction:column;align-items:flex-start}
+  .contact .a,.contact form{grid-column:1/-1}
+  .contact form{margin-top:48px}
+  footer.site .logo,footer.site .c,footer.site nav{grid-column:1/-1;justify-content:flex-start}
+  #strip .l{display:none}#strip .s{display:inline}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .m>span{transform:none!important}
+  .js .rv{opacity:1;transform:none}
+  .state .fx{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<header id="hdr">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="SanaHeal home"><img src="https://sanaheal.com/wp-content/uploads/2023/04/Group-163.svg" alt="SanaHeal" width="132" height="24" onerror="this.parentNode.classList.add('fb')"><span class="wm">SanaHeal</span></a>
+    <nav class="main" aria-label="Primary">
+      <a href="#show" data-k="1">Science</a>
+      <a href="#platform">Platform</a>
+      <a href="#news">News</a>
+      <a href="#team">Team</a>
+      <a href="#careers">Careers</a>
+    </nav>
+    <a class="btn ct" href="#contact">Contact</a>
+    <button id="menuBtn" class="btn" aria-expanded="false" aria-controls="mnav">Menu</button>
+  </div>
+</header>
+<nav id="mnav" aria-label="Mobile"><a href="#show">Science</a><a href="#platform">Platform</a><a href="#news">News</a><a href="#team">Team</a><a href="#careers">Careers</a><a href="#contact">Contact</a></nav>
+
+<main id="top">
+
+<!-- ===== Hero + pinned showcase ===== -->
+<section id="show" aria-label="How SanaHeal seals wet tissue">
+  <div class="pin">
+    <div class="wrap">
+      <div class="grid">
+        <div class="copy">
+
+          <div class="state hero on" id="s0" data-s="0">
+            <p class="eyebrow fx" style="--d:0">Next-generation bioadhesive technology</p>
+            <h1><span class="m"><span style="--i:0">Sticks to wet tissue.</span></span><br><span class="m"><span style="--i:1">Seals in seconds.</span></span></h1>
+            <p class="lede fx" style="--d:120">Rapid and robust bioadhesive technology engineered to mimic nature's ability to adhere to wet and challenging surfaces.</p>
+            <div class="ctas fx" style="--d:220">
+              <a class="btn solid mag" href="#show" data-k="1">See how it works <svg class="ar" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M1 6h10M7 2l4 4-4 4"/></svg></a>
+              <a class="btn mag" href="#contact">Partner with us</a>
+            </div>
+            <div class="chips fx" style="--d:320">
+              <a class="chip" href="#prize"><span class="t">Winner</span>Nature Spinoff Prize 2023</a>
+              <a class="chip" href="#show" data-k="5"><span class="t">Approved</span>Regulatory approval to stop trauma bleeding</a>
+            </div>
+          </div>
+
+          <div class="state" id="s1" data-s="1">
+            <p class="eyebrow fx">01 · The problem</p>
+            <h2 class="sp">Wet surfaces defeat glue.</h2>
+            <p class="fx" style="--d:120">Every wet surface carries a thin film of water. It sits between an adhesive and the tissue and blocks the contact that adhesion depends on. Conventional glues try to diffuse through it, so bonds come slowly and stay weak. Water beads, and wins.</p>
+            <p class="src fx" style="--d:220">Sources: sanaheal.com, “The Problem: Adhesion to Biological Tissues”; Yuk et al., <a href="https://www.nature.com/articles/s41586-019-1710-5" target="_blank" rel="noopener">Nature 2019</a>.</p>
+          </div>
+
+          <div class="state" id="s2" data-s="2">
+            <p class="eyebrow fx">02 · Dry the interface</p>
+            <h2 class="sp">The film lands and draws the water away.</h2>
+            <p class="fx" style="--d:120">SanaHeal's material arrives dry. Pressed gently onto wet tissue, it repels contaminants and absorbs surface moisture, drying the interface in the instant of contact. The barrier is gone.</p>
+            <p class="src fx" style="--d:220">Sources: sanaheal.com/technology (“repels contaminants and absorbs surface moisture”); Nature 2019. Inspired by spider-web glue, which pulls interfacial water away.</p>
+          </div>
+
+          <div class="state" id="s3" data-s="3">
+            <p class="eyebrow fx">03 · Bond</p>
+            <h2 class="sp">Bonds form across the interface.</h2>
+            <p class="fx" style="--d:120">As it takes up water, the material swells and forms physical and chemical bonds for a near-instant seal: hydrogen and electrostatic bonds first, then covalent bonds with the tissue's own amine groups.</p>
+            <div class="k fx num" style="--d:200"><div><b>≈5 s</b><small>to adhere</small></div><div><b>≈1 kPa</b><small>gentle pressure</small></div></div>
+            <p class="src fx" style="--d:260">Sources: sanaheal.com/technology; Yuk et al., Nature 2019 (adhesion within five seconds under about 1 kPa).</p>
+          </div>
+
+          <div class="state" id="s4" data-s="4">
+            <p class="eyebrow fx">04 · Hold</p>
+            <h2 class="sp">The seal holds as the surface flexes.</h2>
+            <p class="fx" style="--d:120">Organs breathe, pulse and stretch. A seal that is itself a soft, tough hydrogel moves with them instead of tearing out. In published preclinical work, the barnacle-inspired paste sealed injuries in seconds, independent of blood clotting.</p>
+            <div class="k fx num" style="--d:200"><div><b>≤15 s</b><small>haemostatic sealing</small></div><div><b>0</b><small>clotting needed</small></div></div>
+            <p class="src fx" style="--d:260">Source: Yuk et al., <a href="https://www.nature.com/articles/s41551-021-00769-y" target="_blank" rel="noopener">Nat. Biomed. Eng. 2021</a> (animal studies, incl. heparinised pigs).</p>
+          </div>
+
+          <div class="state" id="s5" data-s="5">
+            <p class="eyebrow fx">05 · Milestone</p>
+            <h2 class="sp">Approved to stop trauma bleeding.</h2>
+            <blockquote class="fx" style="--d:140">“SanaHeal's technology has already gained regulatory approval to stop trauma bleeding, and next year it will enter human trials to help control bleeding during surgeries and for repair of various injured tissues.”</blockquote>
+            <cite class="fx" style="--d:220"><a href="https://news.mit.edu/2026/sanaheal-makes-surgical-stitching-more-like-applying-sticky-note-1020" target="_blank" rel="noopener" style="color:inherit">MIT News · October 20, 2026</a></cite>
+            <p class="src fx" style="--d:280">The article does not name the agency or the cleared product.</p>
+          </div>
+
+        </div>
+        <div class="stage" id="stage">
+          <canvas id="gl" aria-label="Interpretive visualization: a thin hydrogel film above a wet surface beaded with droplets" role="img"></canvas>
+          <div class="fbk" aria-hidden="true"></div>
+          <div class="cap"><span>Interpretive visualization</span><span class="gap" id="gapNote">Interface gap enlarged for legibility</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="rail" id="rail" aria-label="Showcase steps">
+      <button data-k="1">01</button><button data-k="2">02</button><button data-k="3">03</button><button data-k="4">04</button><button data-k="5">05</button>
+    </div>
+    <div class="hint" id="hint"><i></i>Drag to rotate</div>
+  </div>
+</section>
+
+<!-- ===== Statement ===== -->
+<section class="sec statement" id="why">
+  <div class="wrap grid">
+    <p class="q split">Sutures and staples pierce the tissue they are meant to close. SanaHeal <em>seals</em> it instead.</p>
+    <div class="meta rv">
+      <p>Closing a wound “usually involves staples or sutures, which can cause more damage to tissues, trigger immune responses, and lead to scar tissue or infections.”<span class="s">MIT News, Oct 20, 2026</span></p>
+      <p>“Our solution is more like a Post-it note.”<span class="s">Hyunwoo Yuk, Founder &amp; CTO, in MIT News</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Nature ===== -->
+<section class="sec" id="nature">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">Nature-inspired technology</p>
+      <h2 class="split">Learning from nature to achieve rapid, robust tissue adhesion.</h2>
+    </div>
+    <div class="duo">
+      <article class="rv">
+        <svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M14 92h92" stroke="#5D646C"/><path d="M34 92c4-26 12-42 26-46 14 4 22 20 26 46" stroke="#E8EAE7" stroke-width="1.1"/><path d="M44 92c2-16 8-28 16-31 8 3 14 15 16 31" stroke="#8C939B"/><path d="M60 46v-6" stroke="#8C939B"/><ellipse cx="60" cy="93" rx="34" ry="3" stroke="#CBB68E" stroke-width="1.1"/></svg>
+        <div><span class="t">Barnacles</span><h3>Clean and adhere to uneven and contaminated surfaces.</h3><p>A lipid-rich matrix first cleans contaminants off the surface; adhesive proteins then crosslink to it. SanaHeal's haemostatic paste borrows the trick: an oil phase pushes blood aside so adhesive microparticles can bond.</p></div>
+      </article>
+      <article class="rv" style="transition-delay:.12s">
+        <svg viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M8 44c30 26 74 26 104-6" stroke="#E8EAE7" stroke-width="1.1"/><circle cx="34" cy="58" r="4.5" stroke="#CBB68E"/><circle cx="58" cy="63" r="5.5" stroke="#CBB68E"/><circle cx="83" cy="57" r="4.5" stroke="#CBB68E"/><path d="M40 92v-10M60 96V84M80 92v-10" stroke="#5D646C"/></svg>
+        <div><span class="t">Spider webs</span><h3>Instantly dry and adhere to wet surfaces.</h3><p>Web glue carries hygroscopic compounds that pull interfacial water away, so the silk sticks even in humid air. SanaHeal's dry patch does the same on wet tissue.</p></div>
+      </article>
+    </div>
+    <p class="fine note rv">SanaHeal's materials are synthetic and plant-derived. Sources: sanaheal.com (home, technology); Yuk et al., Nat. Biomed. Eng. 2021 (barnacle glue); Nature 2019 (spider-web glue).</p>
+  </div>
+</section>
+
+<!-- ===== Platform ===== -->
+<section class="sec" id="platform">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">SanaHeal's solutions</p>
+      <h2 class="split">Diverse form factors for various applications and indications.</h2>
+      <p class="rv">One chemistry, shaped to the procedure. SanaHeal has been a platform company from the start, working with larger medical device partners to bring products through trials and to market.</p>
+    </div>
+    <div class="plat">
+      <figure class="ph rv"><img src="https://sanaheal.com/wp-content/uploads/2023/06/2023_SanaHeal-2048x1365-1-1536x1024.jpg" alt="SanaHeal laboratory photograph" loading="lazy" width="1536" height="1024" onerror="this.parentNode.classList.add('fb')"><div class="pf">Lab photograph · sanaheal.com</div><figcaption>SanaHeal lab · 2023</figcaption></figure>
+      <div class="forms">
+        <div class="form rv"><span class="n">01 · Paste</span><h3>Bioadhesive paste</h3><p>Rapid, coagulation-independent control of bleeding. Bioadhesive microparticles in a hydrophobic oil that repels blood, inspired by barnacle glue.</p></div>
+        <div class="form rv"><span class="n">02 · Patch</span><h3>Bioadhesive patch</h3><p>Seals organ injuries against fluid and air leaks. A dry sheet that absorbs interfacial water and bonds under gentle pressure, inspired by spider-web glue.</p></div>
+        <p class="funcs rv">The platform can also carry added functions, such as drug delivery and electrical conductivity.</p>
+      </div>
+    </div>
+
+    <div class="metrics num rv">
+      <div><b>11</b><small>Peer-reviewed papers listed by SanaHeal</small><span class="s">sanaheal.com</span></div>
+      <div><b>9</b><small>Product applications across three industries</small><span class="s">sanaheal.com/industries</span></div>
+      <div><b>$4.7<sup>M</sup></b><small>NIH SBIR Direct-to-Phase II awards, 2023 and 2024</small><span class="s">NIH RePORTER</span></div>
+      <div><b>20</b><small>Patents pending or issued, per the founder's profile</small><span class="s">sanaheal.com/about</span></div>
+    </div>
+    <p class="fine" style="margin-top:14px">The live homepage counters read “0”; the figures above are counted from the site's own listings.</p>
+  </div>
+</section>
+
+<!-- ===== Industries ===== -->
+<section class="sec" id="industries">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">Industries</p>
+      <h2 class="split">Adhering materials to wet and uneven surfaces is a universal challenge.</h2>
+    </div>
+    <div class="ind num">
+      <article class="rv"><span class="pct">75%</span><h3>Medical</h3><ul><li>Trauma and surgical bleeding control</li><li>Tissue repair and sealing</li><li>Implantable device interface</li><li>Advanced wound treatment</li><li>Drug delivery</li></ul><p class="fine">“Research Use Only, Not for Human Use” (as stated on sanaheal.com).</p></article>
+      <article class="rv" style="transition-delay:.08s"><span class="pct">20%</span><h3>Skin application</h3><ul><li>Dermatology</li><li>Cosmetics</li></ul></article>
+      <article class="rv" style="transition-delay:.16s"><span class="pct">5%</span><h3>Research</h3><ul><li>Aquatic wildlife</li><li>Wearable device</li></ul></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Prize ===== -->
+<section class="sec" id="prize">
+  <div class="wrap">
+    <div class="prize rv">
+      <div class="yr num">2023</div>
+      <div class="tx">
+        <p class="eyebrow">Nature · The Spinoff Prize 2023</p>
+        <blockquote>“The company is the winner of the Spinoff Prize 2023.”</blockquote>
+        <a class="link" href="https://www.nature.com/articles/d41586-023-01661-2" target="_blank" rel="noopener">Read in Nature, May 24, 2023</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== News + publications ===== -->
+<section class="sec" id="news">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">Publications &amp; media highlights</p>
+      <h2 class="split">Platform technologies and pre-clinical studies, published in peer-reviewed journals.</h2>
+    </div>
+    <div class="two">
+      <div class="a rv">
+        <p class="colh"><span>News</span><span class="num">09</span></p>
+        <ul class="list num">
+          <li><time>Oct 20, 2026</time><div><a href="https://news.mit.edu/2026/sanaheal-makes-surgical-stitching-more-like-applying-sticky-note-1020" target="_blank" rel="noopener">SanaHeal makes surgical stitching more like applying a sticky note</a><small>MIT News</small></div></li>
+          <li><time>Feb 24, 2025</time><div><a href="https://sanaheal.com/archives/5560" target="_blank" rel="noopener">SanaHeal won Critical Care Innovation Incubator Pitch Competition sponsored by MTEC</a><small>SCCM C2I2</small></div></li>
+          <li><time>Dec 2024</time><div><span style="font-size:15px">Series A financing, reported at $10.5M</span><small>PitchBook / CB Insights via Biobase ·</small></div></li>
+          <li><time>Oct 18, 2024</time><div><a href="https://sanaheal.com/archives/5544" target="_blank" rel="noopener">SanaHeal won Execution Award by MedTech Innovator during MedTech Conference in Toronto</a><small>MedTech Innovator</small></div></li>
+          <li><time>Sep 24, 2024</time><div><a href="https://sanaheal.com/archives/5538" target="_blank" rel="noopener">SanaHeal is awarded $2.5M NIH NHLBI SBIR Direct-to-Phase II grant in collaboration with Mayo Clinic and BWH / Harvard Medical School</a><small>Grant award</small></div></li>
+          <li><time>Jul 17, 2024</time><div><a href="https://sanaheal.com/archives/5528" target="_blank" rel="noopener">SanaHeal is selected to participate in the 2024 Ray of Hope Accelerator cohort</a><small>Biomimicry Institute</small></div></li>
+          <li><time>Jul 13, 2024</time><div><a href="https://sanaheal.com/archives/5524" target="_blank" rel="noopener">SanaHeal won first prize for the 2024 iCANX Startup Award</a><small>iCANX</small></div></li>
+          <li><time>Jun 25, 2024</time><div><a href="https://sanaheal.com/archives/5520" target="_blank" rel="noopener">SanaHeal is selected to participate in the 2024 MedTech Innovator cohort</a><small>MedTech Innovator</small></div></li>
+          <li><time>Sep 2023</time><div><span style="font-size:15px">$2.2M NIH NIDDK SBIR Direct-to-Phase II: “Strain-programmed bioadhesive patch for enhanced diabetic wound healing”</span><small>NIH RePORTER · R44DK137615</small></div></li>
+          <li><time>May 24, 2023</time><div><a href="https://www.nature.com/articles/d41586-023-01661-2" target="_blank" rel="noopener">SanaHeal wins The Spinoff Prize 2023</a><small>Nature</small></div></li>
+        </ul>
+      </div>
+      <div class="b rv" style="transition-delay:.1s">
+        <p class="colh"><span>Publications</span><span class="num">11</span></p>
+        <ol class="list pubs num">
+          <li><span class="j">01</span><div><a href="https://www.nature.com/articles/s41586-019-1710-5" target="_blank" rel="noopener">Dry double-sided tape for adhesion of wet tissues and devices</a><span class="j">Nature · 2019</span></div></li>
+          <li><span class="j">02</span><div><a href="https://www.nature.com/articles/s41551-021-00769-y" target="_blank" rel="noopener">Rapid and coagulation-independent haemostatic sealing by a paste inspired by barnacle glue</a><span class="j">Nature Biomedical Engineering · 2021</span></div></li>
+          <li><span class="j">03</span><div><a href="https://www.nature.com/articles/s41551-022-00905-2" target="_blank" rel="noopener">A strain-programmed patch for the healing of diabetic wounds</a><span class="j">Nature Biomedical Engineering · 2022</span></div></li>
+          <li><span class="j">04</span><div><a href="https://www.nature.com/articles/nmat4463" target="_blank" rel="noopener">Tough bonding of hydrogels to diverse non-porous surfaces</a><span class="j">Nature Materials · 2016</span></div></li>
+          <li><span class="j">05</span><div><a href="https://sanaheal.com/archives/publications/strong-adhesion-of-wet-conducting-polymers-on-diverse-substrates" target="_blank" rel="noopener">Strong adhesion of wet conducting polymers on diverse substrates</a><span class="j">Science Advances</span></div></li>
+          <li><span class="j">06</span><div><a href="https://sanaheal.com/archives/publications/skin-inspired-hydrogel-elastomer-hybrids-with-robust-interfaces-and-functional-microstructures" target="_blank" rel="noopener">Skin-inspired hydrogel-elastomer hybrids with robust interfaces and functional microstructures</a><span class="j">Nature Communications</span></div></li>
+          <li><span class="j">07</span><div><a href="https://sanaheal.com/archives/publications/multifunctional-hydrogel-skins-on-diverse-polymers-with-arbitrary-shapes" target="_blank" rel="noopener">Multifunctional hydrogel skins on diverse polymers with arbitrary shapes</a><span class="j">Advanced Materials</span></div></li>
+          <li><span class="j">08</span><div><a href="https://sanaheal.com/archives/publications/instant-tough-bioadhesive-with-triggerable-benign-detachment" target="_blank" rel="noopener">Instant tough bioadhesive with triggerable benign detachment</a><span class="j">PNAS</span></div></li>
+          <li><span class="j">09</span><div><a href="https://sanaheal.com/archives/publications/impermeable-robust-hydrogels-via-hybrid-lamination" target="_blank" rel="noopener">Impermeable robust hydrogels via hybrid lamination</a><span class="j">Advanced Healthcare Materials</span></div></li>
+          <li><span class="j">10</span><div><a href="https://sanaheal.com/archives/publications/hydrogel-interfaces-for-merging-humans-and-machines" target="_blank" rel="noopener">Hydrogel interfaces for merging humans and machines</a><span class="j">Nature Reviews Materials</span></div></li>
+          <li><span class="j">11</span><div><a href="https://sanaheal.com/archives/publications/hydration-and-swelling-of-dry-polymers-for-wet-adhesion" target="_blank" rel="noopener">Hydration and swelling of dry polymers for wet adhesion</a><span class="j">J. Mech. Phys. Solids</span></div></li>
+        </ol>
+        <p class="fine" style="margin-top:14px">Years shown where confirmed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Team ===== -->
+<section class="sec" id="team">
+  <div class="wrap">
+    <div class="sec-h">
+      <p class="eyebrow">Our team + advisors</p>
+      <h2 class="split">A small, tight-knit group of innovators and scientists.</h2>
+      <p class="rv">Exploring courageous new ideas to solve long-standing challenges in healthcare. Officially formed in 2021, after the founders received funding from MIT's Deshpande Center. Based at Hatch.Bio Labs in Somerville.</p>
+    </div>
+    <div class="team" id="teamGrid"></div>
+    <p class="colh advh"><span>Advisors and scientific co-founders</span><span class="num">04</span></p>
+    <div class="adv" id="advGrid"></div>
+  </div>
+</section>
+
+<!-- ===== Backers ===== -->
+<section class="sec" id="backers">
+  <div class="wrap">
+    <p class="colh"><span>Funding and programmes</span></p>
+    <div class="backers rv">
+      <span>MIT Deshpande Center<small>Founding funding</small></span>
+      <span>NIH · NHLBI<small>SBIR 2024</small></span>
+      <span>NIH · NIDDK<small>SBIR 2023</small></span>
+      <span>MedTech Innovator<small>2024 cohort</small></span>
+      <span>Biomimicry Institute<small>Ray of Hope 2024</small></span>
+      <span>Hatch.Bio<small>Lab home</small></span>
+    </div>
+    <p class="fine" style="margin-top:14px">Series A investors are not listed on sanaheal.com.</p>
+  </div>
+</section>
+
+<!-- ===== Careers ===== -->
+<section class="sec" id="careers">
+  <div class="wrap two">
+    <div class="a">
+      <p class="eyebrow" style="margin-bottom:22px">Careers at SanaHeal</p>
+      <h2 class="split">Be a founding member of a growing team.</h2>
+      <p class="rv muted" style="margin-top:18px">We are looking for flexible, collaborative people who want to act as founding members of a growing team. If you think you are a good fit, reach out about open positions at <a href="mailto:info@sanaheal.com">info@sanaheal.com</a>.</p>
+    </div>
+    <div class="b">
+      <div class="perks rv">
+        <div class="perk"><div class="ic"><img src="https://sanaheal.com/wp-content/uploads/2023/04/g1759.svg" alt="" loading="lazy" width="22" height="22" onerror="this.parentNode.classList.add('fb')"></div><div><b>Flexible work environment</b><p>Supports a healthy work-life balance.</p></div></div>
+        <div class="perk"><div class="ic"><img src="https://sanaheal.com/wp-content/uploads/2023/04/support-3.svg" alt="" loading="lazy" width="22" height="22" onerror="this.parentNode.classList.add('fb')"></div><div><b>Team oriented + people centered</b><p>A collaborative, fun culture that encourages growth.</p></div></div>
+        <div class="perk"><div class="ic"><img src="https://sanaheal.com/wp-content/uploads/2023/04/Group-11009.svg" alt="" loading="lazy" width="22" height="22" onerror="this.parentNode.classList.add('fb')"></div><div><b>Science forward. Innovation first.</b><p>Science and innovation are central to the work.</p></div></div>
+        <div class="perk"><div class="ic"><img src="https://sanaheal.com/wp-content/uploads/2023/04/outline.svg" alt="" loading="lazy" width="22" height="22" onerror="this.parentNode.classList.add('fb')"></div><div><b>Benefits</b><p>Medical, dental, 401K and commuter passes.</p></div></div>
+      </div>
+      <div class="job rv">
+        <div><span class="eyebrow">Open position · Location</span><h3>Senior Quality Engineer</h3><p>Ensures the quality and compliance of SanaHeal's bioadhesive medical device products across design and development, with R&amp;D, manufacturing and regulatory affairs.</p></div>
+        <a class="btn solid mag" href="https://www.indeed.com/job/senior-quality-engineer-434f34e59ca2ab02" target="_blank" rel="noopener">Apply</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section class="sec" id="contact">
+  <div class="wrap contact">
+    <div class="a">
+      <p class="eyebrow" style="margin-bottom:22px">Contact us</p>
+      <h2 class="split">Interested in learning more about our bioadhesive technology?</h2>
+      <p class="rv muted" style="margin-top:18px">Contact us for more information about our diverse platforms, or about applying the technology to your industry.</p>
+      <div class="addr rv">
+        <div><b>Hatch.Bio Labs</b>100 Chestnut St.<br>Somerville, MA 02143</div>
+        <div><b>Reach us</b><a href="mailto:info@sanaheal.com">info@sanaheal.com</a><br><a href="https://www.linkedin.com/company/sanaheal" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://twitter.com/SanaHeal" target="_blank" rel="noopener">X</a></div>
+      </div>
+    </div>
+    <form class="inert rv" onsubmit="return false" aria-label="Contact form (concept only, not connected)">
+      <label>Full name<input type="text" name="name" autocomplete="off"></label>
+      <label>Phone number<input type="tel" name="phone" autocomplete="off"></label>
+      <label>Organization<input type="text" name="org" autocomplete="off"></label>
+      <label>Email<input type="email" name="email" autocomplete="off"></label>
+      <label class="full">Message<textarea name="msg"></textarea></label>
+      <div class="full formrow"><button class="btn solid mag" type="button">Submit</button><span class="fine">Concept only, not connected.</span></div>
+    </form>
+  </div>
+  <footer class="site">
+    <div class="wrap grid">
+      <a class="logo" href="#top" aria-label="SanaHeal home"><img src="https://sanaheal.com/wp-content/uploads/2023/04/Group-163.svg" alt="SanaHeal" width="132" height="24" loading="lazy" onerror="this.parentNode.classList.add('fb')"><span class="wm">SanaHeal</span></a>
+      <p class="c">© SanaHeal 2026 · Hatch.Bio Labs, 100 Chestnut St., Somerville, MA 02143</p>
+      <nav aria-label="Footer"><a href="https://sanaheal.com/technology" target="_blank" rel="noopener">Technology</a><a href="https://sanaheal.com/industries" target="_blank" rel="noopener">Industries</a><a href="https://sanaheal.com/about" target="_blank" rel="noopener">About</a><a href="https://sanaheal.com/publications" target="_blank" rel="noopener">Publications</a><a href="https://sanaheal.com/careers" target="_blank" rel="noopener">Careers</a><a href="https://sanaheal.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a><a href="https://sanaheal.com/fcoi-policy" target="_blank" rel="noopener">FCOI Policy</a></nav>
+    </div>
+  </footer>
+</section>
+</main>
+
+<div id="strip" role="note"><span class="l">Redesign concept by Max C · Not affiliated with or endorsed by SanaHeal</span><span class="s">Concept by Max C · Not affiliated with SanaHeal</span></div>
+
+<script>
+(() => {
+'use strict';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp = (x, a, b) => x < a ? a : x > b ? b : x;
+const sstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const lerp = (a, b, t) => a + (b - a) * t;
+
+/* ---------- content: team (sanaheal.com/about) ---------- */
+const TEAM = [
+ {n:'Patrick Rivelli',r:'President & CEO',li:'https://www.linkedin.com/in/patrick-rivelli-4082754/',b:'Medical device entrepreneur and angel investor with 30+ years in startups; has founded or led several venture-backed device companies and directs the MIT Angels life sciences group. BA, Harvard; MS in Management, MIT.'},
+ {n:'Hyunwoo Yuk, Ph.D.',r:'Founder & CTO',li:'https://www.linkedin.com/in/hyunwooyuk/',x:'https://twitter.com/HyunwooYuk',web:'https://www.hyunwooyuk.com/',b:'Soft-materials researcher focused on bringing new technologies to patients. 45+ peer-reviewed articles and 20 patents pending or issued. BS, KAIST; MS and PhD, MIT (Zhao lab).'},
+ {n:'Guangyu Bao, Ph.D.',r:'Senior Research Scientist',li:'https://www.linkedin.com/in/guangyu-bao/',x:'https://twitter.com/BaoGuangyu',b:'Six-plus years in materials and mechanics research, 20+ peer-reviewed articles on biomaterials, bioadhesives and haemostatics. PhD in Mechanical Engineering, McGill (2022).'},
+ {n:'Jongcheon Lim, Ph.D.',r:'Senior Research Scientist',li:'https://www.linkedin.com/in/jongcheon-lim-yjc/',b:'Translational biomedical engineer with 7+ years of research and 16 peer-reviewed articles on implantable and wearable devices. Yonsei, KAIST and Purdue (PhD 2023).'},
+ {n:'Emily Sexton',r:'Senior Program Manager',li:'https://www.linkedin.com/in/emily-chernich/',b:'Bioengineer with 7+ years in medical device R&D; leads the college co-op program and outreach. BS in Bioengineering, Northeastern (2019); certified associate project manager (2022).'},
+ {n:'Evan D\'Agostino, M.S.',r:'Senior R&D Engineer',li:'https://www.linkedin.com/in/evan-dagostino/',b:'Bioengineer with five years across device R&D and academia, focused on biomaterials. BS, UConn (2021); MS, Northeastern (2024).'},
+ {n:'Reagan Draper, M.S.',r:'R&D Engineer',li:'https://www.linkedin.com/in/reagan-draper/',b:'Bioengineer with new-product R&D experience across medical devices. BS and MS in Bioengineering (medical devices concentration), Northeastern.'},
+ {n:'Ryan Foss',r:'Senior Design Quality Engineer',li:'https://www.linkedin.com/in/ryan-foss-aa57332b/',b:'Specialist in design controls and quality management systems across FDA, EU MDR and ISO frameworks; ISO 13485 internal auditor. BS in Mechanical Engineering, Tennessee (2014).'},
+ {n:'Katy Feeny',r:'Regulatory Affairs · MedEdge Consulting',li:'https://www.linkedin.com/in/katy-ledford-feeny-67896865/',b:'Biomedical engineer with 15+ years in clinical, regulatory and quality affairs across the device lifecycle. BS, University of Toledo.'}
+];
+const ADV = [
+ {n:'Xuanhe Zhao, Ph.D.',r:'Scientific Co-Founder',a:'Professor, MIT. World-leading expert in soft materials and biomaterials.',u:'https://meche.mit.edu/people/faculty/zhaox@mit.edu'},
+ {n:'Christoph Nabzdyk, M.D., Dr. med.',r:'Scientific Co-Founder',a:'Professor, Mayo Clinic. World-leading expert in critical care and medical devices.',u:'https://mcpress.mayoclinic.org/authors/christoph-g-nabzdyk/'},
+ {n:'Jiping Wang, M.D., Ph.D.',r:'Scientific Advisor',a:'Research Director, Division of Surgical Oncology, BWH, Harvard Medical School. Expert in surgical oncology and minimally invasive surgery.',u:'https://physiciandirectory.brighamandwomens.org/details/514/jiping-wang-cancer_-_surgical_oncology-surgical_oncology-boston-chestnut_hill'},
+ {n:'Daniel Wildman',r:'Business Advisor',a:'Independent board director and strategic advisor; executive in the medical device industry with 40+ years of experience.',u:'https://www.linkedin.com/in/daniel-wildman-36b4717/'}
+];
+const ini = n => { const p = n.replace(/,.*$/, '').split(/\s+/); return (p[0][0] + p[p.length - 1][0]).toUpperCase(); };
+$('#teamGrid').innerHTML = TEAM.map((t, i) => `<article class="person rv" style="transition-delay:${(i % 3) * 70}ms"><div class="av" aria-hidden="true"><span>${ini(t.n)}</span></div><div><b>${t.n}</b><div class="role">${t.r}</div><p>${t.b}</p><div class="ln"><a href="${t.li}" target="_blank" rel="noopener">LinkedIn</a>${t.x ? `<a href="${t.x}" target="_blank" rel="noopener">X</a>` : ''}${t.web ? `<a href="${t.web}" target="_blank" rel="noopener">Site</a>` : ''}</div></div></article>`).join('');
+$('#advGrid').innerHTML = ADV.map((a, i) => `<a class="rv" style="transition-delay:${i * 70}ms" href="${a.u}" target="_blank" rel="noopener"><b>${a.n}</b><div class="role">${a.r}</div><p>${a.a}</p></a>`).join('');
+
+/* ---------- split headings into masked words ---------- */
+function split(el) {
+  let i = 0;
+  const walk = node => {
+    [...node.childNodes].forEach(ch => {
+      if (ch.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        ch.textContent.split(/(\s+)/).forEach(w => {
+          if (!w) return;
+          if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const m = document.createElement('span'); m.className = 'm';
+          const s = document.createElement('span'); s.textContent = w; s.style.setProperty('--i', i++);
+          m.appendChild(s); frag.appendChild(m);
+        });
+        ch.replaceWith(frag);
+      } else if (ch.nodeType === 1) walk(ch);
+    });
+  };
+  walk(el);
+}
+$$('.split, .sp').forEach(split);
+
+/* ---------- reveal on enter ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+$$('.rv, .split').forEach(el => io.observe(el));
+
+/* ---------- header, menu ---------- */
+const hdr = $('#hdr');
+const menuBtn = $('#menuBtn'), mnav = $('#mnav');
+menuBtn.addEventListener('click', () => { const o = mnav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); });
+$$('#mnav a').forEach(a => a.addEventListener('click', () => { mnav.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); }));
+
+/* ---------- magnetic buttons ---------- */
+if (!RM && matchMedia('(hover:hover)').matches) $$('.mag').forEach(b => {
+  b.addEventListener('mousemove', e => { const r = b.getBoundingClientRect(); b.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * 0.18}px,${(e.clientY - r.top - r.height / 2) * 0.28}px)`; });
+  b.addEventListener('mouseleave', () => { b.style.transition = 'transform .6s cubic-bezier(.2,.7,.1,1)'; b.style.transform = ''; setTimeout(() => b.style.transition = '', 600); });
+});
+
+/* ---------- smooth scroll (lightweight lerp on wheel + anchors) ---------- */
+let sy = scrollY, ty = scrollY, smoothing = false;
+const maxS = () => document.documentElement.scrollHeight - innerHeight;
+function stick() { sy += (ty - sy) * 0.11; if (Math.abs(ty - sy) < 0.6) { sy = ty; smoothing = false; } scrollTo(0, sy); if (smoothing) requestAnimationFrame(stick); }
+function glide(y) { ty = clamp(y, 0, maxS()); if (RM) { scrollTo(0, ty); return; } if (!smoothing) { sy = scrollY; smoothing = true; requestAnimationFrame(stick); } }
+if (!RM) addEventListener('wheel', e => { if (e.ctrlKey) return; e.preventDefault(); if (!smoothing) ty = scrollY; glide(ty + e.deltaY * (e.deltaMode ? 36 : 1)); }, { passive: false });
+addEventListener('scroll', () => { if (!smoothing) { sy = ty = scrollY; } }, { passive: true });
+
+const show = $('#show');
+const showTop = () => show.getBoundingClientRect().top + scrollY;
+const showLen = () => show.offsetHeight - innerHeight;
+const yForState = k => showTop() + showLen() * (k === 0 ? 0 : (k + 0.3) / 5.6);
+$$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+  const k = a.dataset.k, id = a.getAttribute('href').slice(1);
+  const t = id === 'top' ? document.body : document.getElementById(id); if (!t) return;
+  e.preventDefault();
+  glide(k != null ? yForState(+k) : t.getBoundingClientRect().top + scrollY - (id === 'show' ? 0 : 20));
+}));
+$$('#rail button').forEach(b => b.addEventListener('click', () => glide(yForState(+b.dataset.k))));
+
+/* ---------- scroll → showcase state ---------- */
+const states = $$('.state'), rail = $('#rail'), railB = $$('#rail button'), gapNote = $('#gapNote'), hint = $('#hint');
+let sTarget = 0, sCur = 0, active = 0, forced = null;
+function readScroll() {
+  hdr.classList.toggle('solid', scrollY > 40);
+  const p = clamp((scrollY - showTop()) / showLen(), 0, 1);
+  const raw = p * 5.6 - 0.3;                         // small hold at start and end
+  if (raw <= 0) sTarget = 0; else if (raw >= 5) sTarget = 5;
+  else { const k = Math.floor(raw), f = raw - k; sTarget = k + sstep(0.22, 0.78, f); }
+  if (forced != null) sTarget = forced;
+  const idx = clamp(Math.round(sTarget), 0, 5);
+  if (idx !== active) setActive(idx);
+  wake();
+}
+function setActive(idx) {
+  states.forEach((s, i) => { s.classList.toggle('on', i === idx); if (i === 0) s.classList.toggle('off', idx !== 0); });
+  railB.forEach(b => b.classList.toggle('on', +b.dataset.k === idx));
+  rail.classList.toggle('on', idx > 0);
+  gapNote.classList.toggle('on', idx === 3 || idx === 4);
+  active = idx;
+}
+addEventListener('scroll', readScroll, { passive: true });
+addEventListener('resize', readScroll);
+
+/* =====================================================================
+   WebGL2: hydrogel film over a wet, beaded surface
+   ===================================================================== */
+const stage = $('#stage'), cv = $('#gl');
+let gl = null, P = {}, V = {}, inst = {}, ok = false, raf = 0, lastT = 0, simT = 0, frames = 0, msAcc = 0, lastMs = 0, onScreen = true, dirty = true;
+const DPR = Math.min(devicePixelRatio || 1, 2);
+
+const COMMON = `#version 300 es
+precision highp float;
+uniform mat4 uVP; uniform vec3 uCam; uniform float uT, uFlex; uniform vec2 uRes; uniform vec3 uBg; uniform float uExpo;
+float sq(vec2 p, float w){ vec2 a = abs(p)/w; a*=a; a*=a; return pow(a.x+a.y, 0.25); }
+float gY(vec2 p){ float b = 0.65 + 0.35*sin(uT*1.15); return uFlex*((cos(p.x*0.95)-1.0)*0.40*b + 0.06*sin(p.y*1.6 + uT*1.7)); }
+vec3 gN(vec2 p){ float e = 0.02; return normalize(vec3(gY(p-vec2(e,0.))-gY(p+vec2(e,0.)), 2.0*e, gY(p-vec2(0.,e))-gY(p+vec2(0.,e)))); }
+`;
+const FRAG = `
+const vec3 KEY = vec3(-0.5466, 0.7006, 0.4588);
+const vec3 RIM = vec3(0.8165, 0.2722, -0.5103);
+vec3 env(vec3 d, float w){
+  vec3 c = mix(vec3(0.004,0.005,0.007), vec3(0.020,0.024,0.031), smoothstep(-0.2, 1.0, d.y));
+  c += vec3(1.0,0.965,0.92) * 5.0 * smoothstep(0.952 - w, 0.962 + w*0.3, dot(d, KEY));
+  c += vec3(1.0,0.965,0.92) * 0.20 * smoothstep(0.60, 0.95, dot(d, KEY));
+  c += vec3(0.62,0.76,1.0) * 2.4 * smoothstep(0.978 - w, 0.986 + w*0.2, dot(d, RIM));
+  c += vec3(0.75,0.82,0.95) * 0.06 * smoothstep(0.55, 1.0, d.y);
+  return c;
+}
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14), 0.0, 1.0); }
+float hash(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)))*43758.5453); }
+float vig(){ vec2 q = gl_FragCoord.xy/uRes*2.0-1.0; return smoothstep(0.52, 0.97, length(q)); }
+vec3 tone(vec3 c){ c = aces(c*uExpo); return pow(c, vec3(1.0/2.2)); }
+vec3 finish(vec3 c, float fade){ c = tone(c); c += (hash(gl_FragCoord.xy + fract(uT*7.13)*97.0) - 0.5)*0.014; return mix(c, uBg, max(vig(), fade)); }
+`;
+
+/* ground: wet mirror-dark surface; dries under the film */
+const VS_GROUND = COMMON + `
+in vec2 aP; out vec3 vP; out vec3 vN;
+void main(){ vec3 p = vec3(aP.x, gY(aP), aP.y); vP = p; vN = gN(aP); gl_Position = uVP*vec4(p,1.0); }`;
+const FS_GROUND = COMMON + FRAG + `
+uniform float uAbsorb, uFilmH, uLanded, uW;
+in vec3 vP; in vec3 vN; out vec4 o;
+void main(){
+  vec3 n = normalize(vN); vec3 V = normalize(uCam - vP); float nv = max(dot(n,V), 0.0);
+  float F = 0.02 + 0.98*pow(1.0-nv, 5.0);
+  float foot = 1.0 - smoothstep(0.97, 1.03, sq(vP.xz, uW));
+  float dry = foot*uAbsorb;
+  vec3 R = reflect(-V, n);
+  vec3 col = vec3(0.020,0.022,0.027)*(0.15 + 0.45*max(dot(n,KEY),0.0));
+  col += env(R, 0.004 + dry*0.12) * mix(F, 0.03, dry*0.6) * 1.05;
+  col += env(R, 0.30) * (0.03 + F*0.5) * 0.11 * (1.0 - dry*0.5);   // broad soft sheen
+  float pool = exp(-dot(vP.xz - vec2(0.3, 0.6), vP.xz - vec2(0.3, 0.6))*0.35);
+  col += vec3(0.008,0.009,0.012)*pool;
+  // projected film: soft shadow + thin-film caustic while it hovers
+  float h = max(uFilmH, 0.0);
+  vec2 sp = vP.xz + KEY.xz/KEY.y*h;
+  float s = sq(sp, uW);
+  float sh = 1.0 - smoothstep(0.93 - h*0.10, 1.02 + h*0.18, s);
+  col *= 1.0 - sh*0.30*(1.0 - uLanded*0.6);
+  float ca = pow(0.5+0.5*sin(sp.x*3.0 + sin(sp.y*2.0+uT*0.5)*1.2 + uT*0.4), 4.0);
+  vec3 cc = 0.5+0.5*cos(6.2831*(vec3(0.0,0.33,0.67) + sp.x*0.25 + sp.y*0.18));
+  col += cc*ca*sh*0.010*(1.0-uLanded);
+  float r = length(vP.xz);
+  o = vec4(finish(col, smoothstep(1.3, 3.1, r)), 1.0);
+}`;
+
+/* droplets: instanced smooth icosphere, flattened into sessile caps */
+const VS_DROP = COMMON + `
+in vec3 aP; in vec4 aI; uniform float uAbsorb, uFilmH, uW, uRepel;
+out vec3 vP; out vec3 vN; out float vR;
+void main(){
+  vec2 c = aI.xy; float r = aI.z;
+  float d = sq(c, uW*0.98);
+  float a = (1.0 - step(1.0, d)) * clamp(uAbsorb*1.9 - d*0.9, 0.0, 1.0);
+  a = a*a*(3.0-2.0*a);
+  float s = r*(1.0-a)*(1.0 + 0.035*uRepel*sin(uT*3.0 + aI.w*40.0));
+  float hy = 0.66;
+  vec3 q = aP; q.y = max(q.y, -0.25);
+  vec3 lp = vec3(q.x*s, (q.y+0.25)*s*hy, q.z*s);
+  vec3 wp = vec3(c.x, gY(c), c.y) + lp + vec3(0.0, a*uFilmH*0.85, 0.0);
+  vP = wp; vN = normalize(vec3(aP.x*hy, aP.y, aP.z*hy)); vR = r;
+  gl_Position = uVP*vec4(wp, 1.0);
+}`;
+const FS_DROP = COMMON + FRAG + `
+in vec3 vP; in vec3 vN; in float vR; out vec4 o;
+void main(){
+  vec3 n = normalize(vN); vec3 V = normalize(uCam - vP); float nv = max(dot(n,V), 0.0);
+  float F = 0.02 + 0.98*pow(1.0-nv, 5.0);
+  vec3 R = reflect(-V, n);
+  vec3 T = refract(-V, n, 0.75);
+  vec3 col = vec3(0.006,0.007,0.009);
+  col += env(vec3(T.x, -T.y, T.z), 0.06) * 0.30;           // inverted world seen through the lens
+  vec2 kd = normalize(KEY.xz);
+  float caus = pow(clamp(dot(normalize(n.xz + 1e-4), -kd), 0.0, 1.0), 2.0) * smoothstep(0.75, 0.15, n.y);
+  col += vec3(0.85,0.92,1.0) * caus * 0.55;                // light focused on the far side
+  col += env(R, 0.0) * (F*1.15 + 0.035);
+  o = vec4(finish(col, smoothstep(1.5, 2.8, length(vP.xz))), 1.0);
+}`;
+
+/* droplet contact shadow + caustic (premultiplied) */
+const VS_FOOT = COMMON + `
+in vec2 aP; in vec4 aI; uniform float uAbsorb, uW; out vec2 vUv; out float vK; out vec3 vP;
+void main(){
+  vec2 c = aI.xy; float d = sq(c, uW*0.98);
+  float a = (1.0 - step(1.0, d)) * clamp(uAbsorb*1.9 - d*0.9, 0.0, 1.0);
+  vK = 1.0 - a*a*(3.0-2.0*a);
+  vUv = aP*1.9;
+  vec2 xz = c + aP*aI.z*1.9;
+  vec3 p = vec3(xz.x, gY(xz) + 0.0015, xz.y); vP = p;
+  gl_Position = uVP*vec4(p,1.0);
+}`;
+const FS_FOOT = COMMON + FRAG + `
+in vec2 vUv; in float vK; in vec3 vP; out vec4 o;
+void main(){
+  float d = length(vUv);
+  float shadow = 0.80*(1.0 - smoothstep(0.42, 0.95, d));
+  vec2 kd = normalize(KEY.xz);
+  float cd = length(vUv + kd*0.55);
+  float caus = exp(-pow((cd - 0.42)/0.16, 2.0)) * smoothstep(1.1, 0.4, d);
+  float k = vK*(1.0 - max(vig(), smoothstep(1.5, 2.8, length(vP.xz))));
+  vec3 c = tone(vec3(0.75,0.85,1.0)*caus*0.05);
+  o = vec4(c*k, shadow*k);
+}`;
+
+/* luminous bond threads (additive ribbons) */
+const VS_THR = COMMON + `
+in vec2 aP; in vec4 aI; uniform float uGap, uBond; out float vV; out float vS; out float vSeed; out vec3 vP;
+void main(){
+  vec2 c = aI.xy; float v = aP.x;
+  vec3 b = vec3(c.x, gY(c), c.y);
+  vec3 p = b + vec3(0.0, uGap*v, 0.0);
+  float ang = aI.w*6.2831;
+  p.xz += vec2(cos(ang), sin(ang)) * sin(v*3.1416) * 0.003;
+  p.y -= 0.004*(1.0 - v);
+  vec3 side = normalize(cross(vec3(0.0,1.0,0.0), normalize(uCam - p)));
+  p += side * aP.y * 0.0036;
+  vV = v; vS = aP.y; vSeed = aI.z; vP = p;
+  gl_Position = uVP*vec4(p, 1.0);
+}`;
+const FS_THR = COMMON + FRAG + `
+uniform float uBond; in float vV; in float vS; in float vSeed; in vec3 vP; out vec4 o;
+void main(){
+  float g = clamp(uBond*1.7 - vSeed*0.7, 0.0, 1.0);
+  float vis = smoothstep(1.0 - g - 0.001, 1.0 - g + 0.12, vV);   // grows down from the film
+  float edge = exp(-vS*vS*3.2);
+  float pulse = 0.6 + 0.4*sin(vV*7.0 - uT*2.4 + vSeed*31.0);
+  float bead = (smoothstep(0.22, 0.0, vV) + smoothstep(0.78, 1.0, vV))*1.1;
+  vec3 c = vec3(1.0,0.86,0.62) * (0.6*pulse + bead) * edge * vis;
+  c = tone(c*0.75);
+  float k = 1.0 - vig();
+  o = vec4(c*k*0.9, 0.0);
+}`;
+
+/* the hydrogel film: squircle sheet, thin-film interference */
+const VS_FILM = COMMON + `
+in vec3 aP; uniform float uFilmH, uLanded, uSwell; out vec3 vP; out vec3 vN; out float vS; out vec2 vL;
+float fY(vec2 p){
+  float w = 0.055*sin(p.x*1.6 + uT*0.55)*cos(p.y*1.25 - uT*0.42) + 0.026*sin((p.x+p.y)*2.4 + uT*0.8);
+  float sag = -0.07*(1.0 - dot(p,p)/2.4);
+  float tilt = p.y*0.07 - p.x*0.035;
+  return uFilmH + (w + sag + tilt)*(1.0-uLanded) + gY(p)*uLanded;
+}
+void main(){
+  vec2 p = aP.xy*(1.0 + uSwell*0.03);
+  float e = 0.02;
+  vec3 pos = vec3(p.x, fY(p), p.y);
+  vN = normalize(vec3(fY(p-vec2(e,0.))-fY(p+vec2(e,0.)), 2.0*e, fY(p-vec2(0.,e))-fY(p+vec2(0.,e))));
+  vP = pos; vS = aP.z; vL = p;
+  gl_Position = uVP*vec4(pos, 1.0);
+}`;
+const FS_FILM = COMMON + FRAG + `
+uniform float uSwell, uLanded, uFilmA; in vec3 vP; in vec3 vN; in float vS; in vec2 vL; out vec4 o;
+vec3 thin(float cosT, float d){
+  // optical path → position on a cyclic cyan → magenta → gold interference palette
+  float t = fract(2.0*1.36*d*cosT/560.0);
+  vec3 C = vec3(0.45,0.88,1.00), M = vec3(0.98,0.48,0.92), G = vec3(1.00,0.84,0.46);
+  float u = t*3.0;
+  vec3 c = u < 1.0 ? mix(C, M, smoothstep(0.0,1.0,u)) : (u < 2.0 ? mix(M, G, smoothstep(1.0,2.0,u)) : mix(G, C, smoothstep(2.0,3.0,u)));
+  return c;
+}
+void main(){
+  vec3 n = normalize(vN); vec3 V = normalize(uCam - vP);
+  if (!gl_FrontFacing) n = -n;
+  if (dot(n,V) < 0.0) n = -n;
+  float nv = clamp(dot(n,V), 0.0, 1.0);
+  float F = 0.04 + 0.96*pow(1.0-nv, 5.0);
+  float cosT = sqrt(1.0 - (1.0-nv*nv)/(1.36*1.36));
+  float d = 420.0 + 230.0*sin(vL.x*1.05 + vL.y*0.35 + uT*0.30)*cos(vL.y*0.9 - uT*0.25) + 110.0*sin(length(vL)*2.6 - uT*0.5) + uSwell*80.0;
+  vec3 ir = thin(cosT, d);
+  vec3 R = reflect(-V, n);
+  vec3 e = env(R, 0.01);
+  vec3 col = e*(F*0.95 + 0.03) * mix(vec3(1.0), ir*1.3, 0.75);
+  float sheen = smoothstep(-0.35, 1.0, R.y)*(0.30 + F*2.4);
+  col += mix(vec3(1.0), ir, 0.88)*0.10*sheen;
+  float rim = smoothstep(0.965, 0.999, vS);
+  float rim2 = smoothstep(0.80, 1.0, vS);
+  col += vec3(0.92,0.95,1.0)*(rim*0.85 + rim2*0.05)*(0.45 + 0.55*pow(1.0-nv, 1.5));
+  float a = clamp(0.025 + F*0.65 + rim*0.6 + uLanded*0.02, 0.0, 0.95);
+  float k = (1.0 - vig()) * uFilmA;
+  o = vec4(tone(col)*k, a*k*0.62);
+}`;
+
+function sh(type, src) { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); return s; }
+function prog(vs, fs, unis) {
+  const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+  const u = {}; ['uVP','uCam','uT','uFlex','uRes','uBg','uExpo', ...unis].forEach(n => u[n] = gl.getUniformLocation(p, n));
+  return { p, u, a: n => gl.getAttribLocation(p, n) };
+}
+
+/* deterministic random */
+let seed = 7; const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+const W = 1.15; // film half-width (squircle)
+const sqd = (x, z, w) => Math.pow(Math.pow(Math.abs(x) / w, 4) + Math.pow(Math.abs(z) / w, 4), 0.25);
+
+function icosphere(sub) {
+  const t = (1 + Math.sqrt(5)) / 2; let v = [[-1,t,0],[1,t,0],[-1,-t,0],[1,-t,0],[0,-1,t],[0,1,t],[0,-1,-t],[0,1,-t],[t,0,-1],[t,0,1],[-t,0,-1],[-t,0,1]].map(a => { const l = Math.hypot(...a); return a.map(x => x / l); });
+  let f = [[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+  for (let s = 0; s < sub; s++) {
+    const cache = new Map(), nf = [];
+    const mid = (a, b) => { const k = a < b ? a + '_' + b : b + '_' + a; if (cache.has(k)) return cache.get(k); const m = [0,1,2].map(i => (v[a][i] + v[b][i]) / 2); const l = Math.hypot(...m); v.push(m.map(x => x / l)); cache.set(k, v.length - 1); return v.length - 1; };
+    f.forEach(([a, b, c]) => { const ab = mid(a, b), bc = mid(b, c), ca = mid(c, a); nf.push([a, ab, ca], [b, bc, ab], [c, ca, bc], [ab, bc, ca]); });
+    f = nf;
+  }
+  // keep only faces with any vertex above the flattening plane
+  f = f.filter(tri => tri.some(i => v[i][1] > -0.3));
+  return { pos: new Float32Array(v.flat()), idx: new Uint16Array(f.flat()) };
+}
+
+function buf(data, target = gl.ARRAY_BUFFER) { const b = gl.createBuffer(); gl.bindBuffer(target, b); gl.bufferData(target, data, gl.STATIC_DRAW); return b; }
+function attr(pr, name, b, size, divisor = 0) { const l = pr.a(name); if (l < 0) return; gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.enableVertexAttribArray(l); gl.vertexAttribPointer(l, size, gl.FLOAT, false, 0, 0); gl.vertexAttribDivisor(l, divisor); }
+
+function build() {
+  P.ground = prog(VS_GROUND, FS_GROUND, ['uAbsorb','uFilmH','uLanded','uW']);
+  P.drop = prog(VS_DROP, FS_DROP, ['uAbsorb','uFilmH','uW','uRepel']);
+  P.foot = prog(VS_FOOT, FS_FOOT, ['uAbsorb','uW']);
+  P.thr = prog(VS_THR, FS_THR, ['uGap','uBond']);
+  P.film = prog(VS_FILM, FS_FILM, ['uFilmH','uLanded','uSwell','uFilmA']);
+
+  // ground grid
+  const N = 120, S = 3.5, gp = new Float32Array((N + 1) * (N + 1) * 2); let k = 0;
+  for (let j = 0; j <= N; j++) for (let i = 0; i <= N; i++) { gp[k++] = -S + 2 * S * i / N; gp[k++] = -S + 2 * S * j / N; }
+  const gi = new Uint32Array(N * N * 6); k = 0;
+  for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) { const a = j * (N + 1) + i, b = a + 1, c = a + N + 1, d = c + 1; gi[k++] = a; gi[k++] = c; gi[k++] = b; gi[k++] = b; gi[k++] = c; gi[k++] = d; }
+  V.ground = gl.createVertexArray(); gl.bindVertexArray(V.ground); attr(P.ground, 'aP', buf(gp), 2); buf(gi, gl.ELEMENT_ARRAY_BUFFER); inst.groundN = gi.length;
+
+  // droplets (dart throwing)
+  const drops = []; seed = 11;
+  for (let t = 0; t < 9000 && drops.length < 125; t++) {
+    const a = rnd() * Math.PI * 2, rr = Math.pow(rnd(), 0.62) * 2.6, x = Math.cos(a) * rr, z = Math.sin(a) * rr * 0.92;
+    const r = 0.035 + 0.10 * Math.pow(rnd(), 2.4) + (z > 0.8 ? 0.02 * rnd() : 0);
+    if (drops.every(d => Math.hypot(d[0] - x, d[1] - z) > d[2] + r + 0.06)) drops.push([x, z, r, rnd()]);
+  }
+  const di = new Float32Array(drops.flat()); inst.dropN = drops.length;
+  const ico = icosphere(3); inst.icoN = ico.idx.length;
+  const dib = buf(di);
+  V.drop = gl.createVertexArray(); gl.bindVertexArray(V.drop); attr(P.drop, 'aP', buf(ico.pos), 3); attr(P.drop, 'aI', dib, 4, 1); buf(ico.idx, gl.ELEMENT_ARRAY_BUFFER);
+  V.foot = gl.createVertexArray(); gl.bindVertexArray(V.foot); attr(P.foot, 'aP', buf(new Float32Array([-1,-1, 1,-1, -1,1, 1,1])), 2); attr(P.foot, 'aI', dib, 4, 1);
+
+  // threads
+  const th = []; seed = 23;
+  while (th.length < 110) { const x = (rnd() * 2 - 1) * W, z = (rnd() * 2 - 1) * W; if (sqd(x, z, W * 0.94) < 1) th.push([x, z, rnd(), rnd()]); }
+  inst.thrN = th.length;
+  const SEG = 20, tp = new Float32Array((SEG + 1) * 4); k = 0;
+  for (let i = 0; i <= SEG; i++) { tp[k++] = i / SEG; tp[k++] = -1; tp[k++] = i / SEG; tp[k++] = 1; }
+  inst.thrV = (SEG + 1) * 2;
+  V.thr = gl.createVertexArray(); gl.bindVertexArray(V.thr); attr(P.thr, 'aP', buf(tp), 2); attr(P.thr, 'aI', buf(new Float32Array(th.flat())), 4, 1);
+
+  // film: squircle rings, denser at the rim
+  const M = 288, R = 60, fp = [], fi = [];
+  fp.push(0, 0, 0);
+  for (let i = 1; i <= R; i++) {
+    const s = 1 - Math.pow(1 - i / R, 1.7);
+    for (let j = 0; j < M; j++) { const th2 = j / M * Math.PI * 2, c = Math.cos(th2), sn = Math.sin(th2); const rad = W / Math.pow(Math.pow(Math.abs(c), 4) + Math.pow(Math.abs(sn), 4), 0.25); fp.push(c * rad * s, sn * rad * s, s); }
+  }
+  for (let j = 0; j < M; j++) fi.push(0, 1 + j, 1 + (j + 1) % M);
+  for (let i = 1; i < R; i++) for (let j = 0; j < M; j++) { const a = 1 + (i - 1) * M + j, b = 1 + (i - 1) * M + (j + 1) % M, c = a + M, d = b + M; fi.push(a, c, b, b, c, d); }
+  V.film = gl.createVertexArray(); gl.bindVertexArray(V.film); attr(P.film, 'aP', buf(new Float32Array(fp)), 3); buf(new Uint32Array(fi), gl.ELEMENT_ARRAY_BUFFER); inst.filmN = fi.length;
+  gl.bindVertexArray(null);
+}
+
+/* ---- matrices (preallocated) ---- */
+const mP = new Float32Array(16), mV = new Float32Array(16), mVP = new Float32Array(16), eye = new Float32Array(3), bg = new Float32Array([10/255, 12/255, 15/255]), res = new Float32Array(2);
+function persp(o, fy, asp, n, f) { const t = 1 / Math.tan(fy / 2); o.fill(0); o[0] = t / asp; o[5] = t; o[10] = (f + n) / (n - f); o[11] = -1; o[14] = 2 * f * n / (n - f); }
+function look(o, e, cx, cy, cz) {
+  let zx = e[0] - cx, zy = e[1] - cy, zz = e[2] - cz, l = Math.hypot(zx, zy, zz); zx /= l; zy /= l; zz /= l;
+  let xx = zz, xy = 0, xz = -zx; l = Math.hypot(xx, xz); xx /= l; xz /= l;           // up = (0,1,0)
+  const yx = zy * xz - zz * xy, yy = zz * xx - zx * xz, yz = zx * xy - zy * xx;
+  o[0] = xx; o[1] = yx; o[2] = zx; o[3] = 0; o[4] = xy; o[5] = yy; o[6] = zy; o[7] = 0; o[8] = xz; o[9] = yz; o[10] = zz; o[11] = 0;
+  o[12] = -(xx * e[0] + xy * e[1] + xz * e[2]); o[13] = -(yx * e[0] + yy * e[1] + yz * e[2]); o[14] = -(zx * e[0] + zy * e[1] + zz * e[2]); o[15] = 1;
+}
+function mul(o, a, b) { for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) { let s = 0; for (let k = 0; k < 4; k++) s += a[k * 4 + j] * b[i * 4 + k]; o[i * 4 + j] = s; } }
+
+/* ---- keyframes: yaw, pitch(rad), dist, targetY, filmH, expo ---- */
+const KF = [
+  [-0.55, 0.40, 7.0, 0.36, 0.95, 1.00],   // hero: film drifting above the beads
+  [-0.20, 0.20, 4.2, 0.06, 1.75, 1.00],   // 01: water beads, film lifted away
+  [ 0.30, 0.40, 6.0, 0.16, 0.085, 1.00],   // 02: lands, draws the water
+  [ 0.85, 0.13, 4.9, 0.05, 0.085, 1.05],   // 03: low, side-on: threads at the interface
+  [ 0.45, 0.36, 6.3, 0.05, 0.05, 1.00],   // 04: flex
+  [-0.35, 0.58, 7.6, 0.02, 0.05, 0.95]    // 05: calm, sealed
+];
+const cur = new Float32Array(6);
+let yawOff = 0, yawVel = 0, dragging = false, lastX = 0;
+
+function sample(s) {
+  const k = Math.min(Math.floor(s), 4), f = s - k, a = KF[k], b = KF[Math.min(k + 1, 5)], e = f * f * (3 - 2 * f);
+  for (let i = 0; i < 6; i++) cur[i] = lerp(a[i], b[i], e);
+}
+
+function resize() {
+  const w = Math.max(1, Math.round(stage.clientWidth * DPR)), h = Math.max(1, Math.round(stage.clientHeight * DPR));
+  if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; dirty = true; }
+}
+
+function frame(now) {
+  raf = 0;
+  if (!ok) return;
+  const t0 = performance.now();
+  const dt = lastT ? Math.min((now - lastT) / 1000, 0.1) : 0.016; lastT = now;
+  if (!RM) simT += dt;
+  // ease state
+  const ds = sTarget - sCur;
+  sCur = Math.abs(ds) < 0.0005 ? sTarget : sCur + ds * Math.min(1, dt * 3.0);
+  if (!dragging) { yawOff += yawVel * dt; yawVel *= Math.pow(0.04, dt); yawOff *= Math.pow(0.35, dt); }
+  render();
+  frames++; lastMs = performance.now() - t0; msAcc += lastMs;
+  const settled = Math.abs(sTarget - sCur) < 0.0005 && Math.abs(yawOff) < 0.0005 && !dragging;
+  if (RM ? !settled : true) loop();
+}
+function loop() { if (!raf && ok && onScreen && !document.hidden) raf = requestAnimationFrame(frame); }
+function wake() { dirty = true; loop(); }
+
+function render() {
+  resize();
+  const s = sCur; sample(s);
+  const yaw = cur[0] + yawOff, pitch = cur[1], dist = cur[2], ty = cur[3], filmH = cur[4], expo = cur[5];
+  const absorb = sstep(1.45, 1.95, s);
+  const bond = sstep(2.35, 2.95, s) * (1 - sstep(4.25, 4.85, s));
+  const flex = sstep(3.3, 3.85, s) * (1 - 0.7 * sstep(4.3, 4.9, s));
+  const landed = 1 - sstep(0.15, 0.75, filmH);
+  const repel = 1 - sstep(1.2, 1.8, s);
+  const filmA = 1 - 0.55 * Math.max(0, 1 - Math.abs(s - 1)) ;
+  const aspect = cv.width / cv.height;
+  const d2 = dist * (aspect < 0.95 ? 1.0 + (0.95 - aspect) * 0.9 : 1);
+  eye[0] = Math.sin(yaw) * Math.cos(pitch) * d2; eye[1] = ty + Math.sin(pitch) * d2; eye[2] = Math.cos(yaw) * Math.cos(pitch) * d2;
+  persp(mP, 0.50, aspect, 0.1, 40); look(mV, eye, 0, ty, 0); mul(mVP, mP, mV);
+  res[0] = cv.width; res[1] = cv.height;
+
+  gl.viewport(0, 0, cv.width, cv.height);
+  gl.clearColor(bg[0], bg[1], bg[2], 1); gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  const common = pr => { const u = pr.u; gl.useProgram(pr.p); gl.uniformMatrix4fv(u.uVP, false, mVP); gl.uniform3fv(u.uCam, eye); gl.uniform1f(u.uT, simT); gl.uniform1f(u.uFlex, flex); gl.uniform2fv(u.uRes, res); gl.uniform3fv(u.uBg, bg); gl.uniform1f(u.uExpo, expo); return u; };
+
+  gl.enable(gl.DEPTH_TEST); gl.depthMask(true); gl.disable(gl.BLEND); gl.disable(gl.CULL_FACE);
+  let u = common(P.ground); gl.uniform1f(u.uAbsorb, absorb); gl.uniform1f(u.uFilmH, filmH); gl.uniform1f(u.uLanded, landed); gl.uniform1f(u.uW, W);
+  gl.bindVertexArray(V.ground); gl.drawElements(gl.TRIANGLES, inst.groundN, gl.UNSIGNED_INT, 0);
+
+  u = common(P.drop); gl.uniform1f(u.uAbsorb, absorb); gl.uniform1f(u.uFilmH, filmH); gl.uniform1f(u.uW, W); gl.uniform1f(u.uRepel, repel);
+  gl.bindVertexArray(V.drop); gl.drawElementsInstanced(gl.TRIANGLES, inst.icoN, gl.UNSIGNED_SHORT, 0, inst.dropN);
+
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.depthMask(false);
+  u = common(P.foot); gl.uniform1f(u.uAbsorb, absorb); gl.uniform1f(u.uW, W);
+  gl.bindVertexArray(V.foot); gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, inst.dropN);
+
+  if (bond > 0.002) {
+    u = common(P.thr); gl.uniform1f(u.uGap, filmH); gl.uniform1f(u.uBond, bond);
+    gl.bindVertexArray(V.thr); gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, inst.thrV, inst.thrN);
+  }
+  u = common(P.film); gl.uniform1f(u.uFilmH, filmH); gl.uniform1f(u.uLanded, landed); gl.uniform1f(u.uSwell, absorb); gl.uniform1f(u.uFilmA, filmA);
+  gl.bindVertexArray(V.film); gl.drawElements(gl.TRIANGLES, inst.filmN, gl.UNSIGNED_INT, 0);
+  gl.bindVertexArray(null); gl.depthMask(true);
+  dirty = false;
+}
+
+function noGL() { ok = false; stage.classList.add('nogl'); }
+function start() {
+  try {
+    gl = cv.getContext('webgl2', { antialias: true, alpha: false, depth: true, stencil: false, powerPreference: 'high-performance', preserveDrawingBuffer: false });
+    if (!gl) return noGL();
+    build(); ok = true; stage.classList.remove('nogl'); resize(); readScroll(); sCur = sTarget; loop();
+  } catch (e) { console.warn('WebGL disabled:', e.message); noGL(); }
+}
+cv.addEventListener('webglcontextlost', e => { e.preventDefault(); ok = false; if (raf) cancelAnimationFrame(raf); raf = 0; }, false);
+cv.addEventListener('webglcontextrestored', () => { try { build(); ok = true; wake(); } catch (e) { noGL(); } }, false);
+new IntersectionObserver(es => { onScreen = es[0].isIntersecting; if (onScreen) wake(); }).observe(stage);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) { lastT = 0; wake(); } });
+new ResizeObserver(() => wake()).observe(stage);
+
+/* drag to rotate, with inertia and spring back */
+cv.addEventListener('pointerdown', e => { dragging = true; lastX = e.clientX; yawVel = 0; cv.classList.add('drag'); cv.setPointerCapture(e.pointerId); hint.style.opacity = 0; wake(); });
+cv.addEventListener('pointermove', e => { if (!dragging) return; const dx = (e.clientX - lastX) / Math.max(300, stage.clientWidth) * 3.2; lastX = e.clientX; yawOff = clamp(yawOff + dx, -1.4, 1.4); yawVel = dx * 60; wake(); });
+const endDrag = () => { dragging = false; cv.classList.remove('drag'); wake(); };
+cv.addEventListener('pointerup', endDrag); cv.addEventListener('pointercancel', endDrag);
+
+/* test hooks */
+window.__concept = {
+  advance(s) { forced = clamp(+s, 0, 5); sTarget = sCur = forced; setActive(Math.round(forced)); wake(); },
+  setScroll(f) { forced = null; const y = clamp(f, 0, 1) * maxS(); scrollTo(0, y); sy = ty = y; readScroll(); sCur = sTarget; wake(); },
+  release() { forced = null; readScroll(); },
+  stats() { return { ok, frames, avgMs: frames ? +(msAcc / frames).toFixed(2) : 0, lastMs: +lastMs.toFixed(2), s: +sCur.toFixed(3), active, canvas: [cv.width, cv.height], drops: inst.dropN, threads: inst.thrN, tris: ok ? (inst.groundN + inst.icoN * inst.dropN + inst.filmN) / 3 + inst.thrN * 40 : 0 }; }
+};
+
+readScroll(); setActive(0);
+if (document.readyState === 'complete') setTimeout(start, 30); else addEventListener('load', () => setTimeout(start, 30));
+})();
+</script>
+</body>
+</html>

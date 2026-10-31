@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Holobiome — Redesign Concept</title>
+<meta name="description" content="Holobiome discovers and develops therapies from the human microbiome, starting with the gut–brain axis. Redesign concept by Max C; not affiliated with Holobiome.">
+<meta name="theme-color" content="#0C0D09">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.replace('no-js','js');</script>
+<style>
+:root{
+  --bg:#0C0D09; --bg2:#14150F; --ink:#ECE6D6; --ink2:#B9B4A3; --mute:#8D8B77; --amber:#E9A23B;
+  --line:rgba(236,230,214,.10); --line2:rgba(236,230,214,.18);
+  --g:6vw; --max:1280px;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --ease:cubic-bezier(.2,.7,0,1);
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding-bottom:30px;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::selection{background:var(--amber);color:#0C0D09}
+.mono,.lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:400}
+.wrap{max-width:calc(var(--max) + 2*var(--g));margin:0 auto;padding:0 var(--g)}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+em{font-style:italic}
+.amb{color:var(--amber)}
+.todo{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--amber);opacity:.85;white-space:nowrap;text-transform:none}
+sup.src{font-family:var(--mono);font-size:9px;color:var(--mute);margin-left:2px;letter-spacing:0}
+:focus-visible{outline:1px solid var(--amber);outline-offset:3px}
+
+/* header */
+.top{position:fixed;inset:0 0 auto 0;z-index:50;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--g);transition:background .5s, border-color .5s;border-bottom:1px solid transparent}
+.top.solid{background:rgba(12,13,9,.78);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.wm{display:flex;align-items:center;gap:10px;font:500 17px/1 var(--sans);letter-spacing:-.01em}
+.wm svg{width:18px;height:18px}
+.nav{display:flex;align-items:center;gap:30px;font-size:13.5px;color:var(--ink2)}
+.nav a{transition:color .3s}
+.nav a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:6px;font:500 14px/1 var(--sans);border:1px solid var(--line2);color:var(--ink);transition:border-color .35s, background .35s, color .35s;will-change:transform}
+.btn:hover{border-color:rgba(236,230,214,.45)}
+.btn.pri{background:var(--ink);color:#11120D;border-color:var(--ink)}
+.btn.pri:hover{background:#fff}
+.btn .ar{transition:transform .35s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+.btn.sm{height:36px;padding:0 14px;font-size:13px}
+
+/* story: sticky stage + hero + showcase */
+#story{position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;z-index:1;overflow:hidden}
+.stage .frame{position:absolute;right:calc(var(--g) - 2vw);top:11vh;bottom:9vh;width:min(50vw,820px)}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:grab;opacity:0;transition:opacity 1.6s ease}
+#gl.on{opacity:1}
+#gl.drag{cursor:grabbing}
+.fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.nogl .fallback{display:flex}
+.fallback svg{width:78%;height:auto}
+.fcap{position:absolute;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);pointer-events:none}
+.fcap.tl{left:0;top:0}
+.fcap.bl{left:0;bottom:0}
+.fcap.br{right:0;bottom:0;text-align:right}
+.fcap .k{color:var(--ink2)}
+.tag{position:absolute;left:0;top:0;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);pointer-events:none;opacity:0;transition:opacity .5s;white-space:nowrap;display:flex;align-items:center;gap:8px;will-change:transform}
+.tag i{display:block;width:22px;height:1px;background:rgba(236,230,214,.35)}
+.tag.r i{order:0}
+.tag.amber{color:var(--amber)}
+.tag.amber i{background:rgba(233,162,59,.5)}
+
+.overlay{position:relative;z-index:2;margin-top:-100vh;margin-top:-100svh;pointer-events:none}
+.overlay a,.overlay button{pointer-events:auto}
+.hero{height:100vh;height:100svh;display:flex;align-items:center}
+.hero .in{width:min(36vw,520px);margin-left:var(--g)}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px rgba(233,162,59,.6)}
+h1{font:300 clamp(34px,4.2vw,60px)/1.04 var(--serif);letter-spacing:-.025em;margin:0 0 26px;font-variation-settings:"opsz" 60}
+h1 em, h2 em{font-style:italic;color:var(--ink)}
+.l{display:block;overflow:hidden;padding-bottom:.09em;margin-bottom:-.09em}
+.l>span{display:block}
+.js h1 .l>span{animation:rise 1.25s var(--ease) both}
+.js h1 .l:nth-child(2)>span{animation-delay:.08s}
+.js h1 .l:nth-child(3)>span{animation-delay:.16s}
+@keyframes rise{from{transform:translateY(102%)}to{transform:none}}
+.hero .sub{color:var(--ink2);max-width:42ch;margin:0 0 34px;font-size:16.5px}
+.js .hero .sub,.js .hero .ctas,.js .hero .eyebrow{animation:fade 1.4s .35s var(--ease) both}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hint{position:absolute;left:var(--g);bottom:calc(9vh + 2px);display:flex;align-items:center;gap:12px}
+.hint .bar{width:1px;height:28px;background:linear-gradient(var(--mute),transparent);animation:drip 2.4s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.spacer{height:600vh;position:relative}
+
+/* steps (inside stage) */
+.steps{position:absolute;left:var(--g);top:0;bottom:0;width:min(34vw,470px);pointer-events:none;opacity:0;transition:opacity .6s}
+.steps.on{opacity:1}
+.step{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%)}
+.step .num{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.step .num b{font-weight:500;color:var(--amber)}
+.step .num i{display:block;width:28px;height:1px;background:var(--line2)}
+.step h2{font:300 clamp(28px,2.6vw,38px)/1.08 var(--serif);letter-spacing:-.02em;margin:0 0 20px;font-variation-settings:"opsz" 40}
+.step p{color:var(--ink2);margin:0 0 16px;max-width:44ch;font-size:15.5px}
+.step .fine{font-size:12.5px;color:var(--mute);line-height:1.55;border-top:1px solid var(--line);padding-top:14px;margin-top:22px;max-width:46ch}
+.step .fine i{font-style:italic}
+.step .l>span{transform:translateY(104%);transition:transform .9s var(--ease)}
+.step .fx{opacity:0;transform:translateY(8px);transition:opacity .7s .12s, transform .9s .12s var(--ease)}
+.step.act .l>span{transform:none}
+.step.act .l:nth-child(2)>span{transition-delay:.05s}
+.step.act .fx{opacity:1;transform:none}
+.step:not(.act){visibility:hidden;transition:visibility 0s .9s}
+.step.act{visibility:visible}
+.routes{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:8px}
+.routes li{display:flex;gap:12px;font-size:13.5px;color:var(--ink2);align-items:baseline}
+.routes li span{font-family:var(--mono);font-size:10.5px;color:var(--mute);min-width:22px}
+.ticks{position:absolute;left:var(--g);bottom:calc(9vh + 2px);display:flex;gap:6px;pointer-events:auto;opacity:0;transition:opacity .6s}
+.ticks.on{opacity:1}
+.ticks button{all:unset;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--mute);padding:8px 8px 8px 0;display:flex;flex-direction:column;gap:8px;width:44px;transition:color .3s}
+.ticks button::before{content:"";display:block;height:1px;background:var(--line2);transition:background .4s}
+.ticks button.on{color:var(--ink)}
+.ticks button.on::before{background:var(--amber)}
+.ticks button:hover{color:var(--ink)}
+
+/* sections */
+section.sec{position:relative;z-index:3;background:var(--bg);padding:100px 0}
+.sec-head{margin-bottom:52px}
+.kick{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.kick b{font-weight:500;color:var(--ink2)}
+.kick i{display:block;width:28px;height:1px;background:var(--line2)}
+h2.h{font:300 clamp(28px,2.7vw,40px)/1.08 var(--serif);letter-spacing:-.02em;margin:0;font-variation-settings:"opsz" 40}
+.lede{color:var(--ink2);max-width:52ch;margin:0}
+.js .rv .l>span{transform:translateY(104%);transition:transform 1.1s var(--ease)}
+.js .rv.in .l>span{transform:none}
+.js .rv.in .l:nth-child(2)>span{transition-delay:.06s}
+.js .rv.in .l:nth-child(3)>span{transition-delay:.12s}
+.js .fu{opacity:0;transform:translateY(14px);transition:opacity 1s var(--ease), transform 1.1s var(--ease)}
+.js .fu.in{opacity:1;transform:none}
+
+/* statement */
+.statement{padding:150px 0 110px;border-top:1px solid var(--line)}
+.statement blockquote{margin:0;grid-column:2 / span 9}
+.statement q{display:block;font:300 clamp(28px,3.1vw,44px)/1.18 var(--serif);letter-spacing:-.018em;quotes:none;font-variation-settings:"opsz" 48}
+.statement q .dim{color:var(--mute)}
+.statement footer{margin-top:36px;display:flex;gap:14px;align-items:center}
+.statement footer i{display:block;width:28px;height:1px;background:var(--amber)}
+
+/* process */
+.proc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.proc li{padding:28px 28px 8px 0;position:relative}
+.proc li+li{padding-left:28px;border-left:1px solid var(--line)}
+.proc .n{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.08em}
+.proc h3{font:400 22px/1.2 var(--serif);margin:44px 0 10px;letter-spacing:-.01em}
+.proc p{margin:0;color:var(--ink2);font-size:14.5px;max-width:30ch}
+
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);margin-top:96px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.metrics>div{padding:30px 22px 28px 0}
+.metrics>div+div{padding-left:22px;border-left:1px solid var(--line)}
+.metrics .v{font:300 clamp(32px,3vw,44px)/1 var(--serif);letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums;font-feature-settings:"tnum" 1,"lnum" 1}
+.metrics .k{margin-top:16px;font-size:13px;color:var(--ink2);line-height:1.45}
+.srcs{margin-top:18px;font-size:11.5px;color:var(--mute);line-height:1.6}
+.srcs a{border-bottom:1px solid var(--line2)}
+
+/* trial feature */
+.trial{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:start}
+.trial .a{grid-column:1 / span 5}
+.trial .b{grid-column:7 / span 6}
+.spec{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:1px solid var(--line)}
+.spec dt,.spec dd{padding:14px 0;border-bottom:1px solid var(--line);margin:0}
+.spec dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);padding-right:28px;padding-top:17px}
+.spec dd{font-size:15px;color:var(--ink)}
+.pull{margin:44px 0 0;padding-left:20px;border-left:1px solid var(--amber)}
+.pull p{font:300 21px/1.38 var(--serif);margin:0 0 12px;letter-spacing:-.01em}
+.pull cite{font-style:normal}
+
+/* programs */
+.progs{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.prog{padding:30px 28px 34px 0;border-bottom:1px solid var(--line);position:relative;transition:background .5s}
+.prog:nth-child(3n+2),.prog:nth-child(3n+3){padding-left:28px;border-left:1px solid var(--line)}
+.prog .top2{display:flex;justify-content:space-between;align-items:center}
+.prog h3{font:400 22px/1.2 var(--serif);margin:40px 0 10px;letter-spacing:-.01em}
+.prog p{margin:0;color:var(--ink2);font-size:14.5px;max-width:34ch}
+.prog .more{max-height:0;overflow:hidden;opacity:0;transition:max-height .7s var(--ease), opacity .5s, margin .5s;color:var(--mute);font-size:13px;margin-top:0}
+.prog:hover .more,.prog:focus-within .more{max-height:120px;opacity:1;margin-top:12px}
+.prog .dot{width:7px;height:7px;border-radius:50%;border:1px solid var(--mute)}
+.prog.lead .dot{background:var(--amber);border-color:var(--amber);box-shadow:0 0 10px rgba(233,162,59,.55)}
+.partners{margin-top:56px;display:flex;flex-wrap:wrap;gap:12px 40px;align-items:baseline}
+.partners .names{display:flex;flex-wrap:wrap;gap:10px 36px;font:500 17px/1.2 var(--sans);color:var(--ink2);letter-spacing:-.01em}
+
+/* team: editorial rows */
+.tg{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:22px 0 26px;border-top:1px solid var(--line)}
+.tg>.lbl{grid-column:1 / span 2;padding-top:14px}
+.rows{grid-column:3 / span 10;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:48px}
+.rows.c3{grid-template-columns:repeat(4,minmax(0,1fr));column-gap:28px}
+.prow{display:flex;align-items:center;gap:18px;padding:12px 0;border-bottom:1px solid var(--line)}
+.prow .av{position:relative;flex:0 0 56px;width:56px;height:56px;border-radius:50%;overflow:hidden;background:radial-gradient(120% 100% at 30% 20%,#1b1d15,#101109);box-shadow:inset 0 0 0 1px rgba(236,230,214,.12);display:flex;align-items:center;justify-content:center;font:400 17px/1 var(--serif);color:var(--mute);letter-spacing:.02em;transition:box-shadow .5s}
+.prow .av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05);transition:filter .6s var(--ease)}
+.prow:hover .av img{filter:none}
+.prow:hover .av{box-shadow:inset 0 0 0 1px rgba(233,162,59,.5)}
+.prow .tx{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:2px;min-width:0}
+.prow .n{font:300 22px/1.2 var(--serif);letter-spacing:-.01em;font-variation-settings:"opsz" 24}
+.prow .r{font-size:13px;color:var(--mute);line-height:1.4}
+.rows.sm .prow{padding:13px 0}
+.rows.sm .n{font-size:18px}
+.rows.c3 .prow{padding:11px 0;display:block}
+.rows.c3 .tx{flex-direction:column;align-items:flex-start}
+.rows.c3 .n{font:500 14px/1.35 var(--sans);letter-spacing:-.005em}
+.rows.c3 .r{font-size:12.5px;margin-top:2px}
+
+/* investors */
+.inv{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:start}
+.inv .a{grid-column:1 / span 4}
+.inv .b{grid-column:6 / span 7}
+.logos{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:64px}
+.logos>div{height:96px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font:500 15.5px/1.2 var(--sans);color:var(--mute);letter-spacing:-.005em;text-align:center;padding:0 16px;transition:color .4s, background .4s;position:relative}
+.logos>div:hover{color:var(--ink);background:rgba(236,230,214,.02)}
+.logos>div small{position:absolute;top:10px;left:12px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--amber)}
+.big{font:300 clamp(44px,5vw,64px)/1 var(--serif);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+
+/* news */
+.news{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.news a{display:grid;grid-template-columns:120px 1fr 220px 24px;gap:24px;padding:19px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:color .3s}
+.news .d{font-family:var(--mono);font-size:11.5px;color:var(--ink2);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.news .d.u{color:var(--mute)}
+.news .t{font-size:15.5px;color:var(--ink2);transition:color .3s}
+.news .s{font-size:13px;color:var(--mute)}
+.news .ar{color:var(--mute);transition:transform .4s var(--ease), color .3s;justify-self:end}
+.news a:hover .t{color:var(--ink)}
+.news a:hover .ar{transform:translate(3px,-3px);color:var(--amber)}
+.news li.x{display:none}
+.news.all li.x{display:block}
+.more-btn{margin-top:28px}
+
+/* contact */
+.contact{padding:140px 0 120px;border-top:1px solid var(--line)}
+.contact h2{font:300 clamp(34px,4.2vw,60px)/1.04 var(--serif);letter-spacing:-.025em;margin:0 0 40px;grid-column:1 / span 8}
+.mail{font:300 clamp(22px,2vw,30px)/1 var(--serif);border-bottom:1px solid var(--line2);padding-bottom:6px;transition:border-color .3s}
+.mail:hover{border-color:var(--amber)}
+.cinfo{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:96px;border-top:1px solid var(--line);padding-top:26px}
+.cinfo div{font-size:14.5px;color:var(--ink2);line-height:1.6}
+.cinfo .mono{display:block;margin-bottom:10px}
+.cinfo a{border-bottom:1px solid var(--line2)}
+.foot{position:relative;z-index:3;background:var(--bg);border-top:1px solid var(--line);padding:30px var(--g) 34px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:12.5px;color:var(--mute)}
+.foot nav{display:flex;gap:10px 22px;flex-wrap:wrap}
+.foot a:hover{color:var(--ink)}
+.concept{position:fixed;left:0;right:0;bottom:0;z-index:60;height:30px;display:flex;align-items:center;justify-content:center;background:rgba(12,13,9,.92);border-top:1px solid var(--line);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--mute)}
+.concept b{color:var(--ink2);font-weight:500}
+
+/* responsive */
+@media (max-width:900px){
+  :root{--g:20px}
+  .nav a:not(.btn){display:none}
+  .stage .frame{left:0;right:0;top:64px;bottom:auto;height:42svh;width:auto}
+  .fcap.br{display:none}
+  .todo{white-space:normal}
+  .fcap.bl{bottom:6px}
+  .fcap.tl{left:var(--g)} .fcap.bl{left:var(--g)} .fcap.br{right:var(--g)}
+  .hero{align-items:flex-end;padding-bottom:calc(30px + 4svh)}
+  .hero .in{width:auto;margin:0 var(--g)}
+  h1{margin-bottom:18px}
+  .hero .sub{font-size:15.5px;margin-bottom:24px}
+  .eyebrow{margin-bottom:18px}
+  .hint{display:none}
+  .steps{left:var(--g);right:var(--g);width:auto;top:calc(64px + 43svh);bottom:calc(30px + 54px)}
+  .step{top:12px;transform:none}
+  .step .num{margin-bottom:12px}
+  .step h2{font-size:26px;margin-bottom:12px}
+  .step p{font-size:14.5px;margin-bottom:10px}
+  .step .fine{display:none}
+  .routes{display:none}
+  .ticks{left:var(--g);bottom:38px}
+  section.sec{padding:72px 0}
+  .statement{padding:130px 0 110px}
+  .statement blockquote{grid-column:1 / -1}
+  .proc{grid-template-columns:1fr 1fr}
+  .proc li:nth-child(3){padding-left:0;border-left:0}
+  .proc li{padding-bottom:28px;border-bottom:1px solid var(--line)}
+  .proc h3{margin-top:24px}
+  .metrics{grid-template-columns:1fr 1fr;margin-top:80px}
+  .metrics>div{padding:24px 12px 22px 0 !important;border-left:0 !important;border-bottom:1px solid var(--line)}
+  .metrics>div:nth-child(even){padding-left:16px !important;border-left:1px solid var(--line) !important}
+  .trial .a,.trial .b{grid-column:1 / -1}
+  .trial .b{margin-top:48px}
+  .progs{grid-template-columns:1fr}
+  .prog,.prog:nth-child(3n+2),.prog:nth-child(3n+3){padding-left:0;border-left:0}
+  .prog h3{margin-top:20px}
+  .prog .more{max-height:none;opacity:1;margin-top:10px}
+  .tg>.lbl{grid-column:1 / -1;padding-top:0;margin-bottom:6px}
+  .rows,.rows.c3{grid-column:1 / -1;grid-template-columns:1fr;column-gap:0}
+  .rows.c3{grid-template-columns:1fr 1fr;column-gap:16px}
+  .prow .n{font-size:19px}
+  .prow .av{flex-basis:44px;width:44px;height:44px;font-size:14px}
+  .inv .a,.inv .b{grid-column:1 / -1}
+  .inv .b{margin-top:28px}
+  .logos{grid-template-columns:1fr 1fr;margin-top:40px}
+  .logos>div{height:80px;font-size:14px}
+  .news a{grid-template-columns:1fr 18px;gap:6px 12px}
+  .news .d{grid-column:1 / -1}
+  .news .s{grid-column:1 / -1;order:3}
+  .news .ar{grid-row:2;grid-column:2}
+  .contact h2{grid-column:1 / -1}
+  .cinfo{grid-template-columns:1fr 1fr;margin-top:64px;row-gap:30px}
+  .concept{font:400 10px/1 var(--sans);letter-spacing:0;white-space:nowrap}
+  #tagAmb{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition-duration:.01ms !important}
+  .js .rv .l>span,.js .fu{transform:none;opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header class="top" id="top">
+  <a class="wm" href="#story" aria-label="Holobiome, home">
+    <svg viewBox="0 0 18 18" aria-hidden="true"><g transform="rotate(-38 9 9)"><rect x="5.6" y="1.6" width="6.8" height="14.8" rx="3.4" fill="none" stroke="#ECE6D6" stroke-width="1"/><path d="M5.6 9h6.8v4a3.4 3.4 0 0 1-6.8 0z" fill="#E9A23B"/></g></svg>
+    holobiome
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a href="#s1">Science</a><a href="#platform">Platform</a><a href="#programs">Programs</a><a href="#team">Team</a><a href="#news">News</a>
+    <a class="btn sm mag" href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<div id="story">
+  <div class="stage" id="stage">
+    <div class="frame" id="frame">
+      <canvas id="gl" aria-label="Interpretive visualization: a ring of glass capsules, each standing for one cultured gut strain. Drag to turn." role="img"></canvas>
+      <div class="fallback" aria-hidden="true">
+        <svg viewBox="0 0 400 260" fill="none">
+          <defs><radialGradient id="fg" cx="50%" cy="55%" r="50%"><stop offset="0" stop-color="#1b1d15"/><stop offset="1" stop-color="#0C0D09"/></radialGradient></defs>
+          <rect width="400" height="260" fill="url(#fg)"/>
+          <g stroke="#ECE6D6" stroke-opacity=".38" stroke-dasharray="1 6" stroke-linecap="round" stroke-width="3">
+            <ellipse cx="200" cy="132" rx="72" ry="24"/><ellipse cx="200" cy="132" rx="104" ry="35"/><ellipse cx="200" cy="132" rx="136" ry="46"/><ellipse cx="200" cy="132" rx="168" ry="57"/>
+          </g>
+          <circle cx="306" cy="173" r="5" fill="#E9A23B"/><circle cx="306" cy="173" r="16" fill="#E9A23B" fill-opacity=".12"/>
+        </svg>
+      </div>
+      <div class="fcap tl"><span class="k" id="figT">Fig. 00</span> · <span id="figN">The Microbiome Vault</span></div>
+      <div class="fcap bl">Interpretive visualization</div>
+      <div class="fcap br" id="figR">One capsule = one cultured strain</div>
+      <div class="tag" id="tagGut"><span>Gut microbiota</span><i></i></div>
+      <div class="tag" id="tagBrain"><span>Brain</span><i></i></div>
+      <div class="tag amber" id="tagAmb"><i></i><span>GABA-producing strain</span></div>
+    </div>
+
+    <div class="steps" id="steps" aria-live="polite">
+      <article class="step" data-i="1">
+        <div class="num lbl"><b>01</b><i></i>Listen</div>
+        <h2><span class="l"><span>The gut and the brain are</span></span><span class="l"><span>in <em>constant conversation.</em></span></span></h2>
+        <p class="fx">Gut bacteria make and consume neuroactive molecules. Their signals can reach the brain by routes that researchers are still mapping.</p>
+        <ul class="routes fx">
+          <li><span>i</span>Vagus nerve: a direct line from gut to brainstem</li>
+          <li><span>ii</span>Circulating metabolites carried in the blood</li>
+          <li><span>iii</span>Immune signals from the gut</li>
+        </ul>
+      </article>
+      <article class="step" data-i="2">
+        <div class="num lbl"><b>02</b><i></i>Collect</div>
+        <h2><span class="l"><span>The Microbiome Vault:</span></span><span class="l"><span>human strains, <em>in culture.</em></span></span></h2>
+        <p class="fx">Holobiome is assembling what it describes as the world's most diverse, deeply profiled collection of human gut bacteria. Each strain is brought into culture one at a time, so it can be tested for what it actually does.</p>
+        <p class="fine fx">The company estimates there are about 10,000 known gut bacterial species. Public type-strain collections capture a few hundred of them, and about 50 are sold as probiotics today.<sup class="src">NutraIngredients, May 2026</sup></p>
+      </article>
+      <article class="step" data-i="3">
+        <div class="num lbl"><b>03</b><i></i>Select</div>
+        <h2><span class="l"><span>One strain that</span></span><span class="l"><span><em>makes GABA.</em></span></span></h2>
+        <p class="fx">The founding discovery was a "most-wanted" gut bacterium, KLE1738, that would only grow beside <i>Bacteroides fragilis</i>. The missing growth factor was GABA, a major inhibitory neurotransmitter. That finding led the team to gut bacteria that produce it.</p>
+        <p class="fine fx">Strandwitz P. et al., <i>Nature Microbiology</i> 4, 396–403 (2019). <a href="https://doi.org/10.1038/s41564-018-0307-3" style="border-bottom:1px solid var(--line2);pointer-events:auto">doi:10.1038/s41564-018-0307-3</a></p>
+      </article>
+      <article class="step" data-i="4">
+        <div class="num lbl"><b>04</b><i></i>Signal</div>
+        <h2><span class="l"><span>A fine signal,</span></span><span class="l"><span>from <em>gut to brain.</em></span></span></h2>
+        <p class="fx">In a small study of people with major depressive disorder, faecal <i>Bacteroides</i> abundance was negatively correlated with depression-associated brain connectivity.</p>
+        <p class="fine fx">The finding is correlational and preliminary, which is why Holobiome is testing it further. Same paper, 2019.</p>
+      </article>
+      <article class="step" data-i="5">
+        <div class="num lbl"><b>05</b><i></i>Develop</div>
+        <h2><span class="l"><span>A next-generation probiotic</span></span><span class="l"><span><em>for depression.</em></span></span></h2>
+        <p class="fx">This is the lead program. The 2024 seed round is intended to advance it into human testing, and Holobiome says it will not sell anything until it has human data.</p>
+      </article>
+    </div>
+    <div class="ticks" id="ticks" role="group" aria-label="Showcase steps">
+      <button type="button" data-i="1">01</button><button type="button" data-i="2">02</button><button type="button" data-i="3">03</button><button type="button" data-i="4">04</button><button type="button" data-i="5">05</button>
+    </div>
+    <div class="hint lbl" id="hint"><span class="bar"></span>Scroll to explore · drag to turn</div>
+  </div>
+
+  <div class="overlay">
+    <section class="hero" aria-label="Introduction">
+      <div class="in">
+        <div class="eyebrow lbl"><span class="pip"></span>Gut–brain axis therapeutics · Boston</div>
+        <h1><span class="l"><span>The answer was</span></span><span class="l"><span><em>inside us</em></span></span><span class="l"><span>all along.</span></span></h1>
+        <p class="sub">Holobiome discovers and develops therapies from the human microbiome, starting with the conversation between the gut and the brain.</p>
+        <div class="ctas">
+          <a class="btn pri mag" href="#s1">See the science <span class="ar" aria-hidden="true">→</span></a>
+          <a class="btn mag" href="#contact">Partner with us</a>
+        </div>
+      </div>
+    </section>
+    <div class="spacer" id="showcase">
+      <span id="s1" style="position:absolute;top:10vh"></span>
+    </div>
+  </div>
+</div>
+
+<section class="sec statement" aria-label="Mission">
+  <div class="wrap grid">
+    <blockquote class="fu">
+      <q>“We want to help build a future where having your optimal gut microbiome is <span class="dim">by choice,</span> not chance.”</q>
+      <footer class="lbl"><i></i>Philip Strandwitz, PhD · CEO &amp; co-founder · 2024 seed announcement</footer>
+    </blockquote>
+  </div>
+</section>
+
+<section class="sec" id="platform" aria-labelledby="h-plat" style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head grid">
+      <div style="grid-column:1 / span 6">
+        <div class="kick lbl"><b>Platform</b><i></i>From library to medicine</div>
+        <h2 class="h rv" id="h-plat"><span class="l"><span>Screen the library.</span></span><span class="l"><span><em>Map what matters.</em></span></span></h2>
+      </div>
+      <p class="lede fu" style="grid-column:8 / span 5;align-self:end">Holobiome screens the Vault against specific targets to map how gut microbes affect health. The resulting datasets feed consumer products and drugs, developed with partners through long-term joint development and licensing.</p>
+    </div>
+    <ol class="proc fu">
+      <li><span class="n">01</span><h3>Collect</h3><p>Human gut strains, brought into culture and banked in the Vault.</p></li>
+      <li><span class="n">02</span><h3>Screen</h3><p>Each strain is tested against specific targets.</p></li>
+      <li><span class="n">03</span><h3>Map</h3><p>Find which microbes move which biology, informed by genome data and "food maps".</p></li>
+      <li><span class="n">04</span><h3>Develop</h3><p>Turn those maps into next-generation probiotics, prebiotics and drugs.</p></li>
+    </ol>
+    <div class="metrics fu" role="list">
+      <div role="listitem"><div class="v">2018</div><div class="k">Launched, from research at Northeastern University</div></div>
+      <div role="listitem"><div class="v">3M+</div><div class="k">Genomes in its reference database<sup class="src">a</sup></div></div>
+      <div role="listitem"><div class="v">100K+</div><div class="k">Individuals represented in its data<sup class="src">a</sup></div></div>
+      <div role="listitem"><div class="v">6,000+</div><div class="k">Participants in the GUT-FEELINGS trial<sup class="src">b</sup></div></div>
+      <div role="listitem"><div class="v">$9M</div><div class="k">Oversubscribed seed round, Oct 2024<sup class="src">c</sup></div></div>
+    </div>
+    <p class="srcs">a: company figures as reported in <a href="https://www.nutraingredients.com/Article/2026/05/28/probiota-pioneer-holobiome-on-building-the-infrastructure-to-decipher-the-madness-of-the-microbiome/">NutraIngredients, May 2026</a> · b: <a href="https://www.nutraceuticalsworld.com/breaking-news/holobiome-radicle-science-launch-6000-participant-trial-on-gut-brain-axis-formulas/">Nutraceuticals World, Oct 2026</a> · c: <a href="https://www.prnewswire.com/news-releases/holobiome-a-microbiome-platform-startup-targeting-the-gut-brain-axis-closes-oversubscribed-seed-round-302270737.html">PR Newswire, Oct 2024</a></p>
+  </div>
+</section>
+
+<section class="sec" id="trial" aria-labelledby="h-trial" style="border-top:1px solid var(--line)">
+  <div class="wrap trial">
+    <div class="a">
+      <div class="kick lbl"><b>Launched</b><i></i>Oct 2026</div>
+      <h2 class="h rv" id="h-trial"><span class="l"><span>GUT-FEELINGS:</span></span><span class="l"><span>gut–brain science</span></span><span class="l"><span><em>at population scale.</em></span></span></h2>
+      <blockquote class="pull fu">
+        <p>“The missing link is large-scale multimodal data from interventional studies, the kind this trial is designed to generate.”</p>
+        <cite class="lbl">Philip Strandwitz, PhD · CEO &amp; co-founder</cite>
+      </blockquote>
+    </div>
+    <div class="b fu">
+      <p class="lede" style="margin-bottom:34px">Holobiome and Radicle Science are running a randomized, placebo-controlled, decentralized study of food-derived prebiotics in people who feel anxious. The aim is to find which formulations improve mental wellness, and for whom.</p>
+      <dl class="spec">
+        <dt>Design</dt><dd>16 weeks, 20 arms: 19 prebiotic formulations vs. placebo</dd>
+        <dt>Scale</dt><dd>More than 6,000 Americans across 45 states</dd>
+        <dt>Outcomes</dt><dd>Anxiety, stress, mood, sleep and quality of life, plus stool sequencing, blood proteomics and wearable data</dd>
+        <dt>Support</dt><dd>An award from ARPA-H under its EVIDENT initiative</dd>
+        <dt>Readout</dt><dd>Initial results expected in the second half of 2027</dd>
+      </dl>
+      <p class="srcs">Sources: <a href="https://www.nutraingredients.com/Article/2026/10/19/holobiome-and-radicle-science-launch-large-scale-gut-brain-axis-trial/">NutraIngredients, 19 Oct 2026</a> · <a href="https://www.nutraceuticalsworld.com/breaking-news/holobiome-radicle-science-launch-6000-participant-trial-on-gut-brain-axis-formulas/">Nutraceuticals World, 12 Oct 2026</a></p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="programs" aria-labelledby="h-prog" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head grid">
+      <div style="grid-column:1 / span 6">
+        <div class="kick lbl"><b>Programs</b><i></i>One platform</div>
+        <h2 class="h rv" id="h-prog"><span class="l"><span>One library,</span></span><span class="l"><span><em>many questions.</em></span></span></h2>
+      </div>
+      <p class="lede fu" style="grid-column:8 / span 5;align-self:end">The same platform supports a lead depression program, programs in stress and pain, and partner work on sleep, food and health in spaceflight.</p>
+    </div>
+    <div class="progs fu">
+      <div class="prog lead" tabindex="0"><div class="top2"><span class="lbl">Lead program</span><span class="dot"></span></div><h3>Depression</h3><p>A next-generation probiotic aimed at biology relevant to depression.</p><p class="more">The 2024 seed is intended to advance it into human testing.</p></div>
+      <div class="prog" tabindex="0"><div class="top2"><span class="lbl">Program</span><span class="dot"></span></div><h3>Stress</h3><p>A stress program, being pursued with partners, that draws on the same platform.</p><p class="more">Named in the 2024 funding release and the May 2026 profile.</p></div>
+      <div class="prog" tabindex="0"><div class="top2"><span class="lbl">Program · Corundum</span><span class="dot"></span></div><h3>Pain</h3><p>Microbiome solutions along the gut–pain axis.</p><p class="more">Backed by $1M in research funding from Corundum Systems Biology.</p></div>
+      <div class="prog" tabindex="0"><div class="top2"><span class="lbl">Partner · J&amp;J</span><span class="dot"></span></div><h3>Sleep</h3><p>A partnership with Johnson &amp; Johnson exploring how gut bacteria affect sleep.</p><p class="more">This involved J&amp;J Consumer, J&amp;J Innovation and Janssen R&amp;D, and was followed by a second J&amp;J Innovation collaboration.</p></div>
+      <div class="prog" tabindex="0"><div class="top2"><span class="lbl">Grant · TRISH</span><span class="dot"></span></div><h3>Health in space</h3><p>Next-generation probiotics for behavioral health on long-duration missions.</p><p class="more">Funded by a $500K grant from the Translational Research Institute for Space Health.</p></div>
+      <div class="prog" tabindex="0"><div class="top2"><span class="lbl">Partners · Food</span><span class="dot"></span></div><h3>Food &amp; ingredients</h3><p>Work with Unilever, and with Ingredion on the targeted health benefits of food ingredients.</p><p class="more">Holobiome's "food maps" link food ingredients to specific microbes.</p></div>
+    </div>
+    <div class="partners fu">
+      <span class="lbl">Publicly announced engagements</span>
+      <div class="names"><span>Kenvue</span><span>Unilever</span><span>Ingredion</span><span>AstraZeneca</span><span>Johnson &amp; Johnson Innovation</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="team" aria-labelledby="h-team" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head grid">
+      <div style="grid-column:1 / span 6">
+        <div class="kick lbl"><b>Team</b><i></i>Boston</div>
+        <h2 class="h rv" id="h-team"><span class="l"><span>The people</span></span><span class="l"><span><em>behind the Vault.</em></span></span></h2>
+      </div>
+      <p class="lede fu" style="grid-column:8 / span 5;align-self:end">Founded by research scientists from Northeastern University, with a mission to improve global health.</p>
+    </div>
+    <div id="teamGroups"></div>
+  </div>
+</section>
+
+<section class="sec" id="investors" aria-labelledby="h-inv" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="inv">
+      <div class="a">
+        <div class="kick lbl"><b>Backed by</b><i></i>Seed · Oct 2024</div>
+        <div class="big fu">$9M</div>
+        <p class="lbl" style="margin-top:14px">Oversubscribed seed, led by iSelect Fund</p>
+      </div>
+      <div class="b">
+        <h2 class="h rv" id="h-inv"><span class="l"><span>Investors and</span></span><span class="l"><span><em>early believers.</em></span></span></h2>
+        <p class="lede fu" style="margin-top:20px">Non-dilutive support has come from the NIH, ARPA-H and TRISH. Earlier backers include Alexandria LaunchLabs seed capital, a Massachusetts Life Sciences Center QuickFire Challenge award and an Amgen / LabCentral Golden Ticket.</p>
+      </div>
+    </div>
+    <div class="logos fu" aria-label="Investors">
+      <div><small>Lead</small>iSelect Fund</div>
+      <div>Corundum Systems Biology</div>
+      <div>Satori Neuro</div>
+      <div>SkyRiver Ventures</div>
+      <div>Pace Ventures</div>
+      <div>Valor Equity Partners</div>
+      <div>Astanor</div>
+      <div style="color:var(--mute);font:400 11px/1.5 var(--mono);letter-spacing:.06em;text-transform:uppercase">Plus NIH · ARPA-H · TRISH</div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="news" aria-labelledby="h-news" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head grid">
+      <div style="grid-column:1 / span 6">
+        <div class="kick lbl"><b>News</b><i></i>Coverage &amp; announcements</div>
+        <h2 class="h rv" id="h-news"><span class="l"><span>In the <em>record.</em></span></span></h2>
+      </div>
+      <p class="lede fu" style="grid-column:8 / span 5;align-self:end">Selected coverage, partnerships and announcements since Holobiome launched in 2018.</p>
+    </div>
+    <ul class="news" id="newsList">
+      <li><a href="https://www.nutraingredients.com/Article/2026/10/19/holobiome-and-radicle-science-launch-large-scale-gut-brain-axis-trial/"><span class="d">Oct 2026</span><span class="t">Holobiome and Radicle Science launch the large-scale GUT-FEELINGS gut–brain trial</span><span class="s">NutraIngredients</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.nutraceuticalsworld.com/breaking-news/holobiome-radicle-science-launch-6000-participant-trial-on-gut-brain-axis-formulas/"><span class="d">Oct 2026</span><span class="t">A 6,000-participant, ARPA-H-supported trial of gut–brain axis formulas</span><span class="s">Nutraceuticals World</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.nutraingredients.com/Article/2026/05/28/probiota-pioneer-holobiome-on-building-the-infrastructure-to-decipher-the-madness-of-the-microbiome/"><span class="d">May 2026</span><span class="t">Probiota Pioneer: building the infrastructure to decipher the microbiome</span><span class="s">NutraIngredients</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.dvidshub.net/news/561914/cyber-leaders-participate-2026-cognitive-warrior-symposium"><span class="d">2026</span><span class="t">Holobiome participates in the 2026 Cognitive Warrior Symposium</span><span class="s">DVIDS</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.prnewswire.com/news-releases/holobiome-a-microbiome-platform-startup-targeting-the-gut-brain-axis-closes-oversubscribed-seed-round-302270737.html"><span class="d">Oct 2024</span><span class="t">Holobiome closes an oversubscribed $9M seed round</span><span class="s">PR Newswire</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.forbes.com/sites/juergeneckhardt/2023/09/27/the-gut-microbiome-may-unlock-new-treatment-paradigms-for-neurological-diseases/"><span class="d">Sep 2023</span><span class="t">The gut microbiome may unlock new treatment paradigms for neurological diseases</span><span class="s">Forbes</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.foodnavigator.com/Article/2023/07/25/How-Unilever-is-using-artificial-intelligence-and-big-data-biology-to-transform-food"><span class="d">Jul 2023</span><span class="t">A featured collaborator as Unilever brings microbiome science to food</span><span class="s">FoodNavigator</span><span class="ar">↗</span></a></li>
+      <li><a href="https://www.corundum.bz/wk/wp-content/uploads/2021/06/CSB_Press-Release_22.06.21E.pdf"><span class="d">Jun 2021</span><span class="t">Holobiome becomes the first private direct investment of Corundum's CSB-1 fund</span><span class="s">Corundum Systems Biology</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.wsj.com/articles/depression-bacteria-in-your-gut-may-have-caused-itor-made-you-healthier-11608565953"><span class="d">Dec 2020</span><span class="t">The Wall Street Journal on Holobiome and the gut–brain axis</span><span class="s">The Wall Street Journal</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.science.org/doi/abs/10.1126/science.368.6491.570"><span class="d">May 2020</span><span class="t">"Meet the psychobiome": Holobiome's research profiled in Science</span><span class="s">Science</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://holobiome.org/asiabiome-acquisition-pr"><span class="d u">—</span><span class="t">Holobiome acquires Asiabiome, Asia's first microbiome startup</span><span class="s">Holobiome</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.prnewswire.com/news-releases/holobiome-wins-usd1-million-in-research-funding-from-csb-to-advance-microbiome-solutions-for-pain-301410428.html"><span class="d u">—</span><span class="t">$1M from Corundum Systems Biology to advance microbiome solutions for pain</span><span class="s">PR Newswire</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.bcm.edu/news/designing-behavioral-health-solutions-for-future-mars-explorers"><span class="d u">—</span><span class="t">TRISH grants Holobiome $500K to develop probiotics for behavioral health in space</span><span class="s">Baylor College of Medicine</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.marketscreener.com/quote/stock/JOHNSON-JOHNSON-4832/news/Johnson-Johnson-Innovation-Champions-Leading-Edge-Science-with-15-New-Collaborations-with-Potent-25756231/"><span class="d u">—</span><span class="t">J&amp;J partnership to develop live biotherapeutics for sleep disorders</span><span class="s">MarketScreener</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.nutritioninsight.com/news/ingredion-holobiome-gut-microbiome-health-ingredients.html"><span class="d u">—</span><span class="t">Holobiome partners with Ingredion on targeted health benefits of food ingredients</span><span class="s">NutritionInsight</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.biospace.com/article/holobiome-first-company-to-receive-funds-from-the-new-alexandria-seed-capital-platform/"><span class="d u">—</span><span class="t">Alexandria LaunchLabs grants its first seed capital to Holobiome</span><span class="s">BioSpace</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="https://www.prnewswire.com/news-releases/holobiome-announces-second-collaboration-with-johnson--johnson-innovation-to-create-novel-microbiome-therapeutics-300822007.html"><span class="d u">—</span><span class="t">A second collaboration with J&amp;J Innovation on novel microbiome therapeutics</span><span class="s">PR Newswire</span><span class="ar">↗</span></a></li>
+      <li class="x"><a href="http://www.prnewswire.com/news-releases/amgen-awards-three-golden-tickets-for-labcentral-residency-300430168.html"><span class="d u">—</span><span class="t">Amgen and LabCentral award Holobiome a "Golden Ticket" year of lab space</span><span class="s">PR Newswire</span><span class="ar">↗</span></a></li>
+    </ul>
+    <button class="btn more-btn mag" type="button" id="moreNews" aria-expanded="false">Show all 18 items <span class="ar" aria-hidden="true">↓</span></button>
+  </div>
+</section>
+
+<section class="contact" id="contact" aria-labelledby="h-contact" style="position:relative;z-index:3;background:var(--bg)">
+  <div class="wrap">
+    <div class="kick lbl"><b>Contact</b><i></i>Partner · invest · join</div>
+    <div class="grid"><h2 class="rv" id="h-contact"><span class="l"><span>Partner with us, invest,</span></span><span class="l"><span>or simply <em>say hello.</em></span></span></h2></div>
+    <a class="mail" href="mailto:info@holobiome.org?subject=Hello!">info@holobiome.org</a>
+    <div class="cinfo">
+      <div><span class="mono">Lab</span>650 Albany Street<br>Boston, MA 02118</div>
+      <div><span class="mono">Follow</span><a href="https://www.linkedin.com/company/holobiome/">LinkedIn</a> · <a href="https://twitter.com/Holobiome_Inc">X / Twitter</a></div>
+      <div><span class="mono">Careers</span>Interested in joining the team?<br><a href="mailto:info@holobiome.org?subject=Careers">info@holobiome.org</a></div>
+      <div><span class="mono">Press</span><a href="#news">Coverage &amp; announcements</a></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <span>© 2026 Holobiome · 650 Albany Street, Boston, MA 02118</span>
+  <nav aria-label="Footer"><a href="#s1">Science</a><a href="#platform">Platform</a><a href="#programs">Programs</a><a href="#team">Team</a><a href="#news">News</a><a href="mailto:info@holobiome.org">info@holobiome.org</a></nav>
+</footer>
+<div class="concept">Redesign concept by&nbsp;<b>Max C</b>&nbsp;· Not affiliated with or endorsed by Holobiome</div>
+
+<script>
+(function(){
+'use strict';
+var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var $ = function(s){return document.querySelector(s)};
+
+/* ---------- team (real names/titles from holobiome.org/team) ---------- */
+var STR_IMG = 'https://unreasonablegroup.com/cdn-cgi/image/format=auto,fit=scale-down,width=400,quality=90/https://d820a6sl534t.cloudfront.net/uploads/profile_image/94bd160c-2e9a-4b93-8b4c-5df5e4944f77/84237044-5b49-4b0b-830f-4aee19eb0158.jpg';
+var TEAM = [
+ ['Leadership',[['Philip Strandwitz, PhD','Co-founder & Director, Chief Executive Officer',STR_IMG],['Mike La Fleur, PhD, MBA','President, Co-founder, Director']]],
+ ['Board',[['Kim Lewis, PhD','Co-founder, Director · Northeastern University'],['Iain Chessell, PhD','Director · VP & Head of Neuroscience, AstraZeneca'],['Joan LaRovere','Director · joined with the 2024 seed']]],
+ ['Scientific advisors',[['George Church, PhD','Harvard Medical School'],['Jack Gilbert, PhD','UC San Diego'],['Elaine Hsiao, PhD','University of California, Los Angeles'],['Eran Segal, PhD','Weizmann Institute']]],
+ ['Science & operations',[['Gabe Al-Ghalith, PhD','VP of Computational Biology'],['Katya Gavrish, PhD','Director of Microbiology'],['Jonathan Krive, MBA','Director of Business Development'],['Mariaelena Caboni, PhD','Associate Director of Process Development'],['Madeleine Morrissette, PhD','Associate Director of Operations'],['Fabiola Miranda Sanchez, PhD','Senior Scientist, Microbiology'],['Nathaniel Awkerman','Senior Research Associate, Microbiology'],['Vi Pham','Senior Research Associate, Microbiology'],['Madeline Winters','Research Associate, Microbiology'],['Aiden Gaither','Research Associate, Microbiology'],['Elodie Killick','Research Associate, Microbiology'],['Jackson Faulx','Data Operations Engineer']]]
+];
+function esc(s){return s.replace(/&(?!amp;)/g,'&amp;')}
+function initials(n){var p=n.replace(/,.*$/,'').split(' ');return (p[0][0]+p[p.length-1][0]).toUpperCase()}
+var th='',GROUPS=[['Leadership & board',TEAM[0][1].concat(TEAM[1][1]),'',true],['Scientific advisors',TEAM[2][1],'sm',false],['Science & operations',TEAM[3][1],'c3',false]];
+GROUPS.forEach(function(g){
+  th+='<div class="tg fu"><div class="lbl">'+esc(g[0])+'</div><div class="rows '+g[2]+'">';
+  g[1].forEach(function(p){
+    var av=g[3]?'<div class="av" aria-hidden="true">'+initials(p[0])+(p[2]?'<img src="'+p[2]+'" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">':'')+'</div>':'';
+    th+='<div class="prow">'+av+'<div class="tx"><span class="n">'+esc(p[0])+'</span><span class="r">'+esc(p[1])+'</span></div></div>';
+  });
+  th+='</div></div>';
+});
+$('#teamGroups').innerHTML=th;
+
+/* ---------- news toggle ---------- */
+$('#moreNews').addEventListener('click',function(){var l=$('#newsList');var on=l.classList.toggle('all');this.setAttribute('aria-expanded',on);this.firstChild.nodeValue=on?'Show fewer ':'Show all 18 items ';});
+
+/* ---------- reveals ---------- */
+var rvEls=[].slice.call(document.querySelectorAll('.rv,.fu'));
+var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'}):null;
+rvEls.forEach(function(el){io?io.observe(el):el.classList.add('in')});
+function revealInView(){var h=innerHeight;rvEls.forEach(function(el){if(el.classList.contains('in'))return;var r=el.getBoundingClientRect();if(r.top<h*0.95&&r.bottom>0)el.classList.add('in')})}
+
+/* ---------- header ---------- */
+var top=$('#top');
+
+/* ---------- magnetic buttons ---------- */
+if(!RM && matchMedia('(pointer:fine)').matches){
+  [].forEach.call(document.querySelectorAll('.mag'),function(b){
+    b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();var x=(e.clientX-r.left-r.width/2)*.18,y=(e.clientY-r.top-r.height/2)*.28;b.style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px)'});
+    b.addEventListener('pointerleave',function(){b.style.transition='transform .6s cubic-bezier(.2,.7,0,1), border-color .35s, background .35s';b.style.transform='';setTimeout(function(){b.style.transition=''},600)});
+  });
+}
+
+/* ---------- smooth wheel (lerp) ---------- */
+var sTarget=scrollY,sCur=scrollY,wheeling=false;
+function maxScroll(){return document.documentElement.scrollHeight-innerHeight}
+if(!RM && matchMedia('(pointer:fine)').matches){
+  addEventListener('wheel',function(e){
+    if(e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;
+    e.preventDefault();
+    if(!wheeling){sCur=scrollY;sTarget=scrollY}
+    sTarget=Math.max(0,Math.min(maxScroll(),sTarget+e.deltaY*(e.deltaMode===1?36:e.deltaMode===2?innerHeight:1)));
+    if(!wheeling){wheeling=true;requestAnimationFrame(wheelTick)}
+  },{passive:false});
+}
+function wheelTick(){
+  sCur+=(sTarget-sCur)*0.11;
+  if(Math.abs(sTarget-sCur)<0.4){sCur=sTarget;wheeling=false}
+  scrollTo(0,sCur);
+  if(wheeling)requestAnimationFrame(wheelTick);
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a)return;var id=a.getAttribute('href');var t=id.length>1&&document.querySelector(id);if(!t)return;
+  e.preventDefault();var y=t.getBoundingClientRect().top+scrollY-(id==='#s1'?0:64);
+  if(RM){scrollTo(0,y);return}
+  sCur=scrollY;sTarget=Math.max(0,Math.min(maxScroll(),y));if(!wheeling){wheeling=true;requestAnimationFrame(wheelTick)}
+});
+
+/* ---------- story state from scroll ---------- */
+var stage=$('#stage'),steps=$('#steps'),ticks=$('#ticks'),hint=$('#hint');
+var stepEls=[].slice.call(document.querySelectorAll('.step')),tickEls=[].slice.call(ticks.children);
+var figT=$('#figT'),figN=$('#figN'),figR=$('#figR');
+var FIG=[['Fig. 00','The Microbiome Vault','One capsule = one cultured strain'],['Fig. 01','Gut–brain axis','Routes simplified'],['Fig. 02','The Vault','Not to scale'],['Fig. 03','Selection','Illustrative strain'],['Fig. 04','Signal','Schematic path, not anatomy'],['Fig. 05','Lead program','Not a depiction of the candidate']];
+var vh=innerHeight, Starget=0, Scur=0, U=0, activeStep=-1, figIdx=-1;
+function ss(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
+function computeS(){
+  vh=innerHeight;U=scrollY/vh;
+  var s;
+  if(U<1){s=ss(0.3,1.0,U)}
+  else{var j=Math.min(U-1,5.0);var k=Math.floor(j);if(k>=4){s=5}else{s=1+k+ss(0.5,1.0,j-k)}}
+  Starget=s;
+  top.classList.toggle('solid',scrollY>vh*6.6||scrollY>10&&U>=6);
+}
+function syncUI(){
+  var a=U<0.62?0:Math.max(1,Math.min(5,Math.round(Scur)));
+  if(a!==activeStep){
+    activeStep=a;
+    stepEls.forEach(function(el,i){el.classList.toggle('act',i+1===a)});
+    tickEls.forEach(function(el,i){el.classList.toggle('on',i+1===a)});
+    steps.classList.toggle('on',a>0);ticks.classList.toggle('on',a>0);
+  }
+  hint.style.opacity=U<0.25?1-U*4:0;
+  var f=Math.max(0,Math.min(5,Math.round(Scur)));
+  if(f!==figIdx){figIdx=f;figT.textContent=FIG[f][0];figN.textContent=FIG[f][1];figR.textContent=FIG[f][2]}
+}
+tickEls.forEach(function(b){b.addEventListener('click',function(){var i=+b.dataset.i;var y=(i+0.1)*vh;if(RM){scrollTo(0,y)}else{sCur=scrollY;sTarget=y;if(!wheeling){wheeling=true;requestAnimationFrame(wheelTick)}}})});
+addEventListener('scroll',function(){if(!wheeling){sTarget=sCur=scrollY}computeS();if(RM||!glOK){Scur=Starget;syncUI();if(glOK)requestRender()}else{ensureLoop()}},{passive:true});
+computeS();Scur=Starget;syncUI();
+
+/* =================== WebGL: the Vault =================== */
+var canvas=$('#gl'),frame=$('#frame'),gl=null,glOK=false,running=false,visible=true,onScreen=true;
+var tagGut=$('#tagGut'),tagBrain=$('#tagBrain'),tagAmb=$('#tagAmb');
+var N=220, T=RM?7.5:0, yaw=-0.35, yawV=0, dragging=false, lastX=0, lastTs=0, frames=0, lastFrameMs=0;
+var progs={},buf={},VAO={},uni={};
+var VP=new Float32Array(16),Pm=new Float32Array(16),Vm=new Float32Array(16);
+var eye=new Float32Array(3),tgt=new Float32Array(3),camR=new Float32Array(3),camU=new Float32Array(3);
+var amberW=new Float32Array(3),tmp4=new Float32Array(4);
+var CW=1,CH=1;
+
+var ROUTE_GLSL=[
+'vec3 bez(vec3 a,vec3 b,vec3 c,vec3 d,float t){float u=1.-t;return u*u*u*a+3.*u*u*t*b+3.*u*t*t*c+t*t*t*d;}',
+'vec3 route(float p,float t){float a=(p-1.)*0.95;vec3 o=vec3(sin(a),0.,cos(a));vec3 P0=o*1.6+vec3(0.,-1.25,0.);vec3 P3=o*0.72+vec3(0.,1.42,0.);',
+' vec3 P1=P0+vec3(0.,1.15,0.)+o*(0.32+0.1*abs(p-1.));vec3 P2=P3+vec3(0.,-1.05,0.)+o*0.78;return bez(P0,P1,P2,P3,t);}',
+'vec3 rotY(vec3 v,float a){float c=cos(a),s=sin(a);return vec3(v.x*c-v.z*s,v.y,v.x*s+v.z*c);}'
+].join('\n');
+
+var VS_CAP=['#version 300 es','precision highp float;',
+'layout(location=0) in vec3 aPos;layout(location=1) in vec3 aNor;layout(location=2) in vec4 aD0;layout(location=3) in vec4 aD1;layout(location=4) in vec2 aSt;',
+'uniform mat4 uVP;',
+'out vec3 vN;out vec3 vW;out float vHalf;out float vBr;out float vAmb;out vec3 vTint;',
+'void main(){',
+' vec3 ax=aD1.xyz;vec3 up=abs(ax.y)<0.98?vec3(0.,1.,0.):vec3(1.,0.,0.);vec3 X=normalize(cross(up,ax));vec3 Z=cross(X,ax);',
+' vec3 W=aD0.xyz+(X*aPos.x+ax*aPos.y+Z*aPos.z)*aD0.w;',
+' vN=X*aNor.x+ax*aNor.y+Z*aNor.z;vW=W;vHalf=aPos.y;vBr=aD1.w;vAmb=aSt.y;',
+' float r=aSt.x;vTint=r<0.55?vec3(0.92,0.88,0.78):(r<0.82?vec3(0.62,0.66,0.52):vec3(0.80,0.70,0.50));',
+' gl_Position=uVP*vec4(W,1.);',
+'}'].join('\n');
+
+/* CPU-side choreography: per-instance state blend (keeps the vertex shader trivial) */
+var dyn=null,stat=null,_p0=new Float32Array(4),_a0=new Float32Array(3),_p1=new Float32Array(4),_a1=new Float32Array(3),_r0=new Float32Array(3),_r1=new Float32Array(3);
+function routeJS(p,t,o){var a=(p-1)*0.95,ox=Math.sin(a),oz=Math.cos(a),k=0.32+0.1*Math.abs(p-1);
+  var x0=ox*1.6,y0=-1.25,z0=oz*1.6,x3=ox*0.72,y3=1.42,z3=oz*0.72;
+  var x1=x0+ox*k,y1=y0+1.15,z1=z0+oz*k,x2=x3+ox*0.78,y2=y3-1.05,z2=z3+oz*0.78;
+  var u=1-t,b0=u*u*u,b1=3*u*u*t,b2=3*u*t*t,b3=t*t*t;
+  o[0]=b0*x0+b1*x1+b2*x2+b3*x3;o[1]=b0*y0+b1*y1+b2*y2+b3*y3;o[2]=b0*z0+b1*z1+b2*z2+b3*z3}
+var SCL_AM=[1.45,1.45,1.45,4.2,1.9,4.6],BRT=[1,1,1,0.2,0.42,0.62];
+function xfJS(k,i,am,p,ax){
+  var o=i*32,b=o+8+k*4,sc=am?SCL_AM[k]:1;
+  if(k===1&&inst[o+7]>0.5&&!am){var t=(inst[o]*7.31+T*0.042)%1;var rp=Math.floor(inst[o+1]*2.999);
+    routeJS(rp,t,p);routeJS(rp,Math.min(t+0.01,1),_r0);routeJS(rp,Math.max(t-0.01,0),_r1);
+    ax[0]=_r0[0]-_r1[0];ax[1]=_r0[1]-_r1[1];ax[2]=_r0[2]-_r1[2];
+    var e1=Math.min(1,t/0.1),e2=Math.min(1,(1-t)/0.12);e1=e1*e1*(3-2*e1);e2=e2*e2*(3-2*e2);p[3]=sc*0.8*e1*e2;return}
+  var sp=k===0?inst[o+2]:k===1?inst[o+4]:k===4?inst[o+5]:k===5?inst[o+6]:0;
+  var ph=(am&&k===4)?0:T*sp,c=Math.cos(ph),s=Math.sin(ph),X=inst[b],Y=inst[b+1],Z=inst[b+2],W=inst[b+3];
+  p[0]=X*c-Z*s;p[1]=Y;p[2]=X*s+Z*c;p[3]=(k===2||k===3)?sc*trayS[i]:sc;
+  if(W>50){var a=T*0.32;ax[0]=Math.cos(a)*0.9;ax[1]=0.62;ax[2]=Math.sin(a)*0.9}
+  else if(W>20){ax[0]=0;ax[1]=1;ax[2]=0}
+  else{var th=W+ph;ax[0]=Math.cos(th);ax[1]=0.14*(inst[o]-0.5);ax[2]=Math.sin(th)}
+}
+function computeInstances(sv){
+  var s=Math.max(0,Math.min(5,sv)),k0=Math.floor(s),k1=Math.min(k0+1,5),f=s-k0,cy=Math.cos(yaw),sy=Math.sin(yaw);
+  for(var i=0;i<N;i++){
+    var o=i*32,am=inst[o+3]>0.5,st=am?f:Math.max(0,Math.min(1,(f-inst[o+1]*0.38)/0.62));st=st*st*(3-2*st);
+    xfJS(k0,i,am,_p0,_a0);xfJS(k1,i,am,_p1,_a1);
+    var x=_p0[0]+(_p1[0]-_p0[0])*st,y=_p0[1]+(_p1[1]-_p0[1])*st+Math.sin(st*Math.PI)*0.22*(inst[o]-0.35),z=_p0[2]+(_p1[2]-_p0[2])*st;
+    var ax=_a0[0]+(_a1[0]-_a0[0])*st,ay=_a0[1]+(_a1[1]-_a0[1])*st+1e-3,az=_a0[2]+(_a1[2]-_a0[2])*st,l=Math.sqrt(ax*ax+ay*ay+az*az);ax/=l;ay/=l;az/=l;
+    var d=i*8;
+    dyn[d]=x*cy-z*sy;dyn[d+1]=y;dyn[d+2]=x*sy+z*cy;dyn[d+3]=_p0[3]+(_p1[3]-_p0[3])*st;
+    dyn[d+4]=ax*cy-az*sy;dyn[d+5]=ay;dyn[d+6]=ax*sy+az*cy;
+    var q0=BRT[k0]*((k0===2||k0===3)?trayB[i]:1),q1=BRT[k1]*((k1===2||k1===3)?trayB[i]:1);
+    dyn[d+7]=am?1:q0+(q1-q0)*st;
+  }
+}
+
+var FS_CAP=['#version 300 es','precision highp float;',
+'in vec3 vN;in vec3 vW;in float vHalf;in float vBr;in float vAmb;in vec3 vTint;',
+'uniform vec3 uCam;uniform float uT;out vec4 o;',
+'vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.);}',
+'vec3 env(vec3 r){float sky=smoothstep(-0.1,0.9,r.y);vec3 c=mix(vec3(0.010,0.011,0.008),vec3(0.20,0.19,0.16),sky);',
+' c+=vec3(1.0,0.96,0.88)*pow(max(dot(r,normalize(vec3(-0.55,0.75,0.45))),0.),40.)*2.2;',
+' c+=vec3(0.55,0.58,0.62)*pow(max(dot(r,normalize(vec3(0.85,0.15,0.3))),0.),12.)*0.35;',
+' c+=vec3(0.9,0.6,0.25)*smoothstep(0.85,1.,1.-abs(r.y))*0.04;return c;}',
+'void main(){',
+' vec3 N=normalize(vN);vec3 V=normalize(uCam-vW);if(dot(N,V)<0.)N=-N;',
+' float nv=max(dot(N,V),0.);float fr=pow(1.-nv,3.);',
+' vec3 L=normalize(vec3(-0.55,0.75,0.45));vec3 L2=normalize(vec3(0.85,0.15,0.3));vec3 R=reflect(-V,N);',
+' vec3 H=normalize(L+V);float spec=pow(max(dot(N,H),0.),90.)*1.6;',
+' float seam=smoothstep(0.0,0.012,abs(vHalf));',
+' vec3 col;',
+' if(vAmb>0.5){',
+'  vec3 A=vec3(0.95,0.42,0.08);float pulse=0.9+0.1*sin(uT*1.6);',
+'  if(vHalf>0.){col=A*(0.10+0.55*pow(nv,1.4))*pulse+env(R)*(0.05+0.9*fr)+spec;}',
+'  else{float w=pow(max(dot(N,L)*0.5+0.5,0.),1.5);col=A*(0.12+0.62*w)*pulse+env(R)*0.08*fr+spec*0.5+A*fr*0.35;}',
+' }else{',
+'  vec3 tint=vTint*vTint;',
+'  if(vHalf>0.){',
+'   vec3 core=tint*0.22*pow(nv,1.5);',
+'   col=tint*0.025+core+env(R)*(0.04+0.96*fr)+spec*1.2;',
+'  }else{',
+'   float w=pow(max(dot(N,L)*0.5+0.5,0.),2.);float w2=max(dot(N,L2),0.)*0.18;',
+'   col=tint*(0.04+0.62*w+w2)+env(R)*0.06*(0.2+fr)+spec*0.35+tint*fr*0.12;',
+'  }',
+'  col*=vBr;',
+' }',
+' col*=mix(0.35,1.,seam);',
+' col=aces(col*1.15);col=pow(col,vec3(1./2.2));o=vec4(col,1.);',
+'}'].join('\n');
+
+var VS_BG='#version 300 es\nlayout(location=0) in vec2 aP;out vec2 vU;void main(){vU=aP*0.5+0.5;gl_Position=vec4(aP,0.,1.);}';
+var FS_BG=['#version 300 es','precision highp float;','in vec2 vU;uniform vec2 uRes;uniform vec2 uAmb;uniform float uAI,uT,uFloor;out vec4 o;',
+'float h(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}',
+'void main(){vec3 bg=vec3(12.,13.,9.)/255.;float asp=uRes.x/uRes.y;vec2 q=(vU-vec2(0.5,0.47))*vec2(asp,1.);',
+' float d=length(q);vec3 c=mix(vec3(25.,27.,19.)/255.,bg,smoothstep(0.,0.62,d));',
+' vec2 fq=(vU-vec2(0.5,0.30))*vec2(asp,3.2);c+=vec3(0.035,0.032,0.024)*exp(-dot(fq,fq)*5.)*uFloor;',
+' vec2 aq=(vU-uAmb)*vec2(asp,1.);c+=vec3(0.30,0.16,0.04)*exp(-dot(aq,aq)*22.)*uAI;',
+' float e=smoothstep(0.,0.14,min(min(vU.x,1.-vU.x),min(vU.y,1.-vU.y)));c=mix(bg,c,e);',
+' c+=(h(vU*uRes+fract(uT)*61.)-0.5)*0.016*e;o=vec4(c,1.);}'].join('\n');
+
+var VS_RIB=['#version 300 es','precision highp float;','layout(location=0) in vec2 aR;','uniform mat4 uVP;uniform vec3 uCam;uniform float uRoute,uYaw,uW,uT,uPulse;out float vT;out float vSd;out float vB;',
+ROUTE_GLSL,
+'float bump(float t){float b=0.;for(int i=0;i<3;i++){float q=fract(uT*0.2+float(i)/3.);float d=(t-q)*12.;b+=exp(-d*d);}return b;}',
+'void main(){float t=aR.x;vec3 P=rotY(route(uRoute,t),uYaw);vec3 Tg=normalize(rotY(route(uRoute,min(t+0.005,1.)),uYaw)-rotY(route(uRoute,max(t-0.005,0.)),uYaw));',
+' vec3 sd=normalize(cross(Tg,normalize(uCam-P)));float b=bump(t)*uPulse;vB=b;vT=t;vSd=aR.y;',
+' gl_Position=uVP*vec4(P+sd*aR.y*uW*(1.+b*1.4),1.);}'].join('\n');
+var FS_RIB=['#version 300 es','precision highp float;','in float vT;in float vSd;in float vB;uniform vec3 uCol;uniform float uA;out vec4 o;',
+'void main(){float x=1.-vSd*vSd;float a=x*x*smoothstep(0.,0.06,vT)*smoothstep(1.,0.94,vT);float core=exp(-vSd*vSd*9.);',
+' vec3 c=uCol*(a*0.45+core*vB*1.8);o=vec4(c*uA,0.);}'].join('\n');
+
+var VS_GLOW=['#version 300 es','precision highp float;','layout(location=0) in vec2 aP;uniform mat4 uVP;uniform vec3 uC,uR,uU;uniform float uSz;out vec2 vQ;',
+'void main(){vQ=aP;gl_Position=uVP*vec4(uC+(uR*aP.x+uU*aP.y)*uSz,1.);}'].join('\n');
+var FS_GLOW=['#version 300 es','precision highp float;','in vec2 vQ;uniform vec3 uCol;uniform float uI;out vec4 o;',
+'void main(){float d2=dot(vQ,vQ);float a=(exp(-d2*5.)*0.55+exp(-d2*14.)*0.15)*(1.-smoothstep(0.7,1.,sqrt(d2)));o=vec4(uCol*a*uI,0.);}'].join('\n');
+
+var VS_TR=['#version 300 es','precision highp float;','layout(location=0) in vec2 aA;',
+'uniform mat4 uVP;uniform vec3 uTr;uniform float uMr;out vec3 vN;out vec3 vW;out vec3 vT;',
+'void main(){float u=aA.x,v=aA.y;vec3 c=vec3(cos(u),0.,sin(u));vec3 n=c*cos(v)+vec3(0.,sin(v),0.);',
+' vec3 W=c*uTr.x+vec3(0.,uTr.y,0.)+n*uMr;vN=n;vW=W;vT=vec3(-sin(u),0.,cos(u));gl_Position=uVP*vec4(W,1.);}'].join('\n');
+var FS_TR=['#version 300 es','precision highp float;','in vec3 vN;in vec3 vW;in vec3 vT;uniform vec3 uCam;uniform float uB;out vec4 o;',
+'vec3 aces(vec3 x){return clamp((x*(2.51*x+0.03))/(x*(2.43*x+0.59)+0.14),0.,1.);}',
+'void main(){vec3 N=normalize(vN),V=normalize(uCam-vW),T=normalize(vT);vec3 L=normalize(vec3(-0.55,0.75,0.45));vec3 H=normalize(L+V);',
+' float nv=max(dot(N,V),0.),fr=pow(1.-nv,4.);float th=dot(T,H);float aniso=pow(sqrt(max(0.,1.-th*th)),70.);',
+' vec3 brass=vec3(0.42,0.30,0.15);float w=max(dot(N,L)*0.5+0.5,0.);',
+' vec3 col=brass*(0.05+0.32*w*w)+vec3(1.,0.82,0.55)*aniso*0.55*max(dot(N,L),0.)+vec3(0.28,0.26,0.22)*fr*0.4;',
+' col*=uB;col=aces(col*1.1);o=vec4(pow(col,vec3(1./2.2)),1.);}'].join('\n');
+function torusGeo(MS,ns){var v=new Float32Array((MS+1)*(ns+1)*2),p=0,i,j;for(i=0;i<=MS;i++)for(j=0;j<=ns;j++){v[p++]=i/MS*Math.PI*2;v[p++]=j/ns*Math.PI*2}
+  var ix=new Uint16Array(MS*ns*6),q=0;for(i=0;i<MS;i++)for(j=0;j<ns;j++){var a=i*(ns+1)+j,b=a+ns+1;ix[q++]=a;ix[q++]=a+1;ix[q++]=b;ix[q++]=b;ix[q++]=a+1;ix[q++]=b+1}
+  return {v:v,ix:ix,count:ix.length}}
+// tracks per state: [R, y, alpha] x4 (brushed-brass rails under each ring)
+var TRK=[
+ [[1.05,-0.052,1],[1.5,-0.052,1],[1.95,-0.052,1],[2.4,-0.052,1]],
+ [[0.55,1.428,1],[0.8,1.368,1],[1.42,-1.302,1],[1.78,-1.372,1]],
+ [[0.9,-0.4,0],[1.3,-0.4,0],[1.7,-0.4,0],[2.1,-0.4,0]],
+ [[0.9,-0.55,0],[1.3,-0.55,0],[1.7,-0.55,0],[2.1,-0.55,0]],
+ [[0.55,1.428,1],[0.8,1.368,1],[1.42,-1.302,1],[1.78,-1.372,1]],
+ [[1.3,-0.102,1],[1.59,-0.102,1],[1.88,-0.102,1],[2.17,-0.102,1]]];
+var torus;
+function sh(t,src){var s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){throw new Error(gl.getShaderInfoLog(s))}return s}
+function prog(vs,fs,names){var p=gl.createProgram();gl.attachShader(p,sh(gl.VERTEX_SHADER,vs));gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs));gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));var u={};names.forEach(function(n){u[n]=gl.getUniformLocation(p,n)});return {p:p,u:u}}
+
+/* deterministic random */
+var seed=7;function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+
+/* instance layout (static) */
+var RING_R=[1.05,1.5,1.95,2.4],RING_SP=[0.10,-0.07,0.05,-0.036],RING_Y=[0,0,0,0];
+var inst=new Float32Array(N*32),trayS=new Float32Array(N),trayB=new Float32Array(N); // seed4 spd4 s0..s5 (6*4)
+var amberS=[]; // per-state amber [x,y,z,w] and speeds
+function buildInstances(){
+  var counts=[],tot=0,i,k;
+  for(k=0;k<4;k++){counts[k]=Math.round(N*RING_R[k]/(1.05+1.5+1.95+2.4));tot+=counts[k]}
+  counts[3]+=N-tot;
+  // ring membership list
+  var ringOf=[],angOf=[],idx=0;
+  for(k=0;k<4;k++){for(i=0;i<counts[k];i++){ringOf[idx]=k;angOf[idx]=(i/counts[k])*Math.PI*2+k*0.37;idx++}}
+  // amber = index 0, placed on outer ring: swap with first outer ring slot
+  var outerStart=counts[0]+counts[1]+counts[2];
+  var order=[];for(i=0;i<N;i++)order[i]=i;
+  order[0]=outerStart+Math.round(counts[3]*0.06);order[outerStart+Math.round(counts[3]*0.06)]=0;
+  // S1 lists: path members + gut/brain rings
+  var nonPath=[],isPath=[],pathIdx=[],nPath=0;seed=11;
+  for(i=0;i<N;i++){isPath[i]=(i!==0&&rnd()<0.15)?1:0;if(!isPath[i])nonPath.push(i);else{pathIdx[i]=nPath++}}
+  var nGut=Math.round(nonPath.length*0.74),nGutA=Math.round(nGut*0.45),nBr=nonPath.length-nGut,nBrA=Math.round(nBr*0.58);
+  var s1pos={},s4pos={};
+  // gut rings (amber first in gut A, front)
+  nonPath.forEach(function(id,j){
+    var R,y,a,sp;
+    if(j<nGutA){R=1.42;y=-1.25;a=j/nGutA*Math.PI*2;sp=0.055}
+    else if(j<nGut){R=1.78;y=-1.32;a=(j-nGutA)/(nGut-nGutA)*Math.PI*2+0.1;sp=-0.04}
+    else if(j<nGut+nBrA){R=0.80;y=1.42;a=(j-nGut)/nBrA*Math.PI*2;sp=-0.09}
+    else{R=0.55;y=1.48;a=(j-nGut-nBrA)/(nBr-nBrA)*Math.PI*2+0.2;sp=0.12}
+    s1pos[id]=[R*Math.cos(a),y,R*Math.sin(a),a,sp];
+  });
+  // tray 12 x 12 (extra capsules retire from the tray states)
+  var cols=12,rows=12,sx=0.22,sz=0.22,amCell=5*cols+7;
+  seed=23;
+  for(i=0;i<N;i++){
+    var o=i*32,isAm=i===0;
+    // seed
+    inst[o]=isAm?0.35:rnd();inst[o+1]=rnd();
+    var slot=order[i],rk=ringOf[slot],ang=angOf[slot];
+    inst[o+2]=RING_SP[rk];inst[o+3]=isAm?1:0;
+    var s1=s1pos[i];
+    // spd: S1, S4, S5, path flag
+    inst[o+4]=s1?s1[4]:0;inst[o+5]=s1?s1[4]*0.8:0;inst[o+6]=RING_SP[rk]*0.6;inst[o+7]=isPath[i];
+    // S0 orrery
+    var R=RING_R[rk];
+    inst[o+8]=R*Math.cos(ang);inst[o+9]=RING_Y[rk];inst[o+10]=R*Math.sin(ang);inst[o+11]=ang;
+    // S1
+    if(s1){inst[o+12]=s1[0];inst[o+13]=s1[1];inst[o+14]=s1[2];inst[o+15]=s1[3]}
+    else{inst[o+12]=0;inst[o+13]=0;inst[o+14]=0;inst[o+15]=0}
+    // S2 tray (amber at a specific cell)
+    var cell=isAm?amCell:(i<=amCell?i-1:i);
+    var cx=cell%cols,cz=Math.floor(cell/cols),dd=Math.hypot(cx-(cols-1)/2,cz-(rows-1)/2)/6.2,fd=1-Math.min(1,Math.max(0,(dd-0.55)/0.45));fd=fd*fd*(3-2*fd);
+    if(cell<cols*rows&&dd<=1){
+      inst[o+16]=(cx-(cols-1)/2)*sx;inst[o+17]=-0.35;inst[o+18]=(cz-(rows-1)/2)*sz;inst[o+19]=30;
+      trayS[i]=isAm?1:0.5+0.5*fd;trayB[i]=isAm?1:0.45+0.55*fd;
+    }else{inst[o+16]=inst[o+8]*0.8;inst[o+17]=-0.35;inst[o+18]=inst[o+10]*0.8;inst[o+19]=30;trayS[i]=0;trayB[i]=0}
+    // S3 tray sinks; amber lifts
+    if(isAm){inst[o+20]=0.1;inst[o+21]=1.1;inst[o+22]=0.6;inst[o+23]=60}
+    else{inst[o+20]=inst[o+16];inst[o+21]=-0.5;inst[o+22]=inst[o+18];inst[o+23]=30}
+    // S4 (same as S1 rings; path members join outer gut ring loosely; amber fixed front of gut)
+    if(isAm){inst[o+24]=0;inst[o+25]=-1.25;inst[o+26]=1.6;inst[o+27]=0}
+    else if(s1){inst[o+24]=s1[0];inst[o+25]=s1[1];inst[o+26]=s1[2];inst[o+27]=s1[3]}
+    else{var a4=(pathIdx[i]/nPath)*Math.PI*2;inst[o+24]=2.05*Math.cos(a4);inst[o+25]=-1.36;inst[o+26]=2.05*Math.sin(a4);inst[o+27]=a4;inst[o+5]=0.03}
+    // S5 setting rings around jewel
+    if(isAm){inst[o+28]=0;inst[o+29]=0.05;inst[o+30]=0;inst[o+31]=60}
+    else{var R5=1.3+rk*0.29;inst[o+28]=R5*Math.cos(ang);inst[o+29]=RING_Y[rk]*0.5-0.05;inst[o+30]=R5*Math.sin(ang);inst[o+31]=ang}
+  }
+  amberS=[];for(k=0;k<6;k++){var b=8+k*4;amberS.push([inst[b],inst[b+1],inst[b+2]])}
+  amberS.spd=[inst[2],inst[4],0,0,0,0];
+}
+
+function capsuleGeo(RS,HS){
+  var r=0.04,h=0.056,rows=[],j,i;
+  for(j=0;j<=HS;j++){var ph=j/HS*Math.PI/2;rows.push([h+r*Math.cos(ph),r*Math.sin(ph),Math.cos(ph),Math.sin(ph)])}
+  for(j=0;j<=HS;j++){var ph2=Math.PI/2+j/HS*Math.PI/2;rows.push([-h+r*Math.cos(ph2),r*Math.sin(ph2),Math.cos(ph2),Math.sin(ph2)])}
+  var nv=rows.length*(RS+1),v=new Float32Array(nv*6),p=0;
+  rows.forEach(function(rw){for(i=0;i<=RS;i++){var t=i/RS*Math.PI*2,c=Math.cos(t),s=Math.sin(t);v[p++]=rw[1]*c;v[p++]=rw[0];v[p++]=rw[1]*s;v[p++]=rw[3]*c;v[p++]=rw[2];v[p++]=rw[3]*s}});
+  var ix=new Uint16Array((rows.length-1)*RS*6),q=0;
+  for(j=0;j<rows.length-1;j++)for(i=0;i<RS;i++){var a=j*(RS+1)+i,b=a+RS+1;ix[q++]=a;ix[q++]=b;ix[q++]=a+1;ix[q++]=a+1;ix[q++]=b;ix[q++]=b+1}
+  return {v:v,ix:ix,count:ix.length};
+}
+var cap,capHi;
+
+function initGL(){
+  try{
+    gl=canvas.getContext('webgl2',{antialias:true,alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',preserveDrawingBuffer:false});
+    if(!gl)throw 0;
+    progs.cap=prog(VS_CAP,FS_CAP,['uVP','uT','uCam']);
+    progs.bg=prog(VS_BG,FS_BG,['uRes','uAmb','uAI','uT','uFloor']);
+    progs.rib=prog(VS_RIB,FS_RIB,['uVP','uCam','uRoute','uYaw','uW','uT','uPulse','uCol','uA']);
+    progs.glow=prog(VS_GLOW,FS_GLOW,['uVP','uC','uR','uU','uSz','uCol','uI']);
+    progs.tr=prog(VS_TR,FS_TR,['uVP','uTr','uMr','uCam','uB']);
+    if(!torus)torus=torusGeo(160,6);
+    VAO.tr=gl.createVertexArray();gl.bindVertexArray(VAO.tr);
+    var tb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,tb);gl.bufferData(gl.ARRAY_BUFFER,torus.v,gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    var tib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,tib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,torus.ix,gl.STATIC_DRAW);
+    // capsule
+    if(!cap){cap=capsuleGeo(10,3);capHi=capsuleGeo(48,12);buildInstances()}
+    if(!dyn){dyn=new Float32Array(N*8);stat=new Float32Array(N*2);for(var q=0;q<N;q++){stat[q*2]=(inst[q*32]*13.7)%1;stat[q*2+1]=inst[q*32+3]}}
+    buf.dyn=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf.dyn);gl.bufferData(gl.ARRAY_BUFFER,dyn.byteLength,gl.DYNAMIC_DRAW);
+    var stb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,stb);gl.bufferData(gl.ARRAY_BUFFER,stat,gl.STATIC_DRAW);
+    // two LODs: amber (instance 0) gets a high-res mesh; the other 319 share a lighter one
+    function capVAO(g,first){var vao=gl.createVertexArray();gl.bindVertexArray(vao);
+      var vb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,g.v,gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,3,gl.FLOAT,false,24,0);
+      gl.enableVertexAttribArray(1);gl.vertexAttribPointer(1,3,gl.FLOAT,false,24,12);
+      var ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,g.ix,gl.STATIC_DRAW);
+      gl.bindBuffer(gl.ARRAY_BUFFER,buf.dyn);
+      gl.enableVertexAttribArray(2);gl.vertexAttribPointer(2,4,gl.FLOAT,false,32,first*32);gl.vertexAttribDivisor(2,1);
+      gl.enableVertexAttribArray(3);gl.vertexAttribPointer(3,4,gl.FLOAT,false,32,first*32+16);gl.vertexAttribDivisor(3,1);
+      gl.bindBuffer(gl.ARRAY_BUFFER,stb);
+      gl.enableVertexAttribArray(4);gl.vertexAttribPointer(4,2,gl.FLOAT,false,8,first*8);gl.vertexAttribDivisor(4,1);
+      return vao}
+    VAO.capHi=capVAO(capHi,0);VAO.cap=capVAO(cap,1);
+    // fullscreen
+    VAO.bg=gl.createVertexArray();gl.bindVertexArray(VAO.bg);
+    var fb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,fb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    // ribbon strip
+    var SEG=180,rv=new Float32Array((SEG+1)*4);for(var s=0;s<=SEG;s++){rv[s*4]=s/SEG;rv[s*4+1]=-1;rv[s*4+2]=s/SEG;rv[s*4+3]=1}
+    VAO.rib=gl.createVertexArray();gl.bindVertexArray(VAO.rib);
+    var rb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,rb);gl.bufferData(gl.ARRAY_BUFFER,rv,gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    VAO.ribN=(SEG+1)*2;
+    // glow quad
+    VAO.glow=gl.createVertexArray();gl.bindVertexArray(VAO.glow);
+    var gb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,gb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+    gl.bindVertexArray(null);
+    glOK=true;resize();
+    document.documentElement.classList.remove('nogl');
+    return true;
+  }catch(e){glOK=false;document.documentElement.classList.add('nogl');if(e&&e.message)console.warn('GL fallback:',e.message);return false}
+}
+
+function resize(){
+  if(!gl)return;var r=frame.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);
+  var w=Math.max(2,Math.round(r.width*d)),h=Math.max(2,Math.round(r.height*d));
+  if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}
+  CW=r.width;CH=r.height;mob=innerWidth<=900;
+}
+var rzT;addEventListener('resize',function(){clearTimeout(rzT);rzT=setTimeout(function(){resize();computeS();Scur=Starget;syncUI();requestRender()},120)});
+
+/* matrices */
+function persp(m,fov,asp,n,f){var t=1/Math.tan(fov/2);m.fill(0);m[0]=t/asp;m[5]=t;m[10]=(f+n)/(n-f);m[11]=-1;m[14]=2*f*n/(n-f)}
+function look(m,e,c){var zx=e[0]-c[0],zy=e[1]-c[1],zz=e[2]-c[2],l=Math.hypot(zx,zy,zz);zx/=l;zy/=l;zz/=l;
+  var xx=zz,xy=0,xz=-zx;l=Math.hypot(xx,xy,xz);xx/=l;xy/=l;xz/=l;
+  var yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
+  m[0]=xx;m[1]=yx;m[2]=zx;m[3]=0;m[4]=xy;m[5]=yy;m[6]=zy;m[7]=0;m[8]=xz;m[9]=yz;m[10]=zz;m[11]=0;
+  m[12]=-(xx*e[0]+xy*e[1]+xz*e[2]);m[13]=-(yx*e[0]+yy*e[1]+yz*e[2]);m[14]=-(zx*e[0]+zy*e[1]+zz*e[2]);m[15]=1;
+  camR[0]=xx;camR[1]=xy;camR[2]=xz;camU[0]=yx;camU[1]=yy;camU[2]=yz}
+function mul(o,a,b){for(var i=0;i<4;i++)for(var j=0;j<4;j++){o[j*4+i]=a[i]*b[j*4]+a[4+i]*b[j*4+1]+a[8+i]*b[j*4+2]+a[12+i]*b[j*4+3]}}
+function project(x,y,z,out){var m=VP;var cx=m[0]*x+m[4]*y+m[8]*z+m[12],cy=m[1]*x+m[5]*y+m[9]*z+m[13],cw=m[3]*x+m[7]*y+m[11]*z+m[15];out[0]=(cx/cw*0.5+0.5)*CW;out[1]=(1-(cy/cw*0.5+0.5))*CH;out[2]=cw;return out}
+
+// camera per state: eyeY, eyeZ, tgtY, tgtZ, fov
+var CAM=[[4.7,8.0,-0.2,0,0.62],[0.8,8.2,0.06,0,0.62],[4.3,6.2,-0.45,0.1,0.62],[3.1,6.4,0.2,0.2,0.62],[0.8,8.2,0.06,0,0.62],[4.4,8.0,-0.12,0,0.62]];
+var mob=false;
+function camAt(s){var k0=Math.floor(s),k1=Math.min(k0+1,5),f=s-k0;f=f*f*(3-2*f);var A=CAM[k0],B=CAM[k1];
+  var asp=CW/CH,zoom=asp<1?1+(1-asp)*0.9:1;
+  eye[0]=0;eye[1]=(A[0]+(B[0]-A[0])*f)*zoom;eye[2]=(A[1]+(B[1]-A[1])*f)*zoom;tgt[0]=0;tgt[1]=A[2]+(B[2]-A[2])*f;tgt[2]=A[3]+(B[3]-A[3])*f;
+  return A[4]+(B[4]-A[4])*f}
+function amberPos(s,out){var k0=Math.floor(s),k1=Math.min(k0+1,5),f=s-k0;f=f*f*(3-2*f);
+  function one(k,o){var p=amberS[k],ph=(k===0)?T*amberS.spd[0]:(k===1?T*amberS.spd[1]:0),c=Math.cos(ph),sn=Math.sin(ph);o[0]=p[0]*c-p[2]*sn;o[1]=p[1];o[2]=p[0]*sn+p[2]*c}
+  var a=tmpA,b=tmpB;one(k0,a);one(k1,b);
+  var x=a[0]+(b[0]-a[0])*f,y=a[1]+(b[1]-a[1])*f,z=a[2]+(b[2]-a[2])*f;
+  var c=Math.cos(yaw),sn=Math.sin(yaw);out[0]=x*c-z*sn;out[1]=y;out[2]=x*sn+z*c}
+var tmpA=new Float32Array(3),tmpB=new Float32Array(3),scr=new Float32Array(3);
+function w(s,k){return Math.max(0,1-Math.abs(s-k))}
+
+function render(){
+  if(!glOK||!gl)return;
+  var s=Math.max(0,Math.min(5,Scur));
+  var fov=camAt(s);
+  persp(Pm,fov,CW/CH,0.1,50);look(Vm,eye,tgt);mul(VP,Pm,Vm);
+  amberPos(s,amberW);project(amberW[0],amberW[1],amberW[2],scr);
+  gl.viewport(0,0,canvas.width,canvas.height);
+  // bg
+  gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.depthMask(true);
+  gl.useProgram(progs.bg.p);var u=progs.bg.u;
+  gl.uniform2f(u.uRes,canvas.width,canvas.height);gl.uniform2f(u.uAmb,scr[0]/CW,1-scr[1]/CH);
+  var ai=0.35+0.65*Math.max(w(s,3),w(s,5))+0.4*w(s,4);gl.uniform1f(u.uAI,ai);gl.uniform1f(u.uT,RM?0:T);gl.uniform1f(u.uFloor,1-0.6*Math.max(w(s,1),w(s,4)));
+  gl.bindVertexArray(VAO.bg);gl.drawArrays(gl.TRIANGLES,0,3);
+  // capsules
+  gl.clear(gl.DEPTH_BUFFER_BIT);gl.enable(gl.DEPTH_TEST);
+  gl.useProgram(progs.cap.p);u=progs.cap.u;
+  gl.uniformMatrix4fv(u.uVP,false,VP);gl.uniform1f(u.uT,T);gl.uniform3fv(u.uCam,eye);
+  computeInstances(s);gl.bindBuffer(gl.ARRAY_BUFFER,buf.dyn);gl.bufferSubData(gl.ARRAY_BUFFER,0,dyn);
+  gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.frontFace(gl.CW);
+  gl.bindVertexArray(VAO.capHi);gl.drawElementsInstanced(gl.TRIANGLES,capHi.count,gl.UNSIGNED_SHORT,0,1);
+  gl.bindVertexArray(VAO.cap);gl.drawElementsInstanced(gl.TRIANGLES,cap.count,gl.UNSIGNED_SHORT,0,N-1);
+  gl.disable(gl.CULL_FACE);gl.frontFace(gl.CCW);
+  gl.enable(gl.CULL_FACE);  gl.useProgram(progs.tr.p);u=progs.tr.u;gl.uniformMatrix4fv(u.uVP,false,VP);gl.uniform3fv(u.uCam,eye);gl.bindVertexArray(VAO.tr);
+  var tk0=Math.floor(s),tk1=Math.min(tk0+1,5),tf=s-tk0;tf=tf*tf*(3-2*tf);var tB=1-0.5*w(s,4)-0.15*w(s,5);
+  for(var ti=0;ti<4;ti++){var A=TRK[tk0][ti],B=TRK[tk1][ti],ta=A[2]+(B[2]-A[2])*tf;if(ta<0.02)continue;
+    gl.uniform3f(u.uTr,A[0]+(B[0]-A[0])*tf,A[1]+(B[1]-A[1])*tf,0);gl.uniform1f(u.uMr,0.009*ta);gl.uniform1f(u.uB,tB*ta);
+    gl.drawElements(gl.TRIANGLES,torus.count,gl.UNSIGNED_SHORT,0)}
+  gl.disable(gl.CULL_FACE);
+  // ribbons
+  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE);gl.depthMask(false);
+  gl.useProgram(progs.rib.p);u=progs.rib.u;gl.bindVertexArray(VAO.rib);
+  gl.uniformMatrix4fv(u.uVP,false,VP);gl.uniform3fv(u.uCam,eye);gl.uniform1f(u.uYaw,yaw);gl.uniform1f(u.uT,T);
+  var w1=w(s,1),w4=w(s,4);
+  if(w1>0.01){gl.uniform1f(u.uW,0.012);gl.uniform1f(u.uPulse,0.6);gl.uniform3f(u.uCol,0.93,0.90,0.82);gl.uniform1f(u.uA,w1*0.55);
+    for(var r=0;r<3;r++){gl.uniform1f(u.uRoute,r);gl.drawArrays(gl.TRIANGLE_STRIP,0,VAO.ribN)}}
+  if(w4>0.01){gl.uniform1f(u.uRoute,1);gl.uniform1f(u.uW,0.016);gl.uniform1f(u.uPulse,1);gl.uniform3f(u.uCol,1.0,0.62,0.2);gl.uniform1f(u.uA,w4);gl.drawArrays(gl.TRIANGLE_STRIP,0,VAO.ribN)}
+  // glows
+  gl.disable(gl.DEPTH_TEST);gl.useProgram(progs.glow.p);u=progs.glow.u;gl.bindVertexArray(VAO.glow);
+  gl.uniformMatrix4fv(u.uVP,false,VP);gl.uniform3fv(u.uR,camR);gl.uniform3fv(u.uU,camU);
+  var amSz=0.55+0.9*Math.max(w(s,3),w(s,5))+0.25*w4;
+  gl.uniform3fv(u.uC,amberW);gl.uniform1f(u.uSz,amSz);gl.uniform3f(u.uCol,0.95,0.48,0.12);gl.uniform1f(u.uI,0.42+0.10*Math.sin(T*1.6));gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+  if(w4>0.01){var arrive=Math.pow(0.5+0.5*Math.sin(T*1.2566-1.2),3);
+    gl.uniform3f(u.uC,0,1.45,0);gl.uniform1f(u.uSz,1.5);gl.uniform3f(u.uCol,1.0,0.66,0.3);gl.uniform1f(u.uI,w4*(0.10+0.16*arrive));gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
+  gl.depthMask(true);
+  // tags
+  var tg=Math.max(w1,w4);
+  if(tg>0.02){project(-1.98,-1.3,0,tmp4);place(tagGut,tmp4[0],tmp4[1],tg,true);project(-0.98,1.45,0,tmp4);place(tagBrain,tmp4[0],tmp4[1],tg,true)}
+  else{hideTag(tagGut);hideTag(tagBrain)}
+  var ta=w(s,3);if(ta>0.02){place(tagAmb,scr[0]+CW*(mob?0.16:0.15),scr[1]-CH*0.04,ta,false)}else hideTag(tagAmb);
+  frames++;
+}
+function place(el,x,y,o,left){el.style.opacity=o.toFixed(3);el.style.transform='translate('+(left?(x-el.offsetWidth-10):x).toFixed(1)+'px,'+(y-7).toFixed(1)+'px)';el._v=1}
+function hideTag(el){if(el._v){el.style.opacity=0;el._v=0}}
+
+/* loop */
+var last=0,frozen=false;
+function loop(ts){
+  if(!running)return;
+  var dt=last?Math.min(0.05,(ts-last)/1000):0.016;last=ts;
+  var t0=performance.now();
+  step(dt);render();syncUI();
+  lastFrameMs=performance.now()-t0;
+  if(!visible||!onScreen||(RM&&!dragging&&Math.abs(yawV)<1e-4&&Math.abs(Starget-Scur)<1e-3)){running=false;last=0;return}
+  requestAnimationFrame(loop);
+}
+function step(dt){
+  if(!RM)T+=dt;
+  if(RM)Scur=Starget;else Scur+=(Starget-Scur)*Math.min(1,dt*5.5);
+  if(Math.abs(Starget-Scur)<1e-4)Scur=Starget;
+  if(!dragging){yaw+=yawV*dt;yawV*=Math.pow(0.04,dt);if(!RM)yaw+=dt*0.035*(1-Math.min(1,Scur))}
+}
+function ensureLoop(){if(glOK&&!frozen&&!running&&visible&&onScreen){running=true;last=0;requestAnimationFrame(loop)}}
+function requestRender(){if(glOK){if(RM){render();syncUI()}else ensureLoop()}}
+
+/* drag to turn */
+canvas.addEventListener('pointerdown',function(e){if(e.pointerType==='touch')return;dragging=true;lastX=e.clientX;lastTs=performance.now();yawV=0;canvas.classList.add('drag');canvas.setPointerCapture(e.pointerId);ensureLoop()});
+canvas.addEventListener('pointermove',function(e){if(!dragging)return;var now=performance.now(),dx=e.clientX-lastX,dtt=Math.max(1,now-lastTs)/1000;var d=dx*0.006;yaw+=d;yawV=yawV*0.6+(d/dtt)*0.4;lastX=e.clientX;lastTs=now;if(RM)requestRender()});
+function endDrag(){if(!dragging)return;dragging=false;canvas.classList.remove('drag');yawV=Math.max(-3,Math.min(3,yawV));ensureLoop()}
+canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
+// touch: horizontal swipe turns, vertical scrolls
+var tx0=0,ty0=0,tmode=0;
+canvas.addEventListener('touchstart',function(e){var t=e.touches[0];tx0=t.clientX;ty0=t.clientY;lastX=tx0;lastTs=performance.now();tmode=0},{passive:true});
+canvas.addEventListener('touchmove',function(e){var t=e.touches[0];if(tmode===0){var dx=Math.abs(t.clientX-tx0),dy=Math.abs(t.clientY-ty0);if(dx>8||dy>8)tmode=dx>dy?1:2}
+  if(tmode===1){var now=performance.now(),d=(t.clientX-lastX)*0.008;yaw+=d;yawV=d/Math.max(0.001,(now-lastTs)/1000)*0.5;lastX=t.clientX;lastTs=now;ensureLoop()}},{passive:true});
+
+/* visibility */
+document.addEventListener('visibilitychange',function(){visible=!document.hidden;if(visible)ensureLoop()});
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){onScreen=es[0].isIntersecting;if(onScreen)ensureLoop()},{rootMargin:'50px'}).observe(canvas)}
+canvas.addEventListener('webglcontextlost',function(e){e.preventDefault();glOK=false;running=false;document.documentElement.classList.add('nogl');canvas.classList.remove('on')});
+canvas.addEventListener('webglcontextrestored',function(){if(initGL()){canvas.classList.add('on');requestRender()}});
+
+function start(){
+  if(!initGL())return;
+  render();canvas.classList.add('on');
+  if(RM){syncUI()}else ensureLoop();
+}
+if(document.readyState==='complete')setTimeout(start,30);else addEventListener('load',function(){setTimeout(start,30)});
+
+/* test hooks */
+window.__concept={
+  advance:function(sec){computeS();var n=Math.round(sec*30);for(var i=0;i<n;i++)step(1/30);Scur=Starget;render();syncUI();revealInView()},
+  setScroll:function(f){var y=f*maxScroll();sTarget=sCur=y;scrollTo(0,y);computeS();Scur=Starget;render();syncUI();revealInView()},
+  freeze:function(on){frozen=!!on;if(on){running=false}else ensureLoop()},
+  setState:function(s){Starget=Scur=s;render();syncUI()},
+  stats:function(){return {S:Scur,U:U,frames:frames,lastFrameMs:Math.round(lastFrameMs*10)/10,gl:glOK,canvas:[canvas.width,canvas.height]}}
+};
+})();
+</script>
+</body>
+</html>

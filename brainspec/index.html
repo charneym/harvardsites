@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrainSpec — Redesign Concept</title>
+<meta name="description" content="Redesign concept for BrainSpec: FDA-cleared MR spectroscopy software that reads the chemistry hidden in every brain MRI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<style>
+:root{
+  --bg:#F5F3EE; --surface:#ECE9E2; --ink:#15171C; --muted:#6F7279; --cobalt:#1F45D6;
+  --line:rgba(21,23,28,.12); --line2:rgba(21,23,28,.07);
+  --sans:"Geist","TeX Gyre Heros","Helvetica Neue",Arial,sans-serif;
+  --serif:"Instrument Serif","TeX Gyre Pagella",Georgia,serif;
+  --mono:"Geist Mono","DejaVu Sans Mono",ui-monospace,monospace;
+  --g:max(20px,6vw); --max:1280px; --strip:28px; --hdr:64px;
+  --ease:cubic-bezier(.2,.7,.1,1);
+}
+*{box-sizing:border-box}
+html{overflow-x:clip;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;padding-bottom:var(--strip)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+::selection{background:var(--cobalt);color:#fff}
+.wrap{max-width:calc(var(--max) + 2*var(--g));padding:0 var(--g);margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.lbl{font:500 11.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lbl b{color:var(--ink);font-weight:500}
+.num{font-feature-settings:"tnum" 1,"lnum" 1}
+em.s{line-height:0;font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.01em}
+.tm{font-size:.5em;vertical-align:.85em;letter-spacing:0;margin-left:.04em;font-weight:400}
+.src{font-size:12.5px;line-height:1.5;color:var(--muted);max-width:72ch}
+.src a,.p a.u,.u{text-decoration:underline;text-decoration-color:rgba(21,23,28,.25);text-underline-offset:3px;transition:text-decoration-color .3s}
+.src a:hover,.u:hover{text-decoration-color:var(--cobalt)}
+h1,h2,h3{margin:0;font-weight:500}
+h1{font-size:clamp(34px,4.2vw,64px);line-height:1.04;letter-spacing:-.028em}
+h2{font-size:clamp(26px,2.5vw,38px);line-height:1.1;letter-spacing:-.022em}
+h3{font-size:17px;line-height:1.35;letter-spacing:-.01em}
+p{margin:0}
+.p{font-size:16px;line-height:1.55;color:#3A3D44;max-width:60ch}
+.p+.p{margin-top:14px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:42px;padding:0 18px;border-radius:999px;font:500 14px/1 var(--sans);letter-spacing:-.005em;border:1px solid var(--ink);transition:background .35s var(--ease),color .35s var(--ease),border-color .35s;will-change:transform}
+.btn.solid{background:var(--ink);color:var(--bg)}
+.btn.solid:hover{background:var(--cobalt);border-color:var(--cobalt)}
+.btn.ghost{border-color:var(--line);background:transparent}
+.btn.ghost:hover{border-color:var(--ink)}
+.btn .ar{display:inline-block;transition:transform .35s var(--ease)}
+.btn:hover .ar{transform:translateX(3px)}
+.btn.sm{height:36px;padding:0 15px;font-size:13.5px}
+
+/* header */
+header{position:fixed;inset:0 0 auto 0;height:var(--hdr);z-index:50;background:rgba(245,243,238,.82);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .4s}
+header.sc{border-bottom-color:var(--line2)}
+header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;font:500 16px/1 var(--sans);letter-spacing:-.015em}
+.brand .mk{width:26px;height:26px;border-radius:7px;position:relative;overflow:hidden;background:var(--ink);flex:none}
+.brand .mk img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#fff}
+.brand .mk span{position:absolute;inset:0;display:grid;place-items:center;color:var(--bg);font:500 13px/1 var(--sans)}
+nav.main{display:flex;gap:28px;font-size:13.5px;color:#3A3D44}
+nav.main a{position:relative;padding:4px 0}
+nav.main a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+nav.main a:hover::after{transform:scaleX(1)}
+
+/* stage (3D) */
+#stage{position:fixed;top:0;right:0;width:56vw;height:calc(100vh - var(--strip));z-index:1;pointer-events:auto;touch-action:pan-y;cursor:grab}
+#stage.drag{cursor:grabbing}
+#stage canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity 1.2s var(--ease)}
+#stage.live canvas{opacity:1}
+#poster{position:absolute;inset:0;width:100%;height:100%;transition:opacity 1s var(--ease)}
+#stage.live #poster{opacity:0}
+#stage .cap{position:absolute;right:var(--g);bottom:22px;text-align:right;pointer-events:none}
+#stage .cap .lbl{font-size:10.5px}
+#lead{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#lead polyline{fill:none;stroke:rgba(21,23,28,.38);stroke-width:1}
+.pk{position:absolute;left:0;top:0;font:500 11px/1 var(--mono);letter-spacing:.04em;color:var(--ink);white-space:nowrap;pointer-events:none;opacity:0;will-change:transform,opacity}
+.pk i{display:none}
+#gl-note{position:absolute;left:50%;bottom:56px;transform:translateX(-50%);display:none}
+#stage.nogl #gl-note{display:block}
+
+/* hero */
+.hero{position:relative;z-index:2;min-height:calc(100vh - var(--strip));display:flex;align-items:center;pointer-events:none}
+.hero .wrap{width:100%}
+.hero .copy{grid-column:1 / span 5;pointer-events:auto;padding-top:var(--hdr)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:28px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--cobalt);box-shadow:0 0 0 4px rgba(31,69,214,.12)}
+.hero h1{margin-bottom:26px}
+.hero .p{max-width:44ch;font-size:16.5px}
+.cta{display:flex;gap:10px;margin-top:34px;flex-wrap:wrap}
+.hero .foot{position:absolute;left:0;right:0;bottom:28px;pointer-events:none}
+.hero .foot .wrap{display:flex;gap:40px;align-items:center}
+.scrollcue{display:inline-flex;align-items:center;gap:10px}
+.scrollcue span{width:1px;height:28px;background:var(--line);position:relative;overflow:hidden}
+.scrollcue span::after{content:"";position:absolute;left:0;top:-40%;width:1px;height:40%;background:var(--ink);animation:cue 2.4s var(--ease) infinite}
+@keyframes cue{to{top:100%}}
+
+/* masked line reveals */
+.l{display:block;overflow:hidden;padding-bottom:.06em;margin-bottom:-.06em}
+.l>span{display:block;transform:translateY(0)}
+.js [data-r] .l>span{transform:translateY(108%);transition:transform 1.1s var(--ease);transition-delay:calc(var(--i,0) * 90ms + var(--d,0ms))}
+.js [data-r].in .l>span{transform:none}
+.js [data-f]{opacity:0;transform:translateY(12px);transition:opacity 1s var(--ease),transform 1.1s var(--ease);transition-delay:var(--d,0ms)}
+.js [data-f].in{opacity:1;transform:none}
+.hero h1 .l>span{animation:rise 1.2s var(--ease) both;animation-delay:calc(var(--i,0) * 90ms + 80ms)}
+.hero .fadein{animation:fade 1.2s var(--ease) both;animation-delay:.45s}
+@keyframes rise{from{transform:translateY(108%)}to{transform:none}}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* showcase */
+#science{position:relative;z-index:2;height:540vh;pointer-events:none}
+.pin{position:sticky;top:0;height:calc(100vh - var(--strip));overflow:hidden}
+.pin .wrap{height:100%;position:relative}
+.steps{position:absolute;left:var(--g);top:0;bottom:0;width:min(34vw,440px);pointer-events:auto}
+.step{position:absolute;left:0;right:0;top:50%;transform:translateY(-46%);visibility:hidden;transition:visibility 0s .6s}
+.step.on{visibility:visible;transition-delay:0s}
+.step .l>span{transform:translateY(108%);transition:transform .9s var(--ease);transition-delay:calc(var(--i,0) * 70ms)}
+.step.on .l>span{transform:none;transition-delay:calc(var(--i,0) * 70ms + 160ms)}
+.step .fx{opacity:0;transform:translateY(10px);transition:opacity .6s var(--ease),transform .8s var(--ease)}
+.step.on .fx{opacity:1;transform:none;transition-delay:calc(var(--i,0) * 70ms + 260ms)}
+.step .lbl{margin-bottom:20px}
+.step .lbl b{color:var(--cobalt)}
+.step h2{margin-bottom:18px}
+.step .p{max-width:40ch}
+.step .note{margin-top:18px;font:400 12px/1.5 var(--sans);color:var(--muted);max-width:42ch}
+.seg{display:inline-flex;margin-top:24px;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{all:unset;cursor:pointer;height:30px;padding:0 14px;border-radius:999px;font:500 12.5px/30px var(--sans);color:var(--muted);transition:background .35s var(--ease),color .35s}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px}
+.mini{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:28px;border-top:1px solid var(--line);padding-top:18px}
+.mini div{font-size:12.5px;line-height:1.45;color:var(--muted)}
+.mini b{display:block;font:400 22px/1.1 var(--sans);letter-spacing:-.02em;color:var(--ink);margin-bottom:6px}
+.rail{position:absolute;left:var(--g);bottom:34px;transition:opacity .6s;display:flex;align-items:center;gap:22px;pointer-events:auto}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;gap:18px}
+.rail li{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:rgba(21,23,28,.32);transition:color .5s;cursor:pointer}
+.rail li.on{color:var(--ink)}
+.bar{width:96px;height:1px;background:var(--line);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0;background:var(--cobalt);transform-origin:left;transform:scaleX(0)}
+
+/* solid sections */
+.solid{position:relative;z-index:3;background:var(--bg)}
+section.blk{padding:168px 0 0}
+.head{margin-bottom:64px}
+.head .lbl{margin-bottom:22px}
+.head h2{max-width:22ch}
+.head .p{margin-top:18px}
+hr.h{border:0;border-top:1px solid var(--line);margin:0}
+
+/* statement */
+.statement{padding-top:180px}
+.statement .big{grid-column:2 / span 9;font-size:clamp(28px,2.9vw,44px);line-height:1.14;letter-spacing:-.024em;font-weight:400}
+.statement .big .mut{color:#9A9CA1}
+.statement .cols{grid-column:2 / span 10;display:grid;grid-template-columns:1fr 1fr;gap:24px 48px;margin-top:56px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);margin-top:120px;border-top:1px solid var(--line)}
+.metrics>div{padding:26px 24px 0 0}
+.metrics>div+div{padding-left:24px;border-left:1px solid var(--line2)}
+.metrics b{display:block;font:300 clamp(30px,3vw,44px)/1 var(--sans);letter-spacing:-.03em;margin-bottom:14px}
+.metrics span{display:block;font-size:13.5px;line-height:1.45;color:var(--muted);max-width:28ch}
+.metrics+.src{margin-top:28px}
+
+/* applications */
+.apps{border-top:1px solid var(--line)}
+.app{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:26px 0;border-bottom:1px solid var(--line);position:relative;transition:background .4s}
+.app::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease)}
+.app:hover::before{transform:scaleX(1)}
+.app .n{grid-column:1 / span 1;font:500 11.5px/1.6 var(--mono);color:var(--muted)}
+.app .t{grid-column:2 / span 3}
+.app .t h3{font-size:19px;letter-spacing:-.015em;font-weight:500}
+.app .t .lbl{margin-top:6px;font-size:10.5px}
+.app .d{grid-column:5 / span 5;font-size:15px;color:#3A3D44}
+.app .d .kv{margin-top:10px}
+.app .r{grid-column:10 / span 3;display:flex;flex-direction:column;gap:6px;align-items:flex-start;font-size:13px}
+.chip{display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.03em;padding:5px 7px;border-radius:4px;background:var(--surface);color:var(--ink);margin:0 6px 6px 0}
+.chip.c{background:rgba(31,69,214,.08);color:var(--cobalt)}
+.doi{display:inline-flex;gap:8px;align-items:baseline;color:var(--ink)}
+.doi::before{content:"DOI";font:500 9.5px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.doi:hover{color:var(--cobalt)}
+
+/* platform */
+.figs{display:grid;grid-template-columns:7fr 5fr;gap:24px;margin-bottom:96px}
+figure{margin:0}
+.fbox{position:relative;border-radius:14px;overflow:hidden;background:var(--surface);aspect-ratio:16/10}
+.fbox.sq{aspect-ratio:auto;height:100%;min-height:100%}
+.fbox img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;transition:transform 1.2s var(--ease)}
+.fbox:hover img{transform:scale(1.015)}
+.fbox svg.fb{position:absolute;inset:0;width:100%;height:100%}
+figcaption{margin-top:12px;font-size:12.5px;color:var(--muted)}
+.feats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line)}
+.feat{padding:28px 28px 40px 0;border-bottom:1px solid var(--line2)}
+.feat:not(:nth-child(4n+1)){padding-left:24px;border-left:1px solid var(--line2)}
+.feat .lbl{margin-bottom:28px}
+.feat h3{margin-bottom:10px}
+.feat p{font-size:14.5px;line-height:1.55;color:#4A4D54}
+
+/* metabolites */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.met{background:var(--surface);border-radius:14px;padding:22px;display:flex;flex-direction:column;transition:background .5s var(--ease),transform .7s var(--ease)}
+.met:hover{background:#E6E2D9;transform:translateY(-3px)}
+.met .mol{position:relative;aspect-ratio:4/3;border-radius:10px;background:#FBFAF7;margin-bottom:20px;overflow:hidden}
+.met .mol img{position:absolute;inset:12%;width:76%;height:76%;object-fit:contain;mix-blend-mode:multiply;filter:grayscale(1) contrast(1.05);opacity:.86;transition:opacity .5s,filter .5s}
+.met:hover .mol img{filter:grayscale(0);opacity:1}
+.met .mol .ab{position:absolute;inset:0;display:grid;place-items:center;font:400 30px/1 var(--serif);font-style:italic;color:#B9B6AE}
+.met .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.met .top h3{font-size:15.5px}
+.met .top .lbl{color:var(--cobalt)}
+.met p{font-size:13.5px;line-height:1.5;color:#4A4D54}
+.ratio{margin-top:24px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:28px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ratio .lbl{grid-column:1 / span 3}
+.ratio p{grid-column:4 / span 7;font-size:15.5px;color:#3A3D44}
+
+/* fda */
+.fda .grid>div:first-child{grid-column:1 / span 5}
+.fda .grid>div:last-child{grid-column:7 / span 6}
+.fdate{font:300 clamp(30px,3vw,44px)/1 var(--sans);letter-spacing:-.03em;margin:26px 0 22px}
+.quotes{display:flex;flex-direction:column}
+blockquote{margin:0;padding:26px 0;border-top:1px solid var(--line)}
+blockquote:last-child{border-bottom:1px solid var(--line)}
+blockquote p{font:400 21px/1.35 var(--serif);letter-spacing:-.005em;color:var(--ink)}
+blockquote footer{margin-top:12px;font-size:12.5px;color:var(--muted)}
+blockquote footer b{color:var(--ink);font-weight:500}
+
+/* evidence */
+.tl{border-top:1px solid var(--line)}
+.ev{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;padding:24px 0;border-bottom:1px solid var(--line)}
+.ev .y{grid-column:1 / span 2;font:500 12px/1.6 var(--mono);letter-spacing:.04em;color:var(--muted)}
+.ev h3{grid-column:3 / span 4}
+.ev p{grid-column:7 / span 6;font-size:14.5px;color:#4A4D54}
+.ev.hi .y{color:var(--cobalt)}
+.lit{margin-top:96px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}
+.lit>.lbl{grid-column:1 / span 3}
+.lit ul{grid-column:4 / span 9;list-style:none;margin:0;padding:0}
+.lit li{padding:18px 0;border-top:1px solid var(--line2);display:grid;grid-template-columns:1fr auto;gap:6px 24px}
+.lit li a{font-size:15.5px;line-height:1.4;letter-spacing:-.005em}
+.lit li a:hover{color:var(--cobalt)}
+.lit li span{grid-column:1;font-size:12.5px;color:var(--muted)}
+.lit li .yr{grid-column:2;grid-row:1 / span 2;font:500 11.5px/1.6 var(--mono);color:var(--muted)}
+
+/* company */
+.mv{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 48px;border-top:1px solid var(--line);padding-top:28px}
+.mv .lbl{margin-bottom:16px}
+.mv p{font-size:15px;color:#3A3D44}
+.sub{margin-top:120px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:baseline;gap:24px}
+.team{display:grid;grid-template-columns:1fr 1fr;column-gap:48px;border-top:1px solid var(--line)}
+.person{display:grid;grid-template-columns:56px 1fr;gap:20px;padding:28px 0;border-bottom:1px solid var(--line)}
+.person .mono{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font:400 22px/1 var(--serif);color:var(--ink);background:var(--surface);transition:background .6s var(--ease),color .6s var(--ease)}
+.person:hover .mono{background:var(--cobalt);color:#fff}
+.person h3{font-size:22px;letter-spacing:-.018em;line-height:1.2}
+.person .role{font-size:14px;color:var(--muted);margin:4px 0 12px}
+.person p{font-size:15px;line-height:1.55;color:#3A3D44;max-width:52ch}
+.logos{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.logo{height:112px;display:grid;place-items:center;padding:24px;position:relative}
+.logo+.logo{border-left:1px solid var(--line2)}
+.logo img{max-height:46px;max-width:76%;object-fit:contain;filter:grayscale(1);opacity:.62;mix-blend-mode:multiply;transition:filter .6s,opacity .6s}
+.logo:hover img{filter:none;opacity:1}
+.logo .nm{display:none;font-size:13px;text-align:center;color:var(--muted);line-height:1.35}
+.logo.noimg img{display:none}.logo.noimg .nm{display:block}
+.backers{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.backers div{height:96px;display:flex;flex-direction:column;justify-content:center;padding:0 24px}
+.backers div+div{border-left:1px solid var(--line2)}
+.backers b{font:500 17px/1.2 var(--sans);letter-spacing:-.015em}
+.backers span{font-size:12px;color:var(--muted);margin-top:4px}
+
+/* contact */
+.contact .grid>div:first-child{grid-column:1 / span 5}
+.contact form{grid-column:7 / span 6;display:grid;grid-template-columns:1fr 1fr;gap:18px 24px}
+.fld{display:flex;flex-direction:column;gap:8px}
+.fld.w{grid-column:1 / -1}
+.fld label{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fld input,.fld select,.fld textarea{font:400 15px/1.4 var(--sans);color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);padding:10px 0;border-radius:0;outline:none;transition:border-color .3s;-webkit-appearance:none;appearance:none}
+.fld textarea{resize:vertical;min-height:84px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-bottom-color:var(--cobalt)}
+form .row{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:8px}
+form .row p{font-size:12px;color:var(--muted);max-width:44ch}
+.routes{margin-top:40px;border-top:1px solid var(--line)}
+.routes a{display:flex;justify-content:space-between;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:15px;transition:color .3s,padding .5s var(--ease)}
+.routes a:hover{color:var(--cobalt);padding-left:6px}
+.addr{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:24px;font-size:14px;color:#3A3D44}
+.addr .lbl{margin-bottom:10px}
+
+footer.site{margin-top:168px;border-top:1px solid var(--line);padding:40px 0 48px}
+footer.site .wrap{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:24px;font-size:13px;color:var(--muted)}
+footer.site .f1{grid-column:1 / span 4}
+footer.site .f2{grid-column:6 / span 3;display:flex;flex-direction:column;gap:8px}
+footer.site .f3{grid-column:9 / span 4;display:flex;flex-direction:column;gap:8px}
+footer.site a:hover{color:var(--ink)}
+.flogo{height:28px;margin-bottom:16px;display:flex;align-items:center;gap:10px;color:var(--ink);font:500 15px/1 var(--sans)}
+.flogo img{height:28px;width:auto;filter:invert(1) grayscale(1);opacity:.85}
+
+/* label strip */
+.strip{position:fixed;left:0;right:0;bottom:0;height:var(--strip);z-index:60;background:#15171C;color:rgba(245,243,238,.78);display:flex;align-items:center;justify-content:center;font:400 11px/1 var(--mono);letter-spacing:.04em;padding:0 16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.strip b{color:#F5F3EE;font-weight:500;margin-right:.6em}
+.strip span{white-space:nowrap}
+
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:3px;border-radius:4px}
+
+/* responsive */
+@media (max-width:1100px){
+  nav.main{gap:20px}
+  .hero .copy{grid-column:1 / span 6}
+  .feats{grid-template-columns:repeat(2,1fr)}
+  .feat:not(:nth-child(4n+1)){padding-left:0;border-left:0}
+  .feat:nth-child(2n){padding-left:24px;border-left:1px solid var(--line2)}
+  .mets{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:900px){
+  :root{--hdr:56px}
+  nav.main{display:none}
+  #stage{top:var(--hdr);width:100vw;height:46svh}
+  #stage .cap{bottom:auto;top:10px;left:var(--g);right:auto;text-align:left}
+  .hero{align-items:flex-start;min-height:auto}
+  .hero .copy{grid-column:1 / -1;padding-top:calc(var(--hdr) + 46svh + 18px);padding-bottom:64px}
+  .eyebrow{margin-bottom:18px}
+  .hero h1{margin-bottom:18px}
+  .cta{margin-top:24px}
+  .hero .foot{display:none}
+  .steps{left:var(--g);right:var(--g);width:auto;top:calc(var(--hdr) + 46svh);bottom:56px}
+  .step{top:14px;transform:none}
+  .step h2{font-size:25px;margin-bottom:12px}
+  .step .p{font-size:15px}
+  .step .p2{display:none}
+  .step .lbl{margin-bottom:12px}
+  .seg{margin-top:14px}
+  .mini{margin-top:16px;padding-top:12px;gap:12px}
+  .mini b{font-size:18px}
+  .rail{bottom:18px}
+  .rail ol{gap:12px}
+  .rail li span{display:none}
+  .bar{display:none}
+  section.blk{padding-top:112px}
+  .statement{padding-top:112px}
+  .statement .big,.statement .cols{grid-column:1 / -1}
+  .statement .cols{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr;margin-top:72px}
+  .metrics>div{padding:22px 12px 22px 0;border-bottom:1px solid var(--line2)}
+  .metrics>div+div{padding-left:0;border-left:0}
+  .metrics>div:nth-child(2n){padding-left:16px;border-left:1px solid var(--line2)}
+  .app{row-gap:10px}
+  .app .n{grid-column:1 / span 12}
+  .app .t,.app .d,.app .r{grid-column:1 / -1}
+  .app .r{flex-direction:row;flex-wrap:wrap;gap:14px}
+  .figs{grid-template-columns:1fr;margin-bottom:64px}
+  .feats,.mets{grid-template-columns:1fr}
+  .feat:nth-child(n){padding-left:0;border-left:0}
+  .ratio .lbl,.ratio p{grid-column:1 / -1}
+  .ratio .lbl{margin-bottom:12px}
+  .fda .grid>div:first-child,.fda .grid>div:last-child{grid-column:1 / -1}
+  .fda .grid>div:last-child{margin-top:40px}
+  .ev .y,.ev h3,.ev p{grid-column:1 / -1}
+  .ev h3{margin:4px 0 6px}
+  .lit>.lbl,.lit ul{grid-column:1 / -1}
+  .lit>.lbl{margin-bottom:16px}
+  .mv{grid-template-columns:1fr}
+  .team{grid-template-columns:1fr}
+  .logos{grid-template-columns:1fr 1fr}
+  .logo{border-bottom:1px solid var(--line2)}
+  .logo+.logo{border-left:0}
+  .logo:nth-child(2n){border-left:1px solid var(--line2)}
+  .backers{grid-template-columns:1fr 1fr}
+  .backers div{border-bottom:1px solid var(--line2)}
+  .backers div+div{border-left:0}
+  .backers div:nth-child(2n){border-left:1px solid var(--line2)}
+  .contact .grid>div:first-child,.contact form{grid-column:1 / -1}
+  .contact form{margin-top:48px;grid-template-columns:1fr}
+  .addr{grid-template-columns:1fr}
+  footer.site .f1,footer.site .f2,footer.site .f3{grid-column:1 / -1}
+  :root{--strip:40px}
+  .strip{font-size:10px;white-space:normal;line-height:1.35;flex-direction:column;justify-content:center}
+  .strip b{margin:0}.strip .sep{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0ms!important;transition-duration:.001ms!important;transition-delay:0ms!important}
+}
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<header id="hdr">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="BrainSpec home">
+      <span class="mk"><span>B</span><img src="https://brainspecmed.com/wp-content/uploads/2023/09/cropped-BrainSpec_Square_.png" alt="" width="26" height="26" onerror="this.remove()"></span>
+      BrainSpec
+    </a>
+    <nav class="main" aria-label="Primary">
+      <a href="#science">Science</a><a href="#applications">Applications</a><a href="#platform">Platform</a><a href="#evidence">Evidence</a><a href="#company">Company</a><a href="#contact">Contact</a>
+    </nav>
+    <a class="btn solid sm mag" href="https://docs.google.com/forms/d/e/1FAIpQLSeVPZTZY5tBnA3DH66PJehIVQRsBELCxAphc_VF11rkIRIvSA/viewform?usp=sf_link" target="_blank" rel="noopener">Request a demo</a>
+  </div>
+</header>
+
+<!-- 3D stage -->
+<div id="stage" aria-label="Interpretive visualization: a glass MRI voxel containing a proton spectrum" role="img">
+  <svg id="poster" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <defs>
+      <radialGradient id="psh" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#15171C" stop-opacity=".16"/><stop offset="1" stop-color="#15171C" stop-opacity="0"/></radialGradient>
+      <linearGradient id="pgl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".5" stop-color="#E9ECF3" stop-opacity=".35"/><stop offset="1" stop-color="#D9DEEA" stop-opacity=".55"/></linearGradient>
+    </defs>
+    <ellipse cx="300" cy="470" rx="190" ry="26" fill="url(#psh)"/>
+    <path d="M300 118 L462 196 L462 382 L300 460 L138 382 L138 196 Z" fill="url(#pgl)" stroke="rgba(21,23,28,.16)" stroke-width="1" stroke-linejoin="round"/>
+    <path d="M138 196 L300 274 L462 196 M300 274 L300 460" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1"/>
+    <g id="pridge" fill="none" stroke="#1F45D6" stroke-linejoin="round" stroke-linecap="round"></g>
+  </svg>
+  <script>
+  (function(){var pk=[[2.01,1.5,.035],[2.10,.22,.06],[2.35,.28,.06],[3.75,.25,.06],[3.03,1,.035],[3.93,.6,.04],[3.22,.75,.035],[3.56,.5,.05],[4.06,.2,.05]];
+  function S(p,w){var s=0;for(var i=0;i<pk.length;i++){var c=pk[i],ww=c[2]*w,d=p-c[0];s+=c[1]/Math.pow(w,.75)*ww*ww/(d*d+ww*ww);}return s;}
+  var g=document.getElementById('pridge'),h='';for(var r=0;r<7;r++){var f=r/6,wm=1+(1-f)*2.6,bell=.35+.65*f,d='';for(var i=0;i<=200;i++){var u=i/200,p=4.2-u*3.6,x=170+u*230+(1-f)*44,y=372-(1-f)*70-S(p,wm)*bell*90;d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1);}
+  h+='<path d="'+d+'" stroke-width="'+(r==6?1.6:1)+'" stroke-opacity="'+(0.25+0.75*f).toFixed(2)+'"/>';}g.innerHTML=h;})();
+  </script>
+  <canvas id="gl" aria-hidden="true"></canvas>
+  <svg id="lead" aria-hidden="true"><polyline/><polyline/><polyline/><polyline/><polyline/><polyline/><polyline/><polyline/></svg>
+  <div class="pk" data-ppm="3.56">mI<i>3.6</i></div>
+  <div class="pk" data-ppm="3.22">Cho<i>3.2</i></div>
+  <div class="pk" data-ppm="3.03">Cr<i>3.0</i></div>
+  <div class="pk" data-ppm="2.35">Glx<i>2.1–2.4</i></div>
+  <div class="pk" data-ppm="2.01">NAA<i>2.0</i></div>
+  <div class="pk" data-ppm="1.33" data-g="1">Lac<i>1.3</i></div>
+  <div class="pk" data-ppm="0.9" data-g="1">Lip<i>0.9</i></div>
+  <div class="pk" data-vx="1">Voxel<i>2 × 2 × 2 cm</i></div>
+  <div class="cap"><div class="lbl">Interpretive visualization</div><div class="lbl" style="opacity:.7;margin-top:4px">Not patient data</div></div>
+  <div id="gl-note" class="lbl">WebGL2 unavailable · still image</div>
+</div>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="wrap grid">
+      <div class="copy" id="heroCopy">
+        <div class="eyebrow lbl fadein"><span class="dot"></span><span>BrainSpec Core<span class="tm">™</span> · FDA 510(k) cleared</span></div>
+        <h1 id="h1"><span class="l" style="--i:0"><span>The chemistry</span></span><span class="l" style="--i:1"><span><em class="s">hidden</em> in every</span></span><span class="l" style="--i:2"><span>brain scan.</span></span></h1>
+        <p class="p fadein">BrainSpec Core turns a standard MR spectroscopy acquisition on 3T GE, Siemens and Philips scanners into quantified neurometabolite reports in the cloud: a non‑invasive “virtual biopsy”, with results in minutes rather than days.</p>
+        <div class="cta fadein">
+          <a class="btn solid mag" href="https://docs.google.com/forms/d/e/1FAIpQLSeVPZTZY5tBnA3DH66PJehIVQRsBELCxAphc_VF11rkIRIvSA/viewform?usp=sf_link" target="_blank" rel="noopener">Request a demo <span class="ar">→</span></a>
+          <a class="btn ghost mag" href="#science">See how it works</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><div class="wrap">
+      <span class="scrollcue lbl"><span></span>Scroll</span>
+      <span class="lbl">Cleared <b class="num">27 Nov 2023</b></span>
+      <span class="lbl">3T · GE · Siemens · Philips</span>
+    </div></div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section id="science" aria-label="How MR spectroscopy works">
+    <div class="pin">
+      <div class="wrap">
+      <div class="steps" id="steps">
+        <div class="step" data-k="1">
+          <div class="lbl"><span class="l"><span><b>01</b> · Structure</span></span></div>
+          <h2><span class="l" style="--i:1"><span>An MRI shows structure.</span></span><span class="l" style="--i:2"><span>Not chemistry.</span></span></h2>
+          <p class="p fx" style="--i:3">A conventional MRI image is built from the strong signal of water and fat. The metabolites that reveal what tissue is actually doing are present at concentrations roughly 10,000 times lower, so they never appear in the picture.</p>
+        </div>
+        <div class="step" data-k="2">
+          <div class="lbl"><span class="l"><span><b>02</b> · Voxel</span></span></div>
+          <h2><span class="l" style="--i:1"><span>Select one voxel.</span></span></h2>
+          <p class="p fx" style="--i:2">A spectroscopy voxel is a small cube of tissue placed on the anatomical scan. Everything that follows is the chemistry of this one cube.</p>
+          <p class="note fx p2" style="--i:3">The normative data published by BrainSpec’s scientific co‑founder used a 2 × 2 × 2 cm (8 cm³) voxel. Lin et al., NeuroRx 2005.</p>
+        </div>
+        <div class="step" data-k="3">
+          <div class="lbl"><span class="l"><span><b>03</b> · Signal</span></span></div>
+          <h2><span class="l" style="--i:1"><span>Spins ring, then fade.</span></span></h2>
+          <p class="p fx" style="--i:2">In the scanner’s 3‑tesla field, hydrogen nuclei align. A radio‑frequency pulse tips them; they precess near 127.7 MHz, each metabolite slightly shifted by the electrons around it, and the ringing signal decays. That fading echo is the free‑induction decay.</p>
+          <p class="note fx p2" style="--i:3">Precession is slowed about 10⁸ times and chemical‑shift beats are exaggerated so the eye can follow them.</p>
+        </div>
+        <div class="step" data-k="4">
+          <div class="lbl"><span class="l"><span><b>04</b> · Spectrum</span></span></div>
+          <h2><span class="l" style="--i:1"><span>The wave unfolds into</span></span><span class="l" style="--i:2"><span>a chemical fingerprint.</span></span></h2>
+          <p class="p fx" style="--i:3">A Fourier transform turns the decay into peaks at characteristic positions in parts per million. Radiologists read ratios: a rising choline peak and a falling NAA peak, with lactate and lipid appearing, is the classic tumour pattern.</p>
+          <div class="seg fx" style="--i:4" role="group" aria-label="Spectrum pattern">
+            <button type="button" aria-pressed="true" data-pat="0">Normal</button>
+            <button type="button" aria-pressed="false" data-pat="1">Glioma pattern</button>
+          </div>
+          <p class="note fx p2" style="--i:5">Peak positions and the tumour pattern follow Lin et al., NeuroRx 2005. Heights are illustrative ratios to creatine, not measurements.</p>
+        </div>
+        <div class="step" data-k="5">
+          <div class="lbl"><span class="l"><span><b>05</b> · Cleared</span></span></div>
+          <h2><span class="l" style="--i:1"><span>FDA‑cleared. In the cloud.</span></span><span class="l" style="--i:2"><span>On the 3T scanner you have.</span></span></h2>
+          <p class="p fx" style="--i:3">BrainSpec Core<span class="tm">™</span> received FDA 510(k) clearance on 27 November 2023 to measure brain chemistry non‑invasively and support diagnosis.</p>
+          <div class="mini fx" style="--i:4">
+            <div><b class="num">510(k)</b>Cleared Nov 2023</div>
+            <div><b>Cloud</b>Days become minutes</div>
+            <div><b class="num">3T</b>GE · Siemens · Philips</div>
+          </div>
+        </div>
+      </div>
+      <div class="rail" id="rail" aria-hidden="true">
+        <ol><li data-k="1">01<span> Structure</span></li><li data-k="2">02<span> Voxel</span></li><li data-k="3">03<span> Signal</span></li><li data-k="4">04<span> Spectrum</span></li><li data-k="5">05<span> Cleared</span></li></ol>
+        <div class="bar"><i id="barI"></i></div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="solid">
+  <!-- STATEMENT + METRICS -->
+  <section class="statement">
+    <div class="wrap">
+      <div class="grid">
+        <p class="big" data-r><span class="l"><span>Biochemical change appears <em class="s">before</em></span></span><span class="l" style="--i:1"><span>structural change. BrainSpec makes it</span></span><span class="l" style="--i:2"><span>measurable <span class="mut">on the scanner the hospital</span></span></span><span class="l" style="--i:3"><span><span class="mut">already has.</span></span></span></p>
+        <div class="cols" data-f>
+          <p class="p">Magnetic resonance spectroscopy (MRS) reads the faint signal of brain metabolites from the same MRI scanner, in the same session, with no ionizing radiation and no surgery. It is often described as a virtual biopsy.</p>
+          <p class="p">BrainSpec makes the result as simple to read as routine blood test results, with applications in brain tumours, Alzheimer’s disease, multiple sclerosis and more.</p>
+        </div>
+      </div>
+      <div class="metrics" data-f>
+        <div><b class="num">10,000×</b><span>Lower concentration of metabolites than the water and fat signal a conventional MRI is built on</span></div>
+        <div><b class="num">28,000+</b><span>Publications describing the clinical use of MRS</span></div>
+        <div><b class="num">85 / 90%</b><span>Company‑reported sensitivity / specificity for detecting 2‑HG in low‑grade glioma</span></div>
+        <div><b class="num">$98K</b><span>Company‑reported potential saving per patient over five years when MRS is added to standard of care</span></div>
+      </div>
+      <p class="src" data-f>Sources: brainspecmed.com (“The Essentials”, “Proven Clinical Utility”); company press release via <a href="https://www.biospace.com/brainspec-receives-full-fda-clearance-to-begin-using-ai-backed-solution-for-non-invasive-brain-chemistry-measurement" target="_blank" rel="noopener">BioSpace / PRNewswire</a>, 27 Nov 2023. Performance and cost figures are the company’s own statements.</p>
+    </div>
+  </section>
+
+  <!-- APPLICATIONS -->
+  <section class="blk" id="applications">
+    <div class="wrap">
+      <div class="head grid">
+        <div style="grid-column:1 / span 7">
+          <div class="lbl" data-f>Clinical applications</div>
+          <h2 data-r><span class="l"><span>Chemistry that changes</span></span><span class="l" style="--i:1"><span>before structure does.</span></span></h2>
+        </div>
+        <div style="grid-column:8 / span 5;align-self:end">
+          <p class="p" data-f>MRS can detect subtle biochemical changes in the brain before structural changes appear on conventional MRI. Each application links to the literature BrainSpec cites.</p>
+        </div>
+      </div>
+      <div class="apps">
+        <div class="app" data-f><div class="n">01</div><div class="t"><h3>Brain tumour</h3><div class="lbl">Oncology</div></div>
+          <div class="d">Diagnose and monitor tumours by their chemical composition: distinguish tumour types, track treatment response and detect recurrence versus radiation necrosis. BrainSpec’s Breakthrough Device designation (June 2022) covers estimating IDH status in glioma from the 2‑hydroxyglutarate peak, for patients for whom biopsy is inadvisable.<div class="kv"><span class="chip c">Cho ↑</span><span class="chip c">NAA ↓</span><span class="chip">Lac / Lip</span><span class="chip">2‑HG</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1371/journal.pone.0141438" target="_blank" rel="noopener">PLOS ONE 2015</a><a class="doi" href="https://doi.org/10.1177/1010428317710030" target="_blank" rel="noopener">Tumor Biol 2017</a></div></div>
+        <div class="app" data-f><div class="n">02</div><div class="t"><h3>Traumatic brain injury</h3><div class="lbl">Trauma</div></div>
+          <div class="d">Track biochemical change after injury: reduced NAA marking neuronal damage and elevated lactate marking metabolic stress, including subconcussive hits.<div class="kv"><span class="chip c">NAA ↓</span><span class="chip">Lac ↑</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1089/neu.2022.0125" target="_blank" rel="noopener">J Neurotrauma 2022</a><a class="doi" href="https://doi.org/10.1007%2Fs11682-020-00330-6" target="_blank" rel="noopener">ENIGMA MRS</a></div></div>
+        <div class="app" data-f><div class="n">03</div><div class="t"><h3>Parkinson’s disease</h3><div class="lbl">Movement</div></div>
+          <div class="d">Track progression by measuring NAA and myo‑inositol in the substantia nigra and other regions.<div class="kv"><span class="chip c">NAA ↓</span><span class="chip">mI</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1148/radiol.13130531" target="_blank" rel="noopener">Radiology 2014</a></div></div>
+        <div class="app" data-f><div class="n">04</div><div class="t"><h3>Multiple sclerosis</h3><div class="lbl">Neuroimmunology</div></div>
+          <div class="d">Reveal inflammation (elevated choline) and neuronal damage (decreased NAA) to track disease and guide treatment.<div class="kv"><span class="chip c">Cho ↑</span><span class="chip c">NAA ↓</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1093/brain/awh640" target="_blank" rel="noopener">Brain 2005</a></div></div>
+        <div class="app" data-f><div class="n">05</div><div class="t"><h3>Alzheimer’s disease</h3><div class="lbl">Dementia</div></div>
+          <div class="d">Detect neuronal loss (reduced NAA) and neuroinflammation (increased myo‑inositol) to monitor progression.<div class="kv"><span class="chip c">NAA ↓</span><span class="chip c">mI ↑</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1602/neurorx.2.2.197" target="_blank" rel="noopener">NeuroRx 2005</a><a class="doi" href="https://doi.org/10.3389/fnagi.2021.738971" target="_blank" rel="noopener">Front Aging Neurosci</a></div></div>
+        <div class="app" data-f><div class="n">06</div><div class="t"><h3>Epilepsy</h3><div class="lbl">Epilepsy</div></div>
+          <div class="d">Detect elevated lactate during seizures and shifts in NAA indicating neuronal dysfunction, including temporal lobe epilepsy.<div class="kv"><span class="chip">Lac ↑</span><span class="chip c">NAA ↓</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.17219/acem/152943" target="_blank" rel="noopener">Adv Clin Exp Med</a></div></div>
+        <div class="app" data-f><div class="n">07</div><div class="t"><h3>Schizophrenia</h3><div class="lbl">Psychiatry</div></div>
+          <div class="d">Alterations in glutamate and GABA, used to track disease and treatment efficacy.<div class="kv"><span class="chip">Glu</span><span class="chip">GABA</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1001/jamapsychiatry.2021.0380" target="_blank" rel="noopener">JAMA Psychiatry 2021</a></div></div>
+        <div class="app" data-f><div class="n">08</div><div class="t"><h3>Hypoxic‑ischemic encephalopathy</h3><div class="lbl">Neonatal</div></div>
+          <div class="d">Elevated lactate and decreased NAA, used to monitor the condition and predict outcomes after hypothermia.<div class="kv"><span class="chip">Lac ↑</span><span class="chip c">NAA ↓</span></div></div>
+          <div class="r"><a class="doi" href="https://doi.org/10.1159/000505519" target="_blank" rel="noopener">Neonatology 2020</a></div></div>
+      </div>
+      <p class="src" style="margin-top:24px" data-f>Descriptions and citations from brainspecmed.com/applications. The company states BrainSpec Core’s clearance covers diagnostic support for conditions including Alzheimer’s disease, multiple sclerosis, epilepsy and brain tumours.</p>
+    </div>
+  </section>
+
+  <!-- PLATFORM -->
+  <section class="blk" id="platform">
+    <div class="wrap">
+      <div class="head grid">
+        <div style="grid-column:1 / span 7">
+          <div class="lbl" data-f>BrainSpec Core<span class="tm">™</span></div>
+          <h2 data-r><span class="l"><span>Spectroscopy as simple</span></span><span class="l" style="--i:1"><span>to read as a blood test.</span></span></h2>
+        </div>
+        <div style="grid-column:8 / span 5;align-self:end">
+          <p class="p" data-f>A web‑based platform that pairs a post‑processing back end, built on a linear‑combinations model of the spectrum, with an interface made for clinicians and researchers. Everything is processed in the cloud, so results are always up to date.</p>
+        </div>
+      </div>
+      <div class="figs" data-f>
+        <figure>
+          <div class="fbox">
+            <svg class="fb" viewBox="0 0 700 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="700" height="440" fill="#ECE9E2"/><g fill="none" stroke="#15171C" stroke-opacity=".25"><ellipse cx="200" cy="220" rx="120" ry="150"/><ellipse cx="200" cy="220" rx="92" ry="118"/></g><rect x="210" y="170" width="34" height="34" fill="none" stroke="#1F45D6" stroke-width="1.5"/><path d="M380 330 L420 328 L440 300 L452 326 L478 326 L490 250 L500 324 L520 290 L530 322 L560 318 L572 180 L584 320 L640 330" fill="none" stroke="#1F45D6" stroke-width="1.5"/></svg>
+            <img src="https://brainspecmed.com/wp-content/uploads/2023/09/Figure_MRS-scaled.jpg" alt="A voxel placed on an anatomical brain scan, beside its MR spectrum" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>From brainspecmed.com: voxel on the anatomical scan and its spectrum.</figcaption>
+        </figure>
+        <figure>
+          <div class="fbox">
+            <svg class="fb" viewBox="0 0 500 440" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="500" height="440" fill="#ECE9E2"/><rect x="40" y="110" width="190" height="190" rx="10" fill="#15171C" fill-opacity=".06"/><ellipse cx="135" cy="205" rx="64" ry="78" fill="none" stroke="#15171C" stroke-opacity=".3"/><path d="M270 290 L300 288 L314 262 L326 286 L350 286 L362 214 L372 284 L392 254 L402 282 L424 278 L434 160 L446 280 L470 290" fill="none" stroke="#1F45D6" stroke-width="1.5"/></svg>
+            <img src="https://brainspecmed.com/wp-content/uploads/2023/10/MRI_MRS_t.png" alt="MRI image (structure) beside an MRS spectrum (chemistry)" loading="lazy" onerror="this.remove()">
+          </div>
+          <figcaption>From brainspecmed.com/science: MRI (structure) beside MRS (chemistry).</figcaption>
+        </figure>
+      </div>
+      <div class="feats">
+        <div class="feat" data-f><div class="lbl num">01</div><h3>Precision metabolite measurement</h3><p>Quantified neurometabolite concentrations from a linear‑combinations model fit, compared against a reference database of brain chemistry.</p></div>
+        <div class="feat" data-f style="--d:60ms"><div class="lbl num">02</div><h3>Cross‑vendor support</h3><p>Runs on standard 3T scanners from GE, Siemens and Philips. MRS is acquired as an additional sequence; no special hardware.</p></div>
+        <div class="feat" data-f style="--d:120ms"><div class="lbl num">03</div><h3>Automatic reporting</h3><p>Results delivered automatically, turning a process that took days into minutes, readable without a spectroscopy specialist.</p></div>
+        <div class="feat" data-f style="--d:180ms"><div class="lbl num">04</div><h3>Cloud processing</h3><p>All data processed in the cloud, so every site runs the current pipeline and nothing is installed on the scanner.</p></div>
+        <div class="feat" data-f><div class="lbl num">05</div><h3>Safe and non‑invasive</h3><p>Like MRI, MRS uses magnetic fields and radio waves: no ionizing radiation, no surgery.</p></div>
+        <div class="feat" data-f style="--d:60ms"><div class="lbl num">06</div><h3>Proven clinical utility</h3><p>Over 28,000 publications describe clinical use of MRS, across tumours, dementia, MS, epilepsy and more.</p></div>
+        <div class="feat" data-f style="--d:120ms"><div class="lbl num">07</div><h3>Reference databases</h3><p>A reference database of brain chemistry for clinical use, and an extended database of diseased brain chemistry for research.</p></div>
+        <div class="feat" data-f style="--d:180ms"><div class="lbl num">08</div><h3>AutoVOI automation</h3><p>Exclusive license (2025) with the University of Minnesota’s Center for Magnetic Resonance Research to commercialize AutoVOI, which automates voxel placement.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- METABOLITES -->
+  <section class="blk" id="metabolites">
+    <div class="wrap">
+      <div class="head grid">
+        <div style="grid-column:1 / span 7">
+          <div class="lbl" data-f>What MRS measures</div>
+          <h2 data-r><span class="l"><span>Eight neurometabolites,</span></span><span class="l" style="--i:1"><span>one spectrum.</span></span></h2>
+        </div>
+        <div style="grid-column:8 / span 5;align-self:end"><p class="p" data-f>The metabolites BrainSpec describes on its science page, with the molecule drawings from that page.</p></div>
+      </div>
+      <div class="mets">
+        <div class="met" data-f><div class="mol"><span class="ab">NAA</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/Molecules-11.png" alt="N-acetylaspartate molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>N‑Acetylaspartate</h3><span class="lbl num">2.0 ppm</span></div><p>Marker of neuronal health, used in tumours, head injury and dementia. Elevated in recovery and in Canavan disease.</p></div>
+        <div class="met" data-f style="--d:60ms"><div class="mol"><span class="ab">Cho</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/choline-stick.png" alt="Choline molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>Choline</h3><span class="lbl num">3.2 ppm</span></div><p>Linked to cell‑membrane turnover and cell density; relevant to tumours and other proliferative conditions.</p></div>
+        <div class="met" data-f style="--d:120ms"><div class="mol"><span class="ab">Cr</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/Creatine-stick.png" alt="Creatine molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>Creatine</h3><span class="lbl num">3.0 ppm</span></div><p>Central energy marker, relatively stable, often used as the internal reference for ratios.</p></div>
+        <div class="met" data-f style="--d:180ms"><div class="mol"><span class="ab">Glu</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/glutamine-stick.png" alt="Glutamate molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>Glutamate</h3><span class="lbl num">2.1–2.4</span></div><p>Central to neurotransmission; changes may indicate neurological conditions or altered synaptic activity.</p></div>
+        <div class="met" data-f><div class="mol"><span class="ab">Gln</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/glutamine-stick.png" alt="Glutamine molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>Glutamine</h3><span class="lbl num">2.1–2.4</span></div><p>Tied to amino‑acid and neurotransmitter processes; changes may signal neurodegeneration or pathway disruption.</p></div>
+        <div class="met" data-f style="--d:60ms"><div class="mol"><span class="ab">mI</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/inositol-stick.png" alt="myo-Inositol molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>myo‑Inositol</h3><span class="lbl num">3.6 ppm</span></div><p>Involved in osmoregulation and signal transduction; changes may reflect cell stress, volume change or neuroinflammation.</p></div>
+        <div class="met" data-f style="--d:120ms"><div class="mol"><span class="ab">Lac</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/Lactate-stick.png" alt="Lactate molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>Lactate</h3><span class="lbl num">1.33 ppm</span></div><p>Marker of anaerobic metabolism, seen in hypoxia, ischemia and some tumours.</p></div>
+        <div class="met" data-f style="--d:180ms"><div class="mol"><span class="ab">2‑HG</span><img src="https://brainspecmed.com/wp-content/uploads/2023/10/2HG-stick.png" alt="2-Hydroxyglutarate molecule" loading="lazy" onerror="this.remove()"></div><div class="top"><h3>2‑Hydroxyglutarate</h3><span class="lbl num">≈2.25 ppm</span></div><p>Oncometabolite relevant to IDH‑mutant glioma; can be used to track tumour progression.</p></div>
+      </div>
+      <div class="ratio" data-f><div class="lbl">How it is read</div><p>The output of MRS is a spectrum of resonance peaks in parts per million, not an image. In vivo ¹H‑MRS examines roughly the 1–5 ppm range, and ratios between metabolites help diagnose and monitor disease.</p></div>
+    </div>
+  </section>
+
+  <!-- FDA -->
+  <section class="blk fda" id="fda">
+    <div class="wrap grid">
+      <div>
+        <div class="lbl" data-f>Milestone</div>
+        <div class="fdate num" data-r><span class="l"><span>27 November 2023</span></span></div>
+        <h2 data-r style="font-size:clamp(24px,2.1vw,32px);max-width:20ch"><span class="l"><span>BrainSpec Core<span class="tm">™</span> received</span></span><span class="l" style="--i:1"><span>FDA 510(k) clearance.</span></span></h2>
+        <p class="p" style="margin-top:22px" data-f>Clearance covers non‑invasive measurement of brain chemistry to support the diagnosis of conditions including Alzheimer’s disease, multiple sclerosis, epilepsy and brain tumours. The company states it is the first FDA clearance for software that uses a reference database of brain chemistry. It follows an FDA Breakthrough Device designation in June 2022 for estimating IDH status in glioma.</p>
+        <p class="src" style="margin-top:22px" data-f>Source: company press release via <a href="https://www.biospace.com/brainspec-receives-full-fda-clearance-to-begin-using-ai-backed-solution-for-non-invasive-brain-chemistry-measurement" target="_blank" rel="noopener">BioSpace / PRNewswire</a>; <a href="https://www.healio.com/news/neurology/20231129/fda-clears-platform-for-noninvasive-brain-chemistry-measurement" target="_blank" rel="noopener">Healio</a>.</p>
+      </div>
+      <div class="quotes">
+        <blockquote data-f><p>“…automates the delivery of the MR spectroscopy results, reducing turn‑around time from days to minutes.”</p><footer><b>Raymond Y. Huang, MD, PhD</b> · Division Chief of Neuroradiology, Brigham and Women’s Hospital</footer></blockquote>
+        <blockquote data-f style="--d:80ms"><p>“…a high unmet medical need for reliable and quantitative neuroimaging methods.”</p><footer><b>David A. Reardon, MD</b> · Clinical Director, Center for Neuro‑Oncology, Dana‑Farber Cancer Institute</footer></blockquote>
+        <blockquote data-f style="--d:160ms"><p>“Our aim is not to replace the critical role of physicians…”</p><footer><b>Alex Zimmerman</b> · CEO &amp; Co‑Founder, BrainSpec</footer></blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVIDENCE -->
+  <section class="blk" id="evidence">
+    <div class="wrap">
+      <div class="head grid">
+        <div style="grid-column:1 / span 7">
+          <div class="lbl" data-f>Evidence and milestones</div>
+          <h2 data-r><span class="l"><span>Ten years from an iHub pitch</span></span><span class="l" style="--i:1"><span>to a cleared device.</span></span></h2>
+        </div>
+        <div style="grid-column:8 / span 5;align-self:end"><p class="p" data-f>Every item is drawn from BrainSpec’s site or from published press and news coverage.</p></div>
+      </div>
+      <div class="tl">
+        <div class="ev" data-f><div class="y num">2015</div><h3>Founded at the Brigham iHub</h3><p>Radiologist Alexander Lin pitches the idea at a Brigham and Women’s Hospital Innovation Hub session; the team forms with collaborators at BWH and Massachusetts General Hospital. <a class="u" href="https://bwhclinicalandresearchnews.org/2024/04/05/brainspec-lin-virtual-biopsies" target="_blank" rel="noopener">BWH Clinical &amp; Research News</a></p></div>
+        <div class="ev" data-f><div class="y num">2017</div><h3>Techstars Boston</h3><p>One of 13 startups in Techstars Boston’s 2017 class (<a class="u" href="https://www.builtinboston.com/articles/startups-techstars-boston-2017-class" target="_blank" rel="noopener">Built In Boston</a>); backers later named in press include Techstars, DCVC and Tuesday Capital (<a class="u" href="https://www.psychologytoday.com/us/blog/the-future-brain/202312/ai-uses-brain-chemistry-for-precision-neuroscience" target="_blank" rel="noopener">Psychology Today</a>).</p></div>
+        <div class="ev" data-f><div class="y num">Jun 2022</div><h3>FDA Breakthrough Device designation</h3><p>For estimating isocitrate dehydrogenase (IDH) status in glioma patients for whom biopsy is inadvisable.</p></div>
+        <div class="ev hi" data-f><div class="y num">Nov 2023</div><h3>FDA 510(k) clearance of BrainSpec Core<span class="tm">™</span></h3><p>Full clearance to measure brain chemistry non‑invasively and support diagnosis. <a class="u" href="https://www.biospace.com/brainspec-receives-full-fda-clearance-to-begin-using-ai-backed-solution-for-non-invasive-brain-chemistry-measurement" target="_blank" rel="noopener">Press release</a> · <a class="u" href="https://www.healio.com/news/neurology/20231129/fda-clears-platform-for-noninvasive-brain-chemistry-measurement" target="_blank" rel="noopener">Healio</a></p></div>
+        <div class="ev" data-f><div class="y num">Oct 2024</div><h3>Mild TBI study in BMC Neurology</h3><p>In 65 people with a history of traumatic brain injury, MRS analysed with BrainSpec found abnormal levels of at least one neurometabolite in more than 90% of participants. <a class="u" href="https://prnewswire.com/news-releases/magnetic-resonance-spectroscopy-mrs-research-shows-increase-in-detection-of-abnormalities-following-mild-traumatic-brain-injuries-302285350.html" target="_blank" rel="noopener">Release</a></p></div>
+        <div class="ev" data-f><div class="y num">Sep 2025</div><h3>AutoVOI license with University of Minnesota CMRR</h3><p>Exclusive license to commercialize automated voxel placement for MRS. <a class="u" href="https://www.auntminnie.com/clinical-news/mri/news/15754535/brainspec-university-of-minnesota-collaborate-on-mr-spectroscopy" target="_blank" rel="noopener">AuntMinnie</a></p></div>
+      </div>
+      <div class="lit">
+        <div class="lbl" data-f>Literature BrainSpec cites</div>
+        <ul>
+          <li data-f><a href="https://doi.org/10.1148/radiol.13130531" target="_blank" rel="noopener">Clinical Proton MR Spectroscopy in Central Nervous System Disorders</a><span>Öz G, Alger JR, Barker PB, et al. · Radiology</span><span class="yr num">2014</span></li>
+          <li data-f><a href="https://doi.org/10.1055/s-0032-1331814" target="_blank" rel="noopener">Guidelines for Acquiring and Reporting Clinical Neurospectroscopy</a><span>Lin A, Tran T, Bluml S, Merugumala S, Liao H‑J, Ross BD · Seminars in Neurology</span><span class="yr num">2012</span></li>
+          <li data-f><a href="https://doi.org/10.1602/neurorx.2.2.197" target="_blank" rel="noopener">Efficacy of proton magnetic resonance spectroscopy in neurological diagnosis and neurotherapeutic decision making</a><span>Lin A, Ross BD, Harris K, Wong W · NeuroRx</span><span class="yr num">2005</span></li>
+          <li data-f><a href="https://doi.org/10.1186/s12883-024-03745-6" target="_blank" rel="noopener">Mild TBI study using BrainSpec‑analysed MRS (65 participants)</a><span>Rahmani F, Batson RD, Zimmerman A … Lin AP, Raji CA · BMC Neurology</span><span class="yr num">2024</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPANY -->
+  <section class="blk" id="company">
+    <div class="wrap">
+      <div class="head">
+        <div class="lbl" data-f>Company</div>
+        <h2 data-r><span class="l"><span>Making the virtual biopsy</span></span><span class="l" style="--i:1"><span>a reality.</span></span></h2>
+      </div>
+      <div class="mv">
+        <div data-f><div class="lbl">Our story</div><p>The team formed at a brainstorming session hosted by the iHub at Brigham and Women’s Hospital, a program created to help clinicians and researchers turn ideas into reality. Collaborators include radiologists, oncologists, neurologists and neurosurgeons at Brigham and Women’s and Massachusetts General Hospital.</p></div>
+        <div data-f style="--d:80ms"><div class="lbl">Our mission</div><p>To revolutionize neuroimaging through software that improves the accuracy, accessibility and clinical usefulness of MRS data, so clinicians and researchers can make informed decisions about patient care.</p></div>
+        <div data-f style="--d:160ms"><div class="lbl">Our vision</div><p>To put the power of MRS into the hands of clinicians and researchers worldwide: turning complex neuroimaging data into actionable insight, advancing MRS research, and improving the lives of people with neurological conditions.</p></div>
+      </div>
+
+      <div class="sub"><h3 class="lbl" style="color:var(--ink)">Founders</h3></div>
+      <div class="team">
+        <div class="person" data-f><span class="mono" aria-hidden="true">AZ</span><div><h3>Alexandra (Alex) Zimmerman</h3><div class="role">CEO &amp; Co‑Founder</div><p>Founded BrainSpec in 2015 out of the Brigham iHub and has led the company through Techstars Boston, FDA Breakthrough Device designation and FDA 510(k) clearance.</p></div></div>
+        <div class="person" data-f style="--d:80ms"><span class="mono" aria-hidden="true">AL</span><div><h3>Alexander P. Lin, PhD</h3><div class="role">Scientific Co‑Founder · Scientific Lead</div><p>Director of the Center for Clinical Spectroscopy, Department of Radiology, Brigham and Women’s Hospital, and Associate Professor of Radiology at Harvard Medical School. Pitched the idea for BrainSpec at the Brigham iHub in 2015.</p></div></div>
+      </div>
+
+      <div class="sub"><h3 class="lbl" style="color:var(--ink)">Research sites</h3><span class="lbl">Institutions BrainSpec lists as research sites</span></div>
+      <div class="logos">
+        <div class="logo" data-f><img src="https://brainspecmed.com/wp-content/uploads/2023/11/BWH.png" alt="Brigham and Women’s Hospital" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><span class="nm">Brigham and Women’s Hospital</span></div>
+        <div class="logo" data-f><img src="https://brainspecmed.com/wp-content/uploads/2023/11/MGH.png" alt="Massachusetts General Hospital" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><span class="nm">Massachusetts General Hospital</span></div>
+        <div class="logo" data-f><img src="https://brainspecmed.com/wp-content/uploads/2023/11/Dana_Farber-1.jpg" alt="Dana-Farber Cancer Institute" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><span class="nm">Dana‑Farber Cancer Institute</span></div>
+        <div class="logo" data-f><img src="https://brainspecmed.com/wp-content/uploads/2023/11/Mayo_Clinic_STACKED_BLACK_RGB_Sm.png" alt="Mayo Clinic" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><span class="nm">Mayo Clinic</span></div>
+        <div class="logo" data-f><img src="https://brainspecmed.com/wp-content/uploads/2023/11/Swedish_Medical_Group-1.jpg" alt="Swedish Medical Group" loading="lazy" onerror="this.parentNode.classList.add('noimg')"><span class="nm">Swedish Medical Group</span></div>
+      </div>
+
+      <div class="sub"><h3 class="lbl" style="color:var(--ink)">Backers and programs</h3></div>
+      <div class="backers" data-f>
+        <div><b>Techstars</b><span>Boston, 2017 class</span></div>
+        <div><b>DCVC</b><span>Named in press</span></div>
+        <div><b>Tuesday Capital</b><span>Named in press</span></div>
+        <div><b>Creative Destruction Lab</b><span>Toronto, 2022/23 cohort</span></div>
+      </div>
+      <p class="src" style="margin-top:18px" data-f>Backers named in <a href="https://www.psychologytoday.com/us/blog/the-future-brain/202312/ai-uses-brain-chemistry-for-precision-neuroscience" target="_blank" rel="noopener">Psychology Today (Dec 2023)</a>; CDL per <a href="https://creativedestructionlab.com/companies/brainspec/" target="_blank" rel="noopener">creativedestructionlab.com</a>. About $1.9M raised to date per public databases.</p>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="blk contact" id="contact">
+    <div class="wrap grid">
+      <div>
+        <div class="lbl" data-f>Contact</div>
+        <h2 data-r style="margin-top:22px"><span class="l"><span>Interested in BrainSpec?</span></span></h2>
+        <p class="p" style="margin-top:18px" data-f>Request a demo, join the waitlist for new use cases, or send product feedback. We review every submission and follow up with those who request a demo or join the waitlist.</p>
+        <div class="routes" data-f>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeVPZTZY5tBnA3DH66PJehIVQRsBELCxAphc_VF11rkIRIvSA/viewform?usp=sf_link" target="_blank" rel="noopener">Request a demo <span>→</span></a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfHb5vB8JikGIDlJ6sycxi0GJSp74yJR6FDkm8INP_i4GBPIg/viewform?usp=sf_link" target="_blank" rel="noopener">Join the waitlist for new use cases <span>→</span></a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOsQlVN5l3s_Qv5UOoxB0tA4N3y9kaKDaMrk2cXApRYhkL5Q/viewform?usp=sf_link" target="_blank" rel="noopener">Give feedback <span>→</span></a>
+        </div>
+        <div class="addr" data-f>
+          <div><div class="lbl">Office</div>BrainSpec, Inc.<br>665 Washington Street, Suite 2410<br>Boston, MA 02111</div>
+          <div><div class="lbl">Elsewhere</div><a class="u" href="https://www.linkedin.com/company/brainspec/" target="_blank" rel="noopener">LinkedIn</a><br><a class="u" href="https://twitter.com/Brain_Spec" target="_blank" rel="noopener">X / Twitter</a></div>
+        </div>
+      </div>
+      <form onsubmit="event.preventDefault();this.querySelector('.row p').textContent='Concept only: this form is not connected.'" data-f>
+        <div class="fld"><label for="f-n">Name</label><input id="f-n" name="name" autocomplete="name"></div>
+        <div class="fld"><label for="f-e">Email address</label><input id="f-e" name="email" type="email" autocomplete="email"></div>
+        <div class="fld"><label for="f-o">Organization</label><input id="f-o" name="org" autocomplete="organization"></div>
+        <div class="fld"><label for="f-i">Interest area</label><select id="f-i" name="interest"><option>Research</option><option>Clinical use</option><option>Other</option></select></div>
+        <div class="fld w"><label for="f-m">Message</label><textarea id="f-m" name="message"></textarea></div>
+        <div class="row"><p>Concept only, not connected. By submitting this form you consent to your data being collected and stored (<a class="u" href="http://brainspecmed.com/privacy-policy/" target="_blank" rel="noopener">privacy policy</a>).</p><button class="btn solid mag" type="submit">Send message <span class="ar">→</span></button></div>
+      </form>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="f1"><div class="flogo"><img src="https://brainspecmed.com/wp-content/uploads/2016/12/cropped-BrainSpec-White.png" alt="BrainSpec" loading="lazy" onerror="this.remove()"></div><p>BrainSpec Core<span class="tm">™</span> is FDA 510(k) cleared (Nov 2023). 3D scenes are interpretive visualizations, not patient data.</p></div>
+      <div class="f2"><a href="#science">Science</a><a href="#applications">Clinical applications</a><a href="#platform">Platform</a><a href="#evidence">Evidence</a><a href="#company">Company</a></div>
+      <div class="f3"><a href="https://www.linkedin.com/company/brainspec/" target="_blank" rel="noopener">LinkedIn</a><a href="https://twitter.com/Brain_Spec" target="_blank" rel="noopener">X / Twitter</a><a href="http://brainspecmed.com/privacy-policy/" target="_blank" rel="noopener">Privacy policy</a><span>© <span class="num">2025</span> BrainSpec. All rights reserved.</span></div>
+    </div>
+  </footer>
+  </div>
+</main>
+
+<div class="strip" role="note"><b>Redesign concept by Max C</b><span class="sep">·&nbsp;</span><span>Not affiliated with or endorsed by BrainSpec</span></div>
+
+<script>
+(()=>{
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hdr=$('#hdr');
+
+/* ---------- reveals ---------- */
+const io=new IntersectionObserver(es=>{for(const e of es){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}},{rootMargin:'0px 0px -8% 0px',threshold:.12});
+$$('[data-r],[data-f]').forEach(el=>io.observe(el));
+
+/* ---------- smooth wheel scroll (lerp) ---------- */
+let tgtY=scrollY, curY=scrollY, smoothing=false;
+const maxY=()=>document.documentElement.scrollHeight-innerHeight;
+function stepScroll(){curY+=(tgtY-curY)*0.11; if(Math.abs(tgtY-curY)<0.6){curY=tgtY;smoothing=false;} scrollTo(0,curY); if(smoothing) requestAnimationFrame(stepScroll);}
+function smoothTo(y){tgtY=Math.max(0,Math.min(maxY(),y)); if(RM){scrollTo(0,tgtY);return;} if(!smoothing){smoothing=true;curY=scrollY;requestAnimationFrame(stepScroll);}}
+if(!RM) addEventListener('wheel',e=>{if(e.ctrlKey||e.defaultPrevented)return; e.preventDefault(); if(!smoothing) tgtY=scrollY; smoothTo(tgtY+e.deltaY*(e.deltaMode===1?32:1));},{passive:false});
+addEventListener('scroll',()=>{if(!smoothing) tgtY=scrollY;},{passive:true});
+$$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href'); const t=id==='#top'?document.body:$(id); if(!t)return; e.preventDefault(); const y=id==='#top'?0:(id==='#science'?t.offsetTop+innerHeight*0.02:t.getBoundingClientRect().top+scrollY-(id==='#science'?0:40)); smoothTo(y);}));
+
+/* ---------- magnetic buttons ---------- */
+if(!RM && matchMedia('(pointer:fine)').matches) $$('.mag').forEach(b=>{
+  b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect(); const dx=(e.clientX-r.left-r.width/2)/r.width, dy=(e.clientY-r.top-r.height/2)/r.height; b.style.transform=`translate(${(dx*8).toFixed(2)}px,${(dy*6).toFixed(2)}px)`;});
+  b.addEventListener('pointerleave',()=>{b.style.transition='transform .6s cubic-bezier(.2,.7,.1,1),background .35s,color .35s,border-color .35s'; b.style.transform=''; setTimeout(()=>b.style.transition='',600);});
+});
+
+/* ---------- scroll → scene state ---------- */
+const railEl=$('#rail'), show=$('#science'), steps=$$('.step'), rail=$$('#rail li'), barI=$('#barI'), heroCopy=$('#heroCopy');
+let sTarget=0, sCur=0, activeStep=0, vh=innerHeight;
+function computeS(){
+  vh=innerHeight; const y=scrollY, a=show.offsetTop, pin=show.offsetHeight-vh;
+  if(y<a) sTarget=Math.max(0,y/a); else sTarget=1+Math.min(1,(y-a)/(pin*0.9))*4;
+  hdr.classList.toggle('sc',y>8);
+}
+function yForS(s){const a=show.offsetTop,pin=show.offsetHeight-innerHeight; return s<=1?s*a:a+(s-1)/4*pin*0.9;}
+rail.forEach(li=>li.addEventListener('click',()=>smoothTo(yForS(+li.dataset.k))));
+function setStep(k){ if(k===activeStep) return; activeStep=k; steps.forEach(s=>s.classList.toggle('on',+s.dataset.k===k)); rail.forEach(l=>l.classList.toggle('on',+l.dataset.k===k)); }
+function uiFromS(s){
+  const k = s<0.62?0:Math.max(1,Math.min(5,Math.round(s)));
+  setStep(k);
+  barI.style.transform=`scaleX(${Math.max(0,Math.min(1,(s-1)/4)).toFixed(4)})`;
+  const h=Math.min(1,s/0.55); heroCopy.style.opacity=(1-h).toFixed(3); heroCopy.style.transform=`translateY(${(-h*24).toFixed(1)}px)`;
+  railEl.style.opacity = s<0.7?0:1;
+}
+addEventListener('scroll',()=>{computeS(); if(!sceneOn) {sCur=sTarget; uiFromS(sCur);} wake();},{passive:true});
+addEventListener('resize',()=>{computeS(); resize(); wake();});
+computeS(); sCur=sTarget; uiFromS(sCur);
+$$('.seg button').forEach(b=>b.addEventListener('click',()=>{patTarget=+b.dataset.pat; $$('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); wake();}));
+
+/* ---------- WebGL scene ---------- */
+const stage=$('#stage'), cv=$('#gl');
+let gl=null, sceneOn=false, running=false, raf=0, lastT=0, time=0, intro=RM?1:0, pat=0, patTarget=0, frames=0, ftAcc=0, drawCalls=0, tris=0;
+let dragging=false, dragX=0, rotV=0, rotD=0;
+const NP=16;
+// [ppm, height, width] normal vs glioma (Lin et al. 2005 ratios, illustrative)
+const PKN=[2.01,1.5,.035, 2.10,.22,.06, 2.35,.28,.06, 3.75,.25,.06, 3.03,1.0,.035, 3.93,.6,.04, 3.22,.75,.035, 3.56,.5,.05, 4.06,.2,.05, 1.30,0,.025, 1.36,0,.025, 0.90,0,.09, 1.30,0,.12, 2.25,0,.04, 2.60,.1,.04, 0,0,.05];
+const PKG=[2.01,.55,.04, 2.10,.22,.06, 2.35,.3,.06, 3.75,.22,.06, 3.03,.8,.04, 3.93,.45,.045, 3.22,1.45,.04, 3.56,.55,.05, 4.06,.15,.05, 1.30,.5,.028, 1.36,.5,.028, 0.90,.38,.1, 1.30,.32,.13, 2.25,.4,.045, 2.60,.05,.04, 0,0,.05];
+const pkU=new Float32Array(NP*4);
+function blendPeaks(){for(let i=0;i<NP;i++){pkU[i*4]=PKN[i*3]; pkU[i*4+1]=PKN[i*3+1]+(PKG[i*3+1]-PKN[i*3+1])*pat; pkU[i*4+2]=PKN[i*3+2]+(PKG[i*3+2]-PKN[i*3+2])*pat; pkU[i*4+3]=0;}}
+function Sppm(p){let s=0;for(let i=0;i<NP;i++){const w=pkU[i*4+2],d=p-pkU[i*4];s+=pkU[i*4+1]*w*w/(d*d+w*w);}return s;}
+const HS=0.92, BASE=-0.62, ZF=0.34, RIBN=1100, RNX=380, RNZ=44;
+const rtArr=new Float32Array(RNX*RNZ*2); let rtTex=null;
+const spArr=new Float32Array(RIBN+1); let spTex=null, spPat=-1;
+function updateSpec(){ if(spPat===pat) return; spPat=pat;
+  for(let j=0;j<RNZ;j++){const gz=j/(RNZ-1),wm=1+(1-gz)*2.6,hs=1/Math.pow(wm,.75),t=gz*gz*(3-2*gz),bell=.35+.65*t,k=hs*bell;
+    for(let i2=0;i2<RNX;i2++){const p=4.2-i2/(RNX-1)*3.6;let sv=0,ds=0;for(let q=0;q<NP;q++){const w=pkU[q*4+2]*wm,d=p-pkU[q*4],den=d*d+w*w,l=pkU[q*4+1]*w*w/den;sv+=l;ds+=-2*d*l/den;}const o=(j*RNX+i2)*2;rtArr[o]=sv*k;rtArr[o+1]=ds*k;}}
+  gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,rtTex);gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,RNX,RNZ,gl.RG,gl.FLOAT,rtArr);
+  for(let i=0;i<=RIBN;i++) spArr[i]=Sppm(4.2-i/RIBN*3.6); gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,spTex); gl.texSubImage2D(gl.TEXTURE_2D,0,0,0,RIBN+1,1,gl.RED,gl.FLOAT,spArr); gl.activeTexture(gl.TEXTURE0); }
+
+// keyframes: ex,ey,ez, tx,ty,tz, px,py,pz, sc, rot, glass, ridge, rib, morph, slice, grid, cell, labels, sway, vx
+const KF=[
+ [0,2.0,8.9,    0,.02,0,     0,0,0,      1,  -.55, 1,1,1,1, 0,0,0, 0, 1, 0],
+ [0,7.9,4.6,    0,-1.35,.1,  .8,-1.15,-.4, .2, 0,  0,0,0,0, 1,.45,0, 0, 0, 0],
+ [1.3,4.7,6.5,  .45,-.75,-.2, .8,-.32,-.4, .42, 0, 1,0,0,0, 1,1,1, 0, .25, 1],
+ [2.6,1.5,8.0,  0,0,0,       0,0,0,      1,  -.34, 1,0,1,0, 0,0,0, 0, .6, 0],
+ [0,.75,8.3,    0,.04,0,     0,0,0,      1,  -.06, 1,1,1,1, 0,0,0, 1, .15, 0],
+ [-.3,2.3,9.4,  0,-.08,0,    0,0,0,      1,  -.62, 1,1,1,1, 0,0,0, 0, 1, 0]];
+const NPAR=21, cur=new Float32Array(NPAR);
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+function sampleKF(s){const i=Math.min(4,Math.floor(s)), f=ease(Math.min(1,Math.max(0,s-i))); const A=KF[i],B=KF[i+1]; for(let k=0;k<NPAR;k++) cur[k]=A[k]+(B[k]-A[k])*f;}
+
+// matrices
+const P=new Float32Array(16), V=new Float32Array(16), VP=new Float32Array(16), M=new Float32Array(16), eye=new Float32Array(3), T4=new Float32Array(4);
+function persp(o,fy,a,n,f){const t=1/Math.tan(fy/2);o.fill(0);o[0]=t/a;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);}
+function lookAt(o,ex,ey,ez,tx,ty,tz){let zx=ex-tx,zy=ey-ty,zz=ez-tz,l=1/Math.hypot(zx,zy,zz);zx*=l;zy*=l;zz*=l;let xx=zz,xz=-zx;l=1/Math.hypot(xx,xz);xx*=l;xz*=l;const xy=0;const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
+ o[0]=xx;o[1]=yx;o[2]=zx;o[3]=0;o[4]=xy;o[5]=yy;o[6]=zy;o[7]=0;o[8]=xz;o[9]=yz;o[10]=zz;o[11]=0;o[12]=-(xx*ex+xy*ey+xz*ez);o[13]=-(yx*ex+yy*ey+yz*ez);o[14]=-(zx*ex+zy*ey+zz*ez);o[15]=1;}
+function mul(o,a,b){for(let i=0;i<4;i++)for(let j=0;j<4;j++){o[i*4+j]=a[j]*b[i*4]+a[4+j]*b[i*4+1]+a[8+j]*b[i*4+2]+a[12+j]*b[i*4+3];}}
+function project(x,y,z,out){ // cube-space → css px in stage
+  const wx=M[0]*x+M[4]*y+M[8]*z+M[12], wy=M[1]*x+M[5]*y+M[9]*z+M[13], wz=M[2]*x+M[6]*y+M[10]*z+M[14];
+  const cx=VP[0]*wx+VP[4]*wy+VP[8]*wz+VP[12], cy=VP[1]*wx+VP[5]*wy+VP[9]*wz+VP[13], cw=VP[3]*wx+VP[7]*wy+VP[11]*wz+VP[15];
+  out[0]=(cx/cw*.5+.5)*cssW; out[1]=(1-(cy/cw*.5+.5))*cssH;}
+
+const ENV=`
+vec3 env(vec3 d){
+  float y=d.y;
+  vec3 c=mix(vec3(.50,.49,.47),vec3(1.22,1.20,1.16),smoothstep(-.35,.55,y));
+  c*=1.-.42*exp(-y*y*26.);
+  vec3 k=normalize(vec3(-.55,.62,.56));
+  c+=vec3(2.6,2.55,2.45)*smoothstep(.93,.985,dot(d,k));
+  float az=atan(d.x,-d.z);
+  c+=vec3(1.5,1.52,1.6)*(1.-smoothstep(.04,.16,abs(az-1.05)))*smoothstep(-.15,.15,y)*(1.-smoothstep(.45,.85,y));
+  c+=vec3(.6,.62,.66)*(1.-smoothstep(.06,.2,abs(az+2.2)))*smoothstep(-.1,.2,y)*(1.-smoothstep(.3,.7,y));
+  c+=vec3(.02,.06,.32)*(1.-smoothstep(-.7,-.05,y));
+  return c;
+}
+vec3 tone(vec3 x){x*=.86;x=clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14),0.,1.);return pow(x,vec3(1./2.2));}`;
+const PKS=`uniform vec4 uPk[${NP}];
+float S(float p){float s=0.;for(int i=0;i<${NP};i++){vec4 k=uPk[i];float w=k.z;float d=p-k.x;s+=k.y*w*w/(d*d+w*w);}return s;}`;
+
+const SH={
+glassV:`#version 300 es
+layout(location=0) in vec3 aP;layout(location=1) in vec3 aN;uniform mat4 uM,uVP;out vec3 vN,vW;
+void main(){vec4 w=uM*vec4(aP,1.);vW=w.xyz;vN=mat3(uM)*aN;gl_Position=uVP*w;}`,
+glassF:`#version 300 es
+precision highp float;in vec3 vN,vW;uniform vec3 uEye;uniform float uAmt,uBack;out vec4 o;${ENV}
+void main(){
+ vec3 N=normalize(vN);vec3 V=normalize(uEye-vW);
+ if(uBack>.5)N=-N;
+ float nv=clamp(dot(N,V),0.,1.);float fr=pow(1.-nv,5.);float F=.04+.96*fr;
+ vec3 R=reflect(-V,N);
+ vec3 film=.5+.5*cos(6.2831*(vec3(0.,.33,.67)+(1.-nv)*1.25+.12));
+ vec3 c;float a;vec3 sp=vec3(0.);
+ if(uBack>.5){
+   vec3 T=refract(-V,N,1.45);if(dot(T,T)<.01)T=R;
+   c=env(T)*vec3(.93,.95,1.)*(1.+F*.5);
+   a=.025+.34*pow(1.-nv,2.6);
+ }else{
+   c=env(R)*mix(vec3(1.),film,.1*(1.-nv));
+   a=F*.88+.02;
+   vec3 L=normalize(vec3(-.55,.62,.56));vec3 H=normalize(L+V);
+   float s=pow(max(dot(N,H),0.),260.)*1.4+pow(max(dot(N,H),0.),40.)*.06;
+   sp=vec3(s);
+ }
+ a*=uAmt;vec3 t=tone(c);
+ o=vec4(t*a+sp*uAmt,min(1.,a+s(sp)));
+}`.replace('s(sp)','sp.x*.6'),
+ridgeV:`#version 300 es
+layout(location=0) in vec2 aG;uniform mat4 uM,uVP;uniform float uH;uniform highp sampler2D uRt;
+out vec3 vW,vN;out float vH,vZ,vX;
+void main(){
+ vec2 sd=texelFetch(uRt,ivec2(gl_VertexID%${RNX},gl_VertexID/${RNX}),0).rg;
+ float k=uH*${HS.toFixed(2)};float h=sd.x*k;
+ vec3 p=vec3(mix(-.84,.84,aG.x),${BASE.toFixed(2)}+h,mix(-.62,${ZF.toFixed(2)},aG.y));
+ float dhdx=sd.y*k*(-3.6/1.68);
+ vec4 w=uM*vec4(p,1.);vW=w.xyz;vN=mat3(uM)*normalize(vec3(-dhdx,1.,-.05));
+ vH=clamp(h/.95,0.,1.);vZ=aG.y;vX=aG.x;gl_Position=uVP*w;}`,
+ridgeF:`#version 300 es
+precision highp float;in vec3 vW,vN;in float vH,vZ,vX;uniform vec3 uEye;uniform float uA;out vec4 o;
+void main(){
+ float zl=vZ*14.;float f=fract(zl);float d=min(f,1.-f)/max(fwidth(zl),1e-4);float line=1.-smoothstep(.45,1.35,d);
+ vec3 N=normalize(vN);vec3 V=normalize(uEye-vW);
+ float dif=.62+.38*max(dot(N,normalize(vec3(-.4,.8,.5))),0.);
+ float rim=pow(1.-clamp(abs(dot(N,V)),0.,1.),3.);
+ vec3 lo=vec3(.86,.89,.96),hi=vec3(.62,.72,1.);
+ vec3 fill=mix(lo,hi,pow(vH,.7))*dif+rim*.12;
+ float edge=smoothstep(0.,.07,vX)*(1.-smoothstep(.93,1.,vX));
+ float fa=(.06+.62*pow(vH,.75))*edge*mix(.35,1.,vZ);
+ vec3 lc=mix(vec3(.122,.271,.839),vec3(.42,.56,1.),pow(vH,1.3)*.6);
+ float la=line*(.28+.72*vZ)*edge;
+ vec3 c=mix(fill,lc,la/(max(fa,la)+1e-4)*la);
+ float a=max(fa,la*.92)*uA;
+ o=vec4(c*a,a);}`,
+ribV:`#version 300 es
+layout(location=0) in vec2 aS;uniform mat4 uM,uVP;uniform vec2 uRes;uniform float uW,uMorph,uTime,uH;uniform highp sampler2D uSp;
+float Sh(float u){return texelFetch(uSp,ivec2(int(u*${RIBN}.+.5),0),0).r;}
+out float vPx,vU,vZ,vM,vSide,vFace;
+float mU;vec3 rad;float bw;
+vec3 Pf(float u){
+ float x=mix(-.84,.84,u);float ph=-uTime*1.3;
+ vec2 s=vec2(0.);float a;
+ a=6.2831*5.2*u+ph;s+=1.5*vec2(cos(a),sin(a));
+ a=6.2831*6.5*u+ph;s+=1.0*vec2(cos(a),sin(a));
+ a=6.2831*6.9*u+ph;s+=.75*vec2(cos(a),sin(a));
+ a=6.2831*7.6*u+ph;s+=.5*vec2(cos(a),sin(a));
+ s*=.6/3.75*exp(-u*1.9);
+ rad=vec3(0.,s/max(length(s),1e-4));bw=(.05*exp(-u*1.3)+.012);
+ vec3 A=vec3(x,-.1+s.x,-.14+s.y);
+ vec3 B=vec3(x,${BASE.toFixed(2)}+Sh(u)*${HS.toFixed(2)}*uH,${ZF.toFixed(2)});
+ mU=smoothstep(0.,1.,clamp(uMorph*1.7-u*.7,0.,1.));
+ return mix(A,B,mU);}
+void main(){
+ float u=aS.x;float du=1./1100.;
+ vec3 p1=Pf(min(u+du,1.)),pm=Pf(max(u-du,0.));
+ vec3 p0=Pf(u);float m=mU;vec3 r=rad;
+ vec3 tg=normalize(p1-pm+1e-6);
+ // world-space twisting band for the FID, screen-space line for the spectrum
+ vec3 pw=p0+r*aS.y*bw*(1.-m);
+ vec3 nrm=normalize(cross(tg,r));
+ vFace=abs(normalize(mat3(uM)*nrm).z);
+ mat4 MVP=uVP*uM;vec4 c0=MVP*vec4(pw,1.),c1=MVP*vec4(p1,1.),cm=MVP*vec4(pm,1.);
+ vec2 s1=c1.xy/c1.w*uRes,sm=cm.xy/cm.w*uRes;vec2 t=s1-sm;t=t/max(length(t),1e-5);vec2 n=vec2(-t.y,t.x);
+ float hw=uW+1.5;c0.xy+=n*aS.y*hw/uRes*c0.w*m;c0.z-=.0008*c0.w;
+ vPx=aS.y*hw;vU=u;vZ=p0.z;vM=m;vSide=aS.y;gl_Position=c0;}`,
+ribF:`#version 300 es
+precision highp float;in float vPx,vU,vZ,vM,vSide,vFace;uniform float uW,uA,uRev,uMorph;out vec4 o;
+void main(){
+ float aL=clamp(uW+.5-abs(vPx),0.,1.);
+ float aB=(1.-smoothstep(.72,1.,abs(vSide)))*mix(.5,.95,vFace)+ (1.-smoothstep(.0,.12,1.-abs(vSide)))*.0;
+ float edge=smoothstep(.62,.95,abs(vSide));
+ float a=mix(aB,aL,vM);
+ a*=1.-smoothstep(uRev-.04,uRev,vU);
+ float depth=mix(smoothstep(-.75,.45,vZ)*.6+.4,1.,vM);
+ a*=depth*uA;
+ vec3 band=mix(vec3(.62,.72,1.),vec3(.122,.271,.839),clamp(vFace*.9+edge*.6,0.,1.));
+ vec3 c=mix(band,vec3(.122,.271,.839),vM);
+ o=vec4(c*a,a);}`,
+plateV:`#version 300 es
+layout(location=0) in vec2 aQ;uniform mat4 uVP;out vec2 vQ;
+void main(){vQ=aQ*2.2;gl_Position=uVP*vec4(vQ.x,-1.35,vQ.y,1.);}`,
+plateF:`#version 300 es
+precision highp float;in vec2 vQ;uniform sampler2D uT;uniform float uA,uGrid,uCell;uniform vec2 uRes;out vec4 o;
+void main(){
+ vec2 b=abs(vQ)-vec2(2.2-.16);float sd=length(max(b,0.))+min(max(b.x,b.y),0.)-.16;float m=clamp(.5-sd/fwidth(sd),0.,1.);
+ vec2 uv=vQ/4.4+.5;float I=texture(uT,uv).r;
+ vec3 paper=vec3(.925,.918,.895),ink=vec3(.13,.14,.17);
+ float Ic=smoothstep(.04,.85,I);vec3 c=mix(paper,ink,Ic*.52);
+ vec2 q=(vQ+2.2)/.4;vec2 f=fract(q);vec2 d=min(f,1.-f)/fwidth(q);float g=1.-smoothstep(.4,1.3,min(d.x,d.y));
+ float br=smoothstep(.02,.12,texture(uT,uv,2.5).g);
+ c=mix(c,vec3(.33,.48,.95),g*.55*uGrid*br);
+ vec2 cl=q-vec2(7.,4.);float inC=step(0.,cl.x)*step(cl.x,1.)*step(0.,cl.y)*step(cl.y,1.);
+ vec2 e=min(cl,1.-cl)/fwidth(q);float ol=inC*(1.-smoothstep(.9,2.,min(e.x,e.y)));
+ c=mix(c,vec3(.122,.271,.839),(inC*.42+ol*.58)*uCell);
+ vec2 fc=gl_FragCoord.xy/uRes;float a=m*uA*smoothstep(0.,.16,fc.x)*smoothstep(0.,.1,fc.y)*(1.-smoothstep(.97,1.,fc.x));o=vec4(c*a,a);}`,
+shadowV:`#version 300 es
+layout(location=0) in vec2 aQ;uniform mat4 uVP;uniform vec4 uC;out vec2 vD;
+void main(){vD=aQ*2.1;vec2 p=uC.xz+vD*uC.w;gl_Position=uVP*vec4(p.x,-1.349,p.y,1.);}`,
+shadowF:`#version 300 es
+precision highp float;in vec2 vD;uniform vec4 uC;uniform float uA,uLift;out vec4 o;
+void main(){
+ float soft=1.+uLift*1.4;
+ float r2=dot(vD,vD);
+ float sh=exp(-r2*2.4/soft)*.17/soft+exp(-r2*7./soft)*.13/soft;
+ vec2 cd=vD-vec2(.55,.55);float cs=exp(-dot(cd,cd)*4.5*soft)*.55/(soft*soft);
+ vec3 c=mix(vec3(.10,.10,.12),vec3(.60,.70,1.),cs/(sh+cs+1e-4));
+ float a=(sh+cs*.5)*uA;o=vec4(c*a,a);}`
+};
+
+let PR={}, VA={}, TEX=null, cssW=1, cssH=1, dpr=1;
+function compile(vs,fs){const p=gl.createProgram();for(const [t,src] of [[gl.VERTEX_SHADER,vs],[gl.FRAGMENT_SHADER,fs]]){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));gl.attachShader(p,s);}gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(p));
+ const u={};const n=gl.getProgramParameter(p,gl.ACTIVE_UNIFORMS);for(let i=0;i<n;i++){const inf=gl.getActiveUniform(p,i);const nm=inf.name.replace('[0]','');u[nm]=gl.getUniformLocation(p,nm);}return {p,u};}
+function vao(attrs,idx){const v=gl.createVertexArray();gl.bindVertexArray(v);attrs.forEach(([loc,data,size])=>{const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,size,gl.FLOAT,false,0,0);});let n=0;if(idx){const b=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,b);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,idx,gl.STATIC_DRAW);n=idx.length;}gl.bindVertexArray(null);return {v,n};}
+
+function roundedBox(){ // smooth rounded cube, analytic normals
+  const r=.13,b=1-r, ax=[]; const seg=(a,c,n)=>{for(let i=0;i<n;i++)ax.push(a+(c-a)*i/n);};
+  seg(-1,-b,9);seg(-b,b,6);seg(b,1,9);ax.push(1);const N=ax.length;
+  const pos=[],nor=[],idx=[];
+  const faces=[[0,1,2,1],[0,1,2,-1],[1,2,0,1],[1,2,0,-1],[2,0,1,1],[2,0,1,-1]];
+  for(const [a0,a1,a2,sg] of faces){const base=pos.length/3;
+    for(let j=0;j<N;j++)for(let i=0;i<N;i++){const c=[0,0,0];c[a0]=ax[i];c[a1]=ax[j];c[a2]=sg;
+      const p=[Math.max(-b,Math.min(b,c[0])),Math.max(-b,Math.min(b,c[1])),Math.max(-b,Math.min(b,c[2]))];
+      let nx=c[0]-p[0],ny=c[1]-p[1],nz=c[2]-p[2];const l=Math.hypot(nx,ny,nz)||1;nx/=l;ny/=l;nz/=l;
+      pos.push(p[0]+nx*r,p[1]+ny*r,p[2]+nz*r);nor.push(nx,ny,nz);}
+    for(let j=0;j<N-1;j++)for(let i=0;i<N-1;i++){const q=base+j*N+i;
+      if(sg>0)idx.push(q,q+1,q+N+1,q,q+N+1,q+N);else idx.push(q,q+N+1,q+1,q,q+N,q+N+1);}}
+  return {pos:new Float32Array(pos),nor:new Float32Array(nor),idx:new Uint16Array(idx)};
+}
+function ridgeMesh(NX,NZ){const g=new Float32Array(NX*NZ*2);let k=0;for(let j=0;j<NZ;j++)for(let i=0;i<NX;i++){g[k++]=i/(NX-1);g[k++]=j/(NZ-1);}
+  const idx=new Uint32Array((NX-1)*(NZ-1)*6);k=0;for(let j=0;j<NZ-1;j++)for(let i=0;i<NX-1;i++){const q=j*NX+i;idx[k++]=q;idx[k++]=q+1;idx[k++]=q+NX+1;idx[k++]=q;idx[k++]=q+NX+1;idx[k++]=q+NX;}return {g,idx};}
+function ribbonMesh(){const a=new Float32Array((RIBN+1)*4);for(let i=0;i<=RIBN;i++){a[i*4]=i/RIBN;a[i*4+1]=-1;a[i*4+2]=i/RIBN;a[i*4+3]=1;}return a;}
+
+function sliceTexture(){ // procedural axial slice: R = intensity, G = brain mask
+  const S=1024,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
+  x.fillStyle='#000';x.fillRect(0,0,S,S);
+  const cx=S/2,cy=S/2;
+  const blob=(rx,ry,amp,fr,ph,col,blur)=>{x.fillStyle=col;x.beginPath();for(let i=0;i<=360;i++){const t=i/360*Math.PI*2;const rr=1+amp*Math.sin(fr*t+ph)+amp*.5*Math.sin(fr*1.7*t+ph*2.3)+.025*Math.cos(2*t);const px=cx+Math.cos(t)*rx*rr,py=cy+Math.sin(t)*ry*rr*(1+.05*Math.sin(t));i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();x.fill();};
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const ph=[rnd()*6,rnd()*6,rnd()*6,rnd()*6];
+  const R=(t,s)=>1+s*(.5*Math.sin(3*t+ph[0])+.35*Math.sin(5*t+ph[1])+.25*Math.sin(9*t+ph[2])+.15*Math.sin(13*t+ph[3]));
+  const shape=(rx,ry,wob,col,blur)=>{x.fillStyle=col;x.beginPath();for(let i=0;i<=480;i++){const t=i/480*Math.PI*2;const r=R(t,wob);const px=cx+Math.cos(t)*rx*r,py=cy+Math.sin(t)*ry*r*(1+.05*Math.sin(t));i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();x.fill();};
+  shape(374,452,.004,'rgb(64,0,0)',2);
+  shape(356,434,.004,'rgb(10,0,0)',2);
+  shape(340,418,.008,'rgb(118,255,0)',2);
+  shape(282,358,.03,'rgb(192,255,0)',10);
+  x.lineCap='round';
+  for(let k=0;k<96;k++){const t=rnd()*Math.PI*2;const r0=R(t,.008);const sy=1+.05*Math.sin(t);
+    let px=cx+Math.cos(t)*340*r0,py=cy+Math.sin(t)*418*r0*sy;const L=14+rnd()*rnd()*50;let ang=t+Math.PI+(rnd()-.5)*.6;
+    x.strokeStyle='rgb(40,255,0)';x.lineWidth=1.6+rnd()*1.6;x.beginPath();x.moveTo(px,py);
+    for(let q=0;q<6;q++){ang+=(rnd()-.5)*.7;px+=Math.cos(ang)*L/6;py+=Math.sin(ang)*L/6;x.lineTo(px,py);}x.stroke();}
+  x.strokeStyle='rgb(20,255,0)';x.lineWidth=6;x.beginPath();x.moveTo(cx,cy-430);x.bezierCurveTo(cx+5,cy-280,cx-5,cy-180,cx,cy-120);x.stroke();x.beginPath();x.moveTo(cx,cy+150);x.bezierCurveTo(cx-5,cy+260,cx+5,cy+340,cx,cy+430);x.stroke();
+  x.fillStyle='rgb(22,255,0)';
+  for(const s of [-1,1]){x.beginPath();x.moveTo(cx+s*8,cy-150);x.bezierCurveTo(cx+s*62,cy-140,cx+s*66,cy-40,cx+s*36,cy+20);x.bezierCurveTo(cx+s*22,cy+60,cx+s*34,cy+120,cx+s*62,cy+156);x.bezierCurveTo(cx+s*30,cy+150,cx+s*10,cy+90,cx+s*10,cy+20);x.closePath();x.fill();}
+  x.fillStyle='rgba(140,255,0,.75)';for(const s of [-1,1]){x.beginPath();x.ellipse(cx+s*108,cy+12,40,66,s*.2,0,7);x.fill();}
+  const c2=document.createElement('canvas');c2.width=c2.height=S;const y=c2.getContext('2d');y.filter='blur(5px)';y.drawImage(c,0,0);
+  const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c2);gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  const an=gl.getExtension('EXT_texture_filter_anisotropic');if(an)gl.texParameterf(gl.TEXTURE_2D,an.TEXTURE_MAX_ANISOTROPY_EXT,8);
+  return t;}
+
+let ridgeN=0, boxN=0;
+function init(){
+  try{
+    gl=cv.getContext('webgl2',{antialias:true,alpha:true,premultipliedAlpha:true,powerPreference:'high-performance',preserveDrawingBuffer:false});
+  }catch(e){gl=null;}
+  if(!gl){stage.classList.add('nogl');return;}
+  try{
+    gl.getExtension('OES_element_index_uint');
+    PR.glass=compile(SH.glassV,SH.glassF);PR.ridge=compile(SH.ridgeV,SH.ridgeF);PR.rib=compile(SH.ribV,SH.ribF);PR.plate=compile(SH.plateV,SH.plateF);PR.shadow=compile(SH.shadowV,SH.shadowF);
+    const bx=roundedBox();VA.box=vao([[0,bx.pos,3],[1,bx.nor,3]],bx.idx);boxN=bx.idx.length/3;
+    const rm=ridgeMesh(RNX,RNZ);VA.ridge=vao([[0,rm.g,2]],rm.idx);ridgeN=rm.idx.length/3;
+    VA.rib=vao([[0,ribbonMesh(),2]]);
+    const q=new Float32Array([-1,-1,1,-1,-1,1,1,1]);VA.quad=vao([[0,q,2]]);
+    spTex=gl.createTexture();gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,spTex);gl.texStorage2D(gl.TEXTURE_2D,1,gl.R32F,RIBN+1,1);for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.NEAREST);gl.activeTexture(gl.TEXTURE0);spPat=-1;
+    rtTex=gl.createTexture();gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,rtTex);gl.texStorage2D(gl.TEXTURE_2D,1,gl.RG32F,RNX,RNZ);for(const p of [gl.TEXTURE_MIN_FILTER,gl.TEXTURE_MAG_FILTER])gl.texParameteri(gl.TEXTURE_2D,p,gl.NEAREST);gl.activeTexture(gl.TEXTURE0);
+  }catch(e){console.warn('[brainspec] GL init failed',e&&e.message);gl=null;stage.classList.add('nogl');return;}
+  sceneOn=true;resize();blendPeaks();
+  cv.addEventListener('webglcontextlost',e=>{e.preventDefault();sceneOn=false;stop();stage.classList.remove('live');},false);
+  cv.addEventListener('webglcontextrestored',()=>{PR={};VA={};TEX=null;init();},false);
+  render();requestAnimationFrame(()=>stage.classList.add('live'));
+  const mk=()=>{if(gl&&!TEX){try{TEX=sliceTexture();}catch(e){}}};('requestIdleCallback' in window)?requestIdleCallback(mk,{timeout:1500}):setTimeout(mk,300);
+  wake();
+}
+function resize(){if(!gl)return;const r=stage.getBoundingClientRect();cssW=Math.max(1,r.width);cssH=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);
+  const w=Math.round(cssW*dpr),h=Math.round(cssH*dpr);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}}
+
+const pkEls=$$('.pk'), leads=$$('#lead polyline'), pkPos=new Float32Array(2), pkX=new Float32Array(8), pkY=new Float32Array(8), pkW=new Float32Array(8), pkA=new Float32Array(8), pkOrd=[0,1,2,3,4,5,6];
+let pkMeasured=false, labHidden=false; const pkL=new Float32Array(8);
+function layoutLabels(lab,vx){
+  if(lab<=.01&&vx<=.01){if(labHidden)return;labHidden=true;pkEls.forEach(e=>e.style.opacity='0');leads.forEach(l=>l.setAttribute('points',''));return;}
+  labHidden=false;
+  if(!pkMeasured){pkEls.forEach((e,i)=>pkW[i]=e.offsetWidth||40);pkMeasured=true;}
+  let top=1e9;
+  for(let i=0;i<7;i++){const ppm=+pkEls[i].dataset.ppm;const g=pkEls[i].dataset.g?pat:1;pkA[i]=lab*g;
+    const u=(4.2-ppm)/3.6;project(-.84+u*1.68,BASE+Sppm(ppm)*HS*intro,ZF,pkPos);pkX[i]=pkPos[0];pkY[i]=pkPos[1];if(pkA[i]>.05&&pkY[i]<top)top=pkY[i];}
+  const railY=Math.max(18,top-44);
+  // push apart along rail (labels already ordered left→right by ppm)
+  let prevR=-1e9;const lx=pkL;
+  for(let i=0;i<7;i++){if(pkA[i]<=.05){lx[i]=pkX[i];continue;}let x=pkX[i]-pkW[i]/2;if(x<prevR+10)x=prevR+10;lx[i]=x+pkW[i]/2;prevR=x+pkW[i];}
+  const over=prevR-(cssW-12);if(over>0)for(let i=0;i<7;i++)lx[i]-=over;
+  for(let i=0;i<7;i++){const e=pkEls[i],a=pkA[i];
+    if(a<=.01){e.style.opacity='0';leads[i].setAttribute('points','');continue;}
+    e.style.opacity=a.toFixed(3);e.style.transform=`translate(${(lx[i]-pkW[i]/2).toFixed(1)}px,${(railY-14).toFixed(1)}px)`;
+    leads[i].setAttribute('points',`${lx[i].toFixed(1)},${(railY+3).toFixed(1)} ${pkX[i].toFixed(1)},${(railY+14).toFixed(1)} ${pkX[i].toFixed(1)},${(pkY[i]-5).toFixed(1)}`);
+    leads[i].style.opacity=(a*.9).toFixed(3);}
+  // voxel tag
+  const e=pkEls[7];
+  if(vx>.01){project(1,1,-1,pkPos);e.style.opacity=vx.toFixed(3);e.style.transform=`translate(${(pkPos[0]+18).toFixed(1)}px,${(pkPos[1]-34).toFixed(1)}px)`;
+    leads[7].setAttribute('points',`${(pkPos[0]+3).toFixed(1)},${(pkPos[1]-3).toFixed(1)} ${(pkPos[0]+16).toFixed(1)},${(pkPos[1]-24).toFixed(1)}`);leads[7].style.opacity=(vx*.9).toFixed(3);}
+  else{e.style.opacity='0';leads[7].setAttribute('points','');}
+}
+
+function render(){
+  if(!gl||gl.isContextLost())return;
+  sampleKF(sCur);
+  const C=cur;
+  const aspect=cssW/cssH;
+  // portrait framing: pull back to keep the object inside narrow canvases
+  const back=aspect<1?1+(1-aspect)*.55:1;
+  const ex=C[3]+(C[0]-C[3])*back, ey=C[4]+(C[1]-C[4])*back, ez=C[5]+(C[2]-C[5])*back;
+  eye[0]=ex;eye[1]=ey;eye[2]=ez;
+  persp(P,30*Math.PI/180,aspect,.1,60);lookAt(V,ex,ey,ez,C[3],C[4],C[5]);mul(VP,P,V);
+  const sway=C[19]*(RM?0:1);
+  const rot=C[10]+sway*(.2*Math.sin(time*.23))+rotD;
+  const sc=C[9], py=C[7]+sway*.045*Math.sin(time*.6);
+  const cs=Math.cos(rot)*sc, sn=Math.sin(rot)*sc;
+  M.fill(0);M[0]=cs;M[2]=-sn;M[5]=sc;M[8]=sn;M[10]=cs;M[12]=C[6];M[13]=py;M[14]=C[8];M[15]=1;
+  const glass=C[11], ridge=C[12]*intro, rib=C[13], morph=C[14], slice=C[15];
+  gl.viewport(0,0,cv.width,cv.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);gl.disable(gl.DEPTH_TEST);gl.depthMask(false);
+  drawCalls=0;tris=0;
+  if(slice>.004&&TEX){const p=PR.plate;gl.useProgram(p.p);gl.uniformMatrix4fv(p.u.uVP,false,VP);gl.uniform1f(p.u.uA,slice);gl.uniform1f(p.u.uGrid,C[16]);gl.uniform1f(p.u.uCell,C[17]);gl.uniform2f(p.u.uRes,cv.width,cv.height);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,TEX);gl.uniform1i(p.u.uT,0);gl.bindVertexArray(VA.quad.v);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);drawCalls++;tris+=2;}
+  if(glass>.004){const p=PR.shadow;gl.useProgram(p.p);gl.uniformMatrix4fv(p.u.uVP,false,VP);gl.uniform4f(p.u.uC,C[6],py,C[8],sc);gl.uniform1f(p.u.uA,glass);gl.uniform1f(p.u.uLift,Math.max(0,(py-sc+1.35)/sc));gl.bindVertexArray(VA.quad.v);gl.drawArrays(gl.TRIANGLE_STRIP,0,4);drawCalls++;tris+=2;}
+  const g=PR.glass;
+  if(glass>.004){gl.enable(gl.CULL_FACE);gl.cullFace(gl.FRONT);gl.useProgram(g.p);gl.uniformMatrix4fv(g.u.uVP,false,VP);gl.uniformMatrix4fv(g.u.uM,false,M);gl.uniform3fv(g.u.uEye,eye);gl.uniform1f(g.u.uAmt,glass);gl.uniform1f(g.u.uBack,1);gl.bindVertexArray(VA.box.v);gl.drawElements(gl.TRIANGLES,VA.box.n,gl.UNSIGNED_SHORT,0);drawCalls++;tris+=boxN;gl.disable(gl.CULL_FACE);}
+  gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);
+  if(ridge>.004){const p=PR.ridge;gl.depthMask(true);gl.useProgram(p.p);gl.uniformMatrix4fv(p.u.uVP,false,VP);gl.uniformMatrix4fv(p.u.uM,false,M);updateSpec();gl.uniform1i(p.u.uRt,2);gl.activeTexture(gl.TEXTURE2);gl.bindTexture(gl.TEXTURE_2D,rtTex);gl.activeTexture(gl.TEXTURE0);gl.uniform1f(p.u.uH,ridge);gl.uniform1f(p.u.uA,Math.min(1,ridge*1.6)*glass);gl.uniform3fv(p.u.uEye,eye);gl.bindVertexArray(VA.ridge.v);gl.drawElements(gl.TRIANGLES,VA.ridge.n,gl.UNSIGNED_INT,0);drawCalls++;tris+=ridgeN;gl.depthMask(false);}
+  if(rib>.004){const p=PR.rib;gl.useProgram(p.p);gl.uniformMatrix4fv(p.u.uVP,false,VP);gl.uniformMatrix4fv(p.u.uM,false,M);updateSpec();gl.uniform1i(p.u.uSp,1);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,spTex);gl.activeTexture(gl.TEXTURE0);gl.uniform2f(p.u.uRes,cv.width,cv.height);gl.uniform1f(p.u.uW,(morph>.5?1.15:1.25)*dpr);gl.uniform1f(p.u.uMorph,morph);gl.uniform1f(p.u.uTime,time);gl.uniform1f(p.u.uH,intro);gl.uniform1f(p.u.uA,Math.min(1,rib*3)*glass);gl.uniform1f(p.u.uRev,rib*1.15);gl.bindVertexArray(VA.rib.v);gl.drawArrays(gl.TRIANGLE_STRIP,0,(RIBN+1)*2);drawCalls++;tris+=RIBN*2;}
+  gl.disable(gl.DEPTH_TEST);
+  if(glass>.004){gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(g.p);gl.uniform1f(g.u.uBack,0);gl.bindVertexArray(VA.box.v);gl.drawElements(gl.TRIANGLES,VA.box.n,gl.UNSIGNED_SHORT,0);drawCalls++;tris+=boxN;gl.disable(gl.CULL_FACE);}
+  gl.bindVertexArray(null);
+  layoutLabels(C[18]*Math.min(1,ridge*1.2), C[20]);
+}
+
+let stageVisible=true;
+function inRange(){return scrollY < show.offsetTop+show.offsetHeight;}
+function loop(t){
+  raf=0; if(!running)return;
+  const dt=Math.min(.05,lastT?(t-lastT)/1000:.016);lastT=t;
+  step(dt); const t0=performance.now(); render(); ftAcc+=performance.now()-t0; frames++;
+  if(!RM||settling()) raf=requestAnimationFrame(loop); else running=false;
+}
+function step(dt){
+  if(!RM){time+=dt; intro=Math.min(1,intro+dt/2.6);}
+  const k=RM?1:1-Math.exp(-dt*5.5); sCur+=(sTarget-sCur)*k; if(Math.abs(sTarget-sCur)<1e-4)sCur=sTarget;
+  pat+=(patTarget-pat)*(RM?1:1-Math.exp(-dt*3.5)); if(Math.abs(patTarget-pat)<1e-3)pat=patTarget; blendPeaks();
+  if(!dragging){rotD+=rotV*dt; rotV*=Math.exp(-dt*3.2); rotD*=Math.exp(-dt*(Math.abs(rotV)<.05?1.1:0));}
+  uiFromS(sCur);
+}
+function settling(){return Math.abs(sTarget-sCur)>1e-4||Math.abs(patTarget-pat)>1e-3||dragging||Math.abs(rotV)>.01;}
+let frozen=false;
+function wake(){ if(frozen) return; if(!sceneOn){uiFromS(sTarget);return;} const ok=!document.hidden&&inRange(); stage.style.visibility=inRange()?'visible':'hidden'; if(ok&&!running){running=true;lastT=0;raf=requestAnimationFrame(loop);} if(!ok)stop(); }
+function stop(){running=false;if(raf)cancelAnimationFrame(raf);raf=0;}
+document.addEventListener('visibilitychange',wake);
+
+// drag to rotate, with inertia
+stage.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;dragging=true;dragX=e.clientX;rotV=0;stage.classList.add('drag');stage.setPointerCapture(e.pointerId);wake();});
+stage.addEventListener('pointermove',e=>{if(!dragging)return;const dx=(e.clientX-dragX)/cssW*3.2;dragX=e.clientX;rotD+=dx;rotV=dx*60;});
+const endDrag=()=>{dragging=false;stage.classList.remove('drag');};
+stage.addEventListener('pointerup',endDrag);stage.addEventListener('pointercancel',endDrag);
+
+let booted=false;const boot=()=>{ if(booted)return; booted=true; if('requestIdleCallback' in window) requestIdleCallback(init,{timeout:500}); else setTimeout(init,60); };
+if(document.readyState==='complete') boot(); else { addEventListener('load',boot); setTimeout(boot,1200); }
+
+window.__concept={
+  advance(s){const n=Math.max(1,Math.round(s*60));for(let i=0;i<n;i++)step(1/60);render();return sCur;},
+  setScroll(f){const y=f*maxY();tgtY=y;curY=y;scrollTo(0,y);computeS();sCur=sTarget;uiFromS(sCur);render();return sCur;},
+  go(s){const y=yForS(s);tgtY=y;curY=y;scrollTo(0,y);computeS();sCur=sTarget;uiFromS(sCur);render();return sCur;},
+  freeze(on){frozen=!!on; if(on) stop(); else wake();},
+  pattern(p){patTarget=p;$$('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(+x.dataset.pat===p)));},
+  stats(){return {gl:!!gl,s:+sCur.toFixed(3),step:activeStep,drawCalls,tris,canvas:[cv.width,cv.height],frames,avgRenderMs:frames?+(ftAcc/frames).toFixed(2):0,intro:+intro.toFixed(2)};}
+};
+})();
+</script>
+</body>
+</html>

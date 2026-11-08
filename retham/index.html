@@ -1351,7 +1351,8 @@ function arDone(el){if(el._arD)return;el._arD=el._arP=1;if(el._arT&&el._arT.prog
   if(el._arL)gsap.set(el._arL,{yPercent:0,opacity:1});
   else if(el.getAttribute("data-ar")==="m")gsap.set(el,{clearProps:"clipPath"});
   else gsap.set(el,{clearProps:"transform,opacity,transition"})}
-function arSweep(){$$("#view [data-ar]").forEach(function(el){if(el._arD||el._arP)return;var r=el.getBoundingClientRect();if(r.top<innerHeight){if(r.bottom<0)arDone(el);else arPlay(el,0)}})}
+function stSweep(){var v=$("#view");ScrollTrigger.getAll().forEach(function(st){var a=st.animation,tg=st.trigger;if(!a||st.vars.scrub||st.pin||!tg||tg.nodeType!==1||!v.contains(tg)||a.progress()>0||a.isActive())return;var r=tg.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)a.play()})}
+function arSweep(){stSweep();$$("#view [data-ar]").forEach(function(el){if(el._arD||el._arP)return;var r=el.getBoundingClientRect();if(r.top<innerHeight){if(r.bottom<0)arDone(el);else arPlay(el,0)}})}
 function autoReveal(view,E){if(RM)return;
   AR_T0=performance.now()+(E||0)*1000;
   $$("[class*=stat] .v",view).forEach(function(v){if(!v.closest(AR_SKIP))arStat(v)});
@@ -1369,14 +1370,14 @@ function autoReveal(view,E){if(RM)return;
   });
   var q=AR_Q;AR_Q=[];
   if(q.length)ScrollTrigger.batch(q,{start:"top 92%",once:true,onEnter:function(b){var w=Math.max(0,(AR_T0-performance.now())/1000);b.forEach(function(el,i){arPlay(el,w+Math.min(i,8)*.07+(el.closest(".stat")&&!el.matches(".v")?.4:0))})}});
-  var fs=(E||0)*1000;setTimeout(arSweep,fs+2500);setTimeout(arSweep,fs+5000);
+  var fs=(E||0)*1000;setTimeout(stSweep,fs+1200);setTimeout(arSweep,fs+2500);setTimeout(arSweep,fs+5000);
 }
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,HERO_TW=[];
 function splitReveal(el){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
-  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:el,start:"top 85%"}});
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:el,start:"top 90%"}});
 }
 function armFailsafe(){clearTimeout(window._fs);window._fs=setTimeout(function(){
   arSweep();HERO_TW.forEach(function(t){if(t&&t.progress()<1)t.progress(1)});
@@ -1401,7 +1402,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TW=[];
     if(!RM&&$(".ph-head",view))HERO_TW.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:22,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.32}));
     if(!RM&&k==="bio"){HERO_TW.push(gsap.from($$(".bio-bar, .bio-r>.lab",view),{y:18,opacity:0,duration:.9,ease:"silk",stagger:.06,delay:E+.1}))}
     $$(".split",view).forEach(function(el){splitReveal(el)});
-    if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph-head")||el.classList.contains("bio-bar"))return;gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%"}})});
+    if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph-head")||el.classList.contains("bio-bar"))return;if(el.offsetHeight>innerHeight*.3&&el.querySelector(AR_SEL))return;/* tall blocks: children reveal individually (autoReveal) */gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 90%"}})});
     $$("[data-group]",view).forEach(function(g){arGroup(g.children,28)});
     $$("[data-team]",view).forEach(function(g){arGroup(g.children,30)});
     $$(".rows",view).forEach(function(ol){arGroup(ol.children,20)});

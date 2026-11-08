@@ -483,6 +483,9 @@ a.feature:hover .go svg{transform:translateX(5px)}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani p.txt .w{opacity:1}
 }
+
+/* BA: no count-up anywhere, including the loader percentage */
+#preCnt{visibility:hidden!important}
 </style>
 </head>
 <body>
@@ -785,7 +788,7 @@ function vPipeline(){
    '<div class="two"><div><p class="lede" data-r>CD68-ET3-LV CD34+ is an autologous hematopoietic stem cell gene therapy. A patient’s blood stem cells are collected, enriched, engineered with a lentiviral FVIII vector, and returned so their marrow supplies clotting factor continuously.</p>'+
    '<ol class="steps" data-group><li><b>Collect</b> white blood cells by apheresis.</li><li><b>Enrich</b> CD34+ stem and progenitor cells.</li><li><b>Engineer</b> with the LV-FVIII vector (CD68 promoter).</li><li><b>Engraft</b> in the bone-marrow stem-cell compartment.</li><li><b>Regenerate</b> daughter cells that supply FVIII.</li></ol></div>'+
    '<div><div class="ev" data-group><div class="c"><b>5</b><h3>Participants dosed</h3><p>Adults aged 22–41 with severe hemophilia A in a completed Phase 1 trial.</p></div>'+
-    '<div class="c"><b>0</b><h3>Spontaneous bleeds on study</h3><p>Participants had reported at least 20 annualized bleeds before treatment.</p></div>'+
+    '<div class="c"><b>Zero</b><h3>Spontaneous bleeds on study</h3><p>Participants had reported at least 20 annualized bleeds before treatment.</p></div>'+
     '<div class="c"><b>14<small>mo</small></b><h3>Median follow-up</h3><p>Range of 9 to 27 months; FVIII rose from undetectable to levels predicted to be therapeutic.</p></div>'+
     '<div class="c"><b>Fast&nbsp;Track</b><h3>FDA designations</h3><p>Fast Track, Orphan Drug and Rare Pediatric Disease.</p></div></div></div></div>'+
    '<p class="note" data-r>Company-reported Phase 1 results: no adverse events above grade 2 other than those expected with neutropenia and thrombocytopenia, no FVIII inhibitors, and integration-site analysis at 4–22 months showing no safety concerns. ET3, ET401 and ET501 are investigational and not approved by the FDA or any other regulator.</p>'+
@@ -1029,7 +1032,53 @@ function splitReveal(el){if(RM)return;
   gsap.fromTo(st.lines,{y:"1.5em",opacity:0},{y:0,opacity:1,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:el,start:"top 85%",once:true}});
 }
 /* every hero/page-head element gets a reveal in every path, plus a failsafe */
-function failsafe(view,ms){clearTimeout(FS_TIMER);FS_TIMER=setTimeout(function(){
+/* ===== AZ/BA: global reveal. Every heading, paragraph, list item, card, stat, label, button, image, figure, canvas and table row in main sections enters as it scrolls in. Headings and stat values: masked line rise. Everything else: offset and fade, staggered in groups. ===== */
+var REV=[];
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=lab],[class*=tag],[class*=pill],[class*=btn]";
+var RV_UNIT="li,tr,figure,blockquote,button,a[class],[class*=card],[class*=tile],[class*=pill],[class*=btn]";
+var RV_STRUCT="li,tr,[class*=card],[class*=tile]";
+var RV_BLK="p,li,tr,figure,img,canvas,blockquote,h1,h2,h3,h4,h5,h6,dt,dd,button,a[class],[class*=card],[class*=stat],[class*=tile],[class*=pill],[class*=btn]";
+function rvHid(el,stop){for(var e=el;e&&e!==stop&&e!==document.body;e=e.parentElement){var s=getComputedStyle(e);if(+s.opacity<.05||s.visibility==="hidden")return true;if(s.transform!=="none"){var m=new DOMMatrix(s.transform);if(Math.abs(m.m42)>4||Math.abs(m.m41)>4||Math.abs(m.a-1)>.02)return true}if(s.clipPath&&s.clipPath!=="none"&&!/inset\(0(px|%)?( 0(px|%)?)*\)/.test(s.clipPath))return true}return false}
+function rvReady(fn){if(document.getElementById("pre"))gsap.delayedCall(.15,function(){rvReady(fn)});else fn()}
+function autoReveal(root,E){
+  REV=REV.filter(function(x){return x.el.isConnected});if(RM||!root)return;E=E||0;var t0=Date.now();
+  var TW=new Set();gsap.globalTimeline.getChildren(true,true,false).forEach(function(t){(t.targets()||[]).forEach(function(x){if(x&&x.nodeType===1)TW.add(x)})});
+  var stop=root.parentElement;
+  function pinOf(el){var p=el.closest(".pin-spacer");return p?p.firstElementChild:null}
+  function ok(el){if(!el.closest("section")||el.closest("header,nav,footer,.ln,.ln-mask,[data-rv-skip]"))return false;var r=el.getBoundingClientRect();if(r.width<2||r.height<2)return false;return getComputedStyle(el).display!=="none"}
+  function ancCov(el){for(var e=el;e&&e!==stop;e=e.parentElement){if(e!==el&&e.matches(".st-step"))continue;if(TW.has(e)||(e!==el&&e.hasAttribute("data-rv")))return true}return false}
+  function descCov(el,ownOk){var d=el.querySelectorAll("*");for(var i=0;i<d.length;i++){var x=d[i];if(x.hasAttribute("data-rv")){if(ownOk&&x.getAttribute("data-rv")==="h")continue;return true}if(TW.has(x))return true;if(x.classList.contains("ln")&&!x.closest("[data-rv]"))return true}return false}
+  function cov(el){var pin=pinOf(el);if(ancCov(el))return true;if(pin&&+getComputedStyle(el).opacity<.05)return true;return pin?false:rvHid(el,stop)}
+  function trig(el){return pinOf(el)}
+  var groups=new Map();function add(el,targets,kind){var p=trig(el);var key=p||null;REV.push({el:el,t:targets});if(p){if(!groups.has(p))groups.set(p,[]);groups.get(p).push({el:el,t:targets,k:kind});return true}return false}
+  function play(t,k,d){if(k==="h")return gsap.to(t,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:d||0});
+    return gsap.to(t,{y:0,opacity:function(i,x){return x._ro==null?1:x._ro},duration:.95,ease:"silk",stagger:.07,delay:d||0,onComplete:function(){t.forEach(rvRestore)}})}
+  function lateDelay(){return Date.now()-t0<400?E+.2:0}
+  /* pass 1: stat values and headings get the masked line rise */
+  var heads=[];
+  $$("[data-count]",root).forEach(function(c){var v=c.parentElement;if(v&&heads.indexOf(v)<0)heads.push(v)});
+  $$("h1,h2,h3,h4,h5,h6",root).forEach(function(h){if(heads.indexOf(h)<0&&!heads.some(function(v){return v.contains(h)||h.contains(v)}))heads.push(h)});
+  heads.forEach(function(el){if(!ok(el)||cov(el)||descCov(el))return;
+    var sp=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});el.setAttribute("data-rv","h");
+    gsap.set(sp.lines,{yPercent:160,opacity:0});
+    if(!add(el,sp.lines,"h"))ScrollTrigger.create({trigger:el,start:"top 92%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){play(sp.lines,"h",d)})}})});
+  /* pass 2: everything else, offset and fade */
+  var items=[];
+  $$(RV_SEL,root).forEach(function(el){if(el.hasAttribute("data-rv")||!ok(el)||cov(el))return;
+    var unit=el.matches(RV_UNIT);
+    if(el.querySelector(unit?RV_STRUCT:RV_BLK))return;if(descCov(el,true))return;
+    var s=getComputedStyle(el);el._ro=+s.opacity;el._is={o:el.style.opacity,t:el.style.transform,tr:el.style.transition};el.setAttribute("data-rv","1");
+    var vars={opacity:0,transition:"none"};if(s.transform==="none"&&s.display!=="inline")vars.y=28;gsap.set(el,vars);
+    if(!add(el,[el],"o"))items.push(el)});
+  if(items.length)ScrollTrigger.batch(items,{start:"top 92%",once:true,interval:.12,onEnter:function(b){var d=lateDelay();rvReady(function(){play(b,"o",d)})}});
+  /* pinned stories: every step's content (inactive ones too) enters when the story arrives */
+  groups.forEach(function(list,sec){ScrollTrigger.create({trigger:sec,start:"top 75%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){list.forEach(function(x,i){play(x.t,x.k,d+i*.06)})})}})});
+}
+function rvFailsafe(){var H=innerHeight;REV.forEach(function(x){if(!x.el.isConnected||x.el.getBoundingClientRect().top>H)return;
+  x.t.forEach(function(el){if(+getComputedStyle(el).opacity<.99*(el._ro==null?1:el._ro)&&!gsap.isTweening(el)){if(x.el.getAttribute("data-rv")==="h")gsap.set(el,{opacity:1,yPercent:0});else rvRestore(el)}})})}
+function rvRestore(el){var s=el._is;if(!s){gsap.set(el,{clearProps:"transform,opacity,transition"});return}gsap.set(el,{clearProps:"transform,opacity,transition"});el.style.opacity=s.o;el.style.transform=s.t;el.style.transition=s.tr}
+
+function failsafe(view,ms){clearTimeout(FS_TIMER);FS_TIMER=setTimeout(function(){rvFailsafe();
   $$("[data-h], #pageTitle .ln > *, #pageTitle .ch, #pageTitle .ln",view).forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0,clearProps:"transform"})}})},ms)}
 function heroIntro(view,first,hold){
   var t=$("#pageTitle",view),hs=$$("[data-h]",view);
@@ -1052,13 +1101,14 @@ function initView(k,first){
     if(!RM)$$("[data-r]",view).forEach(function(el){gsap.fromTo(el,{y:28,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%",once:true}})});
     if(!RM)$$("[data-group]",view).forEach(function(g){gsap.fromTo(g.children,{y:26,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",stagger:.04,scrollTrigger:{trigger:g,start:"top 85%",once:true}})});
     if(!RM)$$("[data-team]",view).forEach(function(g){gsap.fromTo(g.children,{y:30,opacity:0},{y:0,opacity:1,duration:1.05,ease:"silk",stagger:.04,clearProps:"transform",scrollTrigger:{trigger:g,start:"top 85%",once:true}})});
-    if(!RM)$$(".rows",view).forEach(function(ol){gsap.fromTo(ol.children,{y:20,opacity:0},{y:0,opacity:1,duration:.85,ease:"silk",stagger:.04,scrollTrigger:{trigger:ol,start:"top 88%",once:true}})});
+    if(!RM)$$(".rows",view).forEach(function(ol){var ch=[].slice.call(ol.children);gsap.set(ch,{y:20,opacity:0});ch.forEach(function(c){REV.push({el:c,t:[c]})});ScrollTrigger.batch(ch,{start:"top 92%",once:true,interval:.1,onEnter:function(bt){gsap.to(bt,{y:0,opacity:1,duration:.85,ease:"silk",stagger:.05})}})});
     if(!RM)$$("[data-w]",view).forEach(function(el){gsap.fromTo(el,{scaleX:0},{scaleX:1,duration:1.4,ease:"flow",scrollTrigger:{trigger:el,start:"top 90%",once:true}})});
     statsInit(view);
     if(k==="home"){maniInit(view);storyInit(view)}
     if(k==="science")pathInit(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.fromTo(s3.chars,{yPercent:60,opacity:0},{yPercent:0,opacity:1,duration:1.4,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%",once:true}})}
+    autoReveal(view,(hold?0:ENTRY));
   },view);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},250)},{once:true})});
   ScrollTrigger.refresh();
@@ -1067,11 +1117,10 @@ function statsInit(view){
   var box=$("[data-stats]",view);if(!box)return;
   if(RM)return;
   $$(".stat .bar",box).forEach(function(b,i){gsap.to(b,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:box,start:"top 85%",once:true}})});
-  gsap.fromTo($$(".stat .v,.stat .k",box),{y:20,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",stagger:.03,scrollTrigger:{trigger:box,start:"top 85%",once:true}});
-  $$("[data-count]",box).forEach(function(el){var v=+el.getAttribute("data-count"),dc=+el.getAttribute("data-dec"),o={n:0};el.textContent=(0).toFixed(dc);
-    gsap.to(o,{n:v,duration:1.8,ease:"power3.out",onUpdate:function(){el.textContent=o.n.toFixed(dc)},onComplete:function(){el.textContent=v.toFixed(dc)},scrollTrigger:{trigger:box,start:"top 85%",once:true}})});
+  gsap.fromTo($$(".stat .k",box),{y:20,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",stagger:.03,scrollTrigger:{trigger:box,start:"top 85%",once:true}});
+  $$("[data-count]",box).forEach(function(el){var v=+el.getAttribute("data-count"),dc=+el.getAttribute("data-dec")||0;el.textContent=v.toFixed(dc)});
 }
-function maniInit(view){var m=$("#mani",view);if(!m||RM)return;var s=SplitText.create(m,{type:"words",wordsClass:"w"});
+function maniInit(view){var m=$("#mani",view);if(!m||RM)return;gsap.fromTo(m,{y:28,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",clearProps:"transform,opacity",scrollTrigger:{trigger:m,start:"top 92%",once:true}});REV.push({el:m,t:[m]});var s=SplitText.create(m,{type:"words",wordsClass:"w"});
   gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 52%",scrub:true}})}
 function pathInit(view){var p=$("#spath",view);if(!p||RM){$$(".node",view).forEach(function(n){n.classList.add("on")});return}
   gsap.to($(".sp-line i",p),{scaleY:1,ease:"none",scrollTrigger:{trigger:p,start:"top 65%",end:"bottom 65%",scrub:true}});

@@ -1038,7 +1038,43 @@ function hdrTheme(){
 
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,ENTRY=0;
-function failsafe(ms){setTimeout(function(){try{
+/* ================= AZ: GLOBAL REVEAL (everything enters; one helper for every route, overlay and step) ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+/* scroll-driven: everything in the view that nothing else animates */
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  if(items.length)ScrollTrigger.batch(items,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+/* time-driven (overlays): stagger everything in root now */
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+/* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(ms){setTimeout(function(){try{rvFail();
   if(window._heroIn&&window._heroIn.progress()<1&&!window._heroIn.isActive())window._heroIn.progress(1);
   $$(".hero [data-r], .hero .eyebrow, #pageTitle, #pageTitle *, .ph-head [data-r], .ph-head .eyebrow").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<1){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}});
 }catch(e){}},ms)}
@@ -1058,15 +1094,15 @@ function initView(k,first){var E=ENTRY;ENTRY=0;
         else failsafe((E+2.5)*1000+400);
         gsap.to(t,{yPercent:-14,opacity:.3,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
       }
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});gsap.from(s2.chars,{yPercent:120,opacity:0,duration:1.1,ease:"silk",stagger:{each:.016},delay:E+.1});failsafe((E+2.5)*1000+400)}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});gsap.from(s2.chars,{yPercent:120,opacity:0,duration:1.1,ease:"silk",stagger:{each:.016},delay:E+.1});failsafe((E+2.5)*1000+400)}
     if(!RM&&$(".ph-head",view)){gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:22,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.4})}
-    if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph-head")||el.closest(".stats"))return;gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%"}})});
+    /* AZ: [data-r] and list children now enter per item via rvView() */
     if(!RM)$$(".stats",view).forEach(function(g){gsap.from($$(".stat",g),{y:28,opacity:0,duration:1,ease:"silk",stagger:.04,scrollTrigger:{trigger:g,start:"top 85%"}})});
     if(!RM)$$(".sechead, .tintro, .crit-h",view).forEach(function(el){gsap.from(el.classList.contains("crit-h")?el:el.children,{y:24,opacity:0,duration:1,ease:"silk",stagger:.06,scrollTrigger:{trigger:el,start:"top 88%"}})});
     if(!RM)$$(".cta",view).forEach(function(c){var h=$(".d1",c);if(h){var sp=SplitText.create(h,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(sp.lines,{yPercent:115,opacity:0,duration:1.1,ease:"silk",stagger:.08,scrollTrigger:{trigger:c,start:"top 82%"}})}
       gsap.from($$("p, .act",c),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,delay:.2,scrollTrigger:{trigger:c,start:"top 82%"}})});
     if(!RM)$$(".team-grid",view).forEach(function(g){gsap.from($$(".tcard",g),{y:30,opacity:0,duration:1,ease:"silk",stagger:.04,clearProps:"transform,opacity",scrollTrigger:{trigger:g,start:"top 85%"}})});
-    if(!RM)$$(".alist, .rows, .tl, .bcol ul, .pgrid",view).forEach(function(ol){gsap.from(ol.children,{y:20,opacity:0,duration:.8,ease:"silk",stagger:.04,scrollTrigger:{trigger:ol,start:"top 86%"}})});
+    /* AZ: [data-r] and list children now enter per item via rvView() */
     if(!RM)$$(".focus",view).forEach(function(g){gsap.from($$(".fc",g),{y:28,opacity:0,duration:1,ease:"silk",stagger:.04,scrollTrigger:{trigger:g,start:"top 85%"}});
       $$(".fc svg *",g).forEach(function(el){if(!el.getTotalLength||el.classList.contains("r"))return;var L=el.getTotalLength();gsap.fromTo(el,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.6,ease:"flow",scrollTrigger:{trigger:g,start:"top 85%"}})})});
     if(!RM)$$(".bcol h4, .bcol > p",view).forEach(function(el){gsap.from(el,{y:16,opacity:0,duration:.8,ease:"silk",scrollTrigger:{trigger:el,start:"top 90%"}})});
@@ -1075,6 +1111,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:40,opacity:0,duration:1.3,ease:"silk",stagger:.06,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
   },view);
   magnets(document);tilts(document);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
@@ -1082,10 +1119,9 @@ function initView(k,first){var E=ENTRY;ENTRY=0;
 }
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"words",wordsClass:"w"});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 80%",end:"bottom 52%",scrub:true}})}
-  $$("[data-count]",view).forEach(function(el){var v=+el.getAttribute("data-count"),dec=+(el.getAttribute("data-dec")||0);var o={n:0};function fmt(x){return dec?x.toFixed(dec):String(Math.round(x))}
-    if(RM){el.textContent=fmt(v);return}
-    el.textContent=fmt(0);gsap.to(o,{n:v,duration:1.6,ease:"power3.out",onUpdate:function(){el.textContent=fmt(o.n)},onComplete:function(){el.textContent=fmt(v)},scrollTrigger:{trigger:el.closest(".stats")||el,start:"top 85%"}})});
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 80%",end:"bottom 52%",scrub:true}})}
+  /* BA: stats reveal as finished values with the masked line rise; no count-up */
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:.1+i*.08,scrollTrigger:{trigger:el.closest(".stats")||el,start:"top 85%"}})});
   if(!RM)$$(".stat .line i",view).forEach(function(line,i){gsap.to(line,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   var crit=$("#crit",view),figs=$$(".crit-fig",view),lis=$$(".crit-list li",view),prog=$(".crit-list .prog",view);
   if(crit&&!RM){

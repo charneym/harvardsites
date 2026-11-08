@@ -485,6 +485,9 @@ form{display:grid;grid-template-columns:1fr 1fr;gap:28px var(--gap)}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+
+/* BA: no count-up anywhere, including the loader percentage */
+#preCnt{visibility:hidden!important}
 </style>
 </head>
 <body>
@@ -990,7 +993,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO=null;
     $$(".split",view).forEach(function(el){splitReveal(el)});
     if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph")||el.closest(".bio"))return;gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%"}})});
     if(!RM)$$("[data-group]",view).forEach(function(g){gsap.from(g.children,{y:28,opacity:0,duration:1,ease:"silk",stagger:.04,clearProps:"transform,opacity",scrollTrigger:{trigger:g,start:"top 85%"}})});
-    if(!RM)$$(".rows",view).forEach(function(ol){gsap.from(ol.children,{y:20,opacity:0,duration:.8,ease:"silk",stagger:.03,scrollTrigger:{trigger:ol,start:"top 85%"}})});
+    if(!RM)$$(".rows",view).forEach(function(ol){var ch=[].slice.call(ol.children);gsap.set(ch,{y:20,opacity:0});ch.forEach(function(c){REV.push({el:c,t:[c]})});ScrollTrigger.batch(ch,{start:"top 92%",once:true,interval:.1,onEnter:function(bt){gsap.to(bt,{y:0,opacity:1,duration:.85,ease:"silk",stagger:.05})}})});
     if(!RM)$$(".pipe .prow",view).forEach(function(r){gsap.from(r,{y:24,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:r,start:"top 88%"}})});
     $$("[data-bar]",view).forEach(function(b){var i=$("i",b),s=$("s",b),em=$("em",b);if(RM){gsap.set(i,{scaleX:1});gsap.set([s,em],{opacity:1});return}
       gsap.timeline({scrollTrigger:{trigger:b,start:"top 88%"}}).to(i,{scaleX:1,duration:1.4,ease:"flow"}).to([s,em],{opacity:1,duration:.5,ease:"silk"},"-=.35")});
@@ -998,6 +1001,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO=null;
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm");if(big&&!RM){var s4=SplitText.create(big,{type:"chars"});gsap.from(s4.chars,{yPercent:40,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    autoReveal(view,E);
   },view);
   magnets(document);
   var rt;function rf(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},180)}$$("img",view).forEach(function(im){if(!im.complete){im.addEventListener("load",rf,{once:true});im.addEventListener("error",rf,{once:true})}});
@@ -1006,8 +1010,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO=null;
 function homeScroll(view){
   var m=$("#mani",view);
   if(m&&!RM){var s=SplitText.create(m,{type:"words",wordsClass:"w"});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 50%",scrub:true}})}
-  $$("[data-count]",view).forEach(function(el){var v=+el.getAttribute("data-count"),dec=+el.getAttribute("data-dec")||0;if(RM)return;var o={n:0};el.textContent=(0).toFixed(dec);
-    gsap.to(o,{n:v,duration:1.6,ease:"power3.out",onUpdate:function(){el.textContent=o.n.toFixed(dec)},onComplete:function(){el.textContent=v.toFixed(dec)},scrollTrigger:{trigger:el.closest("[data-stats]")||el,start:"top 85%"}})});
+  $$("[data-count]",view).forEach(function(el){var v=+el.getAttribute("data-count"),dec=+el.getAttribute("data-dec")||0;el.textContent=v.toFixed(dec)});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:"[data-stats]",start:"top 85%"}})});
   storyInit(view);
 }
@@ -1036,11 +1039,58 @@ function contactInit(view){
       if(!RM){$$("#thanks rect, #thanks path",view).forEach(function(p){var L=p.getTotalLength();gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.4,ease:"flow"})});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.25})}
       ScrollTrigger.refresh()}})});
 }
+/* ===== AZ/BA: global reveal. Every heading, paragraph, list item, card, stat, label, button, image, figure, canvas and table row in main sections enters as it scrolls in. Headings and stat values: masked line rise. Everything else: offset and fade, staggered in groups. ===== */
+var REV=[];
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=lab],[class*=tag],[class*=pill],[class*=btn]";
+var RV_UNIT="li,tr,figure,blockquote,button,a[class],[class*=card],[class*=tile],[class*=pill],[class*=btn]";
+var RV_STRUCT="li,tr,[class*=card],[class*=tile]";
+var RV_BLK="p,li,tr,figure,img,canvas,blockquote,h1,h2,h3,h4,h5,h6,dt,dd,button,a[class],[class*=card],[class*=stat],[class*=tile],[class*=pill],[class*=btn]";
+function rvHid(el,stop){for(var e=el;e&&e!==stop&&e!==document.body;e=e.parentElement){var s=getComputedStyle(e);if(+s.opacity<.05||s.visibility==="hidden")return true;if(s.transform!=="none"){var m=new DOMMatrix(s.transform);if(Math.abs(m.m42)>4||Math.abs(m.m41)>4||Math.abs(m.a-1)>.02)return true}if(s.clipPath&&s.clipPath!=="none"&&!/inset\(0(px|%)?( 0(px|%)?)*\)/.test(s.clipPath))return true}return false}
+function rvReady(fn){if(document.getElementById("pre"))gsap.delayedCall(.15,function(){rvReady(fn)});else fn()}
+function autoReveal(root,E){
+  REV=REV.filter(function(x){return x.el.isConnected});if(RM||!root)return;E=E||0;var t0=Date.now();
+  var TW=new Set();gsap.globalTimeline.getChildren(true,true,false).forEach(function(t){(t.targets()||[]).forEach(function(x){if(x&&x.nodeType===1)TW.add(x)})});
+  var stop=root.parentElement;
+  function pinOf(el){var p=el.closest(".pin-spacer");return p?p.firstElementChild:null}
+  function ok(el){if(!el.closest("section")||el.closest("header,nav,footer,.ln,.ln-mask,[data-rv-skip]"))return false;var r=el.getBoundingClientRect();if(r.width<2||r.height<2)return false;return getComputedStyle(el).display!=="none"}
+  function ancCov(el){for(var e=el;e&&e!==stop;e=e.parentElement){if(e!==el&&e.matches(".st-step"))continue;if(TW.has(e)||(e!==el&&e.hasAttribute("data-rv")))return true}return false}
+  function descCov(el,ownOk){var d=el.querySelectorAll("*");for(var i=0;i<d.length;i++){var x=d[i];if(x.hasAttribute("data-rv")){if(ownOk&&x.getAttribute("data-rv")==="h")continue;return true}if(TW.has(x))return true;if(x.classList.contains("ln")&&!x.closest("[data-rv]"))return true}return false}
+  function cov(el){var pin=pinOf(el);if(ancCov(el))return true;if(pin&&+getComputedStyle(el).opacity<.05)return true;return pin?false:rvHid(el,stop)}
+  function trig(el){return pinOf(el)}
+  var groups=new Map();function add(el,targets,kind){var p=trig(el);var key=p||null;REV.push({el:el,t:targets});if(p){if(!groups.has(p))groups.set(p,[]);groups.get(p).push({el:el,t:targets,k:kind});return true}return false}
+  function play(t,k,d){if(k==="h")return gsap.to(t,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:d||0});
+    return gsap.to(t,{y:0,opacity:function(i,x){return x._ro==null?1:x._ro},duration:.95,ease:"silk",stagger:.07,delay:d||0,onComplete:function(){t.forEach(rvRestore)}})}
+  function lateDelay(){return Date.now()-t0<400?E+.2:0}
+  /* pass 1: stat values and headings get the masked line rise */
+  var heads=[];
+  $$("[data-count]",root).forEach(function(c){var v=c.parentElement;if(v&&heads.indexOf(v)<0)heads.push(v)});
+  $$("h1,h2,h3,h4,h5,h6",root).forEach(function(h){if(heads.indexOf(h)<0&&!heads.some(function(v){return v.contains(h)||h.contains(v)}))heads.push(h)});
+  heads.forEach(function(el){if(!ok(el)||cov(el)||descCov(el))return;
+    var sp=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});el.setAttribute("data-rv","h");
+    gsap.set(sp.lines,{yPercent:160,opacity:0});
+    if(!add(el,sp.lines,"h"))ScrollTrigger.create({trigger:el,start:"top 92%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){play(sp.lines,"h",d)})}})});
+  /* pass 2: everything else, offset and fade */
+  var items=[];
+  $$(RV_SEL,root).forEach(function(el){if(el.hasAttribute("data-rv")||!ok(el)||cov(el))return;
+    var unit=el.matches(RV_UNIT);
+    if(el.querySelector(unit?RV_STRUCT:RV_BLK))return;if(descCov(el,true))return;
+    var s=getComputedStyle(el);el._ro=+s.opacity;el._is={o:el.style.opacity,t:el.style.transform,tr:el.style.transition};el.setAttribute("data-rv","1");
+    var vars={opacity:0,transition:"none"};if(s.transform==="none"&&s.display!=="inline")vars.y=28;gsap.set(el,vars);
+    if(!add(el,[el],"o"))items.push(el)});
+  if(items.length)ScrollTrigger.batch(items,{start:"top 92%",once:true,interval:.12,onEnter:function(b){var d=lateDelay();rvReady(function(){play(b,"o",d)})}});
+  /* pinned stories: every step's content (inactive ones too) enters when the story arrives */
+  groups.forEach(function(list,sec){ScrollTrigger.create({trigger:sec,start:"top 75%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){list.forEach(function(x,i){play(x.t,x.k,d+i*.06)})})}})});
+}
+function rvFailsafe(){var H=innerHeight;REV.forEach(function(x){if(!x.el.isConnected||x.el.getBoundingClientRect().top>H)return;
+  x.t.forEach(function(el){if(+getComputedStyle(el).opacity<.99*(el._ro==null?1:el._ro)&&!gsap.isTweening(el)){if(x.el.getAttribute("data-rv")==="h")gsap.set(el,{opacity:1,yPercent:0});else rvRestore(el)}})})}
+function rvRestore(el){var s=el._is;if(!s){gsap.set(el,{clearProps:"transform,opacity,transition"});return}gsap.set(el,{clearProps:"transform,opacity,transition"});el.style.opacity=s.o;el.style.transform=s.t;el.style.transition=s.tr}
+
 /* AW failsafe: anything still hidden 2.5s after the page shows is forced visible */
 function failsafe(){setTimeout(function(){
   if(HERO&&HERO.progress()<1&&!HERO.isActive())HERO.progress(1);
   $$("#view .hero [data-r], #view .ph [data-r], #view .bio [data-r], #view .bio-bar").forEach(function(el){if(+getComputedStyle(el).opacity<.99&&!gsap.isTweening(el))gsap.set(el,{opacity:1,y:0})});
   $$("#pageTitle .ln-mask > *, #pageTitle .ln > *, #pageTitle .ln").forEach(function(el){if(+getComputedStyle(el).opacity<.99&&!gsap.isTweening(el))gsap.set(el,{opacity:1,yPercent:0})});
+  rvFailsafe();
 },2500)}
 
 /* ================= NAV / ROUTING ================= */

@@ -1165,10 +1165,15 @@ hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=wi
 
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,HERO=null,STORY=null;
-function splitReveal(el){
-  if(RM)return;
+/* BB: an element already on the first screen (even a sliver at the bottom edge) reveals with the page entrance, not on a later scroll */
+function inFirst(el){return el.getBoundingClientRect().top+scrollY<innerHeight}
+/* faded blocks that only peek in at the bottom edge wait for the scroll, so their lower part never reveals off-screen */
+function inFirstO(el){return el.getBoundingClientRect().top+scrollY<innerHeight*.9}
+function fsST(el,st,E,o){return (o?inFirstO:inFirst)(el)?{v:{trigger:el,start:"top bottom"},d:(E||0)+.45}:{v:{trigger:el,start:st},d:0}}
+function splitReveal(el,E){
+  if(RM)return;var q=fsST(el,"top 88%",E);
   var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});
-  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:el,start:"top 88%"}});
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:q.d,scrollTrigger:q.v});
 }
 var ENTRY=0;
 function initView(k,first){var E=ENTRY;ENTRY=0;HERO=null;
@@ -1190,11 +1195,13 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO=null;
     else if(t&&!RM&&k==="bio"){var s3=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(s3.lines,{yPercent:150,opacity:0});HERO=gsap.timeline({delay:E+.15}).to(s3.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08})}
     if(!RM&&$(".ph",view)){var phr=$$(".ph [data-r]",view);gsap.set(phr,{y:22,opacity:0});gsap.to(phr,{y:0,opacity:1,duration:1,ease:"silk",stagger:.08,delay:E+.35})}
     if(!RM&&k==="bio"){var br=$$(".bio [data-r], .bio-bar",view);gsap.set(br,{y:22,opacity:0});gsap.to(br,{y:0,opacity:1,duration:1,ease:"silk",stagger:.08,delay:E+.3})}
-    $$(".split",view).forEach(function(el){splitReveal(el)});
-    if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph")||el.closest(".bio"))return;gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%"}})});
-    if(!RM)$$("[data-group]",view).forEach(function(g){gsap.from(g.children,{y:28,opacity:0,duration:1,ease:"silk",stagger:.04,clearProps:"transform,opacity",scrollTrigger:{trigger:g,start:"top 85%"}})});
+    $$(".split",view).forEach(function(el){splitReveal(el,E)});
+    if(!RM)$$("[data-r]",view).forEach(function(el){if(el.closest(".hero")||el.closest(".ph")||el.closest(".bio"))return;var q=fsST(el,"top 88%",E,1);gsap.from(el,{y:28,opacity:0,duration:1,ease:"silk",delay:q.d,scrollTrigger:q.v})});
+    if(!RM)$$("[data-group]",view).forEach(function(g){var ch=[].slice.call(g.children);gsap.set(ch,{y:28,opacity:0});ch.forEach(function(c){REV.push({el:c,t:[c]})});
+      /* BB: each child reveals as IT enters the viewport (a group starting at the fold must not play its lower rows off-screen) */
+      [ch.filter(inFirstO),ch.filter(function(c){return !inFirstO(c)})].forEach(function(arr,j){if(arr.length)ScrollTrigger.batch(arr,{start:j?"top 88%":"top bottom",once:true,interval:.1,onEnter:function(bt){gsap.to(bt,{y:0,opacity:1,duration:1,ease:"silk",stagger:.05,delay:j?0:E+.45,clearProps:"transform,opacity"})}})})});
     if(!RM)$$(".rows",view).forEach(function(ol){var ch=[].slice.call(ol.children);gsap.set(ch,{y:20,opacity:0});ch.forEach(function(c){REV.push({el:c,t:[c]})});ScrollTrigger.batch(ch,{start:"top 92%",once:true,interval:.1,onEnter:function(bt){gsap.to(bt,{y:0,opacity:1,duration:.8,ease:"silk",stagger:.05})}})});
-    if(!RM)$$(".pipe .prow",view).forEach(function(r){gsap.from(r,{y:24,opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:r,start:"top 88%"}})});
+    if(!RM)$$(".pipe .prow",view).forEach(function(r){var q=fsST(r,"top 88%",E,1);gsap.from(r,{y:24,opacity:0,duration:1,ease:"silk",delay:q.d,scrollTrigger:q.v})});
     $$("[data-bar]",view).forEach(function(b){var i=$("i",b),s=$("s",b),em=$("em",b);if(RM){gsap.set(i,{scaleX:1});gsap.set([s,em],{opacity:1});return}
       gsap.timeline({scrollTrigger:{trigger:b,start:"top 88%"}}).to(i,{scaleX:1,duration:1.4,ease:"flow"}).to([s,em],{opacity:1,duration:.5,ease:"silk"},"-=.35")});
     $$("[data-clip]",view).forEach(function(el){if(RM)return;gsap.fromTo(el,{clipPath:"inset(100% 0% 0% 0%)"},{clipPath:"inset(0% 0% 0% 0%)",duration:1.4,ease:"flow",delay:E+.25})});
@@ -1264,7 +1271,7 @@ function autoReveal(root,E){
   function play(t,k,d){if(k==="h")return gsap.to(t,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:d||0});
     return gsap.to(t,{y:0,opacity:function(i,x){return x._ro==null?1:x._ro},duration:.95,ease:"silk",stagger:.07,delay:d||0,onComplete:function(){t.forEach(rvRestore)}})}
   /* BB: anything already on the first screen (even a sliver at the bottom edge) plays with the page entrance */
-  function fs1(el){return el.getBoundingClientRect().top+scrollY<innerHeight}
+  var fs1=inFirst;
   function lateDelay(){return Date.now()-t0<400?E+.2:0}
   /* pass 1: stat values and headings get the masked line rise */
   var heads=[];
@@ -1282,11 +1289,11 @@ function autoReveal(root,E){
     var s=getComputedStyle(el);el._ro=+s.opacity;el._is={o:el.style.opacity,t:el.style.transform,tr:el.style.transition};el.setAttribute("data-rv","1");
     var vars={opacity:0,transition:"none"};if(s.transform==="none"&&s.display!=="inline")vars.y=28;gsap.set(el,vars);
     if(!add(el,[el],"o"))items.push(el)});
-  [items.filter(fs1),items.filter(function(x){return !fs1(x)})].forEach(function(arr,j){if(arr.length)ScrollTrigger.batch(arr,{start:j?"top 92%":"top bottom",once:true,interval:.12,onEnter:function(b){var d=lateDelay();rvReady(function(){play(b,"o",d)})}})});
+  [items.filter(inFirstO),items.filter(function(x){return !inFirstO(x)})].forEach(function(arr,j){if(arr.length)ScrollTrigger.batch(arr,{start:j?"top 92%":"top bottom",once:true,interval:.12,onEnter:function(b){var d=lateDelay();rvReady(function(){play(b,"o",d)})}})});
   /* pinned stories: every step's content (inactive ones too) enters when the story arrives */
   groups.forEach(function(list,sec){ScrollTrigger.create({trigger:sec,start:"top 75%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){list.forEach(function(x,i){play(x.t,x.k,d+i*.06)})})}})});
 }
-function rvFailsafe(){var H=innerHeight;REV.forEach(function(x){if(!x.el.isConnected||x.el.getBoundingClientRect().top>H)return;
+function rvFailsafe(){var H=innerHeight;REV.forEach(function(x){if(!x.el.isConnected||x.el.getBoundingClientRect().top>(x.el.getAttribute("data-rv")==="h"?H:H*.9))return;
   x.t.forEach(function(el){if(+getComputedStyle(el).opacity<.99*(el._ro==null?1:el._ro)&&!gsap.isTweening(el)){if(x.el.getAttribute("data-rv")==="h")gsap.set(el,{opacity:1,yPercent:0});else rvRestore(el)}})})}
 function rvRestore(el){var s=el._is;if(!s){gsap.set(el,{clearProps:"transform,opacity,transition"});return}gsap.set(el,{clearProps:"transform,opacity,transition"});el.style.opacity=s.o;el.style.transform=s.t;el.style.transition=s.tr}
 

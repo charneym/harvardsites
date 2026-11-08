@@ -603,6 +603,109 @@ var fT=g.fromTo;g.fromTo=function(t,a,b){if(!reveal(b))return fT.apply(g,argumen
 <script>!function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t="undefined"!=typeof globalThis?globalThis:t||self).Lenis=i()}(this,(function(){"use strict";function clamp(t,i,e){return Math.max(t,Math.min(i,e))}class Animate{constructor(){this.isRunning=!1,this.value=0,this.from=0,this.to=0,this.currentTime=0}advance(t){var i;if(!this.isRunning)return;let e=!1;if(this.duration&&this.easing){this.currentTime+=t;const i=clamp(0,this.currentTime/this.duration,1);e=i>=1;const s=e?1:this.easing(i);this.value=this.from+(this.to-this.from)*s}else this.lerp?(this.value=function damp(t,i,e,s){return function lerp(t,i,e){return(1-e)*t+e*i}(t,i,1-Math.exp(-e*s))}(this.value,this.to,60*this.lerp,t),Math.round(this.value)===this.to&&(this.value=this.to,e=!0)):(this.value=this.to,e=!0);e&&this.stop(),null===(i=this.onUpdate)||void 0===i||i.call(this,this.value,e)}stop(){this.isRunning=!1}fromTo(t,i,{lerp:e,duration:s,easing:o,onStart:n,onUpdate:l}){this.from=this.value=t,this.to=i,this.lerp=e,this.duration=s,this.easing=o,this.currentTime=0,this.isRunning=!0,null==n||n(),this.onUpdate=l}}class Dimensions{constructor(t,i,{autoResize:e=!0,debounce:s=250}={}){this.wrapper=t,this.content=i,this.width=0,this.height=0,this.scrollHeight=0,this.scrollWidth=0,this.resize=()=>{this.onWrapperResize(),this.onContentResize()},this.onWrapperResize=()=>{this.wrapper instanceof Window?(this.width=window.innerWidth,this.height=window.innerHeight):(this.width=this.wrapper.clientWidth,this.height=this.wrapper.clientHeight)},this.onContentResize=()=>{this.wrapper instanceof Window?(this.scrollHeight=this.content.scrollHeight,this.scrollWidth=this.content.scrollWidth):(this.scrollHeight=this.wrapper.scrollHeight,this.scrollWidth=this.wrapper.scrollWidth)},e&&(this.debouncedResize=function debounce(t,i){let e;return function(...s){let o=this;clearTimeout(e),e=setTimeout((()=>{e=void 0,t.apply(o,s)}),i)}}(this.resize,s),this.wrapper instanceof Window?window.addEventListener("resize",this.debouncedResize,!1):(this.wrapperResizeObserver=new ResizeObserver(this.debouncedResize),this.wrapperResizeObserver.observe(this.wrapper)),this.contentResizeObserver=new ResizeObserver(this.debouncedResize),this.contentResizeObserver.observe(this.content)),this.resize()}destroy(){var t,i;null===(t=this.wrapperResizeObserver)||void 0===t||t.disconnect(),null===(i=this.contentResizeObserver)||void 0===i||i.disconnect(),this.wrapper===window&&this.debouncedResize&&window.removeEventListener("resize",this.debouncedResize,!1)}get limit(){return{x:this.scrollWidth-this.width,y:this.scrollHeight-this.height}}}class Emitter{constructor(){this.events={}}emit(t,...i){var e;let s=this.events[t]||[];for(let t=0,o=s.length;t<o;t++)null===(e=s[t])||void 0===e||e.call(s,...i)}on(t,i){var e;return(null===(e=this.events[t])||void 0===e?void 0:e.push(i))||(this.events[t]=[i]),()=>{var e;this.events[t]=null===(e=this.events[t])||void 0===e?void 0:e.filter((t=>i!==t))}}off(t,i){var e;this.events[t]=null===(e=this.events[t])||void 0===e?void 0:e.filter((t=>i!==t))}destroy(){this.events={}}}const t=100/6,i={passive:!1};class VirtualScroll{constructor(e,s={wheelMultiplier:1,touchMultiplier:1}){this.element=e,this.options=s,this.touchStart={x:0,y:0},this.lastDelta={x:0,y:0},this.window={width:0,height:0},this.emitter=new Emitter,this.onTouchStart=t=>{const{clientX:i,clientY:e}=t.targetTouches?t.targetTouches[0]:t;this.touchStart.x=i,this.touchStart.y=e,this.lastDelta={x:0,y:0},this.emitter.emit("scroll",{deltaX:0,deltaY:0,event:t})},this.onTouchMove=t=>{const{clientX:i,clientY:e}=t.targetTouches?t.targetTouches[0]:t,s=-(i-this.touchStart.x)*this.options.touchMultiplier,o=-(e-this.touchStart.y)*this.options.touchMultiplier;this.touchStart.x=i,this.touchStart.y=e,this.lastDelta={x:s,y:o},this.emitter.emit("scroll",{deltaX:s,deltaY:o,event:t})},this.onTouchEnd=t=>{this.emitter.emit("scroll",{deltaX:this.lastDelta.x,deltaY:this.lastDelta.y,event:t})},this.onWheel=i=>{let{deltaX:e,deltaY:s,deltaMode:o}=i;e*=1===o?t:2===o?this.window.width:1,s*=1===o?t:2===o?this.window.height:1,e*=this.options.wheelMultiplier,s*=this.options.wheelMultiplier,this.emitter.emit("scroll",{deltaX:e,deltaY:s,event:i})},this.onWindowResize=()=>{this.window={width:window.innerWidth,height:window.innerHeight}},window.addEventListener("resize",this.onWindowResize,!1),this.onWindowResize(),this.element.addEventListener("wheel",this.onWheel,i),this.element.addEventListener("touchstart",this.onTouchStart,i),this.element.addEventListener("touchmove",this.onTouchMove,i),this.element.addEventListener("touchend",this.onTouchEnd,i)}on(t,i){return this.emitter.on(t,i)}destroy(){this.emitter.destroy(),window.removeEventListener("resize",this.onWindowResize,!1),this.element.removeEventListener("wheel",this.onWheel,i),this.element.removeEventListener("touchstart",this.onTouchStart,i),this.element.removeEventListener("touchmove",this.onTouchMove,i),this.element.removeEventListener("touchend",this.onTouchEnd,i)}}return class Lenis{constructor({wrapper:t=window,content:i=document.documentElement,eventsTarget:e=t,smoothWheel:s=!0,syncTouch:o=!1,syncTouchLerp:n=.075,touchInertiaMultiplier:l=35,duration:r,easing:h=(t=>Math.min(1,1.001-Math.pow(2,-10*t))),lerp:a=.1,infinite:c=!1,orientation:u="vertical",gestureOrientation:d="vertical",touchMultiplier:p=1,wheelMultiplier:m=1,autoResize:v=!0,prevent:g,virtualScroll:S,__experimental__naiveDimensions:w=!1}={}){this._isScrolling=!1,this._isStopped=!1,this._isLocked=!1,this._preventNextNativeScrollEvent=!1,this._resetVelocityTimeout=null,this.time=0,this.userData={},this.lastVelocity=0,this.velocity=0,this.direction=0,this.animate=new Animate,this.emitter=new Emitter,this.onPointerDown=t=>{1===t.button&&this.reset()},this.onVirtualScroll=t=>{if("function"==typeof this.options.virtualScroll&&!1===this.options.virtualScroll(t))return;const{deltaX:i,deltaY:e,event:s}=t;if(this.emitter.emit("virtual-scroll",{deltaX:i,deltaY:e,event:s}),s.ctrlKey)return;const o=s.type.includes("touch"),n=s.type.includes("wheel");this.isTouching="touchstart"===s.type||"touchmove"===s.type;if(this.options.syncTouch&&o&&"touchstart"===s.type&&!this.isStopped&&!this.isLocked)return void this.reset();const l=0===i&&0===e,r="vertical"===this.options.gestureOrientation&&0===e||"horizontal"===this.options.gestureOrientation&&0===i;if(l||r)return;let h=s.composedPath();h=h.slice(0,h.indexOf(this.rootElement));const a=this.options.prevent;if(h.find((t=>{var i,e,s,l,r;return t instanceof HTMLElement&&("function"==typeof a&&(null==a?void 0:a(t))||(null===(i=t.hasAttribute)||void 0===i?void 0:i.call(t,"data-lenis-prevent"))||o&&(null===(e=t.hasAttribute)||void 0===e?void 0:e.call(t,"data-lenis-prevent-touch"))||n&&(null===(s=t.hasAttribute)||void 0===s?void 0:s.call(t,"data-lenis-prevent-wheel"))||(null===(l=t.classList)||void 0===l?void 0:l.contains("lenis"))&&!(null===(r=t.classList)||void 0===r?void 0:r.contains("lenis-stopped")))})))return;if(this.isStopped||this.isLocked)return void s.preventDefault();if(!(this.options.syncTouch&&o||this.options.smoothWheel&&n))return this.isScrolling="native",void this.animate.stop();s.preventDefault();let c=e;"both"===this.options.gestureOrientation?c=Math.abs(e)>Math.abs(i)?e:i:"horizontal"===this.options.gestureOrientation&&(c=i);const u=o&&this.options.syncTouch,d=o&&"touchend"===s.type&&Math.abs(c)>5;d&&(c=this.velocity*this.options.touchInertiaMultiplier),this.scrollTo(this.targetScroll+c,Object.assign({programmatic:!1},u?{lerp:d?this.options.syncTouchLerp:1}:{lerp:this.options.lerp,duration:this.options.duration,easing:this.options.easing}))},this.onNativeScroll=()=>{if(null!==this._resetVelocityTimeout&&(clearTimeout(this._resetVelocityTimeout),this._resetVelocityTimeout=null),this._preventNextNativeScrollEvent)this._preventNextNativeScrollEvent=!1;else if(!1===this.isScrolling||"native"===this.isScrolling){const t=this.animatedScroll;this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity,this.velocity=this.animatedScroll-t,this.direction=Math.sign(this.animatedScroll-t),this.isScrolling="native",this.emit(),0!==this.velocity&&(this._resetVelocityTimeout=setTimeout((()=>{this.lastVelocity=this.velocity,this.velocity=0,this.isScrolling=!1,this.emit()}),400))}},window.lenisVersion="1.1.13",t&&t!==document.documentElement&&t!==document.body||(t=window),this.options={wrapper:t,content:i,eventsTarget:e,smoothWheel:s,syncTouch:o,syncTouchLerp:n,touchInertiaMultiplier:l,duration:r,easing:h,lerp:a,infinite:c,gestureOrientation:d,orientation:u,touchMultiplier:p,wheelMultiplier:m,autoResize:v,prevent:g,virtualScroll:S,__experimental__naiveDimensions:w},this.dimensions=new Dimensions(t,i,{autoResize:v}),this.updateClassName(),this.targetScroll=this.animatedScroll=this.actualScroll,this.options.wrapper.addEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.addEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll=new VirtualScroll(e,{touchMultiplier:p,wheelMultiplier:m}),this.virtualScroll.on("scroll",this.onVirtualScroll)}destroy(){this.emitter.destroy(),this.options.wrapper.removeEventListener("scroll",this.onNativeScroll,!1),this.options.wrapper.removeEventListener("pointerdown",this.onPointerDown,!1),this.virtualScroll.destroy(),this.dimensions.destroy(),this.cleanUpClassName()}on(t,i){return this.emitter.on(t,i)}off(t,i){return this.emitter.off(t,i)}setScroll(t){this.isHorizontal?this.rootElement.scrollLeft=t:this.rootElement.scrollTop=t}resize(){this.dimensions.resize(),this.animatedScroll=this.targetScroll=this.actualScroll,this.emit()}emit(){this.emitter.emit("scroll",this)}reset(){this.isLocked=!1,this.isScrolling=!1,this.animatedScroll=this.targetScroll=this.actualScroll,this.lastVelocity=this.velocity=0,this.animate.stop()}start(){this.isStopped&&(this.isStopped=!1,this.reset())}stop(){this.isStopped||(this.isStopped=!0,this.animate.stop(),this.reset())}raf(t){const i=t-(this.time||t);this.time=t,this.animate.advance(.001*i)}scrollTo(t,{offset:i=0,immediate:e=!1,lock:s=!1,duration:o=this.options.duration,easing:n=this.options.easing,lerp:l=this.options.lerp,onStart:r,onComplete:h,force:a=!1,programmatic:c=!0,userData:u}={}){if(!this.isStopped&&!this.isLocked||a){if("string"==typeof t&&["top","left","start"].includes(t))t=0;else if("string"==typeof t&&["bottom","right","end"].includes(t))t=this.limit;else{let e;if("string"==typeof t?e=document.querySelector(t):t instanceof HTMLElement&&(null==t?void 0:t.nodeType)&&(e=t),e){if(this.options.wrapper!==window){const t=this.rootElement.getBoundingClientRect();i-=this.isHorizontal?t.left:t.top}const s=e.getBoundingClientRect();t=(this.isHorizontal?s.left:s.top)+this.animatedScroll}}if("number"==typeof t){if(t+=i,t=Math.round(t),this.options.infinite?c&&(this.targetScroll=this.animatedScroll=this.scroll):t=clamp(0,t,this.limit),t===this.targetScroll)return null==r||r(this),void(null==h||h(this));if(this.userData=null!=u?u:{},e)return this.animatedScroll=this.targetScroll=t,this.setScroll(this.scroll),this.reset(),this.preventNextNativeScrollEvent(),this.emit(),null==h||h(this),void(this.userData={});c||(this.targetScroll=t),this.animate.fromTo(this.animatedScroll,t,{duration:o,easing:n,lerp:l,onStart:()=>{s&&(this.isLocked=!0),this.isScrolling="smooth",null==r||r(this)},onUpdate:(t,i)=>{this.isScrolling="smooth",this.lastVelocity=this.velocity,this.velocity=t-this.animatedScroll,this.direction=Math.sign(this.velocity),this.animatedScroll=t,this.setScroll(this.scroll),c&&(this.targetScroll=t),i||this.emit(),i&&(this.reset(),this.emit(),null==h||h(this),this.userData={},this.preventNextNativeScrollEvent())}})}}}preventNextNativeScrollEvent(){this._preventNextNativeScrollEvent=!0,requestAnimationFrame((()=>{this._preventNextNativeScrollEvent=!1}))}get rootElement(){return this.options.wrapper===window?document.documentElement:this.options.wrapper}get limit(){return this.options.__experimental__naiveDimensions?this.isHorizontal?this.rootElement.scrollWidth-this.rootElement.clientWidth:this.rootElement.scrollHeight-this.rootElement.clientHeight:this.dimensions.limit[this.isHorizontal?"x":"y"]}get isHorizontal(){return"horizontal"===this.options.orientation}get actualScroll(){return this.isHorizontal?this.rootElement.scrollLeft:this.rootElement.scrollTop}get scroll(){return this.options.infinite?function modulo(t,i){return(t%i+i)%i}(this.animatedScroll,this.limit):this.animatedScroll}get progress(){return 0===this.limit?1:this.scroll/this.limit}get isScrolling(){return this._isScrolling}set isScrolling(t){this._isScrolling!==t&&(this._isScrolling=t,this.updateClassName())}get isStopped(){return this._isStopped}set isStopped(t){this._isStopped!==t&&(this._isStopped=t,this.updateClassName())}get isLocked(){return this._isLocked}set isLocked(t){this._isLocked!==t&&(this._isLocked=t,this.updateClassName())}get isSmooth(){return"smooth"===this.isScrolling}get className(){let t="lenis";return this.isStopped&&(t+=" lenis-stopped"),this.isLocked&&(t+=" lenis-locked"),this.isScrolling&&(t+=" lenis-scrolling"),"smooth"===this.isScrolling&&(t+=" lenis-smooth"),t}updateClassName(){this.cleanUpClassName(),this.rootElement.className=`${this.rootElement.className} ${this.className}`.trim()}cleanUpClassName(){this.rootElement.className=this.rootElement.className.replace(/lenis(-\w+)?/g,"").trim()}}}));
 
 </script>
+<script>/* StoryFX: continuous, scroll-scrubbed motion for pinned "how it works" sections.
+   Usage:  var fx = StoryFX({section: el, figs: [figEl...], steps: [stepEl...]});
+           then call fx(p) with p = the SMOOTHED pinned progress 0..1 (e.g. tl.eventCallback("onUpdate", ()=>fx(tl.progress())) ).
+   - Figures: overlapping cross-dissolve (rise + scale + slight focus pull), each figure's SVG primitives build in
+     (strokes draw, fills grow from their own centre, radially from the middle), a gentle drift while held.
+   - First figure builds as the section scrolls into view (own ScrollTrigger), so the pin starts with it already composed.
+   - Steps: stacked steps cross over line by line; side-by-side lists brighten/lift the active step continuously.
+   - Canvases / images inside figures just get the figure-level transition. Reduced motion: no-op. */
+(function(){
+  var clamp=function(v){return v<0?0:v>1?1:v};
+  var ease=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+  var out=function(t){return 1-Math.pow(1-t,3)};
+  var SKIP='defs,clipPath,mask,pattern,marker,symbol,linearGradient,radialGradient,filter';
+  function prepFig(f){
+    var prims=[],svgs=f.querySelectorAll('svg');
+    for(var s=0;s<svgs.length;s++){
+      var svg=svgs[s],list=svg.querySelectorAll('path,line,polyline,polygon,circle,ellipse,rect,text,image'),bb0;
+      try{bb0=svg.getBBox()}catch(e){bb0=null}
+      var cx=bb0?bb0.x+bb0.width/2:0,cy=bb0?bb0.y+bb0.height/2:0,R=bb0?Math.hypot(bb0.width,bb0.height)/2||1:1;
+      for(var i=0;i<list.length;i++){
+        var el=list[i];if(el.closest(SKIP))continue;
+        var cs=getComputedStyle(el),bb;try{bb=el.getBBox()}catch(e){continue}
+        if(bb.width*bb.height===0&&el.tagName!=='line'&&el.tagName!=='path'&&el.tagName!=='polyline')continue;
+        var st=cs.stroke,fl=cs.fill,noFill=(fl==='none'||/rgba\([^)]*,\s*0\)$/.test(fl)||cs.fillOpacity==='0'),
+            hasStroke=st&&st!=='none'&&cs.strokeOpacity!=='0'&&parseFloat(cs.strokeWidth)>0,
+            dashed=cs.strokeDasharray&&cs.strokeDasharray!=='none',
+            mode=(noFill&&hasStroke&&!dashed&&el.tagName!=='text'&&el.tagName!=='image')?'draw':'grow',
+            canT=!el.getAttribute('transform')&&!el.closest('[transform]')?true:!el.getAttribute('transform');
+        var d=Math.hypot(bb.x+bb.width/2-cx,bb.y+bb.height/2-cy)/R;
+        var p={el:el,mode:mode,d:d,o:parseFloat(cs.opacity)||1,last:-1,canT:canT&&mode==='grow'&&el.tagName!=='image'};
+        if(mode==='draw'){el.setAttribute('pathLength','1');el.style.strokeDasharray='1 1';el.style.strokeDashoffset='1'}
+        else if(p.canT){el.style.transformBox='fill-box';el.style.transformOrigin='50% 50%'}
+        el.style.transition='none';prims.push(p);
+      }
+    }
+    prims.sort(function(a,b){return a.d-b.d});
+    var M=prims.length;prims.forEach(function(p,i){p.off=M>1?(i/(M-1))*.62:0});
+    f.style.transition='none';f.style.opacity='1';f.style.willChange='translate,scale,filter';
+    return {el:f,prims:prims,last:{}};
+  }
+  function setFig(F,vis,y,sc,blur){
+    var s=F.el.style,k=vis.toFixed(3)+y.toFixed(1)+sc.toFixed(4)+blur.toFixed(2);if(F.last.k===k)return;F.last.k=k;
+    // individual translate/scale + filter:opacity compose with any reveal tween on the same element
+    s.visibility=vis<.002?'hidden':'visible';
+    s.translate='0 '+y.toFixed(1)+'px';s.scale=sc.toFixed(4);
+    s.filter='opacity('+vis.toFixed(3)+')'+(blur>.06?' blur('+blur.toFixed(2)+'px)':'');
+  }
+  function build(F,b){
+    for(var i=0;i<F.prims.length;i++){
+      var p=F.prims[i],e=clamp((b-p.off)/.38);if(Math.abs(e-p.last)<.004&&!(e===0||e===1)||e===p.last)continue;p.last=e;
+      if(p.mode==='draw'){p.el.style.strokeDashoffset=(1-out(e)).toFixed(4);p.el.style.opacity=(p.o*Math.min(1,e*3)).toFixed(3)}
+      else{p.el.style.opacity=(p.o*out(e)).toFixed(3);if(p.canT)p.el.style.transform=e>=1?'':'scale('+(.55+.45*out(e)).toFixed(4)+')'}
+    }
+  }
+  window.StoryFX=function(o){
+    var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var figs=(o.figs||[]).map(prepFig),steps=o.steps||[],N=Math.max(figs.length,steps.length,1),T=o.overlap||.2,pre=1;
+    if(RM)return function(){};
+    var stacked=false;
+    if(steps.length>1){var a=steps[0].getBoundingClientRect(),c=steps[1].getBoundingClientRect();stacked=Math.abs(a.top-c.top)<12&&Math.abs(a.left-c.left)<12}
+    var parts=steps.map(function(s){
+      var kids=[].slice.call(s.children).filter(function(k){return k.offsetWidth||k.offsetHeight});if(!kids.length)kids=[s];
+      s.style.transition='none';if(stacked){s.style.opacity='1'}kids.forEach(function(k){k.style.transition='none';k.style.willChange='translate,filter'});return kids});
+    var lastP=-1;
+    function upd(p){
+      if(p==null)p=lastP<0?0:lastP;lastP=p;
+      var q=p*N;
+      for(var j=0;j<N;j++){
+        var t=q-j,en=j===0?1:clamp((t+T)/(2*T)),ex=j===N-1?0:clamp((t-(1-T))/(2*T));
+        var F=figs[j];
+        if(F){
+          if(j===0)en=pre;
+          var vis=ease(en)*(1-ease(ex)),hold=clamp(t);
+          var y=(1-out(en))*34-ease(ex)*30+(.5-hold)*10,sc=(.93+.07*out(en))*(1+.035*ease(ex))*(1+.018*hold),blur=(1-out(en))*5+ease(ex)*5;
+          setFig(F,vis,y,sc,blur);
+          if(vis>0||en>0)build(F,j===0?pre*1.3:clamp((t+T)/(2*T+.45)));
+        }
+        var kids=parts[j];if(!kids)continue;
+        if(stacked){
+          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
+          for(var k=0;k<kids.length;k++){
+            var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
+            kids[k].style.filter='opacity('+(out(ke)*(1-ease(kx))).toFixed(3)+')';
+            kids[k].style.translate='0 '+((1-out(ke))*26-ease(kx)*18).toFixed(1)+'px';
+          }
+        }else{
+          var act=t<0?clamp(1+t/T):t>1?clamp(1-(t-1)/T):1;act=ease(act);
+          steps[j].style.filter='opacity('+(.36+.64*act).toFixed(3)+')';
+          steps[j].style.translate='0 '+((1-act)*8).toFixed(1)+'px';
+        }
+      }
+    }
+    if(figs[0]&&o.section&&window.ScrollTrigger){
+      pre=0;ScrollTrigger.create({trigger:o.section,start:'top 70%',end:'top top',onUpdate:function(s){pre=s.progress;upd()},onLeave:function(){pre=1;upd()},onLeaveBack:function(){pre=0;upd()}});
+      // already past?  (reload restore)
+      if(o.section.getBoundingClientRect().top<=0)pre=1;
+    }
+    upd(0);
+    return upd;
+  };
+})();
+</script>
 <script>
 (function(){
 "use strict";
@@ -919,8 +1022,11 @@ document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.ta
 
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,ENTRY=0,FS_TIMER=0;
-function splitReveal(el){if(RM)return;
+/* BB: a heading already on the first screen (even near the bottom edge) rises with the page entrance, not on a later scroll */
+function inFirst(el){return el.getBoundingClientRect().top+scrollY<innerHeight}
+function splitReveal(el,H){if(RM)return;
   var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});
+  if(H&&inFirst(el)){gsap.set(st.lines,{y:"1.5em",opacity:0});H.to(st.lines,{y:0,opacity:1,duration:1.15,ease:"silk",stagger:.09},.5);return}
   gsap.fromTo(st.lines,{y:"1.5em",opacity:0},{y:0,opacity:1,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:el,start:"top 85%",once:true}});
 }
 /* every hero/page-head element gets a reveal in every path, plus a failsafe */
@@ -953,7 +1059,7 @@ function autoReveal(root,E){
   heads.forEach(function(el){if(!ok(el)||cov(el)||descCov(el))return;
     var sp=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});el.setAttribute("data-rv","h");
     gsap.set(sp.lines,{yPercent:160,opacity:0});
-    if(!add(el,sp.lines,"h"))ScrollTrigger.create({trigger:el,start:"top 92%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){play(sp.lines,"h",d)})}})});
+    if(!add(el,sp.lines,"h"))ScrollTrigger.create({trigger:el,start:inFirst(el)?"top bottom":"top 92%",once:true,onEnter:function(){var d=lateDelay();rvReady(function(){play(sp.lines,"h",d)})}})});
   /* pass 2: everything else, offset and fade */
   var items=[];
   $$(RV_SEL,root).forEach(function(el){if(el.hasAttribute("data-rv")||!ok(el)||cov(el))return;
@@ -989,7 +1095,7 @@ function initView(k,first){
     if(hold)window._heroIn=tl;
     failsafe(view,hold?5200:(ENTRY+2.5)*1000);
     if(!RM&&k==="home"){gsap.to("#hero .wrap",{yPercent:-10,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}})}
-    $$(".split",view).forEach(splitReveal);
+    $$(".split",view).forEach(function(el){splitReveal(el,tl)});
     if(!RM)$$("[data-r]",view).forEach(function(el){gsap.fromTo(el,{y:28,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",scrollTrigger:{trigger:el,start:"top 88%",once:true}})});
     if(!RM)$$("[data-group]",view).forEach(function(g){gsap.fromTo(g.children,{y:26,opacity:0},{y:0,opacity:1,duration:1,ease:"silk",stagger:.04,scrollTrigger:{trigger:g,start:"top 85%",once:true}})});
     if(!RM)$$("[data-team]",view).forEach(function(g){gsap.fromTo(g.children,{y:30,opacity:0},{y:0,opacity:1,duration:1.05,ease:"silk",stagger:.04,clearProps:"transform",scrollTrigger:{trigger:g,start:"top 85%",once:true}})});
@@ -1028,22 +1134,20 @@ function storyInit(view){
   if(RM){steps.forEach(function(s,i){s.style.position=i?"relative":"";s.style.opacity=1;s.style.visibility="visible";s.style.marginTop=i?"28px":""});$(".st-steps",sec).style.minHeight="0";
     gsap.set([cap,iol,rout,fglow,focus],{opacity:1});routP.forEach(function(p){p.style.strokeDashoffset=0});gsap.set([tg[0],tg[2],tg[3],tg[4]],{opacity:1});return}
   gsap.set(tg[0],{opacity:1});
-  function swap(tl,a,b,at){tl.to(steps[a],{autoAlpha:0,y:-18,duration:.28,ease:"power2.in"},at).fromTo(steps[b],{autoAlpha:0,y:22},{autoAlpha:1,y:0,duration:.34,ease:"power2.out"},at+.28)}
+  /* BD: step text crosses over line by line via StoryFX (no tweened swaps) */
   var tl=gsap.timeline({defaults:{ease:"power2.inOut"}});
   /* step 0 Problem: the bag contracts, haze rises */
   tl.to(bag,{attr:{ry:46},duration:.9},.1).to(haze,{opacity:1,attr:{ry:46},duration:.9},.1).to(tg[1],{opacity:1,duration:.4},.4).to({},{duration:1.2},1.0);
   /* step 1 Implant: capsule holds the space open */
-  swap(tl,0,1,2.1);
   tl.to(cap,{opacity:1,duration:.5},2.3).to(bag,{attr:{ry:108},duration:.9},2.3).to(haze,{opacity:0,attr:{ry:108},duration:.7},2.3)
     .to(tg[1],{opacity:0,duration:.3},2.3).to(tg[2],{opacity:1,duration:.4},2.7).to({},{duration:1.3},2.9);
   /* step 2 Platform: the lens seats in a defined position */
-  swap(tl,1,2,4.2);
   tl.fromTo(iol,{opacity:0,scale:.82,transformOrigin:"300px 220px"},{opacity:1,scale:1,duration:.8,ease:"power2.out"},4.3).to(tg[3],{opacity:1,duration:.4},4.7).to({},{duration:1.3},5.1);
   /* step 3 Future: light focuses to a stable focal point */
-  swap(tl,2,3,6.4);
   tl.to(rout,{opacity:1,duration:.3},6.5).to(routP,{strokeDashoffset:0,duration:.9,ease:"power1.inOut",stagger:.05},6.6)
     .to(fglow,{opacity:1,duration:.7},6.9).to(focus,{opacity:1,duration:.5},7.1).to(tg[4],{opacity:1,duration:.4},7.3).to({},{duration:1.4},7.7);
   gsap.to(fglow,{attr:{r:72},duration:2,ease:"sine.inOut",repeat:-1,yoyo:true});
+  var fx=StoryFX({section:sec,steps:steps});tl.eventCallback("onUpdate",function(){fx(tl.progress())});
   var D=tl.duration(),marks=[0,2.4,4.5,6.9].map(function(x){return x/D});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*4)},pin:true,scrub:.8,anticipatePin:1,invalidateOnRefresh:true,animation:tl,
     onUpdate:function(s){var p=s.progress,k=0;for(var j=0;j<4;j++)if(p>=marks[j])k=j;ticks.forEach(function(t,j){t.classList.toggle("on",j<=k)})}});

@@ -1088,6 +1088,59 @@ function hdrTheme(){
 
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,ENTRY=0,heroTL=null;
+/* ================= GLOBAL REVEAL (AZ/BA): everything enters on scroll, nothing counts up ================= */
+var RV=window._RV={items:[],q:[],raf:0,until:0,bound:0};
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=pill]";
+var RV_ITEM="li,tr,figure,[class*=card],[class*=stat],[class*=tile]";
+function rvShown(el){if(el.checkVisibility)return el.checkVisibility({opacityProperty:true,visibilityProperty:true});var s=getComputedStyle(el);return s.display!=="none"&&s.visibility!=="hidden"&&+s.opacity>.05}
+function rvDone(el){if(el._rvf)return;el._rvf=1;
+  if(el._rvk==="h"){if(el._rvsp)el._rvsp.revert()}
+  else if(el._rvk==="v"){gsap.set(el._rvi,{clearProps:"transform,opacity"});el._rvm.style.clipPath="none"}
+  else{gsap.set(el,{clearProps:"opacity,transform"});var s=el._rvst;if(s.o)el.style.opacity=s.o;if(s.t)el.style.transform=s.t;el.style.transition=s.tr}}
+function rvPlay(el,d){el._rvT=performance.now()+d*1000;
+  if(el._rvk==="h")gsap.to(el._rvsp.lines,{yPercent:0,opacity:1,duration:1.15,ease:"expo.out",stagger:.09,delay:d,onComplete:function(){rvDone(el)}});
+  else if(el._rvk==="v")gsap.to(el._rvi,{yPercent:0,opacity:1,duration:1.15,ease:"expo.out",delay:d,onComplete:function(){rvDone(el)}});
+  else gsap.to(el,{opacity:el._rvo,y:0,duration:.95,ease:"power3.out",delay:d,onComplete:function(){rvDone(el)}})}
+function rvFlush(){RV.raf=0;var q=RV.q.splice(0),base=Math.max(0,(RV.until-performance.now())/1000);
+  q.forEach(function(el){var r=el.getBoundingClientRect();el._rvy=r.top;el._rvx=r.left});
+  q.sort(function(a,b){return Math.abs(a._rvy-b._rvy)>24?a._rvy-b._rvy:a._rvx-b._rvx});
+  q.forEach(function(el,i){rvPlay(el,base+Math.min(i*.07,.56)+(el.closest(".stat")&&el._rvk!=="v"?.4:0))})}
+function rvQ(el){if(el._rvs||el._rvf)return;el._rvs=1;RV.q.push(el);if(!RV.raf)RV.raf=requestAnimationFrame(rvFlush)}
+function rvForce(el){var t=el._rvk==="h"?el._rvsp.lines:el._rvk==="v"?el._rvi:el;gsap.killTweensOf(t);gsap.set(t,{opacity:el._rvk==="f"?el._rvo:1,y:0,yPercent:0});rvDone(el)}
+/* failsafe (AW): anything at or above the fold that is still hidden gets revealed; with hard=true, stuck ones are forced visible */
+function rvCheck(hard){var H=innerHeight,now=performance.now(),lim=H*(innerHeight+scrollY>=document.documentElement.scrollHeight-4?1:.92);RV.items.forEach(function(el){if(el._rvf||!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>lim)return;
+  if(!el._rvs)rvQ(el);else if(hard&&now>el._rvT+1700)rvForce(el)})}
+function autoReveal(view,E,force){
+  if(RM||!view)return;
+  RV.items=[];RV.q=[];RV.until=performance.now()+(E||0)*1000;
+  /* mark everything an existing tween already drives */
+  gsap.globalTimeline.getChildren(true,true,false).forEach(function(t){(t.targets()||[]).forEach(function(x){if(x&&x.nodeType===1){x._rvt=1;for(var p=x.parentElement;p&&p!==document.body;p=p.parentElement)p._rvd=1}})});
+  var add=function(el){RV.items.push(el);ScrollTrigger.create({trigger:el,start:"clamp(top 92%)",once:true,onEnter:function(){rvQ(el)}})};
+  /* stats: final value, masked rise (BA) */
+  $$("[data-count]",view).forEach(function(n){var v=n.parentElement;if(!v||v._rvu||v.closest("[aria-hidden=true]"))return;
+    v._rvu=1;v._rvk="v";v.innerHTML='<span class="rvm" style="display:inline-block;clip-path:inset(-.12em -.25em -.24em -.25em)"><span class="rvi" style="display:inline-block">'+v.innerHTML+'</span></span>';
+    v._rvm=v.firstChild;v._rvi=v._rvm.firstChild;gsap.set(v._rvi,{yPercent:150,opacity:0});add(v)});
+  var H=innerHeight;
+  $$(RV_SEL+(force?","+force:""),view).forEach(function(el){
+    if(el._rvu||el._rvt)return;
+    if(el.closest("[aria-hidden=true],.sr-only"))return;
+    for(var p=el.parentElement;p&&p!==view;p=p.parentElement)if(p._rvu||p._rvt)return;
+    if(!rvShown(el))return;
+    var r=el.getBoundingClientRect();if(r.width<2||r.height<2||r.height>H*.85)return;
+    var item=el.matches(RV_ITEM),forced=force&&el.matches(force);
+    if(el._rvd&&!item&&!forced)return;
+    if(item&&!forced){var n=0;for(var c=el.firstElementChild;c;c=c.nextElementSibling)if(c.matches(RV_ITEM))n++;if(n>=2)return}
+    el._rvu=1;
+    if(/^H[1-6]$/.test(el.tagName)&&!el._rvd&&!el.querySelector(".ln,img,svg,canvas")&&el.textContent.trim()){
+      el._rvk="h";el._rvsp=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvsp.lines,{yPercent:150,opacity:0})}
+    else{el._rvk="f";var cs=getComputedStyle(el);el._rvo=+cs.opacity;el._rvst={o:el.style.opacity,t:el.style.transform,tr:el.style.transition};
+      el.style.transition="none";gsap.set(el,{opacity:0,y:28})}
+    add(el)});
+  if(!RV.bound){RV.bound=1;var st;addEventListener("scroll",function(){clearTimeout(st);st=setTimeout(function(){rvCheck(false)},280)},{passive:true})}
+  setTimeout(function(){rvCheck(false)},(E+.6)*1000);
+  setTimeout(function(){rvCheck(true)},(E+2.5)*1000);
+  setTimeout(function(){rvCheck(true)},(E+5)*1000);
+}
 function initView(k,first){var E=ENTRY;ENTRY=0;
   var view=$("#view");
   ctx=gsap.context(function(){
@@ -1124,6 +1177,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm",view);if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.fromTo(s3.chars,{yPercent:60,opacity:0},{yPercent:0,opacity:1,duration:1.3,ease:"silk",stagger:.045,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    autoReveal(view,E,"#mani");
   },view);
   magnets(document);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
@@ -1132,8 +1186,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;
 function homeScroll(view){
   var m=$("#mani",view);
   if(m&&!RM){var s=SplitText.create(m,{type:"words",wordsClass:"w"});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 80%",end:"bottom 50%",scrub:true}})}
-  $$("[data-count]",view).forEach(function(el){var v=+el.getAttribute("data-count"),dec=+(el.getAttribute("data-dec")||0);var from=v>1000?v-24:0;var o={n:from};var fmt=function(n){return dec?n.toFixed(dec):String(Math.round(n))};if(RM){el.textContent=fmt(v);return}
-    el.textContent=fmt(from);gsap.to(o,{n:v,duration:1.5,ease:"power3.out",onUpdate:function(){el.textContent=fmt(o.n)},onComplete:function(){el.textContent=fmt(v)},scrollTrigger:{trigger:el.closest(".stats")||el.closest(".dstats")||el,start:"top 85%"}})});
+  /* BA: no count-ups; values reveal as final numbers (autoReveal) */
   if(!RM)$$(".stat .line",view).forEach(function(line,i){gsap.to(line,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   if(!RM){var bg=$(".data .big",view);if(bg)gsap.fromTo(bg,{yPercent:8},{yPercent:-8,ease:"none",scrollTrigger:{trigger:".data",start:"top bottom",end:"bottom top",scrub:true}})}
   /* pinned story */
@@ -1181,7 +1234,7 @@ function paint(r){
 var navCount=0,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(cb)})})}
 /* AW failsafe: 2.5s after the page shows, nothing in the hero may still be hidden */
-function failsafe(){setTimeout(function(){try{if(heroTL&&heroTL.progress()<1&&!heroTL.isActive())heroTL.progress(1);
+function failsafe(){setTimeout(function(){try{rvCheck(true)}catch(e){}try{if(heroTL&&heroTL.progress()<1&&!heroTL.isActive())heroTL.progress(1);
   $$(".hero [data-r], .ph-head [data-r], .ph-head .eyebrow, #pageTitle").forEach(function(el){if(+getComputedStyle(el).opacity<.99){gsap.set(el,{opacity:1,y:0})}});
   $$("#pageTitle .ln-mask *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!(heroTL&&heroTL.isActive()))gsap.set(el,{opacity:1,yPercent:0})})}catch(e){}},2500)}
 function go(first,ready){

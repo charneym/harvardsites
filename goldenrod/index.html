@@ -529,6 +529,10 @@ function split(targets,fn){var a=tl(targets),ph=[],ot=[];a.forEach(function(e){(
 var fT=g.fromTo;g.fromTo=function(t,a,b){if(!reveal(b))return fT.apply(g,arguments);var s=split(t);if(!s.ph.length)return fT.apply(g,arguments);
   if(s.ot.length)fT.call(g,s.ot,a,b);return fT.call(g,s.ph,strip(a,'start'),strip(b,'end'))};
 })();
+;(function(){/* A throwing scroll/timeline callback (e.g. a view torn down mid-scrub during a route change) must never break page transitions */
+var g=window.gsap;if(!g||!g.core||!g.core.Animation)return;var A=g.core.Animation.prototype,ec=A.eventCallback;if(A.__safe)return;A.__safe=1;
+A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=function(){try{return f.apply(this,arguments)}catch(e){console.warn('safe cb',e)}}}return arguments.length>1?ec.call(this,t,cb,pr):ec.call(this,t)};
+})();
 </script>
 <script>/*!
  * ScrollTrigger 3.13.0

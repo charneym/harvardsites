@@ -1,0 +1,1088 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Elements Endoscopy — Flexible endoscopy, rewired</title>
+<meta name="description" content="Elements Endoscopy is developing a modular, drive-by-wire, haptic-controlled colonoscope: electronic controls and drives in place of mechanical cables, for manual and robotic procedures.">
+<meta name="theme-color" content="#0d1226">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d1226'/%3E%3Cpath d='M10 32Q24 8 50 12Q30 18 10 32Z' fill='%23e6007e'/%3E%3Cpath d='M10 32Q30 20 54 26Q30 30 10 32Z' fill='%23ffed00'/%3E%3Cpath d='M10 32Q30 34 54 38Q30 44 10 32Z' fill='%23009fe3'/%3E%3Cpath d='M10 32Q24 56 50 52Q30 46 10 32Z' fill='%23312783'/%3E%3Cpath d='M34 32Q44 22 58 32Q44 42 34 32Z' fill='%23009640'/%3E%3C/svg%3E">
+<style>
+/*@fonts Sora:300,400; Inter Tight:400,500; IBM Plex Mono:400*/
+:root{
+  --ink:#0d1226;--ink2:#111933;--ink3:#18213f;--deep:#090d1c;
+  --bone:#f2f4f7;--bone2:#e6eaf0;--bone3:#d5dbe5;
+  --stone:#a9b2c4;--stoneD:#4b566b;
+  --acc:#009fe3;--accL:#62cbf6;--accD:#00699a;
+  --mag:#e6007e;--ind:#312783;--grn:#009640;--yel:#ffed00;--slate:#476682;
+  --hair:rgba(242,244,247,.14);--hairD:rgba(13,18,38,.15);
+  --disp:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--sans);font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--accL);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--accL);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--accD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--accL);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--stone)}
+.light .lab{color:var(--stoneD)}
+em{font-style:normal}
+.d1{font-family:var(--disp);font-weight:300;font-size:clamp(46px,7.2vw,140px);line-height:1;letter-spacing:-.045em;margin:0}
+.d2{font-family:var(--disp);font-weight:300;font-size:clamp(38px,5vw,92px);line-height:1.02;letter-spacing:-.04em;margin:0}
+.d3{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.3vw,56px);line-height:1.08;letter-spacing:-.03em;margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--accL)}
+.light .d1 em,.light .d2 em,.light .d3 em{color:var(--accD)}
+.lede{font-family:var(--disp);font-weight:300;font-size:clamp(20px,1.75vw,28px);line-height:1.4;letter-spacing:-.015em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--stone)}
+.light .muted{color:var(--stoneD)}
+.light{background:var(--bone);color:var(--ink)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:15ch}
+.shead p{max-width:46ch;margin:0;color:var(--stone)}
+.light .shead p{color:var(--stoneD)}
+.kick{display:block;margin-bottom:22px;color:var(--accL)}
+.light .kick{color:var(--accD)}
+
+/* grain */
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* scope field */
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(70% 80% at 64% 46%,#1a2348 0%,#10162f 50%,#090d1c 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+/* preloader / veil */
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;visibility:hidden}
+#pre .mark{width:84px;height:64px;overflow:visible}
+#pre .wm{font-family:var(--disp);font-weight:300;font-size:clamp(40px,5vw,72px);letter-spacing:-.04em;color:var(--bone);line-height:1.1;padding:.1em .18em .3em;margin-bottom:-.3em;overflow:hidden;text-align:center}
+#pre .wm small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.62em;text-transform:uppercase;margin-top:6px;color:var(--stone);padding-left:.62em}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(50px,5.6vw,80px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+/* header */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:var(--bone);border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:rgba(13,18,38,.76);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:rgba(242,244,247,.84);border-bottom-color:var(--hairD)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.brand img{height:32px;width:auto}
+.brand .lg-d{display:none}
+.hdr.ink .brand .lg-w{display:none}
+.hdr.ink .brand .lg-d{display:block}
+.brand .wmk{display:none;align-items:center;gap:10px;font-family:var(--disp);font-weight:300;font-size:25px;letter-spacing:-.03em;line-height:1}
+.brand .wmk small{font-family:var(--mono);font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;opacity:.8}
+.brand .wmk svg{width:30px;height:24px}
+.brand.nologo img{display:none!important}
+.brand.nologo .wmk{display:flex}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+/* buttons: one system */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--accL);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--accL)}
+.btn:hover::before{transform:none}
+.btn.solid{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.light .btn:hover{color:#fff;border-color:var(--accD)}
+.light .btn::before{background:var(--accD)}
+.light .btn.solid{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.light .btn.solid:hover{border-color:var(--accD)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--disp);font-weight:300;font-size:clamp(38px,10vw,64px);line-height:1.08;letter-spacing:-.04em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
+
+/* masks (AD / AU / AX) */
+.ln{overflow:visible!important}
+.ln-mask{padding:.08em .14em .2em;margin:-.08em -.14em -.2em}
+
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(58% 74% at 18% 52%,rgba(9,13,28,.8),rgba(9,13,28,.45) 50%,rgba(9,13,28,0) 80%),linear-gradient(180deg,rgba(9,13,28,.35),rgba(9,13,28,0) 22%,rgba(9,13,28,0) 64%,#0d1226 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--accL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(46px,7.2vw,140px);line-height:.98}
+.hero-h .l{display:block;white-space:nowrap}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:47ch;margin:0;font-size:17px;line-height:1.6;color:rgba(242,244,247,.86)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:rgba(242,244,247,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--accL);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:8px;height:8px;border-radius:50%;background:var(--bone);display:block;opacity:.85}
+.hero-key i.s{background:var(--accL)}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+/* page heads */
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 20% 70%,rgba(9,13,28,.8),rgba(9,13,28,.25) 70%),linear-gradient(180deg,rgba(9,13,28,.3),rgba(9,13,28,.1) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--accL)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:54ch;color:rgba(242,244,247,.9)}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+.cta{background:var(--bone2)}
+@media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
+
+/* manifesto */
+.mani .txt{font-family:var(--disp);font-weight:300;font-size:clamp(28px,3.5vw,60px);line-height:1.14;letter-spacing:-.035em;margin:0;max-width:25ch}
+.mani .txt .w{opacity:.16}
+.mani .txt em{color:var(--accD)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hairD)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--accD);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--disp);font-weight:300;font-size:clamp(50px,5.4vw,100px);line-height:1;letter-spacing:-.05em;display:block;white-space:nowrap;font-variant-numeric:lining-nums}
+.stat .v sup{font-size:.4em;vertical-align:top;position:relative;top:.16em;margin-left:.06em;color:var(--accD);letter-spacing:0}
+.stat .v .pre{font-size:.5em;vertical-align:top;position:relative;top:.14em;margin-right:.04em;color:var(--accD)}
+.stat .k{display:block;margin-top:14px;max-width:26ch}
+.srcnote{margin-top:clamp(36px,4vw,56px);display:block}
+
+/* story (pinned) */
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:12ch}
+.rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--accL);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9aa4b8;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #66708a;transition:background .35s,border-color .35s}
+.rail span.on{color:var(--bone)}
+.rail span.done::before,.rail span.on::before{background:var(--accL);border-color:var(--accL)}
+.steps{position:relative;min-height:clamp(230px,30vh,300px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--disp);font-weight:300;font-size:clamp(25px,2.2vw,36px);line-height:1.14;letter-spacing:-.03em;margin:0 0 16px}
+.step p{color:rgba(242,244,247,.8);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(70vh,640px);align-self:center}
+.fig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0}
+.fig svg{width:100%;height:100%;overflow:visible}
+.fig text{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:#a9b2c4}
+.fig .tt{font-family:var(--disp);font-size:20px;letter-spacing:-.02em;fill:#f2f4f7}
+
+/* aims cards */
+.aims4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.aim{position:relative;border:1px solid var(--hairD);padding:26px 24px 26px;min-height:300px;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.aim::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.aim::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,159,227,.08),rgba(0,159,227,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.aim:hover{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(13,18,38,.45)}
+.aim:hover::before{transform:scaleX(1)}
+.aim:hover::after{opacity:1}
+.aim svg{width:56px;height:56px;margin-bottom:28px;overflow:visible}
+.aim svg *{fill:none;stroke:var(--ink);stroke-width:1.1}
+.aim svg .a{stroke:var(--accD)}
+.aim svg .f{fill:var(--accD);stroke:none}
+.aim h3{font-family:var(--disp);font-weight:300;font-size:clamp(24px,2vw,32px);line-height:1.1;letter-spacing:-.03em;margin:0 0 12px;transition:transform .32s var(--eo),color .25s}
+.aim:hover h3{transform:translateX(4px);color:var(--accD)}
+.aim p{color:var(--stoneD);font-size:15px;margin:0 0 18px}
+.aim .lab{margin-top:auto;color:var(--accD)}
+
+/* grant */
+.grant{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:end}
+.gq{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.3vw,56px);line-height:1.1;letter-spacing:-.035em;margin:0;max-width:21ch}
+.gq em{color:var(--accL)}
+
+/* text cards (team) */
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.tcard{position:relative;display:flex;flex-direction:column;min-height:260px;padding:28px 28px 26px;border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.tcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,159,227,.09),rgba(0,159,227,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.tcard:hover,.tcard:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(13,18,38,.45)}
+.tcard:hover::before,.tcard:focus-visible::before{transform:scaleX(1)}
+.tcard:hover::after,.tcard:focus-visible::after{opacity:1}
+.tcard .grp{color:var(--stoneD)}
+.tcard h3{font-family:var(--disp);font-weight:300;font-size:clamp(28px,2.4vw,38px);line-height:1.1;letter-spacing:-.035em;margin:30px 0 8px;transition:transform .32s var(--eo),color .25s var(--eo)}
+.tcard h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.tcard:hover h3,.tcard:focus-visible h3{transform:translateX(5px);color:var(--accD)}
+.tcard:hover h3 span,.tcard:focus-visible h3 span{background-size:100% 1px}
+.tcard .ttl{font-size:15px;line-height:1.5;color:var(--stoneD);margin:0;max-width:44ch}
+.tcard .go{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:24px;color:var(--accD)}
+.tcard .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--eo),transform .32s var(--eo)}
+.tcard:hover .go svg,.tcard:focus-visible .go svg{opacity:1;transform:none}
+
+/* rows (record) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.light .rows{border-top-color:var(--hairD)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.light .row-a{border-bottom-color:var(--hairD)}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accL);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.light .row-a::before{background:var(--accD)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(98,203,246,.07),rgba(98,203,246,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a h3{grid-column:4/12;font-family:var(--disp);font-weight:300;font-size:clamp(19px,1.6vw,26px);line-height:1.25;letter-spacing:-.025em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--accL);transform:translateX(6px)}
+.light .row-a:hover h3{color:var(--accD)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+/* cta */
+.cta .big{font-family:var(--disp);font-weight:300;font-size:clamp(48px,7.4vw,138px);line-height:1;letter-spacing:-.05em;margin:0}
+.cta .big em{color:var(--accD)}
+.cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+/* footer */
+.ftr{position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--accL)}
+.ftr .c a{color:var(--bone)}
+.ftr .bigw{font-family:var(--disp);font-weight:300;font-size:min(22vw,340px);line-height:.9;letter-spacing:-.06em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.16em;color:var(--bone)}
+.ftr .bigw .ch{display:inline-block}
+.ftr .petals{display:flex;justify-content:center;gap:10px;margin-top:-.2em}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+/* inner page blocks */
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.pl3{border-top:1px solid var(--hairD);padding-top:24px}
+.pl3 svg{width:64px;height:64px;margin-bottom:26px;overflow:visible}
+.pl3 svg *{fill:none;stroke:var(--ink);stroke-width:1.1}
+.pl3 svg .a{stroke:var(--accD)}
+.pl3 svg .f{fill:var(--accD);stroke:none}
+.pl3 h3{font-family:var(--disp);font-weight:300;font-size:clamp(25px,2.2vw,36px);line-height:1.08;letter-spacing:-.035em;margin:0 0 14px}
+.pl3 p{color:var(--stoneD);font-size:15.5px;max-width:36ch}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.bul{list-style:none;margin:0;padding:0}
+.bul li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hair);font-size:17px;line-height:1.5}
+.bul li:last-child{border-bottom:1px solid var(--hair)}
+.bul li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accL);margin-top:.55em}
+.light .bul li{border-color:var(--hairD)}
+.light .bul li::before{background:var(--accD)}
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:var(--gap);padding:18px 0;border-top:1px solid var(--hair);align-items:baseline}
+.facts>div:last-child{border-bottom:1px solid var(--hair)}
+.light .facts>div{border-color:var(--hairD)}
+.facts dd{margin:0;font-family:var(--disp);font-weight:300;font-size:clamp(19px,1.6vw,24px);line-height:1.3;letter-spacing:-.02em}
+.tl{position:relative;list-style:none;margin:0;padding:0 0 0 34px}
+.tl .ln0{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--hairD)}
+.tl .ln1{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--accD);transform-origin:top;transform:scaleY(0)}
+.tl li{position:relative;padding:0 0 clamp(30px,3.4vw,48px)}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:-34px;top:.42em;width:9px;height:9px;border-radius:50%;background:var(--bone);border:1px solid var(--accD)}
+.tl li h3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.9vw,30px);line-height:1.15;letter-spacing:-.03em;margin:4px 0 8px}
+.tl li p{color:var(--stoneD);max-width:58ch;margin:0}
+.moa{border:1px solid var(--hair);background:var(--ink);padding:clamp(18px,3vw,40px)}
+.moa svg{width:100%;height:auto;display:block}
+.moa text{font-family:var(--mono);font-size:12px;letter-spacing:.1em;fill:var(--stone)}
+.moa .t1{font-family:var(--disp);font-size:21px;letter-spacing:-.02em;fill:var(--bone)}
+.moa .vm{display:none}
+@media (max-width:700px){.moa .hz{display:none}.moa .vm{display:block}.moa{padding:14px}}
+.note{font-size:14px;color:var(--stone);margin-top:22px;max-width:60ch}
+.light .note{color:var(--stoneD)}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--disp);font-weight:300;font-size:clamp(28px,2.8vw,44px);line-height:1.06;letter-spacing:-.035em;margin:14px 0 14px}
+.addr p{color:var(--stoneD)}
+.map{margin-top:clamp(30px,4vw,56px);border:1px solid var(--hairD);aspect-ratio:5/4;background:var(--bone2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(13,18,38,.3);padding:16px 0 12px;font-family:var(--disp);font-weight:300;font-size:22px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--accD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a3004f;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#a3004f}
+.subm{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.thanks svg circle{fill:none;stroke:var(--accD);stroke-width:1}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+/* transition cover */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--ink3);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--accL);opacity:.75}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
+.xt .t{font-family:var(--disp);font-weight:300;font-size:clamp(52px,8.4vw,160px);line-height:1;letter-spacing:-.05em;color:var(--bone);overflow:hidden;padding:.12em .18em .3em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--accL)}
+
+/* bio overlay */
+.bio{position:fixed;inset:0;z-index:850;visibility:hidden;pointer-events:none}
+.bio.open{visibility:visible;pointer-events:auto}
+.bio .scr{position:absolute;inset:0;background:rgba(9,13,28,.62);opacity:0}
+.bio .pan{position:absolute;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--bone);color:var(--ink);display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
+.bio .bar0{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px clamp(22px,4vw,48px);border-bottom:1px solid var(--hairD);position:sticky;top:0;background:var(--bone);z-index:2}
+.bio .pn{display:flex;gap:8px}
+.bio .in{padding:clamp(34px,5vw,64px) clamp(22px,4vw,48px) 60px}
+.bio h2{font-family:var(--disp);font-weight:300;font-size:clamp(38px,4.6vw,62px);line-height:1.04;letter-spacing:-.045em;margin:16px 0 12px;padding-bottom:.08em}
+.bio .role{font-size:17px;color:var(--stoneD);margin:0 0 34px}
+.bio .bt p{font-size:17px;line-height:1.65}
+.bio .src{margin-top:34px}
+.bio .lab{color:var(--stoneD)}
+.bio a.ul{color:var(--accD)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+.light .btn.sm{color:var(--ink)}
+.light .btn.sm:hover{color:#fff}
+
+@media (max-width:1100px){
+  .hero-key{display:none}
+  .aims4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:36vh;height:36svh}
+  .story-l .d3,.story-l .kick{display:none}
+  .grant{grid-template-columns:1fr}
+  .two,.cgrid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .brand img{height:28px}
+  .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(9,13,28,.05) 0%,rgba(9,13,28,.15) 24%,rgba(9,13,28,.78) 44%,rgba(9,13,28,.92) 70%,#0d1226 100%)}
+  .hero-h{font-size:clamp(42px,12.4vw,96px)}
+  .hero-foot .s{font-size:16px}
+  .pillars{grid-template-columns:1fr;row-gap:48px}
+  .tgrid{grid-template-columns:1fr}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.subm{grid-column:1/2}
+}
+@media (max-width:560px){
+  .aims4{grid-template-columns:1fr}
+  .aim{min-height:0}
+  .tcard{min-height:0}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .facts>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:20px}
+  .stats{grid-template-columns:1fr 1fr;column-gap:16px}
+  .stat .v{font-size:clamp(40px,11.5vw,56px)}
+}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("ee-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><g id="petalsDef"><path d="M6 24Q18 2 48 4Q28 12 6 24Z" fill="#e6007e"/><path d="M6 24Q28 12 54 18Q30 23 6 24Z" fill="#ffed00"/><path d="M6 24Q30 25 54 30Q28 36 6 24Z" fill="#009fe3"/><path d="M6 24Q18 46 48 44Q28 36 6 24Z" fill="#312783"/><path d="M32 24Q44 13 60 24Q44 35 32 24Z" fill="#009640"/></g></defs></svg>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="mark" viewBox="0 0 64 48"><g id="petals"><path d="M6 24Q18 2 48 4Q28 12 6 24Z" fill="#e6007e"/><path d="M6 24Q28 12 54 18Q30 23 6 24Z" fill="#ffed00"/><path d="M6 24Q30 25 54 30Q28 36 6 24Z" fill="#009fe3"/><path d="M6 24Q18 46 48 44Q28 36 6 24Z" fill="#312783"/><path d="M32 24Q44 13 60 24Q44 35 32 24Z" fill="#009640"/></g></svg>
+    <div class="wm"><span>elements</span><small>Endoscopy</small></div>
+  </div>
+  <span class="lab pl">Flexible endoscopy, rewired</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">001</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="Elements Endoscopy, home">
+    <img class="lg-w" src="https://elementsendoscopy.com/wp-content/uploads/2019/04/elements_endoscopy_logo_w.png" alt="Elements Endoscopy" onerror="document.getElementById('brand').classList.add('nologo')">
+    <img class="lg-d" src="https://elementsendoscopy.com/wp-content/uploads/2019/04/elements_endoscopy_logo.png" alt="" aria-hidden="true" onerror="document.getElementById('brand').classList.add('nologo')">
+    <span class="wmk"><svg viewBox="0 0 64 48" aria-hidden="true"><use href="#petalsDef"/></svg>elements<small>Endoscopy</small></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/technology">Technology</a>
+    <a class="nl ul" href="#/program">Program</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true">
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/technology">Technology</a></li>
+    <li><a href="#/program">Program</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Edina, Minnesota</span><br>Elements Endoscopy Inc.</div>
+    <div><span class="lab">Funding</span><br>NIH SBIR Phase II · NIBIB</div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="bio" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName">
+  <div class="scr" id="bioScr"></div>
+  <div class="pan light" id="bioPan">
+    <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
+    <div class="in" id="bioIn"></div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Elements Endoscopy</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="Elements Endoscopy";
+var MAIL="brian@elementsendoscopy.com";
+
+/* ================= CONTENT (from dossier; nothing invented) ================= */
+var RECORD=[
+ {d:"2026-08-26",s:"NIH RePORTER · NIBIB",t:"SBIR Phase II: development of a modular, drive-by-wire, haptic controlled, reusable colonoscope system",u:"https://reporter.nih.gov/project-details/2R44EB034611-02"},
+ {d:"2025-01-07",s:"U.S. Patent 12,185,908",t:"Endoscope with inertial measurement units and/or haptic input controls",u:"https://patents.google.com/patent/US12185908B2/en"},
+ {d:"2024-10-01",s:"U.S. Patent 12,102,288",t:"Multi-use endoscopes and associated systems and methods",u:"https://patents.google.com/patent/US12102288B2/en"},
+ {d:"2023-11-28",s:"U.S. Patent 11,826,023",t:"Multi-use endoscopes and associated systems and methods",u:"https://patents.google.com/patent/US11826023B2/en"},
+ {d:"2023-04-28",s:"NIH RePORTER · NIBIB",t:"SBIR Phase I: development of a modular flexible semi-disposable endoscope platform",u:"https://reporter.nih.gov/project-details/1R43EB034611-01"},
+ {d:"2022-12-20",s:"U.S. Patent 11,529,038",t:"Endoscope with inertial measurement units and/or haptic input controls",u:"https://patents.google.com/patent/US11529038B2/en"}
+];
+var TEAM=[
+ {slug:"brian-craig",name:"Brian Craig",title:"Chief Executive Officer",grp:"Leadership",
+  bio:["Brian leads Elements Endoscopy as Chief Executive Officer.","He is a co-inventor, with Dwight Meglan, on the company’s granted U.S. patents: multi-use endoscopes with removable, sealed optics, and endoscopes with inertial measurement units and haptic input controls."],
+  link:{t:"U.S. Patent 11,529,038 · haptic input controls",u:"https://patents.google.com/patent/US11529038B2/en"}},
+ {slug:"dwight-meglan",name:"Dwight Meglan",title:"Principal Investigator, NIH SBIR",grp:"Research",
+  bio:["Dwight is the contact principal investigator on both of Elements’ NIH SBIR awards from the National Institute of Biomedical Imaging and Bioengineering: the 2023 Phase I modular endoscope platform and the 2026 Phase II drive-by-wire colonoscope.","He is a co-inventor on the company’s patents."],
+  link:{t:"Phase II project on NIH RePORTER",u:"https://reporter.nih.gov/project-details/2R44EB034611-02"}}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function tCard(p){return '<a class="tcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
+function rows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+
+/* story figures: stroke-only primitives so StoryFX can draw them */
+var S='stroke="#c9d0dd" stroke-width="1.3" fill="none"',SA='stroke="#62cbf6" stroke-width="1.5" fill="none"',SD='stroke="#62cbf6" stroke-width="1.3" fill="none" stroke-dasharray="3 6"',FA='fill="#62cbf6"',FM='fill="rgba(242,244,247,.08)"';
+function vert(x0,y0,n,dx,dy,rot){var o='';for(var i=0;i<n;i++){var x=x0+i*dx,y=y0+i*dy*i*.12;o+='<rect x="'+(x-6)+'" y="'+(y-16)+'" width="12" height="32" rx="3" '+S+' transform="rotate('+(rot*i).toFixed(1)+' '+x+' '+y+')"/>'}return o}
+var FIG=[
+ /* 1: cables */
+ '<svg viewBox="0 0 600 480" aria-hidden="true"><text class="tt" x="40" y="58">Cable-actuated</text><text x="40" y="84">PULL WIRES · PULLEYS · KNOBS</text>'+
+ '<rect x="40" y="170" width="150" height="230" rx="34" '+S+'/><circle cx="115" cy="220" r="34" '+S+'/><circle cx="115" cy="220" r="20" '+S+'/><circle cx="115" cy="300" r="26" '+S+'/>'+
+ '<path d="M115 186 C200 186 240 230 330 236 L470 240" '+S+'/><path d="M115 254 C200 254 240 262 330 260 L470 262" '+S+'/><path d="M115 274 C210 280 250 300 330 292 L470 286" '+S+'/>'+
+ '<path d="M470 236 C520 236 540 220 556 190" '+SA+'/><path d="M470 290 C524 290 552 260 566 222" '+SA+'/><circle cx="562" cy="204" r="9" '+FA+'/>'+
+ '<path d="M250 214 l10 -10 M262 218 l10 -10 M274 222 l10 -10" '+SA+'/><text x="236" y="190">TENSION · WEAR</text><text x="40" y="440">1980s ARCHITECTURE</text><text x="470" y="330">TIP</text></svg>',
+ /* 2: drive-by-wire */
+ '<svg viewBox="0 0 600 480" aria-hidden="true"><text class="tt" x="40" y="58">Drive-by-wire</text><text x="40" y="84">ELECTRONIC CONTROL · ELECTRIC DRIVES</text>'+
+ '<rect x="40" y="170" width="120" height="200" rx="30" '+S+'/><rect x="66" y="210" width="68" height="48" rx="8" '+S+'/><path d="M80 300h40M80 318h40" '+S+'/>'+
+ '<path d="M160 250 H330" '+SD+'/><rect x="330" y="200" width="110" height="100" rx="14" '+S+'/><circle cx="364" cy="250" r="22" '+S+'/><circle cx="364" cy="250" r="6" '+FA+'/><rect x="396" y="226" width="30" height="48" rx="4" '+S+'/><path d="M402 250h18" '+SA+'/>'+
+ '<path d="M440 250 C500 250 530 232 552 186" '+SA+'/><circle cx="556" cy="178" r="9" '+FA+'/><path d="M440 250 C500 250 520 270 548 300" stroke="#c9d0dd" stroke-width="1" fill="none" stroke-dasharray="2 5"/>'+
+ '<text x="186" y="236">SIGNAL</text><text x="330" y="330">ELECTROMECHANICAL /</text><text x="330" y="348">HYDRAULIC DRIVE</text><text x="40" y="410">CONTROL INTERFACE</text></svg>',
+ /* 3: haptic handle */
+ '<svg viewBox="0 0 600 480" aria-hidden="true"><text class="tt" x="40" y="58">A handle for every hand</text><text x="40" y="84">HAPTIC FEEDBACK · ERGONOMICS</text>'+
+ '<path d="M250 130 C320 130 350 170 350 230 L340 400 C338 430 262 430 260 400 L250 230 C250 180 230 150 250 130 Z" '+S+'/><circle cx="300" cy="200" r="30" '+S+'/><path d="M300 178v44M278 200h44" '+SA+'/><circle cx="300" cy="200" r="7" '+FA+'/>'+
+ '<path d="M190 300 C190 230 240 186 300 186" '+S+' stroke-dasharray="2 6"/><path d="M160 320 C160 220 230 156 300 156" '+S+' stroke-dasharray="2 6"/><path d="M130 340 C130 210 220 126 300 126" '+SA+'/>'+
+ '<path d="M380 210 q14 -10 28 0 t28 0" '+SA+'/><path d="M380 236 q14 -10 28 0 t28 0" '+SA+'/><text x="380" y="276">HAPTIC CUES</text><text x="40" y="440">5TH–95TH PERCENTILE HAND SIZES</text></svg>',
+ /* 4: modular, separable */
+ '<svg viewBox="0 0 600 480" aria-hidden="true"><text class="tt" x="40" y="58">Separable and sealed</text><text x="40" y="84">MODULAR · IP68 HYDRAULIC INTERFACE</text>'+
+ '<rect x="40" y="190" width="130" height="120" rx="26" '+S+'/><text x="40" y="350">HANDLE</text>'+
+ '<rect x="210" y="214" width="60" height="72" rx="10" '+S+'/><circle cx="240" cy="250" r="18" '+SA+'/><circle cx="240" cy="250" r="26" '+S+'/><text x="200" y="350">SEALED LINK</text>'+
+ '<path d="M182 250h18M280 250h18" '+SA+'/><path d="M192 242l8 8-8 8M288 242l-8 8 8 8" '+SA+'/>'+
+ '<rect x="310" y="232" width="90" height="36" rx="18" '+S+'/><path d="M400 250 C470 250 500 236 530 210 C548 194 556 180 560 168" '+S+'/><path d="M408 238 C470 238 494 226 520 202" stroke="#c9d0dd" stroke-width="1" fill="none" stroke-dasharray="2 5"/><circle cx="560" cy="166" r="8" '+FA+'/><text x="330" y="350">INSERTION MODULE</text><text x="40" y="420">MANUAL OR ROBOTIC CONTROL</text></svg>'
+];
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Drive-by-wire flexible endoscopy · Minnesota</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Flexible</span><span class="l">endoscopy,</span><span class="l"><em>rewired.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Elements Endoscopy is building a modular, drive-by-wire colonoscope: electronic controls and drives in place of mechanical cables, a haptic handle and separable, sealed connections, for manual and robotic procedures.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/technology">How it works '+ARR+'</a><a class="btn" href="#/program">The Phase II program</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Bending section, steered by wire</span><span><i class="s"></i>Separable, sealed connection</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Colonoscope design has barely changed since the 1980s. Elements replaces the cables with <em>electronic control and drives,</em> so a scope can stay consistent across its life, fit the physician’s hand and open the way to robotic assistance.</p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1,630</span><span class="lab k">Projected U.S. gastroenterologist shortfall in 2025</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">19<sup>M</sup></span><span class="lab k">More patients entering the screening pool</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">67.9<sup>%</sup></span><span class="lab k">Of endoscopists report procedure-related injury</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>5,833</span><span class="lab k">Average repair cost per incident</span></div>'+
+   '</div><span class="lab srcnote" data-r>Figures as cited in the NIH Phase II project abstract</span></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">From cables to <em>code.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Cable</span><span>Wire</span><span>Hand</span><span>Module</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>The cable problem.</h3><p>Conventional colonoscopes steer the tip through mechanical pull cables running the length of the scope. The design has stayed largely the same since the 1980s, and it wears: repairs average $5,833 per incident, and competence takes 200 to 400 procedures.</p></article>'+
+     '<article class="step"><h3>Steer by wire.</h3><p>Elements replaces the cable-actuated mechanism with electronic control interfaces and drives. An electromechanical and hydraulic system deflects the tip, so handling stays consistent instead of drifting as cables stretch.</p></article>'+
+     '<article class="step"><h3>Fit the hand, feel the scope.</h3><p>Controls become a haptic handle, refined for hand sizes from the 5th to the 95th percentile. Haptic feedback keeps the physician in touch with the tip, and settings can be tailored to each physician.</p></article>'+
+     '<article class="step"><h3>Separate, seal, scale.</h3><p>The handle and the flexible scope separate through IP68-sealed hydraulic connections built for validated disinfection. The modular, data-ready architecture supports manual procedures today and robotic assistance tomorrow.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r">'+FIG.map(function(f){return '<div class="fig">'+f+'</div>'}).join("")+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Phase II aims</span><h2 class="d2 split">Four builds to a <em>design freeze.</em></h2></div><p data-r>The NIH Phase II program takes the functional Phase I prototype to a commercially ready system, tested against a leading reusable colonoscope.</p></div>'+
+   '<div class="aims4" data-group>'+
+    aimCard('<path d="M8 48 C24 48 34 40 40 24 C43 16 46 12 52 8"/><circle class="f" cx="52" cy="8" r="4"/><path class="a" d="M14 40 a10 10 0 0 1 10 -10"/>','The tip','The final electromechanical and hydraulically based tip deflection subsystem.','Target · over 200 cycles')+
+    aimCard('<path d="M22 6 C36 6 42 14 42 24 L40 56 L24 56 L22 24 C22 16 18 10 22 6 Z"/><circle class="a" cx="32" cy="20" r="6"/>','The handle','A refined ergonomic handle, optimized for diverse hand sizes.','Target · over 20,000 cycles')+
+    aimCard('<rect x="4" y="22" width="18" height="20" rx="4"/><rect x="42" y="22" width="18" height="20" rx="4"/><circle class="a" cx="32" cy="32" r="8"/><circle cx="32" cy="32" r="13"/>','The connections','Separable connections with IP68-sealed hydraulic interfaces and validated disinfection.','IP68 sealed')+
+    aimCard('<rect x="4" y="24" width="14" height="16" rx="3"/><rect x="24" y="26" width="12" height="12" rx="3"/><path d="M36 32 C46 32 50 26 56 14"/><circle class="f" cx="56" cy="14" r="3.4"/><path class="a" d="M18 32h6"/>','The system','The full modular system, assessed by gastroenterologists with standardized protocols.','Target · over 80% acceptance')+
+   '</div></div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="grant" data-r><div><span class="lab kick">NIBIB · SBIR Phase II · Aug 2026</span><p class="gq"><em>$1,435,234</em> in first-year NIH funding to make drive-by-wire colonoscopy commercially ready.</p></div>'+
+   '<p class="muted">The Phase II award from the National Institute of Biomedical Imaging and Bioengineering follows a Phase I that delivered a complete functional prototype, validating electromechanical and hydraulic actuation, haptic feedback controls and a modular architecture. The goal is a design-frozen system ready for FDA 510(k) preparation.</p></div>'+
+   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Grants and patents</h2><a class="btn" href="#/program" data-r>The full record '+ARR+'</a></div>'+rows(RECORD.slice(0,3))+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Built by <em>device veterans.</em></h2></div><p data-r>Elements emerged from the medical device incubator ConvergAscent, led by seasoned industry veterans working with partners who have developed and commercialized numerous medical devices.</p></div>'+
+   '<div class="tgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  '</div></section>'+
+  cta();
+}
+function aimCard(svg,h,p,l){return '<div class="aim"><svg viewBox="0 0 64 64" aria-hidden="true">'+svg+'</svg><h3>'+h+'</h3><p>'+p+'</p><span class="lab">'+l+'</span></div>'}
+function cta(){
+  return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Get in touch</span>'+
+   '<h2 class="big split">Talk to us about <em>the next scope.</em></h2>'+
+   '<p class="sub" data-r>Gastroenterologists, partners and investors: start a conversation about the drive-by-wire colonoscope and the Phase II program.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="#/technology">The technology</a></div>'+
+  '</div></section>';
+}
+function moaSvg(){
+  var box=function(x,y,w,h,t,s){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="none" stroke="#a9b2c4" stroke-width="1"/><text class="t1" x="'+(x+18)+'" y="'+(y+40)+'">'+t+'</text><text x="'+(x+18)+'" y="'+(y+66)+'">'+s+'</text>'};
+  var hz='<svg class="hz" viewBox="0 0 1120 220" role="img" aria-label="Signal path: haptic handle, control electronics, electromechanical and hydraulic drives, sealed connection, bending section">'+
+   box(0,60,200,96,"Haptic handle","OPERATOR INPUT")+box(230,60,200,96,"Control","ELECTRONICS")+box(460,60,200,96,"Drives","ELECTRO · HYDRAULIC")+box(690,60,190,96,"Sealed link","IP68 · SEPARABLE")+
+   '<path d="M200 108h30M430 108h30M660 108h30" fill="none" stroke="#62cbf6" stroke-width="1.4"/><path d="M880 108 C960 108 1010 96 1050 60 C1072 40 1084 28 1092 20" fill="none" stroke="#62cbf6" stroke-width="1.6"/><circle cx="1094" cy="18" r="7" fill="#62cbf6"/><text x="930" y="170">BENDING SECTION</text><text x="0" y="200">SIGNAL, NOT CABLE</text></svg>';
+  var vm='<svg class="vm" viewBox="0 0 320 620" role="img" aria-label="Signal path from haptic handle to bending section">'+
+   box(0,0,320,90,"Haptic handle","OPERATOR INPUT")+box(0,124,320,90,"Control","ELECTRONICS")+box(0,248,320,90,"Drives","ELECTRO · HYDRAULIC")+box(0,372,320,90,"Sealed link","IP68 · SEPARABLE")+
+   '<path d="M160 90v34M160 214v34M160 338v34" fill="none" stroke="#62cbf6" stroke-width="1.4"/><path d="M160 462 C160 520 180 560 230 600" fill="none" stroke="#62cbf6" stroke-width="1.6"/><circle cx="234" cy="603" r="7" fill="#62cbf6"/><text x="0" y="560">BENDING SECTION</text></svg>';
+  return hz+vm;
+}
+function vTech(){
+  return head({k:"Technology",h:'Built like a <em>modern machine.</em>',p:'A colonoscope that steers through electronics instead of cables, with a haptic handle and separable, sealed modules, designed for manual and robotic procedures.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+
+   '<div class="pillars" data-group>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="4" y="20" width="18" height="24" rx="5"/><path class="a" d="M22 32h14" stroke-dasharray="2 3"/><rect x="36" y="22" width="14" height="20" rx="3"/><path d="M50 32 C56 32 58 26 60 20"/><circle class="f" cx="60" cy="18" r="3"/></svg><h3>Drive-by-wire</h3><p>Electronic control interfaces and drives replace mechanical cable actuation, the first implementation of drive-by-wire architecture in flexible endoscopy, according to the NIH Phase II abstract.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M24 6 C38 6 44 14 44 24 L42 58 L26 58 L24 24 C24 16 20 10 24 6 Z"/><circle class="a" cx="34" cy="20" r="7"/><path class="a" d="M50 22 q4 -4 8 0M50 30 q4 -4 8 0"/></svg><h3>Haptic handle</h3><p>Haptic feedback controls in an ergonomic handle refined across hand sizes, with physician-specific customization of how the scope responds.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="22" width="20" height="20" rx="5"/><circle class="a" cx="32" cy="32" r="7"/><circle cx="32" cy="32" r="12"/><rect x="44" y="26" width="18" height="12" rx="6"/></svg><h3>Separable and sealed</h3><p>Modular sections join through IP68-sealed hydraulic interfaces designed for validated disinfection, so the system can be reprocessed without a maintenance burden.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Signal path</span><h2 class="d2 split">Signal, <em>not cable.</em></h2></div><p data-r>Physician input at the handle becomes an electronic command, and drives at the scope turn it into precise tip deflection.</p></div>'+
+   '<figure class="moa" style="margin:0">'+moaSvg()+'</figure>'+
+  '</div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Benchmarks</span><h2 class="d3 split">Measured against <em>the reference.</em></h2><p class="muted" style="margin-top:24px" data-r>Phase II testing targets performance within 5% of the specifications of the Olympus PCF-H190D colonoscope, with clinician assessment across hand sizes.</p></div>'+
+   '<dl class="facts" data-group>'+
+    '<div><dt class="lab">Force accuracy</dt><dd>±0.05 N</dd></div>'+
+    '<div><dt class="lab">Motion resolution</dt><dd>±0.5 mm</dd></div>'+
+    '<div><dt class="lab">Reference device</dt><dd>Within 5% of Olympus PCF-H190D specifications</dd></div>'+
+    '<div><dt class="lab">Tip deflection lifetime</dt><dd>More than 200 functional cycles</dd></div>'+
+    '<div><dt class="lab">Handle durability</dt><dd>More than 20,000 cycles</dd></div>'+
+    '<div><dt class="lab">Hand sizes assessed</dt><dd>5th to 95th percentile</dd></div>'+
+    '<div><dt class="lab">User acceptance</dt><dd>Above 80%</dd></div>'+
+   '</dl></div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Manual and robotic</span><h2 class="d3 split">Manual today, <em>robotic-ready.</em></h2><p class="muted" style="margin-top:24px" data-r>Once steering is electronic, the same scope can be driven by a physician’s hand or by software. Elements’ patents describe a semi-robotic embodiment in which a computer in the handle steers the insertion tube in response to haptic controls.</p></div>'+
+   '<ul class="bul" data-group>'+
+    '<li><span>Consistent performance throughout the device lifecycle, with equivalent per-procedure costs and no maintenance burden.</span></li>'+
+    '<li><span>Physician-specific ergonomic customization, aimed at reducing injuries and shortening learning curves.</span></li>'+
+    '<li><span>Inertial measurement units that can feed a digital three-dimensional representation of the anatomy.</span></li>'+
+    '<li><span>Comprehensive procedural data collection, enabling future AI-driven procedural assistance.</span></li>'+
+   '</ul></div></div></section>'+cta();
+}
+function vProgram(){
+  return head({k:"Program",h:'From prototype to <em>design freeze.</em>',p:'Two NIH SBIR awards and four granted U.S. patents trace the path from a modular endoscope concept to a commercially ready drive-by-wire colonoscope.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Milestones</span><h2 class="d3 split">The road so <em>far.</em></h2><p class="muted" style="margin-top:24px" data-r>Dates from NIH RePORTER and the U.S. patent record.</p></div>'+
+   '<ol class="tl" id="tl"><i class="ln0"></i><i class="ln1"></i>'+
+    '<li><span class="lab">Dec 2017</span><h3>First patent priority date</h3><p>Multi-use endoscopes with a removable, sealed optical window and a removable optical module.</p></li>'+
+    '<li><span class="lab">Oct 2018</span><h3>Haptic and robotic control filed</h3><p>An endoscope with a releasable handle, haptic controllers and a computer for steering, plus inertial measurement units.</p></li>'+
+    '<li><span class="lab">Dec 2022</span><h3>First patent granted</h3><p>U.S. Patent 11,529,038, followed by 11,826,023 (2023), 12,102,288 (2024) and 12,185,908 (2025).</p></li>'+
+    '<li><span class="lab">Apr 2023</span><h3>NIH SBIR Phase I</h3><p>NIBIB funds a modular, flexible, semi-disposable endoscope platform. The phase delivers a complete functional prototype.</p></li>'+
+    '<li><span class="lab">Aug 2026</span><h3>NIH SBIR Phase II</h3><p>NIBIB awards $1,435,234 in first-year funding to develop the modular, drive-by-wire, haptic-controlled colonoscope.</p></li>'+
+    '<li><span class="lab">Goal</span><h3>Design freeze</h3><p>A design-frozen system ready for FDA 510(k) preparation, within a project period that runs to August 2028.</p></li>'+
+   '</ol></div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Phase II at a glance</span><h2 class="d3 split">The <em>award.</em></h2></div>'+
+   '<dl class="facts" data-group>'+
+    '<div><dt class="lab">Project</dt><dd>2R44EB034611-02</dd></div>'+
+    '<div><dt class="lab">Institute</dt><dd>National Institute of Biomedical Imaging and Bioengineering</dd></div>'+
+    '<div><dt class="lab">First-year award</dt><dd>$1,435,234</dd></div>'+
+    '<div><dt class="lab">Notice date</dt><dd>August 26, 2026</dd></div>'+
+    '<div><dt class="lab">Principal investigator</dt><dd>Dwight Meglan</dd></div>'+
+    '<div><dt class="lab">Objective</dt><dd>A commercially ready drive-by-wire colonoscope system</dd></div>'+
+   '</dl></div>'+
+   '<div style="margin-top:var(--sec)"><span class="lab kick" data-r>The record</span>'+rows(RECORD)+'</div>'+
+  '</div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'The <em>team.</em>',p:'Elements Endoscopy is an early-stage company that emerged from the medical device incubator ConvergAscent, led by seasoned industry veterans.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="tgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  '<p class="note" data-r>Profiles drawn from NIH RePORTER, the U.S. patent record and Elements’ published policies.</p></div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Clinical collaboration, partnership, investment or press: send a note and it will reach the Elements team.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Headquarters</span><h3>Edina, Minnesota</h3><p>Elements Endoscopy Inc.</p><p><span class="lab">Brian Craig · Chief Executive Officer</span><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p>'+
+    '<div class="map">'+mapSvg()+'</div></div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
+    '<div class="subm"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:#00699a;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. On the live site this form would reach the Elements team directly.</p></div></div>'+
+  '</div></div></section>';
+}
+function mapSvg(){
+  var g='';for(var x=25;x<500;x+=25)g+='<path d="M'+x+' 0V400" stroke="rgba(13,18,38,.07)" stroke-width="1"/>';for(var y=25;y<400;y+=25)g+='<path d="M0 '+y+'H500" stroke="rgba(13,18,38,.07)" stroke-width="1"/>';
+  return '<svg viewBox="0 0 500 400" aria-label="Stylized locator marking Edina, Minnesota">'+g+
+  '<path class="mp" d="M0 300C70 290 120 318 190 296S310 262 360 276 450 300 500 288" fill="none" stroke="#4b566b" stroke-width="1.2"/>'+
+  '<g class="pin" transform="translate(170 170)"><circle r="30" fill="rgba(0,105,154,.12)" class="pr"/><circle r="6" fill="#00699a"/><text x="20" y="-6" font-family="Sora,sans-serif" font-weight="300" font-size="30" letter-spacing="-1" fill="#0d1226">Edina</text><text x="22" y="18" font-family="IBM Plex Mono,monospace" font-size="11" letter-spacing="1.5" fill="#4b566b">MINNESOTA</text><text x="22" y="36" font-family="IBM Plex Mono,monospace" font-size="11" letter-spacing="1.5" fill="#4b566b">44.89° N · 93.35° W</text></g>'+
+  '<text x="30" y="370" font-family="IBM Plex Mono,monospace" font-size="11" letter-spacing="1.5" fill="#4b566b">MINNEAPOLIS–SAINT PAUL METRO</text></svg>';
+}
+function v404(){return head({k:"Not found",h:'Nothing at this <em>depth.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Company</span>Elements Endoscopy Inc.<br>Edina, Minnesota</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="#/contact">Contact form</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/program">Program</a><br><a class="ul" href="#/team">Team</a></div>'+
+   '<div class="c"><span class="lab">Funding</span>NIH SBIR Phase II<br>National Institute of Biomedical Imaging and Bioengineering</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">elements</span>'+
+  '<div class="legal"><span class="lab">© 2026 Elements Endoscopy Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"Elements Endoscopy — Flexible endoscopy, rewired",x:"Home"};
+  if(p[0]==="technology")return {k:"technology",v:vTech,t:"Technology — "+SITE,x:"Technology"};
+  if(p[0]==="program")return {k:"program",v:vProgram,t:"Program — "+SITE,x:"Program"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
+var MOBILE=function(){return innerWidth<861};
+
+/* ================= HERO FIELD: a drive-by-wire colonoscope entering a lumen; its bending section follows the pointer, its light finds the folds ================= */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,W=0,H=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,bend={a:0,th:.5};
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);if(!running)frame(true)}
+  function lay(){if(W<861)return {ox:.56,oy:.3,F:Math.min(W*1.05,H*.6)};if(W<1100)return {ox:.62,oy:.47,F:H*.95};return {ox:.63,oy:.48,F:Math.min(H*1.02,W*.66)}}
+  function v3(x,y,z){return [x,y,z]}
+  function add(a,b){return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]}
+  function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]}
+  function mul(a,s){return [a[0]*s,a[1]*s,a[2]*s]}
+  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]}
+  function crs(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+  function nrm(a){var l=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/l,a[1]/l,a[2]/l]}
+  function bez(P0,P1,P2,P3,u){var v=1-u;return [0,1,2].map(function(k){return v*v*v*P0[k]+3*v*v*u*P1[k]+3*v*u*u*P2[k]+u*u*u*P3[k]})}
+  var L,cx0,cy0;
+  function depth0(P){return P.p[2]}
+  function pr(p){var z=Math.max(.35,p[2]);return [cx0+p[0]/z*L.F,cy0+p[1]/z*L.F,z]}
+  var BG="13,18,38",PAPER="226,232,242",ACC="98,203,246",ACC2="0,159,227";
+  function frame(once){
+    var t=(performance.now()-t0)/1000;if(RM)t=12;
+    m[0]+=(mT[0]-m[0])*.045;m[1]+=(mT[1]-m[1])*.045;dim+=(dimT-dim)*.08;
+    L=lay();cx0=W*L.ox;cy0=H*L.oy;
+    cv.style.opacity=shown?String(.4+.6*dim):"";
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    var e=IN.v,ei=e*e*(3-2*e);
+    /* lumen: haustral folds receding along the view axis, flowing slowly toward the viewer */
+    var axis=[0.06+m[0]*.03,-0.02+m[1]*.02];
+    var NF=12,span=12,speed=.22;
+    /* tip pose (computed first so the folds can be lit) */
+    var sway=Math.sin(t*.31)*.05,sway2=Math.cos(t*.23)*.04;
+    var A=v3(1.75,.42,1.7),C1=v3(1.25+sway,.95,2.5),C2=v3(.05,.7+sway2,3.1),PB=v3(.12,.22,3.75);
+    var T=nrm(sub(PB,C2));
+    var idleA=t*.18,tA=Math.atan2(m[1],m[0]||1e-4),mag=Math.min(1,Math.hypot(m[0],m[1])*2.2);
+    var wantA=mag>.08?tA:idleA,wantTh=.45+.75*mag+.12*Math.sin(t*.5);
+    var da=((wantA-bend.a+Math.PI*3)%(Math.PI*2))-Math.PI;bend.a+=da*.05;bend.th+=(wantTh-bend.th)*.05;
+    var up=Math.abs(T[1])>.9?[1,0,0]:[0,1,0];var N0=nrm(crs(T,up)),B0=crs(T,N0);
+    var BD=add(mul(N0,Math.cos(bend.a)),mul(B0,Math.sin(bend.a)));
+    var Lb=1.15,k=bend.th/Lb;
+    function bendPt(u){var s=u*Lb;return add(PB,add(mul(T,Math.sin(k*s)/k),mul(BD,(1-Math.cos(k*s))/k)))}
+    function bendTan(u){var s=u*Lb;return nrm(add(mul(T,Math.cos(k*s)),mul(BD,Math.sin(k*s))))}
+    var tip=bendPt(1),tipT=bendTan(1);
+    var spot=add(tip,mul(tipT,2.4)),sp=pr(spot),spr=L.F*.62/spot[2];
+    /* folds */
+    for(var f=0;f<NF;f++){
+      var z=4.2+((f/NF*span-t*speed)%span+span)%span;
+      var fa=Math.min(1,(z-4.2)/1.4)*Math.max(0,1-(z-4.2)/span)*ei;if(fa<.01)continue;
+      var R=1.25+.07*Math.sin(f*1.7);var pts=[],n=64;
+      for(var i=0;i<=n;i++){var an=i/n*6.2832;var wob=1+.025*Math.sin(an*3+f*1.3+t*.2)+.015*Math.sin(an*5-f);
+        pts.push(pr([axis[0]*z*.4+Math.cos(an)*R*wob,axis[1]*z*.4+Math.sin(an)*R*wob*.92,z]))}
+      for(i=0;i<n;i++){var a1=pts[i],a2=pts[i+1];var mx=(a1[0]+a2[0])/2,my=(a1[1]+a2[1])/2;
+        var lit=Math.exp(-((mx-sp[0])*(mx-sp[0])+(my-sp[1])*(my-sp[1]))/(spr*spr*2.2));
+        var al=fa*(.11+.6*lit);c.strokeStyle=lit>.25?"rgba("+ACC+","+al.toFixed(3)+")":"rgba("+PAPER+","+al.toFixed(3)+")";
+        c.lineWidth=Math.max(.6,1.5*4.2/z);c.beginPath();c.moveTo(a1[0],a1[1]);c.lineTo(a2[0],a2[1]);c.stroke()}
+    }
+    /* soft illumination where the scope looks */
+    var g=c.createRadialGradient(sp[0],sp[1],0,sp[0],sp[1],spr*1.6);g.addColorStop(0,"rgba("+ACC2+","+(.16*ei).toFixed(3)+")");g.addColorStop(1,"rgba("+ACC2+",0)");c.fillStyle=g;c.fillRect(sp[0]-spr*1.6,sp[1]-spr*1.6,spr*3.2,spr*3.2);
+    /* centerline samples: proximal (insertion tube) then bending section */
+    var C=[],NP=56,NB=30,reach=.08+.92*ei;
+    for(i=0;i<=NP;i++){var u=i/NP;C.push({p:bez(A,C1,C2,PB,u),b:0,s:u*.72})}
+    for(i=1;i<=NB;i++){var ub=i/NB;C.push({p:bendPt(ub),t:bendTan(ub),b:1,s:.72+ub*.28})}
+    for(i=0;i<C.length;i++){if(!C[i].t){var q0=C[Math.max(0,i-1)].p,q1=C[Math.min(C.length-1,i+1)].p;C[i].t=nrm(sub(q1,q0))}}
+    /* parallel transport frames */
+    var Nn=nrm(crs(C[0].t,[0,1,0]));for(i=0;i<C.length;i++){var tt=C[i].t;Nn=nrm(sub(Nn,mul(tt,dot(Nn,tt))));C[i].n=Nn;C[i].bn=crs(tt,Nn)}
+    var r=.13,show=Math.floor(C.length*(1-reach));
+    /* spine */
+    c.lineWidth=1;c.strokeStyle="rgba("+PAPER+","+(.16*ei).toFixed(3)+")";c.beginPath();for(i=show;i<C.length;i++){var s2=pr(C[i].p);i===show?c.moveTo(s2[0],s2[1]):c.lineTo(s2[0],s2[1])}c.stroke();
+    /* rings, far to near */
+    var JUNC=31;
+    for(i=C.length-1;i>=show;i--){var P=C[i],isB=P.b,isJ=(i===JUNC||i===JUNC+1);
+      if(!isB&&!isJ&&i%2&&depth0(P)>2.6)continue;
+      var rr=r*(isJ?1.18:1);var nseg=28,prev=null;var depth=pr(P.p)[2];
+      var base=(isB?.62:.32)*ei*Math.min(1,1.6/depth*1.6);
+      for(var j=0;j<=nseg;j++){var an2=j/nseg*6.2832;var rad=add(mul(P.n,Math.cos(an2)),mul(P.bn,Math.sin(an2)));var wp=add(P.p,mul(rad,rr));var s3=pr(wp);
+        if(prev){var front=dot(rad,nrm(mul(wp,-1)))>0;var al2=base*(front?1:.22);
+          c.strokeStyle=isJ?"rgba("+ACC+","+(al2*1.3).toFixed(3)+")":"rgba("+PAPER+","+al2.toFixed(3)+")";c.lineWidth=Math.max(.7,(isJ?2:1.2)*2.2/depth);
+          c.beginPath();c.moveTo(prev[0],prev[1]);c.lineTo(s3[0],s3[1]);c.stroke()}prev=s3}
+    }
+    /* drive signals: pulses travelling the wire to the tip */
+    for(i=0;i<7;i++){var ph=(i/7+t*.12)%1;var idx=ph*(C.length-1);if(idx<show)continue;var i0=Math.floor(idx),fr=idx-i0;var q=C[i0].p,q2=C[Math.min(C.length-1,i0+1)].p;var pp=pr(add(q,mul(sub(q2,q),fr)));
+      var pa=Math.sin(ph*Math.PI)*ei,rad2=Math.max(2,9/pp[2]);var g2=c.createRadialGradient(pp[0],pp[1],0,pp[0],pp[1],rad2*3);g2.addColorStop(0,"rgba("+ACC+","+(.9*pa).toFixed(3)+")");g2.addColorStop(.35,"rgba("+ACC+","+(.25*pa).toFixed(3)+")");g2.addColorStop(1,"rgba("+ACC+",0)");c.fillStyle=g2;c.beginPath();c.arc(pp[0],pp[1],rad2*3,0,6.2832);c.fill()}
+    /* distal face: lens and light guides */
+    if(ei>.5){var tf=pr(tip),ra=L.F*r/tf[2];var a3=Math.min(1,(ei-.5)*2);
+      c.fillStyle="rgba("+BG+","+(.85*a3).toFixed(3)+")";c.beginPath();c.arc(tf[0],tf[1],ra*.98,0,6.2832);c.fill();
+      c.strokeStyle="rgba("+PAPER+","+(.7*a3).toFixed(3)+")";c.lineWidth=1;c.beginPath();c.arc(tf[0],tf[1],ra*.98,0,6.2832);c.stroke();
+      c.fillStyle="rgba("+ACC+","+(.95*a3).toFixed(3)+")";c.beginPath();c.arc(tf[0]-ra*.18,tf[1]-ra*.05,ra*.28,0,6.2832);c.fill();
+      c.fillStyle="rgba("+PAPER+","+(.85*a3).toFixed(3)+")";c.beginPath();c.arc(tf[0]+ra*.38,tf[1]-ra*.3,ra*.12,0,6.2832);c.fill();c.beginPath();c.arc(tf[0]+ra*.34,tf[1]+ra*.38,ra*.12,0,6.2832);c.fill()}
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+})();
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.7)*(1-p*.5))}
+
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var s=els[i].closest&&els[i].closest("[data-theme]");if(s&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=s.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+}
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
+      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    var tl=$("#tl",view);if(tl&&!RM){gsap.to($(".ln1",tl),{scaleY:1,ease:"none",scrollTrigger:{trigger:tl,start:"top 70%",end:"bottom 60%",scrub:true}})}
+    if(!RM&&$(".moa",view)){$$(".moa path,.moa rect,.moa circle",view).forEach(function(p){if(!p.getTotalLength)return;var L=p.getTotalLength();if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.8,ease:"flow",scrollTrigger:{trigger:".moa",start:"top 78%"}})});
+      gsap.from($$(".moa text",view),{opacity:0,duration:.8,stagger:.03,delay:.6,scrollTrigger:{trigger:".moa",start:"top 78%"}})}
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= AZ: GLOBAL REVEAL ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.aim";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+
+var storyAlive=false;
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var sec=$("#story",view);if(!sec)return;
+  var steps=$$(".step",view),figs=$$(".fig",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM){figs.forEach(function(f,i){f.style.opacity=i===0?1:0});return}
+  storyAlive=true;
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,figs:figs,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!storyAlive||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4)));fx(p)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){if(!fw.isConnected)return;fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{attr:{r:0},opacity:0,duration:1.5,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+  if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
+    gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
+    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+}
+
+/* ================= BIO OVERLAY ================= */
+var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{xPercent:102});
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
+   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
+   '<p class="lab src">Profile drawn from NIH RePORTER, the U.S. patent record and Elements’ published policies.</p>';
+  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  document.title=p.name+" — "+SITE;
+}
+function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
+  if(bioOpen){rvPlay($("#bioIn"),0);return}
+  bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();
+  gsap.killTweensOf(["#bioPan","#bioScr"]);
+  gsap.fromTo("#bioPan",{xPercent:102},{xPercent:0,duration:instant||RM?.01:.7,ease:"flow"});gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
+  var d0=instant?(window._preShown?1.5:.4):.25;rvPlay($("#bioIn"),d0);
+  if(!RM)gsap.fromTo($$(".bar0 .btn",bio),{opacity:0,y:-12},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){var c=$("[data-close]",bio);if(c)c.focus({preventScroll:true})},50);
+}
+function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{xPercent:102,duration:RM?.01:.55,ease:"flow"});gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
+function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
+$("#bioScr").addEventListener("click",closeBio);
+var bioFromClick=false,bioBase=null;
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(a.hasAttribute("data-close")){e.preventDefault();closeBio();return}
+  if(a.hasAttribute("data-replace")){e.preventDefault();history.replaceState(null,"",h);prevHash=h;var r=route(h);if(r.bio)openBio(r.bio);return}
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();bioBase=location.hash||"#/";bioFromClick=true;history.pushState(null,"",h);prevHash=h;openBio(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");storyAlive=false;if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.snapDim(r.k==="home"?1:.7);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("ee-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){bioBase="#/team";openBio(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
+  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{xPercent:102});gsap.set("#bioScr",{opacity:0})}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)bioBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)openBio(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem("ee-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem("ee-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem("ee-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});gsap.set("#pre .wm small",{opacity:0,y:10});$("#pre .pc").style.visibility="visible";
+  var pet=$$("#petals path");gsap.set(pet,{scale:0,opacity:0,transformOrigin:"6px 24px"});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:1};function upd(){cnt.textContent=("00"+Math.max(1,Math.round(o.n))).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(pet,{scale:1,opacity:1,duration:.8,ease:"silk",stagger:.07},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to("#pre .wm small",{opacity:1,y:0,duration:.6,ease:"silk"},.45)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)
+        .to(["#pre .mark","#pre .wm small","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2.2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(['300 1em "Sora"','400 1em "Sora"','400 1em "Inter Tight"','500 1em "Inter Tight"','400 1em "IBM Plex Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+</body>
+</html>

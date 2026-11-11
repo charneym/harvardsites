@@ -790,6 +790,10 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
   };
 })();
 </script>
+<script>/* Refresh-safe pinned stories: a ScrollTrigger refresh (resize, fonts, lazy images loading or failing) renders scrubbed
+   timelines at 0 to measure, then restores their progress without firing onUpdate, so callback-driven stories (StoryFX)
+   fell back to step one. After every refresh, re-fire the onUpdate of each scrubbed story still on screen at its true progress. */
+(function(){var S=window.ScrollTrigger;if(!S||S.__storyFix)return;S.__storyFix=1;S.addEventListener("refresh",function(){requestAnimationFrame(function(){S.getAll().forEach(function(t){var a=t.animation,el=t.pin||t.trigger;if(!a||!t.vars||!t.vars.scrub||!el||!el.isConnected)return;var r=el.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;var cb=a.eventCallback("onUpdate");if(typeof cb==="function"){try{cb.call(a)}catch(e){}}})})})})();</script>
 <script>/* BF: one source of truth for the cover offset */gsap.set(".xc",{y:0,yPercent:101});</script>
 <script>
 (function(){

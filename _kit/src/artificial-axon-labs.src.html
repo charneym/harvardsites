@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Artificial Axon Labs — Watch myelin form, then find drugs that repair it</title>
+<meta name="description" content="Artificial Axon Labs, an MIT spinout, 3D-prints biomimetic axons to measure myelin wrapping directly and discover first-in-class remyelinating therapies for multiple sclerosis.">
+<meta name="theme-color" content="#141313">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23141313'/%3E%3Cg stroke='%23e3846a' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M14 20v24M23 14v36M32 18v28M41 12v40M50 20v24'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+/*@fonts Epilogue:300,400,500; Literata:400i; Geist Mono:400*/
+:root{
+  --ink:#141313;
+  --ink2:#1a1918;
+  --ink3:#242220;
+  --deep:#0d0c0c;
+  --bone:#f3efea;
+  --bone2:#e9e3db;
+  --bone3:#d9d1c7;
+  --stone:#aca59d;
+  --stoneD:#56514b;
+  --mid:#6c665f;
+  --sin:#c05038;
+  --sinL:#e3846a;
+  --sinD:#a13f2a;
+  --err:#a13f2a;
+  --hair:rgba(243,239,234,.14);--hairD:rgba(20,19,19,.16);
+  --serif:'Epilogue',system-ui,sans-serif;
+  --ital:'Literata',Georgia,serif;
+  --sans:'Epilogue',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--sinL);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--sinL);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--sinD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--sinL);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.g12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--stone)}
+.light .lab{color:var(--stoneD)}
+em{font-style:italic;font-family:var(--serif)}
+.d1{font-family:var(--serif);font-weight:400;font-size:clamp(50px,8.4vw,164px);line-height:.94;letter-spacing:-.035em;margin:0}
+.d2{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,104px);line-height:.98;letter-spacing:-.03em;margin:0}
+.d3{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,62px);line-height:1.04;letter-spacing:-.022em;margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--sinL);font-weight:400}
+.light .d1 em,.light .d2 em,.light .d3 em{color:var(--sinD)}
+.d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.lede{font-family:var(--serif);font-weight:400;font-size:clamp(21px,1.9vw,30px);line-height:1.34;letter-spacing:-.005em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--stone)}
+.light .muted{color:var(--stoneD)}
+.light{background:var(--bone);color:var(--ink)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:16ch}
+.shead p{max-width:46ch;margin:0;color:var(--stone)}
+.light .shead p{color:var(--stoneD)}
+.kick{display:block;margin-bottom:22px;color:var(--sinL)}
+.light .kick{color:var(--sinD)}
+
+/* grain */
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* field canvas */
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(90% 80% at 74% 46%,#1a1918 0%,#141313 52%,#0d0c0c 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+/* preloader / veil */
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;visibility:hidden}
+#pre .dots{width:64px;height:64px}
+#pre .wm{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.4vw,62px);letter-spacing:-.02em;color:var(--bone);line-height:1.1;padding:.1em .18em .4em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm em{color:var(--sinL)}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--serif);font-weight:400;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.03em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+/* header */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:var(--bone);border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:rgba(20,19,19,.74);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:rgba(243,239,234,.82);border-bottom-color:var(--hairD)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.brand img{height:34px;width:auto}
+.brand .lg-d{display:none}
+.hdr.ink .brand .lg-w{display:none}
+.hdr.ink .brand .lg-d{display:block}
+.brand .wmk{display:none;align-items:baseline;gap:8px;font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.02em;line-height:1}
+.brand .wmk small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+.brand .wmk svg{width:22px;height:22px;align-self:center}
+.brand.nologo img{display:none!important}
+.brand.nologo .wmk{display:flex}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+/* buttons: one system */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--sinL);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--sinL)}
+.btn:hover::before{transform:none}
+.btn.solid{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.btn.solid::before{background:var(--sinL)}
+.light .btn:hover{color:var(--bone);border-color:var(--sinD)}
+.light .btn::before{background:var(--sinD)}
+.light .btn.solid{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--serif);font-weight:400;font-size:clamp(40px,11vw,68px);line-height:1.05;letter-spacing:-.03em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
+
+/* masks (AD / AU / AX) */
+.ln{overflow:visible!important}
+.ln-mask{padding:.08em .14em .2em;margin:-.08em -.14em -.2em}
+
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(62% 72% at 20% 52%,rgba(13,12,12,.78),rgba(13,12,12,.42) 48%,rgba(13,12,12,0) 78%),linear-gradient(180deg,rgba(13,12,12,.35),rgba(13,12,12,0) 22%,rgba(13,12,12,0) 62%,#141313 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--sinL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(48px,7.4vw,148px);line-height:.95;letter-spacing:-.04em}
+.hero-h .l{display:block;white-space:nowrap}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:46ch;margin:0;font-size:17px;line-height:1.6;color:rgba(243,239,234,.86)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:rgba(243,239,234,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--sinL);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:8px;height:8px;border-radius:50%;background:var(--bone);display:block;opacity:.85}
+.hero-key i.s{background:var(--sinL)}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+/* page heads */
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 20% 70%,rgba(13,12,12,.75),rgba(13,12,12,.2) 70%),linear-gradient(180deg,rgba(13,12,12,.3),rgba(13,12,12,.1) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--sinL)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:54ch}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+.cta{background:var(--bone2)}
+@media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
+.moa .vm{display:none}
+@media (max-width:700px){.moa .hz{display:none}.moa .vm{display:block}.moa{padding:14px}}
+
+/* manifesto */
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.9vw,66px);line-height:1.1;letter-spacing:-.022em;margin:0;max-width:24ch}
+.mani .txt .w{opacity:.16}
+.mani .txt em{color:var(--sinL)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hair)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--serif);font-weight:400;font-size:clamp(56px,6.4vw,116px);line-height:.95;letter-spacing:-.04em;display:block;white-space:nowrap}
+.stat .v sup{font-size:.38em;vertical-align:top;position:relative;top:.2em;margin-left:.04em;color:var(--sinL)}
+.stat .v .pre{font-size:.6em;vertical-align:top;position:relative;top:.12em;margin-right:.02em;color:var(--sinL)}
+.stat .k{display:block;margin-top:14px;max-width:28ch}
+
+/* story (pinned) */
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
+.rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#aca59d;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #6c665f;transition:background .35s,border-color .35s}
+.rail span.on{color:var(--bone)}
+.rail span.done::before,.rail span.on::before{background:var(--sinL);border-color:var(--sinL)}
+.steps{position:relative;min-height:clamp(220px,30vh,300px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.018em;margin:0 0 16px}
+.step p{color:rgba(243,239,234,.8);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(74vh,720px);align-self:center}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
+.story-r .ax{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;border-top:1px solid var(--hair);padding-top:10px}
+
+/* pipeline table */
+.pipe{border-top:1px solid var(--hairD)}
+.dark .pipe,.dark2 .pipe{border-top-color:var(--hair)}
+.pipe-h,.prow{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,3fr) minmax(0,6fr);column-gap:var(--gap);align-items:center}
+.pipe-h{padding:14px 0;border-bottom:1px solid var(--hairD)}
+.pipe-h .stg{display:grid;grid-template-columns:repeat(3,1fr)}
+.pipe-h .stg span{padding-left:10px;border-left:1px solid var(--hairD)}
+.prow{padding:26px 0;border-bottom:1px solid var(--hairD);position:relative}
+.prow h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2.2vw,36px);line-height:1.08;letter-spacing:-.02em;margin:0 0 6px}
+.prow .ind{font-size:15px;line-height:1.5;color:var(--stoneD)}
+.prow .track{position:relative;height:40px;display:grid;grid-template-columns:repeat(3,1fr)}
+.prow .track i{border-left:1px solid var(--hairD);display:block}
+.prow .bar{position:absolute;left:0;top:50%;height:10px;margin-top:-5px;border-radius:99px;background:linear-gradient(90deg,rgba(161,63,42,.35),var(--sinD));transform-origin:left}
+.prow .bar.p{background:linear-gradient(90deg,rgba(20,19,19,.12),rgba(20,19,19,.55))}
+.prow .bar b{position:absolute;right:-1px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--sinD);box-shadow:0 0 0 5px rgba(161,63,42,.16)}
+.prow .bar.p b{background:var(--ink);box-shadow:0 0 0 5px rgba(20,19,19,.1)}
+.prow .note{grid-column:3/4;margin-top:10px;font-size:14px;color:var(--stoneD);line-height:1.5}
+.tagp{display:inline-flex;align-items:center;line-height:1;padding:6px 10px 5px;border:1px solid currentColor;border-radius:99px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;color:var(--sinD)}
+
+/* evidence block */
+.evi{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:end}
+.evi blockquote{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.4vw,58px);line-height:1.1;letter-spacing:-.022em;max-width:22ch}
+.evi blockquote em{color:var(--sinL)}
+.evi .meta{border-top:1px solid var(--hair);padding-top:20px}
+.evi .meta p{color:var(--stone);font-size:15px}
+.evi .meta ul{list-style:none;margin:18px 0 0;padding:0}
+.evi .meta li{padding:12px 0;border-top:1px solid var(--hair);font-size:15px;display:flex;justify-content:space-between;gap:16px;align-items:center}
+
+/* text cards (team, no portraits) */
+.tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.tcard{position:relative;display:flex;flex-direction:column;justify-content:flex-start;min-height:220px;padding:24px 22px 22px;border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo),border-color .32s var(--eo)}
+.dark .tcard,.dark2 .tcard{border-color:var(--hair);background:linear-gradient(180deg,rgba(243,239,234,.035),rgba(243,239,234,0))}
+.tcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.dark .tcard::before,.dark2 .tcard::before{background:var(--sinL)}
+.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(161,63,42,.08),rgba(161,63,42,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.dark .tcard::after,.dark2 .tcard::after{background:linear-gradient(0deg,rgba(227,132,106,.09),rgba(227,132,106,0) 60%)}
+.tcard:hover,.tcard:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(20,19,19,.45)}
+.tcard:hover::before,.tcard:focus-visible::before{transform:scaleX(1)}
+.tcard:hover::after,.tcard:focus-visible::after{opacity:1}
+.tcard .grp{color:var(--stoneD)}
+.dark .tcard .grp,.dark2 .tcard .grp{color:var(--stone)}
+.tcard h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,1.9vw,30px);line-height:1.1;letter-spacing:-.015em;margin:28px 0 8px;transition:transform .32s var(--eo),color .25s var(--eo)}
+.tcard h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.tcard:hover h3,.tcard:focus-visible h3{transform:translateX(5px);color:var(--sinD)}
+.dark .tcard:hover h3,.dark2 .tcard:hover h3{color:var(--sinL)}
+.tcard:hover h3 span,.tcard:focus-visible h3 span{background-size:100% 1px}
+.tcard .ttl{font-size:14.5px;line-height:1.45;color:var(--stoneD);margin:0}
+.dark .tcard .ttl,.dark2 .tcard .ttl{color:var(--stone)}
+.tcard .go{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:22px;color:var(--sinD)}
+.dark .tcard .go,.dark2 .tcard .go{color:var(--sinL)}
+.tcard .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--eo),transform .32s var(--eo)}
+.tcard:hover .go svg,.tcard:focus-visible .go svg{opacity:1;transform:none}
+.tgroup{margin-top:clamp(64px,7vw,110px)}
+.tgroup:first-child{margin-top:0}
+.tgroup>.lab{display:block;margin-bottom:22px}
+
+/* backers */
+.backers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.bk{border:1px solid var(--hair);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;gap:10px;position:relative;transition:border-color .3s var(--eo),background-color .3s var(--eo)}
+.bk b{font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.7vw,26px);line-height:1.15;letter-spacing:-.01em}
+.bk:hover{border-color:rgba(227,132,106,.6);background:rgba(243,239,234,.03)}
+
+/* rows (news) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.light .rows{border-top-color:var(--hairD)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.light .row-a{border-bottom-color:var(--hairD)}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--sinL);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.light .row-a::before{background:var(--sinD)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(227,132,106,.07),rgba(227,132,106,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.light .row-a::after{background:linear-gradient(0deg,rgba(161,63,42,.06),rgba(161,63,42,0) 70%)}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.8vw,29px);line-height:1.18;letter-spacing:-.015em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--sinL);transform:translateX(6px)}
+.light .row-a:hover h3{color:var(--sinD)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+/* cta */
+.cta .big{font-family:var(--serif);font-weight:400;font-size:clamp(52px,8vw,150px);line-height:.95;letter-spacing:-.04em;margin:0}
+.cta .big em{color:var(--sinD)}
+.cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+/* footer */
+.ftr{position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--sinL)}
+.ftr .c a{color:var(--bone)}
+.ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(23vw,360px);line-height:.8;letter-spacing:-.05em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.22em;color:var(--bone)}
+.ftr .bigw em{color:var(--sinL)}
+.ftr .bigw .ch{display:inline-block}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+/* inner page blocks */
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.pl3{border-top:1px solid var(--hairD);padding-top:24px}
+.dark .pl3,.dark2 .pl3{border-top-color:var(--hair)}
+.pl3 svg{width:64px;height:64px;margin-bottom:26px;overflow:visible}
+.pl3 svg *{fill:none;stroke:var(--ink);stroke-width:1}
+.pl3 svg .a{stroke:var(--sinD)}
+.pl3 svg .f{fill:var(--sinD);stroke:none}
+.pl3 h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.4vw,40px);line-height:1.04;letter-spacing:-.02em;margin:0 0 14px}
+.pl3 p{color:var(--stoneD);font-size:15.5px;max-width:36ch}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.aims{list-style:none;margin:0;padding:0;counter-reset:a}
+.aims li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hair);font-size:17px;line-height:1.5}
+.aims li:last-child{border-bottom:1px solid var(--hair)}
+.aims li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--sinL);margin-top:.55em}
+.qt{margin:clamp(40px,5vw,70px) 0 0;padding-top:28px;border-top:1px solid var(--hair)}
+.qt p{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(24px,2.2vw,34px);line-height:1.25;letter-spacing:-.012em;max-width:30ch;margin:0 0 18px}
+.light .qt{border-top-color:var(--hairD)}
+.tl{position:relative;list-style:none;margin:0;padding:0 0 0 34px}
+.tl .ln0{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--hairD)}
+.tl .ln1{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--sinD);transform-origin:top;transform:scaleY(0)}
+.tl li{position:relative;padding:0 0 clamp(30px,3.4vw,48px)}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:-34px;top:.5em;width:9px;height:9px;border-radius:50%;background:var(--bone);border:1px solid var(--sinD)}
+.tl li h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,30px);line-height:1.15;letter-spacing:-.015em;margin:0 0 8px}
+.tl li p{color:var(--stoneD);max-width:58ch;margin:0}
+.moa{border:1px solid var(--hair);background:var(--ink);padding:clamp(18px,3vw,40px)}
+.moa svg{width:100%;height:auto;display:block}
+.moa text{font-family:var(--mono);font-size:12px;letter-spacing:.1em;fill:var(--stone)}
+.moa .t1{font-family:var(--serif);font-size:22px;letter-spacing:-.01em;fill:var(--bone)}
+.moa .ac{fill:var(--sinL)}
+.refs{list-style:none;margin:0;padding:0;font-size:14.5px;color:var(--stone)}
+.refs li{padding:12px 0;border-top:1px solid var(--hair)}
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--gap);padding:18px 0;border-top:1px solid var(--hair)}
+.facts>div:last-child{border-bottom:1px solid var(--hair)}
+.facts dd{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,24px);line-height:1.3}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,48px);line-height:1.04;letter-spacing:-.02em;margin:14px 0 14px}
+.addr p{color:var(--stoneD)}
+.map{margin-top:clamp(30px,4vw,56px);border:1px solid var(--hairD);aspect-ratio:5/4;background:var(--bone2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea,.fld select{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(20,19,19,.3);padding:16px 0 12px;font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--sinD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#a13f2a;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#a13f2a}
+.sub{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.thanks svg circle{fill:none;stroke:var(--sinD);stroke-width:1}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+/* transition cover */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--ink3);transform:translateY(101%);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--sinL);opacity:.7}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
+.xt .t{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(54px,9vw,170px);line-height:.95;letter-spacing:-.035em;color:var(--bone);overflow:hidden;padding:.14em .18em .4em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--sinL)}
+
+/* bio overlay */
+.bio{position:fixed;inset:0;z-index:850;visibility:hidden;pointer-events:none}
+.bio.open{visibility:visible;pointer-events:auto}
+.bio .scr{position:absolute;inset:0;background:rgba(13,12,12,.6);opacity:0}
+.bio .pan{position:absolute;top:0;right:0;bottom:0;width:min(640px,100%);background:var(--bone);color:var(--ink);display:flex;flex-direction:column;overflow:auto;overscroll-behavior:contain}
+.bio .bar0{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:22px clamp(22px,4vw,48px);border-bottom:1px solid var(--hairD);position:sticky;top:0;background:var(--bone);z-index:2}
+.bio .pn{display:flex;gap:8px}
+.bio .in{padding:clamp(34px,5vw,64px) clamp(22px,4vw,48px) 60px}
+.bio h2{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5vw,68px);line-height:1;letter-spacing:-.03em;margin:16px 0 12px;padding-bottom:.08em}
+.bio .role{font-size:17px;color:var(--stoneD);margin:0 0 34px}
+.bio .bt p{font-size:17px;line-height:1.65}
+.bio blockquote{margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(22px,2vw,28px);line-height:1.3}
+.bio blockquote cite{display:block;margin-top:14px;font-style:normal}
+.bio .src{margin-top:34px}
+.bio .lab{color:var(--stoneD)}
+.bio .src a{color:var(--sinD)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+
+[data-r]{will-change:auto}
+.nf{min-height:70vh}
+
+@media (max-width:1100px){
+  .tgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-key{display:none}
+}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:38vh;height:38svh}
+  .story-l .d3{display:none}
+  .story-l .kick{display:none}
+  .backers{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .evi{grid-template-columns:1fr}
+  .two,.cgrid{grid-template-columns:1fr}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .brand .wmk small{display:none}
+  .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(13,12,12,.05) 0%,rgba(13,12,12,.2) 22%,rgba(13,12,12,.78) 38%,rgba(13,12,12,.9) 70%,#141313 100%)}
+  .hero-h{font-size:clamp(42px,11.6vw,96px)}
+  .hero-foot .s{font-size:16px}
+  .stats{grid-template-columns:1fr;gap:36px}
+  .tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pillars{grid-template-columns:1fr;row-gap:48px}
+  .pipe-h{display:none}
+  .prow{grid-template-columns:1fr;row-gap:8px}
+  .prow .note{grid-column:1/2}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.sub{grid-column:1/2}
+}
+@media (max-width:560px){
+  .tgrid{grid-template-columns:1fr}
+  .tcard{min-height:0}
+  .backers{grid-template-columns:1fr}
+  .bk{min-height:110px}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .facts>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:21px}
+}
+/* ===== Artificial Axon Labs: printed-line typography, rust accent, fibre motifs ===== */
+em{font-family:var(--ital);font-style:italic}
+.d1,.d2,.d3,.hero-h,.cta .big,.step h3,.tcard h3,.row-a h3,.pl3 h3,.bio h2,.pc-meta h3,.mani .txt,.evi blockquote,.gq,.lede,.addr h3,.sv h3,.fg b{font-family:var(--sans);font-weight:300;letter-spacing:-.025em}
+.d1{font-size:clamp(50px,8vw,150px);line-height:.98}
+.d2{font-size:clamp(38px,5.2vw,94px);line-height:1}
+.d3{font-size:clamp(30px,3.4vw,58px)}
+.hero-h{font-size:clamp(44px,6.9vw,136px);line-height:1;letter-spacing:-.03em}
+.lede{font-family:var(--sans);font-weight:300;font-size:clamp(20px,1.8vw,28px);line-height:1.4}
+.mani .txt{font-weight:300;font-size:clamp(28px,3.6vw,60px);line-height:1.12;max-width:21ch}
+.cta .big{font-size:clamp(46px,7vw,128px)}
+.stat .v{font-family:var(--sans);font-weight:300;font-size:clamp(54px,6vw,108px);letter-spacing:-.045em}
+.ftr .bigw{font-family:var(--sans);font-weight:300;font-size:min(21vw,330px);letter-spacing:-.05em}
+.bio h2{font-family:var(--sans);font-weight:300}
+.lab{font-size:10.5px;letter-spacing:.16em}
+
+/* brand wordmark in the header: the logo's line array + stacked caps */
+.brand .wmk{display:flex;align-items:center;gap:12px;font-family:var(--sans);font-size:0;letter-spacing:0}
+.brand .wmk .mk{width:30px;height:30px;flex:none}
+.brand .wmk .mk g{stroke:var(--sinL)}
+.hdr.ink .brand .wmk .mk g{stroke:var(--sinD)}
+.hdr .brand .wmk .wn{display:flex;flex-direction:column;gap:2px;font-size:13px;font-weight:400;line-height:1.08;letter-spacing:.17em}
+.brand .wmk .wn b{font-weight:400;color:var(--sinL)}
+.hdr.ink .brand .wmk .wn b{color:var(--sinD)}
+.brand .wmk small{display:none}
+
+/* hero field: deep ink with a warm wash behind the fibres */
+.fieldbg{background:radial-gradient(74% 72% at 62% 42%,#201b19 0%,#161413 52%,#0e0d0d 100%)}
+.hero::before{background:radial-gradient(70% 86% at 10% 52%,rgba(13,12,12,.94),rgba(13,12,12,.62) 52%,rgba(13,12,12,0) 86%),linear-gradient(180deg,rgba(13,12,12,.5),rgba(13,12,12,0) 24%,rgba(13,12,12,0) 58%,var(--ink) 100%)}
+.ph-head::before{background:radial-gradient(70% 80% at 18% 68%,rgba(13,12,12,.84),rgba(13,12,12,.28) 72%),linear-gradient(180deg,rgba(13,12,12,.45),rgba(13,12,12,.14) 42%,var(--ink) 100%)}
+.hero .eyebrow,.ph-head .eyebrow{color:var(--sinL)}
+.hero-key i{background:rgba(227,132,106,.9)}
+.hero-key i.y{background:var(--bone)}
+.cue i{background:var(--sinL)}
+
+/* preloader */
+#pre{background:var(--deep)}
+#pre .wm{color:var(--bone)}
+#pre .wm em{color:var(--sinL)}
+#pre .dots{width:72px;height:72px}
+#pre .bar i{background:var(--sin)}
+
+/* story: figures instead of a canvas */
+.story-r{display:flex;align-items:center;justify-content:center}
+.figs{position:relative;width:100%;height:100%}
+.sfig{position:absolute;inset:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.sfig svg{width:min(100%,520px);height:auto;max-height:72%;overflow:visible}
+.sfig svg *{fill:none;stroke:rgba(243,239,234,.55);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.sfig svg .a{stroke:var(--sinL)}
+.sfig svg .g{stroke:rgba(227,132,106,.45)}
+.sfig svg .f{fill:var(--sin);stroke:none}
+.sfig svg .a2{stroke:var(--sinL);fill:rgba(227,132,106,.12)}
+.sfig figcaption{color:var(--stone)}
+.step h3{font-weight:300}
+.rail span{font-size:10px}
+
+/* pillars */
+.pl3 svg *{stroke:var(--ink);fill:none;stroke-width:1.1}
+.pl3 svg .a{stroke:var(--sinD)}
+.pl3 svg .f{fill:var(--sinD);stroke:none}
+
+/* portraits (Leavitt-model hover) with a refined text-card fallback */
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(20,19,19,.5)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-size:clamp(23px,1.75vw,28px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14px;line-height:1.45;color:var(--stoneD)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:6px}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}
+.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));overflow:hidden}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .pc-meta{padding-top:0;height:100%}
+.pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--stoneD)}
+.pcard.noimg .go{margin-top:auto;padding-top:20px}
+.pcard.noimg::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.pcard.noimg::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(192,80,56,.1),rgba(192,80,56,0) 60%);opacity:0;transition:opacity .32s;pointer-events:none}
+.pcard.noimg:hover{box-shadow:0 26px 46px -30px rgba(20,19,19,.4)}
+.pcard.noimg:hover::before,.pcard.noimg:focus-visible::before{transform:scaleX(1)}
+.pcard.noimg:hover::after,.pcard.noimg:focus-visible::after{opacity:1}
+.pcard.noimg:hover h3,.pcard.noimg:focus-visible h3{transform:translateX(5px)}
+.bio-ph{margin:0 0 26px;width:min(220px,50%);aspect-ratio:4/5;overflow:hidden;background:var(--bone3)}
+.bio-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+
+/* news rows carry no date column for undated items */
+.row-a .nm{gap:4px}
+
+@media (max-width:1100px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1024px){.stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}.sfig svg{max-height:88%}.sfig figcaption{display:none}}
+@media (max-width:860px){
+  .hero::before{background:linear-gradient(180deg,rgba(13,12,12,.1) 0%,rgba(13,12,12,.3) 24%,rgba(13,12,12,.84) 42%,rgba(13,12,12,.93) 72%,var(--ink) 100%)}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .hdr .brand .wmk .wn{font-size:11.5px}
+  .hero-h{font-size:clamp(33px,8.1vw,74px);letter-spacing:-.028em}
+}
+@media (max-width:560px){.stats{grid-template-columns:1fr}}
+@media (max-width:420px){.pgrid{grid-template-columns:1fr}.stat .v{font-size:60px}}
+
+</style>
+</head>
+<body>
+
+<script>try{if(sessionStorage.getItem("aal-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="dots" viewBox="0 0 64 64"><g stroke="#e3846a" stroke-width="2.4" stroke-linecap="round" fill="none"><path class="dp" d="M8 22v20"/><path class="dp" d="M17 14v36"/><path class="dp" d="M26 8v48"/><path class="dp" d="M35 12v40"/><path class="dp" d="M44 18v28"/><path class="dp" d="M53 4v56"/></g></svg>
+    <div class="wm"><span>Artificial <em>Axon</em> Labs</span></div>
+  </div>
+  <span class="lab pl">An MIT spinout</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">001</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand nologo" id="brand" aria-label="Artificial Axon Labs, home">
+    <span class="wmk"><svg class="mk" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#c05038" stroke-width="2" stroke-linecap="round"><path d="M4 14v12M10 8v24M16 4v32M22 10v20M28 2v36M34 12v16"/></g></svg><span class="wn"><span><b>A</b>RTIFICIAL</span><span><b>A</b>XON·L<b>A</b>BS</span></span></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/platform">Platform</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="nl ul" href="#/news">News</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true">
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/platform">Platform</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/news">News</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Topsfield, MA</span><br>Artificial Axon Labs Inc.</div>
+    <div><span class="lab">Write</span><br><a href="mailto:anna.jagielska@artificialaxonlabs.com">Anna Jagielska</a></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="bio" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName">
+  <div class="scr" id="bioScr"></div>
+  <div class="pan" id="bioPan">
+    <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
+    <div class="in" id="bioIn"></div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Artificial Axon Labs</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>/* cover: zero the CSS translate so GSAP yPercent alone drives it (no double offset) */gsap.set(".xc,.xcov",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="Artificial Axon Labs";
+function ini(n){var p=n.replace(/,.*$/,"").split(/\s+/).filter(Boolean);return p[0][0]+p[p.length-1][0]}
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
+function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+/* ================= CONTENT (from dossier; nothing invented) ================= */
+var NEWS=[
+ {d:"2026-08-06",s:"NIH RePORTER",t:"NINDS SBIR Phase II award to model the MS lesion environment in the myelination assay",u:"https://reporter.nih.gov/project-details/11409835"},
+ {d:"2025-05-01",s:"Company news",t:"Alexis Lowe, PhD joins Artificial Axon Labs as Senior Scientist",u:"https://www.linkedin.com/in/alexis-lowe-wellesleyneurograd/"},
+ {d:"2025-01-24",s:"PLOS ONE",t:"Myelin ensheathment and drug responses of oligodendrocytes are modulated by the stiffness of artificial axons",u:"https://doi.org/10.1371/journal.pone.0290521"},
+ {d:"2024-09-12",s:"NIH RePORTER",t:"NINDS SBIR Phase I award for the in vitro myelination assay",u:"https://reporter.nih.gov/project-details/10822538"},
+ {d:"2023-11-09",s:"Scientific Reports",t:"Artificial axons as a biomimetic 3D myelination platform for the discovery and validation of promyelinating compounds",u:"https://doi.org/10.1038/s41598-023-44675-6"},
+ {d:"2023-07-01",s:"MassChallenge",t:"Finalist in the MassChallenge 2023 awards",u:"https://readymag.com/MassChallenge/Resolve2023Finalists/finalists/"},
+ {d:"2023-06-01",s:"Sanofi",t:"Winner of the Sanofi iDEA-TECH award, 2023–24",u:"https://www.sanofi.com/assets/dotcom/pages/docs/our-science/scientific-collaboration/iDEA-winners-2018-2025.pdf"},
+ {d:"2022-05-01",s:"BioPharma Reporter",t:"Selected for MassBioDrive, MassBio’s biotech accelerator",u:"https://www.biopharma-reporter.com/Article/2022/03/15/MassBio-announces-line-up-for-its-biotech-accelerator"},
+ {d:"2021-06-29",s:"MIT News",t:"3 Questions: Anna Jagielska on mimicking axons",u:"https://news.mit.edu/2021/3-questions-anna-jagielska-mimicking-axons-0629"},
+ {d:"2018-01-11",s:"Scientific Reports",t:"Engineered 3D-printed artificial axons",u:"https://doi.org/10.1038/s41598-017-18744-6"}
+];
+var IMG="https://images.squarespace-cdn.com/content/v1/6122f571b3151f3c2a11b4ac/";
+var TEAM=[
+ {slug:"anna-jagielska",name:"Anna Jagielska, PhD",title:"Founder, CEO and President",grp:"Founders",img:IMG+"1629728944132-0QA1L0Q0ZK08CQSWJZ5D/Capture.JPG?format=500w",
+  bio:["Anna Jagielska founded Artificial Axon Labs and leads it as CEO and President. Her work at MIT spans biomaterials and neuroscience, and she is principal investigator of the company’s NINDS Phase I and Phase II SBIR awards for the artificial axon myelination assay.","She is a co-author of Engineered 3D-printed artificial axons (Scientific Reports, 2018) and of the 2023 Scientific Reports paper validating artificial axons as a biomimetic 3D myelination platform."],
+  link:{t:"MIT News: 3 Questions on mimicking axons",u:"https://news.mit.edu/2021/3-questions-anna-jagielska-mimicking-axons-0629"}},
+ {slug:"kavin-kowsari",name:"Kavin Kowsari, PhD",title:"Founder and Chief Technology Officer",grp:"Founders",img:IMG+"1629728830847-D4U0ZVI2JIIY3G44Z46D/Portrait_Kavin+Kowsari.JPG?format=500w",
+  bio:["Kavin Kowsari co-founded Artificial Axon Labs and is its Chief Technology Officer, working in biomaterials and 3D printing at MIT.","He is a co-author of the company’s platform papers in Scientific Reports (2023) and PLOS ONE (2025) on myelination of 3D-printed artificial axons."]},
+ {slug:"krystyn-van-vliet",name:"Krystyn J. Van Vliet, PhD",title:"Scientific Co-founder",grp:"Founders",img:IMG+"1629729234611-E4FBRXQYN5L42T5LV3QG/MIT-VanVliet_square_72dpi.jpg?format=500w",
+  bio:["Listed by the company as Koerner Professor of Materials Science & Engineering and Biological Engineering at MIT, and a scientific co-founder of Artificial Axon Labs.","She is a co-author of the artificial axon platform papers, including the 2025 PLOS ONE study of how axon stiffness modulates myelin ensheathment and drug responses."]},
+ {slug:"nicholas-fang",name:"Nicholas X. Fang, PhD",title:"Scientific Co-founder",grp:"Founders",img:IMG+"1629729155516-YD1LZVWK8PYE08GQALFQ/fang.jpg?format=500w",
+  bio:["Listed by the company as Professor of Mechanical Engineering at MIT, and a scientific co-founder of Artificial Axon Labs. His work underpins the light-based 3D printing behind the artificial axon arrays."]},
+ {slug:"alexis-lowe",name:"Alexis Lowe, PhD",title:"Senior Scientist",grp:"Team",img:IMG+"a50b812e-99ae-4ba8-9fe8-900656d287f9/LOWE.jpg?format=500w",
+  bio:["Alexis Lowe joined Artificial Axon Labs as a Senior Scientist in May 2025. She holds a BA in Neuroscience from Wellesley College and a PhD in Biomedical Engineering from Johns Hopkins University, with an interest in neural regeneration and regrowth."]},
+ {slug:"nicholas-terrett",name:"Nicholas Terrett, PhD",title:"Medicinal Chemistry",grp:"Advisors",img:IMG+"1647619104533-1OR64U10IXM5SG0VHS0N/Nick+Terrett+picture.jpg?format=500w",
+  bio:["Nicholas Terrett advises Artificial Axon Labs on medicinal chemistry."]},
+ {slug:"anna-voronova",name:"Anna Voronova, PhD",title:"Strategic Advisor",grp:"Advisors",img:IMG+"1629729329645-WCYZZPUDC3L5OJOXZTGG/AVoronova2_0.jpeg?format=500w",
+  bio:["Anna Voronova is a strategic advisor to Artificial Axon Labs."]}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+var PAPERS=[
+ ["Artificial axons as a biomimetic 3D myelination platform for the discovery and validation of promyelinating compounds","Scientific Reports, 2023","https://doi.org/10.1038/s41598-023-44675-6"],
+ ["Myelin ensheathment and drug responses of oligodendrocytes are modulated by stiffness of artificial axons","PLOS ONE, 2025","https://doi.org/10.1371/journal.pone.0290521"],
+ ["Engineered 3D-printed artificial axons","Scientific Reports, 2018","https://doi.org/10.1038/s41598-017-18744-6"]
+];
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function paperRows(){return '<ul class="rows">'+PAPERS.map(function(p){return '<li><a class="row-a" href="'+p[2]+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(p[1])+'</span></span><h3>'+esc(p[0])+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Biomimetic myelination platform · an MIT spinout</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Watch myelin</span><span class="l">form. Then find</span><span class="l">drugs that <em>repair it.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Artificial Axon Labs 3D-prints axon mimics with the geometry and softness of real axons, so human cells wrap measurable myelin around them — and remyelinating compounds can be screened in conditions that mimic a multiple sclerosis lesion.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/platform">See the platform '+ARR+'</a><a class="btn" href="#/news">Papers and news</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>3D-printed axon mimic</span><span><i class="y"></i>Oligodendrocyte wrapping myelin</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Today’s MS therapies stop new lesions. They do not rebuild the myelin that is already lost, because no screening tool measures <em>wrapping itself.</em></p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.48<sup>M</sup></span><span class="lab k">First-year NINDS Phase II award, 2026</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">3D</span><span class="lab k">Printed axon mimics at the stiffness of nervous tissue</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2028</span><span class="lab k">Phase II program runs to July 2028</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Print. Seed. <em>Measure.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Print</span><span>Seed</span><span>Challenge</span><span>Measure</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>Print axons out of light.</h3><p>Light-based 3D printing writes sub-micrometre fibres from ultra-low-stiffness, biocompatible materials, matching both the geometry and the softness of biological axons. Glass cones and electrospun fibres are orders of magnitude stiffer than nervous tissue.</p></article>'+
+     '<article class="step"><h3>Let human cells wrap them.</h3><p>Human cells are seeded onto the array and oligodendrocytes do what they do in the brain: extend processes along the fibre and wrap myelin around it. The assay is compatible with human cells, so human biology is studied directly.</p></article>'+
+     '<article class="step"><h3>Recreate the lesion.</h3><p>The Phase II assay adds the factors that block repair inside real MS lesions — interferon gamma and myelin debris — so compounds are tested in the hostile environment they would actually meet.</p></article>'+
+     '<article class="step"><h3>Measure wrapping, not proxies.</h3><p>Myelin around each printed axon is imaged and quantified directly, in three dimensions. Most screens can only score oligodendrocyte differentiation, which is why candidates have translated poorly to the clinic.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r"><div class="figs" id="figs">'+FIGS.join("")+'</div></div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>What makes it different</span><h2 class="d2 split">Three things no other <em>assay does.</em></h2></div><p data-r>Claims below are the company’s own description of the Artificial Axons platform, developed by its founders at MIT.</p></div>'+
+   '<div class="pillars" data-group>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path class="a" d="M10 10l18 18"/><path d="M6 46h52"/><circle cx="32" cy="36" r="7"/><path d="M20 46v-6M44 46v-9"/></svg><h3>Printed with light</h3><p>Sub-micrometre features in ultra-low-stiffness, biocompatible materials, pushing past the limits of standard 3D printing.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 32h56"/><ellipse cx="24" cy="32" rx="10" ry="7"/><ellipse class="a" cx="44" cy="32" rx="7" ry="5"/><circle class="f" cx="24" cy="32" r="2.4"/></svg><h3>Direct 3D readout</h3><p>Myelin wrapping is quantified directly in an axon-like, three-dimensional environment, rather than inferred from differentiation.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="20" cy="22" r="9"/><circle class="a" cx="42" cy="38" r="12"/><path d="M6 56c6-10 16-14 26-14"/></svg><h3>Human cells</h3><p>Compatible with human cells, so human disease is addressed directly instead of through animal cells that have repeatedly failed to predict clinical effect.</p></div>'+
+   '</div></div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Validated with</span><h2 class="d2 split">Built and tested <em>at MIT.</em></h2></div><p data-r>The platform has been validated at MIT with industry and academic collaborators, and the company has published its validation work in peer-reviewed journals.</p></div>'+
+   paperRows()+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Engineers of the <em>artificial axon.</em></h2></div><p data-r>Founded by MIT scientists in biomaterials, neuroscience and 3D printing, with advisors in medicinal chemistry and myelin biology.</p></div>'+
+   '<div class="pgrid" data-group>'+[0,1,2,4].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
+   '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark" style="background:var(--ink2)"><div class="wrap">'+
+   '<div class="grant" data-r><div><span class="lab kick">NINDS · SBIR Phase II · Aug 2026</span><p class="gq">$1.48M to build the assay that models <em>the MS lesion itself.</em></p></div>'+
+   '<p class="muted">Two milestones: develop a myelination assay that includes the inflammatory factors blocking repair in MS lesions, and validate it by testing how known pro-myelinating compounds perform in that hostile environment.</p></div>'+
+   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,4))+'</div>'+
+  '</div></section>'+
+  cta();
+}
+function cta(){
+  return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Work with us</span>'+
+   '<h2 class="big split">Screen your compounds on <em>real wrapping.</em></h2>'+
+   '<p class="sub" data-r>Pharmaceutical teams, myelin biologists and investors: talk to Artificial Axon Labs about running remyelinating compounds on the Artificial Axons platform.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="#/platform">Platform detail</a></div>'+
+  '</div></section>';
+}
+function vPlatform(){
+  return head({k:"Platform",h:'Artificial <em>Axons.</em>',p:'A biomimetic 3D drug-discovery platform for remyelinating compounds: printed axon mimics, human cells, and direct quantification of myelin wrapping in conditions that model a multiple sclerosis lesion.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The problem</span><h2 class="d3 split">Current therapies stop lesions. They don’t <em>rebuild myelin.</em></h2></div>'+
+   '<div><ul class="aims" data-group>'+
+   '<li><span>Disease-modifying therapies prevent new inflammatory lesions in the CNS, but most prior lesions fail to remyelinate, and no clinically available therapy promotes remyelination.</span></li>'+
+   '<li><span>Tissue and co-culture assays are too complex for effective screening; 2D assays score only oligodendrocyte differentiation, not wrapping, which needs three-dimensional axon-like structures.</span></li>'+
+   '<li><span>Existing 3D assays such as glass cones and electrospun fibres are orders of magnitude stiffer than nervous tissue, so candidates found with them have had limited clinical success.</span></li>'+
+   '</ul>'+
+   '<div class="qt" data-r><p>“Direct visualization and quantification of myelin wrapping in response to compounds in the MS lesion-like environment.”</p><span class="lab">NINDS Phase II project summary, 2026</span></div></div>'+
+  '</div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The assay</span><h2 class="d3 split">What is measured, and <em>in what conditions.</em></h2><p class="muted" style="margin-top:24px" data-r>Artificial Axons combine printed fibres matching axon geometry and low stiffness with the soluble factors found in demyelinating lesions.</p></div>'+
+   '<dl class="facts" data-group>'+
+    '<div><dt class="lab">Substrate</dt><dd>3D-printed axon mimics in ultra-low-stiffness biocompatible material, sub-micrometre features.</dd></div>'+
+    '<div><dt class="lab">Cells</dt><dd>Human cells, including patient-derived cells, wrapping myelin along the printed fibre.</dd></div>'+
+    '<div><dt class="lab">Lesion environment</dt><dd>Interferon gamma and myelin debris, the pro-inflammatory factors that inhibit myelination in MS lesions.</dd></div>'+
+    '<div><dt class="lab">Readout</dt><dd>Direct imaging and quantification of myelin wrapping in three dimensions.</dd></div>'+
+    '<div><dt class="lab">Validation</dt><dd>Known pro-myelinating compounds re-tested in the lesion-like environment to measure how their efficacy changes.</dd></div>'+
+   '</dl></div></div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Published work</span><h2 class="d2 split">The platform <em>in print.</em></h2></div></div>'+paperRows()+
+  '</div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'The people behind <em>the platform.</em>',p:'Founders from MIT in biomaterials, neuroscience and 3D printing, a senior scientist in neural regeneration, and advisors in medicinal chemistry and myelin biology.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+}
+function vNews(){
+  return head({k:"News",h:'Awards, papers and <em>milestones.</em>',p:'Every item links to its source: NIH RePORTER records, peer-reviewed papers and award announcements.'})+
+  '<section class="sec dark" data-theme="dark" style="padding-top:clamp(56px,6vw,96px)"><div class="wrap">'+newsRows(NEWS)+'</div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Screening collaborations, partnerships and press: send a note and it will reach the team directly.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Artificial Axon Labs Inc.</span><h3>Topsfield, Massachusetts</h3><p><a class="ul" href="mailto:anna.jagielska@artificialaxonlabs.com">anna.jagielska@artificialaxonlabs.com</a></p><p><a class="ul" href="https://linkedin.com/company/artificial-axon-labs/" target="_blank" rel="noopener">LinkedIn ↗</a></p>'+
+    '<div class="map">'+mapSvg()+'</div></div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
+    '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Artificial Axon Labs team directly.</p></div></div>'+
+  '</div></div></section>';
+}
+function mapSvg(){
+  var g='';for(var i=0;i<70;i++){var x=18+(i%10)*52,y=40+Math.floor(i/10)*48;g+='<rect x="'+x+'" y="'+(y+(i%3)*4)+'" width="2" height="'+(26+(i%5)*9)+'" fill="rgba(20,19,19,.14)"/>'}
+  return '<svg viewBox="0 0 540 400" aria-label="Stylized map marking Topsfield, Massachusetts">'+g+
+  '<path class="mp" d="M0 318C70 300 120 330 190 292S330 262 390 220 500 190 540 196" fill="none" stroke="#56514b" stroke-width="1.2"/>'+
+  '<g class="pin" transform="translate(250 200)"><circle r="30" fill="rgba(192,80,56,.12)" class="pr"/><circle r="6" fill="#a13f2a"/><text x="18" y="-8" font-family="Epilogue,sans-serif" font-size="26" fill="#141313">Topsfield</text><text x="18" y="14" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.5" fill="#56514b">MASSACHUSETTS</text></g></svg>';
+}
+function v404(){return head({k:"Not found",h:'This page isn’t <em>wrapped.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Company</span>Artificial Axon Labs Inc.<br>Topsfield, Massachusetts</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:anna.jagielska@artificialaxonlabs.com">Email the team</a><br><a class="ul" href="https://linkedin.com/company/artificial-axon-labs/" target="_blank" rel="noopener">LinkedIn</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Focus</span>Remyelination<br>Multiple sclerosis</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">Axons</span>'+
+  '<div class="legal"><span class="lab">© 2026 Artificial Axon Labs Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"Artificial Axon Labs — Watch myelin form, then find drugs that repair it",x:"Home"};
+  if(p[0]==="platform")return {k:"platform",v:vPlatform,t:"Platform — "+SITE,x:"Platform"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
+var MOBILE=function(){return innerWidth<861};
+/* ===== HERO FIELD: printed axon mimics, with oligodendrocytes wrapping myelin sheath along them ===== */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
+  function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+  var NF=7,fibs=[],cells=[];
+  for(var i=0;i<NF;i++)fibs.push({ph:R(i,1)*6.283,sp:.1+R(i,2)*.12,amp:.5+R(i,3)*.9,z:R(i,4),x0:R(i,5),len:.62+R(i,6)*.5});
+  for(i=0;i<8;i++)cells.push({f:(i*3)%NF,p:R(i,7),sp:(.008+R(i,8)*.011)*(R(i,9)>.45?1:-1),s:.85+R(i,10)*.8,n:2+Math.floor(R(i,11)*4),o:R(i,12)*6.283});
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
+  function lay(){
+    if(w<861)return {x:[.04,1.06],y:[.44,.95],sc:.66};
+    if(w<1200)return {x:[.3,1.08],y:[.1,.95],sc:.84};
+    return {x:[.36,1.1],y:[.07,.96],sc:1};
+  }
+  function fibY(fb,x,t,L){return fb.base+Math.sin(x*.0024+fb.ph+t*fb.sp)*fb.amp*h*.028+Math.sin(x*.0009-t*.07)*h*.012}
+  function frame(once){
+    var t=RM?26:(performance.now()-t0)/1000;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    var e=IN.v*IN.v*(3-2*IN.v),L=lay();
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.lineCap="round";c.lineJoin="round";
+    var xa0=L.x[0]*w,xb0=L.x[1]*w;
+    for(var i=0;i<NF;i++){
+      var fb=fibs[i],u=(i+.5)/NF;
+      fb.base=h*(L.y[0]+u*(L.y[1]-L.y[0]))+m[1]*h*.025*(i%2?1:-1);
+      var depth=.45+.55*fb.z;                        /* near fibres thicker and brighter */
+      var xa=xa0+(fb.x0*.1)*w, xb=xa+(xb0-xa0)*Math.min(1.05,fb.len)*(1+m[0]*.04);
+      fb.xa=xa;fb.xb=xb;fb.d=depth;
+      var grd=c.createLinearGradient(xa,0,xb,0);
+      var al=e*(.34+.6*depth)*(.55+.45*dim)*L.sc;
+      grd.addColorStop(0,"rgba(192,80,56,0)");
+      grd.addColorStop(.14,"rgba(201,91,66,"+(al*.85).toFixed(3)+")");
+      grd.addColorStop(.62,"rgba(227,132,106,"+al.toFixed(3)+")");
+      grd.addColorStop(1,"rgba(192,80,56,0)");
+      c.strokeStyle=grd;c.lineWidth=(1.1+depth*2.6)*L.sc;
+      c.beginPath();
+      for(var x=xa;x<=xb;x+=12){var y=fibY(fb,x,t);x===xa?c.moveTo(x,y):c.lineTo(x,y)}
+      c.stroke();
+      /* print origin: a short vertical tick, echoing the company's line mark */
+      c.strokeStyle="rgba(227,132,106,"+(al*.55).toFixed(3)+")";c.lineWidth=1.1;
+      var ty=fibY(fb,xa+18,t),tl=(16+depth*26)*L.sc;
+      c.beginPath();c.moveTo(xa+18,ty-tl);c.lineTo(xa+18,ty+tl);c.stroke();
+    }
+    for(i=0;i<cells.length;i++){
+      var cl=cells[i],f=fibs[cl.f];if(!f)continue;
+      var p=(cl.p+t*cl.sp)%1;if(p<0)p+=1;
+      var cx=f.xa+(f.xb-f.xa)*(.08+p*.84),cy=fibY(f,cx,t);
+      var s=cl.s*L.sc*(.6+.7*f.d),al2=e*(.5+.5*dim)*(.45+.55*f.d);
+      var seg=44*s,hh=(5+4*f.d)*s*1.4;
+      /* myelin sheath: filled segments hugging the fibre, with node gaps between them */
+      for(var k=-Math.floor(cl.n/2);k<=Math.floor(cl.n/2);k++){
+        var sx=cx+k*(seg+9*s),sy=fibY(f,sx,t);
+        var fade=1-Math.abs(k)/(cl.n*.9+.6);
+        c.save();c.translate(sx,sy);c.rotate(Math.atan2(fibY(f,sx+18,t)-fibY(f,sx-18,t),36));
+        var hs=hh*(.62+.38*fade);
+        var sg=c.createLinearGradient(0,-hs,0,hs);
+        sg.addColorStop(0,"rgba(243,239,234,"+(al2*.07*fade).toFixed(3)+")");
+        sg.addColorStop(.42,"rgba(243,239,234,"+(al2*.34*fade).toFixed(3)+")");
+        sg.addColorStop(.58,"rgba(243,239,234,"+(al2*.34*fade).toFixed(3)+")");
+        sg.addColorStop(1,"rgba(243,239,234,"+(al2*.07*fade).toFixed(3)+")");
+        c.fillStyle=sg;
+        var hw=seg/2,tp=hs*.34;
+        c.beginPath();
+        c.moveTo(-hw,-tp);c.bezierCurveTo(-hw*.6,-hs,hw*.6,-hs,hw,-tp);
+        c.lineTo(hw,tp);c.bezierCurveTo(hw*.6,hs,-hw*.6,hs,-hw,tp);c.closePath();c.fill();
+        c.strokeStyle="rgba(243,239,234,"+(al2*.5*fade).toFixed(3)+")";c.lineWidth=1;c.stroke();
+        c.strokeStyle="rgba(243,239,234,"+(al2*.2*fade).toFixed(3)+")";
+        for(var q=-2;q<=2;q++){var qx=q*(hw/3.1),qh=hs*(.78-Math.abs(q)*.12);c.beginPath();c.moveTo(qx,-qh);c.lineTo(qx,qh);c.stroke()}
+        c.restore();
+      }
+      /* cell body above the fibre, with processes reaching down to the sheath */
+      var by=cy-(34+26*f.d)*s,r=(9+7*f.d)*s;
+      c.strokeStyle="rgba(243,239,234,"+(al2*.4).toFixed(3)+")";c.lineWidth=1;
+      for(var pr=-1;pr<=1;pr++){
+        var px=cx+pr*(seg*.62);
+        c.beginPath();c.moveTo(cx+pr*r*.5,by+r*.7);
+        c.bezierCurveTo(cx+pr*r*1.6,by+r*2.2,px,fibY(f,px,t)-hh*2.4,px,fibY(f,px,t)-hh*1.05);c.stroke();
+      }
+      var rg=c.createRadialGradient(cx,by,0,cx,by,r*2.4);
+      rg.addColorStop(0,"rgba(243,239,234,"+(al2*.16).toFixed(3)+")");rg.addColorStop(1,"rgba(243,239,234,0)");
+      c.fillStyle=rg;c.beginPath();c.arc(cx,by,r*2.1,0,6.283);c.fill();
+      c.fillStyle="rgba(243,239,234,"+(al2*.14).toFixed(3)+")";
+      c.beginPath();c.ellipse(cx,by,r,r*.82,Math.sin(cl.o+t*.2)*.2,0,6.283);c.fill();
+      c.strokeStyle="rgba(243,239,234,"+(al2*.62).toFixed(3)+")";c.lineWidth=1.1;c.stroke();
+      c.fillStyle="rgba(227,132,106,"+(al2*.5).toFixed(3)+")";
+      c.beginPath();c.arc(cx-r*.22,by-r*.1,r*.26,0,6.283);c.fill();
+    }
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
+})();
+
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.8)*(1-p*.5))}
+
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var s=els[i].closest&&els[i].closest("[data-theme]");if(s&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=s.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  /* BB: a heading already on the first screen rises with the page entrance (after the cover), not underneath it; others fire well inside the viewport */
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+}
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
+      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
+    /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
+    /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
+    if(!RM&&0)$$(".prow .bar",view).forEach(function(b,i){gsap.from(b,{scaleX:0,duration:1.4,ease:"flow",delay:i*.04,scrollTrigger:{trigger:b.closest(".pipe"),start:"top 80%"}})});
+    var tl=$("#tl",view);if(tl&&!RM){gsap.to($(".ln1",tl),{scaleY:1,ease:"none",scrollTrigger:{trigger:tl,start:"top 70%",end:"bottom 60%",scrub:true}})}
+    if(!RM&&$(".moa",view)){$$(".moa path,.moa rect,.moa circle",view).forEach(function(p){if(!p.getTotalLength||p.closest("marker"))return;var L=p.getTotalLength();if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.8,ease:"flow",scrollTrigger:{trigger:".moa",start:"top 78%"}})});
+      gsap.from($$(".moa text",view),{opacity:0,duration:.8,stagger:.03,delay:.6,scrollTrigger:{trigger:".moa",start:"top 78%"}})}
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= AZ: GLOBAL REVEAL (everything enters; one helper for every route, overlay and step) ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}/* a figure with ambient motion inside still fades in as one piece */
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    /* BB: a unit taller than ~35% of the screen reveals piecewise, so its lower part never appears before it is scrolled into view */
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+/* scroll-driven: everything in the view that nothing else animates */
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+/* time-driven (overlays): stagger everything in root now */
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+/* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+/* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+
+var story=null;
+/* ===== STORY FIGURES: four line drawings, built in by StoryFX as you scroll ===== */
+function sfig(inner,lab){return '<figure class="sfig"><svg viewBox="0 0 420 320" aria-hidden="true">'+inner+'</svg><figcaption class="lab">'+lab+'</figcaption></figure>'}
+var FIGS=[
+ /* 1. printing: light writes a fibre */
+ sfig('<rect x="150" y="18" width="120" height="40" rx="6"/><path class="a" d="M210 58L178 196M210 58l32 138"/><path class="a" d="M196 118h28M188 158h44"/><path d="M60 230h300"/><path d="M120 230v-18M300 230v-24"/><path class="g" d="M178 196h64"/><circle class="f" cx="210" cy="196" r="5"/><path d="M60 262h300" stroke-dasharray="4 7"/><path d="M96 196v34M324 196v34"/>','Light-based 3D printing'),
+ /* 2. the printed array, at tissue stiffness */
+ sfig('<path d="M40 70h340M40 130h340M40 190h340M40 250h340"/><path class="g" d="M40 40v240"/><ellipse cx="150" cy="70" rx="30" ry="11"/><ellipse cx="226" cy="70" rx="30" ry="11"/><ellipse cx="186" cy="130" rx="30" ry="11"/><ellipse cx="124" cy="190" rx="30" ry="11"/><ellipse cx="200" cy="190" rx="30" ry="11"/><ellipse cx="262" cy="250" rx="30" ry="11"/><path class="a" d="M150 59v22M226 59v22M186 119v22M124 179v22M200 179v22M262 239v22"/><circle class="f" cx="150" cy="44" r="9"/><circle class="f" cx="186" cy="104" r="9"/><circle class="f" cx="200" cy="164" r="9"/><circle class="f" cx="262" cy="224" r="9"/>','Human cells wrap myelin'),
+ /* 3. the lesion environment: inflammatory factors and myelin debris break the sheath */
+ sfig('<path d="M40 150h340"/><ellipse cx="120" cy="150" rx="34" ry="13"/><ellipse cx="300" cy="150" rx="34" ry="13"/><path class="a" d="M196 134c8 6 18 6 26 0M196 166c8-6 18-6 26 0"/><path class="g" d="M176 120l-22-28M212 112l-6-34M252 120l24-28"/><circle class="f" cx="152" cy="88" r="5"/><circle class="f" cx="206" cy="74" r="5"/><circle class="f" cx="278" cy="88" r="5"/><path d="M150 214c10-8 22-8 32 0M212 220c10-8 22-8 32 0M262 206c10-8 22-8 32 0"/><path d="M40 258h340" stroke-dasharray="4 8"/><text x="40" y="282" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">IFN-GAMMA + MYELIN DEBRIS</text>','An MS lesion-like environment'),
+ /* 4. quantified wrapping: coverage per printed axon */
+ sfig('<path d="M48 250h320"/><path d="M48 60v190"/><path class="g" d="M48 104h320" stroke-dasharray="5 8"/><rect class="a2" x="78" y="178" width="34" height="72"/><rect class="a2" x="132" y="142" width="34" height="108"/><rect class="a2" x="186" y="92" width="34" height="158"/><rect class="a2" x="240" y="158" width="34" height="92"/><rect class="a2" x="294" y="122" width="34" height="128"/><circle class="f" cx="203" cy="92" r="5"/><text x="48" y="286" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">MYELIN PER AXON</text><text x="48" y="52" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">COMPOUND RESPONSE</text>','Wrapping, quantified')
+];
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  /* BA: stats reveal at their final value, never counted up */
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  var sec=$("#story",view);if(!sec)return;
+  var steps=$$(".step",view),figs=$$(".sfig",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM){steps.forEach(function(s){s.classList.add("on")});return}
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,figs:figs,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.round(p*3)));fx(p)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+}
+
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{attr:{r:0},opacity:0,duration:1.5,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+  if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
+    gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
+    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+}
+/* ================= BIO OVERLAY ================= */
+var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{xPercent:102});
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  $("#bioIn").innerHTML='<figure class="bio-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.remove()"></figure><span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
+   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+   '<p class="lab src">Profile drawn from the Artificial Axon Labs team page.</p>';
+  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  document.title=p.name+" — "+SITE;
+}
+function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
+  if(bioOpen){rvPlay($("#bioIn"),0);return}
+  bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();
+  gsap.killTweensOf(["#bioPan","#bioScr"]);
+  gsap.fromTo("#bioPan",{xPercent:102},{xPercent:0,duration:instant||RM?.01:.7,ease:"flow"});gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
+  /* direct load: the panel is already open, so its bar and content enter once the page is uncovered */
+  var d0=instant?(window._preShown?1.5:.4):.25;rvPlay($("#bioIn"),d0);
+  if(!RM)gsap.fromTo($$(".bar0 .btn",bio),{opacity:0,y:-12},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){var c=$("[data-close]",bio);if(c)c.focus({preventScroll:true})},50);
+}
+function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{xPercent:102,duration:RM?.01:.55,ease:"flow"});gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
+function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
+$("#bioScr").addEventListener("click",closeBio);
+var bioFromClick=false,bioBase=null;
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(a.hasAttribute("data-close")){e.preventDefault();closeBio();return}
+  if(a.hasAttribute("data-replace")){e.preventDefault();history.replaceState(null,"",h);prevHash=h;var r=route(h);if(r.bio)openBio(r.bio);return}
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();bioBase=location.hash||"#/";bioFromClick=true;history.pushState(null,"",h);prevHash=h;openBio(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.snapDim(r.k==="home"?1:.7);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("aal-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){bioBase="#/team";openBio(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  /* bio overlay routes never repaint */
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
+  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{xPercent:102});gsap.set("#bioScr",{opacity:0})}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)bioBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)openBio(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem("aal-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem("aal-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){ /* reload: veil stays opaque until the scroll position is restored invisibly, then fades */
+    field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem("aal-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var dots=$$("#pre .dots .dp");gsap.set(dots,{scale:0,transformOrigin:"center"});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  /* GPU warm-up: compile and draw a few frames before the timed sequence so it never skips */
+  var wf=0;(function warm(){if(++wf<4){field.once();field.finish();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(dots,{scale:1,duration:.7,ease:"back.out(1.6)",stagger:.07},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.022},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .dots","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2);field.start()},.3)
+        /* mobile: hero plays under the lifting veil so it is settled at hand-off */
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(["300 1em \"Epilogue\"", "400 1em \"Epilogue\"", "500 1em \"Epilogue\"", "italic 400 1em \"Literata\"", "400 1em \"Geist Mono\""].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+</body>
+</html>

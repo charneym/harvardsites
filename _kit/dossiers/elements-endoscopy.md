@@ -41,15 +41,15 @@
 - Investors, headcount, clinical data, regulatory status beyond the 510(k)-preparation goal, street address, other team members' titles.
 
 ## Photo inventory (PRINCIPLES BJ; `_kit/photo-inventory.js` + WordPress media library `/wp-json/wp/v2/media`)
-- USED: https://elementsendoscopy.com/wp-content/uploads/2019/04/Picture2.jpg (538×309): rendering of the handle with a separate flexible insertion module. Home page, "The system" section, on a white plate (native size, not upscaled past ~1×).
+- USED: https://elementsendoscopy.com/wp-content/uploads/2019/04/Picture2.jpg (538×309): rendering of the handle with a separate flexible insertion module. Home page ("The system") and Technology page ("Built to come apart."), on a pure-white section so the JPEG blends; lower edge faded instead of hard-cropping the cable.
 - USED: elements_endoscopy_logo_w.png / elements_endoscopy_logo.png: header logo (light/dark headers).
 - UNUSED: Picture1.tif and Picture1-1.tif (538×309): duplicates of Picture2 as TIFF with a broken alpha channel (black blotches); TIFF is not web-displayable.
-- UNUSED: elements_endoscopy_logo.jpg (2400×600): duplicate of the logo on a white JPEG background; the transparent PNGs are used instead.
+- USED (derived): elements_endoscopy_logo.jpg (2400×600): the petal mark was cropped from it at native aspect (236×240), background removed, white petal kept; used for the loader, favicon, person sheet and Team page visual.
 - No headshots, lab or facility photos exist on the site or in its media library.
 
 ## Palette (PRINCIPLES BK): logo pixel samples → tokens
 - logo indigo petal #312783 (sampled #303078) → `--ind`; its deep shades → base `--ink #0e0d2a`, `--ink2 #14123a`, `--ink3 #1c1a4a`, `--deep #08071c`
-- logo magenta petal #E6007E (sampled #f00078) → accent `--acc #e6007e`; tint on dark `--accL #ff5aa8`; shade on light `--accD #b3005f`
+- logo magenta petal #E6007E (sampled #f00078) → accent `--acc #e6007e` (fills, large type); one tint for text on dark `--accL #ff3d9a`; small text on light `--accD #c4006f` (same hue, AA)
 - logo cyan petal #009FE3 → signal colour `--sig #009fe3` / `--sigL #5cc8f5` (drive signals, lens, diagrams)
-- logo green #009640 and yellow #FFED00 → petal mark only (`--grn`, `--yel`)
+- logo yellow #FFED00, cyan #009FE3, magenta #E6007E, green #009640 (tint #2fbf6a) → the four story steps (Cable, Wire, Hand, Module): rail dot and label colour per step
 - neutrals tinted toward the indigo: `--bone #f4f3f8`, `--bone2 #e9e8f1`, `--stone #aeacc8`, `--stoneD #4f4d6b`

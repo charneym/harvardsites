@@ -8,7 +8,8 @@ const [,, file, route = '', w = '1440', h = '900'] = process.argv;
 (async () => {
   const b = await chromium.launch({args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist']});
   const p = await b.newPage({viewport: {width: +w, height: +h}});
-  await p.goto('file://' + file + (route ? '#' + route : ''));
+  const R = route ? (route.startsWith('#') ? route : '#' + route) : ''; const errs = []; p.on('pageerror', e => errs.push(e.message));
+  await p.goto('file://' + require('path').resolve(file) + R);
   await p.waitForTimeout(6000);
   const res = await p.evaluate(() => {
     const H = innerHeight, out = [];
@@ -46,8 +47,11 @@ const [,, file, route = '', w = '1440', h = '900'] = process.argv;
       }
     }
     const zeros = [...document.querySelectorAll('body *')].filter(e => e.children.length === 0 && /^[$€£]?0([.,]0+)?\s*[MKBk%×x+]?$/.test((e.textContent || '').trim()) && e.getBoundingClientRect().width > 0).map(e => 'ZERO-VALUE COUNTER: "' + e.textContent.trim() + '" in ' + (e.parentElement.innerText || '').replace(/\s+/g, ' ').slice(0, 60));
+    const vis = [...document.querySelectorAll('h1,h2,h3,p')].filter(e => { const r = e.getBoundingClientRect(); return r.width > 2 && r.height > 2 && e.innerText.trim(); }).length;
+    if (vis < 2) out.unshift('BLANK: the route rendered fewer than 2 visible headings/paragraphs');
     return zeros.concat(out);
   });
+  if (errs.length) res.unshift('JS ERRORS: ' + errs.slice(0, 3).join(' | '));
   console.log(res.length ? `NOT ANIMATED (${res.length}):\n` + res.slice(0, 60).join('\n') : 'OK: every below-fold element is pre-hidden for a reveal');
   await b.close();
 })();

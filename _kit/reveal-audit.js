@@ -19,7 +19,8 @@ await p.addInitScript(()=>{window.__sig=function(){
       return [Math.round(op(n)*100),Math.round(nr.top-sr.top),Math.round(nr.left-sr.left),mk]});
     if(!el.__k)el.__k=(window.__kc=(window.__kc||0)+1);out.push({i:el.__k,top:r.top,bot:r.bottom,v,t:(el.innerText||el.alt||el.tagName).trim().replace(/\s+/g,' ').slice(0,50),tag:el.tagName.toLowerCase()+'.'+((typeof el.className==='string'?el.className:'').split(' ')[0])})}
   return out}});
-await p.goto('file://'+file+(route?'#'+route:''));
+const R=route?(route.startsWith('#')?route:'#'+route):'';const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+require('path').resolve(file)+R);
 const H=+h;
 // first screen of the route: must animate (except the home hero handled by loader) -> compare 60ms vs 5s
 await p.waitForTimeout(60);const early=await p.evaluate(()=>window.__sig());
@@ -47,5 +48,11 @@ for(let step=0;step<400;step++){
 }
 // dedupe by text
 const seen=new Set(),res=fails.filter(f=>{const k=f.replace(/^@\S+ |^FIRST-SCREEN @\d+ /,'');if(seen.has(k))return false;seen.add(k);return true});
+// vacuity guards: a blank or crashed page must never pass
+const vis=await p.evaluate(()=>[...document.querySelectorAll('h1,h2,h3,p')].filter(e=>{const r=e.getBoundingClientRect();return r.width>2&&r.height>2&&e.innerText.trim()}).length);
+const docH=await p.evaluate(()=>document.documentElement.scrollHeight);
+if(errs.length)res.unshift('JS ERRORS: '+errs.slice(0,3).join(' | '));
+if(vis<2)res.unshift('BLANK: the route rendered fewer than 2 visible headings/paragraphs');
+if(done.size===0&&docH>H*1.6)res.unshift('VACUOUS: page is '+docH+'px tall but no element was measured entering the viewport');
 console.log(res.length?`NOT ANIMATED (${res.length}) ${file.split('/').pop()} ${route}:\n`+res.slice(0,50).join('\n'):`OK ${file.split('/').pop()} ${route||'home'} (${done.size} checked)`);
 await b.close()})();

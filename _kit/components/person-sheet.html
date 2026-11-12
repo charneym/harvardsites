@@ -5,23 +5,25 @@
   Wheel/trackpad/touch scroll MUST work inside .ps-body: it carries data-lenis-prevent (Lenis otherwise eats wheel
   events while it is stopped), overscroll-behavior:contain, and is the only scroll container.
   Re-skin with the site's tokens only: --ps-bg, --ps-ink, --ps-mute, --ps-line, --ps-accent, --ps-scrim, --ps-serif, --ps-sans.
+  The sheet itself must NOT clip (no overflow:hidden): each child rounds its own corners, so the scroll body is the only
+  clipping ancestor of the bio text (otherwise clip-audit --bios fails as soon as a bio is long enough to scroll).
   Gate: node _kit/overlay-audit.js <file> "#/team" must print OK.
 -->
 <style>
 .ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
 .ps.open{visibility:visible;pointer-events:auto}
 .ps-scrim{position:absolute;inset:0;background:var(--ps-scrim,rgba(10,12,14,.62));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
-.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
-.ps-media{position:relative;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
+.ps-media{position:relative;overflow:hidden;border-radius:18px 0 0 18px;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
 /* no photo: a typographic plate, never a monogram */
 .ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,color-mix(in srgb,var(--ps-accent,#2b6) 16%,transparent),transparent 60%)}
 .ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0}
-.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--ps-line,rgba(0,0,0,.08))}
+.ps-bar{border-top-right-radius:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
-.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body{border-bottom-right-radius:18px;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
 .ps-body .lab{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-accent,#2b6)}
 .ps-body h2{font:400 clamp(34px,3.6vw,54px)/1.05 var(--ps-serif,Georgia);letter-spacing:-.02em;margin:14px 0 10px;padding-bottom:.14em}
 .ps-body .role{font:400 17px/1.5 var(--ps-sans,system-ui);color:var(--ps-mute,#5b6068);margin:0 0 30px}
@@ -31,7 +33,9 @@
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
-  .ps-media{height:min(38vh,300px)}
+  .ps-media{height:min(38vh,300px);border-radius:18px 18px 0 0}
+  .ps-bar{border-top-right-radius:0}
+  .ps-body{border-bottom-right-radius:0}
   .ps-col{min-height:0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}

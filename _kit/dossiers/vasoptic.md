@@ -49,3 +49,19 @@
 - Logo: indigo zigzag "VVi" wave mark (#4f539c → #67709b) + "VASOPTIC MEDICAL INC". https://static.wixstatic.com/media/92846c_406cd9cfbdb74aef9fbc96a326e63b65~mv2.png
 - Site colours: navy #0c3c60, #062134, blue #1468a8, #39729b, ice #daedff, orange accent #fb8037.
 - Images (company-hosted): XyCAM RI 92846c_89b6ac97e8cf41278e07f7ec4c6f5a8b~mv2.jpg; patient 92846c_94cfaa8564fa419a818d15b0ca534813~mv2.jpg; XyCAM CRE 92846c_b7ec98feb502468eb75d7943980ff14b~mv2.jpg; VasoVUE G1 92846c_62c237790061424d99f759f983dcf0c5~mv2.jpg; episcleral 92846c_5284e1826f564c70a108e80527d820f0~mv2.jpg; cerebral 92846c_ffe397f88ed14b30915a53645ae9d8f4~mv2.jpg
+
+## Palette from logo (BK)
+photo-inventory samples the header logo PNG as white/grey (#ffffff, #f0f0f0, #181830); that is the reversed version used on their navy banner. The colour logo (og:image, same VVi wave mark) is indigo #4f539c → #67709b.
+- logo indigo #4f539c → --sinD / --ind (accent on light sections, buttons, rails, links)
+- indigo tint #b3b7f4 / #aeb2f2 → --sinL / --indL (accent on dark sections, mark on dark header)
+- site navy #062134 / #0c3c60 → --ink #071a2b, --ink2, --ink3 (base)
+- site ice #daedff → --ice (light surfaces, solid buttons); --bone #eef4fa tint
+- site blue #39729b → speckle grain in the hero shader
+- site highlight orange #fb8037 ("Dynamics.") → --pulse, used only for the heartbeat signal (hero "heartbeat.", pulse in shader, waveform peak)
+
+## Photo inventory (BJ)
+Used: XyCAM RI product (home, platforms), clinician + patient exam (platforms), XyCAM CRE cart/ROP (home, platforms), XyCAM CRE inclined + rabbit retina (platforms), VasoVUE G1 (home, platforms), raw→processed speckle GIF (science), OCT-A vs XyCAM RI GIF (science), BFVi time-series GIF (science), rabbit episcleral tri-panel, cranial-window tri-panel, wound-healing angiogenesis (science).
+Unused, with reasons:
+- "Blood Vessel Interior RBCs_edited.jpg": generic stock-style illustration, not company imagery.
+- Contact-page "Screenshot 2024-02-09" Google map: off-topic; replaced by the stylized map.
+- Technology-page OCT-A strip (729×220) and fundus/OCT strip (946×167): illustrations of other modalities, thin strips; superseded by the OCT-A vs XyCAM RI figure.

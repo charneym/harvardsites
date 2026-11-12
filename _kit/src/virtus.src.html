@@ -557,6 +557,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .light .aims li::before{background:var(--sinD)}
 .bk b{font-size:clamp(19px,1.5vw,24px)}
 .bk .lab{color:var(--stone)}
+.cpath{list-style:none;margin:0;padding:6px 0 6px 6px;position:relative}
+.cpath::before{content:"";position:absolute;left:12px;top:22px;bottom:22px;width:1px;background:var(--hair)}
+.cpath .met{position:relative;display:flex;align-items:center;gap:18px;padding:8px 0;font-family:var(--serif);font-weight:300;font-size:clamp(18px,1.6vw,22px);line-height:1.25;color:var(--bone)}
+.cpath .met b{flex:none;width:13px;height:13px;border-radius:50%;border:1px solid var(--stone);background:var(--ink);position:relative;z-index:1}
+.cpath .met.end b{background:var(--sinL);border-color:var(--sinL);box-shadow:0 0 0 6px rgba(92,200,215,.14)}
+.cpath .met em{color:var(--stone);font-style:italic}
+.cpath .enz{display:flex;flex-wrap:wrap;gap:6px 14px;padding:4px 0 4px 31px}
+.cpath .enz .lab{color:var(--stone)}
+.cpath .enz .vt{color:var(--sinL)}
 .cmt{font-size:13px;color:var(--stone);margin-top:20px;max-width:60ch}
 .light .cmt{color:var(--stoneD)}
 .map .grid{stroke:rgba(13,19,21,.07)}
@@ -576,6 +585,22 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+
+/* BG/BK: no template-gold leftovers; every tint derives from the site's own tokens */
+.hdr.solid{background:color-mix(in srgb,var(--ink) 76%,transparent)}
+.hdr.solid.ink{background:color-mix(in srgb,var(--bone) 86%,transparent)}
+.tcard::after,.pcard.noimg::after{background:linear-gradient(0deg,color-mix(in srgb,var(--sin) 12%,transparent),transparent 60%)!important}
+.row-a::after,.light .row-a::after{background:linear-gradient(0deg,color-mix(in srgb,var(--sin) 9%,transparent),transparent 70%)}
+.bk:hover{border-color:color-mix(in srgb,var(--sinL) 60%,transparent);background:color-mix(in srgb,var(--bone) 3%,transparent)}
+.nav .btn[aria-current="page"]{color:var(--ink);border-color:var(--sinL)}
+.nav .btn[aria-current="page"]::before{transform:none}
+.hdr.ink .nav .btn[aria-current="page"]{color:var(--bone);border-color:var(--sinD)}
+.hdr.ink .nav .btn[aria-current="page"]::before{background:var(--sinD)}
+.bio .pmed img{object-position:50% 28%}
+@media (max-width:760px){.bio .pmed:not(.isplate){height:min(40vh,320px)}}
+/* pipeline stage scale stays visible on phones */
+@media (max-width:860px){.pipe-h{display:block!important;padding:10px 0}.pipe-h>span{display:none}.prow .track{margin-top:4px}}
+@media (max-width:560px){.sfig text{font-size:15px}.moa text{font-size:16px}.moa .t1{font-size:24px}}
 
 /* critic round: sheet focus ring stays inside, plate never empty, touch devices get no sticky hovers, mobile story centred */
 .bio .in:focus,.bio .in:focus-visible{outline:none}
@@ -701,14 +726,14 @@ var PREK="vt-pre",YK="vt-y:";
 /* ================= CONTENT (from dossier; nothing invented) ================= */
 var RP="https://reporter.nih.gov/project-details/";
 var NEWS=[
- {d:"2026-09-17",s:"NIH · NINDS",t:"SBIR Phase II award to take PanK activators into preclinical in vivo safety and efficacy studies for PKAN",u:RP+"11408936"},
+ {d:"2026-09-17",s:"NIH · NINDS",t:"SBIR Phase II award to take PANK activators into preclinical in vivo safety and efficacy studies for PKAN",u:RP+"11408936"},
  {d:"",s:"Yale Ventures",t:"Yale spinout Virtus Therapeutics receives $698K NIH SBIR grant for its PKAN therapy development",u:"https://ventures.yale.edu/news/yale-spinout-virtus-therapeutics-receives-nih-sbir-grant"},
  {d:"2024-08-30",s:"NIH · NINDS",t:"Supplement to the Phase I SBIR program on PANK activators",u:RP+"11146095"},
  {d:"2024-08-12",s:"NIH · NINDS",t:"Phase I SBIR continues: structure-activity work, cell-based assays and PK studies of VTACs",u:RP+"10929351"},
  {d:"2023-09-14",s:"NIH · NINDS",t:"Phase I SBIR awarded for PANK activators for the treatment of PKAN",u:RP+"10678455"}
 ];
 var TEAM=[
- {slug:"choukri-ben-mamoun",name:"Choukri Ben Mamoun, PhD",title:"Founder",grp:"Founder",
+ {slug:"choukri-ben-mamoun",name:"Choukri Ben Mamoun, PhD",title:"Founder",grp:"Leadership",
   bio:["Choukri Ben Mamoun founded Virtus Therapeutics to translate his laboratory’s research on pantothenate kinase into a therapy for PKAN. He is the John F. Enders Professor of Medicine (Infectious Diseases), Microbial Pathogenesis and Pathology at Yale School of Medicine.","He received the 2020 and 2021 Blavatnik Awards, and also founded the Yale spinout Curatix. PKAN research in the Ben Mamoun Lab is supported in part by the NBIA Disorders Association."],
   q:"With this support, Virtus Therapeutics’ quest to develop new drugs gains significant momentum, propelling us forward on our mission to transform the course of neurodegenerative disease treatment.",qs:"On the company’s NIH SBIR award, via Yale Ventures"},
  {slug:"anasuya-pal",name:"Anasuya Pal, PhD",title:"Leads research and development",grp:"Research",
@@ -743,7 +768,7 @@ function sceneSVG(){
    '<path class="h sc-rail" pathLength="1" d="M70 150H386"/>'+dots+nodes+
    '<circle class="ad sc-on" cx="70" cy="150" r="16"/><circle class="af sc-core" cx="70" cy="150" r="5"/>'+
    '<path class="a sc-x" pathLength="1" d="M60 140l20 20M80 140l-20 20"/>'+
-   '<g class="sc-vtac"><path class="a" d="'+hex+'"/><path class="a" d="M-12 -7l-14 -8M12 7l12 8"/><text x="-30" y="-20" text-anchor="end">VTAC</text></g>'+
+   '<g class="sc-vtac"><path class="a" d="'+hex+'"/><path class="a" d="M-12 -7l-14 -8M12 7l12 8"/></g><text class="sc-vlab" x="12" y="104" text-anchor="end">VTAC</text>'+
    '<circle class="ad sc-coa" cx="370" cy="96" r="26"/><text class="tn sc-coat" x="370" y="102" text-anchor="middle">CoA</text>'+
    '<text class="sc-cap" x="200" y="284" text-anchor="middle">COENZYME A, RESTORED</text></svg>';
 }
@@ -760,12 +785,13 @@ function scene(root,tl,sec){
   tl.fromTo(q(".sc-mito"),{opacity:0,scale:.88,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.1,ease:"none"},.27);
   tl.fromTo(q(".sc-mlab"),{opacity:0},{opacity:1,duration:.06},.31);
   tl.fromTo(q(".sc-x"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.06,ease:"none"},.33);
-  tl.to(q(".sc-dot"),{opacity:.1,x:-10,duration:.1,stagger:-.004,ease:"none"},.33);
-  tl.to(q(".sc-coa"),{attr:{r:10},opacity:.35,duration:.12,ease:"none"},.36);
-  tl.to(q(".sc-coat"),{opacity:.35,duration:.08},.38);
+  tl.to(q(".sc-dot"),{opacity:.1,x:-10,duration:.1,stagger:-.004,ease:"none"},.27);
+  tl.to(q(".sc-coa"),{attr:{r:10},opacity:.35,duration:.1,ease:"none"},.28);
+  tl.to(q(".sc-coat"),{opacity:0,scale:.5,transformOrigin:"50% 50%",duration:.08},.36);
   /* 3 · activate: a VTAC travels in and docks on the first-step node; PANK3 lights */
   tl.to(q(".sc-vtac"),{x:40,y:124,opacity:1,duration:.14,ease:"none"},.5);
   tl.to(q(".sc-x"),{opacity:0,duration:.05},.62);
+  tl.fromTo(q(".sc-vlab"),{opacity:0},{opacity:1,duration:.05},.64);
   tl.fromTo(q(".sc-on"),{opacity:0,scale:.6,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.06,ease:"none"},.63);
   tl.fromTo(q(".sc-core"),{opacity:0},{opacity:1,duration:.04},.65);
   tl.to(q(".sc-mlab"),{opacity:.35,duration:.06},.62);
@@ -773,7 +799,7 @@ function scene(root,tl,sec){
   tl.to(q(".sc-dot"),{opacity:.95,x:0,duration:.14,stagger:.006,ease:"none"},.76);
   tl.to(q(".sc-node"),{stroke:"#5cc8d7",duration:.1,stagger:.02},.78);
   tl.to(q(".sc-coa"),{attr:{r:26},opacity:1,duration:.12,ease:"none"},.82);
-  tl.to(q(".sc-coat"),{opacity:1,duration:.06},.84);
+  tl.to(q(".sc-coat"),{opacity:1,scale:1,duration:.08},.82);
   tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.06},.88);
 }
 
@@ -791,7 +817,7 @@ function vHome(){
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">PKAN is caused by mutations in PANK2, the enzyme that begins turning vitamin B5 into coenzyme A. It causes early immobility and often death by early adulthood. Virtus is building <em>a way around the broken step.</em></p>'+
+   '<p class="txt" id="mani">PKAN is caused by mutations in PANK2, the enzyme that begins turning vitamin B5 into coenzyme&nbsp;A. It causes early immobility and often death by early adulthood. Virtus is building <em>a way around the broken step.</em></p>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">156<sup>K</sup></span><span class="lab k"><b>Compounds screened</b>In the discovery cascade behind the VTACs</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">14</span><span class="lab k"><b>PANK3 activators</b>VTAC1–14, active at nanomolar concentrations</span></div>'+
@@ -872,14 +898,12 @@ function vScience(){
    '</ul></div></div></section>'+cta();
 }
 function moaSvg(){
-  var st=[["Pantothenate (vitamin B5)",""],["4′-Phosphopantothenate","PANK1 · PANK2 · PANK3"],["4′-Phosphopantothenoyl-L-cysteine","PPCS"],["4′-Phosphopantetheine","PPCDC"],["Dephospho-CoA","COASY"],["Coenzyme A","COASY"]],s='';
-  for(var i=0;i<st.length;i++){var y=30+i*60;s+='<text class="t1" x="40" y="'+(y+6)+'">'+st[i][0]+'</text>';if(i<st.length-1)s+='<path d="M20 '+(y+16)+'V'+(y+46)+'M15 '+(y+40)+'l5 6 5-6" fill="none" stroke="#5f6a6b" stroke-width="1.2"/>';if(st[i+1]&&st[i+1][1])s+='<text x="40" y="'+(y+36)+'"'+(i===0?' class="ac"':'')+'>'+st[i+1][1]+'</text>'}
-  s+='<circle cx="20" cy="30" r="5" fill="none" stroke="#a3adad" stroke-width="1.2"/><circle cx="20" cy="330" r="7" fill="#5cc8d7"/>';
-  s+='<path d="M330 66h40M330 66l-8-5M330 66l-8 5" fill="none" stroke="#5cc8d7" stroke-width="1.2"/><text x="380" y="62" class="ac">VTACs ACTIVATE</text><text x="380" y="80" class="ac">PANK3 HERE</text>';
-  return '<svg viewBox="0 0 520 360" aria-label="Coenzyme A biosynthesis from pantothenate in five enzymatic steps">'+s+'</svg>';
+  var st=[["Pantothenate","Vitamin B5",""],["4′-Phosphopantothenate","",'PANK1 · PANK2 · PANK3'],["4′-Phosphopantothenoyl-L-cysteine","","PPCS"],["4′-Phosphopantetheine","","PPCDC"],["Dephospho-CoA","","COASY"],["Coenzyme A","","COASY"]];
+  return '<ol class="cpath" aria-label="Coenzyme A biosynthesis from pantothenate in five enzymatic steps">'+st.map(function(s,i){
+    return (s[2]?'<li class="enz"><span class="lab">'+s[2]+'</span>'+(i===1?'<span class="lab vt">VTACs activate PANK3 here</span>':'')+'</li>':'')+'<li class="met'+(i===5?' end':'')+'"><b></b><span>'+s[0]+(s[1]?' <em>('+s[1]+')</em>':'')+'</span></li>'}).join("")+'</ol>';
 }
 function vPipeline(){
-  return head({k:"Pipeline",h:'One disease. <em>A focused program.</em>',p:'Virtus’s first disease target is PKAN. Its Phase II program is designed to advance a lead activator of human PANK3 toward clinical development.'})+
+  return head({k:"Pipeline",h:'One disease. <em>A&nbsp;focused program.</em>',p:'Virtus’s first disease target is PKAN. Its Phase II program is designed to advance a lead activator of human PANK3 toward clinical development.'})+
   '<section class="sec dark first" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Path so far</span><h2 class="d3 split">From 156,593 compounds <em>to a late lead.</em></h2><p class="muted" style="margin-top:24px" data-r>Each step narrowed the field with biochemical, cell-based and pharmacokinetic data.</p></div>'+
    '<ol class="tl" id="tl"><i class="ln0"></i><i class="ln1"></i>'+
@@ -889,10 +913,10 @@ function vPipeline(){
     '<li><span class="lab kick">Now</span><h3>VTAC-2 and backups in vivo</h3><p>Preclinical safety and efficacy studies under the NINDS Phase II award.</p></li>'+
    '</ol></div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>Phase II aims</span><h2 class="d3 split">What happens <em>next.</em></h2></div>'+
+   '<div><span class="lab kick" data-r>Phase II aims</span><h2 class="d3 split">What&nbsp;happens <em>next.</em></h2></div>'+
    '<dl class="facts" data-group>'+
     '<div><dt class="lab">Aim 1</dt><dd>Characterize backup VTACs in biochemical and cell-based assays, and evaluate their PK properties, to find more candidates for in vivo efficacy studies.</dd></div>'+
-    '<div><dt class="lab">Aim 2</dt><dd>Evaluate in vivo efficacy of late-lead VTAC-2 and backup VTACs in the whole-body pank2−/− and SynCre pank1fl/fl pank2fl/fl mouse models of PKAN.</dd></div>'+
+    '<div><dt class="lab">Aim 2</dt><dd>Evaluate in vivo efficacy of late-lead VTAC-2 and backup VTACs in the whole-body <i>pank2</i><sup>−/−</sup> and SynCre <i>pank1</i><sup>fl/fl</sup> <i>pank2</i><sup>fl/fl</sup> mouse models of PKAN.</dd></div>'+
     '<div><dt class="lab">Goal</dt><dd>Set the stage for future clinical evaluation and FDA approval of a lead PANK3 activator for PKAN.</dd></div>'+
     '<div><dt class="lab">Funding</dt><dd><a class="ul" href="'+RP+'11408936" target="_blank" rel="noopener">NINDS 2R44NS127740-03A1</a>, through August 2029</dd></div>'+
     '<div><dt class="lab">IP</dt><dd>Yale patent application 63/043,534</dd></div>'+
@@ -900,10 +924,7 @@ function vPipeline(){
 }
 function vTeam(){
   return head({k:"Team",h:'The people behind <em>Virtus.</em>',p:'A Yale spinout founded on pantothenate kinase research from the Ben Mamoun Lab, now building toward the clinic from Groton, Connecticut.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Support</span><h2 class="d2 split">Backed by <em>science funders.</em></h2></div><p data-r>From a Yale faculty accelerator to competitive NIH awards, Virtus has been funded by the programs that back early, rigorous science.</p></div>'+
-   backers()+'</div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'News and <em>milestones.</em>',p:'Funding milestones and coverage of Virtus Therapeutics, each linked to its source.'})+
@@ -1047,7 +1068,7 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.8)*(1-p*.5))}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.32)*(1-p*.5))}
 
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
 /* ================= HEADER THEME ================= */
@@ -1167,8 +1188,11 @@ function homeScroll(view){
   if(RM){return}
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});var scn=$("#scene",view);if(scn)scene(scn,tl,sec);
-  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4-.0001<0?0:p*4)));fx(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  /* the step text, rail and scene are always derived from the timeline's real progress, including after a refresh (late image loads) that moves it without an update event */
+  function sync(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4-.0001<0?0:p*4)));fx(p)}
+  tl.eventCallback("onUpdate",sync);
+  var later=function(){requestAnimationFrame(function(){requestAnimationFrame(sync)})};
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:later,onLeave:later,onEnterBack:later,onLeaveBack:later});
 }
 function contactInit(view){
   var f=$("#cform",view);if(!f)return;
@@ -1223,9 +1247,9 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
 function paint(r){
   var view=$("#view");if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
-  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  $$(".nav .nl,.nav .btn").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.7);observeField();
+  field.snapDim(r.k==="home"?1:.32);observeField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

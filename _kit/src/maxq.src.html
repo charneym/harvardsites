@@ -588,6 +588,22 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* BG/BK: no template-gold leftovers; every tint derives from the site's own tokens */
+.hdr.solid{background:color-mix(in srgb,var(--ink) 76%,transparent)}
+.hdr.solid.ink{background:color-mix(in srgb,var(--bone) 86%,transparent)}
+.tcard::after,.pcard.noimg::after{background:linear-gradient(0deg,color-mix(in srgb,var(--sin) 12%,transparent),transparent 60%)!important}
+.row-a::after,.light .row-a::after{background:linear-gradient(0deg,color-mix(in srgb,var(--sin) 9%,transparent),transparent 70%)}
+.bk:hover{border-color:color-mix(in srgb,var(--sinL) 60%,transparent);background:color-mix(in srgb,var(--bone) 3%,transparent)}
+.nav .btn[aria-current="page"]{color:var(--ink);border-color:var(--sinL)}
+.nav .btn[aria-current="page"]::before{transform:none}
+.hdr.ink .nav .btn[aria-current="page"]{color:var(--bone);border-color:var(--sinD)}
+.hdr.ink .nav .btn[aria-current="page"]::before{background:var(--sinD)}
+.bio .pmed img{object-position:50% 28%}
+@media (max-width:760px){.bio .pmed:not(.isplate){height:min(40vh,320px)}}
+/* pipeline stage scale stays visible on phones */
+@media (max-width:860px){.pipe-h{display:block!important;padding:10px 0}.pipe-h>span{display:none}.prow .track{margin-top:4px}}
+@media (max-width:560px){.sfig text{font-size:15px}.moa text{font-size:16px}.moa .t1{font-size:24px}}
+
 /* critic round: sheet focus ring stays inside, plate never empty, touch devices get no sticky hovers, mobile story centred */
 .bio .in:focus,.bio .in:focus-visible{outline:none}
 @media (min-width:761px){.bio .pmed.isplate ~ .pcol .pq{display:none}}
@@ -908,7 +924,7 @@ function vTeam(){
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investors</span><h2 class="d2 split">Backed to <em>build.</em></h2></div><p data-r>A $31.5 million Series A, closed in August 2026, with strategic backing from Olympus Innovation Ventures.</p></div>'+
-   backers()+
+   '<dl class="facts" data-group>'+INV.map(function(b){return '<div><dt class="lab">'+b[1]+'</dt><dd>'+b[0]+'</dd></div>'}).join("")+'</dl>'+
    '<div class="qt" data-r><p>“There’s a strong need in urology for technology that allows physicians to see and treat the prostate in one setting.”</p><span class="lab">Gabriela Kaynor · Chair, Olympus Innovation Ventures</span></div>'+
   '</div></section>'+cta();
 }
@@ -1074,7 +1090,7 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.8)*(1-p*.5))}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.32)*(1-p*.5))}
 
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
 /* ================= HEADER THEME ================= */
@@ -1194,8 +1210,11 @@ function homeScroll(view){
   if(RM){return}
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});var scn=$("#scene",view);if(scn)scene(scn,tl,sec);
-  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4-.0001<0?0:p*4)));fx(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  /* the step text, rail and scene are always derived from the timeline's real progress, including after a refresh (late image loads) that moves it without an update event */
+  function sync(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4-.0001<0?0:p*4)));fx(p)}
+  tl.eventCallback("onUpdate",sync);
+  var later=function(){requestAnimationFrame(function(){requestAnimationFrame(sync)})};
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:later,onLeave:later,onEnterBack:later,onLeaveBack:later});
 }
 function contactInit(view){
   var f=$("#cform",view);if(!f)return;
@@ -1250,9 +1269,9 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
 function paint(r){
   var view=$("#view");if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
-  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  $$(".nav .nl,.nav .btn").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.7);observeField();
+  field.snapDim(r.k==="home"?1:.32);observeField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

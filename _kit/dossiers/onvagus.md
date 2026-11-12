@@ -21,3 +21,11 @@
 
 ## Brand
 - Squarespace; Space Grotesk headings, Raleway body; black / #fafafa; warm taupe hero render; device shown in blue.
+
+## Palette (PRINCIPLES BK)
+- No logo file (text site title in black). photo-inventory found no logo.
+- site black/warm hero render → --ink #0f0e0c, --deep; site off-white #fafafa → --bone #f3efe8; the blue of their device (their own photo) → --sin #4f9fe0, tint --sinL #9fcdf3 on dark, shade --sinD #1d659f on light.
+
+## Images (PRINCIPLES BJ)
+- USED: device-on-neck photo 20250806_175142.jpg (home, "The approach").
+- UNUSED: hero render of vases (generic AI/stock still life, not their product); About/Contact header images are template art.

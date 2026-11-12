@@ -34,3 +34,12 @@
 ## Brand
 - Wix site; wordmark "TRUECATH, INC." in light geometric uppercase (Avenir/Brandon Grotesque light); black/white/#f7f7f7; device in violet; teal tint #e3f2f3 cards; chart cyan/coral.
 - Hero image (device): https://static.wixstatic.com/media/fe0212_d156e4aaae8d4e0ead7c935f0eed124d~mv2.jpg
+
+## Palette (PRINCIPLES BK)
+- No logo file exists (text wordmark "TRUECATH, INC." in black). photo-inventory found no logo; palette comes from the site and the device they feature.
+- site black #000 → --ink #121316 (base for story/footer); site white / #f7f7f7 → --bone #f6f7f8 (base); device hub violet (their product photo) → --sin #8e44c4, deep --sinD #6a2c99 for text on light, tint --sinL #cfaef2 on dark; their chart coral → blood cells #d9787a.
+
+## Images (PRINCIPLES BJ)
+- USED: device photo fe0212_d156e4aaae8d4e0ead7c935f0eed124d (home, "The device").
+- USED as data, redrawn natively: performance chart fe0212_38a5096d… (values +122%, ~+75% repeat/overall, >+250% novice also stated in the NIH abstract / LSI '23 talk).
+- UNUSED: failure-mode pie fe0212_a052e0d0… and slow-indication diagram fe0212_ee900379… (off-brand slide graphics; the pie's slice-to-category mapping can't be verified, so it is not redrawn); solution 1, features, importance, how it works 2 (text-only slide graphics whose content is set as live type); "How it Works" video poster fe0212_73fdeeb4… (low-res duplicate of the device photo).

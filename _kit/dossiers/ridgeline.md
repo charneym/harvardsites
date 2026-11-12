@@ -37,3 +37,10 @@
 
 ## Brand
 - Wix; logo white wordmark + green mountains (for dark bg): https://static.wixstatic.com/media/02f678_0fe6807773374d73be767b5e84897d1e~mv2.png (600x187). Navy #11215a / #08102d, green #1b681e / #0e340f; Aeonik font.
+
+## Palette (PRINCIPLES BK)
+- logo sampled greens #307830 / #489048 / #186018 / #60a860 / #90c090 and white #f0f0f0 → --sin #489048 (accent), --sinD #186018 (accent text on light), --sinL #90c090 (accent on dark); logo white → --bone; their site header navy #11215a / #08102d → base --ink #08102d, --ink3 #11215a.
+
+## Images (PRINCIPLES BJ)
+- USED: logo; three team headshots; muscle progenitor cell micrograph 02f678_d3bdb228… (home, under the Sci Rep highlight); NNMT pathway figure PATHWAY.jpg (Science page).
+- UNUSED: 02f678_4cd02fe5… mountain-climber hero (stock; credit "Katie Haugland Bowen"); 02f678_6cdf8702… / 02f678_be0dae52… pill-in-fingers banners (generic stock); nsplsh_9827011d… and Downtown-Houston (Unsplash city stock); 02f678_9cc86a71… laptop (stock); 02f678_e4fffacb… "tmp.png" conference banner (unidentified speaker, low-res strip).

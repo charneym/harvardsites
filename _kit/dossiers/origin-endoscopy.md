@@ -28,3 +28,10 @@
 ## Brand
 - Wix; logo "ORIGIN ENDOSCOPY" in magenta with rainbow flower-of-life "O". Magenta #b8326f, orchid #c17caf, gradient to purple; Montserrat/Avenir.
 - Logos: https://static.wixstatic.com/media/09e77b_94a0640278a64eeaa4eb5f34a0cf45cd~mv2.png (light bg), https://static.wixstatic.com/media/09e77b_3759b8307a544ab6b8ff4a84989fbae4~mv2.png (dark bg), https://static.wixstatic.com/media/09e77b_97341db15014415288d0e58566ddb16a~mv2.png (white O)
+
+## Palette (PRINCIPLES BK)
+- logo sampled #c03078 (54%) → --sin #c03078 (accent); logo #d878a8 → --sinL (accent on dark); shade --sinD #9c2560 (accent text on light); logo tints #f0c0d8/#f0d8f0 → blush base --bone2 #f4edf1; site plum gradient #a0308a → transition cover gradient; neutral ink #17121a.
+
+## Images (PRINCIPLES BJ)
+- USED: full-colour logo (header), white logo (dark header), white "O" mark (transition cover, footer).
+- UNUSED: nsplsh_506f99a9… ("Image by National Cancer Institute", Unsplash stock lab glassware); 09e77b_d98ff679… (father carrying children in a field, stock lifestyle photo, off-topic).

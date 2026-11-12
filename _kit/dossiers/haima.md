@@ -86,3 +86,26 @@ Coverage, with links:
 - No equity round, investors or valuation are disclosed; disclosed funding is federal (NIH SBIR, DARPA, DoD, NSF) and a state Third Frontier award.
 - The company is pre-clinical: there are no human efficacy data, and no IND clearance is announced.
 - No email address is published, no headcount, and the 2025 press releases are not linked to their sources, so they are described by date and title only.
+
+## Brand mapping (PRINCIPLES BK), from the logo's pixel-sampled colours
+Logo sampled with `_kit/photo-inventory.js` (https://images.squarespace-cdn.com/content/v1/579ff4fdf5e2319ce9412834/1530640261212-A21985PZKRX5F2SUX7PG/Haima+Logo.png): `#781860` 46%, `#c01818` 9%, `#a8a8a8` 8%, `#a81818` 6%, `#783078` 5%, `#909090` 3%.
+- logo `#781860` (the wordmark, and the logo's dominant colour) → `--sin` (the accent)
+- `#7a1a62` → `--sinD` (accent on light sections); a tint `#d08ac0` → `--sinL` (accent on the dark base)
+- the same purple deepened → `--ink #150a14`, `--ink2 #1c0f1b`, `--ink3 #2a1226`, `--deep #0f060e`
+- the purple at the top of the scale → `--bone #f6eef3`, `--bone2 #ebe0e8`, `--bone3 #d9ccd6`
+- logo `#c01818` (the molecule dots) → `--liv` / `--livL #e05a5a`, used as the signal colour: the red cells in the hero and the red cells and capillary in the story
+The purple is the accent and the red the signal, matching the proportions in their own mark. No other hue appears, including in the WebGL constants.
+The logo file is a purple wordmark on white, which is illegible on the site's dark base: it is hotlinked in the header on light sections (multiply-blended) and a faithful inline re-draw of the same mark is used on dark sections.
+
+## Images used from the company's own site (PRINCIPLES BJ)
+`_kit/photo-inventory.js` reached only the logo on this Squarespace site (its images load through a lazy gallery), so the remaining images were listed directly from the pages with Playwright and reviewed on a contact sheet.
+- SynthoPlate construct schematic — `.../1633640354199-58LI3COI59NIJJR5T4WN/SynthoPlate.jpg` (home and SynthoPlate page; the product figure)
+- Platelet rendering — `.../1634044535591-I9QY112PX43IYIDS1NG4/Platelets+3D-v2.jpg` (SynthoPlate page, antiplatelet indication)
+- Platelet-inspired platform diagram — `.../1634047004382-EN7M04SUXYE74LAWIFY6/platelet-inspired-platform.png` (science page)
+- The four mechanism illustrations, hemostasis / thrombosis / thromboinflammation / cancer metastasis — `clot2.png`, `block2.png`, `purple2.png`, `yellow2.png` (science page)
+- Cleveland EMS ambulance — `.../1630259722197-HCFCV2LYAVR8DOFWPH1S/vlcsnap-2021-06-24-20h44m08s059.png` (traumatic injury)
+- Surgery photograph — `.../1630259783100-VWU445E13A2J4C6K02VR/1.jpg` (surgery)
+- Platelet transfusion photograph — `.../1630259810554-2IEEWP7G2DGKROMKZHIG/20180501-blood-transfusion.jpg` (thrombocytopenia)
+- Fourteen headshots across executive management, the scientific advisory board and the research team
+
+Not used, with reasons: none of the company's meaningful images were left out; the only other files on the site are the Squarespace social icons and the logo variants.

@@ -67,3 +67,24 @@ OINDP services (https://www.viatherapeutics.com/our-technologies/oindp-services)
 - No clinical-stage programme: VT103 is pre-IND, and no human data exist.
 - No headcount, no customer or partner names (client work is not named publicly).
 - Total award values are not published; the figures above are first-year amounts from RePORTER.
+
+## Brand mapping (PRINCIPLES BK), from the logo's pixel-sampled colours
+Logo sampled with `_kit/photo-inventory.js` (https://static.wixstatic.com/media/41f917_1dec606712024cc4835d7b419b7ed33b~mv2.png): `#009090` 17%, `#004848` 15%, `#d8d8d8` 13%, `#187878` 6%, `#003030` 5%, `#189090` 4%.
+- logo `#009090` → `--sin` (the accent)
+- a deeper shade of it, `#0a6e6e` → `--sinD` (accent on the light base)
+- a tint of it, `#4fc6c6` → `--sinL` (accent on dark sections)
+- logo `#003030`/`#004848` deepened → `--ink #06272a`, `--ink2 #0a3034`, `--ink3 #10444a`, `--deep #041c1f`
+- logo `#d8d8d8` warmed to paper → `--bone #f4f4f0`, `--bone2 #e8eae5`, `--bone3 #d5dad5` (the site's base, matching their white site)
+- neutral `--liv #8a8278` / `--livL #b9b2a8` for the "held back at the surface" and systemic-circulation marks (a neutral, since their logo carries no second hue)
+The real logo file is hotlinked in the header on light sections (multiply-blended so its white box drops out); a faithful inline wordmark is used where the header sits on a dark section.
+
+## Images used from the company's own site (PRINCIPLES BJ)
+Harvested with `_kit/photo-inventory.js` (8 pages crawled, 16 meaningful images).
+- Their own equipment photograph, `41f917_46e33527469f4e5f9554495cb7856f33~mv2.jpg` ("PXL_20250522_193358872") — home page, the device/process image
+- Laboratory photograph `41f917_e26af9878f9a4f8fbcab1de0dfe01640~mv2.jpeg` — technology page
+- The six headshots (team cards and person sheets)
+- The logo, `41f917_1dec606712024cc4835d7b419b7ed33b~mv2.png` — header
+
+Not used, with reasons:
+- `8e8931_95a015ace77d47aab149de066c4bc371~mv2.jpg` — the same equipment photograph at 311×230, a lower-resolution duplicate
+- `2bb9e75bc3224cf4b3314fa0e01af8a7.jpg` ("Pipetting Samples"), `11062b_33787989082a4459a2e59e197ae8948f~mv2.jpeg` ("Science Lab"), `5c3f1e5a1ebf435bbc152173d50d7ea9.jpg` ("Embryonic Stem Cells"), `11062b_6856964059a0487cad651bbcff22dafb~mv2_d_5700_3800_s_4_2.jpg` ("Chemistry Class"), `11062b_a4cbb996d3ef4eb6a733d07c0d97640b~mv2.jpg` ("Science Student"), `11062b_2cad0157f39942f5aaf6ecc288fea0f4~mv2.jpg` ("Medicine") — Wix stock photography, still carrying the stock library's titles

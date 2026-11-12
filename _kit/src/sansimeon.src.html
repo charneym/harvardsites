@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Sansimeon — Single-cell sequencing at scale</title>
+<meta name="description" content="Sansimeon pairs single cells with single barcoded beads and processes complex clinical samples in one streamlined workflow, scaling single-cell sequencing to tens of millions of cells.">
+<meta name="theme-color" content="#04182b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='28' fill='%23005090'/%3E%3Cpath d='M32 4a28 28 0 0 0 0 56c-8-8-14-14-6-22s14-16 6-34z' fill='%2310b0e0'/%3E%3Cpath d='M38 26c8 6 4 18-6 34a28 28 0 0 0 20-44c-4 6-10 8-14 10z' fill='%23f0b000'/%3E%3C/svg%3E">
+<style>
+/*@fonts Sora:300,400; Figtree:400,600; IBM Plex Mono:400*/
+:root{
+  --ink:#04182b;--ink2:#072340;--ink3:#005090;--deep:#020f1c;
+  --paper:#eef5f9;--paper2:#e2edf3;--paper3:#cfdfe8;
+  --cyan:#10b0e0;--cyanL:#62d0ea;--cyanD:#006f99;
+  --gold:#f0b000;--goldL:#ffc93a;--goldD:#7f5d00;
+  --mute:#4f6476;--muteL:#9fb6c7;
+  --hair:rgba(238,245,249,.14);--hairD:rgba(4,24,43,.14);
+  --disp:'Sora',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+b,strong{font-weight:600}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--cyanL);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--cyanL);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--cyanD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--cyanL);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.lab{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:var(--muteL)}
+.light .lab{color:var(--mute)}
+.d1{font-family:var(--disp);font-weight:300;font-size:clamp(48px,7.4vw,146px);line-height:1.02;letter-spacing:-.05em;margin:0}
+.d2{font-family:var(--disp);font-weight:300;font-size:clamp(38px,4.9vw,90px);line-height:1.04;letter-spacing:-.045em;margin:0}
+.d3{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.2vw,54px);line-height:1.1;letter-spacing:-.035em;margin:0}
+.d1 em,.d2 em,.d3 em,.big em,.gq em,.mani .txt em,.evi blockquote em{font-style:normal;color:var(--cyanL)}
+.light .d1 em,.light .d2 em,.light .d3 em,.light .big em,.light .mani .txt em,.light2 .d1 em,.light2 .d2 em,.light2 .d3 em,.light2 .big em{color:var(--cyanD)}
+.lede{font-family:var(--disp);font-weight:300;font-size:clamp(20px,1.65vw,26px);line-height:1.5;letter-spacing:-.015em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--muteL)}
+.light .muted{color:var(--mute)}
+.light{background:var(--paper);color:var(--ink)}
+.light2{background:var(--paper2);color:var(--ink)}
+.light2 .lab{color:var(--mute)}
+.light2 .muted{color:var(--mute)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:15ch}
+.shead p{max-width:46ch;margin:0;color:var(--muteL)}
+.light .shead p,.light2 .shead p{color:var(--mute)}
+.kick{display:block;margin-bottom:22px;color:var(--cyanL)}
+.light .kick,.light2 .kick{color:var(--cyanD)}
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(70% 80% at 72% 48%,#0a2f52 0%,#06213b 46%,#03152a 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
+#pre .orb{width:66px;height:66px}
+#pre .wm{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.8vw,54px);letter-spacing:.14em;color:var(--paper);line-height:1.2;padding:.16em .2em .3em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--cyan);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(50px,5.6vw,80px);line-height:1;letter-spacing:-.04em;color:var(--paper);font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 14px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:var(--paper);border-bottom:1px solid transparent;transition:transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid,.hdr.ink{background:rgba(4,24,43,.8);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;height:44px}
+.brand img{height:30px;width:auto}
+.brand .wmk{display:none;align-items:center;gap:2px;font-family:var(--disp);font-weight:300;font-size:22px;letter-spacing:.12em}
+.brand .wmk svg{width:22px;height:22px}
+.brand.nologo img{display:none}
+.brand.nologo .wmk{display:flex}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11.5px;line-height:1;letter-spacing:.13em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--cyanL);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--cyanL)}
+.btn:hover::before{transform:none}
+.btn.solid{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.light .btn::before,.light2 .btn::before{background:var(--cyanD)}
+.light .btn:hover,.light2 .btn:hover{color:#fff;border-color:var(--cyanD)}
+.light .btn.solid,.light2 .btn.solid{background:var(--ink3);color:#fff;border-color:var(--ink3)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px;overflow:auto}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--disp);font-weight:300;font-size:clamp(38px,10vw,64px);line-height:1.12;letter-spacing:-.045em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--muteL);font-size:13px;line-height:1.6;margin-top:30px}
+.ln{overflow:visible!important}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+
+.hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,140px) var(--side) clamp(80px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 70% at 16% 52%,rgba(4,24,43,.9),rgba(4,24,43,.6) 50%,rgba(4,24,43,0) 80%),linear-gradient(180deg,rgba(4,24,43,.45),rgba(4,24,43,0) 20%,rgba(4,24,43,0) 66%,var(--ink) 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--cyanL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(50px,7.2vw,142px);line-height:1.02;letter-spacing:-.055em}
+.hero-h .l{display:block;white-space:nowrap}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:46ch;margin:0;font-size:17px;line-height:1.65;color:rgba(238,245,249,.86)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:rgba(238,245,249,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--cyanL);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:9px;height:9px;border-radius:50%;display:block}
+.hero-key i.c{background:var(--gold)}
+.hero-key i.b{background:var(--cyan)}
+.hero-key i.d{border:1px solid var(--cyanL);width:13px;height:13px;margin:0 -2px}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 20% 70%,rgba(4,24,43,.88),rgba(4,24,43,.4) 70%),linear-gradient(180deg,rgba(4,24,43,.4),rgba(4,24,43,.15) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--cyanL)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:56ch;color:rgba(238,245,249,.86)}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+
+.mani .txt{font-family:var(--disp);font-weight:300;font-size:clamp(28px,3.3vw,56px);line-height:1.22;letter-spacing:-.04em;margin:0;max-width:27ch}
+.mani .txt .w{opacity:.16}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hairD)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--cyanD);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--disp);font-weight:300;font-size:clamp(56px,6.2vw,112px);line-height:1.02;letter-spacing:-.06em;display:block;white-space:nowrap}
+.stat .v sup{font-size:.34em;vertical-align:top;position:relative;top:.24em;margin-left:.08em;color:var(--cyanD);letter-spacing:-.02em}
+.stat .k{display:block;margin-top:14px;max-width:32ch;text-transform:none;letter-spacing:.01em;font-size:13.5px;line-height:1.55}
+
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:12ch}
+.rail{display:flex;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--cyanL);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#93aabb;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #5a7487;transition:background .35s,border-color .35s}
+.rail span.on{color:var(--paper)}
+.rail span.done::before,.rail span.on::before{background:var(--cyanL);border-color:var(--cyanL)}
+.steps{position:relative;min-height:clamp(230px,31vh,300px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--disp);font-weight:300;font-size:clamp(25px,2.1vw,34px);line-height:1.18;letter-spacing:-.035em;margin:0 0 16px}
+.step p{color:rgba(238,245,249,.8);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(74vh,720px);align-self:center}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
+
+.apps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.ap{position:relative;border:1px solid var(--hairD);padding:clamp(22px,2vw,30px);min-height:300px;display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.65),rgba(255,255,255,.15));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.ap::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--cyanD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.ap::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(16,176,224,.1),rgba(16,176,224,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.ap:hover{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(4,24,43,.4)}
+.ap:hover::before{transform:scaleX(1)}
+.ap:hover::after{opacity:1}
+.ap svg{width:60px;height:60px;overflow:visible;flex:none}
+.ap svg *{fill:none;stroke:#1d3a52;stroke-width:1.1}
+.ap svg .a{stroke:var(--cyanD)}
+.ap svg .f{fill:var(--cyan);stroke:none}
+.ap svg .g{fill:var(--gold);stroke:none}
+.ap h3{font-family:var(--disp);font-weight:400;font-size:clamp(20px,1.6vw,24px);line-height:1.2;letter-spacing:-.03em;margin:34px 0 10px}
+.ap p{margin:0;color:var(--mute);font-size:15px;line-height:1.55}
+
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:var(--gap);padding:22px 0;border-top:1px solid var(--hair);align-items:baseline}
+.facts>div:last-child{border-bottom:1px solid var(--hair)}
+.facts dt{font-family:var(--disp);font-weight:400;font-size:clamp(19px,1.5vw,23px);letter-spacing:-.025em;line-height:1.3}
+.facts dd{margin:0;color:var(--muteL);font-size:15.5px;line-height:1.6}
+.light .facts>div,.light2 .facts>div{border-color:var(--hairD)}
+.light .facts dd,.light2 .facts dd{color:var(--mute)}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+@media (min-width:1025px){.two>.stk{position:sticky;top:120px}}
+.tl{position:relative;list-style:none;margin:0;padding:0 0 0 34px}
+.tl .ln0{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--hair)}
+.tl .ln1{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--cyanL);transform-origin:top;transform:scaleY(0)}
+.tl li{position:relative;padding:0 0 clamp(26px,3vw,40px)}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:-34px;top:.5em;width:9px;height:9px;border-radius:50%;background:var(--ink);border:1px solid var(--cyanL)}
+.tl li h3{font-family:var(--disp);font-weight:400;font-size:clamp(19px,1.5vw,22px);letter-spacing:-.025em;line-height:1.3;margin:4px 0 6px}
+.tl li p{color:var(--muteL);max-width:52ch;margin:0;font-size:15.5px}
+.tl li a{color:var(--cyanL)}
+.light .tl .ln0,.light2 .tl .ln0{background:var(--hairD)}
+.light .tl .ln1,.light2 .tl .ln1{background:var(--cyanD)}
+.light .tl li::before,.light2 .tl li::before{background:var(--paper);border-color:var(--cyanD)}
+.light .tl li p,.light2 .tl li p{color:var(--mute)}
+.light .tl li a,.light2 .tl li a{color:var(--cyanD)}
+
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.cm{border-top:1px solid var(--hair);padding-top:26px}
+.cm .lab{display:block;margin-bottom:18px}
+.cm ul{list-style:none;margin:0;padding:0}
+.cm li{padding:14px 0;border-bottom:1px solid var(--hair);font-size:16px;line-height:1.5;display:grid;grid-template-columns:22px 1fr;gap:10px}
+.cm li::before{content:"";width:8px;height:8px;border-radius:50%;margin-top:.55em;border:1px solid var(--muteL)}
+.cm.us li::before{background:var(--cyanL);border-color:var(--cyanL)}
+.cm.us .lab{color:var(--cyanL)}
+
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(4,24,43,.55)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:5px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-family:var(--disp);font-weight:400;font-size:clamp(20px,1.55vw,24px);line-height:1.18;letter-spacing:-.03em;margin:0;transition:color .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--mute)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--cyanD);margin-top:6px}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--cyanD)}
+.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;overflow:hidden}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .grp{display:block;margin-bottom:22px}
+
+.grant{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:end}
+.gq{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.1vw,52px);line-height:1.16;letter-spacing:-.04em;margin:0;max-width:22ch}
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--cyanL);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(16,176,224,.08),rgba(16,176,224,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a h3{grid-column:4/12;font-family:var(--disp);font-weight:300;font-size:clamp(18px,1.5vw,24px);line-height:1.32;letter-spacing:-.025em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--cyanL);transform:translateX(6px)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+.cta{background:var(--paper2);color:var(--ink)}
+.cta .big{font-family:var(--disp);font-weight:300;font-size:clamp(48px,7.2vw,134px);line-height:1.02;letter-spacing:-.055em;margin:0}
+.cta .big em{color:var(--cyanD)}
+.cta .sub{font-size:clamp(18px,1.45vw,21px);line-height:1.6;max-width:58ch;color:var(--mute);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+.ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14.5px;line-height:1.75;color:var(--muteL)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--cyanL)}
+.ftr .c a{color:var(--paper)}
+.ftr .bigw{font-family:var(--disp);font-weight:300;font-size:min(13.4vw,230px);line-height:1;letter-spacing:.02em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.12em;color:var(--paper)}
+.ftr .bigw .ch{display:inline-block}
+.ftr .bigw .o{color:var(--gold)}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--disp);font-weight:300;font-size:clamp(28px,2.8vw,44px);line-height:1.12;letter-spacing:-.04em;margin:14px 0 14px}
+.addr p{color:var(--mute)}
+.addr a{color:var(--cyanD)}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(4,24,43,.3);padding:16px 0 12px;font-family:var(--disp);font-weight:300;font-size:22px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10.5px;color:var(--cyanD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#a12c1c;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#a12c1c}
+.subm{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+.xc{position:fixed;inset:0;z-index:950;pointer-events:none;background:var(--ink3);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--gold);opacity:.8}
+.xt{position:fixed;inset:0;z-index:951;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden;color:#fff}
+.xt .t{font-family:var(--disp);font-weight:300;font-size:clamp(52px,8.2vw,156px);line-height:1.08;letter-spacing:-.055em;overflow:hidden;padding:.16em .2em .3em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:#d9ecf7}
+
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:rgba(2,15,28,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(720px,calc(100vh - 96px));background:var(--paper);color:var(--ink);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.55),0 0 0 1px var(--hairD);opacity:0}
+.ps-media{position:relative;background:var(--paper3);overflow:hidden;border-radius:18px 0 0 18px}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,rgba(16,176,224,.18),transparent 60%)}
+.ps-plate .k{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.ps-plate .q{font-family:var(--disp);font-weight:300;font-size:clamp(22px,2vw,30px);line-height:1.25;margin-top:14px;padding-bottom:.12em}
+.ps-col{display:flex;flex-direction:column;min-height:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--hairD)}
+.ps-step{display:flex;gap:8px}
+.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body .lab{color:var(--cyanD)}
+.ps-body h2{font-family:var(--disp);font-weight:300;font-size:clamp(34px,3.4vw,52px);line-height:1.1;letter-spacing:-.045em;margin:14px 0 10px;padding-bottom:.1em}
+.ps-body .role{font-size:17px;line-height:1.5;color:var(--mute);margin:0 0 30px}
+.ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
+.ps-body ul{list-style:none;margin:26px 0 0;padding:0;border-top:1px solid var(--hairD)}
+.ps-body li{padding:14px 0;border-bottom:1px solid var(--hairD);font-size:15px;line-height:1.5}
+.ps-body li a{color:var(--cyanD)}
+.ps-body .src{margin-top:28px;font-size:14px;color:var(--mute)}
+.nf{min-height:70vh}
+.nw{white-space:nowrap}
+.arows{border-top:1px solid var(--hairD)}
+.arow{display:grid;grid-template-columns:72px minmax(0,4fr) minmax(0,6fr);gap:var(--gap);align-items:center;padding:34px 0;border-bottom:1px solid var(--hairD)}
+.arow svg{width:56px;height:56px;overflow:visible}
+.arow svg *{fill:none;stroke:#1d3a52;stroke-width:1.1}
+.arow svg .a{stroke:var(--cyanD)}.arow svg .f{fill:var(--cyan);stroke:none}.arow svg .g{fill:var(--gold);stroke:none}
+.arow h3{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.6vw,42px);line-height:1.1;letter-spacing:-.04em;margin:0}
+.arow p{margin:0;color:var(--mute);font-size:16.5px;max-width:52ch}
+@media (max-width:760px){.arow{grid-template-columns:56px 1fr;row-gap:10px}.arow p{grid-column:2/3}}
+.ps-body:focus,.ps-body:focus-visible{outline:none}
+
+@media (max-width:1100px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.apps{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-key{display:none}}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:38vh;height:38svh}
+  .story-l .d3,.story-l .kick{display:none}
+  .grant,.two,.cgrid{grid-template-columns:1fr}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:12px;padding-bottom:12px}
+  .brand img{height:24px}
+  .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(4,24,43,.1) 0%,rgba(4,24,43,.3) 22%,rgba(4,24,43,.88) 36%,rgba(4,24,43,.94) 72%,var(--ink) 100%)}
+  .hero-h{font-size:clamp(44px,12.6vw,96px)}
+  .hero-foot .s{font-size:16px}
+  .stats{grid-template-columns:1fr;gap:40px}
+  .cmp{grid-template-columns:1fr;gap:44px}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.subm{grid-column:1/2}
+  .facts>div{grid-template-columns:1fr;gap:6px}
+}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .ps-media{height:min(34vh,280px);border-radius:18px 18px 0 0}
+  .ps-bar{padding:14px 18px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (max-width:560px){
+  .apps{grid-template-columns:1fr}
+  .ap{min-height:0}
+  .ap h3{margin-top:26px}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .fld input,.fld textarea{font-size:20px}
+}
+@media (max-width:420px){.pgrid{gap:28px 14px}.pc-meta h3{font-size:18px}.pc-meta .ttl{font-size:13px}}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("ss-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="orb" viewBox="0 0 64 64"><circle class="o1" cx="32" cy="32" r="29" fill="none" stroke="#10b0e0" stroke-width="1.4"/><circle class="o2" cx="20" cy="38" r="7" fill="#f0b000"/><circle class="o3" cx="42" cy="26" r="4.6" fill="#10b0e0"/></svg>
+    <div class="wm"><span>SANSIMEON</span></div>
+  </div>
+  <span class="lab pl">Single-cell sequencing at scale</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">000</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="Sansimeon, home">
+    <img src="https://sansimeon.bio/wp-content/uploads/2023/09/logo.svg" alt="Sansimeon" onerror="document.getElementById('brand').classList.add('nologo')">
+    <span class="wmk">SANSIME<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#10b0e0" stroke-width="5"/><circle cx="24" cy="38" r="8" fill="#f0b000"/></svg>N</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/platform">Platform</a>
+    <a class="nl ul" href="#/applications">Applications</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true" data-lenis-prevent>
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/platform">Platform</a></li>
+    <li><a href="#/applications">Applications</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Fremont, CA</span><br>Sansimeon, Inc.</div>
+    <div><span class="lab">Follow</span><br><a href="https://www.linkedin.com/company/sansimeon/" target="_blank" rel="noopener">LinkedIn</a></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" id="psScrim"></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <a class="btn sm" href="#/team" data-close>Close</a>
+        <div class="ps-step"><a class="btn sm" id="psPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="psNext" href="#/team" data-replace aria-label="Next person">Next</a></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Sansimeon</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="Sansimeon";
+var STORE_KEY="ss";
+var WP="https://sansimeon.bio/wp-content/uploads/2023/09/";
+var LI="https://www.linkedin.com/company/sansimeon/";
+
+/* ================= CONTENT (from the dossier; nothing invented) ================= */
+var GRANTS=[
+ {d:"Jun 2026",s:"NIH NIGMS · 1R44GM163418",t:"A fully integrated platform for reproducible and scalable single-cell sequencing in clinical research",u:"https://reporter.nih.gov/search/results?query=1R44GM163418"},
+ {d:"2025–2026",s:"NIH NIGMS · R44GM149003",t:"A uniquely scalable platform for sequencing tens of millions of single cells from complex clinical samples with a streamlined workflow",u:"https://reporter.nih.gov/search/results?query=R44GM149003"},
+ {d:"2024",s:"NIH NHGRI · 1R43HG013446",t:"A uniquely scalable approach to single cell sequencing for the development of next generation cell therapies",u:"https://reporter.nih.gov/search/results?query=1R43HG013446"},
+ {d:"2023",s:"NIH NIGMS · 1R43GM149003",t:"A uniquely scalable approach to sequence tens of millions of single cells without compromising performance",u:"https://reporter.nih.gov/search/results?query=1R43GM149003"}
+];
+var TEAM=[
+ {slug:"philipp-spuhler",name:"Philipp Spuhler, PhD",title:"Chief Executive Officer",grp:"Leadership",img:WP+"Philipp-Spuhler-PhD.svg",
+  bio:["Philipp Spuhler is Sansimeon’s Chief Executive Officer: an engineer and entrepreneur with 15 years of experience in technology commercialization.","He is the principal investigator on Sansimeon’s NIH SBIR awards, including the June 2026 NIGMS award for a fully integrated, reproducible single-cell sequencing platform for clinical research. His published work includes microfluidic isolation of rare circulating tumor cells from blood using inertial focusing."],
+  links:[["LinkedIn","https://www.linkedin.com/in/phil-spuhler-3469a413/"],["Inertial focusing for sorting of rare circulating tumor cells · Science Translational Medicine, 2013","https://doi.org/10.1126/scitranslmed.3005616"],["Microfluidic, marker-free isolation of circulating tumor cells from blood samples · Nature Protocols, 2014","https://doi.org/10.1038/nprot.2014.044"]]},
+ {slug:"mehmet-toner",name:"Mehmet Toner, PhD",title:"Technology Advisor",grp:"Advisors",img:WP+"Mehmet-Toner.svg",
+  bio:["Mehmet Toner is Professor of Biomedical Engineering at Massachusetts General Hospital, Harvard Medical School, and Harvard-MIT Health Sciences & Technology.","Sansimeon’s products are based on technologies developed at Massachusetts General Hospital, the largest teaching hospital of Harvard Medical School."],
+  links:[["Google Scholar","https://scholar.google.com/citations?user=eF_bXIkAAAAJ&hl=en"]]},
+ {slug:"ravi-kapur",name:"Ravi Kapur, PhD",title:"Technology Advisor",grp:"Advisors",img:WP+"Ravi-Kapur.svg",
+  bio:["Ravi Kapur is a scientist, engineer and entrepreneur with 30 years of experience in technology commercialization."],
+  links:[["LinkedIn","https://www.linkedin.com/in/drravikapur/"]]},
+ {slug:"jon-edd",name:"Jon Edd, PhD",title:"Technology Advisor",grp:"Advisors",img:WP+"Jon-Edd-PhD.svg",
+  bio:["Jon Edd is a scientist, engineer and inventor with 20 years of experience in technology development.","His published work includes the controlled encapsulation of single cells into monodisperse picolitre drops, the physical step at the heart of droplet-based single-cell sequencing."],
+  links:[["Google Scholar","https://scholar.google.com/citations?user=Ef0HSpUAAAAJ&hl=en"],["Controlled encapsulation of single-cells into monodisperse picolitre drops · Lab on a Chip, 2008","https://doi.org/10.1039/b805456h"]]}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+var GL={
+ imm:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="34" r="16"/><circle class="g" cx="26" cy="34" r="5"/><path class="a" d="M40 22l8-8M44 26l10-4M38 18l2-10"/><circle class="f" cx="48" cy="14" r="2.4"/><circle class="f" cx="54" cy="22" r="2.4"/><circle class="f" cx="40" cy="8" r="2.4"/></svg>',
+ cri:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 26c8-8 16 8 24 0s16 8 24 0M8 38c8-8 16 8 24 0s16 8 24 0"/><path class="a" d="M30 18v28"/><circle class="f" cx="30" cy="18" r="2.6"/></svg>',
+ tai:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="24"/><path class="a" d="M32 8v48M8 32h48"/><circle class="g" cx="44" cy="20" r="4"/></svg>',
+ cel:'<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="22" cy="24" r="10"/><circle cx="42" cy="24" r="10"/><circle cx="32" cy="42" r="10"/><circle class="g" cx="32" cy="42" r="3.6"/><circle class="f" cx="22" cy="24" r="2.4"/><circle class="f" cx="42" cy="24" r="2.4"/></svg>'
+};
+var APPS=[
+ ["imm","Immune profiling","Fully characterize the immune response through TCR repertoire profiling to improve the efficacy of <span class='nw'>T-cell</span> immunotherapies and identify new therapeutics."],
+ ["cri","CRISPR screening","Perform genome-wide CRISPR screens to accelerate the development of <span class='nw'>CRISPR-based</span> therapies."],
+ ["tai","Tailored drug therapies","Design personalized cancer treatments by identifying a person’s unique immune response to disease and to treatment."],
+ ["cel","Next-generation cell therapies","Use cell engineering to design personalized cancer treatments with improved efficacy and at reduced cost."]
+];
+function apps(){return '<div class="apps" data-group>'+APPS.map(function(a){return '<div class="ap">'+GL[a[0]]+'<h3>'+a[1]+'</h3><p>'+a[2]+'</p></div>'}).join("")+'</div>'}
+var DATA=[
+ ["Data analysis","Generate multi-modal datasets with unprecedented resolution and scale to power machine learning in drug discovery and development."],
+ ["Clinical trial design","Use single-cell profiling of patient cohorts to identify clinically relevant signatures."],
+ ["Biomarkers and targets","Discover new disease biomarkers and identify potential drug targets from single-cell sequencing data."],
+ ["Integration and automation","Process complex clinical samples in a scaled, cost-effective and streamlined workflow, ready for automated pipelines."]
+];
+function dataList(){return '<dl class="facts" data-group>'+DATA.map(function(d){return '<div><dt>'+d[0]+'</dt><dd>'+d[1]+'</dd></div>'}).join("")+'</dl>'}
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="ssNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.ssNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
+function rows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Single-cell sequencing · Fremont, CA</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">One cell.</span><span class="l">One bead.</span><span class="l">At <em>scale.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Sansimeon pairs single cells with single barcoded beads, deterministically, and works directly on complex clinical samples such as whole blood, so single-cell sequencing can reach tens of millions of cells.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/platform">How it works '+ARR+'</a><a class="btn" href="#/applications">Applications</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i class="c"></i>Single cell</span><span><i class="b"></i>Barcoded bead</span><span><i class="d"></i>Droplet</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>The bottleneck</span>'+
+   '<p class="txt" id="mani">Single-cell sequencing changed how we read disease. But today’s barcoding methods stop near a million cells per experiment, and sample preparation varies from operator to operator. Sansimeon is building the platform that <em>scales without compromise.</em></p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">100<sup>M</sup></span><span class="lab k">Cells per run with high-speed deterministic encapsulation</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1<sup>M</sup></span><span class="lab k">Cells per experiment: the ceiling of existing single-cell barcoding methods</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1<sup>step</sup></span><span class="lab k">Enrichment, multiplexed tagging and CITE-seq labeling in one incubation</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">From whole blood to <em>barcoded cells.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Prepare</span><span>Order</span><span>Pair</span><span>Encapsulate</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>Prepare in one step.</h3><p>Red blood cells and platelets are removed and target cells enriched in-line, while multiplexed tagging and CITE-seq labeling happen in the same incubation. No centrifugation, minimal hands-on time.</p></article>'+
+     '<article class="step"><h3>Line the cells up.</h3><p>Cells travel through a microchannel in single file, evenly spaced, so each one arrives at the encapsulation point on schedule rather than at random.</p></article>'+
+     '<article class="step"><h3>One cell, one bead.</h3><p>Each cell is paired with a single barcoded bead in the microchannel before emulsification: deterministic pairing, without cell-hashing or combinatorial indexing.</p></article>'+
+     '<article class="step"><h3>Encapsulate at scale.</h3><p>Paired cells and beads are sealed into droplets at high speed, up to 100 million cells per run, ready for sequencing on commercial or in-house single-cell platforms.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Applications</span><h2 class="d2">Where scale <em>changes the answer.</em></h2></div><p data-r>Rare cells, deep immune repertoires and genome-wide screens all need far more cells than a single experiment can hold today.</p></div>'+
+   apps()+
+   '<div style="margin-top:48px" data-r><a class="btn" href="#/applications">All applications '+ARR+'</a></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>Powering AI in pharma and biotech</span><h2 class="d3">More high-quality data, from <em>real clinical samples.</em></h2><p class="muted" style="margin-top:24px;max-width:42ch" data-r>Scaled, cost-effective and streamlined processing of complex clinical samples generates the datasets machine learning in drug discovery needs.</p></div>'+
+   dataList()+
+  '</div></div></section>'+
+
+  '<section class="sec light2" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2">Built on <em>MGH</em> microfluidics.</h2></div><p data-r>Sansimeon is led by life-science veterans, and its products are based on technologies developed at Massachusetts General Hospital, the largest teaching hospital of Harvard Medical School.</p></div>'+
+   '<div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="grant" data-r><div><span class="lab kick">NIH NIGMS · SBIR · June 2026</span><p class="gq">$382,798 to build a <em>fully integrated, reproducible</em> single-cell platform for clinical research.</p></div>'+
+   '<p class="muted">The first-year award funds a one-step protocol for whole blood, then an automated benchtop instrument with an injection-molded microfluidic cartridge, validated across donors, operators and timepoints.</p></div>'+
+   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px;align-items:center"><h2 class="d3">NIH-funded since 2023</h2><a class="btn" href="#/platform" data-r>Roadmap '+ARR+'</a></div>'+rows(GRANTS)+'</div>'+
+  '</div></section>'+
+  cta();
+}
+function cta(){
+  return '<section class="sec cta light2" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Work with us</span>'+
+   '<h2 class="big">Scale your <em class="nw">single-cell</em> study.</h2>'+
+   '<p class="sub" data-r>Immunotherapy developers, CRISPR screening teams and translational researchers: tell us about your samples and the number of cells you need to see.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="'+LI+'" target="_blank" rel="noopener">LinkedIn ↗</a></div>'+
+  '</div></section>';
+}
+function vPlatform(){
+  return head({k:"Platform",h:'Scaled, <em>without compromise.</em>',p:'A turnkey platform that joins unbiased, high-efficiency sample preparation to scalable, deterministic cell encapsulation.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>The problem</span><h2 class="d3">Single-cell sequencing has not reached the <em>clinic.</em></h2></div>'+
+   '<div><p class="lede" data-r>Single-cell sequencing profiles cellular heterogeneity, immune responses and disease mechanisms at high resolution. Current platforms struggle in clinical and translational settings.</p>'+
+   '<dl class="facts" style="margin-top:40px" data-group>'+
+    '<div><dt>Poor reproducibility</dt><dd>Variable sample preparation changes results from run to run.</dd></div>'+
+    '<div><dt>Limited cell retention</dt><dd>Lost cells constrain throughput, which matters most when the target is rare.</dd></div>'+
+    '<div><dt>Complex workflows</dt><dd>Labor-intensive steps are hard to standardize across operators and sites.</dd></div>'+
+    '<div><dt>A throughput ceiling</dt><dd>Existing barcoding methods do not support more than about a million cells per experiment; scalable alternatives trade away performance or ease of use.</dd></div>'+
+   '</dl></div>'+
+  '</div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>The approach</span><h2 class="d2">Two steps, <em><span class="nw">re-engineered.</span></em></h2></div><p data-r>Sansimeon rebuilds both ends of the workflow: what happens to the sample before encapsulation, and how cells meet their barcodes.</p></div>'+
+   '<div class="cmp" data-group>'+
+    '<div class="cm us"><span class="lab">Sample preparation</span><ul><li>Red blood cell and platelet removal in-line</li><li>Cell enrichment in the same incubation</li><li>Multiplexed tagging and CITE-seq labeling</li><li>No centrifugation, minimal hands-on time</li><li>In-line debulking technology previously commercialized for cell-therapy manufacturing and rare-cell isolation</li></ul></div>'+
+    '<div class="cm us"><span class="lab">Encapsulation</span><ul><li>Deterministic pairing of one cell with one bead in a microchannel</li><li>Pairing happens before emulsification</li><li>No cell-hashing or combinatorial indexing needed</li><li>Significantly improved cell–bead pairing efficiency</li><li>Up to 100 million cells per run</li></ul></div>'+
+   '</div>'+
+  '</div></section>'+
+  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>Roadmap</span><h2 class="d3">From protocol to <em>benchtop instrument.</em></h2><p class="muted" style="margin-top:24px;max-width:42ch" data-r>Each step is funded by the National Institutes of Health through the Small Business Innovation Research program.</p></div>'+
+   '<ol class="tl" id="tl"><i class="ln0"></i><i class="ln1"></i>'+
+    '<li><span class="lab">2023 · NIGMS Phase I</span><h3>Deterministic pairing at scale</h3><p>Rapid pairing of single cells with single beads in a microchannel prior to emulsification, targeting throughput to 100 million cells. <a class="ul" href="'+GRANTS[3].u+'" target="_blank" rel="noopener">RePORTER ↗</a></p></li>'+
+    '<li><span class="lab">2024 · NHGRI Phase I</span><h3>Built for cell therapy development</h3><p>Sequencing more than 100 million single cells directly from crude, complex samples such as whole blood or bone marrow aspirates. <a class="ul" href="'+GRANTS[2].u+'" target="_blank" rel="noopener">RePORTER ↗</a></p></li>'+
+    '<li><span class="lab">2025–2026 · NIGMS Phase II</span><h3>End-to-end platform</h3><p>An automated workflow for direct analysis of peripheral whole blood and dissociated tissue, validated in clinically relevant samples with computational tools for scaled datasets. <a class="ul" href="'+GRANTS[1].u+'" target="_blank" rel="noopener">RePORTER ↗</a></p></li>'+
+    '<li><span class="lab">June 2026 · NIGMS award</span><h3>One-step protocol, then the instrument</h3><p>Phase I validates a unified one-step incubation for multiplexing, CITE-seq and cell enrichment in whole blood. Phase II builds an automated benchtop instrument and an injection-molded microfluidic cartridge. <a class="ul" href="'+GRANTS[0].u+'" target="_blank" rel="noopener">RePORTER ↗</a></p></li>'+
+   '</ol></div></div></section>'+cta();
+}
+function vApps(){
+  return head({k:"Applications",h:'Built for the hardest <em>samples.</em>',p:'High-throughput single-cell sequencing from limited clinical specimens, for immunotherapy development, precision medicine and drug discovery.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+
+   '<div class="arows" data-group>'+APPS.map(function(a){return '<div class="arow">'+GL[a[0]]+'<h3>'+a[1]+'</h3><p>'+a[2]+'</p></div>'}).join("")+'</div>'+
+  '</div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>Rare cells</span><h2 class="d3">When the cell you need is <em>one in a million.</em></h2></div>'+
+   '<div><p class="lede" data-r>Rare-cell applications suffer most from today’s workflow limits: immunotherapy development, precision diagnostics and minimal residual disease detection.</p><p class="muted" style="margin-top:26px" data-r>Higher cell recovery and wash efficiency, and a standardized workflow, address the barriers that keep single-cell technologies out of the clinic.</p></div>'+
+  '</div></div></section>'+
+  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>AI in pharma and biotech</span><h2 class="d3">Datasets with <em>resolution and scale.</em></h2></div>'+
+   '<div><p class="lede" data-r>Single-cell data at tens of millions of cells, from real patient samples, is the raw material machine learning in drug discovery has been missing.</p><p class="muted" style="margin-top:26px" data-r>Use cases range from multi-modal training sets and patient-cohort signatures for clinical trial design to biomarker discovery and drug target identification, all from a scaled, cost-effective and streamlined workflow.</p></div>'+
+  '</div></div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'The people behind <em>the platform.</em>',p:'Veterans of the life-science industry with a record of bringing new technologies to market, advised by the inventors of the underlying microfluidics.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Let’s talk <em>cells.</em>',p:'Partnerships, early access, research collaborations or investment: send a note and it will reach the Sansimeon team.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Headquarters</span><h3>Fremont, California</h3><p>Sansimeon, Inc.</p><p><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn ↗</a></p></div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","What are you sequencing?","ta",1,1)+
+    '<div class="subm"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="64" fill="none" stroke="#006f99" stroke-width="1"/><circle cx="-14" cy="8" r="20" fill="#f0b000"/><circle cx="22" cy="-12" r="12" fill="#10b0e0"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Sansimeon team directly.</p></div></div>'+
+  '</div></div></section>';
+}
+function v404(){return head({k:"Not found",h:'This page is <em>unpaired.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Headquarters</span>Sansimeon, Inc.<br>Fremont, California</div>'+
+   '<div class="c"><span class="lab">Follow</span><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/contact">Contact</a></div>'+
+   '<div class="c"><span class="lab">Funding</span>NIH SBIR · NIGMS and NHGRI, 2023–2026</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">SANSIME<span class="o">O</span>N</span>'+
+  '<div class="legal"><span class="lab">© 2026 Sansimeon, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"Sansimeon — Single-cell sequencing at scale",x:"Home"};
+  if(p[0]==="platform")return {k:"platform",v:vPlatform,t:"Platform — "+SITE,x:"Platform"};
+  if(p[0]==="applications")return {k:"applications",v:vApps,t:"Applications — "+SITE,x:"Applications"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});window.__lenis=lenis;lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
+var MOBILE=function(){return innerWidth<861};
+function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+function sm(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}
+/* BH: a masked reveal clips only while it moves */
+function unmask(st){if(!st)return;(st.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
+
+/* ================= HERO FIELD: an emulsion, every droplet one cell + one barcoded bead ================= */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
+  var GOLD="240,176,0",CY="16,176,224",CYL="98,208,234",NUC="196,143,0";
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
+  function lay(){if(w<861)return {cx:w*.5,cy:h*.3,rx:w*.62,ry:h*.3,s:Math.max(24,Math.min(34,w*.075))};
+    var s=Math.max(30,Math.min(50,Math.min(w,h)*.052));return {cx:w*.72,cy:h*.5,rx:Math.min(w*.32,h*.6),ry:h*.44,s:s}}
+  function drop(x,y,s,a,id,j,hl,depth){
+    var r=s*.44;c.lineWidth=depth?0.8:1;
+    c.fillStyle="rgba("+CY+","+(.07*a)+")";c.strokeStyle="rgba("+CYL+","+((.38+.5*hl)*a)+")";
+    c.beginPath();c.arc(x,y,r,0,6.2832);c.fill();c.stroke();
+    var an=R(id,j)*6.2832,ca=Math.cos(an),sa=Math.sin(an);
+    var cx=x-ca*s*.1,cy=y-sa*s*.1,bx=x+ca*s*.16,by=y+sa*s*.16;
+    c.fillStyle="rgba("+GOLD+","+(.92*a)+")";c.beginPath();c.arc(cx,cy,s*.16,0,6.2832);c.fill();
+    c.fillStyle="rgba("+NUC+","+(.95*a)+")";c.beginPath();c.arc(cx-ca*s*.03,cy-sa*s*.03,s*.065,0,6.2832);c.fill();
+    c.fillStyle="rgba("+CY+","+(.95*a)+")";c.beginPath();c.arc(bx,by,s*.1,0,6.2832);c.fill();
+    if(!depth){c.strokeStyle="rgba(238,245,249,"+((.25+.55*hl)*a)+")";c.lineWidth=.8;c.beginPath();c.arc(bx,by,s*.135,an-1.2,an+1.2);c.stroke()}
+  }
+  function lattice(L,t,s,vx,amp,par,depth){
+    var off=(t*vx)%s,shift=Math.floor(t*vx/s),rh=s*.866;
+    var x0=L.cx-L.rx*1.25,x1=L.cx+L.rx*1.25,y0=L.cy-L.ry*1.25,y1=L.cy+L.ry*1.25;
+    var sweep=((t*.06)%1.6)-.3;
+    for(var j=Math.floor(y0/rh);j<=Math.ceil(y1/rh);j++){
+      var y=j*rh+m[1]*par;
+      for(var i=Math.floor(x0/s)-1;i<=Math.ceil(x1/s)+1;i++){
+        var x=i*s+(j&1?s/2:0)+off+m[0]*par;
+        var dx=(x-L.cx)/(L.rx*IN.v+1),dy=(y-L.cy)/(L.ry*IN.v+1),d=Math.sqrt(dx*dx+dy*dy);
+        var a=(1-sm(.62,1,d))*amp;if(a<.02)continue;
+        var u=(dx+dy*.4+1.2)/2.4,hl=Math.max(0,1-Math.abs(u-sweep)*7);
+        drop(x,y,s,a,i-shift,j,hl,depth);
+      }
+    }
+  }
+  function feed(L,t,s){
+    var y=L.cy+s*.433,xa=L.cx-L.rx*1.18,xb=L.cx-L.rx*.72,hw=s*.3;
+    var g=c.createLinearGradient(xa,0,xb,0);g.addColorStop(0,"rgba("+CYL+",0)");g.addColorStop(.3,"rgba("+CYL+",.45)");g.addColorStop(1,"rgba("+CYL+",0)");
+    c.strokeStyle=g;c.lineWidth=1;c.beginPath();c.moveTo(xa,y-hw);c.lineTo(xb,y-hw);c.moveTo(xa,y+hw);c.lineTo(xb,y+hw);c.stroke();
+    var sp=s*.9,off=(t*s*.9)%sp;
+    for(var x=xa-sp+off;x<xb;x+=sp){var a=sm(xa,xa+s*3,x)*(1-sm(xb-s*3,xb,x))*IN.v;if(a<.02)continue;
+      c.fillStyle="rgba("+GOLD+","+a+")";c.beginPath();c.arc(x,y,s*.13,0,6.2832);c.fill();
+      c.fillStyle="rgba("+CY+","+a+")";c.beginPath();c.arc(x+s*.36,y,s*.085,0,6.2832);c.fill()}
+  }
+  function frame(once){
+    var t=(performance.now()-t0)/1000;if(RM)t=20;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    cv.style.opacity=shown?String(.35+.65*dim):"";
+    var L=lay();c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    lattice(L,t*.7,L.s*.62,L.s*.18,.32*IN.v,6,true);
+    lattice(L,t,L.s,L.s*.32,1*IN.v,14,false);
+    if(w>=861)feed(L,t,L.s);
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+})();
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
+
+/* ================= STORY CANVAS: one chip, one continuous camera move ================= */
+var story=null;
+function makeStory(cv){
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
+  var PAPER="238,245,249",CYL="98,208,234",CY="16,176,224",GOLD="240,176,0",NUC="196,143,0",DIM="150,176,196";
+  var CAM=[[110,20,340],[470,0,360],[790,-50,360],[1090,0,540]];
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  function ss(x){return x*x*(3-2*x)}
+  function cam(){var s=p*3,i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=ss(Math.max(0,Math.min(1,(fr-.3)/.4)));var A=CAM[i0],B=CAM[i0+1];
+    return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f),i0:i0,f:f}}
+  function poly(P){c.beginPath();c.moveTo(P[0][0],P[0][1]);for(var i=1;i<P.length;i++)c.lineTo(P[i][0],P[i][1]);c.stroke()}
+  function dot(x,y,r,col,a){c.fillStyle="rgba("+col+","+a+")";c.beginPath();c.arc(x,y,r,0,6.2832);c.fill()}
+  function cell(x,y,a,tag){dot(x,y,5.2,GOLD,.95*a);dot(x-1.2,y+.6,2,NUC,a);if(tag>0){for(var k=0;k<3;k++){var an=k*2.1+.6;dot(x+Math.cos(an)*6.6,y+Math.sin(an)*6.6,1.1,CYL,tag*a)}}}
+  function bead(x,y,a,sc){dot(x,y,3.6,CY,.95*a);c.strokeStyle="rgba("+PAPER+","+(.5*a)+")";c.lineWidth=.7/sc;c.beginPath();c.arc(x,y,4.8,-.9,.9);c.stroke()}
+  function draw(){
+    p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
+    var t=RM?10:(performance.now()-t0)/1000,C=cam();var W=[0,0,0,0];W[C.i0]=1-C.f;W[C.i0+1]=C.f;
+    var sc=Math.min(w,h*1.3)/(C.span*(w<620?1.4:1));
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
+    c.lineWidth=1.1/sc;c.lineJoin="round";c.lineCap="round";c.strokeStyle="rgba("+PAPER+",.45)";
+    /* chip walls */
+    poly([[-80,-46],[230,-46],[300,-10],[752,-10]]);poly([[768,-10],[924,-10]]);poly([[936,-10],[1000,-10],[1040,-130],[1300,-130]]);
+    poly([[-80,46],[170,46],[170,190]]);poly([[215,190],[215,46],[230,46],[300,10],[924,10]]);poly([[936,10],[1000,10],[1040,130],[1300,130]]);
+    poly([[752,-240],[752,-10]]);poly([[768,-240],[768,-10]]);
+    poly([[924,-160],[924,-10]]);poly([[936,-160],[936,-10]]);poly([[924,160],[924,10]]);poly([[936,160],[936,10]]);
+    /* debulking pillar array */
+    for(var px=40;px<=200;px+=14)for(var py=-38;py<=38;py+=14){var sh=((px-40)/14%4)*3.5;dot(px,py+sh,1.6,PAPER,.22)}
+    /* oil */
+    for(var k=0;k<14;k++){var u=(R(k,40)+t*.12)%1;dot(930,-160+u*150,1.3,DIM,.6*Math.sin(u*3.14));dot(930,160-u*150,1.3,DIM,.6*Math.sin(u*3.14))}
+    /* red cells and platelets diverted to waste */
+    for(var i=0;i<120;i++){var u2=(R(i,3)+t*.05)%1,x,y,a=1,pl=i>=80;
+      if(u2<.8){x=-80+(u2/.8)*272;var y0=(R(i,4)-.5)*80;y=y0+(40-y0)*sm(70,190,x)+Math.sin(t*1.3+i)*2;a=sm(-80,-40,x)}
+      else{x=192+(R(i,5)-.5)*18;y=46+(u2-.8)/.2*140;a=1-sm(150,186,y)}
+      if(pl)dot(x,y,1.3,DIM,.8*a);else{c.strokeStyle="rgba("+DIM+","+(.8*a)+")";c.lineWidth=.9/sc;c.beginPath();c.ellipse(x,y,4.4,3.4,R(i,6)*3,0,6.2832);c.stroke()}}
+    /* cells: random in the inlet, ordered in single file, paired, encapsulated */
+    var N=28,V=.03,SP=1020;
+    for(i=0;i<N;i++){var s=(i/N+t*V)%1,cx=-80+s*SP,f=1-sm(220,330,cx);
+      var cy=(R(i,1)-.5)*70*f+Math.sin(t*1.1+i*2)*3*f;cx+=(R(i,2)-.5)*34*f;
+      var al=sm(-80,-50,cx);var sB=(840/SP)+.0;var tag=sm(90,160,cx);
+      if(cx<940){cell(cx,cy+(cx>760?3:0),al,tag)}
+      /* matching bead */
+      var bx=760,by=-(sB-s)*SP;
+      if(s<sB){if(by>-250)bead(bx,by,sm(-250,-215,by),sc)}else if(cx<940)bead(cx+9,-4,1,sc);
+      if(cx>915&&cx<1000){var rr=13*sm(918,946,cx);c.strokeStyle="rgba("+CYL+",.9)";c.lineWidth=1/sc;c.beginPath();c.arc(Math.min(cx,946)+4,0,rr,0,6.2832);c.stroke();if(cx>=940){var dx=cx-940;cell(946+dx,3,1,1);bead(955+dx,-4,1,sc)}}
+    }
+    /* droplet lattice */
+    var S=34,off=(t*14)%S,rh=S*.866;
+    for(var j=-4;j<=4;j++)for(var q=-1;q<9;q++){var x2=1010+q*S+(j&1?S/2:0)+off,y2=j*rh;var a2=sm(1000,1050,x2)*(1-sm(1240,1290,x2))*(1-sm(100,124,Math.abs(y2)));if(a2<.03)continue;
+      var an=R(q-Math.floor(t*14/S),j)*6.28;
+      c.fillStyle="rgba("+CY+","+(.07*a2)+")";c.strokeStyle="rgba("+CYL+","+(.7*a2)+")";c.lineWidth=1/sc;c.beginPath();c.arc(x2,y2,14,0,6.2832);c.fill();c.stroke();
+      cell(x2-Math.cos(an)*3.5,y2-Math.sin(an)*3.5,a2,1);bead(x2+Math.cos(an)*6,y2+Math.sin(an)*6,a2,sc)}
+    c.restore();
+    function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-200||sx>w+200||sy<-40||sy>h+40)return;c.globalAlpha=Math.min(1,a);c.font="400 10.5px 'IBM Plex Mono',monospace";c.fillStyle="rgb(196,214,226)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";c.fillText(txt,sx,sy);c.globalAlpha=1}
+    lab("WHOLE BLOOD",-56,-62,W[0]);lab("IN-LINE DEBULKING",150,-62,W[0]);lab("CELLS LABELED IN ONE STEP",-70,72,W[0],"left");lab("RED CELLS + PLATELETS OUT",192,208,W[0]);
+    lab("SINGLE-FILE ORDERING",470,-30,W[1]);lab("EVEN SPACING",470,36,W[1]);
+    lab("BARCODED BEADS",760,-256,W[2]);lab("ONE CELL · ONE BEAD",790,40,W[2]+W[1]*.5);
+    lab("OIL",930,-176,W[3]);lab("DROPLETS",1140,-150,W[3]);lab("UP TO 100M CELLS PER RUN",1140,160,W[3]);
+  }
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();
+  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
+  return {set:function(v){pT=v},snap:function(v){p=pT=v;draw()},resize:function(){size();draw()},kill:function(){alive=false;io.disconnect()}};
+}
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var s=els[i].closest&&els[i].closest("[data-theme]");if(s&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=s.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){s.revert()}});
+      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){s2.revert()}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    var tl=$("#tl",view);if(tl&&!RM){gsap.to($(".ln1",tl),{scaleY:1,ease:"none",scrollTrigger:{trigger:tl,start:"top 70%",end:"bottom 60%",scrub:true}})}
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= AZ: GLOBAL REVEAL ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.ap,.arow";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.ap,.arow";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){st.revert()}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
+  story=makeStory(cv);
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM){return}
+  function fxMap(p){return p<1/6?p*1.5:p<5/6?.25+(p-1/6)*.75:.75+(p-5/6)*1.5}
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.round(p*3)));fx(fxMap(p))});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+    onRefresh:function(){if(story)story.resize()}});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{scale:0,transformOrigin:"50% 50%",opacity:0,duration:1.4,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+}
+
+/* ================= PERSON SHEET (BI) ================= */
+var ps=$("#ps"),psBody=$("#psBody"),psMedia=$("#psMedia"),psSheet=$("#psSheet"),bioOpen=false,lastFocus=null;
+function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+window.ssPlate=function(im){var m=im.parentNode;im.remove();if(m)m.insertAdjacentHTML("beforeend",m.getAttribute("data-plate")||"")};
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  psMedia.setAttribute("data-plate",plate(p));
+  psMedia.innerHTML='<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="ssPlate(this)">';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+   (p.links?'<ul>'+p.links.map(function(l){return '<li><a class="ul" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a></li>'}).join("")+'</ul>':'')+
+   '<p class="lab src">Profile drawn from sansimeon.bio, NIH RePORTER and PubMed.</p>';
+  psBody.scrollTop=0;
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  document.title=p.name+" — "+SITE;
+}
+function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
+  if(bioOpen){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,.05);return}
+  bioOpen=true;lastFocus=document.activeElement;ps.classList.add("open");ps.setAttribute("aria-hidden","false");if(lenis)lenis.stop();document.documentElement.style.overflow="hidden";
+  gsap.killTweensOf([psSheet,"#psScrim"]);
+  var d=instant||RM?.01:1;
+  gsap.fromTo("#psScrim",{opacity:0},{opacity:1,duration:.45*d,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*d,ease:"power3.out"});
+  var d0=instant?(window._preShown?1.5:.4):.15;rvPlay(psBody,d0);
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
+}
+function hideBio(){if(!bioOpen)return;bioOpen=false;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});
+  gsap.to("#psScrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){if(bioOpen)return;ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
+  document.documentElement.style.overflow="";if(lenis)lenis.start();if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});
+  var r=route(location.hash);document.title=r.t}
+function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
+$("#psScrim").addEventListener("click",closeBio);
+document.addEventListener("keydown",function(e){if(!bioOpen||e.key!=="Tab")return;var f=$$("a[href],button,[tabindex='0']",ps);if(!f.length)return;var a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}});
+var bioFromClick=false,bioBase=null;
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(a.hasAttribute("data-close")){e.preventDefault();closeBio();return}
+  if(a.hasAttribute("data-replace")){e.preventDefault();history.replaceState(null,"",h);prevHash=h;var r=route(h);if(r.bio)openBio(r.bio);return}
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();bioBase=location.hash||"#/";bioFromClick=true;history.pushState(null,"",h);prevHash=h;openBio(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.snapDim(r.k==="home"?1:.7);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem(STORE_KEY+"-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){bioBase="#/team";openBio(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
+  if(bioOpen){bioOpen=false;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set("#psScrim",{opacity:0});document.documentElement.style.overflow=""}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)bioBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)openBio(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem(STORE_KEY+"-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem(STORE_KEY+"-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem(STORE_KEY+"-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var dots=$$("#pre .orb circle");gsap.set(dots,{scale:0,transformOrigin:"center"});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(dots,{scale:1,duration:.7,ease:"back.out(1.6)",stagger:.08},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .orb","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(['300 1em "Sora"','400 1em "Sora"','400 1em "Figtree"','600 1em "Figtree"','400 1em "IBM Plex Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+</body>
+</html>

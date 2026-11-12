@@ -24,3 +24,9 @@ The coordinator session sources and picks, then starts 7 cloud sessions (create_
 3 sites each plus 1 alternate. Each prompt is short: "Read `_kit/BATCH_BRIEF.md` and follow it", plus the assignment block (seed data and
 evidence). Sessions push each site to main when it passes every gate and report `SITE DONE` via send_message. The coordinator pulls each site,
 sends the HTML to the client, and builds the Mailmeteor CSV from the reports (columns Email, Greeting, Company, URL, Notes).
+
+## Usage limit (learned Nov 2026)
+The account has a rolling 5-hour usage cap. 14 concurrent build sessions exhaust it in roughly 30–60 minutes, and every session then stops mid-task
+(status FAILED, result "You've hit your 5-hour limit · resets <time>"). Nothing is lost: the sessions resume when sent a message after the reset.
+Run the most important work first (client fixes before new builds), keep 6–7 sessions at a time, tell sessions to avoid redundant QA re-runs,
+and schedule a check just after each reset to nudge stalled sessions.

@@ -48,3 +48,14 @@ Used: HeadGear_Web_2_Vanity_White_v02.jpg — the ESStim headgear product render
 Not used, with reasons: ForPD.jpg (couple walking), the swimmer, the beach couple, the yoga class and shutterstock_204800416 (grandfather and child) — licensed stock lifestyle photography, not company content; the "Meet ESStim" video poster — a dark video thumbnail whose only content is the title text, which the page states in type; shutterstock_192317513 and shutterstock_118867258 — stock backgrounds behind their headers.
 Note: the company publishes no team headshots, so the team page uses refined typographic cards rather than monograms.
 - Product render (headgear): https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/aaa6d186-74b5-4c6a-8eaa-bea720cd5186/HeadGear_Web_2_Vanity_White_v02.jpg
+
+## Client review round 2 (PRINCIPLES BJ/BK/BN)
+- Both device renders are now used and carry one grade: HeadGear_Web_2_Vanity_White_v02.jpg in the
+  home device band, Highland_Headgear_Animation_Fall-2021.png on the technology page and again as the
+  full-width band on the contact page (shown whole on its own plate, not cropped into the face).
+- Logo on light sections: their colour logo file sets its tagline in a light orange that measures
+  1.77:1 against the bone tones, which rule A does not allow. Light headers now use the faithful
+  inline wordmark in the brand's own deep tints (--sinD #2b6e6e, --peachD #96511c, both ~5.3:1);
+  their white logo file still runs on every dark header, which is most of the site.
+- The ghost of a face visible inside the helmet shell on the home render is in the company's own
+  render. It has been left as they published it rather than retouched.

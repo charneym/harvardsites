@@ -58,3 +58,12 @@ the product photo on the home page.
 Note: the kit's photo-inventory crawler reports only the logo for this site, because every other image is
 lazy-loaded and reports naturalWidth 0 during the crawl; the inventory above was taken from the rendered
 page with a scrolling Playwright pass.
+
+## Client review round 2 (PRINCIPLES BJ/BK/BN)
+- Portrait crops: face positions were measured in each of the company's own seven photographs and
+  each portrait is panned and zoomed to one eye-line (40.5-43.7% of the card) and one head size
+  (72-74% of the card width), under one grade. Two sources (Lowe, Voronova) are low-resolution on
+  the company's own site; they were normalised in tone and crop rather than replaced, because these
+  are the only photographs the company publishes for those people.
+- The light-based printing rig render is now the full-width band on the contact page; the decorative
+  "map" panel it replaced carried no geographic information and has been removed.

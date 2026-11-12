@@ -32,3 +32,13 @@
 Used: the DNA-encoded library illustration and the sequencing-readout illustration from /our-technology, and the microplate/pipette laboratory photo from the same page.
 Not used, with reasons: "Untitled design (1/2/3).png" — AI-generated filler renders of neurons, DNA and cells, no company content; the blue neuron hero photograph — stock imagery; ContactIcon.png — a phone mock-up used as a UI icon; Jillion_FCOI_Report_Summary_Table.png — a policy table, not brand content; Jillion_Logo (5).png — a low-resolution (320×295) self-positioning hexagon diagram whose text is unreadable at any size it could be used; duplicate CDN size variants of the logo.
 Note: the company publishes no team photographs, no laboratory of its own and no product imagery, which is why the concept leans on typography and the drawn platform scene.
+
+## Client review round 2 (PRINCIPLES BJ/BK/BN)
+- The microplate/pipette laboratory photograph from /our-technology is now also the full-width band
+  on the contact page, captioned for what it shows (screening, not chemistry).
+- Its cyan is the hue of the company's own photograph, not an introduced palette colour; BK governs
+  invented hues, and BJ requires their imagery be used. It carries the site's grade.
+- The team page previously carried a "Note" block explaining to the agency why the page was thin,
+  and a hero line citing Jillion's own website as a source. Both were build scaffolding and are gone.
+- The programmes table lists four programmes against five NIH awards: the tau row now shows its
+  Phase I (2024) and Phase II (2026) awards, both on RePORTER, so the headline arithmetic reads.

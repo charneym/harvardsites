@@ -1,0 +1,107 @@
+<!--
+  PERSON SHEET: the required bio overlay for every site (PRINCIPLES BI). Replaces the old right-edge drawer.
+  Desktop: a centred two-column sheet (portrait left, scrollable bio right) over a dimmed, softly blurred page.
+  Mobile (<760px): full-height sheet that rises from the bottom; portrait becomes a modest header image.
+  Wheel/trackpad/touch scroll MUST work inside .ps-body: it carries data-lenis-prevent (Lenis otherwise eats wheel
+  events while it is stopped), overscroll-behavior:contain, and is the only scroll container.
+  Re-skin with the site's tokens only: --ps-bg, --ps-ink, --ps-mute, --ps-line, --ps-accent, --ps-scrim, --ps-serif, --ps-sans.
+  Gate: node _kit/overlay-audit.js <file> "#/team" must print OK.
+-->
+<style>
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:var(--ps-scrim,rgba(10,12,14,.62));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
+.ps-media{position:relative;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+/* no photo: a typographic plate, never a monogram */
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,color-mix(in srgb,var(--ps-accent,#2b6) 16%,transparent),transparent 60%)}
+.ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
+.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
+.ps-col{display:flex;flex-direction:column;min-height:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--ps-line,rgba(0,0,0,.08))}
+.ps-bar .ps-step{display:flex;gap:8px}
+.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body .lab{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-accent,#2b6)}
+.ps-body h2{font:400 clamp(34px,3.6vw,54px)/1.05 var(--ps-serif,Georgia);letter-spacing:-.02em;margin:14px 0 10px;padding-bottom:.14em}
+.ps-body .role{font:400 17px/1.5 var(--ps-sans,system-ui);color:var(--ps-mute,#5b6068);margin:0 0 30px}
+.ps-body p{font:400 17px/1.7 var(--ps-sans,system-ui);margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
+.ps-body .src{margin-top:28px;font-size:14px;color:var(--ps-mute,#5b6068)}
+.ps-x{min-height:44px;padding:0 18px}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .ps-media{height:min(38vh,300px)}
+  .ps-col{min-height:0}
+  .ps-bar{padding:14px 18px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
+</style>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <button class="btn ps-x" data-ps-close>Close</button>
+        <div class="ps-step"><button class="btn ps-x" id="psPrev" aria-label="Previous person">Prev</button><button class="btn ps-x" id="psNext" aria-label="Next person">Next</button></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Wire-up sketch: adapt names to the site. PEOPLE = [{slug,name,title,group,img|null,bio:[...],src}] */
+function PersonSheet(PEOPLE, opts) {
+  var ps = document.getElementById('ps'), sheet = document.getElementById('psSheet'), body = document.getElementById('psBody'), media = document.getElementById('psMedia');
+  var cur = -1, lastFocus = null, base = opts.baseRoute; /* e.g. '#/team' */
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function fill(i) {
+    var p = PEOPLE[i];
+    media.innerHTML = p.img
+      ? '<img src="' + p.img + '" alt="Portrait of ' + esc(p.name) + '" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">'
+      : plate(p);
+    window.__psPlate = plate(p);
+    body.innerHTML = '<span class="lab">' + esc(p.group || '') + '</span><h2 id="psName">' + esc(p.name) + '</h2><p class="role">' + esc(p.title) + '</p>' +
+      p.bio.map(function (b) { return '<p>' + esc(b) + '</p>'; }).join('') + (p.src ? '<p class="src">Source: ' + p.src + '</p>' : '');
+    body.scrollTop = 0;
+  }
+  function plate(p){return '<div class="ps-plate"><span class="k">' + esc(p.group || 'Team') + '</span><span class="q">' + esc(p.title) + '</span></div>'}
+  function open(i, fromRoute) {
+    var wasOpen = cur >= 0; cur = i; fill(i);
+    if (!wasOpen) {
+      lastFocus = document.activeElement;
+      ps.classList.add('open'); ps.setAttribute('aria-hidden', 'false');
+      opts.lenis && opts.lenis.stop(); document.documentElement.style.overflow = 'hidden';
+      gsap.fromTo(ps.querySelector('.ps-scrim'), { opacity: 0 }, { opacity: 1, duration: .45, ease: 'power2.out' });
+      gsap.fromTo(sheet, { opacity: 0, y: 26, scale: .985 }, { opacity: 1, y: 0, scale: 1, duration: .6, ease: 'power3.out' });
+      gsap.fromTo(body.children, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .55, stagger: .04, delay: .12, ease: 'power2.out' });
+      setTimeout(function () { body.focus({ preventScroll: true }); }, 60);
+    } else {
+      gsap.fromTo([media, body], { opacity: 0 }, { opacity: 1, duration: .35, ease: 'power1.out' });
+    }
+  }
+  function close() {
+    if (cur < 0) return; cur = -1;
+    gsap.to(sheet, { opacity: 0, y: 18, duration: .35, ease: 'power2.in' });
+    gsap.to(ps.querySelector('.ps-scrim'), { opacity: 0, duration: .4, onComplete: function () {
+      ps.classList.remove('open'); ps.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = ''; opts.lenis && opts.lenis.start(); lastFocus && lastFocus.focus && lastFocus.focus({ preventScroll: true });
+    } });
+    if (location.hash !== base) history.replaceState(null, '', base); /* Close returns to the page, never navigates */
+  }
+  function step(d) { var i = (cur + d + PEOPLE.length) % PEOPLE.length; history.replaceState(null, '', base + '/' + PEOPLE[i].slug); open(i); }
+  ps.querySelectorAll('[data-ps-close]').forEach(function (e) { e.addEventListener('click', close); });
+  document.getElementById('psPrev').addEventListener('click', function () { step(-1); });
+  document.getElementById('psNext').addEventListener('click', function () { step(1); });
+  document.addEventListener('keydown', function (e) {
+    if (cur < 0) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'Tab') { var f = ps.querySelectorAll('button,a[href],[tabindex="0"]'); if (!f.length) return; var a = f[0], z = f[f.length - 1]; if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
+  });
+  return { open: open, close: close, isOpen: function () { return cur >= 0; } };
+}
+</script>

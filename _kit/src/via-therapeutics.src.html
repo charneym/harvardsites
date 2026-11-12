@@ -24,6 +24,7 @@
   --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
   --sec:clamp(112px,14vh,200px);
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+  --artmask:linear-gradient(90deg,transparent 0 calc(var(--side) + (100% - 2 * var(--side)) * .60),#000 calc(var(--side) + (100% - 2 * var(--side)) * .70),#000 calc(100% - var(--side) - 70px),transparent calc(100% - var(--side)));
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
@@ -70,7 +71,7 @@ h1,h2,h3{text-wrap:balance}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
 .fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(86% 76% at 68% 52%,#2b1a26 0%,#1d1219 54%,#140c11 100%)}
-#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out;-webkit-mask-image:linear-gradient(90deg,transparent 0 47%,#000 58%,#000 93%,transparent 99%);mask-image:linear-gradient(90deg,transparent 0 47%,#000 58%,#000 93%,transparent 99%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out;-webkit-mask-image:var(--artmask);mask-image:var(--artmask)}
 #field.ready{opacity:1}
 
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
@@ -129,9 +130,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ln-mask{padding:.16em .16em .26em!important;margin:-.16em -.16em -.26em!important;overflow:clip;overflow-clip-margin:0}
 .ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
-.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto auto auto;column-gap:var(--gap);align-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
-.hero>.eyebrow,.hero>.hero-h,.hero>.hero-foot{grid-column:1/8}
-.hero .hrule{grid-column:8/9;grid-row:1/4;justify-self:start;width:1px;background:linear-gradient(180deg,rgba(244,244,240,0),rgba(244,244,240,.2) 16%,rgba(244,244,240,.2) 84%,rgba(244,244,240,0));margin-left:calc(var(--gap) * -.5)}
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto auto auto;column-gap:var(--gap);align-content:center;padding:clamp(96px,12vh,140px) var(--side);z-index:1}
+.hero>.eyebrow,.hero>.hero-h,.hero>.hero-foot{grid-column:1/9}
+.hero .hrule{grid-column:9/10;grid-row:1/4;justify-self:start;width:1px;background:linear-gradient(180deg,rgba(244,244,240,0),rgba(244,244,240,.22) 16%,rgba(244,244,240,.22) 84%,rgba(244,244,240,0));margin-left:calc(var(--gap) * -.55)}
 
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(6,39,42,.92) 0 42%,rgba(6,39,42,.34) 56%,rgba(6,39,42,0) 70%),linear-gradient(180deg,rgba(6,39,42,.5),rgba(6,39,42,0) 22%,rgba(6,39,42,0) 62%,#06272a 100%)}
 .hero>*{position:relative;z-index:1}
@@ -151,7 +152,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero-key i.g{background:var(--livL)}
 .hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
 
-.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head{position:relative;min-height:66vh;min-height:66svh;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-content:start;padding:clamp(150px,20vh,240px) var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head>*{grid-column:1/9}
 .ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 20% 70%,rgba(4,28,31,.8),rgba(4,28,31,.26) 70%),linear-gradient(180deg,rgba(4,28,31,.42),rgba(4,28,31,.12) 40%,var(--ink) 100%)}
 .ph-head>*{position:relative}
 .ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--sinL)}
@@ -180,8 +182,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .story-l .kick{margin-bottom:18px}
 .story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
 .rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
-.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
-.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
+.rail::before{content:"";position:absolute;left:0;right:calc(25% - 9px);top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:calc(25% - 9px);top:4px;height:1px;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
 .rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8ea3a2;transition:color .35s var(--eo)}
 .rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #4d6a68;transition:background .35s,border-color .35s}
 .rail span.on{color:var(--bone)}
@@ -213,28 +215,31 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* cards / team */
 .pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr));max-width:calc((100% - 3 * var(--gap)) * .75 + 2 * var(--gap))}
+.pgrid.n2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:calc((100% - 3 * var(--gap)) * .5 + var(--gap))}
+.pgrid.n1{grid-template-columns:1fr;max-width:calc((100% - 3 * var(--gap)) * .25)}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+@media (hover:hover){.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
 .pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(6,39,42,.5)}
 .ph2{position:absolute;inset:0}
 .ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .45s ease-out,clip-path .45s ease-out}
-.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+@media (hover:hover){.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}}
 .ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
 .ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
-.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+@media (hover:hover){.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .pc-meta .grp{display:none}
 .pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(25px,1.9vw,30px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
-.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta h3 span{display:inline-block;padding-bottom:.16em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--stone)}
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:6px}
 .dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--sinL)}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
-.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}
+@media (hover:hover){.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}}
 .dark .pcard:hover h3,.dark2 .pcard:hover h3{color:var(--sinL)}
-.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+@media (hover:hover){.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}}
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
 .pcard.noimg{border:1px solid var(--hairD);padding:26px 24px 24px;min-height:230px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0))}
 .dark .pcard.noimg,.dark2 .pcard.noimg{border-color:var(--hair);background:linear-gradient(180deg,rgba(244,244,240,.04),rgba(244,244,240,0))}
@@ -327,7 +332,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .big em{color:var(--sinD)}
 .cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
-.ftr{position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr{margin-bottom:-1px;position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--sinL)}
@@ -339,6 +344,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* contact */
 .cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.cgrid .addr{padding-top:38px}
 .addr h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,48px);line-height:1.06;letter-spacing:-.018em;margin:14px 0 14px}
 .addr p{color:var(--stoneD)}
 .map{margin-top:clamp(30px,4vw,56px);border:1px solid var(--hairD);aspect-ratio:5/4;background:var(--bone2);position:relative;overflow:hidden}
@@ -383,6 +389,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(20px,2.4vw,30px);border-bottom:1px solid var(--hairD)}
 .ps-step{display:flex;gap:8px}
 .ps-body:focus{outline:none}
+.ps-body{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 26px,#000 calc(100% - 30px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 26px,#000 calc(100% - 30px),transparent 100%)}
 .ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(30px,3.6vw,52px) clamp(26px,3.4vw,54px) 58px;scrollbar-width:thin}
 .ps-body .lab{color:var(--sinD)}
 .ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,52px);line-height:1.06;letter-spacing:-.026em;margin:14px 0 10px;padding-bottom:.16em}
@@ -397,6 +404,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 36px);height:calc(100dvh - 36px)}
   .ps-media{height:min(34vh,260px)}
   .ps-bar{padding:14px 18px}
+  .ps-bar .btn{height:44px;min-height:44px;padding:0 18px}
   .ps-body{padding:26px 20px 48px}
 }
 [data-r]{will-change:auto}
@@ -480,9 +488,12 @@ html,body{background:var(--bone)}
 body{color:var(--ink)}
 .dark,.dark2,.story,.cta,.ftr,.mm{color:var(--bone)}
 .dark .muted,.dark2 .muted,.story .muted{color:var(--stone)}
-.brand .lg{height:44px;width:auto;mix-blend-mode:multiply;display:none}
-.hdr.ink .brand .lg{display:block}
-.hdr.ink .brand .wmk{display:none}
+.brand .wmk{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:9px;align-items:center;font-family:var(--sans)}
+.brand .wmk .vw{grid-column:1;grid-row:1;font-weight:600;font-size:25px;letter-spacing:.01em;line-height:1}
+.brand .wmk .vbricks{grid-column:1;grid-row:2;width:48px;height:13px;color:var(--sin);margin-top:3px}
+.hdr .brand .wmk .vbricks{color:var(--sinL)}
+.hdr.ink .brand .wmk .vbricks{color:var(--sin)}
+.brand .wmk small{grid-column:2;grid-row:1/3;align-self:center;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.8}
 .fieldbg{background:radial-gradient(84% 78% at 70% 44%,#fbfbf8 0%,#f2f3ee 52%,#e6e9e3 100%)}
 .hero.light,.ph-head.light{background:transparent;color:var(--ink)}
 .hero::before{background:linear-gradient(90deg,rgba(244,244,240,.96) 0 42%,rgba(244,244,240,.42) 56%,rgba(244,244,240,0) 70%),linear-gradient(180deg,rgba(244,244,240,.55),rgba(244,244,240,0) 22%,rgba(244,244,240,0) 62%,#f4f4f0 100%)}
@@ -496,8 +507,8 @@ body{color:var(--ink)}
 .hero-key i.g{background:#9aa6a2}
 .cue{background:rgba(6,39,42,.18)}
 .cue i{background:var(--sinD)}
-.hdr.solid{background:rgba(244,244,240,.84);border-bottom-color:var(--hairD)}
-.hdr.solid.ink{background:rgba(244,244,240,.88)}
+.hdr.solid{background:rgba(6,39,42,.76);border-bottom-color:var(--hair)}
+.hdr.solid.ink{background:rgba(244,244,240,.88);border-bottom-color:var(--hairD)}
 #pre{background:var(--bone)}
 #pre .wm{color:var(--ink)}
 #pre .wm em{color:var(--sinD)}
@@ -520,7 +531,8 @@ body{color:var(--ink)}
 .dark .prow .ind,.dark2 .prow .ind{color:var(--bone)}
 .prow .stg{margin:0}
 .prow .note{grid-column:2/5;margin-top:12px;max-width:none}
-.prow.lead{background:linear-gradient(90deg,rgba(0,144,144,.08),rgba(0,144,144,0) 70%)}
+.prow.lead>*{position:relative}
+.prow.lead::before{content:"";position:absolute;inset:0 -22px;background:linear-gradient(90deg,rgba(0,144,144,.09),rgba(0,144,144,.02) 72%,rgba(0,144,144,0));pointer-events:none}
 .prow.lead h3{color:var(--sinD)}
 .prow::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--eo)}
 .prow:hover::after{transform:scaleX(1)}
@@ -550,8 +562,7 @@ body{color:var(--ink)}
 .cta .lab{color:var(--stone)}
 .cta .kick{color:var(--sinL)}
 .fig.plate .ph{background:#fff}
-#field{-webkit-mask-image:linear-gradient(90deg,transparent 0 56%,#000 64%,#000 93%,transparent 99%);mask-image:linear-gradient(90deg,transparent 0 56%,#000 64%,#000 93%,transparent 99%)}
-@media (max-width:1024px){#field{-webkit-mask-image:none;mask-image:none}}
+@media (max-width:1024px){#field{-webkit-mask-image:linear-gradient(180deg,transparent 0 10%,#000 20%,#000 58%,transparent 74%);mask-image:linear-gradient(180deg,transparent 0 10%,#000 20%,#000 58%,transparent 74%)}}
 @media (max-width:1100px){.svc{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:1024px){.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:860px){
@@ -589,8 +600,7 @@ body{color:var(--ink)}
 
 <header class="hdr" id="hdr">
   <a href="#/" class="brand" id="brand" aria-label="Via Therapeutics, home">
-    <img class="lg" src="https://static.wixstatic.com/media/41f917_1dec606712024cc4835d7b419b7ed33b~mv2.png" alt="Via Therapeutics" onerror="this.remove()">
-    <span class="wmk"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 20h52M6 34h52" stroke="currentColor" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M32 42v14" stroke="#4fc6c6" stroke-width="5" stroke-linecap="round"/><path d="M24 50l8 8 8-8" stroke="#4fc6c6" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Via<small>Therapeutics</small></span>
+    <span class="wmk"><span class="vw">VIA</span><svg class="vbricks" viewBox="0 0 120 34" aria-hidden="true"><g fill="currentColor"><rect x="2" y="0" width="24" height="8" rx="4"/><rect x="31" y="0" width="24" height="8" rx="4"/><rect x="60" y="0" width="24" height="8" rx="4"/><rect x="89" y="0" width="24" height="8" rx="4"/><rect x="16" y="13" width="24" height="8" rx="4"/><rect x="45" y="13" width="24" height="8" rx="4"/><rect x="74" y="13" width="24" height="8" rx="4"/><rect x="2" y="26" width="24" height="8" rx="4"/><rect x="31" y="26" width="24" height="8" rx="4"/><rect x="60" y="26" width="24" height="8" rx="4"/><rect x="89" y="26" width="24" height="8" rx="4"/></g></svg><small>Therapeutics</small></span>
   </a>
   <nav class="nav" aria-label="Primary">
     <a class="nl ul" href="#/technology">Technology</a>
@@ -624,7 +634,7 @@ body{color:var(--ink)}
   <div class="ps-sheet" id="psSheet">
     <div class="ps-media" id="psMedia"></div>
     <div class="ps-col">
-      <div class="ps-bar"><button class="btn sm" data-ps-close>Close</button><div class="ps-step"><button class="btn sm" id="psPrev" aria-label="Previous person">Prev</button><button class="btn sm" id="psNext" aria-label="Next person">Next</button></div></div>
+      <div class="ps-bar"><button class="btn" data-ps-close>Close</button><div class="ps-step"><button class="btn" id="psPrev" aria-label="Previous person">Prev</button><button class="btn" id="psNext" aria-label="Next person">Next</button></div></div>
       <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
     </div>
   </div>
@@ -805,9 +815,9 @@ function vHome(){
    '<span class="lab kick" data-r>The problem</span>'+
    '<p class="txt" id="mani">A drug that works in a dish can still fail in a patient, because almost none of it ever reaches the tissue. Via’s work is the <em>last few millimetres.</em></p>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">1 in 5</span><span class="lab k">Americans will develop skin cancer in their lifetime (Via’s NCI award abstract)</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1 in 5</span><span class="lab k">Americans will develop skin cancer in their lifetime, as Via’s NCI award abstract states</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">30<sup>%</sup></span><span class="lab k">Success rate of current multi-drug regimens for <i>M. abscessus</i> lung infection (Via’s NIAID award abstract)</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">&lt;1<sup>%</sup></span><span class="lab k">Oral bioavailability of the kind of compound Via reformulates, as cited in its cSCC Phase I abstract</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">&lt;1<sup>%</sup></span><span class="lab k">Oral bioavailability of the kind of compound Via reformulates, as cited in its Phase I skin-cancer abstract</span></div>'+
    '</div></div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
@@ -817,7 +827,7 @@ function vHome(){
      '<article class="step on"><h3>The barrier is the whole problem.</h3><p>Skin is accessible, but topical treatment of skin cancers and precancerous lesions has been limited by either too little drug crossing the stratum corneum or too much of it reaching the circulation. The same compounds given orally can have under 1% bioavailability; given intravenously they can cause aggressive adverse effects.</p></article>'+
      '<article class="step"><h3>Screen the formulation, not just the molecule.</h3><p>Via built a high-throughput screening method with formulation libraries, and evaluated hundreds of formulations in ex vivo human skin. The screen looks for what actually lands in the epidermis and dermis and stays there — not for a better molecule.</p></article>'+
      '<article class="step"><h3>Deliver into the layer that matters.</h3><p>The lead formulation, VT103, carries a synergistic combination of two compounds into the dermis without significant systemic exposure. In Phase I it produced significant anticancer effects in a UV-induced photocarcinogenesis model in SKH-1 mice.</p></article>'+
-     '<article class="step"><h3>Then make it real.</h3><p>The Phase II programme optimises and scales up manufacturing for product quality and consistency, runs in vivo efficacy studies, and completes IND-enabling toxicology in line with FDA guidance, positioning VT103 for a Phase 1 clinical trial.</p></article>'+
+     '<article class="step"><h3>Then make it real.</h3><p>The Phase II programme optimises and scales up manufacturing for product quality and consistency, runs in vivo efficacy studies, and completes IND-enabling toxicology in line with FDA guidance, positioning VT103 for a Phase I clinical trial.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
   '</div></section>'+
@@ -856,7 +866,7 @@ function vTech(){
    '<div class="pillars" data-group>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 18h56M4 30h56" class="a"/><path d="M4 48h56"/><circle class="f" cx="22" cy="40" r="3"/><circle class="f" cx="38" cy="38" r="2.4"/><path d="M22 4v30M38 4v28"/></svg><h3>Into the skin</h3><p>Topical and transdermal delivery tuned so the drug reaches the epidermis and dermis and stays there, rather than stopping at the stratum corneum or passing into the circulation.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 6v16M32 22c-6 4-14 10-14 22 0 8 6 12 10 8M32 22c6 4 14 10 14 22 0 8-6 12-10 8" class="a"/><circle class="f" cx="24" cy="40" r="2.4"/><circle class="f" cx="41" cy="44" r="2.4"/><circle class="f" cx="32" cy="34" r="2"/></svg><h3>Into the lung</h3><p>Jet milling and spray drying for aerodynamic performance, with device-informed formulation across DPI, pMDI and nasal platforms, and testing on next-generation impactors.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="22" width="18" height="18" rx="4"/><rect x="36" y="22" width="18" height="18" rx="4" class="a"/><path d="M8 52h48"/><circle class="f" cx="19" cy="31" r="2.6"/><circle class="f" cx="45" cy="31" r="2.6"/></svg><h3>Into a child’s dose</h3><p>Low-cost, shelf-stable minitablets and sprinkles designed for safety, compliance and manufacturability, developed under NIAID contracts for paediatric tuberculosis treatment.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="12" width="22" height="22" rx="5"/><rect x="36" y="12" width="22" height="22" rx="5" class="a"/><path d="M4 56h56"/><path d="M17 34v14M47 34v14"/><circle class="f" cx="17" cy="23" r="3.2"/><circle class="f" cx="47" cy="23" r="3.2"/></svg><h3>Into a child’s dose</h3><p>Low-cost, shelf-stable minitablets and sprinkles designed for safety, compliance and manufacturability, developed under NIAID contracts for paediatric tuberculosis treatment.</p></div>'+
    '</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>OINDP services</span><h2 class="d2 split">Orally inhaled and nasal <em>drug products.</em></h2></div><p data-r>Success depends on the interplay between formulation, particle properties, device performance and analytical testing, which takes iterative design and integrated data to make regulator-ready decisions early.</p></div>'+
@@ -930,7 +940,7 @@ function footer(){
    '<div class="c"><span class="lab">Laboratory</span>Via Therapeutics, LLC<br>8222 N Lamar Blvd, Unit F60<br>Austin, TX 78753</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@viatherapeutics.com">info@viatherapeutics.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/programmes">Programmes</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Routes</span>Topical · inhaled · nasal<br>Mucosal · transcutaneous · ocular · oral</div>'+
+   '<div class="c"><span class="lab">Routes</span>Topical, inhaled, oral, ocular,<br>mucosal, transcutaneous, systemic<br>and dry powder</div>'+
   '</div><span class="bigw" aria-hidden="true" id="bigwm">Via</span>'+
   '<div class="legal"><span class="lab">© 2026 Via Therapeutics, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
@@ -1031,10 +1041,10 @@ var field=(function(){
   var dpr=1;
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);if(gl)gl.viewport(0,0,cv.width,cv.height);if(!running)frame(true)}
   function layout(){var w=innerWidth,h=innerHeight;
-    if(w<861)return {off:[-.28,.44],sc:h/w>1.6?.74:.86};
+    if(w<861)return {off:[-.24,.30],sc:h/w>1.6?.70:.80};
     if(w<1100)return {off:[.30,-.04],sc:.86};
-    if(w>=1600)return {off:[.50,-.04],sc:.78};
-    return {off:[.48,-.02],sc:.76}}
+    if(w>=1600)return {off:[.54,-.04],sc:.72};
+    return {off:[.52,-.02],sc:.70}}
   function frame(once){
     var t=(performance.now()-t0)/1000;if(RM)t=30;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
@@ -1060,14 +1070,14 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.82)*(1-p*.5))}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.45)*(1-p*.5))}
 
 /* ===== STORY CANVAS: capsule -> release -> secretion -> clearance ===== */
 var story=null;
 function makeStory(cv){
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
-  var PAPER="233,240,239",TEAL="90,200,196",DIM="150,166,165",WARN="214,168,120";
+  var PAPER="233,240,239",TEAL="90,200,196",DIM="150,166,165",WARN="138,130,120";
   /* world: one skin cross-section, 0..1120 */
   var SURF=-130,EPI=-58,DERM=120,VES=176;
   var CAM=[[150,-6,300],[520,-10,440],[846,-6,300],[560,40,1200]];
@@ -1155,14 +1165,14 @@ function makeStory(cv){
       c.globalAlpha=1}
     c.restore();
     function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-240||sx>w+240||sy<-40||sy>h+40)return;
-      c.globalAlpha=Math.min(1,a);c.font="400 11px 'Geist Mono',monospace";c.fillStyle="rgb(188,204,203)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.fillText(txt,sx,sy);c.globalAlpha=1}
+      c.globalAlpha=Math.min(1,a);c.font="400 11px 'Geist Mono',monospace";c.shadowColor="rgba(6,39,42,.9)";c.shadowBlur=7;c.fillStyle="rgb(196,212,211)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.fillText(txt,sx,sy);c.shadowBlur=0;c.shadowColor='transparent';c.globalAlpha=1}
     lab("STRATUM CORNEUM",150,SURF-34,W[0]);
     lab("EPIDERMIS",150,EPI-12,W[0]+W[1]*.5);
     lab("DERMIS",150,DERM-14,W[0]+W[1]*.5);
     lab("SYSTEMIC CIRCULATION",150,VES+26,W[0]);
-    lab("FORMULATION LIBRARY · EX VIVO HUMAN SKIN",500,SURF-58,W[1]);
+    lab("FORMULATION LIBRARY · EX VIVO HUMAN SKIN",500,SURF-86,W[1]);
     lab("LEAD",594,DERM+52,W[1]);
-    lab("cSCC LESION",840,EPI-26,W[2]);
+    lab("cSCC LESION",840,EPI-54,W[2]);
     lab("VT103 · HELD IN THE DERMIS",840,DERM+40,W[2]);
     lab("SCALE-UP",240,344,W[3]);lab("IN VIVO EFFICACY",570,344,W[3]);lab("IND-ENABLING TOX",900,344,W[3]);
     lab("PHASE 1",1026,318,W[3],"left");
@@ -1306,7 +1316,7 @@ function contactInit(view){
 
 /* ============ PERSON SHEET (BI) ============ */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psIdx=-1,psFocus=null;
-var SRCLINE="Profile drawn from Via Therapeutics’ own team page and from NIH RePORTER.";
+var SRCLINE="Sources: Fzata and NIH RePORTER.";
 function psPlate(p){return '<div class="ps-plate"><span class="lab k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
 function fillBio(i){var p=TEAM[i];psIdx=i;
   window.__psPlate=psPlate(p);
@@ -1364,7 +1374,7 @@ function paint(r){
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.75);observeField();
+  field.snapDim(r.k==="home"?1:.45);observeField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

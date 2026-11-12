@@ -138,7 +138,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.08em .14em .2em;margin:-.08em -.14em -.2em}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -555,6 +556,14 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .dark .tl li p,.dark2 .tl li p{color:var(--stone)}
 .facts dd{font-family:var(--sans);font-weight:400;letter-spacing:-.01em}
 .ftr .bigw em{color:var(--sky)}
+.bio .plate .q{font-weight:400}
+.sys{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:center}
+.sys-fig{margin:0;position:relative;aspect-ratio:1278/718;overflow:hidden;border-radius:4px;background:#000}
+.sys-fig img{width:100%;height:100%;object-fit:cover;object-position:30% 50%}
+.sys.noimg .sys-fig{display:none}.sys.noimg{grid-template-columns:1fr}
+.sys-t .d3{margin-bottom:24px}
+@media (max-width:1024px){.sys{grid-template-columns:1fr}}
+@media (max-width:560px){.story-r{height:30vh!important;height:30svh!important}.step h3{font-size:22px;margin-bottom:10px}.step p{font-size:14.5px;line-height:1.55}}
 .cmt{font-size:13px;color:var(--stone);margin-top:20px;max-width:60ch}
 .light .cmt{color:var(--stoneD)}
 @media (max-width:1100px){.pgrid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -570,6 +579,36 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .grain,.cue i{animation:none}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
+}
+
+.moa svg{overflow:visible}
+
+/* story on small phones: the stage and the step text share the pinned screen without clipping */
+@media (max-width:560px){.story-r{height:30vh!important;height:30svh!important}.step h3{font-size:22px;margin-bottom:10px}.step p{font-size:14.5px;line-height:1.55}}
+
+/* BI: centred person sheet (kit components/person-sheet.html, re-skinned with site tokens) */
+.bio{display:grid;place-items:center;z-index:850}
+.bio .scr{background:rgba(8,10,12,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bio .pan{position:relative;top:auto;right:auto;bottom:auto;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));display:grid;grid-template-columns:minmax(260px,38%) minmax(0,1fr);grid-template-rows:minmax(0,1fr);border-radius:18px;overflow:visible;background:var(--bone);color:var(--ink);box-shadow:0 40px 120px -30px rgba(0,0,0,.5),0 0 0 1px var(--hairD)}
+.bio .pmed{position:relative;overflow:hidden;background:var(--bone2);border-radius:18px 0 0 18px}
+.bio .pmed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+.bio .plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding:clamp(28px,3.4vw,44px);background:linear-gradient(165deg,var(--ink2),var(--ink) 70%);color:var(--bone)}
+.bio .plate::before{content:"";position:absolute;left:clamp(28px,3.4vw,44px);right:clamp(28px,3.4vw,44px);top:clamp(28px,3.4vw,44px);height:1px;background:var(--sinL);opacity:.8}
+.bio .plate .lab{color:var(--sinL)}
+.bio .plate .q{font-family:var(--serif);font-weight:300;font-size:clamp(22px,2vw,30px);line-height:1.22;letter-spacing:-.02em;padding-bottom:.12em;max-width:16ch}
+.bio .pcol{display:flex;flex-direction:column;min-height:0}
+.bio .bar0{position:static;padding:16px clamp(22px,2.6vw,32px);border-bottom:1px solid var(--hairD);background:var(--bone);border-radius:0 18px 0 0}
+.bio .in{flex:1;min-height:0;overflow-y:auto;border-radius:0 0 18px 0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(24px,4vw,56px) 56px;scrollbar-width:thin}
+.bio .in h2{padding-bottom:.14em}
+.bio .bt p{max-width:62ch}
+@media (max-width:760px){
+  .bio{place-items:end stretch}
+  .bio .pan{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .bio .pmed{height:min(30vh,240px);border-radius:18px 18px 0 0}
+  .bio .bar0{border-radius:0}
+  .bio .in{border-radius:0}
+  .bio .bar0{padding:12px 16px}
+  .bio .in{padding:24px 20px 48px}
 }
 </style>
 </head>
@@ -624,8 +663,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 <div class="bio" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName">
   <div class="scr" id="bioScr"></div>
   <div class="pan" id="bioPan">
-    <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
-    <div class="in" id="bioIn"></div>
+    <div class="pmed" id="bioMed"></div>
+    <div class="pcol">
+      <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
+      <div class="in" id="bioIn" data-lenis-prevent tabindex="0"></div>
+    </div>
   </div>
 </div>
 
@@ -677,26 +719,46 @@ function tCard(p){return '<a class="pcard noimg" href="#/team/'+p.slug+'" aria-l
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function backers(){return '<div class="backers" data-group>'+INV.map(function(b){return '<div class="bk'+(b[2]?' lead':'')+'"><b>'+b[0]+'</b><span class="lab">'+b[1]+'</span></div>'}).join("")+'</div>'}
 
-/* story figures: axial view of the prostate, probe in the urethra */
+/* BL: ONE continuous scene. The same axial gland stays on stage; its parts draw, rotate, light and grow along the scrubbed timeline */
 var GL='M60 150C60 92 112 58 180 58S300 92 300 150 262 236 180 238 60 208 60 150Z';
-function gland(cls){return '<path class="'+(cls||"gf")+'" d="'+GL+'"/>'}
-function figs(){
-  var a='<svg viewBox="0 0 360 300" aria-hidden="true">';
-  var f1=a+gland()+'<circle class="lux" cx="180" cy="138" r="13"/><circle class="s" cx="180" cy="138" r="13"/>'+
-    [0,30,60,90,120,150,180,210,240,270,300,330].map(function(d){var r=d*Math.PI/180,x=180+Math.cos(r)*20,y=138+Math.sin(r)*20,X=180+Math.cos(r)*(d>200&&d<340?96:118)*1.05,Y=138+Math.sin(r)*(d>20&&d<160?92:80);return '<line class="h" x1="'+x.toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+X.toFixed(1)+'" y2="'+Y.toFixed(1)+'"/>'}).join("")+
-    '<path class="s" d="M180 138L292 112" /><path class="s" d="M196 86A58 58 0 0 1 236 122" /><path class="s" d="M210 58A86 86 0 0 1 262 104" />'+
-    '<text x="180" y="282" text-anchor="middle">IMAGE FROM WITHIN</text></svg>';
-  var f2=a+gland()+'<ellipse class="g" cx="134" cy="152" rx="44" ry="52"/><ellipse class="g" cx="226" cy="152" rx="44" ry="52"/>'+
-    '<path class="od" d="M98 150C96 112 116 100 140 102S166 120 162 150 140 200 126 196 100 184 98 150Z"/><path class="od" d="M262 150C264 112 244 100 220 102S194 120 198 150 220 200 234 196 260 184 262 150Z"/>'+
-    '<circle class="lux" cx="180" cy="138" r="13"/><circle class="s" cx="180" cy="138" r="13"/><text x="180" y="282" text-anchor="middle">PLAN TO THE ANATOMY</text></svg>';
-  var pts=[[120,122],[140,118],[112,146],[132,144],[150,150],[118,172],[138,178],[240,122],[220,118],[248,146],[228,144],[210,150],[242,172],[222,178]];
-  var f3=a+gland()+'<path class="od" d="M98 150C96 112 116 100 140 102S166 120 162 150 140 200 126 196 100 184 98 150Z"/><path class="od" d="M262 150C264 112 244 100 220 102S194 120 198 150 220 200 234 196 260 184 262 150Z"/>'+
-    '<path class="o" d="M180 138L132 144M180 138L228 144"/><circle class="lux" cx="180" cy="138" r="13"/><circle class="s" cx="180" cy="138" r="13"/>'+
-    pts.map(function(p){return '<circle class="of" cx="'+p[0]+'" cy="'+p[1]+'" r="4.2"/>'}).join("")+'<text x="180" y="282" text-anchor="middle">TREAT WHAT YOU SEE</text></svg>';
-  var f4=a+gland("g")+'<circle class="lux" cx="180" cy="138" r="34"/><circle class="s" cx="180" cy="138" r="34" stroke-dasharray="4 5"/><circle class="s" cx="180" cy="138" r="13"/><circle class="sf" cx="180" cy="138" r="4"/>'+
-    pts.map(function(p){return '<circle class="of" cx="'+p[0]+'" cy="'+p[1]+'" r="3.2" opacity=".55"/>'}).join("")+
-    '<path class="g" d="M180 172V200M170 192l10 10 10-10"/><text x="180" y="282" text-anchor="middle">PRESERVE THE URETHRA</text></svg>';
-  return [f1,f2,f3,f4].map(function(s){return '<div class="sfig">'+s+'</div>'}).join("");
+var LOBEL='M98 150C96 112 116 100 140 102S166 120 162 150 140 200 126 196 100 184 98 150Z',LOBER='M262 150C264 112 244 100 220 102S194 120 198 150 220 200 234 196 260 184 262 150Z';
+var FOC=[[120,122],[140,118],[112,146],[132,144],[150,150],[118,172],[138,178],[240,122],[220,118],[248,146],[228,144],[210,150],[242,172],[222,178]];
+function sceneSVG(){
+  var rays='';for(var d=0;d<360;d+=30){var r=d*Math.PI/180,x=180+Math.cos(r)*20,y=138+Math.sin(r)*20,X=180+Math.cos(r)*118,Y=138+Math.sin(r)*96;rays+='<line class="h sc-ray" pathLength="1" x1="'+x.toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+X.toFixed(1)+'" y2="'+Y.toFixed(1)+'"/>'}
+  return '<svg viewBox="0 0 360 300" aria-hidden="true"><defs><clipPath id="glc"><path d="'+GL+'"/></clipPath></defs>'+
+   '<path class="gf sc-gl" pathLength="1" d="'+GL+'"/>'+
+   '<g clip-path="url(#glc)">'+rays+'<path class="sc-sweep" d="M180 138L320 100A150 150 0 0 1 330 160Z" fill="rgba(159,197,234,.14)"/><line class="s sc-beam" x1="180" y1="138" x2="306" y2="110"/></g>'+
+   '<ellipse class="g sc-lobe" cx="134" cy="152" rx="44" ry="52"/><ellipse class="g sc-lobe" cx="226" cy="152" rx="44" ry="52"/>'+
+   '<path class="od sc-plan" d="'+LOBEL+'"/><path class="od sc-plan" d="'+LOBER+'"/>'+
+   '<path class="o sc-hifu" pathLength="1" d="M180 138L132 144"/><path class="o sc-hifu" pathLength="1" d="M180 138L228 144"/>'+
+   FOC.map(function(p){return '<circle class="of sc-foc" cx="'+p[0]+'" cy="'+p[1]+'" r="4.2"/>'}).join("")+
+   '<circle class="lux sc-mar" cx="180" cy="138" r="13"/><circle class="s sc-marl" cx="180" cy="138" r="13" stroke-dasharray="4 5"/>'+
+   '<circle class="lux" cx="180" cy="138" r="13"/><circle class="s sc-ur" pathLength="1" cx="180" cy="138" r="13"/><circle class="sf" cx="180" cy="138" r="3.4"/>'+
+   '<text class="sc-cap" x="180" y="284" text-anchor="middle">URETHRA PRESERVED</text></svg>';
+}
+function scene(root,tl,sec){
+  var q=function(s){return root.querySelectorAll(s)};
+  /* the stage builds as the section arrives */
+  gsap.fromTo(root,{opacity:0},{opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:sec,start:"top 75%"}});
+  gsap.fromTo(q(".sc-gl,.sc-ur"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,ease:"flow",stagger:.15,scrollTrigger:{trigger:sec,start:"top 75%"}});
+  gsap.fromTo(q(".sf,.lux:not(.sc-mar)"),{opacity:0},{opacity:1,duration:1,delay:.6,scrollTrigger:{trigger:sec,start:"top 75%"}});
+  /* 1 · image: rays draw out from the probe while the beam sweeps a full turn */
+  tl.fromTo(q(".sc-ray"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.16,stagger:.006,ease:"none"},0);
+  tl.fromTo(q(".sc-beam,.sc-sweep"),{rotation:-40,svgOrigin:"180 138",opacity:1},{rotation:320,svgOrigin:"180 138",duration:.27,ease:"none"},0);
+  tl.to(q(".sc-beam,.sc-sweep"),{opacity:0,duration:.04},.25);
+  /* 2 · plan: the lobes resolve, the plan traces around them */
+  tl.fromTo(q(".sc-lobe"),{opacity:0,scale:.9,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.12,ease:"none"},.26);
+  tl.to(q(".sc-ray"),{opacity:.35,duration:.1},.28);
+  tl.fromTo(q(".sc-plan"),{opacity:0,scale:.82,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.14,ease:"none"},.32);
+  /* 3 · treat: energy leaves the probe, focal zones light one after another */
+  tl.fromTo(q(".sc-hifu"),{strokeDasharray:"1 1",strokeDashoffset:1,opacity:1},{strokeDashoffset:0,duration:.06,ease:"none"},.52);
+  tl.fromTo(q(".sc-foc"),{opacity:0,scale:0,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.05,stagger:.011,ease:"none"},.55);
+  /* 4 · preserve: the protected margin grows around the urethra; treatment settles */
+  tl.to(q(".sc-hifu"),{opacity:0,duration:.05},.76);
+  tl.to(q(".sc-foc"),{opacity:.55,duration:.08},.78);
+  tl.to(q(".sc-lobe"),{opacity:.45,duration:.08},.78);
+  tl.fromTo(q(".sc-mar,.sc-marl"),{attr:{r:13},opacity:0},{attr:{r:36},opacity:1,duration:.14,ease:"none"},.78);
+  tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.08},.86);
 }
 
 /* ================= VIEWS ================= */
@@ -729,8 +791,13 @@ function vHome(){
      '<article class="step"><h3>Treat what you see.</h3><p>Targeted, tissue-selective HIFU therapy is delivered from the same probe in the same sitting, under the same imaging, in a fully automated outpatient procedure.</p></article>'+
      '<article class="step"><h3>Preserve what matters.</h3><p>The design aims to spare the urethra and minimise injury, swelling, bleeding and impact on sexual function: the side-effects that remain common concerns today.</p></article>'+
     '</div></div>'+
-   '<div class="story-r"><div class="sfigs">'+figs()+'</div><div class="ax lab" aria-hidden="true"><span>Axial view</span><span>Schematic</span></div></div>'+
+   '<div class="story-r"><div class="sfigs"><div class="sfig" id="scene">'+sceneSVG()+'</div></div><div class="ax lab" aria-hidden="true"><span>Axial view</span><span>Schematic</span></div></div>'+
   '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark" style="background:#050506"><div class="wrap"><div class="sys">'+
+   '<figure class="sys-fig"><img src="https://cdn.prod.website-files.com/67f44cf0483f1b4454d55068%2F680bf5d0cfbd3217d8bb68a0_Revised%20Final%20Website%20Video-poster-00001.jpg" alt="Render of the MaxQ transurethral probe and handpiece beside a prostate model" loading="lazy" decoding="async" onerror="this.closest(\'.sys\').classList.add(\'noimg\')"></figure>'+
+   '<div class="sys-t"><span class="lab kick" data-r>The system</span><h2 class="d3 split">One probe. <em>One sitting.</em></h2><p class="muted" data-r>A single transurethral device carries both the ultrasound imaging and the targeted therapy, designed for a fully automated, outpatient procedure tailored to each patient’s anatomy.</p><p class="cmt" data-r>MaxQ System render. Investigational device; not available for commercial use in the United States.</p></div>'+
+  '</div></div></section>'+
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Indications</span><h2 class="d2 split">BPH first. <em>Then further.</em></h2></div><p data-r>The first indication is benign prostatic hyperplasia. The same platform is planned for focal therapy of prostate cancer and, longer term, broader prostate diagnostics.</p></div>'+
@@ -811,10 +878,10 @@ function moaSvg(){
    '<circle class="sk" cx="260" cy="182" r="18" fill="none" stroke-width="1.6"/>'+
    '<path class="og" d="M260 182L166 214M260 182L354 214" fill="none" stroke-width="1.2"/>'+
    '<path class="og" d="M150 214a16 16 0 1 0 32 0a16 16 0 1 0-32 0M338 214a16 16 0 1 0 32 0a16 16 0 1 0-32 0" fill="none" stroke-width="1.2"/>'+
-   '<path d="M260 132V40M150 214H40M370 214h110" fill="none" stroke="#5b554d" stroke-width="1"/>'+
+   '<path d="M260 132V72M150 214H20M370 214h136" fill="none" stroke="#5b554d" stroke-width="1"/>'+
    '<text class="t1" x="270" y="44">Probe in the urethra</text><text x="270" y="64" class="ac">IMAGING + THERAPY</text>'+
-   '<text class="t1" x="40" y="200">Target tissue</text><text x="40" y="236">FOCAL ZONES</text>'+
-   '<text class="t1" x="380" y="200" >Protected</text><text x="380" y="236">URETHRAL MARGIN</text>'+
+   '<text class="t1" x="20" y="196">Target tissue</text><text x="20" y="236">FOCAL ZONES</text>'+
+   '<text class="t1" x="506" y="196" text-anchor="end">Protected</text><text x="506" y="236" text-anchor="end">URETHRAL MARGIN</text>'+
    '<text x="260" y="372" text-anchor="middle">PROSTATE CAPSULE · AXIAL</text></svg>';
 }
 function vTeam(){
@@ -877,6 +944,8 @@ function route(h){
 /* ================= ENV ================= */
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+/* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
+(function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -888,10 +957,11 @@ var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),tex=null,pat=null,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,L=null,TS=0;
   function hsh(a,b){var x=Math.sin(a*127.1+b*311.7)*43758.5453;return x-Math.floor(x)}
-  function layout(){var w=innerWidth,h=innerHeight;
+  /* BM: the gland is anchored to the content grid (same container as the header and text), not to the window edge */
+  function layout(){var w=innerWidth,h=innerHeight,gut=Math.max(16,Math.min(72,w*.042)),L0=Math.max(gut,(w-1320)/2),cw=w-2*L0;
     if(w<861)return {cx:w*.5,cy:h*.27,R:Math.min(w*.36,h*.19)};
-    if(w<1100)return {cx:w*.68,cy:h*.5,R:Math.min(h*.33,w*.25)};
-    return {cx:w*.69,cy:h*.52,R:Math.min(h*.36,w*.235)}}
+    if(w<1100)return {cx:L0+cw*.7,cy:h*.5,R:Math.min(h*.33,cw*.26)};
+    return {cx:L0+cw*.72,cy:h*.52,R:Math.min(h*.36,cw*.25)}}
   var UY=-.1,LOBES=[[-.38,.02,.36,.44],[.38,.02,.36,.44]],LES=[];
   (function(){var k=0;for(var i=0;i<400&&LES.length<38;i++){var s=i%2?1:-1,x=s*(.1+hsh(i,1)*.62),y=-.38+hsh(i,2)*.82;var lb=LOBES[s<0?0:1];var e=Math.pow((x-lb[0])/lb[2],2)+Math.pow((y-lb[1])/lb[3],2);if(e>.82)continue;if(Math.hypot(x,(y-UY))<.27)continue;var ok=true;for(var j=0;j<LES.length;j++)if(Math.hypot(LES[j].x-x,LES[j].y-y)<.1){ok=false;break}if(!ok)continue;LES.push({x:x,y:y,a:Math.atan2(y-UY,x)})}
     LES.sort(function(a,b){return (a.a+Math.PI)-(b.a+Math.PI)});LES.forEach(function(l,i){l.p=.06+.66*i/(LES.length-1)})})();
@@ -1099,9 +1169,9 @@ function homeScroll(view){
   var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),figEls=$$(".sfig",view),cur=0;
   function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
     rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
-  if(RM){figEls.forEach(function(f,i){f.style.opacity=i===0?1:0});return}
+  if(RM){return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:figEls,steps:steps});
+  var fx=StoryFX({section:sec,figs:[],steps:steps});var scn=$("#scene",view);if(scn)scene(scn,tl,sec);
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4-.0001<0?0:p*4)));fx(p)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
 }
@@ -1120,8 +1190,10 @@ function contactInit(view){
 }
 
 /* ================= BIO OVERLAY ================= */
-var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{xPercent:102});
+var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>';
+  $("#bioMed").innerHTML=(p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.innerHTML=window.__plate">':'')+(p.img?'':window.__plate);
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
    '<p class="lab src">Profile drawn from MaxQ Medical’s August 2026 Series A announcement.</p>';
@@ -1129,16 +1201,16 @@ function fillBio(i){var p=TEAM[i],n=TEAM.length;
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
-  if(bioOpen){rvPlay($("#bioIn"),0);return}
+  if(bioOpen){$("#bioIn").scrollTop=0;gsap.fromTo(["#bioMed","#bioIn"],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}
   bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();
   gsap.killTweensOf(["#bioPan","#bioScr"]);
-  gsap.fromTo("#bioPan",{xPercent:102},{xPercent:0,duration:instant||RM?.01:.7,ease:"flow"});gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
+  gsap.fromTo("#bioPan",{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:instant||RM?.01:.6,ease:"power3.out"});document.documentElement.style.overflow="hidden";$("#bioIn").scrollTop=0;gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
   /* direct load: the panel is already open, so its bar and content enter once the page is uncovered */
   var d0=instant?(window._preShown?1.5:.4):.25;rvPlay($("#bioIn"),d0);
   if(!RM)gsap.fromTo($$(".bar0 .btn",bio),{opacity:0,y:-12},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
-  setTimeout(function(){var c=$("[data-close]",bio);if(c)c.focus({preventScroll:true})},50);
+  setTimeout(function(){var c=$("#bioIn");if(c)c.focus({preventScroll:true})},60);
 }
-function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{xPercent:102,duration:RM?.01:.55,ease:"flow"});gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
+function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});document.documentElement.style.overflow="";gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
 function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
 $("#bioScr").addEventListener("click",closeBio);
 var bioFromClick=false,bioBase=null;
@@ -1169,7 +1241,7 @@ function go(first,ready){
   /* bio overlay routes never repaint */
   if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
   if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
-  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{xPercent:102});gsap.set("#bioScr",{opacity:0})}
+  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{opacity:0});gsap.set("#bioScr",{opacity:0});document.documentElement.style.overflow=""}
   if(busy){queued=true;return}busy=true;
   scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
   var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
@@ -1196,7 +1268,7 @@ function openMenu(){document.body.classList.add("menu-open");burger.setAttribute
 function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
   gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
 burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
-addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+addEventListener("keydown",function(e){if(e.key==="Tab"&&bioOpen){var f=$$("#bio a[href],#bio button,#bio [tabindex=\"0\"]");if(f.length){var a0=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a0){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a0.focus()}}}if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
 
 /* ================= PRELOADER / RELOAD VEIL ================= */
 var SEEN=false;try{SEEN=sessionStorage.getItem(PREK)==="1"}catch(e){}

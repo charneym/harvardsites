@@ -43,3 +43,11 @@
 
 ## Contact
 - No email on site (contact form only). Time zone: Central (Austin, TX).
+
+## Palette (logo-derived, v13 BK)
+- Logo pixel sample: green #6ab745 (dominant), grey #58595b ("Source", rules). photo-inventory buckets: #60c048, #606060.
+- Mapping: logo green #6ab745 → --sin; tint #8fc974 → --sinL (on dark); shade #2c6619 → --sinD (on light, AA); logo grey #58595b → --stoneD / --slate; neutral graphite #141516 base and off-white #f3f3f1 (neutrals only, no other hue).
+
+## Photos (v13 BJ)
+- Used: team headshots (Porterfield, Kottam, Walmsley, Phillips) on home + Team + person sheet; MDI exploded render (MDIRender.png) on home (FDA block) and Programs; "MCS weaning" Impella CO diagram and "pericardial drain" illustration on Programs.
+- Unused, with reasons: pennybacker_bridge_austin wallpaper, mirror-light-black-glass.jpg, pexels-photo-459411.jpeg, pexels-ecg-415779.jpeg, unsplash nebulizer image (generic stock, unrelated to the science); Google Maps tiles (not company imagery).

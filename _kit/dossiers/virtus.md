@@ -37,3 +37,10 @@
 
 ## Contact
 - virtusadm@virtustherapeutics.com (site, Yale Ventures). Time zone: Eastern (Groton, CT).
+
+## Palette (v13 BK)
+- No logo image exists on the site (photo-inventory: logo NOT FOUND; text wordmark only). The pitch deck renders "√IRTUS" in black with the tagline "CURE BY DESIGN".
+- Mapping from their site CSS: teal rgb(26,162,181) #1aa2b5 → --sin; tint #5cc8d7 → --sinL (on dark); shade #0c6b78 → --sinD (on light); their black/near-black → deep teal-black base #0d1315; their light grey #f7f7f7 → --bone #f2f4f3.
+
+## Photos (v13 BJ)
+- photo-inventory found 0 meaningful company images; the site uses GoDaddy stock (img1.wsimg.com/isteam/stock/...), which is deliberately unused (generic stock, unrelated to PKAN). No headshots are published; team uses typographic cards and plates.

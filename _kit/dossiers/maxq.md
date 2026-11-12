@@ -39,3 +39,12 @@
 
 ## Contact
 - info@maxqmedical.com (site). Time zone: Pacific (Sunnyvale, CA).
+
+## Palette (logo-derived, v13 BK)
+- photo-inventory logo sample: #f07830 38% (orange, quantized), #78a8d8 15% (sky blue), shades #d87830/#c06030/#904818. Site CSS orange rgb(228,118,55).
+- Mapping: logo orange #e47637 → --sin (accent); tint #f29a64 → --sinL (accent on dark); shade #a8481a → --sinD (accent on light); logo blue #72a6d8 → --sky (probe/imaging), #9fc5ea → --skyL; their site's black → --ink #0d0f12 base; warm neutrals for light sections.
+
+## Photos (v13 BJ)
+- Used: product render (video poster) https://cdn.prod.website-files.com/67f44cf0483f1b4454d55068%2F680bf5d0cfbd3217d8bb68a0_Revised%20Final%20Website%20Video-poster-00001.jpg — home "The system" section.
+- Logo hotlinked in header. No people photos exist on the site or in the release; team uses typographic cards and plates.
+- Unused: none (photo-inventory found 1 meaningful image).

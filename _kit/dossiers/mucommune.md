@@ -91,10 +91,10 @@ Pixel sampling of the full-resolution logo asset (`a11892_4251e2a68c464b798d861c
 | Logo colour | Token | Use on the concept site |
 | --- | --- | --- |
 | #2b19dd indigo (mark, left strokes) | `--sin` (accent) | links, accents, buttons on light, kickers, pipeline bars, person-sheet accent |
-| #2b19dd lightened to #a3a8ee / #9aa0f5 | `--sinL` | the same accent on dark sections, antibody strokes in the story scene |
+| #2b19dd lightened to #7d70ff / #9aa0f5 | `--sinL` | the same accent on dark sections (AA at 4.9:1 on the ink base), antibody strokes in the story scene |
 | #2b19dd deepened to #111428 / #171b35 / #1e2342 / #0a0c1c | `--ink`, `--ink2`, `--ink3`, `--deep` | page base, section tones, transition cover |
 | #2b19dd tinted to #f3f5fb / #e7ebf6 / #d6dcee | `--bone`, `--bone2`, `--bone3` | light sections, CTA band, image plates |
-| #ea8124 orange (mark, right strokes) | `--org`, `--orgL` #ff9e55, `--orgD` #8a4208 | the "trapped" signal: held particles in the hero and story, award labels, stat units (the deepened shade is used on light backgrounds for AA contrast) |
+| #ea8124 orange (mark, right strokes) | `--org`, `--orgL` #ff9e55, `--orgM` #c4620f, `--orgD` #8a4208 | the "trapped" signal: the true #ea8124 is the colour of every held particle in the hero; #c4620f carries display-size orange on light backgrounds, #8a4208 the small caps labels that need 4.5:1 |
 | #545453 wordmark grey | `--stone` #a8aecb / `--stoneD` #4d5370 | secondary text (shifted a few degrees toward the indigo hue so the neutrals sit in the same family) |
 
 No hue outside the logo is used anywhere, including the hero canvas and the story scene.

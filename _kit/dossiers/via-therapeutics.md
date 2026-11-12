@@ -76,7 +76,7 @@ Logo sampled with `_kit/photo-inventory.js` (https://static.wixstatic.com/media/
 - logo `#003030`/`#004848` deepened → `--ink #06272a`, `--ink2 #0a3034`, `--ink3 #10444a`, `--deep #041c1f`
 - logo `#d8d8d8` warmed to paper → `--bone #f4f4f0`, `--bone2 #e8eae5`, `--bone3 #d5dad5` (the site's base, matching their white site)
 - neutral `--liv #8a8278` / `--livL #b9b2a8` for the "held back at the surface" and systemic-circulation marks (a neutral, since their logo carries no second hue)
-The real logo file is hotlinked in the header on light sections (multiply-blended so its white box drops out); a faithful inline wordmark is used where the header sits on a dark section.
+The served logo is a 145×105 raster of the mark on an opaque white box, which cannot be dropped out on either of this site’s backgrounds (the header is its own stacking context, so `mix-blend-mode:multiply` has nothing to blend into). The mark is therefore re-drawn as inline SVG/CSS from the full-resolution asset — the same "VIA" wordmark, the same eleven rounded brick bars beneath it and the same "Therapeutics" strapline, in the logo’s own `#009090` — and that re-draw is what the header carries on both light and dark sections.
 
 ## Images used from the company's own site (PRINCIPLES BJ)
 Harvested with `_kit/photo-inventory.js` (8 pages crawled, 16 meaningful images).
@@ -88,3 +88,5 @@ Harvested with `_kit/photo-inventory.js` (8 pages crawled, 16 meaningful images)
 Not used, with reasons:
 - `8e8931_95a015ace77d47aab149de066c4bc371~mv2.jpg` — the same equipment photograph at 311×230, a lower-resolution duplicate
 - `2bb9e75bc3224cf4b3314fa0e01af8a7.jpg` ("Pipetting Samples"), `11062b_33787989082a4459a2e59e197ae8948f~mv2.jpeg` ("Science Lab"), `5c3f1e5a1ebf435bbc152173d50d7ea9.jpg` ("Embryonic Stem Cells"), `11062b_6856964059a0487cad651bbcff22dafb~mv2_d_5700_3800_s_4_2.jpg` ("Chemistry Class"), `11062b_a4cbb996d3ef4eb6a733d07c0d97640b~mv2.jpg` ("Science Student"), `11062b_2cad0157f39942f5aaf6ecc288fea0f4~mv2.jpg` ("Medicine") — Wix stock photography, still carrying the stock library's titles
+
+**Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 8 pages crawled, 16 meaningful images, 9 used in the concept; the 7 unused are the ones listed above (six Wix stock photographs still carrying the stock library’s titles, and the low-resolution duplicate). Logo palette re-sampled: `#009090` 27%, `#004848` 21%, `#003030` 5%, `#007878` 5%, `#007890` 5%, `#001830` 4% — unchanged against the mapping above.

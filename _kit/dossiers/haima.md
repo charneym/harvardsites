@@ -95,7 +95,7 @@ Logo sampled with `_kit/photo-inventory.js` (https://images.squarespace-cdn.com/
 - the purple at the top of the scale → `--bone #f6eef3`, `--bone2 #ebe0e8`, `--bone3 #d9ccd6`
 - logo `#c01818` (the molecule dots) → `--liv` / `--livL #e05a5a`, used as the signal colour: the red cells in the hero and the red cells and capillary in the story
 The purple is the accent and the red the signal, matching the proportions in their own mark. No other hue appears, including in the WebGL constants.
-The logo file is a purple wordmark on white, which is illegible on the site's dark base: it is hotlinked in the header on light sections (multiply-blended) and a faithful inline re-draw of the same mark is used on dark sections.
+The logo file is a purple wordmark on an opaque white box, which cannot be dropped out on this site’s dark base (the header is its own stacking context, so `mix-blend-mode:multiply` has nothing to blend into). The mark is re-drawn as inline SVG from the full-resolution asset — the same lower-case "haima" wordmark, the same platelet glyph and the same two colours — and that re-draw is what the header carries everywhere.
 
 ## Images used from the company's own site (PRINCIPLES BJ)
 `_kit/photo-inventory.js` reached only the logo on this Squarespace site (its images load through a lazy gallery), so the remaining images were listed directly from the pages with Playwright and reviewed on a contact sheet.
@@ -109,3 +109,5 @@ The logo file is a purple wordmark on white, which is illegible on the site's da
 - Fourteen headshots across executive management, the scientific advisory board and the research team
 
 Not used, with reasons: none of the company's meaningful images were left out; the only other files on the site are the Squarespace social icons and the logo variants.
+
+**Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 24 pages crawled; the crawler still reaches only the logo on this Squarespace site, because every other image is served from a lazy gallery that does not resolve to an `<img>` at crawl time, so the image list above remains the one taken directly from the pages with Playwright. Nothing meaningful was left out. Logo palette re-sampled: `#781860` 71%, `#c01818` 12%, `#a81818` 8%, `#c03030` 4%, `#901818` 3%, `#601860` 2% — unchanged against the mapping above.

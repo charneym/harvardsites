@@ -96,6 +96,7 @@ Logo sampled with `_kit/photo-inventory.js` (https://static.wixstatic.com/media/
 - the same hue at the top of the scale → `--bone #f6f1f3`, `--bone2 #ece2e7`, `--bone3 #ddcfd7`
 - logo green `#227722` → `--liv` / `--livL #7bc47b`, used only for the resident-flora marks in the hero and story
 No hue outside the logo is used anywhere, including the WebGL constants.
+The served logo is a 188×141 raster of the mark on an opaque white box, which cannot be dropped out on this site’s dark base (the header is its own stacking context, so `mix-blend-mode:multiply` has nothing to blend into). The mark is re-drawn as inline SVG from the full-resolution asset — the same two-cell glyph and the same "Fzata" wordmark, in the logo’s own magenta — and that re-draw is what the header carries.
 
 ## Images used from the company's own site (PRINCIPLES BJ)
 Harvested with `_kit/photo-inventory.js` (21 pages crawled, 17 meaningful images, 0 flagged as stock).
@@ -103,15 +104,17 @@ Harvested with `_kit/photo-inventory.js` (21 pages crawled, 17 meaningful images
 - Lab photograph, scientist at an instrument — `522169_5db20eeb70cd4a7c812ffc6a538c1edc~mv2.jpg` (home)
 - Lab photograph, IBD advocate holding a flask — `44ad90_4f546bc5cf7645b49eefd12a4c66c675~mv2.jpeg` (home)
 - BioPYM mechanism-of-action diagram — `44ad90_bf0e0040b3c14958b073cae5b2b83997~mv2.png` (platform)
-- Gastrointestinal BioPYM pipeline chart — `44ad90_31f0e5627b014643b5b96dbc563327f8~mv2.png` (pipeline)
 - BioPYM capsule bottle rendering — `44ad90_4b25e39930914c6a8e707275d6277790~mv2.png` (home and pipeline; the product image)
 - Mid-Atlantic Innovation Celebration winner badge — `44ad90_d63845796ac44ad09967333f7ec33f6a~mv2.png` (home)
 - Global Health Innovation Challenge logo — `44ad90_437118ccb81840338e17a234f10bd2ff~mv2.png` (home)
 - Headshots of Zhiyong Yang and Hanping Feng (team cards and person sheets)
 
 Not used, with reasons:
+- `44ad90_31f0e5627b014643b5b96dbc563327f8~mv2.png` (their gastrointestinal BioPYM pipeline chart) — it repeated the native pipeline table directly above it, listed a different set of programs from the current NIH RePORTER record (it carries FZ202, FZ010 and FZ201 and no FZ040), and brought its own typeface, rules and green gradient bars into the page. The table is the current record.
 - `44ad90_50e770c0807541daa2fbd684f5a501be~mv2.png` and the second pipeline PNG — duplicates of the pipeline chart at lower resolution
 - `44ad90_2d0fd1bf3f844d8081cf64b030d90f1df000.jpg` — the logo lockup as a flat image; the header already carries the mark
 - `44ad90_321eafe609064f57bb73e82a93e4f5e1~mv2.jpg` (hands held over a stomach) and `44ad90_30b0fede127e4a1bacbe549ae9017764~mv2.png` (an IBD awareness ribbon) — generic blog artwork, not company content
 - `44ad90_c63178ec50cd46e791d91429e4a4e933~mv2.png` — a screenshot of a Google map; the concept draws its own map
 - Three further "Fzata Scientist" frames (182×229, 194×274, 327×243) — too small to present at the site's scale, and the same subject as the lab photograph already used
+
+**Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 21 pages crawled, 17 meaningful images, 12 used in the concept, 0 flagged as stock; the 5 unused are the ones listed above. Logo palette re-sampled: `#a80078` 31%, `#a81878` 15%, `#900060` 8%, `#900078` 7%, `#006018` 3%, `#307830` 2% — unchanged against the mapping above.

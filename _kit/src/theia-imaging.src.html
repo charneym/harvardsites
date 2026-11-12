@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Theia Imaging — Handheld OCT for patients who cannot sit still</title>
+<meta name="description" content="Theia Imaging builds the Loris T2, a handheld swept-source OCT platform with interchangeable 62° and 145° lenses, bringing depth-resolved retinal imaging to infants, children and patients who cannot cooperate with a tabletop scanner.">
+<meta name="theme-color" content="#070d22">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070d22'/%3E%3Cpath d='M8 32c8-11 16-16 24-16s16 5 24 16c-8 11-16 16-24 16S16 43 8 32z' fill='none' stroke='%2315cdff' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='7' fill='none' stroke='%23e8ebf7' stroke-width='3'/%3E%3C/svg%3E">
+<style>
+/*@fonts Newsreader:400,400i; Hanken Grotesk:400,500; IBM Plex Mono:400*/
+:root{
+  --ink:#070d22;--ink2:#0b1430;--ink3:#101a3c;--deep:#04081a;
+  --paper:#f3f4f9;--paper2:#e8eaf4;--paper3:#d8dcec;
+  --mist:#a9b1d0;--mistD:#535c83;
+  --cy:#15cdff;--cyL:#6fe0ff;--ind:#2b3a9e;--indD:#1b2578;
+  --hair:rgba(232,235,247,.14);--hairD:rgba(7,13,34,.14);
+  --serif:'Newsreader',Georgia,'Times New Roman',serif;
+  --sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:#e8ebf7;font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--cy);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--cy);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--indD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--cy);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--mist)}
+.light .lab{color:var(--mistD)}
+em{font-style:italic;font-family:var(--serif)}
+.d1{font-family:var(--serif);font-weight:400;font-size:clamp(50px,8.4vw,150px);line-height:1;letter-spacing:-.03em;margin:0}
+.d2{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,96px);line-height:1.02;letter-spacing:-.026em;margin:0}
+.d3{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,58px);line-height:1.08;letter-spacing:-.02em;margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--cyL);font-weight:400}
+.light .d1 em,.light .d2 em,.light .d3 em{color:var(--indD)}
+.d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.lede{font-family:var(--serif);font-weight:400;font-size:clamp(21px,1.9vw,30px);line-height:1.36;letter-spacing:-.005em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--mist)}
+.light .muted{color:var(--mistD)}
+.light{background:var(--paper);color:var(--ink)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:17ch}
+.shead p{max-width:46ch;margin:0;color:var(--mist)}
+.light .shead p{color:var(--mistD)}
+.kick{display:block;margin-bottom:22px;color:var(--cyL)}
+.light .kick{color:var(--indD)}
+
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(78% 72% at 70% 42%,#122052 0%,#0a1130 54%,#05091c 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;visibility:hidden}
+#pre .dots{width:78px;height:58px;overflow:visible}
+#pre .wm{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.4vw,62px);letter-spacing:-.02em;color:#e8ebf7;line-height:1.1;padding:.1em .18em .4em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm em{color:var(--cy)}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--cy);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--serif);font-weight:400;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.03em;color:#e8ebf7;font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:#e8ebf7;border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:rgba(7,13,34,.74);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:rgba(243,244,249,.86);border-bottom-color:var(--hairD)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.brand img{height:30px;width:auto}
+.brand .lg-d{display:none}
+.hdr.ink .brand .lg-w{display:none}
+.hdr.ink .brand .lg-d{display:block}
+.brand .wmk{display:none;align-items:center;gap:9px;font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.02em;line-height:1}
+.brand .wmk small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;align-self:center}
+.brand .wmk svg{width:26px;height:20px;align-self:center}
+.brand.nologo img{display:none!important}
+.brand.nologo .wmk{display:flex}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--cy);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--cy)}
+.btn:hover::before{transform:none}
+.btn.solid{background:#e8ebf7;color:var(--ink);border-color:#e8ebf7}
+.btn.solid::before{background:var(--cy)}
+.light .btn::before{background:var(--indD)}
+.light .btn:hover{color:#f3f4f9;border-color:var(--indD)}
+.light .btn.solid{background:var(--ink);color:#f3f4f9;border-color:var(--ink)}
+.light .btn.solid::before{background:var(--indD)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--serif);font-weight:400;font-size:clamp(38px,10vw,64px);line-height:1.08;letter-spacing:-.03em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--mist);font-size:13px;line-height:1.6}
+
+.ln{overflow:visible!important}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(56% 74% at 16% 50%,rgba(5,9,26,.92),rgba(5,9,26,.55) 46%,rgba(5,9,26,0) 76%),linear-gradient(180deg,rgba(5,9,26,.5),rgba(5,9,26,0) 24%,rgba(5,9,26,0) 60%,var(--ink) 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--cyL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(46px,7vw,132px);line-height:1;letter-spacing:-.032em;max-width:11ch}
+.hero-h .l{display:block}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:44ch;margin:0;font-size:17px;line-height:1.6;color:rgba(232,235,247,.88)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:var(--side);bottom:clamp(14px,2.4vh,26px);width:1px;height:42px;overflow:hidden;background:rgba(232,235,247,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--cy);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1;color:var(--mist)}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:8px;height:8px;border-radius:50%;background:#e8ebf7;display:block;opacity:.8}
+.hero-key i.s{background:var(--cy);opacity:1}
+.cue.gone{opacity:0!important;transition:opacity .4s ease-out}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 18% 70%,rgba(5,9,26,.9),rgba(5,9,26,.35) 70%),linear-gradient(180deg,rgba(5,9,26,.45),rgba(5,9,26,.15) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--cyL)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:54ch;color:rgba(232,235,247,.9)}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+.cta{background:var(--paper2)}
+
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(29px,3.7vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:28ch}
+.mani .txt .w{opacity:.17}
+.mani .txt em{color:var(--indD)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hairD)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--indD);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--serif);font-weight:400;font-size:clamp(48px,5.4vw,96px);line-height:1;letter-spacing:-.035em;display:block;white-space:nowrap}
+.stat .v sup{font-size:.36em;vertical-align:top;position:relative;top:.3em;margin-left:.04em;color:var(--indD)}
+.stat .k{display:block;margin-top:14px;max-width:26ch}
+
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
+.rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--cy);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8b93b5;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #5a6388;transition:background .35s,border-color .35s}
+.rail span.on{color:#e8ebf7}
+.rail span.done::before,.rail span.on::before{background:var(--cy);border-color:var(--cy)}
+.steps{position:relative;min-height:clamp(230px,32vh,310px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.3vw,38px);line-height:1.14;letter-spacing:-.018em;margin:0 0 16px}
+.step p{color:rgba(232,235,247,.82);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(76vh,760px);align-self:center}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.pl3{border-top:1px solid var(--hairD);padding-top:24px}
+.dark .pl3,.dark2 .pl3{border-top-color:var(--hair)}
+.pl3 svg{width:72px;height:72px;margin-bottom:26px;overflow:visible}
+.pl3 svg *{fill:none;stroke:var(--ink);stroke-width:1}
+.dark .pl3 svg *,.dark2 .pl3 svg *{stroke:#e8ebf7}
+.pl3 svg .a{stroke:var(--indD)}
+.dark .pl3 svg .a,.dark2 .pl3 svg .a{stroke:var(--cy)}
+.pl3 svg .f{fill:var(--indD);stroke:none}
+.dark .pl3 svg .f,.dark2 .pl3 svg .f{fill:var(--cy)}
+.pl3 h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.4vw,38px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px}
+.pl3 p{color:var(--mistD);font-size:15.5px;max-width:36ch}
+.dark .pl3 p,.dark2 .pl3 p{color:var(--mist)}
+
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+@media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
+.aims{list-style:none;margin:0;padding:0}
+.aims li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hair);font-size:17px;line-height:1.55}
+.light .aims li{border-top-color:var(--hairD)}
+.aims li:last-child{border-bottom:1px solid var(--hair)}
+.light .aims li:last-child{border-bottom-color:var(--hairD)}
+.aims li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cy);margin-top:.55em}
+.light .aims li::before{background:var(--indD)}
+.qt{margin:clamp(40px,5vw,70px) 0 0;padding-top:28px;border-top:1px solid var(--hair)}
+.light .qt{border-top-color:var(--hairD)}
+.qt p{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(23px,2.1vw,33px);line-height:1.3;letter-spacing:-.012em;max-width:32ch;margin:0 0 18px;padding-bottom:.08em}
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--gap);padding:18px 0;border-top:1px solid var(--hair)}
+.light .facts>div{border-top-color:var(--hairD)}
+.facts>div:last-child{border-bottom:1px solid var(--hair)}
+.light .facts>div:last-child{border-bottom-color:var(--hairD)}
+.facts dd{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,24px);line-height:1.32}
+
+/* device + lens cards */
+.dev{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(24px,3vw,56px);align-items:center}
+.dev-fig{margin:0;position:relative;background:var(--paper2);overflow:hidden;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.dark .dev-fig,.dark2 .dev-fig{background:#0e1738}
+.dev-fig img{width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.dev-fig.noimg img{display:none}
+.dev-fig .vsl{display:none;width:66%;height:auto}
+.dev-fig.noimg .vsl{display:block}
+.vsl *{fill:none;stroke:var(--ink);stroke-width:1.2}
+.dark .vsl *,.dark2 .vsl *{stroke:#e8ebf7}
+.vsl .a{stroke:var(--indD)}
+.dark .vsl .a{stroke:var(--cy)}
+.dev-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,58px);line-height:1.02;letter-spacing:-.025em;margin:10px 0 14px}
+.rg{font-size:.34em;vertical-align:top;position:relative;top:.34em;margin-left:.05em;font-family:var(--sans);letter-spacing:0}
+.spec{margin:22px 0 0}
+.spec>div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--hairD);align-items:baseline}
+.dark .spec>div,.dark2 .spec>div{border-top-color:var(--hair)}
+.spec>div:last-child{border-bottom:1px solid var(--hairD)}
+.dark .spec>div:last-child,.dark2 .spec>div:last-child{border-bottom-color:var(--hair)}
+.spec dd{margin:0;font-family:var(--serif);font-size:clamp(19px,1.5vw,23px);line-height:1.2;text-align:right}
+.lenses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.lens{border:1px solid var(--hairD);padding:clamp(16px,1.8vw,26px);position:relative;display:flex;flex-direction:column;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.dark .lens,.dark2 .lens{border-color:var(--hair)}
+.lens::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--indD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.dark .lens::before,.dark2 .lens::before{background:var(--cy)}
+.lens:hover{transform:translateY(-4px);box-shadow:0 30px 50px -34px rgba(7,13,34,.5)}
+.lens:hover::before{transform:scaleX(1)}
+.lens figure{margin:0 0 20px;aspect-ratio:5/4;overflow:hidden;background:var(--paper2)}
+.dark .lens figure,.dark2 .lens figure{background:#0e1738}
+.lens figure img{width:100%;height:100%;object-fit:cover}
+.lens h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2vw,32px);line-height:1.1;margin:0 0 10px}
+.lens p{color:var(--mistD);font-size:15px;margin:0 0 14px}
+.dark .lens p,.dark2 .lens p{color:var(--mist)}
+.lens .nums{display:flex;gap:22px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+.lens .nums b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(22px,1.8vw,28px);line-height:1.1}
+
+/* image evidence strip */
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.plate figure{margin:0;aspect-ratio:3/2;overflow:hidden;background:#0a1130;border:1px solid var(--hair)}
+.light .plate figure{background:var(--paper2);border-color:var(--hairD)}
+.plate figure img{width:100%;height:100%;object-fit:cover}
+.plate figcaption{margin-top:14px;font-size:14.5px;line-height:1.55;color:var(--mist);max-width:38ch}
+.light .plate figcaption{color:var(--mistD)}
+
+/* people */
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px var(--gap);max-width:1040px}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out;text-align:left}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
+.dark .pc-fig,.dark2 .pc-fig{background:#11193c}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(7,13,34,.55)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 13%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(25px,1.9vw,31px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--mistD)}
+.dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--mist)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--indD);margin-top:6px}
+.dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--cyL)}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--indD)}
+.dark .pcard:hover h3,.dark2 .pcard:hover h3{color:var(--cyL)}
+.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:230px;overflow:hidden}
+.dark .pcard.noimg,.dark2 .pcard.noimg{border-color:var(--hair)}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .pc-meta{padding-top:0;height:100%}
+.pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--mistD)}
+.pcard.noimg .go{margin-top:auto;padding-top:20px}
+
+/* rows (news) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.light .rows{border-top-color:var(--hairD)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.light .row-a{border-bottom-color:var(--hairD)}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--cy);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.light .row-a::before{background:var(--indD)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(21,205,255,.07),rgba(21,205,255,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.light .row-a::after{background:linear-gradient(0deg,rgba(27,37,120,.06),rgba(27,37,120,0) 70%)}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.8vw,29px);line-height:1.2;letter-spacing:-.015em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--cyL);transform:translateX(6px)}
+.light .row-a:hover h3{color:var(--indD)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+.cta .big{font-family:var(--serif);font-weight:400;font-size:clamp(50px,7.6vw,140px);line-height:1;letter-spacing:-.035em;margin:0}
+.cta .big em{color:var(--indD)}
+.cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--mistD);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+.ftr{position:relative;z-index:1;background:var(--deep);color:#e8ebf7;padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--mist)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--cyL)}
+.ftr .c a{color:#e8ebf7}
+.ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(23vw,340px);line-height:.9;letter-spacing:-.045em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.2em;color:#e8ebf7}
+.ftr .bigw .ch{display:inline-block}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,46px);line-height:1.06;letter-spacing:-.02em;margin:14px 0 14px}
+.addr p{color:var(--mistD)}
+.map{margin-top:clamp(30px,4vw,56px);border:1px solid var(--hairD);aspect-ratio:5/4;background:var(--paper2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mistD);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(7,13,34,.3);padding:16px 0 12px;font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--indD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9a2f1c;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#9a2f1c}
+.subr{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.thanks svg circle{fill:none;stroke:var(--indD);stroke-width:1}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+/* transition cover */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--ink3);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--cy);opacity:.8}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
+.xt .t{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(50px,8.4vw,150px);line-height:1;letter-spacing:-.032em;color:#e8ebf7;overflow:hidden;padding:.16em .18em .4em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--cyL)}
+
+/* person sheet (PRINCIPLES BI) */
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:rgba(4,8,26,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(760px,calc(100vh - 96px));background:var(--paper);color:var(--ink);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.6),0 0 0 1px var(--hairD);opacity:0}
+.ps-media{position:relative;background:var(--paper3);overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:36px;background:linear-gradient(160deg,rgba(43,58,158,.16),transparent 60%)}
+.ps-plate .k{font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mistD)}
+.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--serif);margin-top:14px;padding-bottom:.14em}
+.ps-col{display:flex;flex-direction:column;min-height:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 26px;border-bottom:1px solid var(--hairD)}
+.ps-step{display:flex;gap:8px}
+.ps-body:focus{outline:none}
+.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,50px) clamp(26px,4vw,54px) 56px;scrollbar-width:thin}
+.ps-body .lab{color:var(--indD)}
+.ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,50px);line-height:1.06;letter-spacing:-.025em;margin:14px 0 10px;padding-bottom:.1em}
+.ps-body .role{font-size:17px;line-height:1.5;color:var(--mistD);margin:0 0 28px}
+.ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:60ch}
+.ps-body blockquote{margin:28px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34}
+.ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
+.ps-body .src{margin-top:26px;font-size:14px;color:var(--mistD)}
+.ps-body .src a{color:var(--indD)}
+
+[data-r]{will-change:auto}
+
+@media (max-width:1100px){.hero-key{display:none}.plates{grid-template-columns:1fr 1fr}}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:44vh;height:44svh;min-height:330px}
+  .story-l .d3{font-size:clamp(24px,3.4vw,34px);margin-bottom:18px;max-width:none}
+  .story-l .kick{margin-bottom:10px}
+  .story-r{order:-1}
+  .two,.cgrid,.dev{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+  .pgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 16px}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .brand .wmk small{display:none}
+  .hero{justify-content:flex-end;padding-bottom:clamp(74px,10vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(5,9,26,.1) 0%,rgba(5,9,26,.3) 24%,rgba(5,9,26,.84) 42%,rgba(5,9,26,.94) 72%,var(--ink) 100%)}
+  .hero-h{font-size:clamp(40px,10.6vw,88px);max-width:none}
+  .hero-foot .s{font-size:16px}
+  .pillars,.lenses,.plates{grid-template-columns:1fr;row-gap:44px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.subr{grid-column:1/2}
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:16px 16px 0 0}
+  .ps-media{height:min(34vh,260px)}
+  .ps-bar{padding:14px 18px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr;gap:34px}
+  .pgrid{grid-template-columns:1fr}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .facts>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:21px}
+  .spec dd{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("th-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="dots" viewBox="0 0 78 58"><path d="M4 29c11-15 21-22 35-22s24 7 35 22c-11 15-21 22-35 22S15 44 4 29z" fill="none" stroke="#e8ebf7" stroke-width="1.5"/><circle cx="39" cy="29" r="10" fill="none" stroke="#15cdff" stroke-width="1.5"/><circle cx="39" cy="29" r="3.4" fill="#15cdff"/></svg>
+    <div class="wm"><span>Theia <em>Imaging</em></span></div>
+  </div>
+  <span class="lab pl">Advanced ophthalmic imaging for all</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">000</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="Theia Imaging, home">
+    <img class="lg-w" src="https://static.wixstatic.com/media/08758d_d9c6b7ab45c747d28359c0f04166a94a~mv2.png/v1/crop/x_15,y_0,w_378,h_125/fill/w_378,h_125,fp_0.50_0.50,q_90,enc_auto/Theia-Logo_Horizontal-FullColor-e1623525604459.png" alt="Theia Imaging" referrerpolicy="no-referrer" style="filter:brightness(0) invert(1)" onerror="document.getElementById('brand').classList.add('nologo')">
+    <img class="lg-d" src="https://static.wixstatic.com/media/08758d_d9c6b7ab45c747d28359c0f04166a94a~mv2.png/v1/crop/x_15,y_0,w_378,h_125/fill/w_378,h_125,fp_0.50_0.50,q_90,enc_auto/Theia-Logo_Horizontal-FullColor-e1623525604459.png" alt="" aria-hidden="true" referrerpolicy="no-referrer" onerror="document.getElementById('brand').classList.add('nologo')">
+    <span class="wmk"><svg viewBox="0 0 78 58" aria-hidden="true"><path d="M4 29c11-15 21-22 35-22s24 7 35 22c-11 15-21 22-35 22S15 44 4 29z" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="39" cy="29" r="10" fill="none" stroke="currentColor" stroke-width="4"/></svg>Theia<small>Imaging</small></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/technology">Technology</a>
+    <a class="nl ul" href="#/system">The system</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="nl ul" href="#/news">News</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true">
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/technology">Technology</a></li>
+    <li><a href="#/system">The system</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/news">News</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Durham, North Carolina</span><br>Theia Imaging LLC</div>
+    <div><span class="lab">Write</span><br><a href="mailto:info@theiaimaging.com">info@theiaimaging.com</a></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <button class="btn sm" data-ps-close>Close</button>
+        <div class="ps-step"><button class="btn sm" id="psPrev" aria-label="Previous person">Prev</button><button class="btn sm" id="psNext" aria-label="Next person">Next</button></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Theia Imaging</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="Theia Imaging";
+var W="https://static.wixstatic.com/media/";
+var IMG={
+ cart:W+"940fa2_9e2b754e0bf8446ba1d984c5660bb366~mv2.jpg/v1/fill/w_1138,h_772,al_c,q_85,enc_auto/cart_render_gray_bg_edited.jpg",
+ probe:W+"08758d_6dc1906157554f479bc41633ca6ca39d~mv2.jpg/v1/fill/w_1046,h_776,al_c,q_85,enc_auto/T2_View2.jpg",
+ nc:W+"08758d_a5a425719bdd45b78a99f141d0850588~mv2.jpg/v1/crop/x_0,y_1,w_334,h_438/fill/w_576,h_756,al_c,q_85,enc_auto/NC2.jpg",
+ wf:W+"08758d_a19452bc5ea64fac96902079bc7958e0~mv2.jpg/v1/fill/w_494,h_730,al_c,q_85,enc_auto/WF2.jpg",
+ svp:W+"08758d_1c436556ee804c3ea4f8dfeba7599d74~mv2.png/v1/fill/w_1138,h_576,al_c,q_90,enc_auto/SVPs.png",
+ bscan:W+"08758d_5299c212c016401bbb83f0ad97690622~mv2.png/v1/fill/w_700,h_776,al_c,q_90,enc_auto/Bscans.png",
+ onh:W+"940fa2_c9a206a41e1f4f079a5667749aecc0c8~mv2.png/v1/fill/w_1024,h_548,al_c,q_90,enc_auto/widefield_ONH_stretch.png",
+ uwf:W+"d169a6_9759731f836f4cf4bd2b9cb1b9349f29~mv2.png/v1/fill/w_528,h_626,al_c,q_90,enc_auto/d169a6_9759731f836f4cf4bd2b9cb1b9349f29~mv2.png",
+ octaNews:W+"940fa2_94157f79032045c499cc39957360c545~mv2.png/v1/fill/w_580,h_436,fp_0.50_0.50,q_95,enc_auto/940fa2_94157f79032045c499cc39957360c545~mv2.png",
+ h1:W+"08758d_6221fe98499d4574918f821a085a16c9~mv2.png/v1/fill/w_468,h_468,al_c,q_90,enc_auto/hafeez%20headshot%20-%20Removed%20Sized%202.png",
+ h2:W+"08758d_f863711048a148bfaa341209176eed7c~mv2.png/v1/fill/w_468,h_468,al_c,q_90,enc_auto/Christian%20headshot%20-%20Removed%20Sized%202.png",
+ h3:W+"08758d_844cca80537e4202b18b72de455d9a22~mv2.png/v1/fill/w_468,h_468,al_c,q_90,enc_auto/Cindy%20%20headshot%20-%20Removed%20Sized%202.png"
+};
+var B="https://www.theiaimaging.com/post/";
+var NEWS=[
+ {d:"2026-07-20",s:"Theia Imaging",t:"Theia Imaging secures $2.1M NIH award to bring ultra-widefield OCT angiography to the bedside",u:B+"theia-imaging-secures-2-1m-nih-award-to-bring-ultra-widefield-oct-angiography-to-the-bedside"},
+ {d:"2026-04-27",s:"Theia Imaging",t:"Theia Imaging will be at ARVO 2026, with distribution partner Spective",u:B+"theia-imaging-will-be-at-arvo-2026"},
+ {d:"2026-04-13",s:"Theia Imaging",t:"Loris T2 handheld OCT granted FDA Breakthrough Device Designation for retinopathy of prematurity",u:B+"theia-imaging-s-loris-t2-handheld-oct-granted-fda-breakthrough-device-designation-for-retinopathy-of"},
+ {d:"2024-08-15",s:"Theia Imaging",t:"National Institutes of Health awards Theia Imaging $2.0M SBIR Phase II award",u:B+"theia-imaging-awarded-2-0m-sbir-phase-ii-award-from-national-institutes-of-health"},
+ {d:"2024-04-26",s:"Theia Imaging",t:"Theia Imaging to exhibit at ARVO 2024",u:B+"theia-imaging-to-exhibit-at-arvo-2024"},
+ {d:"2023-06-01",s:"Theia Imaging",t:"Theia Imaging awarded $1.9M SBIR Phase II award from the National Institutes of Health",u:B+"national-eye-institute-awards-theia-sbir-phase-ii-grant"},
+ {d:"2023-04-20",s:"Theia Imaging",t:"Theia Imaging to preview new ultra-widefield handheld OCT device at ARVO 2023",u:B+"theia-announces-their-participation-in-arvo-for-the-second-year-in-a-row"},
+ {d:"2022-04-30",s:"Theia Imaging",t:"Come see us at ARVO 2022: debuting the T1 handheld SSOCT system",u:B+"theia-announces-their-participation-in-arvo-2022"}
+];
+var TEAM=[
+ {slug:"hafeez-dhalla",name:"Hafeez Dhalla, PhD, MBA",title:"Founder & Chief Executive Officer",grp:"Founders",img:IMG.h1,
+  bio:["Hafeez Dhalla is a founder of Theia Imaging and its Chief Executive Officer, and holds a PhD and an MBA. He speaks for the company on its National Eye Institute awards, and in 2023 described the gap the Loris platform was built for: at that point there were no handheld OCT devices available on the market at all.",
+       "He is named on NIH RePORTER as a multiple principal investigator, with Christian Viehland, on the National Eye Institute awards behind the T2 platform: the high-speed handheld OCT program (R44-EY032394), the widefield program (R44-EY033604) and the OCT angiography program (R44-EY034418)."],
+  q:"After years of research and development, both at Duke and at Theia, this Phase II award will finally allow us to get this exciting technology into the hands of clinicians.",qs:"On the first Phase II award, June 2023",
+  src:'<a href="https://www.theiaimaging.com/about-us" target="_blank" rel="noopener">theiaimaging.com/about-us</a> and NIH RePORTER'},
+ {slug:"christian-viehland",name:"Christian Viehland, PhD",title:"Founder & Chief Technical Officer",grp:"Founders",img:IMG.h2,
+  bio:["Christian Viehland is a founder of Theia Imaging and its Chief Technical Officer.",
+       "He is the contact principal investigator on every National Eye Institute award made to Theia Imaging, from the first Phase I in 2021 through the 2026 Phase II for the ultrahigh-speed, widefield OCT angiography system."],
+  src:'<a href="https://www.theiaimaging.com/about-us" target="_blank" rel="noopener">theiaimaging.com/about-us</a> and NIH RePORTER'},
+ {slug:"cynthia-toth",name:"Cynthia A. Toth, MD",title:"Founder & Chief Medical Officer",grp:"Founders",img:IMG.h3,
+  bio:["Cynthia A. Toth is a founder of Theia Imaging and its Chief Medical Officer.",
+       "She is one of the three founders the company credits with its combined expertise in translational research, pediatric eye care and ophthalmic diagnostics — the clinical foundation for a handheld system designed around infants, young children and patients who cannot cooperate with a tabletop scanner."],
+  src:'<a href="https://www.theiaimaging.com/about-us" target="_blank" rel="noopener">theiaimaging.com/about-us</a>'}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="thNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.thNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},140)};
+function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function probeSvg(){return '<svg class="vsl" viewBox="0 0 220 200" aria-hidden="true"><rect x="18" y="74" width="96" height="40" rx="18"/><path d="M114 94h26l34-24v48l-34-24"/><path class="a" d="M174 70c16 10 16 38 0 48" stroke-dasharray="3 5"/><path d="M18 94H4"/><circle class="a" cx="150" cy="94" r="5"/></svg>'}
+function plate(src,cap,alt){return '<div class="plate"><figure><img src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest(\'.plate\').style.display=\'none\'"></figure><figcaption>'+cap+'</figcaption></div>'}
+var SPECS=[["Light source","1060 nm swept source"],["A-scan rate","300 kHz"],["Image acquisition","Up to 500 frames/second"],["Volume acquisition","Up to 4 volumes/second"],["Axial resolution","6 µm in tissue"],["Imaging depth","7.3 mm in tissue"],["Scan head weight","Under 350 g with lens"],["Cart tether","10 ft (3 m)"]];
+function devBlock(o){o=o||{};
+  return '<div class="dev">'+
+   '<figure class="dev-fig"><img src="'+IMG.cart+'" alt="The Loris T2 handheld OCT system: cart-mounted engine with a tethered handheld probe" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add(\'noimg\')">'+probeSvg()+'</figure>'+
+   '<div class="dev-meta"><span class="lab">Research-use system</span><h3>Loris<sup class="rg">®</sup> T2 <em>handheld OCT</em></h3>'+
+   '<p class="muted">A cart-mounted swept-source engine, a long flexible tether and a probe under 350 grams that accepts interchangeable lenses — described by the company as the world’s first commercial handheld swept-source OCT system.</p>'+
+   (o.specs===false?'':'<dl class="spec">'+SPECS.slice(0,4).map(function(s){return '<div><dt class="lab">'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl>')+
+   (o.cta===false?'':'<div style="margin-top:28px"><a class="btn solid" href="#/system">Full specifications '+ARR+'</a></div>')+'</div></div>';
+}
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Handheld swept-source OCT · Durham, NC</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">OCT that comes</span><span class="l">to the <em>bedside.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Infants, young children and patients who cannot hold still are excluded from the imaging that would diagnose them. Theia Imaging builds the handheld system that reaches them — 300,000 depth scans a second, in a probe that weighs less than a can of soda.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/technology">How it works '+ARR+'</a><a class="btn" href="#/system">See the Loris T2</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Retinal layers, depth-resolved</span><span><i class="s"></i>Blood flow, no dye</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">OCT is the gold standard for diagnosing retinal disease. It is also a tabletop instrument with a chin rest — so the patients at the highest risk, and least able to describe what they cannot see, are the ones it <em>cannot reach.</em></p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">300<sup>kHz</sup></span><span class="lab k">A-scan rate of the Loris T2 engine</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">145°</span><span class="lab k">Field of view, ultra-widefield lens</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">350<sup>g</sup></span><span class="lab k">Maximum probe weight, with lens fitted</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">6<sup>µm</sup></span><span class="lab k">Axial resolution in tissue</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">One probe, four <em>moves.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Approach</span><span>Sweep</span><span>Widen</span><span>Flow</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>Bring the scanner to the patient.</h3><p>A tabletop OCT asks the patient to sit, position in a chin rest and fixate. The Loris T2 inverts that: a tethered probe under 350 grams is brought to the eye at the cot, the bedside or the operating table, using infrared light rather than a bright flash.</p></article>'+
+     '<article class="step"><h3>Sweep 300,000 depth scans a second.</h3><p>A 1060 nm swept-source laser fires an A-scan — one column of depth — then steps across the retina. At 300 kHz those columns assemble into cross-sections and volumes fast enough to beat a squirming subject, resolving 6 µm through 7.3 mm of tissue.</p></article>'+
+     '<article class="step"><h3>Open the field to the periphery.</h3><p>The scan head accepts interchangeable lens bores. The non-contact lens images 62° at a 20 mm working distance; the ultra-widefield lens opens the same engine to 145°, reaching the peripheral retina where retinopathy of prematurity actually begins.</p></article>'+
+     '<article class="step"><h3>See blood flow without dye.</h3><p>Scan the same line repeatedly and everything static cancels; only moving blood cells change. That contrast is OCT angiography, and the 2026 National Eye Institute award funds a next-generation 800 kHz engine, neural-network segmentation and guided capture to bring it to a handheld probe.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>The system</span><h2 class="d2 split">Built to be <em>picked up.</em></h2></div><p data-r>One engine, one modular scan head and two lens bores, so a single device covers the macula and the far periphery for a patient who cannot be moved.</p></div>'+
+   devBlock({})+
+  '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>What it sees</span><h2 class="d2 split">Images from the <em>investigational</em> system.</h2></div><p data-r>Captured with an investigational device in IRB-approved clinical studies. The T2 handheld OCT system is under development, is available for research use only, and has not been cleared or approved by the FDA.</p></div>'+
+   '<div class="plates" data-group>'+
+    plate(IMG.svp,"Retinal (left) and choroidal (right) vasculature obtained with the Loris T2 ultra-widefield lens in a subject with central retinal vein occlusion.","En-face vascular projections from the Loris T2")+
+    plate(IMG.bscan,"Ultra-widefield B-scans from a single OCT volume, crossing the optic nerve and the foveal center.","Ultra-widefield B-scans crossing the optic nerve and fovea")+
+    plate(IMG.onh,"Optic nerve head imaged by the Theia T1 system, the prototype that preceded the T2 platform.","Optic nerve head image captured by the Theia T1 system")+
+   '</div></div></section>'+
+
+  '<section class="sec light" data-theme="light" style="background:var(--paper2)"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Founders</span><h2 class="d2 split">Three founders, <em>one patient group.</em></h2></div><p data-r>Theia Imaging was formed in the spring of 2020 by three founders with expertise in translational research, pediatric eye care and ophthalmic diagnostics.</p></div>'+
+   '<div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="two" data-r><div><span class="lab kick">National Eye Institute · SBIR Phase II · July 2026</span><h2 class="d3" style="margin-top:14px">Ultra-widefield <em>angiography,</em> handheld.</h2></div>'+
+   '<div><p class="muted">A two-year Phase II award of approximately $2.1M, carrying an angiography module for the Loris T2 through a pivotal study and a 510(k) submission. Award 2R44EY034418-02A1, National Eye Institute; the first-year amount on NIH RePORTER is $1,031,041.</p>'+
+   '<ul class="aims" data-group><li><span>An 800 kHz OCT angiography engine with enhanced imaging depth.</span></li><li><span>Neural-network segmentation of the retinal vasculature, plus a guided capture workflow for motion-free scans at the bedside.</span></li><li><span>Q-submission, pivotal study and 510(k) submission for the T2-A.</span></li></ul></div></div>'+
+   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,4))+'</div>'+
+  '</div></section>'+
+  cta();
+}
+function cta(){
+  return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Work with us</span>'+
+   '<h2 class="big split">Image the patients <em>no one can.</em></h2>'+
+   '<p class="sub" data-r>Clinician-scientists, neonatal units and research groups: talk to Theia about the Loris T2 platform, the ultra-widefield lens and the angiography module in development.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="#/system">The system</a></div>'+
+  '</div></section>';
+}
+function vTech(){
+  return head({k:"Technology",h:'Depth, speed and <em>field.</em>',p:'Swept-source optical coherence tomography, rebuilt around a handheld probe: a faster engine, a modular scan head and the angiography module now in development.'})+
+  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
+   '<div class="pillars" data-group>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 46h56"/><path class="a" d="M4 36c8 0 8-18 16-18s8 18 16 18 8-14 16-14 8 14 12 14"/><circle class="f" cx="20" cy="18" r="2.4"/></svg><h3>A swept source at 1060 nm</h3><p>Each A-scan is one column of depth. The 1060 nm swept source reaches through 7.3 mm of tissue at 6 µm axial resolution, and runs without the bright visible flash that distresses an infant.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="6" y="22" width="30" height="20" rx="9"/><path d="M36 32h10l12-9v18l-12-9"/><circle class="f" cx="50" cy="32" r="2.6"/><path class="a" d="M24 14v6M14 14v6"/></svg><h3>A modular scan head</h3><p>One engine, interchangeable lens bores. A 62° non-contact lens for the macula at a 20 mm working distance, and a 145° ultra-widefield lens for the periphery, so one device covers both.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22"/><path class="a" d="M12 30c8 3 14 9 20 9s12-6 20-9"/><path class="a" d="M20 44c6-10 18-10 24 0"/><circle class="f" cx="32" cy="32" r="3"/></svg><h3>Angiography, in development</h3><p>Repeat a scan and static tissue cancels while moving blood does not — vasculature without an injected dye. The 2026 Phase II award funds an 800 kHz OCTA engine and the segmentation to read it.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The patients</span><h2 class="d3 split">Those who <em>cannot cooperate.</em></h2><p class="muted" style="margin-top:24px" data-r>Infants, young children and patients who are sedated, in intensive care or living with a disability cannot position at a chin rest or fixate on a target. Many also cannot report a change in their vision, so disease is often found only after it has done damage.</p></div>'+
+   '<div><dl class="facts" data-group>'+
+    '<div><dt class="lab">Retinopathy of prematurity</dt><dd>Premature infants screened for ROP make up 1.4% of the newborn population, by the figure in Theia’s NIH award abstract.</dd></div>'+
+    '<div><dt class="lab">Today’s screening</dt><dd>Binocular indirect ophthalmoscopy: a manual technique the company describes as subjective and without depth resolution.</dd></div>'+
+    '<div><dt class="lab">Why the periphery matters</dt><dd>The 40° field of most handheld systems is useful for the macula, but insufficient for the peripheral retina where ROP occurs.</dd></div>'+
+    '<div><dt class="lab">Breakthrough Device</dt><dd>The Loris T2 has been granted FDA Breakthrough Device Designation for retinopathy of prematurity, which affords priority review and closer interaction with the agency during development.</dd></div>'+
+   '</dl></div></div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The 2026 programme</span><h2 class="d3 split">From images to <em>measurements.</em></h2><p class="muted" style="margin-top:24px" data-r>NEI SBIR Phase II award 2R44EY034418-02A1, announced July 2026: approximately $2.1M over two years, first-year amount $1,031,041 on NIH RePORTER, for the T2-A angiography module.</p></div>'+
+   '<div><ul class="aims" data-group>'+
+    '<li><span>Develop an 800 kHz OCTA engine with enhanced imaging depth.</span></li>'+
+    '<li><span>Capture a data set to train a neural network for the segmentation OCTA requires, and build a capture workflow that helps imagers acquire motion-free scans.</span></li>'+
+    '<li><span>Develop segmentation for quantitative measurement of retinal anatomy — out of reach today for clinicians managing infants and young children.</span></li>'+
+    '<li><span>Execute a regulatory strategy through Q-submission and a pivotal study to a 510(k) submission.</span></li>'+
+   '</ul>'+
+   '<div class="qt" data-r><p>“there are currently no handheld OCT devices available on the market”</p><span class="lab">Hafeez Dhalla, PhD, MBA · Founder & CEO, on the first Phase II award, 2023</span></div></div>'+
+  '</div></div></section>'+cta();
+}
+function vSystem(){
+  return head({k:"The system",h:'The Loris<sup class="rg">®</sup> <em>T2.</em>',p:'A handheld swept-source OCT platform: cart-mounted engine, flexible tether, a probe under 350 grams, and two interchangeable lens bores.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+
+   devBlock({specs:false,cta:false})+
+   '<div style="margin-top:clamp(56px,7vw,110px)"><div class="shead" style="margin-bottom:36px"><div><span class="lab kick" data-r>Specifications</span><h2 class="d3 split">As published by <em>Theia.</em></h2></div></div>'+
+   '<dl class="spec" data-group>'+SPECS.map(function(s){return '<div><dt class="lab">'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl></div>'+
+  '</div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Lens bores</span><h2 class="d2 split">Two fields, <em>one engine.</em></h2></div><p data-r>Fields of view are reported using the eye-angle definition. Both lenses mount to the same modular scan head.</p></div>'+
+   '<div class="lenses" data-group>'+
+    '<div class="lens"><figure><img src="'+IMG.nc+'" alt="The Loris T2 non-contact retina lens" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest(\'figure\').style.display=\'none\'"></figure><span class="lab">Non-contact retina lens</span><h3>62° field, no contact</h3><p>A 20 mm working distance for macular imaging without touching the eye.</p><div class="nums"><div><b>62°</b><span class="lab">Field of view</span></div><div><b>10 µm</b><span class="lab">Lateral resolution</span></div><div><b>20 mm</b><span class="lab">Working distance</span></div></div></div>'+
+    '<div class="lens"><figure><img src="'+IMG.wf+'" alt="The Loris T2 ultra-widefield retina lens" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest(\'figure\').style.display=\'none\'"></figure><span class="lab">Ultra-widefield retina lens</span><h3>145° field, to the periphery</h3><p>Contact imaging with a coupling fluid (artificial tears), reaching the peripheral retina in a single acquisition.</p><div class="nums"><div><b>145°</b><span class="lab">Field of view</span></div><div><b>24 µm</b><span class="lab">Lateral resolution</span></div><div><b>Contact</b><span class="lab">Coupling fluid</span></div></div></div>'+
+   '</div>'+
+   '<div class="plates" data-group style="margin-top:clamp(56px,7vw,110px)">'+
+    plate(IMG.uwf,"A 145° volumetric OCT captured with the Loris T2 ultra-widefield lens.","A 145 degree volumetric OCT capture")+
+    plate(IMG.probe,"The handheld probe: under 350 g with a lens fitted, on a 3 m tether to the cart-mounted engine.","The Loris T2 handheld probe")+
+    plate(IMG.octaNews,"OCT angiography maps the retina’s vessels in depth-resolved detail without a dye injection.","OCT angiography image from the Loris T2 programme")+
+   '</div>'+
+   '<p class="lab" style="margin-top:40px;max-width:70ch" data-r>The T2 handheld OCT system is under development and has not been cleared or approved by the FDA. It is available for research use only. Images shown were obtained using an investigational device in IRB-approved clinical studies.</p>'+
+  '</div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'The <em>founders.</em>',p:'Theia Imaging was formed in the spring of 2020 by three founders with pioneering expertise in translational research, pediatric eye care and ophthalmic diagnostics.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+}
+function vNews(){
+  return head({k:"News",h:'News and <em>milestones.</em>',p:'Awards, regulatory milestones and meetings, each linked to the company’s own announcement.'})+
+  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+newsRows(NEWS)+'</div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Research imaging, clinical collaboration, distribution or press — send a note and the team will route it.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Office</span><h3>Durham, North Carolina</h3><p>404 Hunt St, Ste 430<br>Durham, NC 27701</p><p><a class="ul" href="mailto:info@theiaimaging.com">info@theiaimaging.com</a></p>'+
+    '<div class="map">'+mapSvg()+'</div></div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Institution","text",0,1)+fld("msg","How can we help?","ta",1,1)+
+    '<div class="subr"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:#1b2578;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. On the live site this form would reach the Theia Imaging team directly.</p></div></div>'+
+  '</div></div></section>';
+}
+function mapSvg(){
+  var g='';for(var i=0;i<70;i++){var r=Math.sqrt(i/70)*150,a=i*2.39996;g+='<circle cx="'+(250+Math.cos(a)*r).toFixed(1)+'" cy="'+(200+Math.sin(a)*r*.8).toFixed(1)+'" r="'+(1.1+Math.sqrt(i/70)*2.2).toFixed(2)+'" fill="rgba(7,13,34,.14)"/>'}
+  return '<svg viewBox="0 0 500 400" aria-label="Stylized map marking Durham, North Carolina">'+g+
+  '<path class="mp" d="M0 286C70 266 120 300 190 262S320 232 372 196 462 166 500 172" fill="none" stroke="#535c83" stroke-width="1.2"/>'+
+  '<g class="pin" transform="translate(250 200)"><circle r="30" fill="rgba(27,37,120,.12)" class="pr"/><circle r="6" fill="#1b2578"/><text x="18" y="-10" font-family="Newsreader,serif" font-size="28" fill="#070d22">Durham</text><text x="18" y="12" font-family="IBM Plex Mono,monospace" font-size="11" letter-spacing="1.5" fill="#535c83">NORTH CAROLINA</text></g>'+
+  '<text x="30" y="370" font-family="IBM Plex Mono,monospace" font-size="11" letter-spacing="1.5" fill="#535c83">RESEARCH TRIANGLE</text></svg>';
+}
+function v404(){return head({k:"Not found",h:'Out of <em>focus.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Office</span>Theia Imaging LLC<br>404 Hunt St, Ste 430<br>Durham, North Carolina 27701</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@theiaimaging.com">info@theiaimaging.com</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/system">The system</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Platform</span>Loris® T2 · 300 kHz<br>62° non-contact lens<br>145° ultra-widefield lens</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">Theia</span>'+
+  '<div class="legal"><span class="lab">© 2026 Theia Imaging LLC</span><span class="lab">Concept website · research-use device</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"Theia Imaging — Handheld OCT for patients who cannot sit still",x:"Home"};
+  if(p[0]==="technology")return {k:"technology",v:vTech,t:"Technology — "+SITE,x:"Technology"};
+  if(p[0]==="system")return {k:"system",v:vSystem,t:"The system — "+SITE,x:"The system"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33);window.__lenis=lenis}
+var MOBILE=function(){return innerWidth<861};
+function unmask(s){if(!s||!s.lines)return;s.lines.forEach(function(l){var p=l.parentNode;if(p&&p.nodeType===1&&p!==document.body){p.style.overflow="visible";p.style.clipPath="none"}})}
+
+/* ================= HERO FIELD =================
+   A widefield B-scan being written by the probe: retinal layers assemble under a sweeping A-scan line,
+   inside the 145° field arc, with blood cells moving through one vascular layer. */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,DETAIL=1,L=null;
+  function rnd(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+  function layout(){var w=innerWidth,h=innerHeight;
+    var side=Math.max(Math.min(72,w*.042),16),right=w-Math.max(side,(w-1320)/2);
+    if(w<861)return {ox:w*.08,oy:h*.15,W:w*.84,H:h*.17,s:Math.min(.92,w/560),mob:1,tight:1};
+    if(w<1200){var ox1=w*.54;return {ox:ox1,oy:h*.26,W:right-ox1,H:h*.5,s:Math.min(1.1,h/900),mob:0,tight:1}}
+    var ox2=w*.505;return {ox:ox2,oy:h*.25,W:right-ox2,H:h*.52,s:Math.min(1.25,h/900),mob:0,tight:0}}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);L=layout();if(!running)frame(true)}
+  /* retinal cross-section: depth of layer k at normalised x, with a foveal dip at the centre */
+  function curve(x,k){var d=Math.exp(-Math.pow((x-.46)/.1,2));
+    return Math.sin((x-.5)*2.1)*L.H*.05 + k*L.H*.046 + (k<3?d*L.H*.052*(1-k*.3):0) + Math.sin(x*9.3+k*1.7)*L.H*.0035}
+  function lbl(t,x,y,al,align){if(al<.02||!DETAIL)return;c.globalAlpha=Math.min(1,al);c.font="400 10.5px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.fillStyle="rgb(169,177,208)";c.textAlign=align||"left";c.fillText(t,x,y);c.globalAlpha=1}
+  var LAY=[[0,.42,"232,235,247"],[1,.24,"169,177,208"],[2,.62,"232,235,247"],[3,.2,"169,177,208"],[4,.3,"169,177,208"],[5,.5,"111,224,255"],[6,.5,"232,235,247"],[7,.18,"169,177,208"]];
+  function layers(e,boost,ox,W,cy0,s){
+    for(var li=0;li<LAY.length;li++){
+      var k=LAY[li][0],al=LAY[li][1]*e*boost;
+      c.strokeStyle="rgba("+LAY[li][2]+","+al.toFixed(3)+")";c.lineWidth=(k===2||k===6?1.5:1)*Math.max(.85,s*.85);
+      c.beginPath();
+      for(var i=0;i<=150;i++){var x=i/150,px=ox+x*W,py=cy0+curve(x,k);i?c.lineTo(px,py):c.moveTo(px,py)}
+      c.stroke();
+    }
+  }
+  function frame(once){
+    var t=(performance.now()-t0)/1000;if(RM)t=12;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    cv.style.opacity=shown?String(.45+.55*dim):"";
+    var e=IN.v*IN.v*(3-2*IN.v),s=L.s;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,innerWidth,innerHeight);
+    c.save();c.translate(m[0]*16,m[1]*12);
+    var ox=L.ox,oy=L.oy,W=L.W,H=L.H,mob=L.mob;
+    var sw=(t*.08)%1;                                   /* the write head, continuously sweeping */
+    var cy0=oy+H*.42;
+    var apx=ox+W*.5,apy=oy-H*.14*(L.mob?.7:1);
+    /* soft field of light behind the scan */
+    var gg=c.createRadialGradient(ox+W*.5,cy0+H*.12,0,ox+W*.5,cy0+H*.12,W*.72);
+    gg.addColorStop(0,"rgba(30,66,150,"+(.3*e)+")");gg.addColorStop(1,"rgba(30,66,150,0)");
+    c.fillStyle=gg;c.beginPath();c.arc(ox+W*.5,cy0+H*.12,W*.72,0,6.2832);c.fill();
+    /* the 145° field: probe apex to the ends of the scanned strip (desktop composition) */
+    if(!mob&&DETAIL){
+    c.strokeStyle="rgba(232,235,247,"+(.13*e)+")";c.lineWidth=1;
+    c.beginPath();c.moveTo(ox,cy0+curve(0,0));c.lineTo(apx,apy);c.lineTo(ox+W,cy0+curve(1,0));c.stroke();
+    c.save();c.setLineDash([2,5]);c.strokeStyle="rgba(21,205,255,"+(.34*e)+")";
+    c.beginPath();c.arc(apx,apy,H*.3,Math.PI*.2,Math.PI*.8);c.stroke();c.restore();
+    lbl("145° FIELD",apx,apy+H*.36,.75*e,"center");
+    /* probe body at the apex */
+    c.strokeStyle="rgba(232,235,247,"+(.6*e)+")";c.lineWidth=1.3;
+    c.beginPath();c.moveTo(apx-26*s,apy-32*s);c.lineTo(apx+26*s,apy-32*s);c.lineTo(apx+12*s,apy-4*s);c.quadraticCurveTo(apx,apy+4*s,apx-12*s,apy-4*s);c.closePath();c.stroke();
+    c.beginPath();c.moveTo(apx-18*s,apy-32*s);c.lineTo(apx-18*s,apy-58*s);c.quadraticCurveTo(apx-18*s,apy-70*s,apx-2*s,apy-74*s);c.stroke();
+    c.fillStyle="rgba(21,205,255,"+(.9*e)+")";c.beginPath();c.arc(apx,apy-2*s,2.6*s,0,6.2832);c.fill();
+    lbl("LORIS T2 PROBE",apx-34*s,apy-26*s,.8*e,"right");
+    }
+    /* the live A-scan beam */
+    var hx=ox+W*sw,hy=cy0+curve(sw,0);
+    if(!mob&&DETAIL){var g=c.createLinearGradient(apx,apy,hx,hy);g.addColorStop(0,"rgba(21,205,255,"+(.55*e)+")");g.addColorStop(1,"rgba(21,205,255,"+(.1*e)+")");
+    c.strokeStyle=g;c.lineWidth=1.1;c.beginPath();c.moveTo(apx,apy);c.lineTo(hx,hy);c.stroke();}
+    /* the cross-section: always complete, brighter where it has just been written */
+    layers(e,1,ox,W,cy0,s);
+    c.save();
+    var trail=W*.2;
+    var gt=c.createLinearGradient(hx-trail,0,hx,0);gt.addColorStop(0,"rgba(0,0,0,0)");gt.addColorStop(1,"rgba(0,0,0,1)");
+    c.beginPath();c.rect(Math.max(ox,hx-trail),cy0-H*.3,Math.min(trail,hx-ox),H*.9);c.clip();
+    c.globalAlpha=.85;layers(e,.9,ox,W,cy0,s);c.globalAlpha=1;
+    c.restore();
+    /* speckle (OCT texture) */
+    for(var q=0;q<300;q++){var xq=rnd(q,1),kq=rnd(q,2)*6.6,jq=(rnd(q,3)-.5)*6;
+      var tw=.3+.7*Math.abs(Math.sin(t*1.2+q));
+      c.fillStyle="rgba(232,235,247,"+(.17*tw*e).toFixed(3)+")";
+      c.fillRect(ox+xq*W,cy0+curve(xq,kq)+jq,1.1,1.1)}
+    /* blood cells moving through the vascular layer: the OCTA signal */
+    for(var b=0;b<30;b++){var u=(rnd(b,5)+t*(.04+rnd(b,6)*.035))%1;
+      var bx=ox+u*W,by=cy0+curve(u,5)+(rnd(b,7)-.5)*4;
+      var fl2=.55+.45*Math.sin(t*2.4+b);
+      c.fillStyle="rgba(21,205,255,"+(.85*e*fl2).toFixed(3)+")";
+      c.beginPath();c.arc(bx,by,2*Math.max(.85,s*.85),0,6.2832);c.fill()}
+    /* the write head */
+    if(DETAIL){
+      c.strokeStyle="rgba(21,205,255,"+(.6*e)+")";c.lineWidth=1;
+      c.beginPath();c.moveTo(hx,cy0-H*.14);c.lineTo(hx,cy0+H*.5);c.stroke();
+      c.fillStyle="rgba(21,205,255,"+e+")";c.beginPath();c.arc(hx,hy,3*Math.max(.9,s),0,6.2832);c.fill();
+    }
+    /* depth scale */
+    if(!mob&&!L.tight&&DETAIL){
+      c.strokeStyle="rgba(232,235,247,"+(.18*e)+")";c.lineWidth=1;
+      c.beginPath();c.moveTo(ox-20*s,cy0-H*.04);c.lineTo(ox-20*s,cy0+H*.4);c.stroke();
+      for(var d2=0;d2<=3;d2++){var dy=cy0-H*.04+(H*.44/3)*d2;c.beginPath();c.moveTo(ox-24*s,dy);c.lineTo(ox-16*s,dy);c.stroke()}
+      lbl("0 mm",ox-30*s,cy0-H*.035,.6*e,"right");lbl("7.3 mm",ox-30*s,cy0+H*.41,.6*e,"right");
+      lbl("RETINA",ox,cy0-H*.1,.7*e);
+      lbl("CHOROID",ox,cy0+H*.47,.7*e);
+    }
+    lbl("A-SCAN · 300 kHz",mob?ox:ox+W,mob?cy0+H*.72:cy0+H*.56,.78*e,mob?"left":"right");
+    if(L.tight&&!mob){lbl("RETINA",ox+W,cy0-H*.1,.7*e,"right")}
+    c.restore();
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},setDetail:function(v){DETAIL=v;if(!running)frame(true)}};
+})();
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.85)*(1-p*.5))}
+
+/* ================= STORY CANVAS: ONE CONTINUOUS SCENE (PRINCIPLES BL) =================
+   A schematic eye with the probe above it. Across the scrub: the probe approaches, the beam sweeps and
+   writes a B-scan strip, the scanned field widens from 62° to 145°, and repeated scans light up flow. */
+var story=null;
+function makeStory(cv){
+  var c=cv.getContext("2d"),dpr=1,alive=true,vis=true,p=0,pT=0,w=0,h=0,t0=performance.now();
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);var r=cv.getBoundingClientRect();w=r.width;h=r.height;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  function rnd(i,k){var x=Math.sin(i*73.13+k*31.7)*43758.5453;return x-Math.floor(x)}
+  function ease(x){return x<0?0:x>1?1:x*x*(3-2*x)}
+  function seg(x,a,b){return ease((x-a)/(b-a))}
+  function draw(){
+    var t=(performance.now()-t0)/1000;
+    p+=(pT-p)*.12;
+    var P=p;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    var s=Math.min(w/540,h/700),cx=w*.5,ey=h*.32,R=Math.min(w*.33,h*.26);
+    var approach=seg(P,0,.2),sweepP=seg(P,.2,.5),wide=seg(P,.5,.74),flow=seg(P,.74,1);
+    /* ---- the eye (one object, always present) ---- */
+    var eyeIn=.8+.2*ease(Math.min(1,P*6));
+    c.save();c.translate(cx,ey+ (1-eyeIn)*18);
+    c.strokeStyle="rgba(232,235,247,"+(.5*eyeIn)+")";c.lineWidth=1.3;
+    c.beginPath();c.arc(0,0,R,0,6.2832);c.stroke();
+    /* cornea / lens at the front (top, facing the probe) */
+    c.beginPath();c.arc(0,-R*1.02,R*.42,Math.PI*1.18,Math.PI*1.82);c.stroke();
+    c.strokeStyle="rgba(232,235,247,"+(.34*eyeIn)+")";
+    c.beginPath();c.ellipse(0,-R*.72,R*.3,R*.16,0,0,6.2832);c.stroke();
+    /* retina: the back wall, thicker where it has been scanned */
+    var half=(31+(72.5-31)*wide)*Math.PI/180;          /* 62° -> 145° half-angle */
+    c.strokeStyle="rgba(232,235,247,"+(.3*eyeIn)+")";c.lineWidth=2.2;
+    c.beginPath();c.arc(0,0,R*.93,Math.PI*.18,Math.PI*.82);c.stroke();
+    c.strokeStyle="rgba(21,205,255,"+(.75*eyeIn*Math.max(.12,sweepP))+")";c.lineWidth=2.6;
+    c.beginPath();c.arc(0,0,R*.93,Math.PI*.5-half,Math.PI*.5+half);c.stroke();
+    /* fan of A-scan rays from the pupil to the scanned arc */
+    var NR=22;
+    for(var i=0;i<NR;i++){
+      var f=(i/(NR-1))*2-1, a=Math.PI*.5+f*half;
+      var lead=Math.min(1,Math.max(0,sweepP*1.25-Math.abs(f)*.25));
+      if(lead<=0)continue;
+      var pulse=flow>0?(.55+.45*Math.sin(t*3.4+i*.6)):1;
+      c.strokeStyle="rgba(21,205,255,"+(.3*lead*pulse*eyeIn).toFixed(3)+")";c.lineWidth=1;
+      c.beginPath();c.moveTo(0,-R*.72);c.lineTo(Math.cos(a)*R*.93,Math.sin(a)*R*.93);c.stroke();
+    }
+    /* the live A-scan ray */
+    var scanA=Math.PI*.5+Math.sin(t*1.1)*half*Math.min(1,sweepP*1.6);
+    if(sweepP>0){c.strokeStyle="rgba(111,224,255,"+(.9*sweepP*eyeIn)+")";c.lineWidth=1.5;
+      c.beginPath();c.moveTo(0,-R*.72);c.lineTo(Math.cos(scanA)*R*.93,Math.sin(scanA)*R*.93);c.stroke();}
+    c.restore();
+    /* ---- the probe above the eye: approaches, then holds ---- */
+    var py=Math.max(R*.62,ey-R*2.05+approach*R*.62), pxx=cx+(1-approach)*w*.045;
+    c.save();c.translate(pxx,py);
+    c.strokeStyle="rgba(232,235,247,"+(.3+.45*approach)+")";c.lineWidth=1.4;
+    c.beginPath();c.moveTo(-34*s,-46*s);c.lineTo(34*s,-46*s);c.lineTo(16*s,0);c.quadraticCurveTo(0,10*s,-16*s,0);c.closePath();c.stroke();
+    c.beginPath();c.moveTo(-26*s,-46*s);c.lineTo(-26*s,-78*s);c.quadraticCurveTo(-26*s,-92*s,-6*s,-96*s);c.stroke();
+    c.fillStyle="rgba(21,205,255,"+(.5+.5*approach)+")";c.beginPath();c.arc(0,4*s,3.2*s,0,6.2832);c.fill();
+    c.font="400 10.5px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
+    c.fillStyle="rgba(169,177,208,"+(.9*approach)+")";c.textAlign="right";c.fillText("UNDER 350 g",-44*s,-24*s);
+    c.restore();
+    /* beam from probe into the eye once close */
+    if(approach>.3){c.strokeStyle="rgba(21,205,255,"+(.45*(approach-.3)/.7)+")";c.lineWidth=1;
+      c.beginPath();c.moveTo(pxx,py+6*s);c.lineTo(cx,ey-R*.72);c.stroke()}
+    /* ---- the B-scan strip the sweep writes ---- */
+    var sy=h*.72,sh=h*.26,x0=w*.07,x1=w*.93;
+    var span=.26+.74*wide;                          /* how much of the strip the field covers */
+    var lead=Math.min(1,sweepP*1.1);
+    var cxs=(x0+x1)/2,halfW=(x1-x0)/2*span;
+    c.strokeStyle="rgba(232,235,247,"+(.16*ease(Math.min(1,sweepP*2)))+")";c.lineWidth=1;
+    c.beginPath();c.moveTo(cxs-halfW,sy-sh*.5);c.lineTo(cxs-halfW,sy+sh*.62);c.stroke();
+    if(lead>0){
+      c.save();c.beginPath();c.rect(cxs-halfW*lead,sy-sh*.7,halfW*2*lead,sh*1.6);c.clip();
+      var LY=[[0,.5],[.14,.26],[.3,.7],[.46,.2],[.62,.3],[.76,.55],[.9,.18]];
+      for(var k=0;k<LY.length;k++){
+        var yy=sy-sh*.3+LY[k][0]*sh*.78;
+        c.strokeStyle=(k===5?"rgba(111,224,255,":"rgba(232,235,247,")+(LY[k][1]*ease(lead)).toFixed(3)+")";
+        c.lineWidth=k===2?1.6:1;
+        c.beginPath();
+        for(var j=0;j<=140;j++){var u=j/140,px2=cxs-halfW+u*halfW*2;
+          var py2=yy+Math.sin((u-.5)*3.1)*sh*.09+Math.sin(u*9+k)*sh*.006;
+          j?c.lineTo(px2,py2):c.moveTo(px2,py2)}
+        c.stroke();
+      }
+      for(var q=0;q<260;q++){var xq=rnd(q,1),kq=rnd(q,2);
+        var px3=cxs-halfW+xq*halfW*2,py3=sy-sh*.3+kq*sh*.78+Math.sin((xq-.5)*3.1)*sh*.09;
+        c.fillStyle="rgba(232,235,247,"+(.17*(.3+.7*Math.abs(Math.sin(t*1.1+q)))*ease(lead)).toFixed(3)+")";
+        c.fillRect(px3,py3,1.1,1.1)}
+      /* flow: vessels light up in the strip when the repeated scans start */
+      if(flow>0){
+        for(var v=0;v<40;v++){var uv=rnd(v,3),off=(rnd(v,4)-.5)*sh*.05;
+          var vx=cxs-halfW+uv*halfW*2,vy=sy-sh*.3+.76*sh*.78+Math.sin((uv-.5)*3.1)*sh*.09+off;
+          var tw=.5+.5*Math.sin(t*2.6+v*.9);
+          c.fillStyle="rgba(21,205,255,"+(.95*flow*tw).toFixed(3)+")";
+          c.beginPath();c.arc(vx,vy,2.1,0,6.2832);c.fill();
+          c.fillStyle="rgba(21,205,255,"+(.3*flow).toFixed(3)+")";
+          c.beginPath();c.arc(vx,vy,5.5,0,6.2832);c.fill()}
+      }
+      c.restore();
+      /* write head on the strip, tracking the live A-scan ray */
+      var hxx=cxs+halfW*lead*Math.sin(t*1.1);
+      c.strokeStyle="rgba(21,205,255,"+(.5*ease(lead))+")";c.lineWidth=1;
+      c.beginPath();c.moveTo(hxx,sy-sh*.42);c.lineTo(hxx,sy+sh*.52);c.stroke();
+    }
+    c.font="400 10.5px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
+    c.textAlign="left";c.fillStyle="rgba(169,177,208,"+(.85*ease(Math.min(1,sweepP*2)))+")";
+    c.fillText("B-SCAN",cxs-halfW,sy-sh*.6);
+    c.textAlign="right";
+    c.fillStyle="rgba(169,177,208,"+(.85*ease(wide))+")";c.fillText(wide>.5?"145° FIELD":"62° FIELD",cxs+halfW,sy-sh*.6);
+    c.textAlign="center";c.fillStyle="rgba(21,205,255,"+(.45+.55*flow).toFixed(3)*(flow>.01?1:0)+")";
+    if(flow>.01)c.fillText("OCT ANGIOGRAPHY · FLOW DETECTED",cxs,sy+sh*.86);
+  }
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();
+  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
+  return {set:function(v){pT=v},snap:function(v){p=pT=v;draw()},resize:function(){size();draw()},kill:function(){alive=false;io.disconnect()}};
+}
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var sE=els[i].closest&&els[i].closest("[data-theme]");if(sE&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=sE.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){unmask(st)}});
+}
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var sp=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(sp)}});
+      htl.from(sp.chars,{yPercent:150,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-12,opacity:.3,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:150,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= GLOBAL REVEAL (AZ) ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:150,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}});
+  $$("#view .ln-mask, #view .ln").forEach(function(el){el.style.overflow="visible";el.style.clipPath="none"})},2500)}
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var sm=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});
+    gsap.from(sm.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(sm)}});
+    gsap.to(sm.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  var cu=$(".cue",view);if(cu)ScrollTrigger.create({trigger:cu.closest(".hero"),start:"top -12%",end:"max",toggleClass:{targets:cu,className:"gone"}});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
+  story=makeStory(cv);
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(sE,j){sE.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM)return;
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+    onRefresh:function(){if(story)story.resize()}});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{attr:{r:0},opacity:0,duration:1.5,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+  if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
+    gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
+    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+}
+
+/* ================= PERSON SHEET (PRINCIPLES BI) ================= */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psCur=-1,psLast=null,psFromClick=false,psBase="#/team";
+function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psFill(i){var p=TEAM[i];
+  window.__psPlate=psPlate(p);
+  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.remove();document.getElementById(\'psMedia\').insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+    (p.src?'<p class="src">Source: '+p.src+'</p>':'');
+  psBody.scrollTop=0;document.title=p.name+" — "+SITE;
+}
+function psOpen(slug,instant){var i=pBy(slug);if(i<0)return;
+  var was=psCur>=0;psCur=i;psFill(i);
+  if(was){rvPlay(psBody,0);gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}
+  psLast=document.activeElement;
+  ps.classList.add("open");ps.setAttribute("aria-hidden","false");
+  if(lenis)lenis.stop();document.documentElement.style.overflow="hidden";
+  gsap.killTweensOf([psSheet,".ps-scrim"]);
+  gsap.fromTo(".ps-scrim",{opacity:0},{opacity:1,duration:instant||RM?.01:.45,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:28,scale:.986},{opacity:1,y:0,scale:1,duration:instant||RM?.01:.6,ease:"power3.out"});
+  var d0=instant?(window._preShown?1.4:.4):.2;
+  rvPlay(psBody,d0);
+  if(!RM)gsap.fromTo($$(".ps-bar .btn",ps),{opacity:0,y:-10},{opacity:1,y:0,duration:.7,ease:"silk",stagger:.05,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
+}
+function psHide(){if(psCur<0)return;psCur=-1;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.34,ease:"power2.in"});
+  gsap.to(".ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true");
+    document.documentElement.style.overflow="";if(lenis)lenis.start();if(psLast&&psLast.focus)psLast.focus({preventScroll:true})}});
+  var r=route(location.hash);document.title=r.t;
+}
+function psClose(){if(psCur<0)return;
+  if(psFromClick){psFromClick=false;history.back()}
+  else{history.replaceState(null,"",psBase||"#/team");prevHash=location.hash||"#/";psHide()}}
+function psStep(d){if(psCur<0)return;var i=(psCur+d+TEAM.length)%TEAM.length;history.replaceState(null,"",psBase+"/"+TEAM[i].slug);prevHash=location.hash;psOpen(TEAM[i].slug)}
+$$("[data-ps-close]",ps).forEach(function(e){e.addEventListener("click",psClose)});
+$("#psPrev").addEventListener("click",function(){psStep(-1)});
+$("#psNext").addEventListener("click",function(){psStep(1)});
+document.addEventListener("keydown",function(e){
+  if(psCur<0)return;
+  if(e.key==="Escape"){psClose();return}
+  if(e.key==="Tab"){var f=$$("button,a[href],[tabindex='0']",ps).filter(function(x){return x.offsetParent!==null});if(!f.length)return;
+    var a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+    else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();psBase="#/team";psFromClick=true;history.pushState(null,"",h);prevHash=h;psOpen(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.setDetail(r.k==="home"?1:0);field.snapDim(r.k==="home"?1:.8);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("th-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){psBase="#/team";psOpen(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){psOpen(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(psCur>=0||route(prevHash).bio)){psFromClick=false;psHide();prevHash=location.hash||"#/";return}
+  if(psCur>=0){psCur=-1;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set(".ps-scrim",{opacity:0});document.documentElement.style.overflow="";if(lenis)lenis.start()}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var hh=$("#pageTitle");if(hh)hh.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:150,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)psBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)psOpen(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem("th-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem("th-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem("th-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var dots=$$("#pre .dots circle, #pre .dots path");gsap.set(dots,{scale:0,transformOrigin:"center",opacity:0});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();field.finish();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(dots,{scale:1,opacity:1,duration:.75,ease:"back.out(1.5)",stagger:.08},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.022},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .dots","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(['400 1em "Newsreader"','italic 400 1em "Newsreader"','400 1em "Hanken Grotesk"','500 1em "Hanken Grotesk"','400 1em "IBM Plex Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+</body>
+</html>

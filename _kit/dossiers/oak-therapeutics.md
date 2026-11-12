@@ -43,3 +43,21 @@
 
 ## Contact
 - office@oaktherapeutics.com · maliski@oaktherapeutics.com (CEO) · +1 (913) 346-0990.
+
+## Imagery and palette (recorded for PRINCIPLES BJ/BK, Nov 2026 review)
+Source: `node _kit/photo-inventory.js https://www.oaktherapeutics.com …` — 20 meaningful images, 5 pages crawled.
+
+### Used on the concept site
+- Product photograph of the strips themselves: https://static.wixstatic.com/media/9a0df2_efcdac9bb3294ecc8b2a5b24e21e8f04~mv2.png (their own photo, transparent background; shown on the home page and the Technology page).
+- Company logo: https://static.wixstatic.com/media/9a0df2_cb9e0237cc8749b78da91b8d58e4937e~mv2.png (header on dark, footer).
+- All twelve team and advisory-board headshots. Person→image mapping verified by matching each image's y-position to the name beside it on https://www.oaktherapeutics.com/team-3 (the Wix filenames are misleading — three different people's portraits are all named "ADHAM FARES…"):
+  Edward Maliski 9a0df2_cc8f9919a9b6457d808fc84e016bcdb9 · Gerhard Apfelthaler 9a0df2_a50e86d539374f0ba17622d2fb266b6b · Sally Maliski 65c4bc_5ff56a44e02640febcf4d36c05c3664e · Cameron McFarlane 9a0df2_38664e8cf4294841877c41ab1d14e3ef · Zachary Nicolay 65c4bc_86fdab69f9444f2083df6091426668bd · Lauren Staus 65c4bc_a648866595e84a2a95e3433c0c52012e · Lisa Armitige 65c4bc_ca215efb231d44768367533ec70728c3 · Adham Fares 65c4bc_4f8a4230548645db9457ecdf809f3eb9 · Sarah Finocchario-Kessler 65c4bc_8ef6b03fd4b54382840a4236973ca0e0 · Michael Hageman 65c4bc_1b773b9deef9445cb66c027832c5031f · Elizabeth Lowenthal 9a0df2_5b4a8e97a93d4338b99b429fcc1263d1 · James Rossman 65c4bc_5ec1647240784689bb2f4fd276d90af5.
+
+### Not used, with reasons
+- dreamstime_xl_21407069 (two crops, 1440x1137 and 1440x227): licensed stock illustration, flagged as stock by the inventory tool.
+- "Blue Smoke" 454x800, and the three unnamed dark/blurred banners (1728x912, 1440x1027, 623x1210): decorative background textures with no subject.
+- 9a0df2_80f23c891165466691c52657ea368f32 (1920x1080): a second copy of the same logo lock-up; duplicate.
+
+### Logo → palette
+Logo sampled colours: #306060, #304860, #306078, #ffffff, #f0ffff (plus the deep navy tile and light cyan tree).
+Mapping: logo deep navy #03223E → `--ink` (base) · logo mid blue #0E5C8A → `--sinD` (accent on light) · logo light cyan #73DFFF → `--sinL` (accent on dark) · site accent blue #3D9BE9 → `--sin` (pipeline bars) · white → `--bone` #F3F7FA. No hue outside the logo and their live CSS is used.

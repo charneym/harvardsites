@@ -34,3 +34,16 @@
 ## Contact
 - No email address is published on the site; LinkedIn is the only outbound link. Footer headings "ABOUT US", "RESOURCES", "CONTACT US", "FOLLOW US" carry no links except LinkedIn.
 - Published documents: Privacy Policy, Terms of Use, Financial Conflict of Interest (FCOI) Policy — https://marktherapeutics.com/fcoi-policy/
+
+## Imagery and palette (recorded for PRINCIPLES BJ/BK, Nov 2026 review)
+Source: `node _kit/photo-inventory.js https://marktherapeutics.com …` — 3 pages crawled, 1 meaningful image, no logo file found.
+
+### Used on the concept site
+- None. The company publishes no photographs, no headshots, no product or laboratory imagery and no logo file.
+
+### Not used, with reasons
+- https://marktherapeutics.com/__static/640a8492-a825-4d96-9171-8431b5b069b9/image_desktop (1409x626): the pale blue diagonal gradient behind their one-screen holding page. It is a decorative background with no subject, so there is nothing to show.
+
+### Logo → palette
+No logo image is served; the site renders the name as text in Inter semibold. The palette is therefore taken from their live CSS, which is what a visitor sees as the brand:
+#1B4B66 (their primary blue) → `--sin`; its light tint #7FC4E8 → `--sinL` (accent on dark); its deep shade #124459 → `--sinD` (accent on light); #16324F → `--ink3`, used for the page-transition cover; #122840/#0F141A deepened to #0B1B2B → `--ink` (base); #F7F9FB → `--bone` #F2F6FA. No hue outside their own stylesheet is used.

@@ -36,3 +36,20 @@
 
 ## Contact
 - gongbo.li@immunebro.com · 773-961-6720 · 400 N Aberdeen St, STE 900, Chicago, IL 60642.
+
+## Imagery and palette (recorded for PRINCIPLES BJ/BK, Nov 2026 review)
+Source: `node _kit/photo-inventory.js https://www.immunebro.com …` — 5 meaningful images, 3 pages crawled.
+
+### Used on the concept site
+- Microscopy image published on their own site: https://static.wixstatic.com/media/ffee3a_4853d5d12b9b45e796e660d6facf7e79~mv2.png (2048x1536 16-bit greyscale capture of cell clusters), shown as a full-width figure on the Platform page. The caption claims only that it is imagery published on their site, because the subject is not stated anywhere by the company.
+- Company logo: https://static.wixstatic.com/media/ffee3a_521e77a7ca6c4d159314eb1cbc490d3f~mv2.png, shown on a white plate in the footer (the wordmark is black, so it cannot sit on the dark page itself). The header uses a faithful inline SVG redraw of the same mark, since the raster is black-on-transparent.
+
+### Not used, with reasons
+- "Robotic Lab Assistant" 1440x900: generic licensed stock photography, flagged by the inventory tool.
+- Mountain-range banner 1440x396: generic stock photography, unrelated to the science.
+- Two illustrations whose filenames are "ChatGPT Image May 21, 2026, 04_11_05 PM.png" and "…04_26_19 PM.png": AI-generated filler (one cell illustration, one crowd scene), excluded under BJ.
+- No team headshots exist anywhere on their site, so the person sheet uses the typographic plate.
+
+### Logo → palette
+Logo sampled colours: #000000 (20%), #181818, #f0f0f0, #60c048 (green), #d8d8d8, #3090c0 (blue).
+Mapping: logo black #000000 → `--ink` #0C1013 (base) · logo green #66BB3C → `--sin`, lightened to #85D45C as `--sinL` on dark and deepened to #3C7A20 as `--sinD` on light · logo blue #2B99CA → `--blu`, with #5CB8E4 for the CD19⁺ target cells in the hero and story · white → `--bone` #F4F7F3. The transition cover uses the deep green #1C5A31, a shade of the logo green (rule BG). No hue outside the logo is used.

@@ -1,0 +1,1315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>OncoSTING — A live BCG that carries its own STING agonist</title>
+<meta name="description" content="OncoSTING engineers Bacillus Calmette-Guérin to overexpress the STING agonist c-di-AMP: a two-pronged immunotherapy for non-muscle invasive bladder cancer, with programs in solid tumors and a next-generation TB vaccine.">
+<meta name="theme-color" content="#180e33">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23180e33'/%3E%3Crect x='16' y='26' width='32' height='13' rx='6.5' fill='none' stroke='%23efecf6' stroke-width='3'/%3E%3Ccircle cx='46' cy='18' r='3.4' fill='%2346c1c6'/%3E%3Ccircle cx='54' cy='30' r='2.6' fill='%2346c1c6'/%3E%3Ccircle cx='47' cy='47' r='2.6' fill='%2346c1c6'/%3E%3C/svg%3E">
+<style>
+/*@fonts Spectral:400,400i; Figtree:400,500; Geist Mono:400*/
+:root{
+  --ink:#180e33;--ink2:#1f1540;--ink3:#261a4c;--deep:#120a26;
+  --paper:#f4f2f7;--paper2:#e9e6f0;--paper3:#d8d3e4;
+  --mist:#a79ec4;--mistD:#5d5478;
+  --ac:#46c1c6;--acL:#79d9dd;--ac2:#1b858d;--acD:#17767e;
+  --hair:rgba(239,236,246,.14);--hairD:rgba(24,14,51,.14);
+  --serif:'Spectral',Georgia,'Times New Roman',serif;
+  --sans:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'Geist Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:#efecf6;font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--ac);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--ac);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--acD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--ac);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--mist)}
+.light .lab{color:var(--mistD)}
+em{font-style:italic;font-family:var(--serif)}
+.d1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7.4vw,132px);line-height:1;letter-spacing:-.03em;margin:0}
+.d2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,5vw,88px);line-height:1.02;letter-spacing:-.026em;margin:0}
+.d3{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.6vw,58px);line-height:1.08;letter-spacing:-.02em;margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--acL);font-weight:400}
+.light .d1 em,.light .d2 em,.light .d3 em{color:var(--acD)}
+.d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.lede{font-family:var(--serif);font-weight:400;font-size:clamp(21px,1.9vw,30px);line-height:1.36;letter-spacing:-.005em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--mist)}
+.light .muted{color:var(--mistD)}
+.light{background:var(--paper);color:var(--ink)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:17ch}
+.shead p{max-width:46ch;margin:0;color:var(--mist)}
+.light .shead p{color:var(--mistD)}
+.kick{display:block;margin-bottom:22px;color:var(--acL)}
+.light .kick{color:var(--acD)}
+
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(76% 74% at 68% 44%,#2b1b57 0%,#1d1340 52%,#120a26 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;visibility:hidden}
+#pre .dots{width:78px;height:58px;overflow:visible}
+#pre .wm{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.4vw,62px);letter-spacing:-.02em;color:#efecf6;line-height:1.1;padding:.1em .18em .4em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm em{color:var(--ac)}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--ac);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--serif);font-weight:400;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.03em;color:#efecf6;font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:#efecf6;border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:rgba(24,14,51,.74);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:rgba(244,242,247,.86);border-bottom-color:var(--hairD)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.brand img{height:26px;width:auto}
+.brand .lg-d{display:none}
+.hdr.ink .brand .lg-w{display:none}
+.hdr.ink .brand .lg-d{display:block}
+.brand .wmk{display:none;align-items:center;gap:9px;font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.02em;line-height:1}
+.brand .wmk small{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.75;align-self:center}
+.brand .wmk svg{width:26px;height:20px;align-self:center}
+.brand.nologo img{display:none!important}
+.brand.nologo .wmk{display:flex}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--ac);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--ac)}
+.btn:hover::before{transform:none}
+.btn.solid{background:#efecf6;color:var(--ink);border-color:#efecf6}
+.btn.solid::before{background:var(--ac)}
+.light .btn::before{background:var(--acD)}
+.light .btn:hover{color:#f4f2f7;border-color:var(--acD)}
+.light .btn.solid{background:var(--ink);color:#f4f2f7;border-color:var(--ink)}
+.light .btn.solid::before{background:var(--acD)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.sm{height:48px;min-height:48px;padding:0 20px}
+@media (max-width:860px){.btn.sm{height:44px;min-height:44px}}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--serif);font-weight:400;font-size:clamp(38px,10vw,64px);line-height:1.08;letter-spacing:-.03em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--mist);font-size:13px;line-height:1.6}
+
+.ln{overflow:visible!important}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(56% 74% at 16% 50%,rgba(18,10,38,.92),rgba(18,10,38,.55) 46%,rgba(18,10,38,0) 76%),linear-gradient(180deg,rgba(18,10,38,.5),rgba(18,10,38,0) 24%,rgba(18,10,38,0) 60%,var(--ink) 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--acL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(42px,6.3vw,118px);line-height:1.02;letter-spacing:-.03em;max-width:12ch}
+.hero-h .l{display:block}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:44ch;margin:0;font-size:17px;line-height:1.6;color:rgba(239,236,246,.88)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:var(--side);bottom:clamp(30px,4.2vh,48px);width:1px;height:42px;overflow:hidden;background:rgba(239,236,246,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--ac);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1;color:var(--mist)}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:8px;height:8px;border-radius:50%;background:#efecf6;display:block;opacity:.8}
+.hero-key i.s{background:var(--ac);opacity:1}
+.cue.gone{opacity:0!important;transition:opacity .4s ease-out}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 18% 70%,rgba(18,10,38,.9),rgba(18,10,38,.35) 70%),linear-gradient(180deg,rgba(18,10,38,.45),rgba(18,10,38,.15) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--acL)}
+.ph-head h1{max-width:15ch}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:54ch;color:rgba(239,236,246,.9)}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+.cta{background:var(--paper2)}
+
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(29px,3.7vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:36ch}
+.mani .txt .w{opacity:.17}
+.mani .txt em{color:var(--acD)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hairD)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--acD);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--serif);font-weight:400;font-size:clamp(48px,5.4vw,96px);line-height:1;letter-spacing:-.035em;display:block;white-space:nowrap}
+.stat .v sup{font-size:.36em;vertical-align:top;position:relative;top:.3em;margin-left:.04em;color:var(--acD)}
+.stat .k{display:block;margin-top:14px;max-width:26ch}
+
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
+.rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:3.5px;height:2px;background:var(--ac);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#8b93b5;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #5d5478;transition:background .35s,border-color .35s}
+.rail span.on{color:#efecf6}
+.rail span.done::before,.rail span.on::before{background:var(--ac);border-color:var(--ac)}
+.steps{position:relative;min-height:clamp(230px,32vh,310px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.3vw,38px);line-height:1.14;letter-spacing:-.018em;margin:0 0 16px}
+.step p{color:rgba(239,236,246,.82);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(76vh,760px);align-self:center}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.pl3{border-top:1px solid var(--hairD);padding-top:24px}
+.dark .pl3,.dark2 .pl3{border-top-color:var(--hair)}
+.pl3 svg{width:72px;height:72px;margin:0 0 26px -3px;overflow:visible}
+.pl3 svg *{fill:none;stroke:var(--ink);stroke-width:1}
+.dark .pl3 svg *,.dark2 .pl3 svg *{stroke:#efecf6}
+.pl3 svg .a{stroke:var(--acD)}
+.dark .pl3 svg .a,.dark2 .pl3 svg .a{stroke:var(--ac)}
+.pl3 svg .f{fill:var(--acD);stroke:none}
+.dark .pl3 svg .f,.dark2 .pl3 svg .f{fill:var(--ac)}
+.pl3 h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.4vw,38px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px}
+.pl3 p{color:var(--mistD);font-size:15.5px;max-width:36ch}
+.dark .pl3 p,.dark2 .pl3 p{color:var(--mist)}
+
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+@media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
+.aims{list-style:none;margin:0;padding:0}
+.aims li{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hair);font-size:17px;line-height:1.55}
+.light .aims li{border-top-color:var(--hairD)}
+.aims li:last-child{border-bottom:1px solid var(--hair)}
+.light .aims li:last-child{border-bottom-color:var(--hairD)}
+.aims li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ac);margin-top:.55em}
+.light .aims li::before{background:var(--acD)}
+.qt{margin:clamp(40px,5vw,70px) 0 0;padding-top:28px;border-top:1px solid var(--hair)}
+.light .qt{border-top-color:var(--hairD)}
+.qt p{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(23px,2.1vw,33px);line-height:1.3;letter-spacing:-.012em;max-width:32ch;margin:0 0 18px;padding-bottom:.08em}
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:var(--gap);padding:18px 0;border-top:1px solid var(--hair)}
+.light .facts>div{border-top-color:var(--hairD)}
+.facts>div:last-child{border-bottom:1px solid var(--hair)}
+.light .facts>div:last-child{border-bottom-color:var(--hairD)}
+.facts dd{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,24px);line-height:1.32}
+
+/* device + lens cards */
+.dev{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(24px,3vw,56px);align-items:center}
+.dev-fig{margin:0;position:relative;background:var(--paper2);overflow:hidden;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center}
+.dark .dev-fig,.dark2 .dev-fig{background:#241a45}
+.dev-fig img{width:100%;height:100%;object-fit:contain;padding:clamp(10px,2vw,28px)}
+.dev-fig.noimg img{display:none}
+.dev-fig .vsl{display:none;width:66%;height:auto}
+.dev-fig.noimg .vsl{display:block}
+.vsl *{fill:none;stroke:var(--ink);stroke-width:1.2}
+.dark .vsl *,.dark2 .vsl *{stroke:#efecf6}
+.vsl .a{stroke:var(--acD)}
+.dark .vsl .a{stroke:var(--ac)}
+.dev-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,58px);line-height:1.02;letter-spacing:-.025em;margin:10px 0 14px}
+.rg{font-size:.34em;vertical-align:top;position:relative;top:.34em;margin-left:.05em;font-family:var(--sans);letter-spacing:0}
+.spec{margin:22px 0 0}
+.spec>div{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--hairD);align-items:baseline}
+.dark .spec>div,.dark2 .spec>div{border-top-color:var(--hair)}
+.spec>div:last-child{border-bottom:1px solid var(--hairD)}
+.dark .spec>div:last-child,.dark2 .spec>div:last-child{border-bottom-color:var(--hair)}
+.spec dd{margin:0;font-family:var(--serif);font-size:clamp(19px,1.5vw,23px);line-height:1.2;text-align:right}
+.lenses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.lens{border:1px solid var(--hairD);padding:clamp(16px,1.8vw,26px);position:relative;display:flex;flex-direction:column;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.dark .lens,.dark2 .lens{border-color:var(--hair)}
+.lens::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--acD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.dark .lens::before,.dark2 .lens::before{background:var(--ac)}
+.lens:hover{transform:translateY(-4px);box-shadow:0 30px 50px -34px rgba(24,14,51,.5)}
+.lens:hover::before{transform:scaleX(1)}
+.lens figure{margin:0 0 20px;aspect-ratio:5/4;overflow:hidden;background:var(--paper2)}
+.dark .lens figure,.dark2 .lens figure{background:#241a45}
+.lens figure img{width:100%;height:100%;object-fit:cover}
+.lens h3{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2vw,32px);line-height:1.1;margin:0 0 10px}
+.lens p{color:var(--mistD);font-size:15px;margin:0 0 14px}
+.dark .lens p,.dark2 .lens p{color:var(--mist)}
+.lens .nums{display:flex;gap:22px;flex-wrap:wrap;margin-top:auto;padding-top:12px}
+.lens .nums b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(22px,1.8vw,28px);line-height:1.1}
+
+/* image evidence strip */
+.plates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.plate figure{margin:0;aspect-ratio:3/2;overflow:hidden;background:#1d1340;border:1px solid var(--hair)}
+.light .plate figure{background:var(--paper2);border-color:var(--hairD)}
+.plate figure img{width:100%;height:100%;object-fit:cover}
+.plate figcaption{margin-top:14px;font-size:14.5px;line-height:1.55;color:var(--mist);max-width:38ch}
+.light .plate figcaption{color:var(--mistD)}
+
+/* people */
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out;text-align:left}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
+.dark .pc-fig,.dark2 .pc-fig{background:#271d49}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(24,14,51,.55)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 13%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,1.6vw,27px);line-height:1.12;margin:0;min-height:2.24em;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--mistD)}
+.dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--mist)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--acD);margin-top:6px}
+.dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--acL)}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--acD)}
+.dark .pcard:hover h3,.dark2 .pcard:hover h3{color:var(--acL)}
+.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:230px;overflow:hidden}
+.dark .pcard.noimg,.dark2 .pcard.noimg{border-color:var(--hair)}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .pc-meta{padding-top:0;height:100%}
+.pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--mistD)}
+.pcard.noimg .go{margin-top:auto;padding-top:20px}
+
+/* pipeline */
+.pipe{border-top:1px solid var(--hairD)}
+.dark .pipe,.dark2 .pipe{border-top-color:var(--hair)}
+.pipe-h,.prow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,2fr) minmax(0,5fr);column-gap:var(--gap);align-items:start}
+.pipe-h{align-items:center}
+.pipe-h{padding:14px 0;border-bottom:1px solid var(--hairD)}
+.dark .pipe-h,.dark2 .pipe-h{border-bottom-color:var(--hair)}
+.pipe-h .stg{display:grid;grid-template-columns:repeat(3,1fr)}
+.pipe-h .stg span{padding-left:10px;border-left:1px solid var(--hairD)}
+.dark .pipe-h .stg span,.dark2 .pipe-h .stg span{border-left-color:var(--hair)}
+.prow{padding:26px 0;border-bottom:1px solid var(--hairD);position:relative}
+.dark .prow,.dark2 .prow{border-bottom-color:var(--hair)}
+.prow h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,2vw,33px);line-height:1.12;letter-spacing:-.02em;margin:-.12em 0 6px}
+.prow .ind{font-size:15px;line-height:1.5;color:var(--mistD);margin:0}
+.dark .prow .ind,.dark2 .prow .ind{color:var(--mist)}
+.prow .track{position:relative;height:40px;margin-top:6px;display:grid;grid-template-columns:repeat(3,1fr)}
+.prow .track i{border-left:1px solid var(--hairD);display:block}
+.dark .prow .track i,.dark2 .prow .track i{border-left-color:var(--hair)}
+.prow .bar{position:absolute;left:0;top:50%;height:10px;margin-top:-5px;border-radius:99px;background:linear-gradient(90deg,rgba(23,118,126,.3),var(--acD));transform-origin:left;display:block}
+.dark .prow .bar,.dark2 .prow .bar{background:linear-gradient(90deg,rgba(70,193,198,.25),var(--ac))}
+.prow .bar b{position:absolute;right:-1px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--acD);box-shadow:0 0 0 5px rgba(23,118,126,.16)}
+.dark .prow .bar b,.dark2 .prow .bar b{background:var(--ac);box-shadow:0 0 0 5px rgba(70,193,198,.16)}
+.prow .note{grid-column:1/2;margin:14px 0 0;font-size:14.5px;color:var(--mistD);line-height:1.55;max-width:46ch}
+.dark .prow .note,.dark2 .prow .note{color:var(--mist)}
+.tagp{display:inline-flex;align-items:center;line-height:1;padding:6px 10px 5px;border:1px solid currentColor;border-radius:99px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;color:var(--acD)}
+.dark .tagp,.dark2 .tagp{color:var(--ac)}
+@media (max-width:860px){.pipe-h{display:none}.prow{grid-template-columns:1fr;row-gap:10px}.prow .note{grid-column:1/2}}
+
+/* rows (news) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.light .rows{border-top-color:var(--hairD)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.light .row-a{border-bottom-color:var(--hairD)}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.light .row-a::before{background:var(--acD)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(70,193,198,.07),rgba(70,193,198,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.light .row-a::after{background:linear-gradient(0deg,rgba(23,118,126,.06),rgba(23,118,126,0) 70%)}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.8vw,29px);line-height:1.2;letter-spacing:-.015em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--acL);transform:translateX(6px)}
+.light .row-a:hover h3{color:var(--acD)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+.cta .big{font-family:var(--serif);font-weight:400;font-size:clamp(50px,7.6vw,140px);line-height:1;letter-spacing:-.035em;margin:0}
+.cta .big em{color:var(--acD)}
+.cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--mistD);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+.ftr{position:relative;z-index:1;background:var(--deep);color:#efecf6;padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--mist)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--acL)}
+.ftr .c a{color:#efecf6}
+.ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(15.5vw,228px);line-height:.9;letter-spacing:-.045em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.2em;color:#efecf6}
+.ftr .bigw .ch{display:inline-block}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,46px);line-height:1.06;letter-spacing:-.02em;margin:14px 0 14px}
+.addr p{color:var(--mistD)}
+.map{margin-top:clamp(30px,4vw,56px);border:1px solid var(--hairD);aspect-ratio:5/4;background:var(--paper2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mistD);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(24,14,51,.3);padding:16px 0 12px;font-family:var(--serif);font-weight:400;font-size:24px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--acD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9a2f1c;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#9a2f1c}
+.subr{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.thanks svg circle{fill:none;stroke:var(--acD);stroke-width:1}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+/* transition cover */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--ink3);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--ac);opacity:.8}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
+.xt .t{font-family:var(--serif);font-weight:400;font-style:italic;font-size:clamp(50px,8.4vw,150px);line-height:1;letter-spacing:-.032em;color:#efecf6;overflow:hidden;padding:.16em .18em .4em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--acL)}
+
+/* person sheet (PRINCIPLES BI) */
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:rgba(4,8,26,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:clamp(420px,70vh,700px);max-height:calc(100vh - 96px);background:var(--paper);color:var(--ink);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.6),0 0 0 1px var(--hairD);opacity:0}
+.ps-media{min-height:320px;position:relative;background:var(--paper3);overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:36px;background:linear-gradient(160deg,rgba(43,58,158,.16),transparent 60%)}
+.ps-plate .k{font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mistD)}
+.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--serif);margin-top:14px;padding-bottom:.14em}
+.ps-col{display:flex;flex-direction:column;min-height:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 26px;border-bottom:1px solid var(--hairD)}
+.ps-step{display:flex;gap:8px}
+.ps-body:focus{outline:none}
+.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,50px) clamp(26px,4vw,54px) 56px;scrollbar-width:thin;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);mask-image:linear-gradient(to bottom,transparent 0,#000 18px)}
+.ps-body .lab{color:var(--acD)}
+.ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,50px);line-height:1.06;letter-spacing:-.025em;margin:14px 0 10px;padding-bottom:.1em}
+.ps-body .role{font-size:17px;line-height:1.5;color:var(--mistD);margin:0 0 28px}
+.ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:60ch}
+.ps-body blockquote{margin:28px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34}
+.ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
+.ps-body .src{margin-top:26px;font-size:14px;color:var(--mistD)}
+.ps-body .src a{color:var(--acD)}
+
+[data-r]{will-change:auto}
+
+@media (max-width:960px){.hero-key{display:none}.plates{grid-template-columns:1fr 1fr}}
+@media (max-width:1024px){
+  .mani .txt{max-width:none}
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:44vh;height:44svh;min-height:330px}
+  .story-l .d3{font-size:clamp(24px,3.4vw,34px);margin-bottom:18px;max-width:none}
+  .story-l .kick{margin-bottom:10px}
+  .story-r{order:-1}
+  .two,.cgrid,.dev{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .brand .wmk small{display:none}
+  .hero{justify-content:flex-end;padding-bottom:clamp(74px,10vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(18,10,38,.1) 0%,rgba(18,10,38,.3) 24%,rgba(18,10,38,.84) 42%,rgba(18,10,38,.94) 72%,var(--ink) 100%)}
+  .hero-h{font-size:clamp(40px,10.6vw,88px);max-width:none}
+  .hero-foot .s{font-size:16px}
+  .pillars,.lenses,.plates{grid-template-columns:1fr;row-gap:44px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.subr{grid-column:1/2}
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:16px 16px 0 0}
+  .ps-media{height:min(34vh,260px)}
+  .ps-bar{padding:14px 18px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (max-width:560px){
+  .stats{grid-template-columns:1fr;gap:34px}
+  .pgrid{grid-template-columns:1fr}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .facts>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:21px}
+  .spec dd{font-size:18px}
+}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("os-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="dots" viewBox="0 0 92 58"><rect x="10" y="20" width="46" height="19" rx="9.5" fill="none" stroke="#efecf6" stroke-width="1.5"/><circle cx="68" cy="16" r="4" fill="#46c1c6"/><circle cx="79" cy="29" r="3.2" fill="#46c1c6"/><circle cx="68" cy="43" r="2.6" fill="#46c1c6"/></svg>
+    <div class="wm"><span>Onco<em>STING</em></span></div>
+  </div>
+  <span class="lab pl">BCG that carries its own agonist</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">000</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="OncoSTING, home">
+    <img class="lg-w" src="https://images.squarespace-cdn.com/content/v1/5c2fd84ec3c16a867eb1dccb/1548025837513-3UKX2BCOTO8702LGWPAA/Logo.png?format=1000w" alt="OncoSTING" referrerpolicy="no-referrer" onerror="document.getElementById('brand').classList.add('nologo')">
+    <img class="lg-d" src="https://images.squarespace-cdn.com/content/v1/5c2fd84ec3c16a867eb1dccb/1548025837513-3UKX2BCOTO8702LGWPAA/Logo.png?format=1000w" alt="" aria-hidden="true" referrerpolicy="no-referrer" style="filter:invert(1) hue-rotate(180deg)" onerror="document.getElementById('brand').classList.add('nologo')">
+    <span class="wmk"><svg viewBox="0 0 92 46" aria-hidden="true"><rect x="6" y="14" width="46" height="19" rx="9.5" fill="none" stroke="currentColor" stroke-width="3.4"/><circle cx="66" cy="10" r="4" fill="#46c1c6"/><circle cx="78" cy="23" r="3.4" fill="#46c1c6"/><circle cx="66" cy="37" r="2.8" fill="#46c1c6"/></svg>Onco<small>STING</small></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/technology">Technology</a>
+    <a class="nl ul" href="#/programs">Programs</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="nl ul" href="#/research">Research</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true">
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/technology">Technology</a></li>
+    <li><a href="#/programs">Programs</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/research">Research</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Baltimore, Maryland</span><br>OncoSTING, LLC</div>
+    <div><span class="lab">Write</span><br><a href="mailto:info@OncoSTING.com">info@OncoSTING.com</a></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <button class="btn sm" data-ps-close>Close</button>
+        <div class="ps-step"><button class="btn sm" id="psPrev" aria-label="Previous person">Prev</button><button class="btn sm" id="psNext" aria-label="Next person">Next</button></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">OncoSTING</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="OncoSTING";
+var SQ="https://images.squarespace-cdn.com/content/v1/5c2fd84ec3c16a867eb1dccb/";
+var IMG={
+ tech:SQ+"1548871396869-Y8AEM8FGIXJ6J03P4GQF/Technology_02.jpg?format=1500w",
+ h1:SQ+"67c03de5-ded6-482a-a148-d88c0ac06213/Bivalacqua_Trinity_Business_Print.jpg?format=1500w",
+ h2:SQ+"1547321114283-ACVZUVFZRJQGS8THVA46/William_Bishai.jpg?format=1500w",
+ h3:SQ+"1578509514082-GJQNQ1PQHAV4T6D08CIA/Profile+Pic+AB-.png?format=1500w",
+ h4:SQ+"461811a6-ef43-4410-9515-ee950d677d77/Todd+Wallach+Headshot_4.jpg?format=1500w"
+};
+var AWARDS=[
+ {d:"2026-09-10",n:"1R44CA310037-01",ic:"NCI · Direct to Phase II",amt:"$1,030,215",t:"STING agonist-expressing BCG to enhance bladder cancer therapy",u:"https://reporter.nih.gov/search/results?projectNums=1R44CA310037-01"},
+ {d:"2026-07-22",n:"5R44AI181290-03",ic:"NIAID",amt:"$986,921",t:"BCG overexpressing a small molecule STING agonist as a vaccine for TB",u:"https://reporter.nih.gov/search/results?projectNums=5R44AI181290-03"},
+ {d:"2025-08-25",n:"4R44AI181290-02",ic:"NIAID",amt:"$991,112",t:"BCG overexpressing a small molecule STING agonist as a vaccine for TB — Phase II",u:"https://reporter.nih.gov/search/results?projectNums=4R44AI181290-02"},
+ {d:"2024-06-20",n:"1R44AI181290-01A1",ic:"NIAID",amt:"$270,176",t:"BCG overexpressing a small molecule STING agonist as a vaccine for TB — Fast-Track Phase I",u:"https://reporter.nih.gov/search/results?projectNums=1R44AI181290-01A1"},
+ {d:"2023-08-28",n:"5R44CA261506-03",ic:"NCI",amt:"$1,092,982",t:"STING agonist-expressing BCG for bladder cancer",u:"https://reporter.nih.gov/search/results?projectNums=5R44CA261506-03"},
+ {d:"2022-07-19",n:"4R44CA261506-02",ic:"NCI",amt:"$907,018",t:"STING agonist-expressing BCG for bladder cancer — Phase II",u:"https://reporter.nih.gov/search/results?projectNums=4R44CA261506-02"},
+ {d:"2021-08-31",n:"1R44CA261506-01A1",ic:"NCI",amt:"$244,436",t:"STING agonist-expressing BCG for bladder cancer — Fast-Track Phase I",u:"https://reporter.nih.gov/search/results?projectNums=1R44CA261506-01A1"}
+];
+var PRESS=[
+ {d:"June 28, 2019",t:"OncoSTING, LLC awarded Maryland Innovation Initiative Company Formation award by Maryland TEDCO"},
+ {d:"May 3–6, 2019",t:"OncoSTING scientists release new studies on the pre-clinical efficacy of OS-101 at the American Urological Association Annual Meeting, Chicago"},
+ {d:"March 15–19, 2019",t:"New studies on the pre-clinical efficacy of OS-101 at the European Association of Urology Annual Meeting, Barcelona"},
+ {d:"July 1, 2018",t:"JHU scientists awarded Willowcroft Foundation grant for development of a novel recombinant immunotherapy for bladder cancer"},
+ {d:"July 1, 2018",t:"JHU researchers awarded Cigarette Restitution Fund grant for innovative bladder cancer immunotherapy"},
+ {d:"February 23, 2018",t:"OncoSTING, LLC awarded Maryland Innovation Initiative Technology Development grant by Maryland TEDCO"}
+];
+var TEAM=[
+ {slug:"todd-wallach",name:"Todd Wallach, MS",title:"Chief Executive Officer",grp:"Management",img:IMG.h4,
+  bio:["Todd Wallach leads OncoSTING as Chief Executive Officer. The company lists his earlier roles as CEO of Evogen and founder of Aton, acquired by Valeant, and of Acuity, acquired by OPKO.",
+       "He is the principal investigator on OncoSTING’s National Institutes of Health awards from 2022 onward — the NCI bladder cancer program and the NIAID tuberculosis vaccine program — and is named with William Bishai on the 2026 Direct to Phase II award."],
+  src:'<a href="https://www.oncosting.com/about" target="_blank" rel="noopener">oncosting.com/about</a> and NIH RePORTER'},
+ {slug:"trinity-bivalacqua",name:"Trinity Bivalacqua, MD, PhD",title:"Co-founder",grp:"Founders",img:IMG.h1,
+  bio:["Trinity Bivalacqua co-founded OncoSTING. He is Professor of Urology and Oncology and Director of Urologic Oncology at the Perelman School of Medicine, University of Pennsylvania, and Co-Director of the GU Cancer Service Line at the Abramson Cancer Center.",
+       "The company describes him as its bladder cancer expert — the clinical half of a founding pair that put a mycobacterial vaccine and a urologic cancer in the same room."],
+  src:'<a href="https://www.oncosting.com/about" target="_blank" rel="noopener">oncosting.com/about</a>'},
+ {slug:"william-bishai",name:"William Bishai, MD, PhD",title:"Co-founder",grp:"Founders",img:IMG.h2,
+  bio:["William Bishai co-founded OncoSTING. He is Professor of Medicine in Infectious Diseases and Co-director of the Center for TB Research at The Johns Hopkins School of Medicine, and a former HHMI lab head.",
+       "The company describes him as its TB and BCG expert. He is named as a principal investigator, with Todd Wallach, on the 2026 National Cancer Institute Direct to Phase II award for BCG-STING."],
+  src:'<a href="https://www.oncosting.com/about" target="_blank" rel="noopener">oncosting.com/about</a> and NIH RePORTER'},
+ {slug:"ambaw-bellete",name:"Ambaw Bellete, MS",title:"Chairman",grp:"Management",img:IMG.h3,
+  bio:["Ambaw Bellete is Chairman of OncoSTING. The company lists him as President and COO of CG Oncology, and previously COO of FerGene, President of Photocure, President of MCSMed and Vice President, UroInjectables at Sanofi.",
+       "His career sits squarely in the field OncoSTING is entering: intravesical therapy for non-muscle invasive bladder cancer."],
+  src:'<a href="https://www.oncosting.com/about" target="_blank" rel="noopener">oncosting.com/about</a>'}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="osNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.osNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},140)};
+function rowsAwards(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.ic)+' · '+esc(n.amt)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function plate(src,cap,alt){return '<div class="plate"><figure><img src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest(\'.plate\').style.display=\'none\'"></figure><figcaption>'+cap+'</figcaption></div>'}
+var PROG=[
+ {k:"OS-151 · intravesical",n:"BCG-STING for NMIBC",ind:"Non-muscle invasive bladder cancer, BCG-experienced and recurrent",st:"IND-enabling",note:"The 2026 NCI Direct to Phase II award funds dose and regimen optimization, a dose-range finding study in rabbits, a GMP batch at ArrantaBio-ReciBioPharm and a GLP toxicology study, to support an IND and first-in-human trials.",w:.62},
+ {k:"OS-151 · intratumoral",n:"BCG-STING in solid tumors",ind:"Certain solid tumors, including malignant melanoma",st:"Preclinical",note:"Tumors such as malignant melanoma have been treated successfully with STING agonists and with traditional BCG; the company is developing OS-151 as an intratumoral immunotherapy.",w:.3},
+ {k:"OS-151 · vaccine",n:"Recombinant BCG for tuberculosis",ind:"Prevention of TB infection and disease",st:"IND-enabling",note:"NIAID Fast-Track support since 2024: drug product formulation and manufacturing, plus pivotal GLP toxicology to position for an IND and a US first-in-human trial.",w:.58}
+];
+function progRow(p){return '<div class="prow"><div><h3>'+esc(p.n)+'</h3><p class="ind">'+esc(p.ind)+'</p><span class="tagp">'+esc(p.k)+'</span></div>'+
+ '<div><span class="lab" style="display:block;padding-top:.45em">'+esc(p.st)+'</span></div>'+
+ '<div class="track"><i></i><i></i><i></i><span class="bar" style="width:'+(p.w*100)+'%"><b></b></span></div>'+
+ '<p class="note">'+esc(p.note)+'</p></div>'}
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Recombinant BCG immunotherapy · Baltimore, MD</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">A vaccine that</span><span class="l">brings its own <em>fire.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>BCG has treated bladder cancer for fifty years, and a third of patients get nothing from it. OncoSTING engineers the same live bacterium to overexpress c-di-AMP — a potent STING agonist, delivered from inside the cell, for as long as the bacterium survives there.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/technology">The mechanism '+ARR+'</a><a class="btn" href="#/programs">Programs</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>BCG, inside the cell</span><span><i class="s"></i>c-di-AMP, released continuously</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Intravesical BCG is the only approved microbial therapeutic for cancer, and it is still first-line for non-muscle invasive disease. It is also unchanged since 1921 — so OncoSTING left the bacterium in place and gave it <em>something to say.</em></p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">4<sup>th</sup></span><span class="lab k">Most common cancer in men</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">75<sup>%</sup></span><span class="lab k">Present with non-muscle invasive disease</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">30<sup>%</sup></span><span class="lab k">Do not respond to the standard BCG course</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v"><sup>$</sup>1.03<sup>M</sup></span><span class="lab k">First year, 2026 NCI Direct to Phase II</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Two signals, <em>one bacterium.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Instill</span><span>Persist</span><span>Release</span><span>Ignite</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>Instill it where the tumor is.</h3><p>BCG is given intravesically, straight into the bladder, where it meets the urothelium that non-muscle invasive disease grows from. Nothing about that route changes: OncoSTING is building a better payload for a therapy urologists already know how to give.</p></article>'+
+     '<article class="step"><h3>Let it survive inside the cell.</h3><p>BCG’s distinguishing trick is prolonged intracellular survival. Taken up by host cells, the bacterium persists — which is also why it trains the innate immune system, and why it makes an unusually patient delivery vehicle.</p></article>'+
+     '<article class="step"><h3>Release the agonist, continuously.</h3><p>The engineered strain overexpresses c-di-AMP, a potent agonist of STING. Because the source is a living bacterium inside the cell, the agonist arrives from the intracellular space and keeps arriving — sustained delivery rather than a single bolus into the tumor microenvironment.</p></article>'+
+     '<article class="step"><h3>Ignite the STING pathway.</h3><p>c-di-AMP drives STING–IRF3–NF-κB signaling: type-I interferon and other proinflammatory mediators, on top of the trained immunity BCG already elicits. Two mechanisms of action from one instillation — and in preclinical models, superior antitumor efficacy against wild-type BCG.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">One strain, three <em>indications.</em></h2></div><p data-r>OS-151 is the antibiotic resistance-free strain built for the clinic. Stages below follow the aims stated in the company’s current NIH awards.</p></div>'+
+   '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Stage</span><div class="stg"><span>Research</span><span>IND-enabling</span><span>Clinical</span></div></div>'+
+   PROG.map(progRow).join("")+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="two" data-r><div><span class="lab kick">National Cancer Institute · Direct to Phase II · September 2026</span><h2 class="d3" style="margin-top:14px">An award that ends in an <em>IND.</em></h2></div>'+
+   '<div><p class="muted">Award 1R44CA310037-01, first-year amount $1,030,215 on NIH RePORTER, running to August 2028. It takes BCG-STING through the work a first-in-human trial requires.</p>'+
+   '<ul class="aims" data-group><li><span>Dose-response studies in ISG reporter macrophages and in the MB49 and BBN mouse models, to fix dose and dosing frequency.</span></li><li><span>A non-GLP dose-range finding study in rabbits, to predict the doses for the GLP toxicology study.</span></li><li><span>A GMP batch, fermentation-based: the strain has already been transferred to ArrantaBio-ReciBioPharm, a CDMO with experience manufacturing BCG.</span></li><li><span>A GLP toxicology study, as the IND-enabling confirmation of safety at the proposed dose and regimen.</span></li></ul></div></div>'+
+   '<div class="plates" data-group style="margin-top:var(--sec)">'+
+    plate(IMG.tech,"OncoSTING’s own schematic of the two-pronged mechanism: BCG-mediated trained immunity alongside STING agonist signaling.","OncoSTING mechanism of action figure")+
+   '</div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light" style="background:var(--paper2)"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">A urologist, a TB lab, <em>and an operator.</em></h2></div><p data-r>OncoSTING was founded by a urologic oncologist and a tuberculosis researcher, and is led by a chief executive with three companies behind him.</p></div>'+
+   '<div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Funding</span><h2 class="d2 split">Seven awards, <em>two institutes.</em></h2></div><p data-r>Continuous NIH SBIR support since 2021 across the bladder cancer and tuberculosis programs. Each row links to its record on NIH RePORTER.</p></div>'+
+   rowsAwards(AWARDS.slice(0,4))+
+   '<div style="margin-top:44px" data-r><a class="btn" href="#/research">All awards '+ARR+'</a></div>'+
+  '</div></section>'+
+  cta();
+}
+function cta(){
+  return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Work with us</span>'+
+   '<h2 class="big split">Partner on <em>BCG-STING.</em></h2>'+
+   '<p class="sub" data-r>Clinical collaborators in urologic oncology, manufacturing partners and investors: OncoSTING is moving a two-pronged immunotherapy toward first-in-human trials in BCG-experienced patients.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="#/programs">Programs</a></div>'+
+  '</div></section>';
+}
+function vTech(){
+  return head({k:"Technology",h:'A living source of <em>c-di-AMP.</em>',p:'STING agonists potentiate antitumor responses through the STING–IRF3–NF-κB pathway. OncoSTING is the only company delivering one from a live bacterial vaccine — BCG, which is itself an approved bladder cancer immunotherapy.'})+
+  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
+   '<div class="pillars" data-group>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="24" width="34" height="16" rx="8"/><circle class="f" cx="50" cy="20" r="3"/><circle class="f" cx="56" cy="32" r="2.4"/><circle class="f" cx="50" cy="44" r="2.4"/></svg><h3>The vehicle</h3><p>Bacillus Calmette-Guérin, a live attenuated strain of Mycobacterium bovis, in use since 1921 and first-line for non-muscle invasive bladder cancer. Its prolonged intracellular survival is what makes it a delivery vehicle, not just a drug.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="20"/><path class="a" d="M22 36c4-10 16-10 20 0"/><circle class="f" cx="32" cy="24" r="3.4"/><path class="a" d="M12 32h-6M58 32h-6" stroke-dasharray="2 3"/></svg><h3>The payload</h3><p>c-di-AMP, overexpressed by the recombinant strain: a potent STING agonist released from the intracellular space, continuously, for as long as the bacterium persists.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M10 50V26l10-8 10 8v24"/><path class="a" d="M30 50V30l12-9 12 9v20"/><circle class="f" cx="42" cy="38" r="3"/></svg><h3>The two prongs</h3><p>BCG-mediated trained immunity, plus STING agonist-mediated induction of type-I interferon and other proinflammatory mediators — one instillation, two mechanisms of action.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The problem</span><h2 class="d3 split">Where BCG <em>runs out.</em></h2><p class="muted" style="margin-top:24px" data-r>The first line of treatment for NMIBC is intravesical BCG, but patients suffer from high relapse rates, 30% of patients do not respond, there is a 4% rate of systemic bacteremia, and there are manufacturing shortages. Attempts to advance recombinant BCG strains have not demonstrated improvement beyond the traditional wild-type strain.</p></div>'+
+   '<div><dl class="facts" data-group>'+
+    '<div><dt class="lab">OS-101</dt><dd>The original prototype: a recombinant BCG overexpressing c-di-AMP, maintained with an antibiotic resistance cassette.</dd></div>'+
+    '<div><dt class="lab">OS-151</dt><dd>An antibiotic resistance-free version, generated with a patent-pending method because the FDA does not allow advanced human trials with BCG strains harbouring antibiotic resistance.</dd></div>'+
+    '<div><dt class="lab">Preclinical comparison</dt><dd>Against wild-type BCG, OS-101 showed superior antitumor efficacy in NMIBC models, more potent pro-inflammatory cytokine responses, greater myeloid reprogramming with an M1 shift, more pronounced epigenetic changes in key cytokine promoters, and metabolomic changes favoring antitumor immunity.</dd></div>'+
+    '<div><dt class="lab">Safety</dt><dd>The company reports an improved safety profile for OS-151 compared with traditional BCG in preclinical studies.</dd></div>'+
+   '</dl></div></div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Beyond the bladder</span><h2 class="d2 split">The same strain, <em>elsewhere.</em></h2></div><p data-r>Two further directions, each funded and each stated in the company’s award abstracts.</p></div>'+
+   '<div class="lenses" data-group>'+
+    '<div class="lens"><span class="lab">Solid tumors</span><h3>Intratumoral immunotherapy</h3><p>Tumors such as malignant melanoma have been treated successfully with STING agonists and also with traditional BCG. OS-151 is being developed as an intratumoral immunotherapy for certain solid tumors.</p></div>'+
+    '<div class="lens"><span class="lab">Tuberculosis</span><h3>A better BCG vaccine</h3><p>BCG has been the only available TB vaccine for more than ninety years, effective against life-threatening extra-pulmonary TB in children but of variable efficacy against pulmonary TB in adults. NIAID Fast-Track support funds OS-151 as a vaccine candidate with greater protective efficacy lasting into adulthood and an improved safety profile.</p></div>'+
+   '</div></div></section>'+cta();
+}
+function vProg(){
+  return head({k:"Programs",h:'From a strain to an <em>IND.</em>',p:'Three programs built on OS-151, the antibiotic resistance-free recombinant BCG. Stages reflect the aims of the company’s current National Institutes of Health awards.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+
+   '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Stage</span><div class="stg"><span>Research</span><span>IND-enabling</span><span>Clinical</span></div></div>'+
+   PROG.map(progRow).join("")+'</div>'+
+   '<p class="lab" style="margin-top:34px;max-width:none;border-top:1px solid var(--hairD);padding-top:18px" data-r>No OncoSTING product has been approved by the FDA. The programs above are preclinical or IND-enabling; stages are drawn from the aims stated in the company’s NIH award abstracts.</p>'+
+  '</div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Lead indication</span><h2 class="d3 split">BCG-experienced, <em>recurrent.</em></h2><p class="muted" style="margin-top:24px" data-r>OncoSTING intends first-in-human trials in patients with recurrent non-muscle invasive bladder cancer, particularly BCG-experienced patients; then BCG-naïve and BCG-unresponsive disease, and then other cancer indications.</p></div>'+
+   '<div><ul class="aims" data-group><li><span>Approximately 80,000 US individuals are diagnosed with bladder cancer each year; two-thirds of cases are non-muscle invasive.</span></li><li><span>NMIBC carries recurrence rates above 50% and a risk of progression.</span></li><li><span>Roughly 30% of patients develop BCG-unresponsive disease, and options are then limited.</span></li></ul></div>'+
+  '</div></div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'Management and <em>founders.</em>',p:'A bladder cancer surgeon-scientist, a tuberculosis and BCG researcher, an operator from intravesical therapy, and a chief executive who has built three companies.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+}
+function vResearch(){
+  return head({k:"Research",h:'Awards and <em>record.</em>',p:'NIH SBIR support across two institutes since 2021. Each award links to its record on NIH RePORTER; the earlier items are the company’s own press record.'})+
+  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
+   '<span class="lab kick" data-r>NIH awards</span>'+rowsAwards(AWARDS)+
+   '<div style="margin-top:var(--sec)"><span class="lab kick" data-r>Earlier record</span>'+
+   '<dl class="facts" data-group>'+PRESS.map(function(p){return '<div><dt class="lab">'+esc(p.d)+'</dt><dd>'+esc(p.t)+'</dd></div>'}).join("")+'</dl></div>'+
+  '</div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Clinical collaboration, manufacturing, licensing or investment — send a note and it will reach the team.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Company</span><h3>Baltimore, Maryland</h3><p>OncoSTING, LLC</p><p><a class="ul" href="mailto:info@OncoSTING.com">info@OncoSTING.com</a></p>'+
+    '<div class="map">'+mapSvg()+'</div></div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
+    '<div class="subr"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:#17767e;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. On the live site this form would reach the OncoSTING team directly.</p></div></div>'+
+  '</div></div></section>';
+}
+function mapSvg(){
+  var g='';for(var i=0;i<70;i++){var r=Math.sqrt(i/70)*150,a=i*2.39996;g+='<circle cx="'+(250+Math.cos(a)*r).toFixed(1)+'" cy="'+(200+Math.sin(a)*r*.8).toFixed(1)+'" r="'+(1.1+Math.sqrt(i/70)*2.2).toFixed(2)+'" fill="rgba(24,14,51,.14)"/>'}
+  return '<svg viewBox="0 0 500 400" aria-label="Stylized map marking Baltimore, Maryland">'+g+
+  '<path class="mp" d="M0 292C72 272 126 306 194 266S324 234 376 196 462 166 500 172" fill="none" stroke="#5d5478" stroke-width="1.2"/>'+
+  '<g class="pin" transform="translate(250 200)"><circle r="30" fill="rgba(23,118,126,.14)" class="pr"/><circle r="6" fill="#17767e"/><text x="16" y="-28" font-family="Spectral,serif" font-size="28" fill="#180e33">Baltimore</text><text x="16" y="-8" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.5" fill="#5d5478">MARYLAND</text></g>'+
+  '</svg>';
+}
+function v404(){return head({k:"Not found",h:'No such <em>page.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Company</span>OncoSTING, LLC<br>Baltimore, Maryland</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@OncoSTING.com">info@OncoSTING.com</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/research">Research</a></div>'+
+   '<div class="c"><span class="lab">Programs</span>OS-151 · NMIBC<br>OS-151 · solid tumors<br>OS-151 · TB vaccine</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">OncoSTING</span>'+
+  '<div class="legal"><span class="lab">© 2026 OncoSTING, LLC</span><span class="lab">Concept website · investigational therapies</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"OncoSTING — A live BCG that carries its own STING agonist",x:"Home"};
+  if(p[0]==="technology")return {k:"technology",v:vTech,t:"Technology — "+SITE,x:"Technology"};
+  if(p[0]==="programs")return {k:"programs",v:vProg,t:"Programs — "+SITE,x:"Programs"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="research")return {k:"research",v:vResearch,t:"Research — "+SITE,x:"Research"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33);window.__lenis=lenis}
+var MOBILE=function(){return innerWidth<861};
+function unmask(s){if(!s||!s.lines)return;s.lines.forEach(function(l){var p=l.parentNode;if(p&&p.nodeType===1&&p!==document.body){p.style.overflow="visible";p.style.clipPath="none"}})}
+
+/* ================= HERO FIELD =================
+   One host cell with the bacterium inside it: BCG persists in the cytoplasm and releases c-di-AMP continuously;
+   the agonist reaches STING on the ER, and the signal travels to the nucleus. Nothing here is a cartoon of
+   cytotoxicity: it is a slow, steady source. */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,DETAIL=1,L=null;
+  function rnd(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+  function layout(){var w=innerWidth,h=innerHeight;
+    var side=Math.max(Math.min(72,w*.042),16),right=w-Math.max(side,(w-1320)/2);
+    if(w<861)return {cx:w*.5,cy:h*.24,R:Math.min(w*.36,h*.15),s:Math.min(.85,w/560),mob:1,tight:1};
+    if(w<1200){var R1=Math.min(w*.17,h*.26);return {cx:right-R1*1.12,cy:h*.5,R:R1,s:Math.min(1.05,h/900),mob:0,tight:1}}
+    var R2=Math.min(w*.165,h*.28);return {cx:right-R2*1.18,cy:h*.5,R:R2,s:Math.min(1.2,h/900),mob:0,tight:0}}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);L=layout();if(!running)frame(true)}
+  function lbl(t,x,y,al,align){if(al<.02||!DETAIL)return;c.globalAlpha=Math.min(1,al);c.font="400 10.5px 'Geist Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.fillStyle="rgb(167,158,196)";c.textAlign=align||"left";c.fillText(t,x,y);c.globalAlpha=1}
+  function blob(cx,cy,R,wob,t){
+    c.beginPath();
+    for(var i=0;i<=72;i++){var a=i/72*6.2832;
+      var r=R*(1+.075*Math.sin(a*3+t*.22)+.045*Math.sin(a*5-t*.17)+wob*.02*Math.sin(a*7+t*.3));
+      var x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.86;i?c.lineTo(x,y):c.moveTo(x,y)}
+    c.closePath();
+  }
+  function frame(once){
+    var t=(performance.now()-t0)/1000;if(RM)t=9;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    cv.style.opacity=shown?String(.45+.55*dim):"";
+    var e=IN.v*IN.v*(3-2*IN.v),s=L.s,R=L.R,cx=L.cx,cy=L.cy;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,innerWidth,innerHeight);
+    c.save();c.translate(m[0]*16,m[1]*12);
+    /* cytoplasm glow */
+    var g0=c.createRadialGradient(cx,cy,0,cx,cy,R*1.5);
+    g0.addColorStop(0,"rgba(70,193,198,"+(.09*e)+")");g0.addColorStop(1,"rgba(70,193,198,0)");
+    c.fillStyle=g0;c.beginPath();c.arc(cx,cy,R*1.5,0,6.2832);c.fill();
+    /* the cell membrane */
+    c.strokeStyle="rgba(239,236,246,"+(.55*e)+")";c.lineWidth=1.5;blob(cx,cy,R,1,t);c.stroke();
+    c.strokeStyle="rgba(239,236,246,"+(.2*e)+")";c.lineWidth=1;blob(cx,cy,R*.94,.7,t+4);c.stroke();
+    /* the nucleus, lower left inside */
+    var nx=cx-R*.38,ny=cy+R*.3,nr=R*.3;
+    var pulse=.5+.5*Math.sin(t*.9);
+    c.strokeStyle="rgba(239,236,246,"+(.3*e)+")";c.lineWidth=1.2;
+    c.beginPath();c.ellipse(nx,ny,nr,nr*.82,-.2,0,6.2832);c.stroke();
+    var gn=c.createRadialGradient(nx,ny,0,nx,ny,nr*1.5);
+    gn.addColorStop(0,"rgba(70,193,198,"+(.16*e*pulse)+")");gn.addColorStop(1,"rgba(70,193,198,0)");
+    c.fillStyle=gn;c.beginPath();c.arc(nx,ny,nr*1.5,0,6.2832);c.fill();
+    for(var k=0;k<5;k++){var aa=k*1.1+t*.08;c.strokeStyle="rgba(239,236,246,"+(.1*e)+")";
+      c.beginPath();c.moveTo(nx-nr*.7,ny-nr*.4+k*nr*.22);c.bezierCurveTo(nx-nr*.2,ny-nr*.5+k*nr*.2,nx+nr*.2,ny+nr*.1+k*nr*.2,nx+nr*.7,ny-nr*.2+k*nr*.2);c.stroke()}
+    /* the ER strand carrying STING, upper right inside */
+    var sx=cx+R*.46,sy=cy-R*.28;
+    c.strokeStyle="rgba(239,236,246,"+(.2*e)+")";c.lineWidth=1;
+    c.beginPath();c.moveTo(cx+R*.1,cy-R*.52);c.bezierCurveTo(cx+R*.5,cy-R*.52,cx+R*.3,cy-R*.1,cx+R*.66,cy-R*.02);c.stroke();
+    /* the bacterium: a capsule, slowly breathing */
+    var bx=cx+R*.02,by=cy-R*.18,bw=R*.42,bh=R*.13,rot=-.35+Math.sin(t*.22)*.05;
+    var gb=c.createRadialGradient(bx,by,0,bx,by,bw*1.5);
+    gb.addColorStop(0,"rgba(70,193,198,"+(.2*e*(.6+.4*pulse))+")");gb.addColorStop(1,"rgba(70,193,198,0)");
+    c.fillStyle=gb;c.beginPath();c.arc(bx,by,bw*1.5,0,6.2832);c.fill();
+    c.save();c.translate(bx,by);c.rotate(rot);
+    c.strokeStyle="rgba(239,236,246,"+(.85*e)+")";c.lineWidth=1.5;
+    c.beginPath();
+    if(c.roundRect)c.roundRect(-bw/2,-bh/2,bw,bh,bh/2);
+    else{c.moveTo(-bw/2+bh/2,-bh/2);c.lineTo(bw/2-bh/2,-bh/2);c.arc(bw/2-bh/2,0,bh/2,-1.5708,1.5708);c.lineTo(-bw/2+bh/2,bh/2);c.arc(-bw/2+bh/2,0,bh/2,1.5708,4.7124)}
+    c.stroke();
+    c.strokeStyle="rgba(239,236,246,"+(.22*e)+")";c.lineWidth=1;
+    for(var q=-2;q<=2;q++){c.beginPath();c.moveTo(q*bw*.16,-bh*.3);c.lineTo(q*bw*.16+bh*.18,bh*.3);c.stroke()}
+    c.restore();
+    /* c-di-AMP: emitted continuously, drifting out, some reaching STING */
+    for(var i=0;i<34;i++){
+      var ph=(rnd(i,1)+t*(.06+rnd(i,2)*.05))%1;
+      var a1=rnd(i,3)*6.2832, rr=ph*R*.95;
+      var px=bx+Math.cos(a1)*rr*1.05,py=by+Math.sin(a1)*rr*.8;
+      var al=Math.min(1,ph*6)*(1-ph)*1.3;
+      c.fillStyle="rgba(70,193,198,"+(.95*al*e).toFixed(3)+")";
+      c.beginPath();c.arc(px,py,1.9*Math.max(.85,s*.85),0,6.2832);c.fill();
+    }
+    /* STING node lighting, and the signal running to the nucleus */
+    var fire=.5+.5*Math.sin(t*.9-1.1);
+    var gs=c.createRadialGradient(sx,sy,0,sx,sy,R*.3);
+    gs.addColorStop(0,"rgba(70,193,198,"+(.3*e*fire)+")");gs.addColorStop(1,"rgba(70,193,198,0)");
+    c.fillStyle=gs;c.beginPath();c.arc(sx,sy,R*.3,0,6.2832);c.fill();
+    c.strokeStyle="rgba(121,217,221,"+(.9*e)+")";c.lineWidth=1.4;
+    c.beginPath();c.arc(sx,sy,6.5*Math.max(.9,s),0,6.2832);c.stroke();
+    c.fillStyle="rgba(121,217,221,"+(.95*e*fire)+")";c.beginPath();c.arc(sx,sy,2.8*Math.max(.9,s),0,6.2832);c.fill();
+    c.save();c.setLineDash([3,6]);c.lineDashOffset=-t*18;
+    c.strokeStyle="rgba(70,193,198,"+(.5*e)+")";c.lineWidth=1.2;
+    c.beginPath();c.moveTo(sx,sy);c.quadraticCurveTo(cx+R*.05,cy+R*.02,nx+nr*.5,ny-nr*.5);c.stroke();c.restore();
+    /* interferon leaving the cell */
+    for(var j=0;j<10;j++){
+      var p2=(rnd(j,7)+t*.09)%1,a2=-1.1+rnd(j,8)*2.6;
+      var rr2=R*(1+p2*.6);
+      var ix=cx+Math.cos(a2)*rr2,iy=cy+Math.sin(a2)*rr2*.86;
+      c.fillStyle="rgba(121,217,221,"+(.6*(1-p2)*e).toFixed(3)+")";
+      c.beginPath();c.arc(ix,iy,1.6*Math.max(.85,s*.85),0,6.2832);c.fill();
+    }
+    if(!L.mob){
+      lbl("BCG · INTRACELLULAR",bx+R*.26,by-R*.2,.85*e);
+      lbl("c-di-AMP",cx-R*.8,cy-R*.56,.75*e);
+      lbl("STING",sx+16*s,sy+4,.85*e);
+      lbl("IRF3 · NF-κB",nx,ny+nr*1.5,.75*e,"center");
+      if(!L.tight)lbl("TYPE-I INTERFERON",cx-R*.1,cy+R*1.12,.7*e);
+    }else{
+      lbl("BCG · c-di-AMP · STING",cx,cy+R*1.28,.8*e,"center");
+    }
+    c.restore();
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},setDetail:function(v){DETAIL=v;if(!running)frame(true)}};
+})();
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.42)*(1-p*.45))}
+
+/* ================= STORY CANVAS: ONE CONTINUOUS SCENE (PRINCIPLES BL) =================
+   A schematic eye with the probe above it. Across the scrub: the probe approaches, the beam sweeps and
+   writes a B-scan strip, the scanned field widens from 62° to 145°, and repeated scans light up flow. */
+var story=null;
+/* ================= STORY CANVAS: ONE CONTINUOUS SCENE (PRINCIPLES BL) =================
+   One camera move. It starts on the bladder wall with BCG arriving in the lumen, pushes in on a single
+   urothelial cell as the bacterium is taken up, holds while c-di-AMP accumulates, and ends with STING
+   firing and interferon leaving the cell. Nothing cross-dissolves: the camera simply moves. */
+function makeStory(cv){
+  var c=cv.getContext("2d"),dpr=1,alive=true,vis=true,p=0,pT=0,w=0,h=0,t0=performance.now();
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);var r=cv.getBoundingClientRect();w=r.width;h=r.height;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  function rnd(i,k){var x=Math.sin(i*73.13+k*31.7)*43758.5453;return x-Math.floor(x)}
+  function ease(x){return x<0?0:x>1?1:x*x*(3-2*x)}
+  function seg(x,a,b){return ease((x-a)/(b-a))}
+  function blob(cx,cy,R,t,wob){
+    c.beginPath();
+    for(var i=0;i<=64;i++){var a=i/64*6.2832;
+      var r=R*(1+.07*Math.sin(a*3+t*.2+wob)+.04*Math.sin(a*5-t*.15+wob));
+      var x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r*.84;i?c.lineTo(x,y):c.moveTo(x,y)}
+    c.closePath();
+  }
+  function draw(){
+    var t=(performance.now()-t0)/1000;
+    p+=(pT-p)*.12;var P=p;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    var s=Math.min(w/540,h/700);
+    var arrive=seg(P,0,.2), uptake=seg(P,.22,.45), build=seg(P,.45,.72), fire=seg(P,.72,1);
+    /* the camera: one continuous push onto the central cell */
+    var zoom=1+2.1*ease(seg(P,.15,.62));
+    var baseR=Math.min(w*.19,h*.13);
+    var cellY=h*.52, cellX=w*.5;
+    c.save();
+    c.translate(cellX,cellY);c.scale(zoom,zoom);c.translate(-cellX,-cellY);
+    /* the urothelium: a row of cells, the middle one is ours */
+    var N=5,gap=baseR*2.25;
+    for(var i=0;i<N;i++){
+      var dx=(i-(N-1)/2)*gap, cx=cellX+dx, cy=cellY+Math.sin(i*1.3)*baseR*.12;
+      var mid=(i===((N-1)/2));
+      c.strokeStyle="rgba(239,236,246,"+((mid?.5:.26)/Math.sqrt(zoom)).toFixed(3)+")";c.lineWidth=1.4/Math.sqrt(zoom);
+      blob(cx,cy,baseR*(mid?1.04:.96),t,i);c.stroke();
+      /* nucleus */
+      var nx=cx-baseR*.34,ny=cy+baseR*.26,nr=baseR*.28;
+      c.strokeStyle="rgba(239,236,246,"+((mid?.34:.2)/Math.sqrt(zoom)).toFixed(3)+")";c.lineWidth=1.1/Math.sqrt(zoom);
+      c.beginPath();c.ellipse(nx,ny,nr,nr*.8,-.2,0,6.2832);c.stroke();
+      if(mid&&zoom>1.4){
+        /* organelles come into view as the camera pushes in: vesicles and an ER strand */
+        c.strokeStyle="rgba(239,236,246,"+(.16*Math.min(1,(zoom-1.4)/1.2)).toFixed(3)+")";c.lineWidth=1/zoom;
+        for(var v=0;v<7;v++){var va=v*1.7+t*.05,vr=baseR*(.3+.45*((v*37)%10)/10);
+          c.beginPath();c.arc(cx+Math.cos(va)*vr,cy+Math.sin(va)*vr*.8,baseR*.055,0,6.2832);c.stroke()}
+        c.beginPath();c.moveTo(cx+baseR*.1,cy-baseR*.52);
+        c.bezierCurveTo(cx+baseR*.5,cy-baseR*.52,cx+baseR*.3,cy-baseR*.1,cx+baseR*.66,cy-baseR*.02);c.stroke();
+      }
+      if(mid&&fire>.02){
+        var gn=c.createRadialGradient(nx,ny,0,nx,ny,nr*1.8);
+        gn.addColorStop(0,"rgba(70,193,198,"+(.3*fire*(.6+.4*Math.sin(t*2.2))).toFixed(3)+")");gn.addColorStop(1,"rgba(70,193,198,0)");
+        c.fillStyle=gn;c.beginPath();c.arc(nx,ny,nr*1.8,0,6.2832);c.fill();
+      }
+    }
+    /* the lumen above the wall, and BCG arriving in it */
+    c.strokeStyle="rgba(239,236,246,"+(.16/Math.sqrt(zoom)).toFixed(3)+")";c.lineWidth=1/Math.sqrt(zoom);
+    c.beginPath();c.moveTo(cellX-w,cellY-baseR*1.5);c.lineTo(cellX+w,cellY-baseR*1.5);c.stroke();
+    var cellR=baseR*1.04;
+    for(var b2=0;b2<9;b2++){
+      var lane=(rnd(b2,1)-.5)*gap*3.4;
+      var drop=Math.min(1,arrive*1.2+rnd(b2,2)*.25);
+      var bx=cellX+lane*(1-uptake*(b2%3===0?1:0))+ (b2%3===0?-lane*uptake:0);
+      var by=cellY-baseR*3.4+(baseR*1.9)*drop;
+      if(b2%3===0){ /* three of them are taken into our cell */
+        bx=cellX+lane+( -lane+baseR*.05)*uptake;
+        by=by+(cellY-baseR*.2-by)*uptake;
+      }
+      var bw=baseR*.42,bh=baseR*.13,rot=-.3+rnd(b2,3)*.6+Math.sin(t*.3+b2)*.06;
+      c.save();c.translate(bx,by);c.rotate(rot);
+      c.strokeStyle="rgba(239,236,246,"+((.3+.5*drop)/Math.sqrt(zoom)).toFixed(3)+")";c.lineWidth=1.3/Math.sqrt(zoom);
+      c.beginPath();
+      if(c.roundRect)c.roundRect(-bw/2,-bh/2,bw,bh,bh/2);
+      else{c.moveTo(-bw/2+bh/2,-bh/2);c.lineTo(bw/2-bh/2,-bh/2);c.arc(bw/2-bh/2,0,bh/2,-1.5708,1.5708);c.lineTo(-bw/2+bh/2,bh/2);c.arc(-bw/2+bh/2,0,bh/2,1.5708,4.7124)}
+      c.stroke();c.restore();
+      if(b2%3===0&&build>.02){
+        var gb=c.createRadialGradient(bx,by,0,bx,by,bw);
+        gb.addColorStop(0,"rgba(70,193,198,"+(.22*build).toFixed(3)+")");gb.addColorStop(1,"rgba(70,193,198,0)");
+        c.fillStyle=gb;c.beginPath();c.arc(bx,by,bw,0,6.2832);c.fill();
+      }
+    }
+    /* c-di-AMP accumulating inside our cell */
+    if(build>.01){
+      for(var k=0;k<38;k++){
+        var ph=(rnd(k,5)+t*(.05+rnd(k,6)*.05))%1;
+        var a1=rnd(k,7)*6.2832,rr=ph*cellR*.86;
+        var px=cellX+Math.cos(a1)*rr,py=cellY-baseR*.18+Math.sin(a1)*rr*.78;
+        var al=Math.min(1,ph*6)*(1-ph*.6)*build;
+        c.fillStyle="rgba(70,193,198,"+(.9*al).toFixed(3)+")";
+        c.beginPath();c.arc(px,py,2.4/zoom,0,6.2832);c.fill();
+      }
+    }
+    /* STING firing on the ER, and the signal to the nucleus */
+    if(fire>.01){
+      var sx=cellX+cellR*.46,sy=cellY-cellR*.3,nx2=cellX-baseR*.34,ny2=cellY+baseR*.26;
+      var gs=c.createRadialGradient(sx,sy,0,sx,sy,cellR*.4);
+      gs.addColorStop(0,"rgba(70,193,198,"+(.34*fire*(.6+.4*Math.sin(t*2.4))).toFixed(3)+")");gs.addColorStop(1,"rgba(70,193,198,0)");
+      c.fillStyle=gs;c.beginPath();c.arc(sx,sy,cellR*.4,0,6.2832);c.fill();
+      c.strokeStyle="rgba(121,217,221,"+(.95*fire)+")";c.lineWidth=1.5/Math.sqrt(zoom);
+      c.beginPath();c.arc(sx,sy,7/Math.sqrt(zoom)+2,0,6.2832);c.stroke();
+      c.save();c.setLineDash([4,7]);c.lineDashOffset=-t*20;
+      c.strokeStyle="rgba(70,193,198,"+(.6*fire)+")";c.lineWidth=1.3/Math.sqrt(zoom);
+      c.beginPath();c.moveTo(sx,sy);c.quadraticCurveTo(cellX,cellY,nx2+baseR*.1,ny2-baseR*.2);c.stroke();c.restore();
+      for(var j=0;j<12;j++){
+        var p2=(rnd(j,9)+t*.1)%1,a2=-1.2+rnd(j,10)*2.8;
+        var rr2=cellR*(1+p2*.5);
+        c.fillStyle="rgba(121,217,221,"+(.7*(1-p2)*fire).toFixed(3)+")";
+        c.beginPath();c.arc(cellX+Math.cos(a2)*rr2,cellY+Math.sin(a2)*rr2*.84,2,0,6.2832);c.fill();
+      }
+    }
+    c.restore();
+    /* labels in screen space, so they stay legible through the push */
+    c.font="400 10.5px 'Geist Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
+    c.textAlign="left";c.fillStyle="rgba(167,158,196,"+(.9*(1-ease(seg(P,.3,.5)))).toFixed(3)+")";
+    c.fillText("BLADDER LUMEN",w*.07,h*.08);
+    c.fillStyle="rgba(167,158,196,"+(.9*ease(seg(P,.1,.35))).toFixed(3)+")";
+    c.fillText("UROTHELIUM",w*.07,h*.14);
+    c.textAlign="right";
+    c.fillStyle="rgba(70,193,198,"+(.9*build*(1-fire*.2)).toFixed(3)+")";
+    c.fillText("c-di-AMP, RELEASED CONTINUOUSLY",w*.93,h*.92);
+    c.fillStyle="rgba(121,217,221,"+(.95*fire).toFixed(3)+")";
+    c.fillText("STING → IRF3 · NF-κB → INTERFERON-I",w*.93,h*.98);
+  }
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();
+  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
+  return {set:function(v){pT=v},snap:function(v){p=pT=v;draw()},resize:function(){size();draw()},kill:function(){alive=false;io.disconnect()}};
+}
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var sE=els[i].closest&&els[i].closest("[data-theme]");if(sE&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=sE.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){unmask(st)}});
+}
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var sp=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(sp)}});
+      htl.from(sp.chars,{yPercent:150,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-12,opacity:.3,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:150,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= GLOBAL REVEAL (AZ) ================= */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:150,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}});
+  $$("#view .ln-mask, #view .ln").forEach(function(el){el.style.overflow="visible";el.style.clipPath="none"})},2500)}
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var sm=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});
+    gsap.from(sm.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(sm)}});
+    gsap.to(sm.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:150,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  var cu=$(".cue",view);if(cu)ScrollTrigger.create({trigger:cu.closest(".hero"),start:"top -12%",end:"max",toggleClass:{targets:cu,className:"gone"}});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
+  story=makeStory(cv);
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(sE,j){sE.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM)return;
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+    onRefresh:function(){if(story)story.resize()}});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{attr:{r:0},opacity:0,duration:1.5,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+  if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
+    gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
+    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+}
+
+/* ================= PERSON SHEET (PRINCIPLES BI) ================= */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psCur=-1,psLast=null,psFromClick=false,psBase="#/team";
+function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psFill(i){var p=TEAM[i];
+  window.__psPlate=psPlate(p);
+  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.remove();document.getElementById(\'psMedia\').insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+    (p.src?'<p class="src">Source: '+p.src+'</p>':'');
+  psBody.scrollTop=0;document.title=p.name+" — "+SITE;
+}
+function psOpen(slug,instant){var i=pBy(slug);if(i<0)return;
+  var was=psCur>=0;psCur=i;psFill(i);
+  if(was){rvPlay(psBody,0);gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}
+  psLast=document.activeElement;
+  ps.classList.add("open");ps.setAttribute("aria-hidden","false");
+  if(lenis)lenis.stop();document.documentElement.style.overflow="hidden";
+  gsap.killTweensOf([psSheet,".ps-scrim"]);
+  gsap.fromTo(".ps-scrim",{opacity:0},{opacity:1,duration:instant||RM?.01:.45,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:28,scale:.986},{opacity:1,y:0,scale:1,duration:instant||RM?.01:.6,ease:"power3.out"});
+  var d0=instant?(window._preShown?1.4:.4):.2;
+  rvPlay(psBody,d0);
+  if(!RM)gsap.fromTo($$(".ps-bar .btn",ps),{opacity:0,y:-10},{opacity:1,y:0,duration:.7,ease:"silk",stagger:.05,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
+}
+function psHide(){if(psCur<0)return;psCur=-1;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.34,ease:"power2.in"});
+  gsap.to(".ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true");
+    document.documentElement.style.overflow="";if(lenis)lenis.start();if(psLast&&psLast.focus)psLast.focus({preventScroll:true})}});
+  var r=route(location.hash);document.title=r.t;
+}
+function psClose(){if(psCur<0)return;
+  if(psFromClick){psFromClick=false;history.back()}
+  else{history.replaceState(null,"",psBase||"#/team");prevHash=location.hash||"#/";psHide()}}
+function psStep(d){if(psCur<0)return;var i=(psCur+d+TEAM.length)%TEAM.length;history.replaceState(null,"",psBase+"/"+TEAM[i].slug);prevHash=location.hash;psOpen(TEAM[i].slug)}
+$$("[data-ps-close]",ps).forEach(function(e){e.addEventListener("click",psClose)});
+$("#psPrev").addEventListener("click",function(){psStep(-1)});
+$("#psNext").addEventListener("click",function(){psStep(1)});
+document.addEventListener("keydown",function(e){
+  if(psCur<0)return;
+  if(e.key==="Escape"){psClose();return}
+  if(e.key==="Tab"){var f=$$("button,a[href],[tabindex='0']",ps).filter(function(x){return x.offsetParent!==null});if(!f.length)return;
+    var a=f[0],z=f[f.length-1];
+    if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+    else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();psBase="#/team";psFromClick=true;history.pushState(null,"",h);prevHash=h;psOpen(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.setDetail(r.k==="home"?1:0);field.snapDim(r.k==="home"?1:.42);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("os-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){psBase="#/team";psOpen(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){psOpen(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(psCur>=0||route(prevHash).bio)){psFromClick=false;psHide();prevHash=location.hash||"#/";return}
+  if(psCur>=0){psCur=-1;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set(".ps-scrim",{opacity:0});document.documentElement.style.overflow="";if(lenis)lenis.start()}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var hh=$("#pageTitle");if(hh)hh.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:150,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)psBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)psOpen(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem("os-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem("os-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem("os-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var dots=$$("#pre .dots circle, #pre .dots path");gsap.set(dots,{scale:0,transformOrigin:"center",opacity:0});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();field.finish();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(dots,{scale:1,opacity:1,duration:.75,ease:"back.out(1.5)",stagger:.08},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.022},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .dots","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(['400 1em "Spectral"','italic 400 1em "Spectral"','400 1em "Figtree"','500 1em "Figtree"','400 1em "Geist Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+</body>
+</html>

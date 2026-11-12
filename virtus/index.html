@@ -581,6 +581,18 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* critic round: sheet focus ring stays inside, plate never empty, touch devices get no sticky hovers, mobile story centred */
+.bio .in:focus,.bio .in:focus-visible{outline:none}
+@media (min-width:761px){.bio .pmed.isplate ~ .pcol .pq{display:none}}
+.bio .plate .who{font-family:var(--serif);font-size:clamp(28px,2.6vw,40px);line-height:1.05;letter-spacing:-.03em;padding-bottom:.12em}
+.bio .plate .q{font-size:clamp(17px,1.5vw,21px);line-height:1.4;color:rgba(255,255,255,.78);max-width:28ch}
+@media (max-width:760px){.bio .pmed.isplate{height:116px}.bio .pmed.isplate .plate{padding:20px}.bio .pmed.isplate .plate::before,.bio .pmed.isplate .q{display:none}.bio .pmed.isplate .who{font-size:26px}}
+.pcard.noimg{min-height:0!important}
+.pcard.noimg .go{padding-top:26px!important}
+.bk b{display:grid;place-items:center;min-height:2.3em}
+@media (hover:none){.pcard:hover,.tcard:hover,.pgc:hover{transform:none;box-shadow:none}.pcard:hover h3,.pcard:hover h3 span,.tcard:hover h3{color:inherit;transform:none;background-size:0 1px}.btn:hover{color:inherit;border-color:currentColor}.btn:hover::before{transform:translateY(101%)}.bk:hover{border-color:var(--hair);background:none}}
+@media (max-width:860px){.story-pin{align-content:center}.sfigs{bottom:34px}}
+
 .moa svg{overflow:visible}
 
 /* story on small phones: the stage and the step text share the pinned screen without clipping */
@@ -1358,10 +1370,10 @@ function contactInit(view){
 /* ================= BIO OVERLAY ================= */
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>';
+  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+' · '+esc(SITE)+'</span><span class="who">'+esc(p.name)+'</span><span class="q">'+esc(p.q?('“'+p.q+'”'):p.title)+'</span></div>';$("#bioMed").classList.toggle("isplate",!p.img);
   $("#bioMed").innerHTML=(p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.innerHTML=window.__plate">':'')+(p.img?'':window.__plate);
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
-   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+   (p.q?'<blockquote class="pq">“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
    '<p class="lab src">Profile drawn from Virtus Therapeutics’ website, Yale Ventures and NIH RePORTER.</p>';
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;

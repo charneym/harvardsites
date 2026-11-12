@@ -561,12 +561,19 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .bigw em{color:var(--sky)}
 .bio .plate .q{font-weight:400}
 .sys{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:center}
-.sys-fig{margin:0;position:relative;aspect-ratio:1278/718;overflow:hidden;border-radius:4px;background:#000}
-.sys-fig img{width:100%;height:100%;object-fit:cover;object-position:30% 50%}
+.sys-fig{margin:0;position:relative;aspect-ratio:1.9;overflow:hidden;background:#000;-webkit-mask-image:radial-gradient(120% 120% at 45% 45%,#000 62%,transparent 100%);mask-image:radial-gradient(120% 120% at 45% 45%,#000 62%,transparent 100%)}
+.sys-fig img{position:absolute;left:0;top:0;width:116%;max-width:none;height:auto}
 .sys.noimg .sys-fig{display:none}.sys.noimg{grid-template-columns:1fr}
 .sys-t .d3{margin-bottom:24px}
 @media (max-width:1024px){.sys{grid-template-columns:1fr}}
 @media (max-width:560px){.story-r{height:30vh!important;height:30svh!important}.step h3{font-size:22px;margin-bottom:10px}.step p{font-size:14.5px;line-height:1.55}}
+.moa .mn{font-family:var(--mono);font-size:12px;fill:#f3efe9;letter-spacing:0}
+.mkey{list-style:none;margin:22px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.mkey li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;border-top:1px solid var(--hair);padding-top:14px;font-size:14px;line-height:1.45;color:var(--stone)}
+.mkey b{width:24px;height:24px;border-radius:50%;border:1px solid var(--sinL);display:grid;place-items:center;font-family:var(--mono);font-weight:400;font-size:11px;color:var(--bone)}
+.mkey strong{display:block;font-weight:500;color:var(--bone);font-size:15px;margin-bottom:2px}
+@media (max-width:700px){.mkey{grid-template-columns:1fr}}
+@media (max-width:560px){.eb2{display:none}}
 .cmt{font-size:13px;color:var(--stone);margin-top:20px;max-width:60ch}
 .light .cmt{color:var(--stoneD)}
 @media (max-width:1100px){.pgrid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -583,6 +590,18 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+
+/* critic round: sheet focus ring stays inside, plate never empty, touch devices get no sticky hovers, mobile story centred */
+.bio .in:focus,.bio .in:focus-visible{outline:none}
+@media (min-width:761px){.bio .pmed.isplate ~ .pcol .pq{display:none}}
+.bio .plate .who{font-family:var(--serif);font-size:clamp(28px,2.6vw,40px);line-height:1.05;letter-spacing:-.03em;padding-bottom:.12em}
+.bio .plate .q{font-size:clamp(17px,1.5vw,21px);line-height:1.4;color:rgba(255,255,255,.78);max-width:28ch}
+@media (max-width:760px){.bio .pmed.isplate{height:116px}.bio .pmed.isplate .plate{padding:20px}.bio .pmed.isplate .plate::before,.bio .pmed.isplate .q{display:none}.bio .pmed.isplate .who{font-size:26px}}
+.pcard.noimg{min-height:0!important}
+.pcard.noimg .go{padding-top:26px!important}
+.bk b{display:grid;place-items:center;min-height:2.3em}
+@media (hover:none){.pcard:hover,.tcard:hover,.pgc:hover{transform:none;box-shadow:none}.pcard:hover h3,.pcard:hover h3 span,.tcard:hover h3{color:inherit;transform:none;background-size:0 1px}.btn:hover{color:inherit;border-color:currentColor}.btn:hover::before{transform:translateY(101%)}.bk:hover{border-color:var(--hair);background:none}}
+@media (max-width:860px){.story-pin{align-content:center}.sfigs{bottom:34px}}
 
 .moa svg{overflow:visible}
 
@@ -947,7 +966,7 @@ function scene(root,tl,sec){
 function vHome(){
   return ''+
   '<section class="hero dark" id="hero" data-field data-theme="dark">'+
-   '<span class="lab eyebrow" data-r>Transurethral imaging &amp; therapy · Sunnyvale, CA</span>'+
+   '<span class="lab eyebrow" data-r>Transurethral imaging &amp; therapy<span class="eb2"> · Sunnyvale, CA</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">See better.</span><span class="l">Treat <em>better.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>MaxQ Medical is developing a fully automated, urethra-preserving, outpatient ultrasound imaging and targeted therapy system for prostate care: one transurethral procedure that lets urologists see the whole gland and treat what they see.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/platform">How it works '+ARR+'</a><a class="btn" href="#/news">Series A news</a></div></div>'+
@@ -971,12 +990,12 @@ function vHome(){
      '<article class="step on"><h3>See the whole gland.</h3><p>A single probe works from within the urethra, giving the urologist full visibility inside the prostate, without the anatomic limits of approaches that work from outside it.</p></article>'+
      '<article class="step"><h3>Plan to the anatomy.</h3><p>Ultrasound imaging maps each patient’s prostate, so the urologist can build a fully customized treatment plan tailored to that anatomy.</p></article>'+
      '<article class="step"><h3>Treat what you see.</h3><p>Targeted, tissue-selective HIFU therapy is delivered from the same probe in the same sitting, under the same imaging, in a fully automated outpatient procedure.</p></article>'+
-     '<article class="step"><h3>Preserve what matters.</h3><p>The design aims to spare the urethra and minimise injury, swelling, bleeding and impact on sexual function: the side-effects that remain common concerns today.</p></article>'+
+     '<article class="step"><h3>Preserve what matters.</h3><p>The design aims to spare the urethra and minimize injury, swelling, bleeding and impact on sexual function: the side-effects that remain common concerns today.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="sfigs"><div class="sfig" id="scene">'+sceneSVG()+'</div></div><div class="ax lab" aria-hidden="true"><span>Axial view</span><span>Schematic</span></div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark" data-theme="dark" style="background:#050506"><div class="wrap"><div class="sys">'+
+  '<section class="sec dark" data-theme="dark" style="background:#000"><div class="wrap"><div class="sys">'+
    '<figure class="sys-fig"><img src="https://cdn.prod.website-files.com/67f44cf0483f1b4454d55068%2F680bf5d0cfbd3217d8bb68a0_Revised%20Final%20Website%20Video-poster-00001.jpg" alt="Render of the MaxQ transurethral probe and handpiece beside a prostate model" loading="lazy" decoding="async" onerror="this.closest(\'.sys\').classList.add(\'noimg\')"></figure>'+
    '<div class="sys-t"><span class="lab kick" data-r>The system</span><h2 class="d3 split">One probe. <em>One sitting.</em></h2><p class="muted" data-r>A single transurethral device carries both the ultrasound imaging and the targeted therapy, designed for a fully automated, outpatient procedure tailored to each patient’s anatomy.</p><p class="cmt" data-r>MaxQ System render. Investigational device; not available for commercial use in the United States.</p></div>'+
   '</div></div></section>'+
@@ -1015,12 +1034,12 @@ function pipe(){
   return '<div class="pipe"><div class="pipe-h lab"><span>Indication</span><span>Approach</span><div class="stg"><span>Development</span><span>Clinical</span><span>Commercial</span></div></div>'+
    rows.map(function(r){return '<div class="prow"><div><h3>'+r.n+'</h3></div><div class="ind">'+r.i+'<br><span class="tagp'+(r.p?' g':'')+'">'+r.t+'</span></div><div class="track"><i></i><i></i><i></i><span class="bar'+(r.p?' pl':'')+'" style="width:'+r.w+'"><b></b></span></div></div>'}).join("")+'</div>';
 }
-function cta(){
+function cta(alt){
   return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Work with us</span>'+
    '<h2 class="big split">Let’s talk <em>prostate care.</em></h2>'+
    '<p class="sub" data-r>Urologists, clinical partners, investors and people who want to join the team: tell us what you are working on and we will route your note to the right person.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="#/platform">Explore the platform</a></div>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a>'+(alt?'<a class="btn" href="#/team">Meet the team</a>':'<a class="btn" href="#/platform">Explore the platform</a>')+'</div>'+
   '</div></section>';
 }
 function vPlatform(){
@@ -1029,11 +1048,11 @@ function vPlatform(){
    '<div class="pillars" data-group>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="34" rx="28" ry="22"/><circle class="a" cx="32" cy="30" r="5"/><path class="a" d="M32 30L56 22M40 18A16 16 0 0 1 48 26"/></svg><h3>Imaging from within</h3><p>Full visibility inside the prostate from a transurethral probe, without the anatomic limitations of approaches that work from outside the gland.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="34" rx="28" ry="22"/><circle class="a" cx="32" cy="30" r="5"/><circle class="f" cx="18" cy="34" r="2.6"/><circle class="f" cx="22" cy="44" r="2.6"/><circle class="f" cx="46" cy="34" r="2.6"/><circle class="f" cx="42" cy="44" r="2.6"/></svg><h3>Tissue-selective therapy</h3><p>Targeted HIFU therapy under image guidance, so urologists can deliver treatment plans tailored to each patient’s anatomy.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="34" rx="28" ry="22"/><circle class="a" cx="32" cy="30" r="5"/><circle cx="32" cy="30" r="11" stroke-dasharray="2 3"/></svg><h3>Urethra-preserving, outpatient</h3><p>Designed to preserve the urethra and minimise injury, swelling, bleeding and impact on sexual function, in a fully automated outpatient procedure.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="34" rx="28" ry="22"/><circle class="a" cx="32" cy="30" r="5"/><circle cx="32" cy="30" r="11" stroke-dasharray="2 3"/></svg><h3>Urethra-preserving, outpatient</h3><p>Designed to preserve the urethra and minimize injury, swelling, bleeding and impact on sexual function, in a fully automated outpatient procedure.</p></div>'+
    '</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Anatomy</span><h2 class="d3 split">Working from <em>the inside out.</em></h2><p class="muted" style="margin-top:24px" data-r>Because the probe sits within the prostatic urethra, imaging and therapy reach the gland directly. Treatment planning keeps a protective margin around the urethra itself.</p><p class="cmt" data-r>Schematic for illustration; not a clinical image.</p></div>'+
-   '<div class="moa" data-r>'+moaSvg()+'</div>'+
+   '<div><div class="moa" data-r>'+moaSvg()+'</div>'+moaKey()+'</div>'+
   '</div></div></section>'+
   '<section class="sec dark2" data-theme="dark" style="background:var(--ink2)"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Roadmap</span><h2 class="d3 split">One platform, <em>three horizons.</em></h2><p class="muted" style="margin-top:24px" data-r>The company’s first indication is BPH, with plans to expand into focal therapy for prostate cancer and, longer term, into broader prostate diagnostics.</p></div>'+
@@ -1049,25 +1068,25 @@ function vPlatform(){
     '<div><dt class="lab">Research</dt><dd>Decades of semiconductor ultrasound research at Stanford University.</dd></div>'+
     '<div><dt class="lab">Inventor</dt><dd>Prof. Pierre Khuri-Yakub, inventor of the Capacitive Micromachined Ultrasonic Transducer (CMUT).</dd></div>'+
     '<div><dt class="lab">Status</dt><dd>Investigational; not available for commercial use in the United States.</dd></div>'+
-   '</dl></div></div></section>'+cta();
+   '</dl></div></div></section>'+cta(1);
 }
 function moaSvg(){
-  return '<svg viewBox="0 0 520 400" aria-label="Schematic axial view of the prostate with a transurethral probe">'+
-   '<path d="M70 200C70 118 150 70 260 70S450 118 450 200 390 324 260 328 70 284 70 200Z" fill="none" stroke="#a9a49c" stroke-width="1.2"/>'+
-   '<path d="M118 204C114 148 146 128 182 130S222 156 218 204 186 276 166 270 120 252 118 204Z" fill="none" stroke="#a9a49c" stroke-width="1" stroke-dasharray="3 4"/>'+
-   '<path d="M402 204C406 148 374 128 338 130S298 156 302 204 334 276 354 270 400 252 402 204Z" fill="none" stroke="#a9a49c" stroke-width="1" stroke-dasharray="3 4"/>'+
-   '<circle class="sk" cx="260" cy="182" r="50" fill="none" stroke-width="1" stroke-dasharray="4 5"/>'+
-   '<circle class="sk" cx="260" cy="182" r="18" fill="none" stroke-width="1.6"/>'+
-   '<path class="og" d="M260 182L166 214M260 182L354 214" fill="none" stroke-width="1.2"/>'+
-   '<path class="og" d="M150 214a16 16 0 1 0 32 0a16 16 0 1 0-32 0M338 214a16 16 0 1 0 32 0a16 16 0 1 0-32 0" fill="none" stroke-width="1.2"/>'+
-   '<path d="M260 132V72M150 214H20M370 214h136" fill="none" stroke="#5b554d" stroke-width="1"/>'+
-   '<text class="t1" x="270" y="44">Probe in the urethra</text><text x="270" y="64" class="ac">IMAGING + THERAPY</text>'+
-   '<text class="t1" x="20" y="196">Target tissue</text><text x="20" y="236">FOCAL ZONES</text>'+
-   '<text class="t1" x="506" y="196" text-anchor="end">Protected</text><text x="506" y="236" text-anchor="end">URETHRAL MARGIN</text>'+
-   '<text x="260" y="372" text-anchor="middle">PROSTATE CAPSULE · AXIAL</text></svg>';
+  /* critic: labels live in an HTML key under the drawing (legible at every width); the drawing carries numbered markers only */
+  function mk(x,y,n){return '<g><circle cx="'+x+'" cy="'+y+'" r="13" fill="#0d0f12" stroke="#f29a64" stroke-width="1.2"/><text x="'+x+'" y="'+(y+4.5)+'" text-anchor="middle" class="mn">'+n+'</text></g>'}
+  return '<svg viewBox="0 0 520 360" aria-label="Schematic axial view of the prostate with a transurethral probe">'+
+   '<path d="M70 180C70 98 150 50 260 50S450 98 450 180 390 304 260 308 70 264 70 180Z" fill="none" stroke="#a9a49c" stroke-width="1.2"/>'+
+   '<path d="M118 184C114 128 146 108 182 110S222 136 218 184 186 256 166 250 120 232 118 184Z" fill="none" stroke="#a9a49c" stroke-width="1" stroke-dasharray="3 4"/>'+
+   '<path d="M402 184C406 128 374 108 338 110S298 136 302 184 334 256 354 250 400 232 402 184Z" fill="none" stroke="#a9a49c" stroke-width="1" stroke-dasharray="3 4"/>'+
+   '<circle class="sk" cx="260" cy="162" r="50" fill="none" stroke-width="1" stroke-dasharray="4 5"/>'+
+   '<circle class="sk" cx="260" cy="162" r="18" fill="none" stroke-width="1.6"/>'+
+   '<path class="og" d="M260 162L166 194M260 162L354 194" fill="none" stroke-width="1.2"/>'+
+   '<path class="og" d="M150 194a16 16 0 1 0 32 0a16 16 0 1 0-32 0M338 194a16 16 0 1 0 32 0a16 16 0 1 0-32 0" fill="none" stroke-width="1.2"/>'+
+   mk(260,162,1)+mk(166,194,2)+mk(310,222,3)+
+   '<text x="260" y="346" text-anchor="middle">PROSTATE CAPSULE · AXIAL</text></svg>';
 }
+function moaKey(){return '<ol class="mkey" data-group><li><b>1</b><span><strong>Probe in the urethra</strong>Imaging and therapy from one transurethral device.</span></li><li><b>2</b><span><strong>Target tissue</strong>Focal zones planned to the patient’s anatomy.</span></li><li><b>3</b><span><strong>Protected margin</strong>A preserved zone around the urethra.</span></li></ol>'}
 function vTeam(){
-  return head({k:"Team",h:'The people behind <em>MaxQ.</em>',p:'Leadership guiding MaxQ to the clinic, and the ultrasound science it grew out of.'})+
+  return head({k:"Team",h:'The people behind <em>MaxQ.</em>',p:'Leadership guiding MaxQ to the clinic, and the ultrasound science behind it.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investors</span><h2 class="d2 split">Backed to <em>build.</em></h2></div><p data-r>A $31.5 million Series A, closed in August 2026, with strategic backing from Olympus Innovation Ventures.</p></div>'+
@@ -1143,7 +1162,7 @@ var field=(function(){
   function layout(){var w=innerWidth,h=innerHeight,gut=Math.max(16,Math.min(72,w*.042)),L0=Math.max(gut,(w-1320)/2),cw=w-2*L0;
     if(w<861)return {cx:w*.5,cy:h*.27,R:Math.min(w*.36,h*.19)};
     if(w<1100)return {cx:L0+cw*.7,cy:h*.5,R:Math.min(h*.33,cw*.26)};
-    return {cx:L0+cw*.72,cy:h*.52,R:Math.min(h*.36,cw*.25)}}
+    return {cx:L0+cw*.7,cy:h*.52,R:Math.min(h*.36,cw*.23)}}
   var UY=-.1,LOBES=[[-.38,.02,.36,.44],[.38,.02,.36,.44]],LES=[];
   (function(){var k=0;for(var i=0;i<400&&LES.length<38;i++){var s=i%2?1:-1,x=s*(.1+hsh(i,1)*.62),y=-.38+hsh(i,2)*.82;var lb=LOBES[s<0?0:1];var e=Math.pow((x-lb[0])/lb[2],2)+Math.pow((y-lb[1])/lb[3],2);if(e>.82)continue;if(Math.hypot(x,(y-UY))<.27)continue;var ok=true;for(var j=0;j<LES.length;j++)if(Math.hypot(LES[j].x-x,LES[j].y-y)<.1){ok=false;break}if(!ok)continue;LES.push({x:x,y:y,a:Math.atan2(y-UY,x)})}
     LES.sort(function(a,b){return (a.a+Math.PI)-(b.a+Math.PI)});LES.forEach(function(l,i){l.p=.06+.66*i/(LES.length-1)})})();
@@ -1203,6 +1222,8 @@ var field=(function(){
     /* capsule tick ring */
     c.strokeStyle="rgba(243,239,233,"+(.16*e)+")";c.lineWidth=1*dpr;c.beginPath();
     for(var i=0;i<120;i++){var a=i/120*6.2832,r1=R*1.36,r2=R*(i%10?1.385:1.42);c.moveTo(Math.cos(a)*r1*1.12,Math.sin(a)*r1*.94);c.lineTo(Math.cos(a)*r2*1.12,Math.sin(a)*r2*.94)}c.stroke();
+    /* sub-pages: the ultrasound texture only, no probe/therapy marks behind the page title */
+    if(curKey==='home'){
     /* planned contour */
     c.save();c.setLineDash([4*dpr,6*dpr]);c.lineDashOffset=-t*6*dpr;c.strokeStyle="rgba(242,154,100,"+(.5*e)+")";c.lineWidth=1.1*dpr;
     for(k=0;k<2;k++){var lb=LOBES[k];c.beginPath();c.ellipse(lb[0]*R,lb[1]*R,lb[2]*R*.93,lb[3]*R*.93,0,0,6.2832);c.stroke()}c.restore();
@@ -1220,6 +1241,7 @@ var field=(function(){
     var g3=c.createRadialGradient(0,uy,R*.05,0,uy,R*.24);g3.addColorStop(0,"rgba(114,166,216,"+(.22*e)+")");g3.addColorStop(1,"rgba(114,166,216,0)");c.fillStyle=g3;c.beginPath();c.arc(0,uy,R*.24,0,6.2832);c.fill();
     c.strokeStyle="rgba(159,197,234,"+(.95*e)+")";c.lineWidth=1.6*dpr;c.beginPath();c.arc(0,uy,R*.085,0,6.2832);c.stroke();
     c.fillStyle="rgba(159,197,234,"+(.9*e)+")";c.beginPath();c.arc(0,uy,2.4*dpr,0,6.2832);c.fill();
+    }
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1374,10 +1396,10 @@ function contactInit(view){
 /* ================= BIO OVERLAY ================= */
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>';
+  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+' · '+esc(SITE)+'</span><span class="who">'+esc(p.name)+'</span><span class="q">'+esc(p.q?('“'+p.q+'”'):p.title)+'</span></div>';$("#bioMed").classList.toggle("isplate",!p.img);
   $("#bioMed").innerHTML=(p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.innerHTML=window.__plate">':'')+(p.img?'':window.__plate);
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
-   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+   (p.q?'<blockquote class="pq">“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
    '<p class="lab src">Profile drawn from MaxQ Medical’s August 2026 Series A announcement.</p>';
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;

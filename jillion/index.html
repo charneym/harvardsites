@@ -658,6 +658,23 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (max-width:860px){.cph-im{aspect-ratio:3/2}}
 .cgrid .addr{align-self:center}
 
+/* The company names exactly one person publicly. Rather than leave one card in a
+   four-column grid with three empty cells, the team page is composed around him:
+   the name and role hold the left column, the verified record the right. */
+.solo{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,6vw,96px);align-items:start}
+.solo-n{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.4vw,88px);line-height:.98;letter-spacing:-.03em;margin:18px 0 16px;padding-bottom:.1em}
+.solo-n em{font-style:italic;color:var(--sinD)}
+.solo-r{color:var(--stoneD);font-size:17px;line-height:1.5;max-width:28ch;margin:0 0 32px}
+.solo-b p{max-width:58ch;margin:0 0 1.15em}
+.rec{margin:clamp(44px,5vw,76px) 0 0;border-top:1px solid var(--hairD)}
+.rec>div{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:baseline;padding:15px 0;border-bottom:1px solid var(--hairD)}
+.rec .rk{color:var(--sinD)}
+.rec .rv{font-size:16px;line-height:1.45}
+@media (max-width:860px){
+  .solo{grid-template-columns:1fr;gap:36px}
+  .rec>div{grid-template-columns:1fr;gap:6px}
+}
+
 </style>
 </head>
 <body>
@@ -1081,8 +1098,27 @@ function vPrograms(){
   '</div></section>'+cta();
 }
 function vTeam(){
-  return head({k:"Team",h:'The science <em>behind Jillion.</em>',p:'Every one of Jillion’s NIH awards names the same principal investigator. His laboratory background, and the four benches that do the work, are below.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+  return head({k:"Team",h:'The science <em>behind Jillion.</em>',p:'Every one of Jillion’s NIH awards names the same principal investigator. His record, and the four benches that do the work, are below.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="solo">'+
+   '<div class="solo-l">'+
+    '<span class="lab kick" data-r>'+esc(TEAM[0].grp)+'</span>'+
+    '<h2 class="solo-n split">Marc <em>Flajolet.</em></h2>'+
+    '<p class="solo-r" data-r>'+esc(TEAM[0].title)+'</p>'+
+    '<div data-r><a class="btn" href="#/team/'+TEAM[0].slug+'">Full profile '+ARR+'</a></div>'+
+   '</div>'+
+   '<div class="solo-b">'+
+    '<p data-r>'+esc(TEAM[0].bio[0])+'</p>'+
+    '<p data-r>'+esc(TEAM[0].bio[1])+'</p>'+
+    '<p data-r><a class="ul" href="'+TEAM[0].link.u+'" target="_blank" rel="noopener">'+esc(TEAM[0].link.t)+' \u2197</a></p>'+
+   '</div>'+
+  '</div>'+
+   '<div class="rec" data-group>'+
+     '<div><span class="rk lab">2026 \u00b7 NIA</span><span class="rv">SBIR Phase II \u2014 pathological tau in Alzheimer\u2019s disease</span></div>'+
+     '<div><span class="rk lab">2024 \u00b7 NIA</span><span class="rv">SBIR Phase I \u2014 pathological tau</span></div>'+
+     '<div><span class="rk lab">2025 \u00b7 NIDA</span><span class="rv">SBIR Phase I \u2014 GPR37, amphetamine use disorders</span></div>'+
+     '<div><span class="rk lab">2025 \u00b7 NIDA</span><span class="rv">SBIR Phase I \u2014 OPRD1 + DRD3 polypharmacology</span></div>'+
+     '<div><span class="rk lab">2024 \u00b7 NIDA</span><span class="rv">SBIR Phase I \u2014 GPR26, opioid use disorders</span></div>'+
+   '</div>'+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>In-house disciplines</span><h2 class="d2 split">Four benches, <em>one building.</em></h2></div></div>'+

@@ -24,10 +24,11 @@ const fs = require('fs');
       const host = location.host; const list = [];
       const abs = s => { try { return new URL(s, location.href).href; } catch (e) { return null; } };
       document.querySelectorAll('img,picture source').forEach(el => {
-        const src = abs(el.currentSrc || el.src || (el.srcset || '').split(',').pop().trim().split(' ')[0]);
+        const lazy = el.getAttribute('data-src') || el.getAttribute('data-lazy-src') || el.getAttribute('data-original') || (el.getAttribute('data-srcset') || '').split(',').pop().trim().split(' ')[0];
+        const src = abs(el.currentSrc || el.src || lazy || (el.srcset || '').split(',').pop().trim().split(' ')[0]);
         if (!src || src.startsWith('data:')) return;
         const rr = el.getBoundingClientRect();
-        list.push({ src, w: el.naturalWidth || Math.round(rr.width), h: el.naturalHeight || Math.round(rr.height), alt: el.alt || '', ctx: (el.closest('section,header,footer,main,div') || {}).className || '' });
+        list.push({ src, w: el.naturalWidth || Math.round(rr.width) || +el.getAttribute('width') || (lazy ? 400 : 0), h: el.naturalHeight || Math.round(rr.height) || +el.getAttribute('height') || (lazy ? 400 : 0), alt: el.alt || '', ctx: (el.closest('section,header,footer,main,div') || {}).className || '' });
       });
       document.querySelectorAll('*').forEach(el => {
         const bg = getComputedStyle(el).backgroundImage; if (!bg || bg === 'none') return;

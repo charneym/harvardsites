@@ -34,3 +34,11 @@
 
 ## Contact
 - Contact form only; no email published. LinkedIn: https://www.linkedin.com/company/romix-biosciences ; FCOI policy PDF https://romixbio.com/assets/documents/FCOI_Romix_vfinal.pdf
+
+## Photo inventory (PRINCIPLES BJ, run 2026-11-12 on romixbio.com)
+- 6 meaningful images found, 6 used: 4 team headshots (Conor Loy, David McKellar, Iwijn De Vlaminck, Julius Judd) and both logo files (dark and negative). No product, lab or figure images exist on the site. Unused non-stock images: none.
+
+## Logo → palette (PRINCIPLES BK; logo pixel sample #184878 67%, #c03030 9%)
+- logo navy #184878 → --navy, transition cover, hero RNA strands; deep shades #08192f / #0f2b4f / #0c2546 → dark sections
+- logo red #c03030 → --accL (accent on light, 5.3:1 on #f6f7f9) and the disease-signature highlight; tint #f3979b → --accD (accent on dark)
+- neutrals #f6f7f9 / #eceff4 (light), #0f1e38 ink

@@ -22,3 +22,14 @@
 
 ## Brand
 - Logo (transparent PNG): https://storage.googleapis.com/wzukusers/user-34765005/images/5c8ff4e3138d515g3vn2/CellectGen-Logo_d600.png — multicolour ring (yellow, green, teal-blue #4494b0, coral #cf6b43, red) and a lowercase "cellectgen" wordmark in a gradient.
+
+## Photo inventory (PRINCIPLES BJ, run 2026-11-12 on cellectgen.com)
+- 6 meaningful images found, 3 used: logo and both founder headshots (200×200 sources, shown at modest size).
+- Unused, with reasons: (1) tooth-and-mirror image, file named "The-Most-Suitable-Dental-Insurance-Plans-3-Steps-to-Compare" — generic stock, not CellectGen's product; (2) blurred tram/streetcar image (user-500003 template asset) — template filler, off-topic; (3) open-plan office photo (wzuk stock asset 175138996) — generic stock, not CellectGen's lab. No product, device or lab photos exist on the site.
+
+## Logo → palette (PRINCIPLES BK; logo pixel sample, transparent pixels excluded: green #71c269 most common, then teal-green #70c096, yellow #fbe608, teal-blue #4494b0, coral #cf6b43)
+- logo green #71c269 (dominant hue) → accent: deep shade #2a6e3c → --accL (5.7:1 on #f6f5f1), tint #9fd89a → --accD on dark, #256b3e → transition cover
+- logo teal-green #70c096 → deep shades #0a201b / #0f2a24 / #123129 → dark sections; hero capillary wash
+- logo teal-blue #4494b0 → secondary (saliva ripples in the hero)
+- logo coral #cf6b43 → "active MMP-8" marker only (hero line, figures, legend)
+- neutrals #f6f5f1 / #ecebe4 (light), #10262e ink

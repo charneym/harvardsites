@@ -77,7 +77,7 @@
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));

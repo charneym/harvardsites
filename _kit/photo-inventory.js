@@ -46,6 +46,7 @@ const fs = require('fs');
       const box = await p.evaluate(() => { const lg = [...document.querySelectorAll('header img, header svg, a[href="/"] img, a[href="/"] svg, [class*=logo] img, img[alt*=logo i], img[src*=logo i], [class*=logo] svg')].find(e => { const q = e.getBoundingClientRect(); return q.width > 30 && q.height > 10 && q.top >= 0; }); if (!lg) return null; const q = lg.getBoundingClientRect(); return { x: q.left, y: q.top, width: q.width, height: q.height }; });
       const buf = box ? await p.screenshot({ clip: box }).catch(() => null) : null;
       if (buf) logo = { src: r.logoBox.src, png: buf.toString('base64') };
+      if (r.logoBox.src && /^https?:/.test(r.logoBox.src)) { try { const resp = await p.request.get(r.logoBox.src); if (resp.ok() && /png|webp|jpe?g/i.test(resp.headers()['content-type'] || '')) logo.raw = (await resp.body()).toString('base64'), logo.rawType = resp.headers()['content-type']; } catch (e) {} }
     }
   }
   let list = [...imgs.values()].filter(x => (x.w >= 160 && x.h >= 160) || /logo/i.test(x.src + x.alt));
@@ -60,18 +61,20 @@ const fs = require('fs');
   if (logo) {
     const q = await b.newPage();
     palette = await q.evaluate(async (png) => {
-      const im = new Image(); im.src = 'data:image/png;base64,' + png; await im.decode();
+      const im = new Image(); im.src = png.startsWith('data:') ? png : 'data:image/png;base64,' + png; await im.decode();
       const c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const g = c.getContext('2d'); g.drawImage(im, 0, 0);
       const d = g.getImageData(0, 0, c.width, c.height).data; const bins = {};
       const corner = (x, y) => { const i = (y * c.width + x) * 4; return [d[i], d[i + 1], d[i + 2]]; }; const bg = corner(1, 1);
       for (let i = 0; i < d.length; i += 4) {
         const r = d[i], gg = d[i + 1], bb = d[i + 2];
+        if (d[i + 3] < 128) continue; // transparent
         if (Math.abs(r - bg[0]) + Math.abs(gg - bg[1]) + Math.abs(bb - bg[2]) < 40) continue; // skip background
+        if (Math.max(r, gg, bb) > 238 && Math.min(r, gg, bb) > 228) continue; // near-white page backdrop
         const k = [r, gg, bb].map(v => Math.round(v / 24) * 24).join(','); bins[k] = (bins[k] || 0) + 1;
       }
       const tot = Object.values(bins).reduce((a, v) => a + v, 0) || 1;
       return Object.entries(bins).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k, v]) => '#' + k.split(',').map(x => Math.min(255, +x).toString(16).padStart(2, '0')).join('') + ' ' + Math.round(v / tot * 100) + '%');
-    }, logo.png);
+    }, logo.raw ? `data:${logo.rawType};base64,${logo.raw}` : logo.png);
     fs.writeFileSync(out + '-logo.png', Buffer.from(logo.png, 'base64'));
     await q.close();
   }

@@ -640,6 +640,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sfig svg{width:min(100%,560px);max-height:80%}
 
 /* ===== The ESStim device (BJ: the product photo belongs on the home page) ===== */
+.dev-im img{filter:saturate(.92) contrast(1.06)}
 .dev{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,5vw,80px);align-items:center}
 .dev-im{position:relative;margin:0;aspect-ratio:5/4;overflow:hidden;border-radius:4px;background:#fff;box-shadow:0 30px 60px -40px rgba(15,27,29,.5)}
 .dev-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:clamp(10px,2vw,28px);transition:transform .6s var(--eo)}
@@ -649,7 +650,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .dev-tx p{color:var(--stoneD);max-width:46ch;font-size:16.5px}
 .dev-tx .note{display:block;margin-top:22px;padding-top:16px;border-top:1px solid var(--hairD);color:var(--peachD);max-width:50ch;line-height:1.6}
 .wear{margin:0;display:flex;flex-direction:column;gap:18px;align-items:center}
-.wear img{width:min(100%,620px);aspect-ratio:5/4;height:auto;object-fit:contain;border-radius:4px;background:#fff}
+.wear img{width:min(100%,620px);aspect-ratio:5/4;height:auto;object-fit:contain;border-radius:4px;background:#fff;filter:saturate(.92) contrast(1.06)}
 .wear figcaption{color:var(--stoneD);max-width:52ch;text-align:center}
 @media (max-width:860px){.dev{grid-template-columns:1fr;row-gap:28px}}
 
@@ -657,12 +658,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps{--ps-bg:var(--bone);--ps-ink:var(--ink);--ps-mute:var(--stoneD);--ps-line:var(--hairD);--ps-accent:var(--sinD);--ps-scrim:rgba(10,20,22,.68);--ps-serif:var(--serif);--ps-sans:var(--sans)}
 .ps-body .lab{font-family:var(--mono);letter-spacing:.16em}
 
-/* ---- contact: a real photograph, not a decorative panel (client review, round 2) ---- */
-.cph{margin:clamp(34px,4vw,56px) 0 0}
-.cph-im{position:relative;aspect-ratio:3/2;overflow:hidden;border-radius:2px;background:var(--bone3)}
-.cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
-.cph figcaption{margin-top:14px;color:var(--stoneD)}
-.cph.noimg{display:none}
 
 /* the hero block is optically centred between the header and the scroll cue on phones,
    instead of leaving a dead band under the header (client review, round 2) */
@@ -670,6 +665,26 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .hero{min-height:100svh;padding-top:84px;padding-bottom:96px;justify-content:center}
   .hero .cue{bottom:28px}
 }
+
+/* contact: one full-width photographic band under both columns, so neither column
+   leaves a dead quadrant beside the form (client review, round 2) */
+.cph{margin:clamp(56px,7vw,100px) 0 0;grid-column:1/-1}
+.cph-im{position:relative;aspect-ratio:26/10;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 42%;filter:saturate(.92) contrast(1.02)}
+.cph figcaption{margin-top:14px;color:var(--stoneD)}
+.cph.noimg{display:none}
+@media (max-width:860px){.cph-im{aspect-ratio:3/2}}
+
+/* the investigational-device note is a full-width footnote strip, not a stray
+   581px block sitting on no column edge */
+.devnote{max-width:none;display:block;padding-top:18px;border-top:1px solid var(--hairD);margin-top:clamp(40px,5vw,72px)}
+.devnote .lab{display:block;margin-bottom:8px;color:var(--peachD)}
+
+/* their headgear render is a tall studio image: show it whole on its own plate
+   rather than cropping into the face */
+.cph-im{background:#fff}
+.cph-im img{object-fit:contain;object-position:50% 50%}
+.cgrid .addr{align-self:center}
 
 </style>
 </head>
@@ -894,7 +909,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -1034,7 +1049,7 @@ function vHome(){
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.5<sup>M</sup></span><span class="lab k">First-year NINDS Phase IIB award, 2026</span></div>'+
    '</div></div></section>'+
 
-  '<section class="sec light" data-theme="light" style="background:var(--bone2);padding-top:clamp(72px,8vh,120px)"><div class="wrap">'+deviceBand()+'</div></section>'+
+  '<section class="sec light" data-theme="light" style="background:var(--bone2);padding-top:clamp(72px,8vh,120px);padding-bottom:clamp(72px,8vh,120px)"><div class="wrap">'+deviceBand()+'</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Couple. Focus. <em>Steer.</em></h2>'+
@@ -1126,12 +1141,14 @@ function vContact(){
   return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Clinical sites, partnering, investment and press: send a note and it will reach the team.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Highland Instruments, Inc.</span><h3>Cambridge, Massachusetts</h3><p><a class="ul" href="mailto:info@highlandinstruments.com">info@highlandinstruments.com</a></p>'+
-    '<figure class="cph" data-r><div class="cph-im"><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
-     '<figcaption class="lab">The transducer assembly sits over the target, outside the skull</figcaption></figure></div>'+
+    '</div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="sub"><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Highland team directly.</p></div></div>'+
-  '</div>'+devnote()+'</div></section>';
+  '</div>'+
+   '<figure class="cph" data-r><div class="cph-im"><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
+     '<figcaption class="lab">The transducer assembly sits over the target, outside the skull</figcaption></figure>'+
+  '</div>'+devnote()+'</section>';
 }
 function v404(){return head({k:"Not found",h:'This page is <em>out of range.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){

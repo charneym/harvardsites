@@ -454,7 +454,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
 .ps.open{visibility:visible;pointer-events:auto}
 .ps-scrim{position:absolute;inset:0;background:var(--ps-scrim,rgba(10,12,14,.62));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
-.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:auto;min-height:min(460px,calc(100vh - 96px));max-height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
 .ps-media{position:relative;border-radius:18px 0 0 18px;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) contrast(1.04)}
 /* no photo: a typographic plate, never a monogram */
@@ -462,6 +462,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
+.ps-sheet.noimg{grid-template-columns:1fr;width:min(760px,calc(100vw - 64px))}
+.ps-sheet.noimg .ps-media{display:none}
+.ps-sheet.noimg .ps-col{border-radius:18px}
+.ps-sheet.noimg .ps-body{border-radius:0 0 18px 18px}
 .ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
 .ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
@@ -545,6 +549,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pl3 svg .f{fill:var(--sinD);stroke:none}
 
 /* pipeline in brand colours */
+.pipe{--stages:4}
+.pipe-h .stg span{padding-left:8px}
 .prow .bar{background:linear-gradient(90deg,rgba(72,62,151,.35),var(--indigo))}
 .prow .bar b{background:var(--indigo);box-shadow:0 0 0 5px rgba(72,62,151,.16)}
 .prow .bar.p{background:linear-gradient(90deg,rgba(20,19,42,.12),rgba(20,19,42,.5))}
@@ -631,10 +637,17 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* ---- contact: a real photograph, not a decorative panel (client review, round 2) ---- */
 .cph{margin:clamp(34px,4vw,56px) 0 0}
-.cph-im{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.cph-im{position:relative;aspect-ratio:3/2;overflow:hidden;border-radius:2px;background:var(--bone3)}
 .cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
 .cph figcaption{margin-top:14px;color:var(--stoneD)}
 .cph.noimg{display:none}
+
+/* the hero block is optically centred between the header and the scroll cue on phones,
+   instead of leaving a dead band under the header (client review, round 2) */
+@media (max-width:860px){
+  .hero{min-height:100svh;padding-top:84px;padding-bottom:96px;justify-content:center}
+  .hero .cue{bottom:28px}
+}
 
 </style>
 </head>
@@ -716,7 +729,7 @@ function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
 var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var SITE="Jillion Therapeutics";
-var BIOSRC="Profile drawn from Jillion\u2019s website and NIH RePORTER records.";
+var BIOSRC="";
 
 /* ================= BH: a mask clips ONLY while its reveal is moving ================= */
 function relMask(lines){if(!lines)return;(lines.length?lines:[lines]).forEach(function(l){
@@ -757,14 +770,14 @@ var SCI=[
 function sciFigs(list){return '<div class="sci" data-group>'+list.map(function(f){return '<figure class="scf"><span class="lab">'+esc(f.k)+'</span><div class="scf-im"><img src="'+f.src+'" alt="'+esc(f.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.scf\').classList.add(\'noimg\')"></div><figcaption>'+esc(f.cap)+'</figcaption></figure>'}).join("")+'</div>'}
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 var PROGS=[
- {n:"Pathological tau",ind:"Alzheimer’s disease and tauopathies",f:.46,tag:"NIA Phase II · 2026",note:"Phase I identified a large set of novel small molecules that physically bind tau. Phase II validates and optimises them, tests brain penetration, safety and efficacy in tauopathy mouse models, and nominates one lead and two backups for IND-enabling studies."},
+ {n:"Pathological tau",ind:"Alzheimer’s disease and tauopathies",f:.46,tag:"NIA Phase I · 2024 → Phase II · 2026",note:"Phase I identified a large set of novel small molecules that physically bind tau. Phase II validates and optimizes them, tests brain penetration, safety and efficacy in tauopathy mouse models, and nominates one lead and two backups for IND-enabling studies."},
  {n:"GPR37",ind:"Amphetamine use disorders",f:.2,p:1,tag:"NIDA Phase I · 2025",note:"DEL screening of an orphan G-protein-coupled receptor selectively expressed in brain regions relevant to amphetamine use, aiming to rebalance basal ganglia signaling."},
  {n:"OPRD1 + DRD3",ind:"Substance use disorders · polypharmacology",f:.2,p:1,tag:"NIDA Phase I · 2025",note:"AI combined with DEL screening to find multi-target ligands binding both the delta opioid and D3 dopamine receptors, with the serotonin 1A receptor as an accessory target."},
  {n:"GPR26",ind:"Opioid use disorders",f:.2,p:1,tag:"NIDA Phase I · 2024",note:"An orphan receptor approach to correcting cAMP signaling changes from chronic opioid use without targeting the opioid receptor system directly."}
 ];
-var STAGES=["Screen","Hit validation","Lead optimisation","IND-enabling"];
+var STAGES=["Screen","Hit validation","Lead optimization","IND-enabling"];
 function pipe(){return '<div class="pipe"><div class="pipe-h lab"><span>Target</span><span>Indication</span><span class="stg">'+STAGES.map(function(s){return '<span>'+s+'</span>'}).join("")+'</span></div>'+
-  PROGS.map(function(p){return '<div class="prow"><div><h3>'+p.n+'</h3>'+(p.tag?'<span class="tagp">'+p.tag+'</span>':'')+'</div><p class="ind">'+p.ind+'</p><div class="track" role="img" aria-label="'+p.n+': '+(p.f>.4?"lead optimisation":"hit validation")+'">'+STAGES.map(function(){return '<i></i>'}).join("")+'<span class="bar'+(p.p?' p':'')+'" style="width:'+(p.f*100)+'%"><b></b></span></div><p class="note">'+p.note+'</p></div>'}).join("")+'</div>'}
+  PROGS.map(function(p){return '<div class="prow"><div><h3>'+p.n+'</h3>'+(p.tag?'<span class="tagp">'+p.tag+'</span>':'')+'</div><p class="ind">'+p.ind+'</p><div class="track" role="img" aria-label="'+p.n+': '+(p.f>.4?"lead optimization":"hit validation")+'">'+STAGES.map(function(){return '<i></i>'}).join("")+'<span class="bar'+(p.p?' p':'')+'" style="width:'+(p.f*100)+'%"><b></b></span></div><p class="note">'+p.note+'</p></div>'}).join("")+'</div>'}
 
 /* ================= VIEW HELPERS ================= */
 function head(o){
@@ -796,12 +809,12 @@ function vHome(){
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Barcode. Bind. <em>Decode.</em></h2>'+
-    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Build</span><span>Select</span><span>Decode</span><span>Optimise</span></div>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Build</span><span>Select</span><span>Decode</span><span>Optimize</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>Build the library in-house.</h3><p>Each compound is synthesised in two or three steps and tagged with a unique DNA sequence that acts as its barcode. Jillion designs and builds its own focused libraries rather than licensing someone else’s.</p></article>'+
      '<article class="step"><h3>Select against a real target.</h3><p>125 million real compounds are screened in a single tube, in days. Because the assay only measures binding, it needs very little protein — so targets can be produced in mammalian cells rather than bacteria, and stay physiological.</p></article>'+
      '<article class="step"><h3>Decode the binders.</h3><p>Next-generation sequencing reads the barcodes of the molecules that stuck, turning a tube of chemistry into a ranked list of hits — including hits against intrinsically disordered proteins such as tau.</p></article>'+
-     '<article class="step"><h3>Optimise with chemistry and AI.</h3><p>Hits are re-synthesised off-DNA, validated for binding by two methods, tested in cells, and optimised for potency, drug-likeness and brain exposure, with AI and machine learning guiding the series.</p></article>'+
+     '<article class="step"><h3>Optimize with chemistry and AI.</h3><p>Hits are re-synthesised off-DNA, validated for binding by two methods, tested in cells, and optimized for potency, drug-likeness and brain exposure, with AI and machine learning guiding the series.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="figs" id="figs">'+FIGS.join("")+'</div></div>'+
   '</div></section>'+
@@ -825,7 +838,7 @@ function vHome(){
     '<div class="dc"><span class="lab">Neuroscience</span><p>Decades of work on brain signalling and basal ganglia pathways, described in Jillion’s grants as carried out in the Greengard lab.</p></div>'+
     '<div class="dc"><span class="lab">Synthetic chemistry</span><p>Focused DEL libraries designed and built in-house under Jillion’s Senior Chemist, using proprietary methods and internal know-how.</p></div>'+
     '<div class="dc"><span class="lab">High-power screening</span><p>The term was coined by Jillion’s team in Trends in Pharmacological Sciences in 2022, and the platform has been run against tau and four receptors since.</p></div>'+
-    '<div class="dc"><span class="lab">AI and machine learning</span><p>Used to prioritise hits, dock multi-target ligands and optimise series on ADMET properties.</p></div>'+
+    '<div class="dc"><span class="lab">AI and machine learning</span><p>Used to prioritize hits, dock multi-target ligands and optimize series on ADMET properties.</p></div>'+
    '</div>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Leadership '+ARR+'</a></div>'+
   '</div></section>'+
@@ -843,9 +856,9 @@ function vPlatform(){
   return head({k:"Platform",h:'High-power screening, <em>in-house.</em>',p:'Jillion pairs its own DNA-encoded library technology with high-power screening — a term its team coined in Trends in Pharmacological Sciences in 2022 — to test vast numbers of real compounds against physiological targets.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+
    '<div class="pillars" data-group>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 10c12 10 28 10 40 0M12 32c12 10 28 10 40 0M12 54c12 10 28 10 40 0"/><path class="a" d="M12 10c12 12 28 12 40 0"/><circle class="f" cx="32" cy="17" r="3"/><circle class="f" cx="32" cy="39" r="3"/></svg><h3>A barcode per molecule</h3><p>Each compound carries a unique DNA sequence, so a mixture of millions can be screened together and read apart afterwards.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 8h24l-6 18 10 30H16l10-30z"/><path class="a" d="M22 44h20"/><circle class="f" cx="30" cy="50" r="2.6"/><circle class="f" cx="38" cy="46" r="2.2"/><circle class="f" cx="34" cy="54" r="2"/></svg><h3>One tube, a few days</h3><p>125 million real compounds, physically tested — not docked in silico — with far less protein than high-throughput screening needs.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="16" width="48" height="32" rx="5"/><path class="a" d="M16 40l8-12 8 8 8-16 8 20"/><path d="M8 30h48" stroke-dasharray="3 5"/></svg><h3>Hits ready for AI</h3><p>Compounds made in two or three steps give clean, tangible chemistry for machine-learning optimisation of potency, drug-likeness and CNS exposure.</p></div>'+
+    '<div class="pl3"><svg viewBox="12 7.75 56 56" preserveAspectRatio="xMinYMid meet" aria-hidden="true"><path d="M12 10c12 10 28 10 40 0M12 32c12 10 28 10 40 0M12 54c12 10 28 10 40 0"/><path class="a" d="M12 10c12 12 28 12 40 0"/><circle class="f" cx="32" cy="17" r="3"/><circle class="f" cx="32" cy="39" r="3"/></svg><h3>A barcode per molecule</h3><p>Each compound carries a unique DNA sequence, so a mixture of millions can be screened together and read apart afterwards.</p></div>'+
+    '<div class="pl3"><svg viewBox="16 4 56 56" preserveAspectRatio="xMinYMid meet" aria-hidden="true"><path d="M20 8h24l-6 18 10 30H16l10-30z"/><path class="a" d="M22 44h20"/><circle class="f" cx="30" cy="50" r="2.6"/><circle class="f" cx="38" cy="46" r="2.2"/><circle class="f" cx="34" cy="54" r="2"/></svg><h3>One tube, a few days</h3><p>125 million real compounds, physically tested — not docked in silico — with far less protein than high-throughput screening needs.</p></div>'+
+    '<div class="pl3"><svg viewBox="8 4 56 56" preserveAspectRatio="xMinYMid meet" aria-hidden="true"><rect x="8" y="16" width="48" height="32" rx="5"/><path class="a" d="M16 40l8-12 8 8 8-16 8 20"/><path d="M8 30h48" stroke-dasharray="3 5"/></svg><h3>Hits ready for AI</h3><p>Compounds made in two or three steps give clean, tangible chemistry for machine-learning optimization of potency, drug-likeness and CNS exposure.</p></div>'+
    '</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Why it fits the brain</span><h2 class="d3 split">Targets that defeated <em>conventional screening.</em></h2><p class="muted" style="margin-top:24px" data-r>Classical high-throughput screening needs large amounts of protein, usually from E. coli, and a clear biological activity to read out. Both conditions fail for G-protein-coupled receptors and for intrinsically disordered proteins such as tau.</p></div>'+
@@ -867,8 +880,8 @@ function vPrograms(){
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Lead program</span><h2 class="d3 split">Tau, from binders to <em>a nominated lead.</em></h2></div>'+
    '<div><ul class="aims" data-group>'+
-    '<li><span>Confirm and optimise Phase I hits into lead series using multiple complementary biochemical and cell-based assays.</span></li>'+
-    '<li><span>Optimise compounds for potency, drug-likeness and CNS exposure.</span></li>'+
+    '<li><span>Confirm and optimize Phase I hits into lead series using multiple complementary biochemical and cell-based assays.</span></li>'+
+    '<li><span>Optimize compounds for potency, drug-likeness and CNS exposure.</span></li>'+
     '<li><span>Demonstrate in vivo activity against tau pathology and disease progression in tau-driven mouse models of Alzheimer’s disease.</span></li>'+
     '<li><span>Nominate one primary lead candidate and two backups to enter IND-enabling studies.</span></li>'+
    '</ul></div>'+
@@ -880,9 +893,8 @@ function vPrograms(){
   '</div></section>'+cta();
 }
 function vTeam(){
-  return head({k:"Team",h:'The science <em>behind Jillion.</em>',p:'Jillion’s website describes a founder with more than two decades of experience in a Nobel Prize-winning laboratory. The person named on the company’s NIH awards is below.'})+
+  return head({k:"Team",h:'The science <em>behind Jillion.</em>',p:'Every one of Jillion’s NIH awards names the same principal investigator. His laboratory background, and the four benches that do the work, are below.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
-  '<div class="note2" data-r><span class="lab">Note</span><p>Jillion’s current website lists no team page. This concept shows only the roles that can be sourced: the principal investigator named on its NIH awards, and the in-house disciplines described on the company’s technology pages.</p></div>'+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>In-house disciplines</span><h2 class="d2 split">Four benches, <em>one building.</em></h2></div></div>'+
@@ -890,7 +902,7 @@ function vTeam(){
     '<div class="dc"><span class="lab">Neuroscience</span><p>Brain signalling and basal ganglia pathways, studied over decades in the Greengard lab as described in Jillion’s grant applications.</p></div>'+
     '<div class="dc"><span class="lab">Synthetic organic chemistry</span><p>Focused DEL libraries designed and built in-house, led by the company’s Senior Chemist.</p></div>'+
     '<div class="dc"><span class="lab">High-power screening</span><p>Screening campaigns against tau and four G-protein-coupled receptors, run in duplicate.</p></div>'+
-    '<div class="dc"><span class="lab">AI and machine learning</span><p>Hit prioritisation, docking for multi-target ligands and multi-parameter optimisation on ADMET values.</p></div>'+
+    '<div class="dc"><span class="lab">AI and machine learning</span><p>Hit prioritization, docking for multi-target ligands and multi-parameter optimization on ADMET values.</p></div>'+
    '</div></div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
@@ -899,7 +911,7 @@ function vContact(){
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Jillion Therapeutics Inc.</span><h3>Brooklyn, New York</h3><p>760 Parkside Ave, Suite 310<br>Brooklyn, NY 11226</p><p><a class="ul" href="mailto:welcome@jilliontherapeutics.com">welcome@jilliontherapeutics.com</a></p>'+
     '<figure class="cph" data-r><div class="cph-im"><img src="'+SCI[2].src+'" alt="'+esc(SCI[2].alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
-     '<figcaption class="lab">The in-house chemistry bench, where hits are re-made off-DNA</figcaption></figure></div>'+
+     '<figcaption class="lab">Screening campaigns, run in duplicate against each target</figcaption></figure></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="sub"><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Jillion team directly.</p></div></div>'+
@@ -1156,13 +1168,13 @@ var story=null;
 function sfig(inner,lab){return '<figure class="sfig"><svg viewBox="0 0 420 320" aria-hidden="true">'+inner+'</svg><figcaption class="lab">'+lab+'</figcaption></figure>'}
 var FIGS=[
  /* 1. build: a compound is made in 2-3 steps and tagged with DNA */
- sfig('<circle cx="86" cy="112" r="20"/><circle cx="150" cy="86" r="20"/><circle cx="214" cy="112" r="20"/><path class="a" d="M106 112h24M170 86h24"/><path d="M214 132v38"/><path class="g" d="M120 196h188M120 228h188"/><path class="g" d="M140 196v32M168 196v32M196 196v32M224 196v32M252 196v32M280 196v32"/><circle class="f" cx="214" cy="182" r="7"/><text x="120" y="268" font-family="IBM Plex Mono,monospace" font-size="11" fill="rgba(244,241,234,.5)" stroke="none">COMPOUND + DNA BARCODE</text>','One barcode per molecule'),
+ sfig('<circle cx="86" cy="112" r="20"/><circle cx="150" cy="86" r="20"/><circle cx="214" cy="112" r="20"/><path class="a" d="M106 112h24M170 86h24"/><path d="M214 132v38"/><path class="g" d="M120 196h188M120 228h188"/><path class="g" d="M140 196v32M168 196v32M196 196v32M224 196v32M252 196v32M280 196v32"/><circle class="f" cx="214" cy="182" r="7"/>','Compound plus DNA barcode'),
  /* 2. select: the whole library meets the target in one tube */
- sfig('<path d="M150 40h120v36l-30 44v160a26 26 0 01-26 26h-8a26 26 0 01-26-26V120l-30-44z"/><path class="g" d="M160 196h100"/><circle class="f" cx="186" cy="232" r="6"/><circle class="f" cx="214" cy="252" r="6"/><circle class="f" cx="240" cy="226" r="6"/><circle cx="210" cy="244" r="34" class="a"/><circle cx="118" cy="104" r="5"/><circle cx="310" cy="128" r="5"/><circle cx="96" cy="196" r="5"/><circle cx="330" cy="212" r="5"/><path class="a" d="M118 110l44 64M310 134l-70 78M104 196l72 34M322 212l-78 22" stroke-dasharray="3 6"/>','125 million, one tube'),
+ sfig('<path d="M150 40h120v36l-30 44v160a26 26 0 01-26 26h-8a26 26 0 01-26-26V120l-30-44z"/><path class="g" d="M160 196h100"/><circle class="f" cx="186" cy="232" r="6"/><circle class="f" cx="214" cy="252" r="6"/><circle class="f" cx="240" cy="226" r="6"/><circle cx="210" cy="244" r="34" class="a"/><circle cx="118" cy="104" r="5"/><circle cx="310" cy="128" r="5"/><circle cx="96" cy="196" r="5"/><circle cx="330" cy="212" r="5"/><path class="a" d="M118 110l44 64M310 134l-70 78M104 196l72 34M322 212l-78 22" stroke-dasharray="3 6"/>','A single binding experiment'),
  /* 3. decode: sequencing reads the barcodes that stuck */
- sfig('<path d="M48 250h324"/><path d="M48 60v190"/><path class="g" d="M48 86h324" stroke-dasharray="4 8"/><rect class="a2" x="80" y="150" width="26" height="100"/><rect class="a2" x="126" y="196" width="26" height="54"/><rect class="a2" x="172" y="96" width="26" height="154"/><rect class="a2" x="218" y="178" width="26" height="72"/><rect class="a2" x="264" y="124" width="26" height="126"/><rect class="a2" x="310" y="206" width="26" height="44"/><circle class="f" cx="185" cy="96" r="6"/><circle class="f" cx="277" cy="124" r="6"/><text x="48" y="286" font-family="IBM Plex Mono,monospace" font-size="11" fill="rgba(244,241,234,.5)" stroke="none">SEQUENCING READ COUNTS</text>','Decode the binders'),
- /* 4. optimise: a hit series is refined off-DNA */
- sfig('<circle cx="110" cy="104" r="22"/><circle class="a" cx="210" cy="104" r="22"/><circle class="a" cx="310" cy="104" r="22"/><path d="M132 104h56M232 104h56"/><path class="g" d="M110 148v44M210 148v62M310 148v80"/><circle class="f" cx="110" cy="200" r="5"/><circle class="f" cx="210" cy="218" r="5"/><circle class="f" cx="310" cy="236" r="5"/><path d="M70 262h280" stroke-dasharray="4 8"/><text x="70" y="290" font-family="IBM Plex Mono,monospace" font-size="11" fill="rgba(244,241,234,.5)" stroke="none">POTENCY · BRAIN EXPOSURE</text>','Optimise the series')
+ sfig('<path d="M48 250h324"/><path d="M48 60v190"/><path class="g" d="M48 86h324" stroke-dasharray="4 8"/><rect class="a2" x="80" y="150" width="26" height="100"/><rect class="a2" x="126" y="196" width="26" height="54"/><rect class="a2" x="172" y="96" width="26" height="154"/><rect class="a2" x="218" y="178" width="26" height="72"/><rect class="a2" x="264" y="124" width="26" height="126"/><rect class="a2" x="310" y="206" width="26" height="44"/><circle class="f" cx="185" cy="96" r="6"/><circle class="f" cx="277" cy="124" r="6"/>','Sequencing read counts'),
+ /* 4. optimize: a hit series is refined off-DNA */
+ sfig('<circle cx="110" cy="104" r="22"/><circle class="a" cx="210" cy="104" r="22"/><circle class="a" cx="310" cy="104" r="22"/><path d="M132 104h56M232 104h56"/><path class="g" d="M110 148v44M210 148v62M310 148v80"/><circle class="f" cx="110" cy="200" r="5"/><circle class="f" cx="210" cy="218" r="5"/><circle class="f" cx="310" cy="236" r="5"/><path d="M70 262h280" stroke-dasharray="4 8"/>','Potency and brain exposure')
 ];
 
 function homeScroll(view){
@@ -1180,14 +1192,37 @@ function homeScroll(view){
     r.style.setProperty("--rx0","4.5px");
     r.style.setProperty("--rspan",((rail.length-1)*(w/rail.length)).toFixed(2)+"px")}
   railGeom();
+  /* BD: stacked step text crosses over line by line, driven here rather than by StoryFX,
+     whose in/out windows leave EVERY step hidden for a moment at each step boundary
+     (the client's critic caught a frame with the rail on MEASURE and no copy at all). */
+  steps.forEach(function(s){s.style.opacity="1";s.style.transition="none";
+    [].forEach.call(s.children,function(k){k.style.transition="none";k.style.willChange="translate,filter"})});
+  function stepFX(p){
+    var c2=function(v){return v<0?0:v>1?1:v},e2=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+    var q=p*NS;
+    for(var j=0;j<NS;j++){
+      var s=steps[j];if(!s)continue;
+      var t=q-j,inn=j===0?1:c2((t+.18)/.24),out=j===NS-1?0:c2((t-.82)/.24);
+      s.style.visibility=(inn*(1-out))>.002?"visible":"hidden";
+      var kids=s.children;
+      for(var k=0;k<kids.length;k++){
+        var o=k*.12,ki=c2(inn*(1+o*kids.length*.5)-o),ko=c2(out*(1+.12*k));
+        kids[k].style.filter="opacity("+(e2(ki)*(1-e2(ko))).toFixed(3)+")";
+        kids[k].style.translate="0 "+((1-e2(ki))*22-e2(ko)*16).toFixed(1)+"px";
+      }
+    }
+  }
+
   function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
     rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
   if(RM){steps.forEach(function(s){s.classList.add("on")});if(prog)prog.style.transform="scaleX(1)";return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:figs,steps:steps});
+  var fx=StoryFX({section:sec,figs:figs});
   tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();
-    prog.style.transform="scaleX("+(NS>1?Math.min(p*NS,NS-1)/(NS-1):p)+")";
-    setStep(Math.min(NS-1,Math.floor(p*NS)));fx(p)});
+    var q=p*NS,j=Math.min(NS-1,Math.floor(q)),fr=q-j,T=.2;
+    var hp=Math.min(NS-1,j+(fr>1-T?(fr-(1-T))/T:0));
+    prog.style.transform="scaleX("+(NS>1?hp/(NS-1):p)+")";
+    setStep(j);stepFX(p);fx(p)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:railGeom});
   /* pipeline bars draw in */
   if(!RM)$$(".prow .bar",view).forEach(function(b,i){gsap.from(b,{scaleX:0,transformOrigin:"left center",duration:1.3,ease:"flow",delay:i*.06,scrollTrigger:{trigger:b.closest(".pipe"),start:"top 80%"}})});
@@ -1211,16 +1246,18 @@ function contactInit(view){
    container and carries data-lenis-prevent, so the wheel and trackpad scroll it while Lenis is stopped.
    Close returns to the route, Prev/Next replaceState, Esc closes, focus is trapped. */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psCur=-1,psLastFocus=null;
-function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span></div>'}
 function psFill(i){
   var p=TEAM[i];
   window.__psPlate=psPlate(p);
   psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  /* no portrait: run the sheet as one centred column rather than an empty plate */
+  psSheet.classList.toggle("noimg",!p.img);
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-    '<p class="src lab">'+BIOSRC+'</p>';
+    (BIOSRC?'<p class="src lab">'+BIOSRC+'</p>':'');
   psBody.scrollTop=0;
   $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
   $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);

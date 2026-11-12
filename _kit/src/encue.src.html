@@ -1,0 +1,1294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>ENCUE — Restoring the synapse</title>
+<meta name="description" content="ENCUE, a Northwestern spinout in Evanston, Illinois, is developing NQ-13, an oral IGFBP2-mimetic drug candidate that restores synaptic plasticity, for Alzheimer’s disease, Rett syndrome and other cognitive disorders. Concept website.">
+<meta name="theme-color" content="#f6f7fa">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f6f7fa'/%3E%3Cpath d='M22 16h24l-2 8H31l-1 5h12l-2 7H28l-1 5h14l-2 8H15z' fill='%230f30c4'/%3E%3C/svg%3E">
+<style>
+/*@fonts Instrument Serif:400,400i; DM Sans:400,500; DM Mono:400*/
+:root{
+  /* BK palette from the ENCUE logo: blue #0f30c4 ("CUE") is the accent, green #018001 ("EN") the secondary,
+     deep shades of the logo blue are the dark base, a cool paper is the light base. */
+  --d0:#060b27;--d1:#0a1236;--d2:#0d1742;
+  --l0:#f6f7fa;--l1:#eceef4;
+  --paper:#f4f5f9;--ink:#0b1433;
+  --mutD:#aeb6d3;--mutL:#4a5169;
+  --accD:#a9b8ff;--accL:#0f30c4;--blue:#0f30c4;--green:#018001;--greenL:#0b7a0b;--greenD:#86d486;
+  --hairD:rgba(244,245,249,.15);--hairL:rgba(11,20,51,.15);
+  --glow:rgba(15,48,196,.06);--err:#b4232a;
+  --serif:'Instrument Serif',Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'DM Mono',ui-monospace,Menlo,monospace;
+  --wmfont:'DM Sans',system-ui,sans-serif;--wmw:500;--wmls:-.035em;--bigws:22vw;
+  --dls:-.012em;
+  --cover:#0f30c4;
+  --pre-bg:#f6f7fa;--pre-fg:#0b1433;--pre-ac:#0f30c4;--pre-hair:rgba(11,20,51,.15);--pre-mu:#4a5169;
+  --hdr-dk:rgba(6,11,39,.76);--hdr-lt:rgba(246,247,250,.86);
+  --fieldbg:radial-gradient(80% 90% at 70% 44%,#ffffff 0%,#f4f5f9 50%,#e8ebf2 100%);
+  --hero-scrim:radial-gradient(56% 74% at 16% 54%,rgba(246,247,250,.95),rgba(246,247,250,.66) 54%,rgba(246,247,250,0) 82%),linear-gradient(180deg,rgba(246,247,250,.35),rgba(246,247,250,0) 20%,rgba(246,247,250,0) 68%,#eceef4 100%);
+  --hero-scrim-m:linear-gradient(180deg,rgba(246,247,250,0) 0%,rgba(246,247,250,.05) 14%,rgba(246,247,250,.9) 21%,rgba(246,247,250,.97) 40%,#eceef4 100%);
+  --ph-scrim:radial-gradient(70% 80% at 20% 70%,rgba(246,247,250,.95),rgba(246,247,250,.45) 70%),linear-gradient(180deg,rgba(246,247,250,.3),rgba(246,247,250,.2) 40%,#f6f7fa 100%);
+  --hero-sub:#2a3150;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--d0)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--d0);color:var(--paper);font-family:var(--sans);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--accD);color:var(--d0)}
+:focus-visible{outline:1.5px solid var(--ac,var(--accD));outline-offset:4px;border-radius:2px}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--accD);color:var(--d0);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+
+/* tones: every component reads these tokens */
+[data-tone=dark]{background:var(--d1);--fg:var(--paper);--mu:var(--mutD);--hr:var(--hairD);--ac:var(--accD);--onac:var(--d0);--bgc:var(--d1);color:var(--fg)}
+[data-tone=dark2]{background:var(--d2);--fg:var(--paper);--mu:var(--mutD);--hr:var(--hairD);--ac:var(--accD);--onac:var(--d0);--bgc:var(--d2);color:var(--fg)}
+[data-tone=light]{background:var(--l0);--fg:var(--ink);--mu:var(--mutL);--hr:var(--hairL);--ac:var(--accL);--onac:var(--l0);--bgc:var(--l0);color:var(--fg)}
+[data-tone=light2]{background:var(--l1);--fg:var(--ink);--mu:var(--mutL);--hr:var(--hairL);--ac:var(--accL);--onac:var(--l0);--bgc:var(--l1);color:var(--fg)}
+.hero[data-tone],.ph-head[data-tone]{background:transparent}
+
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--mu)}
+em{font-style:italic;font-family:var(--serif)}
+.d1{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(50px,8.4vw,164px);line-height:.98;letter-spacing:var(--dls,-.02em);margin:0}
+.d2{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(40px,5.4vw,100px);line-height:1;letter-spacing:var(--dls,-.02em);margin:0}
+.d3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(32px,3.6vw,62px);line-height:1.05;letter-spacing:var(--dls,-.018em);margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--ac);font-weight:inherit}
+.d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.lede{font-family:var(--serif);font-weight:400;font-size:clamp(21px,1.9vw,30px);line-height:1.34;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--mu)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:16ch}
+.shead p{max-width:46ch;margin:0;color:var(--mu)}
+.kick{display:block;margin-bottom:22px;color:var(--ac)}
+
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:var(--grain,.05);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+.fieldbg{position:fixed;inset:0;z-index:0;background:var(--fieldbg)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+/* preloader */
+#pre{position:fixed;inset:0;z-index:1200;background:var(--pre-bg);color:var(--pre-fg)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
+#pre .mk{width:64px;height:64px;overflow:visible}
+#pre .wm{font-family:var(--wmfont,var(--serif));font-weight:var(--wmw,400);font-size:clamp(34px,4.4vw,62px);letter-spacing:var(--wmls,-.02em);line-height:1.1;padding:.1em .18em .4em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm em{color:var(--pre-ac);font-style:normal;font-family:inherit}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--pre-hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--pre-ac);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--serif);font-weight:400;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px);color:var(--pre-mu)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+/* header */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:var(--paper);border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:var(--hdr-dk);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hairD)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:var(--hdr-lt);border-bottom-color:var(--hairL)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+/* buttons: one system (AH) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--ac,var(--accD));border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--onac,var(--d0));border-color:var(--ac,var(--accD))}
+.btn:hover::before{transform:none}
+.btn.solid{background:var(--fg,var(--paper));color:var(--bgc,var(--d0));border-color:var(--fg,var(--paper))}
+.hdr .btn{--ac:var(--accD);--onac:var(--d0)}
+.hdr.ink .btn{--ac:var(--accL);--onac:var(--l0)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--d0);color:var(--paper);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hairD);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(40px,11vw,68px);line-height:1.05;letter-spacing:-.02em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--mutD);font-size:13px;line-height:1.6}
+.mm .lab{color:var(--mutD)}
+
+/* masks (AD/AU/AX) */
+.ln{overflow:visible!important}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--hero-scrim)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--ac);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(48px,7vw,140px);line-height:.98}
+.hero-h .l{display:block;white-space:nowrap}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:46ch;margin:0;font-size:17px;line-height:1.6;color:var(--hero-sub)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:var(--hr);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--ac);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1;color:var(--mu)}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:8px;height:8px;border-radius:50%;background:var(--fg);display:block;opacity:.85}
+.hero-key i.s{background:var(--ac);opacity:1}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+/* page heads */
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:var(--ph-scrim)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--ac)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:56ch}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+
+/* manifesto + stats */
+.mani .txt{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(30px,3.9vw,66px);line-height:1.12;letter-spacing:-.018em;margin:0;max-width:24ch}
+.mani .txt .w{opacity:.16}
+.mani .txt em{color:var(--ac)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hr)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--ac);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(52px,5.6vw,104px);line-height:1;letter-spacing:-.03em;display:block;white-space:nowrap}
+.stat .v sup,.stat .v small{font-size:.36em;vertical-align:top;position:relative;top:.18em;margin-left:.06em;color:var(--ac);letter-spacing:0}
+.stat .v .pre{font-size:.55em;vertical-align:top;position:relative;top:.12em;margin-right:.02em;color:var(--ac)}
+.stat .k{display:block;margin-top:14px;max-width:28ch}
+
+/* pinned story */
+.story{padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
+.rail{display:flex;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hr)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--ac);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--bgc);border:1px solid var(--mu);transition:background .35s,border-color .35s}
+.rail span.on{color:var(--fg)}
+.rail span.done::before,.rail span.on::before{background:var(--ac);border-color:var(--ac)}
+.steps{position:relative;min-height:clamp(230px,31vh,320px)}
+.step{position:absolute;left:0;top:0;right:0}
+.step h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.015em;margin:0 0 16px}
+.step p{color:var(--mu);max-width:44ch;margin:0;font-size:16px}
+.story-r{position:relative;height:min(74vh,720px);align-self:center}
+.fig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.fig svg{width:100%;height:100%;overflow:visible}
+.fig text{font-family:var(--mono);font-size:11px;letter-spacing:.12em;fill:var(--mu)}
+
+/* text cards / portraits (AC + AN) */
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--hr);transition:box-shadow .32s ease-out}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(0,0,0,.55)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(23px,1.8vw,29px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--mu)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--ac);margin-top:6px}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--ac)}
+.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hr);padding:24px 22px 22px;min-height:220px;overflow:hidden}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .pc-meta{padding-top:0;height:100%}
+.pcard.noimg .grp{display:block;margin-bottom:22px}
+.pcard.noimg .go{margin-top:auto;padding-top:20px}
+.pcard.noimg::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.pcard.noimg:hover::before,.pcard.noimg:focus-visible::before{transform:scaleX(1)}
+.pcard.noimg:hover h3,.pcard.noimg:focus-visible h3{transform:translateX(5px)}
+
+/* rows (publications / awards) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hr)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hr);position:relative;overflow:hidden}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--glow),transparent 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a h3 small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
+.row-a:hover h3{color:var(--ac);transform:translateX(6px)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center;padding-right:4px}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+/* generic inner blocks */
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.pl3{border-top:1px solid var(--hr);padding-top:24px}
+.pl3 svg{width:64px;height:64px;margin-bottom:26px;overflow:visible}
+.pl3 svg *{fill:none;stroke:var(--fg);stroke-width:1}
+.pl3 svg .a{stroke:var(--ac)}
+.pl3 svg .f{fill:var(--ac);stroke:none}
+.pl3 h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(25px,2.2vw,36px);line-height:1.08;letter-spacing:-.015em;margin:0 0 14px}
+.pl3 p{color:var(--mu);font-size:15.5px;max-width:38ch}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+@media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
+.aims{list-style:none;margin:0;padding:0}
+.aims li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hr);font-size:17px;line-height:1.55}
+.aims li:last-child{border-bottom:1px solid var(--hr)}
+.aims li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ac);margin-top:.6em}
+.facts{margin:0}
+.facts>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--gap);padding:18px 0;border-top:1px solid var(--hr);align-items:baseline}
+.facts>div:last-child{border-bottom:1px solid var(--hr)}
+.facts dd{margin:0;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,24px);line-height:1.3}
+.fgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px var(--gap)}
+.fg{border-top:1px solid var(--hr);padding-top:22px}
+.fg b{display:block;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(23px,1.9vw,30px);line-height:1.1;margin:16px 0 12px}
+.fg p{color:var(--mu);font-size:15px;margin:0}
+.grant{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:end}
+.gq{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(30px,3.4vw,56px);line-height:1.08;margin:0;max-width:22ch;letter-spacing:-.015em}
+.gq em{color:var(--ac)}
+.qt{margin:clamp(40px,5vw,70px) 0 0;padding-top:28px;border-top:1px solid var(--hr)}
+.qt p{font-family:var(--serif);font-style:italic;font-size:clamp(23px,2.1vw,32px);line-height:1.25;max-width:32ch;margin:0 0 18px}
+
+/* cta */
+.cta .big{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(52px,7.6vw,140px);line-height:.98;letter-spacing:-.025em;margin:0}
+.cta .big em{color:var(--ac)}
+.cta .sub2{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--mu);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+/* footer */
+.ftr{position:relative;z-index:1;background:var(--d0);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hairD);--fg:var(--paper);--mu:var(--mutD);--ac:var(--accD);--hr:var(--hairD)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--mutD)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--accD)}
+.ftr .c a{color:var(--paper)}
+.ftr .bigw{font-family:var(--wmfont,var(--serif));font-weight:var(--wmw,400);font-size:min(var(--bigws,21vw),340px);line-height:.8;letter-spacing:var(--wmls,-.04em);margin:0 auto;text-align:center;white-space:nowrap;display:block;padding:.06em 0 .22em;color:var(--paper)}
+.ftr .bigw em{color:var(--accD);font-style:normal;font-family:inherit}
+.ftr .bigw .ch{display:inline-block}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hairD)}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(30px,3vw,48px);line-height:1.06;letter-spacing:-.015em;margin:14px 0 14px}
+.addr p{color:var(--mu)}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mu);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid var(--hr);padding:16px 0 12px;font-family:var(--serif);font-weight:400;font-size:24px;color:var(--fg);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--ac)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--err);opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fsub{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
+.thanks svg circle{fill:none;stroke:var(--ac);stroke-width:1}
+.formwrap.done form{display:none}
+.formwrap.done .thanks{display:block}
+
+/* transition cover (BF: offset set by GSAP only) */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--cover);will-change:transform}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--accD);opacity:.7}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden;color:var(--paper)}
+.xt .t{font-family:var(--serif);font-weight:var(--dw,400);font-style:var(--xts,italic);font-size:clamp(54px,9vw,170px);line-height:.95;letter-spacing:-.03em;overflow:hidden;padding:.14em .18em .4em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--accD)}
+
+@media (max-width:1100px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-key{display:none}.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:38vh;height:38svh}
+  .story-l .d3,.story-l .kick{display:none}
+  .two,.cgrid,.grant{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .hero::before{background:var(--hero-scrim-m)}
+  .hero-h{font-size:clamp(40px,11vw,92px)}
+  .hero-foot .s{font-size:16px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .pillars{grid-template-columns:1fr;row-gap:48px}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a h3{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.fsub{grid-column:1/2}
+}
+@media (max-width:560px){
+  .pgrid{grid-template-columns:1fr 1fr}
+  .fgrid{grid-template-columns:1fr}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .facts>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:21px}
+  .stats{grid-template-columns:1fr}
+}
+@media (max-width:420px){.pc-meta h3{font-size:21px}.pc-meta .ttl{font-size:13.5px}}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+}
+/* ---------- ENCUE specifics ---------- */
+.d1,.d2,.d3{font-weight:400}
+.hero-h{font-size:clamp(58px,8.6vw,170px);line-height:.96}
+.lede{font-size:clamp(22px,2vw,32px);line-height:1.3}
+.brand img{height:30px;width:auto;transition:filter .3s var(--eo)}
+.hdr:not(.ink) .brand img{filter:brightness(0) invert(1)}
+.brand .wmk{display:none;font-family:var(--wmfont);font-weight:500;font-size:28px;letter-spacing:-.035em;line-height:1;transform:skewX(-9deg)}
+.brand .wmk b{font-weight:500;color:var(--green)}
+.brand .wmk em{font-style:normal;font-family:inherit;color:var(--blue)}
+.hdr:not(.ink) .brand .wmk b{color:var(--greenD)}
+.hdr:not(.ink) .brand .wmk em{color:var(--accD)}
+.brand.nologo img{display:none!important}
+.brand.nologo .wmk{display:inline-block}
+#pre .wm{font-weight:500;letter-spacing:-.035em}
+#pre .wm span{display:inline-block;transform:skewX(-9deg)}
+#pre .wm b{font-weight:500;color:var(--green)}
+.ftr .bigw{font-weight:500;letter-spacing:-.045em}
+.ftr .bigw .sk{display:inline-block;transform:skewX(-9deg)}
+.ftr .bigw b{font-weight:500;color:var(--greenD)}
+.nw{white-space:nowrap}
+.hero-key i.g{background:var(--green);opacity:1}
+.stat .v{font-size:clamp(56px,6vw,112px)}
+.fig .s{fill:none;stroke:var(--fg);stroke-opacity:.62;stroke-width:1.3}
+.fig .s2{fill:none;stroke:var(--fg);stroke-opacity:.26;stroke-width:1}
+.fig .bf{fill:var(--fg);fill-opacity:.05;stroke:none}
+.fig .t{fill:none;stroke:var(--accD);stroke-width:1.6;stroke-linecap:round}
+.fig .tf{fill:var(--accD);stroke:none}
+.fig .g{fill:none;stroke:var(--greenD);stroke-width:1.6;stroke-linecap:round}
+.fig .gf{fill:var(--greenD);stroke:none}
+.fig .pq{fill:var(--fg);fill-opacity:.14;stroke:var(--fg);stroke-opacity:.35;stroke-width:1}
+.fig text.ta{fill:var(--accD)}
+.fig text.tg{fill:var(--greenD)}
+.fig text.big{font-family:var(--serif);font-size:22px;letter-spacing:0;fill:var(--fg)}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px var(--gap)}
+.ft{border-top:1px solid var(--hr);padding-top:22px}
+.ft b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(24px,2vw,32px);line-height:1.1;letter-spacing:-.01em;margin:0 0 10px}
+.ft p{color:var(--mu);margin:0;font-size:15.5px;max-width:34ch}
+.feats .tcard{display:flex;flex-direction:column}
+@media (max-width:1024px){.feats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.feats{grid-template-columns:1fr}}
+/* pipeline */
+.pipe{border-top:1px solid var(--hr)}
+.pp-h,.pp-r{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,3fr) minmax(0,6fr);column-gap:var(--gap);align-items:center}
+.pp-h{padding:16px 0 14px;border-bottom:1px solid var(--hr)}
+.pp-h .st{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.pp-h .st b{font-weight:400}.pp-h .st .sf{display:none}
+@media (max-width:1180px){.pp-h .st .lf{display:none}.pp-h .st .sf{display:inline}}
+.pp-h .st span{white-space:nowrap;padding-left:10px;border-left:1px solid var(--hr)}
+.pp-r{padding:22px 0;border-bottom:1px solid var(--hr);position:relative}
+.pp-r .pg{font-family:var(--serif);font-size:clamp(20px,1.7vw,27px);line-height:1.15}
+.pp-r .ind{font-size:16px;line-height:1.45;color:var(--fg)}
+.pp-r .ind small{display:block;margin-top:6px;color:var(--ac)}
+.pp-r .trk{position:relative;height:28px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.pp-r .trk i{border-left:1px dashed var(--hr);height:100%}
+.pp-r .bar{position:absolute;left:0;top:50%;height:8px;margin-top:-4px;border-radius:0 8px 8px 0;background:linear-gradient(90deg,color-mix(in srgb,var(--green) 18%,transparent),var(--green));width:var(--w);transform-origin:left}
+[data-tone^=dark] .pp-r .bar{background:linear-gradient(90deg,rgba(134,212,134,.15),var(--greenD))}
+.pp-note{margin-top:22px;color:var(--mu);font-size:14px;max-width:70ch}
+/* platform diagram */
+.plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(40px,5vw,72px)}
+.pf{border-top:1px solid var(--hr);padding-top:22px}
+.pf .code{font-family:var(--serif);font-size:clamp(40px,4vw,64px);line-height:1;letter-spacing:-.01em;color:var(--ac);display:block;margin:12px 0 14px;padding-bottom:.06em}
+.pf b{display:block;font-weight:500;font-size:17px;margin-bottom:8px}
+.pf p{color:var(--mu);font-size:15.5px;margin:0;max-width:36ch}
+.chain{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.chain .nd{border:1px solid var(--hr);border-radius:999px;padding:12px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+.chain .nd.a{border-color:var(--ac);color:var(--ac)}
+.chain svg{width:34px;height:10px;color:var(--mu)}
+/* company figure */
+.cfig{margin:0;background:#fff;border:1px solid var(--hr);border-radius:4px;padding:clamp(14px,2vw,28px);overflow:hidden}
+.cfig img{width:100%;height:auto;aspect-ratio:749/503}
+.cfig-cap{margin-top:14px;color:var(--mu);font-size:14px}
+.cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.tcard{position:relative;border:1px solid var(--hr);padding:28px 26px 26px;overflow:hidden;transition:transform .32s ease-out,box-shadow .32s ease-out}
+.tcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,var(--glow),transparent 60%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 26px 40px -30px rgba(6,11,39,.35)}
+.tcard:hover::before{transform:scaleX(1)}.tcard:hover::after{opacity:1}
+.tcard b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,34px);line-height:1.08;margin:14px 0 10px;transition:transform .3s ease-out}
+.tcard:hover b{transform:translateX(4px)}
+.tcard p{color:var(--mu);font-size:15.5px;margin:0}
+.badge{display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:6px 12px;border-radius:999px;border:1px solid var(--ac);color:var(--ac);font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;line-height:1.3}
+.grp-h{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin:0 0 30px;padding-bottom:14px;border-bottom:1px solid var(--hr)}
+.grp-h h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,2.8vw,44px);line-height:1.1;margin:0}
+.pgrid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
+.pgrid.small{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pgrid.two2{grid-template-columns:repeat(5,minmax(0,1fr))}
+.quote{margin:0;padding-top:28px;border-top:1px solid var(--hr)}
+.quote p{font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.3vw,36px);line-height:1.22;max-width:34ch;margin:0 0 18px}
+@media (max-width:1100px){.pgrid.five,.pgrid.two2{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.cards3,.plat{grid-template-columns:1fr;row-gap:36px}.pgrid.five,.pgrid.small,.pgrid.two2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pp-h{display:none}.pp-r{grid-template-columns:1fr;row-gap:8px}.pp-r .trk{margin-top:8px}}
+@media (max-width:560px){.pgrid.five,.pgrid.small,.pgrid.two2{grid-template-columns:1fr 1fr}}
+
+/* ---------- person sheet (BI, _kit/components/person-sheet.html, re-skinned) ---------- */
+.ps{position:fixed;inset:0;z-index:850;display:grid;place-items:center;visibility:hidden;pointer-events:none;--ps-bg:var(--l0);--ps-ink:var(--ink);--ps-mute:var(--mutL);--ps-line:var(--hairL);--ps-accent:var(--accL);--ps-scrim:rgba(6,11,39,.62);--fg:var(--ink);--mu:var(--mutL);--hr:var(--hairL);--ac:var(--accL);--onac:var(--l0);--bgc:var(--l0)}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:var(--ps-scrim);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:flex;align-items:stretch;width:min(1000px,calc(100vw - 64px));max-height:min(720px,calc(100vh - 96px));background:var(--ps-bg);color:var(--ps-ink);border-radius:18px;overflow:visible;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line);opacity:0}
+/* no clipping ancestor around the scroller: corners are rounded per child (BH/BI). The sheet hugs its content, so the portrait column never leaves dead space */
+.ps-media{flex:0 0 min(340px,34%);position:relative;border-radius:18px 0 0 18px;background:var(--hairL);overflow:hidden;display:flex;flex-direction:column}
+.ps-bar{border-top-right-radius:18px}.ps-body{border-bottom-right-radius:18px}
+.ps-media figure{position:relative;margin:0;flex:1;min-height:0;overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 24%;transform:none;filter:grayscale(1) contrast(1.1);transition:filter .6s var(--eo)}
+.ps-media:hover img{filter:grayscale(0) contrast(1.02)}
+.ps-media .cap{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:60px 24px 22px;background:linear-gradient(180deg,rgba(6,11,39,0),rgba(6,11,39,.72))}
+.ps-media .cap .k{font:400 11px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#e9ecf6}
+.ps-plate{flex:1;min-height:200px;background:linear-gradient(160deg,color-mix(in srgb,var(--ps-accent) 14%,transparent),transparent 60%)}
+.ps-col{flex:1;display:flex;flex-direction:column;min-height:0;min-width:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px;border-bottom:1px solid var(--ps-line)}
+.ps-bar .ps-step{display:flex;gap:8px}
+.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin;outline:none}
+.ps-body .lab{color:var(--ps-accent)}
+.ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(36px,3.6vw,54px);line-height:1.08;letter-spacing:-.01em;margin:14px 0 10px;padding-bottom:.14em}
+.ps-body .role{font-size:17px;line-height:1.5;color:var(--ps-mute);margin:0 0 30px}
+.ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
+.ps-body .src{margin-top:28px;font-size:13px;color:var(--ps-mute)}
+.ps .btn.sm{height:44px;min-height:44px;padding:0 18px}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{flex-direction:column;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);max-height:none;border-radius:18px 18px 0 0}
+  .ps-media{flex:0 0 auto;border-radius:18px 18px 0 0;flex-direction:row;align-items:flex-end;padding:18px 20px;background:color-mix(in srgb,var(--ps-ink) 5%,var(--ps-bg))}
+  .ps-bar{border-top-right-radius:0}.ps-body{border-bottom-right-radius:0}
+  .ps-media figure{width:104px;flex:0 0 104px;height:116px;border-radius:6px}
+  .ps-media .cap{position:static;background:none;padding:0 0 0 16px}.ps-media .cap .k{color:var(--mutL)}
+  .ps-plate{min-height:110px;flex:0 0 104px}
+  .ps-bar{padding:12px 16px}
+  .ps-body{padding:24px 20px 48px}
+}
+@media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
+
+.ph2>*{transform:scale(var(--s,1));transform-origin:var(--o,50% 30%);object-position:var(--o,50% 30%)}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(calc(var(--s,1) * 1.045))}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.1) brightness(1.02)}
+/* footer + dark header wordmark: italic, bold, logo greens and blues */
+.ftr .bigw .sk{transform:skewX(-12deg);-webkit-text-stroke:.022em currentColor}
+.ftr .bigw{color:var(--accD)}
+.ftr .bigw b{color:var(--greenD);-webkit-text-stroke:.022em var(--greenD)}
+.brand .wmk{-webkit-text-stroke:.03em currentColor;transform:skewX(-12deg)}
+.brand .wmk b{-webkit-text-stroke:.03em currentColor}
+.hdr:not(.ink) .brand img{display:none}
+.hdr:not(.ink) .brand .wmk{display:inline-block}
+.stat .v sup{font-size:.5em}
+.pp-r{align-items:first baseline}.pp-r .trk{align-self:center}
+.ph-head.sm{min-height:52vh;min-height:52svh}
+.cfig{background:#eef0f5;padding:clamp(18px,2.4vw,34px)}
+.cfig img{background:#fff;border-radius:2px}
+.cfig-cap .lab{color:var(--ac)}
+@media (max-width:1024px){.fig text{display:none}}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("en-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc"><svg class="mk" viewBox="0 0 64 64"><path d="M6 50C22 46 40 40 58 22" fill="none" stroke="#0b1433" stroke-width="2.2" stroke-linecap="round"/><path d="M30 42C30 34 26 30 24 26" fill="none" stroke="#0b1433" stroke-width="1.6" stroke-linecap="round"/><ellipse cx="23" cy="22" rx="6" ry="5" fill="#0f30c4"/><path d="M44 32C46 26 50 24 52 20" fill="none" stroke="#0b1433" stroke-width="1.6" stroke-linecap="round"/><circle cx="53" cy="16" r="4" fill="#018001"/></svg>
+    <div class="wm"><span><b>EN</b><em>CUE</em></span></div></div>
+  <span class="lab pl">Restoring the synapse</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">000</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="ENCUE, home"><img src="https://encueinc.com/wp-content/uploads/2023/10/encue-logo-1536x569.png" alt="ENCUE" onerror="document.getElementById('brand').classList.add('nologo')"><span class="wmk"><b>EN</b><em>CUE</em></span></a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/science">Science</a>
+    <a class="nl ul" href="#/pipeline">Pipeline</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="nl ul" href="#/news">News</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true" data-lenis-prevent>
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/science">Science</a></li>
+    <li><a href="#/pipeline">Pipeline</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/news">News</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf"><div><span class="lab">Evanston, IL</span><br>ENCUE Inc.</div><div><span class="lab">Origin</span><br>Northwestern University spinout</div></div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" id="psScrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <button class="btn sm" type="button" data-ps-close>Close</button>
+        <div class="ps-step"><button class="btn sm" type="button" id="psPrev" aria-label="Previous person">Prev</button><button class="btn sm" type="button" id="psNext" aria-label="Next person">Next</button></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">ENCUE</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){var d=iso.split("-");return d.length<3?(d.length<2?d[0]:MO[+d[1]-1]+" "+d[0]):MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
+
+var MOBILE=function(){return innerWidth<861};
+var TEAM=[],SITE={};
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+
+/* ================= SITE-SPECIFIC: content, views, hero, story ================= */
+var WP="https://encueinc.com/wp-content/uploads/";
+TEAM=[
+ {slug:"joseph-moskal",fs:1.08,fo:"50% 34%",name:"Joseph Moskal, PhD",title:"Founder and Chairman",grp:"Founders",img:WP+"2023/10/Joseph-Moskal.jpg",
+  bio:["Joe is also a Professor of Biomedical Engineering and Director of the Falk Center for Molecular Therapeutics at Northwestern. He is world-renowned for his work on NMDA and neurodegenerative and neuropsychiatric drug discovery; he has authored hundreds of publications and patents.","Joe has extensive experience in drug discovery and entrepreneurship. He was founder and CSO of Naurex, sold to Allergan for $1.7B, and of Aptinyx, whose IPO exceeded $1B. He is the inventor of zelquistinel (oral) and apimostinel (injectable), and has drugs in clinical development at Gate Neuroscience. Dr. Moskal is a pioneer in the NMDA receptor field."]},
+ {slug:"alicia-loffler",fs:1.12,fo:"36% 30%",name:"Alicia Löffler, PhD",title:"Co-founder and Chief Executive Officer",grp:"Founders",img:WP+"2023/10/Alicia-Loffler.jpg",
+  bio:["Alicia brings more than 25 years of experience in biotech and entrepreneurship. She served as the founding Executive Director of Northwestern’s Innovation and New Ventures Office, Executive Director of the Center for Biotechnology at the Kellogg School of Management, and Director of the Northwestern Translational Science Center for Innovation.","In 2015 she was named Associate Provost of Innovation and Entrepreneurship and Associate Vice-President for Research, overseeing translational, transactional, commercialization and venture activities at Northwestern, including the management of its inventions, licenses, patents and startups.","Alicia advises multiple for-profit and non-profit boards for biotech and medical-device organizations and continues teaching at Kellogg. She is the principal investigator of ENCUE’s NIH SBIR program."]},
+ {slug:"jeffrey-burgdorf",fs:1,fo:"50% 30%",name:"Jeffrey Burgdorf, PhD",title:"Co-founder",grp:"Founders",img:WP+"2023/10/Jeffrey-Burghoff.jpg",
+  bio:["Jeff is also a Research Professor of Biomedical Engineering and Associate Director of the Falk Center for Molecular Therapeutics at Northwestern. He has extensive experience in neuroscience discovery, pharmacology and translational biomarker work, and is a pioneer in IGF receptors.","He served in leadership research and drug-development roles at Naurex, Aptinyx and Gate Neuroscience, and is the author of multiple publications and the lead inventor of many patents in the CNS field."]},
+ {slug:"edward-chandler",fs:1.06,fo:"50% 30%",name:"Edward Chandler, MBA",title:"Co-founder and Advisor",grp:"Founders",img:WP+"2023/10/Edward-Chandler-1.jpg",
+  bio:["Ed is a founder and managing director of Portage Venture Partners, which manages the Portage, DFJ Portage and Graystone Venture Funds. Before forming Portage and Graystone, he was a founder and the managing principal of Prairie Capital.","Ed has served as a director of multiple technology, energy, biotech and entertainment companies. He started his career at the Boston Consulting Group."]},
+ {slug:"amin-khan",fs:1.12,fo:"50% 32%",name:"M. Amin Khan, PhD",title:"Co-founder and Senior Advisor, Medicinal Chemistry",grp:"Founders",img:WP+"2024/01/M.-Amin-Khan.jpg",
+  bio:["Amin brings over 30 years of experience in the pharmaceutical and biotech industry. He was a senior scientist at Elan, Gliatech and others.","Amin discovered and developed multiple novel CNS molecules that entered human clinical trials, including Naurex’s second-generation series of partial agonists of the NMDA receptor. He was vice president of chemistry research and development at Naurex and vice president of research and chemistry at Aptinyx."]},
+ {slug:"ronald-burch",fs:1.1,fo:"50% 30%",name:"Ronald Burch, PhD, MD",title:"Senior Advisor, Clinical Research and Development",grp:"Advisors",img:WP+"2024/01/Ronald-Burch.jpg",
+  bio:["Ron brings over 30 years of extensive experience in the pharmaceutical industry. He has led 20 IND submissions, from which seven products have become marketed and two are in phase 3 clinical trials.","Ron is the Chief Medical Officer of Gate Neuroscience. Previously he was Director of Pain and Inflammation at Nova Pharmaceutical and Head of US Biosciences at Zeneca Pharmaceuticals, where he led the CNS therapeutic area. He was also founder and CEO of AlgoRx and co-founder and CMO of Naurex."]},
+ {slug:"peter-penzes",fs:1.16,fo:"50% 30%",name:"Peter Penzes, PhD",title:"Senior Advisor, Research and Mechanisms of Learning",grp:"Advisors",img:WP+"2024/12/Dr.-Peter-Penzes-scaled-e1734037368983.jpg",
+  bio:["Peter is the Ruth and Evelyn Dunbar Professor of Neuroscience, Pharmacology, and Psychiatry and Behavioral Sciences at Northwestern University Feinberg School of Medicine, where he also directs the Center for Autism and Neurodevelopment and the NIMH-funded Silvio E. Conte Center.","Dr. Penzes earned his PhD in Biochemistry from SUNY at Buffalo and completed postdoctoral training in neuroscience at the Johns Hopkins University School of Medicine. His research focuses on the molecular and circuit mechanisms underlying synaptic structural plasticity and their contributions to neurodevelopmental and psychiatric disorders, with the aim of developing therapeutic strategies that target synapse remodeling.","He has received continuous funding from the National Institutes of Health and non-governmental organizations, and his work has been published in over 100 peer-reviewed articles."]}
+];
+var NEWS=[
+ {d:"Sep 2026",s:"NIH · NIA",t:"ENCUE receives an SBIR Phase II award to complete IND-enabling studies of NQ-13",m:"2R44AG087761-02 · first-year award $1,449,877 · PI Alicia Löffler",u:"https://reporter.nih.gov/project-details/2R44AG087761-02"},
+ {d:"Jul 2026",s:"FDA",t:"NQ-13 granted Orphan Drug and Rare Pediatric Disease designations for Rett syndrome",m:"Announced on ENCUE’s pipeline page",u:"https://encueinc.com/pipeline/"},
+ {d:"Sep 2024",s:"NIH · NIA",t:"SBIR Phase I award: novel small-molecule modulators of synaptic plasticity for Alzheimer’s disease",m:"1R43AG087761-01A1 · award $499,998 · PI Alicia Löffler",u:"https://reporter.nih.gov/project-details/1R43AG087761-01A1"}
+];
+var PUBS=[
+ {d:"In press",s:"Publication",t:"A prefrontal cortex alpha/delta switch controls the transition from positive to negative affective states",m:"Nature Discover Mental Health (in press) · preprint",u:"https://assets.researchsquare.com/files/rs-2865690/v1/8e34c48a-9dbc-476a-a9e2-cc8df7cd7880.pdf?c=1683211945"},
+ {d:"2023",s:"Publication",t:"An IGFBP2-derived peptide promotes neuroplasticity and rescues deficits in a mouse model of Phelan-McDermid syndrome",m:"Molecular Psychiatry",u:"https://www.nature.com/articles/s41380-022-01904-0"},
+ {d:"2017",s:"Publication",t:"IGFBP2 produces rapid-acting and long-lasting effects in rat models of posttraumatic stress disorder via a novel mechanism associated with structural plasticity",m:"International Journal of Neuropsychopharmacology",u:"https://www.researchgate.net/publication/313385615_IGFBP2_Produces_Rapid-Acting_and_Long-Lasting_Effects_in_Rat_Models_of_Posttraumatic_Stress_Disorder_via_a_Novel_Mechanism_Associated_with_Structural_Plasticity"},
+ {d:"2015",s:"Publication",t:"Insulin-like growth factor 1 produces an antidepressant-like effect and elicits NMDA receptor-independent long-term potentiation in medial prefrontal cortex and hippocampus",m:"International Journal of Neuropsychopharmacology",u:"https://pubmed.ncbi.nlm.nih.gov/26374350/"},
+ {d:"2010",s:"Publication",t:"Uncovering the molecular basis of positive affect using rough-and-tumble play in rats: a role for insulin-like growth factor 1",m:"Neuroscience",u:"https://www.researchgate.net/publication/42638480_Burgdorf_J_Kroes_RA_Beinfeld_MC_Panksepp_J_Moskal_JR_Uncovering_the_molecular_basis_of_positive_affect_using_rough-and-tumble_play_in_rats_a_role_for_insulin-like_growth_factor_I_Neuroscience_168_769-"},
+ {d:"Patent",s:"US20220144896A1",t:"Insulin-like growth factor binding protein bioactive peptide fragments",m:"Also listed: provisional 63/536,009, Compounds and methods for treating central nervous system disorders; 63/450,502, System and method for detecting an emotional state",u:"https://www.patentguru.com/inventor/burgdorf-jeffrey-s%20"}
+];
+/* pipeline: bar lengths reproduce ENCUE's published chart (EncuePipeline_v4, 2026), in units of the five stage columns */
+var PIPE=[
+ {g:"Autism spectrum disorders",i:"Rett syndrome",w:1.96,b:"FDA Orphan Drug + Rare Pediatric Disease designations"},
+ {g:"",i:"Phelan-McDermid syndrome",w:.64},
+ {g:"Alzheimer’s and dementia",i:"Early and moderate Alzheimer’s disease",w:1.91},
+ {g:"Traumatic brain injury",i:"Post-TBI mild and moderate cognitive disorders",w:1.14},
+ {g:"Psychiatric disorders",i:"Schizophrenia in 22q",w:.41},
+ {g:"",i:"Bipolar disorder",w:.32},
+ {g:"Sleep disorders",i:"Insomnia",w:.32}
+];
+SITE={name:"ENCUE",key:"en",homeTitle:"ENCUE — Restoring the synapse",phTone:"light",
+  fonts:['400 1em "Instrument Serif"','italic 400 1em "Instrument Serif"','400 1em "DM Sans"','500 1em "DM Sans"','400 1em "DM Mono"'],
+  bioSrc:"Profile adapted from ENCUE’s website.",
+  routes:{science:"Science",pipeline:"Pipeline",team:"Team",news:"News",contact:"Contact"},views:{}};
+function rnd(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+
+/* ---- story: ONE synapse, one continuous scrubbed scene (BL) ---- */
+function storyScene(){
+  var s='<svg viewBox="0 0 600 640" id="syn">';
+  /* presynaptic terminal */
+  s+='<path class="bf" d="M150 74C150 20 450 20 450 74C450 152 392 196 300 196C208 196 150 152 150 74Z"/><path class="s dr" d="M150 74C150 20 450 20 450 74C450 152 392 196 300 196C208 196 150 152 150 74Z"/>';
+  var V=[[220,80],[262,62],[306,70],[350,60],[388,86],[244,122],[290,112],[336,116],[300,154],[262,160],[340,156]];
+  V.forEach(function(v){s+='<circle class="s2 dr" cx="'+v[0]+'" cy="'+v[1]+'" r="11"/>'});
+  s+='<path class="s dr" d="M232 196H368" style="stroke-width:2.4"/>';
+  /* dendrite shaft */
+  s+='<rect class="bf" x="10" y="456" width="580" height="66"/><path class="s dr" d="M10 456H252"/><path class="s dr" d="M348 456H590"/><path class="s dr" d="M10 522H590"/>';
+  /* tau tangle inside the shaft (fades with treatment) */
+  s+='<g id="tau"><path class="s" d="M70 489C86 474 102 504 118 489S150 474 166 489S198 504 214 489" style="stroke-width:1.6"/><path class="s" d="M70 489C86 504 102 474 118 489S150 504 166 489S198 474 214 489" style="stroke-width:1.6"/><text x="70" y="552">P-TAU</text></g>';
+  /* amyloid plaques (persist) */
+  s+='<g id="abeta"><path class="pq" d="M58 300C40 280 60 254 86 262C110 246 134 268 126 292C142 314 118 340 94 330C70 346 44 326 58 300Z"/><path class="pq" d="M512 352C500 336 516 316 536 322C556 312 574 330 566 348C576 366 556 382 538 374C518 386 500 370 512 352Z"/><text x="40" y="236">AMYLOID-β</text></g>';
+  /* the spine: neck (path rewritten each frame) + scalable head group */
+  s+='<path id="neck" class="s" d="M282 380C282 410 270 430 270 456M318 380C318 410 330 430 330 456"/>';
+  s+='<g id="head"><ellipse class="bf" cx="300" cy="296" rx="118" ry="84"/><ellipse class="s" cx="300" cy="296" rx="118" ry="84"/>';
+  for(var a=0;a<8;a++){var x=246+a*15.5,yy=296-84*Math.sqrt(1-Math.pow((x-300)/118,2));s+='<g class="ampa" data-x="'+x+'" data-y="'+(yy+2).toFixed(1)+'"><rect class="tf" x="-5" y="-8" width="4" height="16" rx="1.5"/><rect class="tf" x="1" y="-8" width="4" height="16" rx="1.5"/></g>'}
+  /* IGF2R on the spine membrane */
+  [[194,250,-128],[406,250,128]].forEach(function(r,i){s+='<g class="igf" transform="translate('+r[0]+' '+r[1]+') rotate('+r[2]+')"><path class="g" d="M0 0V-18M0 -18L-8 -30M0 -18L8 -30"/><circle class="gf halo" cx="0" cy="-30" r="12" style="fill-opacity:.0"/></g>'});
+  s+='<text class="tg" x="96" y="200" id="lbIgf">IGF2R</text>';
+  s+='</g>';
+  /* NQ-13 molecules */
+  for(var m=0;m<2;m++)s+='<g class="nq"><path class="tf" d="M0 -9L7.8 -4.5V4.5L0 9L-7.8 4.5V-4.5Z"/></g>';
+  s+='<text class="ta" x="40" y="420" id="lbNq">NQ-13</text>';
+  /* signalling cascade dots */
+  for(var c=0;c<8;c++)s+='<circle class="tf casc" r="3.4" cx="300" cy="300"/>';
+  s+='<text class="ta" x="436" y="420" id="lbMek">MEK → ERK</text>';
+  s+='<text x="40" y="160" id="lbPre">PRESYNAPTIC</text><text x="452" y="300" id="lbSp">SPINE</text><text x="430" y="196" id="lbAmpa" class="ta">AMPA RECEPTORS</text>';
+  /* QEEG alpha trace */
+  var d="M40 596";for(var k=1;k<=104;k++){var xx=40+k*5,env=.25+.75*k/104;d+="L"+xx+" "+(596-Math.sin(k*.62)*16*env-Math.sin(k*1.9+1)*3).toFixed(1)}
+  s+='<path class="s2" d="M40 596H560"/><path id="eeg" class="t" d="'+d+'"/><text class="ta" x="40" y="636" id="lbEeg">FRONTAL QEEG ALPHA · SCHEMATIC</text>';
+  return s+'</svg>';
+}
+function sceneDriver(svg){
+  var $s=function(q){return svg.querySelector(q)},$$s=function(q){return [].slice.call(svg.querySelectorAll(q))};
+  var cl=function(v){return v<0?0:v>1?1:v},sm=function(a,b,x){var t=cl((x-a)/(b-a));return t*t*(3-2*t)},lr=function(a,b,t){return a+(b-a)*t};
+  var dr=$$s(".dr");dr.forEach(function(e){e.setAttribute("pathLength","1");e.style.strokeDasharray="1 1"});
+  var stat=$$s(".bf");
+  var head=$s("#head"),neck=$s("#neck"),tau=$s("#tau"),ab=$s("#abeta"),ampa=$$s(".ampa"),nq=$$s(".nq"),halo=$$s(".halo"),casc=$$s(".casc"),eeg=$s("#eeg");
+  eeg.setAttribute("pathLength","1");eeg.style.strokeDasharray="1 1";
+  var L={pre:$s("#lbPre"),sp:$s("#lbSp"),igf:$s("#lbIgf"),nq:$s("#lbNq"),mek:$s("#lbMek"),ampa:$s("#lbAmpa"),eeg:$s("#lbEeg")};
+  var REC=[[194,250,-128],[406,250,128]];
+  var last="";
+  return function(p,pre){
+    var key=p.toFixed(4)+"|"+pre.toFixed(3);if(key===last)return;last=key;
+    dr.forEach(function(e){e.style.strokeDashoffset=(1-pre).toFixed(4)});
+    stat.forEach(function(e){e.style.opacity=pre.toFixed(3)});
+    /* spine head: shrinks under Aβ/tau, regrows past baseline with NQ-13 */
+    var shrink=sm(.05,.21,p),grow=sm(.52,.72,p),sy=lr(lr(1,.72,shrink),1.12,grow),sx=lr(lr(1,.8,shrink),1.08,grow);
+    sx*=pre*.12+.88;sy*=pre*.12+.88;
+    head.setAttribute("transform","translate(300 212) scale("+sx.toFixed(4)+" "+sy.toFixed(4)+") translate(-300 -212)");
+    head.style.opacity=Math.min(1,pre*1.4).toFixed(3);
+    var by=212+168*sy-8,wt=lr(18,9,shrink)+grow*14,wb=lr(30,22,shrink)+grow*8;
+    neck.setAttribute("d","M"+(300-wt)+" "+by.toFixed(1)+"C"+(300-wt)+" "+(by+30).toFixed(1)+" "+(300-wb)+" 430 "+(300-wb)+" 456M"+(300+wt)+" "+by.toFixed(1)+"C"+(300+wt)+" "+(by+30).toFixed(1)+" "+(300+wb)+" 430 "+(300+wb)+" 456");
+    neck.style.opacity=pre.toFixed(3);
+    /* pathology */
+    ab.style.opacity=(sm(.03,.17,p)).toFixed(3);
+    tau.style.opacity=(sm(.06,.2,p)*(1-.85*sm(.56,.74,p))).toFixed(3);
+    /* AMPA receptors: internalised in decline, inserted with treatment */
+    ampa.forEach(function(g,i){var x=+g.getAttribute("data-x"),y=+g.getAttribute("data-y");
+      var keep=(i===2||i===5),base=i===0||i===7?0:1;
+      var vis=keep?1:lr(base*(1-sm(.06+i*.012,.2+i*.012,p)),1,sm(.55+i*.014,.68+i*.014,p));
+      var dy=(1-vis)*34;g.setAttribute("transform","translate("+x+" "+(y+dy).toFixed(1)+")");g.style.opacity=(vis*pre).toFixed(3)});
+    /* NQ-13 arrives and binds IGF2R */
+    var arr=sm(.27,.46,p);
+    nq.forEach(function(g,i){var r=REC[i],tx=r[0]+Math.sin(r[2]*Math.PI/180)*30,ty=r[1]-Math.cos(r[2]*Math.PI/180)*30*sy;
+      var x0=i?590:10,y0=i?360:380,x=lr(x0,tx,arr),y=lr(y0,212+(ty-212)*sy,arr)+Math.sin(arr*Math.PI)*-40;
+      x=300+(x-300)*(arr>.99?sx:1);
+      g.setAttribute("transform","translate("+x.toFixed(1)+" "+y.toFixed(1)+") rotate("+(arr*120).toFixed(1)+")");g.style.opacity=sm(.25,.3,p).toFixed(3)});
+    var bound=sm(.44,.5,p);halo.forEach(function(h){h.style.fillOpacity=(bound*(.22-.12*sm(.7,.9,p))).toFixed(3)});
+    /* MEK/ERK cascade: dots travel from receptors towards the spine base */
+    var cp=sm(.48,.7,p);
+    casc.forEach(function(c,i){var side=i%2?1:-1,u=cl(cp*1.6-(i>>1)*.18),r=REC[i%2];
+      var x=lr(300+(r[0]-300)*sx*.82,300+side*8,u),y=lr(212+(r[1]-212)*sy,212+150*sy,u);
+      c.setAttribute("cx",x.toFixed(1));c.setAttribute("cy",y.toFixed(1));c.style.opacity=(Math.sin(Math.min(1,u)*Math.PI)*(u>0?1:0)).toFixed(3)});
+    /* QEEG read-out */
+    eeg.style.strokeDashoffset=(1-sm(.76,.96,p)).toFixed(4);
+    /* labels */
+    L.pre.style.opacity=pre.toFixed(3);L.sp.style.opacity=pre.toFixed(3);
+    L.ampa.style.opacity=(pre*(1-sm(.12,.2,p)+sm(.6,.68,p))*(1-sm(.74,.8,p))).toFixed(3);
+    L.igf.style.opacity=(sm(.22,.3,p)*(1-sm(.74,.8,p))).toFixed(3);
+    L.nq.style.opacity=(sm(.25,.32,p)*(1-sm(.46,.5,p))).toFixed(3);
+    L.mek.style.opacity=(sm(.5,.56,p)*(1-sm(.74,.8,p))).toFixed(3);
+    L.eeg.style.opacity=sm(.76,.82,p).toFixed(3);
+    $s("#abeta text").style.opacity=(1-sm(.3,.36,p)).toFixed(3);
+  };
+}
+
+/* ---- hero: one fine-ink dendrite; spines sprout, swell and make contact (structural plasticity) ---- */
+function makeHero(cv){
+  var c=cv.getContext("2d"),W=1,H=1,D=1,S=1,mob=false,CUR=[],SP=[],bg=null;
+  function sm(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}
+  function bz(P,t){var u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
+  function sample(P,w0,w1,n){var pts=[],len=0,prev=null;for(var i=0;i<=n;i++){var t=i/n,p=bz(P,t);if(prev)len+=Math.hypot(p[0]-prev[0],p[1]-prev[1]);pts.push({x:p[0],y:p[1],w:(w0+(w1-w0)*t)*S,s:len});prev=p}
+    for(i=0;i<=n;i++){var a=pts[Math.max(0,i-1)],b=pts[Math.min(n,i+1)],dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1;pts[i].tx=dx/l;pts[i].ty=dy/l;pts[i].nx=-dy/l;pts[i].ny=dx/l}
+    return {pts:pts,len:len}}
+  function build(){
+    var P,B;
+    if(mob){P=[[-.06*W,.165*H],[.3*W,.15*H],[.62*W,.09*H],[1.06*W,.11*H]];B=[[0,0],[.74*W,.13*H],[.9*W,.15*H],[1.08*W,.17*H]]}
+    else{/* BM: anchor the visual to the content grid, not the window edge */var cw=W/D,gut=Math.min(72,Math.max(16,cw*.042)),sd=Math.max(gut,(cw-1320)/2)*D,X=function(f){return sd+(W-2*sd)*f};
+      P=[[X(.5),1.08*H],[X(.6),.8*H],[X(.66),.4*H],[X(1.06),.2*H]];B=[[0,0],[X(.8),.62*H],[X(.92),.7*H],[X(1.07),.9*H]]}
+    var main=sample(P,mob?22:40,mob?11:17,240),bi=Math.round(240*(mob?.5:.48)),bp=main.pts[bi];B[0]=[bp.x,bp.y];
+    var br=sample(B,mob?13:18,mob?7:9,160);CUR=[main,br];SP=[];
+    var id=0;[main,br].forEach(function(cv2,ci){var step=(mob?15:16)*S,sx=step*.6;
+      for(var s=sx;s<cv2.len-step*.4;s+=step*(.7+rnd(id,9)*.6)){
+        var k=0;while(k<cv2.pts.length-1&&cv2.pts[k].s<s)k++;var pt=cv2.pts[k];
+        if(pt.x<-40*S||pt.x>W+40*S||pt.y<-40*S||pt.y>H+40*S){id++;continue}
+        if(ci===0&&Math.abs(k-bi)<10){id++;continue}
+        var ty=rnd(id,1),kind=ty<.16?0:ty<.38?1:2;
+        SP.push({pt:pt,side:rnd(id,2)<.5?-1:1,ang:(rnd(id,3)-.5)*.9,len:(kind===0?36+rnd(id,4)*20:kind===1?11+rnd(id,4)*7:22+rnd(id,4)*22)*S*(mob?.85:1),
+          r:(kind===0?1.2:kind===1?7+rnd(id,5)*3:5.5+rnd(id,5)*5)*S*(mob?.85:1),kind:kind,bend:(rnd(id,6)-.5)*.9,d:rnd(id,7),ph:rnd(id,8)*6.283,m0:.2+rnd(id,10)*.5,syn:kind===2&&rnd(id,11)<.62,cur:0,g:0});id++}});
+    /* depth: soft out-of-focus dendrites, rendered once */
+    bg=document.createElement("canvas");bg.width=W;bg.height=H;var b=bg.getContext("2d");b.lineCap="round";
+    var paths=mob?[[[.0*W,.2*H],[.4*W,.32*H],[.6*W,.1*H],[1*W,.16*H]],[[.2*W,.7*H],[.5*W,.5*H],[.8*W,.6*H],[1.1*W,.45*H]]]:
+      [[[.62*W,-.1*H],[.7*W,.3*H],[.86*W,.4*H],[1.1*W,.3*H]],[[.36*W,.98*H],[.6*W,.88*H],[.86*W,.92*H],[1.1*W,.72*H]],[[.8*W,1.1*H],[.82*W,.7*H],[.9*W,.5*H],[1.1*W,.5*H]]];
+    b.filter="blur("+Math.round(9*S)+"px)";
+    paths.forEach(function(Q,i){b.strokeStyle=i%2?"rgba(15,48,196,.07)":"rgba(11,20,51,.05)";b.lineWidth=(i%2?16:22)*S;b.beginPath();b.moveTo(Q[0][0],Q[0][1]);b.bezierCurveTo(Q[1][0],Q[1][1],Q[2][0],Q[2][1],Q[3][0],Q[3][1]);b.stroke()});
+    b.filter="none";
+  }
+  function shaft(cv2){var p=cv2.pts,i;
+    c.beginPath();for(i=0;i<p.length;i++){var a=p[i];c[i?"lineTo":"moveTo"](a.x+a.nx*a.w/2,a.y+a.ny*a.w/2)}
+    for(i=p.length-1;i>=0;i--){a=p[i];c.lineTo(a.x-a.nx*a.w/2,a.y-a.ny*a.w/2)}c.closePath();
+    c.fillStyle="rgba(244,245,249,.92)";c.fill();c.fillStyle="rgba(11,20,51,.045)";c.fill();
+    c.lineWidth=1.15*D;c.strokeStyle="rgba(11,20,51,.6)";
+    [1,-1].forEach(function(sd){c.beginPath();for(var j=0;j<p.length;j++){var q=p[j];c[j?"lineTo":"moveTo"](q.x+sd*q.nx*q.w/2,q.y+sd*q.ny*q.w/2)}c.stroke()});
+    c.lineWidth=.8*D;c.strokeStyle="rgba(11,20,51,.12)";
+    [.2,-.16].forEach(function(f){c.beginPath();for(var j=0;j<p.length;j+=2){var q=p[j];c[j?"lineTo":"moveTo"](q.x+f*q.nx*q.w,q.y+f*q.ny*q.w)}c.stroke()});
+  }
+  return {resize:function(w,h,d){W=w;H=h;D=d;mob=W/D<861;S=mob?(W/D/390)*D*.95:Math.min(W,H*1.6)/1440*1.0;if(!mob)S=Math.max(S,.8*D);build()},
+   draw:function(t,IN,m,dim){
+    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);
+    if(bg)c.drawImage(bg,-m[0]*14*D,-m[1]*10*D);
+    var ox=m[0]*10*D,oy=m[1]*7*D;if(window._fieldSub&&!mob){/* sub-page heads: the art sits clear of the headline column */ox+=W*.24;oy+=H*.3}c.translate(ox,oy);
+    var px=(m[0]+.5)*W-ox,py=(m[1]+.5)*H-oy,sc=Math.min(1,(window.scrollY||0)/innerHeight),R=170*S;
+    /* spines behind the shaft edge are drawn first, then the shaft over their roots */
+    c.lineCap="round";
+    for(var i=0;i<SP.length;i++){var s=SP[i],pt=s.pt;
+      s.g=sm(s.d*.72,s.d*.72+.28,IN);if(s.g<=0)continue;
+      var hx=pt.x,hy=pt.y,dd=Math.hypot(hx-px,hy-py),boost=Math.exp(-(dd*dd)/(R*R));
+      var tgt=Math.min(1,s.m0+.32*sc+.62*boost+.07*Math.sin(t*.45+s.ph)+.12*IN*s.d);
+      s.cur+=(tgt-s.cur)*.06;var sw=s.cur;
+      var ca=Math.cos(s.ang),sa=Math.sin(s.ang),dx=(pt.nx*ca-pt.ny*sa)*s.side,dy=(pt.nx*sa+pt.ny*ca)*s.side;
+      var bx=pt.x+pt.nx*s.side*pt.w*.42,by=pt.y+pt.ny*s.side*pt.w*.42,L=s.len*s.g*(s.kind===2?(.9+.18*sw):1);
+      var ex=bx+dx*L,ey=by+dy*L,cx=bx+dx*L*.5+pt.tx*s.bend*L*.35,cy=by+dy*L*.5+pt.ty*s.bend*L*.35;
+      c.strokeStyle="rgba(11,20,51,"+(.5*s.g).toFixed(3)+")";c.lineWidth=(s.kind===1?2.2:1.05)*D;
+      c.beginPath();c.moveTo(bx,by);c.quadraticCurveTo(cx,cy,ex,ey);c.stroke();
+      if(s.kind===0)continue;
+      var rr=s.r*s.g*(s.kind===2?(.62+.62*sw):(.8+.3*sw)),hx2=ex+dx*rr*.8,hy2=ey+dy*rr*.8,an=Math.atan2(dy,dx);
+      c.beginPath();c.ellipse(hx2,hy2,rr*1.08,rr*.86,an,0,6.283);
+      c.fillStyle="rgba(246,247,250,.96)";c.fill();
+      c.fillStyle="rgba(15,48,196,"+((.1+.36*sw)*s.g).toFixed(3)+")";c.fill();
+      c.lineWidth=1.05*D;c.strokeStyle="rgba(11,20,51,"+(.55*s.g).toFixed(3)+")";c.stroke();
+      if(s.syn){var on=sm(.55,.82,sw)*s.g;if(on>0.01){
+        var tx=hx2+dx*(rr*1.08+3.2*S),ty=hy2+dy*(rr*1.08+3.2*S),bw=rr*1.25;
+        /* presynaptic bouton cap + its axon thread */
+        c.strokeStyle="rgba(11,20,51,"+(.42*on).toFixed(3)+")";c.lineWidth=1*D;
+        c.beginPath();c.ellipse(tx+dx*bw*.55,ty+dy*bw*.55,bw,bw*.62,an+Math.PI/2,0,6.283);c.stroke();
+        c.beginPath();c.moveTo(tx+dx*bw*1.15,ty+dy*bw*1.15);c.quadraticCurveTo(tx+dx*bw*2.6-dy*20*S,ty+dy*bw*2.6+dx*20*S,tx+dx*bw*3.4-dy*44*S,ty+dy*bw*3.4+dx*44*S);
+        c.strokeStyle="rgba(11,20,51,"+(.2*on).toFixed(3)+")";c.stroke();
+        c.fillStyle="rgba(1,128,1,"+(.9*on).toFixed(3)+")";c.beginPath();c.arc(tx,ty,1.9*S*(.8+.4*Math.sin(t*1.6+s.ph)*.5+.2),0,6.283);c.fill()}}
+    }
+    CUR.forEach(shaft);
+    c.setTransform(1,0,0,1,0,0);
+  }};
+}
+
+/* ---- views ---- */
+SITE.views.home=function(){
+  return '<section class="hero" id="hero" data-field data-tone="light">'+
+   '<span class="lab eyebrow" data-r>Synaptic plasticity therapeutics · Evanston, Illinois</span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Restoring the</span><span class="l"><em>synapse.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>ENCUE, a Northwestern University spinout, is developing <span class="nw">NQ-13</span>, an oral IGFBP2-mimetic drug candidate designed to restore synaptic plasticity in Alzheimer’s disease, Rett syndrome and other cognitive disorders.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/science">The science '+ARR+'</a><a class="btn" href="#/pipeline">Pipeline</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i class="s"></i>Dendritic spine</span><span><i class="g"></i>Synaptic contact</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div></section>'+
+  '<section class="sec mani" data-tone="light2"><div class="wrap">'+
+   '<span class="lab kick" data-r>Why synapses</span>'+
+   '<p class="txt" id="mani">Long before memories fade, synapses lose their ability to strengthen. ENCUE is building medicines that <em>restore synaptic health</em> at the earliest stages of cognitive decline.</p>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.45<sup>M</sup></span><span class="lab k">First-year NIA SBIR Phase II award, September 2026</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">≥</span>1,000<sup>×</sup></span><span class="lab k">Preclinical: GLP no-adverse-effect level over the in vivo EC50 dose, in rats</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><span class="lab k">FDA designations for NQ-13 in Rett syndrome, 2026</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">30<sup>yrs</sup></span><span class="lab k">Of Prof. Moskal’s neurodegeneration and psychiatry research</span></div>'+
+   '</div></div></section>'+
+  storyHtml({tone:"dark",k:"How NQ-13 works",h:'Rebuilding the <em>connection.</em>',steps:[
+   {r:"Decline",h:"Synapses fail first.",p:"Amyloid-β and tau suppress synaptic plasticity. The resulting net loss of synapses is an early event in Alzheimer’s disease, linking its protein pathology to cognitive symptoms."},
+   {r:"Bind",h:"NQ-13 engages IGF2R.",p:"NQ-13 functionally mimics IGF-binding protein 2. Dosed orally in rats, it reached cerebrospinal-fluid levels above those needed to bind and activate the IGF2 receptor."},
+   {r:"Rebuild",h:"The spine strengthens.",p:"Growth-factor-like signalling through MEK/ERK increases AMPA and NMDA receptor activity, inducing structural and functional plasticity. In Alzheimer’s models, it came with reduced phospho-tau."},
+   {r:"Measure",h:"A biomarker built to translate.",p:"In preclinical studies, NQ-13 produced a long-lasting increase in frontal-cortex QEEG alpha power in freely behaving rats: a translational EEG read-out ENCUE is developing to measure efficacy and select patients."}],figs:[storyScene()]})+
+  '<section class="sec" data-tone="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">One mechanism, <em>many disorders.</em></h2></div><p data-r>Synaptic plasticity underlies all brain function, so ENCUE designs its modulators for synaptic dysfunction across multiple CNS disorders.</p></div>'+
+   '<div class="feats">'+
+    '<a class="tcard" href="#/pipeline"><span class="lab">Autism spectrum disorders</span><b>Rett and Phelan-McDermid syndromes</b><p>Rett syndrome is the furthest-advanced programme on ENCUE’s pipeline, alongside Alzheimer’s disease.</p></a>'+
+    '<a class="tcard" href="#/pipeline"><span class="lab">Alzheimer’s and dementia</span><b>Early and moderate Alzheimer’s</b><p>The focus of ENCUE’s NIH SBIR Phase I and Phase II awards from the National Institute on Aging.</p></a>'+
+    '<a class="tcard" href="#/pipeline"><span class="lab">Traumatic brain injury</span><b>Post-TBI cognitive disorders</b><p>Mild and moderate cognitive disorders after traumatic brain injury.</p></a>'+
+    '<a class="tcard" href="#/pipeline"><span class="lab">Psychiatric disorders</span><b>Schizophrenia in 22q and bipolar disorder</b><p>Early-discovery programmes in psychiatric indications.</p></a>'+
+    '<a class="tcard" href="#/pipeline"><span class="lab">Sleep disorders</span><b>Insomnia</b><p>An early-discovery programme in sleep.</p></a>'+
+    '<a class="tcard" href="#/science"><span class="lab">Platform</span><b>JB2: three platforms, one target biology</b><p>Peptoid, fully synthetic and AI-generated IGFBP2 mimetics.</p></a>'+
+   '</div></div></section>'+
+  '<section class="sec" data-tone="dark2"><div class="wrap"><div class="grant">'+
+   '<div><span class="lab kick" data-r>FDA · July 2026</span><p class="gq split">Orphan Drug and Rare Pediatric Disease designations for <em>NQ-13 in Rett syndrome.</em></p></div>'+
+   '<blockquote class="quote"><p>“These designations recognize the rare and serious nature of Rett syndrome and represent an important step as we work to advance NQ-13 toward the clinic.”</p><span class="lab">Alicia Löffler, PhD · Chief Executive Officer</span></blockquote>'+
+  '</div></div></section>'+
+  '<section class="sec" data-tone="light2"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Drug hunters from <em>Northwestern.</em></h2></div><p data-r>ENCUE’s founders helped build Naurex and Aptinyx and have advanced multiple CNS molecules into human trials.</p></div>'+
+   '<div class="pgrid small">'+TEAM.slice(0,4).map(tCard).join("")+'</div>'+
+   '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div></div></section>'+
+  '<section class="sec" data-tone="dark"><div class="wrap">'+
+   '<div class="grant"><div><span class="lab kick" data-r>NIA · SBIR Phase II · September 2026</span><p class="gq split">$1.45M in first-year funding to take NQ-13 <em>toward an IND.</em></p></div>'+
+   '<p class="muted" data-r>Phase II will define the pharmacokinetic profile of NQ-13, optimize its formulation and complete IND-enabling studies, guiding an IND application to the FDA and the design of a first clinical trial of oral NQ-13 in Alzheimer’s disease and related dementias.</p></div>'+
+   '<div style="margin-top:var(--sec)">'+rowsHtml(NEWS)+'</div>'+
+  '</div></section>'+cta();
+};
+function cta(){
+  return '<section class="sec cta" data-tone="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Get in touch</span>'+
+   '<h2 class="big split">Let’s restore <em>connection.</em></h2>'+
+   '<p class="sub2" data-r>Investors, pharmaceutical partners, clinicians and patient communities: send a note and the ENCUE team will be in touch.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Contact us '+ARR+'</a><a class="btn" href="#/science">The science</a></div></div></section>';
+}
+SITE.views.science=function(){
+  return head({k:"Science",h:'Healthy synapses, <em>healthy brain.</em>',p:'Synaptic plasticity, the ability of connections between neurons to strengthen and rebuild, is fundamental to every brain function. ENCUE’s discovery programme targets its failure.'})+
+  '<section class="sec first" data-tone="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The insight</span><h2 class="d3 split">Synaptic failure comes <em>early.</em></h2><p class="muted" style="margin-top:24px" data-r>Amyloid-β and tau both impair synaptic potentiation, and a net loss of synapses is an early pathological event in Alzheimer’s disease. Synaptic dysfunction is therefore an early, shared and targetable mechanism linking molecular pathology to clinical symptoms.</p></div>'+
+   '<dl class="facts">'+
+    '<div><dt class="lab">Lead</dt><dd>NQ-13, an IGFBP2-mimetic with a growth-factor-like mechanism</dd></div>'+
+    '<div><dt class="lab">Target</dt><dd>Insulin-like growth factor 2 receptor (IGF2R) signalling at synapses</dd></div>'+
+    '<div><dt class="lab">Delivery</dt><dd>Oral, with good bioavailability in rats; able to cross the blood-brain barrier</dd></div>'+
+    '<div><dt class="lab">Novelty</dt><dd>The first demonstration of IGFBP mimetics as potential therapeutics for Alzheimer’s disease</dd></div>'+
+   '</dl></div></div></section>'+
+  '<section class="sec" data-tone="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Mechanism</span><h2 class="d3 split">Mimic the protein, <em>rebuild the spine.</em></h2><p class="muted" style="margin-top:24px" data-r>ENCUE’s platform molecule JB2 binds IGF2R-containing dendritic spines and induces plasticity through a feed-forward mechanism: MEK/ERK signalling, increased AMPA and NMDA receptor activity, and greater IGF2R expression at the cell surface.</p></div>'+
+   '<div><figure class="cfig"><img src="'+WP+'2026/08/ENCUE-new-slides-e1787692201389.png" alt="ENCUE figure: a diseased neuron with synaptic loss and impaired connectivity, NQ-13 binding IGF receptors at the membrane, and a healthy neuron with restored synapses and improved connectivity" loading="lazy" decoding="async" onerror="this.closest(\'figure\').remove()"></figure><p class="cfig-cap" data-r><span class="lab">Figure 1 · ENCUE</span><br>ENCUE’s schematic: NQ-13 functionally mimics IGF-binding protein activity to restore synaptic structure and neuronal function.</p></div>'+
+  '</div></div></section>'+
+  '<section class="sec" data-tone="light2"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Phase I results</span><h2 class="d3 split">What the data <em>showed.</em></h2><p class="muted" style="margin-top:24px" data-r>Findings from ENCUE’s NIA-funded SBIR Phase I programme, as summarised in its Phase II award.</p></div>'+
+   '<ul class="aims"><li><span>Oral dosing in rats produced cerebrospinal-fluid levels above the concentration needed to bind and fully activate IGF2R.</span></li><li><span>NQ-13 showed good oral bioavailability.</span></li><li><span>At the optimal oral dose, working and long-term memory improved robustly in mouse models of Alzheimer’s disease and in aging mice.</span></li><li><span>Therapeutic-like effects came with reduced phospho-tau, with minimal effects on Aβ42.</span></li><li><span>NQ-13 produced a long-lasting increase in frontal-cortex QEEG alpha power in freely behaving rats.</span></li><li><span>In a 28-day GLP study in rats, the no-observed-adverse-effect level was at least 1,000-fold higher than the in vivo EC50 dose.</span></li></ul>'+
+  '</div></div></section>'+
+  '<section class="sec" data-tone="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Discovery platform</span><h2 class="d2 split">Plasticity, measured with <em>clinical relevance.</em></h2></div><p data-r>ENCUE tests its compounds’ effects on cognition across genetic and non-genetic animal models.</p></div>'+
+   '<div class="feats">'+
+    '<div class="ft"><b>Normal adult rats</b><p>Baseline cognition and synaptic function.</p></div>'+
+    '<div class="ft"><b>Shank mice</b><p>A genetic model of autism.</p></div>'+
+    '<div class="ft"><b>5XFAD mice</b><p>A model of Alzheimer’s disease.</p></div>'+
+    '<div class="ft"><b>Aged rats</b><p>Age-related cognitive deficits.</p></div>'+
+    '<div class="ft"><b>Traumatic brain injury</b><p>Rats after TBI.</p></div>'+
+    '<div class="ft"><b>Chronic stress</b><p>Rats exposed to chronic unpredictable stress.</p></div>'+
+   '</div>'+
+   '<div class="pillars" style="margin-top:var(--sec)">'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 50C20 46 40 38 60 18"/><path d="M28 43C28 36 26 32 22 28"/><ellipse class="f" cx="20" cy="25" rx="6" ry="5"/></svg><h3>Spine formation</h3><p>Neuro-anatomical assessment of dendritic spine formation.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 44H56"/><rect class="a" x="16" y="26" width="5" height="18"/><rect class="a" x="23" y="26" width="5" height="18"/><rect x="38" y="30" width="5" height="14"/><rect x="45" y="30" width="5" height="14"/></svg><h3>Receptor pharmacology</h3><p>Increases in synaptic AMPA receptor expression.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path class="a" d="M4 34C10 34 12 18 18 18S24 46 30 46S36 22 42 22S48 40 54 40S58 34 60 34"/></svg><h3>Electrophysiology</h3><p>In vivo and ex vivo electrophysiological studies, plus a proprietary quantitative EEG biomarker.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec" data-tone="dark2"><div class="wrap"><div class="grant">'+
+   '<div><span class="lab kick" data-r>Translational biomarker</span><p class="gq split">An EEG signature to measure efficacy and <em>select patients.</em></p></div>'+
+   '<p class="muted" data-r>ENCUE’s proprietary quantitative EEG biomarker is designed to measure compound efficacy, optimize patient selection and monitor disease progression, bridging animal studies and the clinic.</p>'+
+  '</div></div></section>'+cta();
+};
+SITE.views.pipeline=function(){
+  var hd='<div class="pp-h"><span class="lab">Programme</span><span class="lab">Indication</span><div class="st lab"><span>Discovery</span><span><b class="lf">IND-enabling</b><b class="sf">IND</b></span><span>Phase I</span><span>Phase II</span><span>Phase III</span></div></div>';
+  var rows=PIPE.map(function(r){return '<div class="pp-r"><span class="pg">'+esc(r.g)+'</span><span class="ind">'+esc(r.i)+(r.b?'<small class="lab">'+esc(r.b)+'</small>':'')+'</span><div class="trk" aria-label="'+esc(r.i)+' development stage"><i></i><i></i><i></i><i></i><i></i><span class="bar" style="--w:'+(r.w/5*100).toFixed(1)+'%"></span></div></div>'}).join("");
+  return head({k:"Pipeline",h:'Three shots <em>on goal.</em>',p:'One synaptic mechanism, three ways to make the molecule, and a pipeline that spans neurodevelopmental, neurodegenerative and psychiatric disorders.'})+
+  '<section class="sec first" data-tone="light"><div class="wrap">'+
+   '<div class="pipe">'+hd+rows+'</div>'+
+   '<p class="pp-note" data-r>Stage bars follow ENCUE’s published development pipeline (2026). NQ-13 is an investigational product and has not been approved for marketing in the United States.</p>'+
+  '</div></section>'+
+  '<section class="sec" data-tone="dark2"><div class="wrap"><div class="grant">'+
+   '<div><span class="lab kick" data-r>Rett syndrome · July 2026</span><p class="gq split">Two FDA designations for NQ-13: Orphan Drug and <em>Rare Pediatric Disease.</em></p></div>'+
+   '<div><p class="muted" data-r>Rett syndrome is a rare and serious neurodevelopmental disorder whose manifestations include developmental regression with loss of communication and motor skills, breathing abnormalities, scoliosis and dysphagia.</p><blockquote class="quote" style="margin-top:36px"><p>“We are very pleased to receive both Orphan Drug and Rare Pediatric Disease Designations from the FDA.”</p><span class="lab">Alicia Löffler, PhD · Chief Executive Officer</span></blockquote></div>'+
+  '</div></div></section>'+
+  '<section class="sec" data-tone="light2"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>JB2 platform</span><h2 class="d2 split">From IGFBP2 to <em>three platforms.</em></h2></div><p data-r>The JB2 platform derives from IGFBP2 and gives ENCUE manufacturing and delivery flexibility, an IP moat and room to expand into new indications.</p></div>'+
+   '<div class="chain"><span class="nd">IGFBP2</span>'+ARR+'<span class="nd a">JB2 platform</span>'+ARR+'<span class="nd">Pipeline and future indications</span></div>'+
+   '<div class="plat">'+
+    '<div class="pf"><span class="lab">Peptoid platform</span><span class="code">NQ-100</span><b>Peptoids</b><p>High stability and a tunable half-life.</p></div>'+
+    '<div class="pf"><span class="lab">Synthetic platform</span><span class="code">NQ-000</span><b>Fully synthetic</b><p>Small-molecule-like behaviour, scalable manufacturing and oral delivery.</p></div>'+
+    '<div class="pf"><span class="lab">AI platform</span><span class="code">NQ-200</span><b>AI-generated mimetics</b><p>Rapid design iteration and optimized potency, aimed at future indications including schizophrenia, bipolar 1 and sleep.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec" data-tone="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Next: Phase II</span><h2 class="d3 split">The road to an <em>IND.</em></h2><p class="muted" style="margin-top:24px" data-r>Funded by the National Institute on Aging through SBIR Phase II award 2R44AG087761-02.</p></div>'+
+   '<ul class="aims"><li><span>Comprehensively define the pharmacokinetic profile of NQ-13.</span></li><li><span>Optimize its formulation.</span></li><li><span>Complete IND-enabling studies.</span></li><li><span>Guide an IND application to the FDA and the design of a first clinical trial of oral NQ-13 in Alzheimer’s disease and related dementias.</span></li></ul>'+
+  '</div></div></section>'+
+  '<section class="sec" data-tone="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Partners</span><h2 class="d2 split">An end-to-end <em>development ecosystem.</em></h2></div><p data-r>Collaborations that support translation from discovery through clinical development.</p></div>'+
+   '<div class="cards3">'+
+    '<div class="tcard"><span class="lab">Global CDMO</span><b>Catalent</b><p>Formulation development to advance ENCUE’s lead programmes toward clinical readiness.</p></div>'+
+    '<div class="tcard"><span class="lab">AI drug design</span><b>Kvantify</b><p>Artificial intelligence and computer-aided drug design to accelerate discovery and expand the pipeline.</p></div>'+
+    '<div class="tcard"><span class="lab">Ongoing partnership</span><b>Sai Life Sciences</b><p>Part of ENCUE’s integrated drug-development ecosystem.</p></div>'+
+   '</div></div></section>'+cta();
+};
+SITE.views.team=function(){
+  var F=TEAM.filter(function(p){return p.grp==="Founders"}),A=TEAM.filter(function(p){return p.grp==="Advisors"});
+  return head({k:"Team",h:'Meet the <em>team.</em>',p:'ENCUE is a Northwestern spinout built on Prof. Joseph Moskal’s 30 years of pioneering work in neurodegenerative and neuropsychiatric disorders.'})+
+  '<section class="sec first" data-tone="light"><div class="wrap"><div class="grp-h"><h2>Founders</h2></div><div class="pgrid five">'+F.map(tCard).join("")+'</div>'+
+  '<div class="grp-h" style="margin-top:var(--sec)"><h2>Advisors</h2></div><div class="pgrid two2">'+A.map(tCard).join("")+'</div></div></section>'+cta();
+};
+SITE.views.news=function(){
+  return head({k:"News",h:'News and <em>publications.</em>',p:'Milestones, awards and the peer-reviewed science behind ENCUE’s programmes.'})+
+  '<section class="sec first" data-tone="light"><div class="wrap"><span class="lab kick" data-r>News</span>'+rowsHtml(NEWS)+'</div></section>'+
+  '<section class="sec" data-tone="light2"><div class="wrap"><div class="shead"><div><span class="lab kick" data-r>Publications and patents</span><h2 class="d2 split">The science in <em>print.</em></h2></div><p data-r>Selected work by ENCUE’s founders on IGF signalling, synaptic plasticity and EEG biomarkers.</p></div>'+rowsHtml(PUBS)+'</div></section>'+cta();
+};
+SITE.views.contact=function(){
+  return head({k:"Contact",sm:1,h:'Start a <em>conversation.</em>',p:'Investors, partners, media and future colleagues: choose a topic and send a note, and the team will be in touch.'})+
+  '<section class="sec first" data-tone="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Headquarters</span><h3>Evanston, Illinois</h3><p>ENCUE Inc.<br>A Northwestern University spinout</p><p>Topics: investor relations, media, careers and general enquiries.</p></div>'+
+   formHtml("Your message is noted. In the live site this form would reach the ENCUE team directly.")+
+  '</div></div></section>';
+};
+SITE.views.nf=function(){return head({k:"Not found",h:'This connection <em>is missing.</em>',p:'<a class="ul" href="#/">Return home →</a>'})};
+SITE.viewInit=function(k,view,RM){
+  if(RM)return;
+  $$(".pp-r .bar",view).forEach(function(b,i){gsap.from(b,{scaleX:0,duration:1.4,ease:"flow",delay:.15+i*.05,scrollTrigger:{trigger:b.closest(".pp-r"),start:"top 90%"}})});
+};
+function footer(){
+  return '<footer class="ftr" data-tone="dark"><div class="cols">'+
+   '<div class="c"><span class="lab">Company</span>ENCUE Inc.<br>Evanston, Illinois<br>Northwestern University spinout</div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Lead programme</span>NQ-13, an oral IGFBP2 mimetic<br>Alzheimer’s disease<br>Rett syndrome</div>'+
+   '<div class="c"><span class="lab">Funding</span>NIH National Institute on Aging<br>SBIR Phase I (2024) and Phase II (2026)</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm"><span class="sk"><b>EN</b>CUE</span></span>'+
+  '<div class="legal"><span class="lab">© 2026 ENCUE Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main">Back to top ↑</a></div></footer>';
+}
+
+
+/* ================= SHARED VIEW HELPERS ================= */
+/* ================= SHARED VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head'+(o.sm?' sm':'')+'" data-field data-tone="'+(SITE.phTone||"dark")+'"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+(o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function tCard(p){var im=p.img?'<figure class="pc-fig"><div class="ph2" style="--s:'+(p.fs||1)+';--o:'+(p.fo||"50% 30%")+'"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
+  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
+function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function formHtml(note){return '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
+    '<div class="fsub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:currentColor;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">'+note+'</p></div></div>'}
+function storyHtml(o){
+  return '<section class="story" id="story" data-tone="'+(o.tone||"dark2")+'"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">'+o.k+'</span><h2 class="d3">'+o.h+'</h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i>'+o.steps.map(function(s,i){return '<span'+(i?'':' class="on"')+'>'+s.r+'</span>'}).join("")+'</div>'+
+    '<div class="steps">'+o.steps.map(function(s){return '<article class="step"><h3>'+s.h+'</h3><p>'+s.p+'</p></article>'}).join("")+'</div></div>'+
+   '<div class="story-r" aria-hidden="true">'+o.figs.map(function(f){return '<div class="fig">'+f+'</div>'}).join("")+'</div>'+
+  '</div></section>';
+}
+
+/* ================= HERO FIELD (site supplies makeHero) ================= */
+var field=(function(){
+  var cv=$("#field"),H=makeHero(cv),running=false,raf=0,shown=false,dim=1,dimT=1,m=[0,0],mT=[0,0],IN={v:1},t0=performance.now(),dpr=1;
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);H.resize(cv.width,cv.height,dpr);if(!running)frame(true)}
+  function frame(once){var t=(performance.now()-t0)/1000;if(RM)t=30;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    cv.style.opacity=shown?String(.3+.7*dim):"";
+    H.draw(t,IN.v,m,dim);
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)})}
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+})();
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var p=Math.max(0,Math.min(1,window.scrollY/innerHeight));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+
+/* ================= HEADER THEME (A) ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var s=els[i].closest&&els[i].closest("[data-tone]");if(s&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=s.getAttribute("data-tone");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",/^light/.test(th));
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[],ENTRY=0;
+function unmask(st){if(st&&st.masks)st.masks.forEach(function(m){m.style.setProperty("overflow","visible");m.style.setProperty("clip-path","none")})}
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,onComplete:function(){unmask(st)},scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+}
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(s)}});
+      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.022}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.05},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){splitReveal(el,E)});
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    if(SITE.viewInit)SITE.viewInit(k,view,RM);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  /* images in fixed aspect-ratio frames never change layout: no refresh (a refresh mid-pin re-seeks the story) */
+  var rt;$$("img",view).forEach(function(im){if(!im.complete&&!im.closest(".pc-fig,.bio-ph"))im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* AZ: global reveal helper */
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv],.story";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .ln-mask").forEach(function(m){if(m.firstChild&&!gsap.isTweening(m.firstChild)){m.style.setProperty("overflow","visible");m.style.setProperty("clip-path","none")}});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){unmask(s)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  /* BA: stats rise in at final value; captions after the numbers */
+  if(!RM){var sts=$$(".stat",view);sts.forEach(function(st0,i){var v=$(".v",st0),k=$(".k",st0),l=$(".ln2",st0);var tr={trigger:st0.closest(".stats"),start:"top 85%"};
+    var sp=SplitText.create(v,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(sp.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){unmask(sp)},scrollTrigger:tr});
+    if(k)gsap.from(k,{y:16,opacity:0,duration:.9,ease:"silk",delay:.45+i*.08,scrollTrigger:tr});
+    if(l)gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.06,scrollTrigger:tr})})}
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  storyInit(view);
+}
+function storyInit(view){
+  var sec=$("#story",view);if(!sec)return;
+  var steps=$$(".step",sec),rail=$$(".rail span",sec),prog=$("#rprog",sec),cur=0,N=steps.length,svg=$("#syn",sec),scene=sceneDriver(svg),pre=0,lp=0;
+  function setStep(n){if(n===cur)return;cur=n;rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM){steps.forEach(function(s,i){s.style.visibility=i?"hidden":"visible"});scene(.95,1);return}
+  scene(0,0);
+  /* one text slot: the outgoing step is fully gone before the incoming one rises in (no ghost stacking) */
+  var cl=function(v){return v<0?0:v>1?1:v},eo=function(t){return 1-Math.pow(1-t,3)},kidsOf=steps.map(function(s){return [].slice.call(s.children)}),lastK=[];
+  function stepX(p){var q=p*N;
+    for(var j=0;j<N;j++){var t=q-j,ein=j===0?1:cl((t-.04)/.12),eout=j===N-1?0:cl((t-.84)/.1);
+      if(j===0&&t<.84&&lastK[0]===undefined)continue;
+      kidsOf[j].forEach(function(k,i){var a=cl(ein*1.25-i*.25),o=eo(a)*(1-eout),y=(1-eo(a))*18-eout*12,key=o.toFixed(3)+y.toFixed(1);
+        if(lastK[j+"."+i]===key)return;lastK[j+"."+i]=key;k.style.opacity=o.toFixed(3);k.style.transform="translateY("+y.toFixed(1)+"px)"});
+      if(j===0)lastK[0]=1;
+      steps[j].style.visibility=(ein>0&&eout<1)?"visible":"hidden"}}
+  steps.forEach(function(s,j){if(j){s.style.visibility="hidden";kidsOf[j].forEach(function(k){k.style.opacity="0"})}});
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  /* the single scene draws itself in as the section arrives, then every part moves with the scrubbed timeline (BL) */
+  ScrollTrigger.create({trigger:sec,start:"top 75%",end:"top 10%",onUpdate:function(st){if(!svg.isConnected)return;pre=st.progress;scene(lp,pre)},onLeave:function(){if(!svg.isConnected)return;pre=1;scene(lp,1)},onLeaveBack:function(){if(!svg.isConnected)return;pre=0;scene(lp,0)}});
+  if(sec.getBoundingClientRect().top<=innerHeight*.1){pre=1;scene(0,1)}
+  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lp=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.999)));if(p>.15)lastK[0]=1;stepX(p);scene(p,pre)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  var sl=$(".story-l",sec);gsap.from($$(".kick, .d3, .rail",sl).concat(kidsOf[0]),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,scrollTrigger:{trigger:sec,start:"top 80%"}});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks circle",view),{attr:{r:0},opacity:0,duration:1.5,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+}
+
+/* ================= PERSON SHEET (BI / K): _kit/components/person-sheet.html wired into the router ================= */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioCur=-1,psLastFocus=null;
+function fillBio(i){var p=TEAM[i];bioCur=i;
+  psMedia.innerHTML=(p.img?'<figure style="--s:'+(p.fs||1)+';--o:'+(p.fo||"50% 30%")+'"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.remove()"></figure>':'<div class="ps-plate"></div>')+
+   '<div class="cap"><span class="k">ENCUE · '+esc(p.grp||"Team")+'</span></div>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'<p class="lab src">'+esc(SITE.bioSrc)+'</p>';
+  psBody.scrollTop=0;document.title=p.name+" — "+SITE.name;
+}
+function openBio(slug,instant){var i=pBy(slug);if(i<0)return;
+  if(bioOpen){fillBio(i);if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.4,ease:"power1.out"});return}
+  fillBio(i);bioOpen=true;psLastFocus=document.activeElement;ps.classList.add("open");ps.setAttribute("aria-hidden","false");if(lenis)lenis.stop();
+  gsap.killTweensOf([psSheet,"#psScrim"]);var D=instant||RM?.01:1,d0=instant?(window._preShown?1.4:.3):0;
+  gsap.fromTo("#psScrim",{opacity:0},{opacity:1,duration:.45*D,delay:d0,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*D,delay:d0,ease:"power3.out"});
+  if(!RM){gsap.fromTo(psBody.children,{opacity:0,y:14},{opacity:1,y:0,duration:.55,stagger:.04,delay:d0+.12,ease:"power2.out",clearProps:"transform"});
+    gsap.fromTo($$(".ps-bar .btn",ps),{opacity:0,y:-10},{opacity:1,y:0,duration:.6,ease:"silk",stagger:.05,delay:d0+.1,clearProps:"transform,opacity"})}
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
+}
+function hideBio(){if(!bioOpen)return;bioOpen=false;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});
+  gsap.to("#psScrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){if(bioOpen)return;ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
+  if(lenis)lenis.start();var r=route(location.hash);document.title=r.t;
+  if(psLastFocus&&psLastFocus.focus&&psLastFocus.isConnected)psLastFocus.focus({preventScroll:true});
+}
+function psReset(){bioOpen=false;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set("#psScrim",{opacity:0})}
+function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
+function psStep(d){if(!bioOpen)return;var n=TEAM.length,i=(bioCur+d+n)%n,h="#/team/"+TEAM[i].slug;history.replaceState(null,"",h);prevHash=h;openBio(TEAM[i].slug)}
+$$("[data-ps-close]",ps).forEach(function(b){b.addEventListener("click",closeBio)});
+$("#psPrev").addEventListener("click",function(){psStep(-1)});$("#psNext").addEventListener("click",function(){psStep(1)});
+document.addEventListener("keydown",function(e){if(!bioOpen||e.key!=="Tab")return;var f=$$("button,a[href],[tabindex='0']",ps).filter(function(x){return x.offsetParent});if(!f.length)return;var a=f[0],z=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}});
+var bioFromClick=false,bioBase=null;
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:SITE.views.home,t:SITE.homeTitle,x:"Home"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:SITE.views.team,t:TEAM[pBy(p[1])].name+" — "+SITE.name,x:"Team"};
+  var r=SITE.routes[p[0]];if(r&&!p[1])return {k:p[0],v:SITE.views[p[0]],t:r+" — "+SITE.name,x:r};
+  return {k:"404",v:SITE.views.nf,t:"Not found — "+SITE.name,x:"Not found"};
+}
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+    if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();bioBase=location.hash||"#/";bioFromClick=true;history.pushState(null,"",h);prevHash=h;openBio(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  window._fieldSub=r.k!=="home";field.snapDim(r.k==="home"?1:.75);observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem(SITE.key+"-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){bioBase="#/team";openBio(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
+  if(bioOpen)psReset();
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)bioBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)openBio(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem(SITE.key+"-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem(SITE.key+"-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis)lenis.start()}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem(SITE.key+"-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var mk=$$("#pre .mk > *");gsap.set(mk,{opacity:0,scale:.6,transformOrigin:"50% 50%"});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.7,ease:"back.out(1.5)",stagger:.07},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.022},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(SITE.fonts.map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+
+</script>
+</body>
+</html>

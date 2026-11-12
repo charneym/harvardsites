@@ -640,6 +640,18 @@ em{font-weight:300}
 @media (max-width:760px){.ps-media{border-radius:18px 18px 0 0}}
 .moa svg{overflow:visible}
 
+/* v13 round 3 (critics) */
+.map svg text{paint-order:stroke;stroke:var(--bone2);stroke-width:6px;stroke-linejoin:round}
+.dark .tl li p,.dark2 .tl li p{color:var(--stone)}
+.dark .tl .ln0,.dark2 .tl .ln0{background:var(--hair)}
+.dark .tl li::before,.dark2 .tl li::before{background:var(--ink);border-color:var(--sinL)}
+.dark .tl li .lab,.dark2 .tl li .lab{color:var(--sinL)}
+.ftr .legal .lab{white-space:nowrap}
+.scn-wrap{display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.scn-wrap svg.scn{width:100%;height:auto;max-height:86%}
+.scn-wrap .sccaps{position:relative;bottom:auto;left:auto;right:auto;height:26px;margin-top:10px}
+@media (max-width:860px){.sfig text[y="400"],.sfig text[y="392"]{display:none}}
+
 </style>
 </head>
 <body>
@@ -1295,7 +1307,7 @@ var field=(function(){
 })();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop();$("#field").style.visibility=any?"":"hidden"}
-function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)});chkField()}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
 
@@ -1444,9 +1456,9 @@ function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
   psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="psNoImg(this)">':psPlate(p);
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="src">'+BIO_SRC+'</p>';
+   '';
   psBody.scrollTop=0;
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $(".ps-step",bio).style.display=n<2?"none":"";$("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

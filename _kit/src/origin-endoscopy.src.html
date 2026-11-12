@@ -11,7 +11,7 @@
 <style>
 /*@fonts Montserrat:300,300i,500; DM Mono:400*/
 :root{
-  --ink:#17121a;--ink2:#1e1622;--ink3:#3a1530;--deep:#120d15;
+  --ink:#141214;--ink2:#1b181b;--ink3:#3a1530;--deep:#0d0b0d;
   --bone:#fbf8f9;--bone2:#f4edf1;--bone3:#e8dce3;
   --stone:#b3a8b0;--stoneD:#5f5560;
   --sin:#c03078;--sinL:#d878a8;--sinD:#9c2560;
@@ -581,6 +581,14 @@ em{font-weight:300}
 .hdr.solid{background:rgba(23,18,26,.82)}
 .ftr .bigw{text-indent:.02em}
 
+/* round 3 */
+.ftr .bigw.logo-w{display:block;text-indent:0;padding:0 0 .1em;line-height:0}
+.ftr .bigw.logo-w img{width:min(78vw,980px);height:auto;margin:0 auto;display:block}
+.tgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cmp-r{grid-template-columns:minmax(0,25fr) minmax(0,45fr) minmax(0,30fr)}
+.hdr.solid{background:rgba(20,18,20,.82)}
+@media (max-width:860px){.tgrid{grid-template-columns:1fr}}
+
 /* ===== v13 shared: generous line masks (BH) ===== */
 .ln-mask{padding:.16em .14em .26em!important;margin:-.16em -.14em -.26em!important}
 /* ===== v13 shared: person sheet (BI), re-skinned with site tokens ===== */
@@ -629,6 +637,18 @@ em{font-weight:300}
 .ps-media{border-radius:18px 0 0 18px}
 @media (max-width:760px){.ps-media{border-radius:18px 18px 0 0}}
 .moa svg{overflow:visible}
+
+/* v13 round 3 (critics) */
+.map svg text{paint-order:stroke;stroke:var(--bone2);stroke-width:6px;stroke-linejoin:round}
+.dark .tl li p,.dark2 .tl li p{color:var(--stone)}
+.dark .tl .ln0,.dark2 .tl .ln0{background:var(--hair)}
+.dark .tl li::before,.dark2 .tl li::before{background:var(--ink);border-color:var(--sinL)}
+.dark .tl li .lab,.dark2 .tl li .lab{color:var(--sinL)}
+.ftr .legal .lab{white-space:nowrap}
+.scn-wrap{display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.scn-wrap svg.scn{width:100%;height:auto;max-height:86%}
+.scn-wrap .sccaps{position:relative;bottom:auto;left:auto;right:auto;height:26px;margin-top:10px}
+@media (max-width:860px){.sfig text[y="400"],.sfig text[y="392"]{display:none}}
 
 </style>
 </head>
@@ -728,7 +748,7 @@ var TEAM=[
  {slug:"jeremy-starkweather",name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",
   bio:["Jeremy Starkweather is the contact principal investigator on Origin Endoscopy’s 2026 NIDDK Direct-to-Phase II SBIR award to develop EpiMAX, an injectable hemostatic agent for long-acting hemostasis of gastrointestinal bleeding."]},
  {slug:"venkata-akshintala",name:"Dr. Venkata Akshintala",title:"Co-inventor · Acting Chief Medical Officer",grp:"Founders",
-  bio:["Dr. Venkata Akshintala co-developed Origin Endoscopy’s primary technology and serves as the company’s acting Chief Medical Officer.","Representing ASGE, he won the shark tank trophy for his product designed to address post-GI procedure bleeding."],
+  bio:["Dr. Venkata Akshintala co-developed Origin Endoscopy’s primary technology and serves as the company’s acting Chief Medical Officer.","Representing ASGE, he won the Shark Tank trophy for a product designed to address bleeding after GI procedures."],
   q:"Current products to treat GI bleeding have challenges and limitations, so we created a durable and innovative gel unlike anything in the market that every endoscopist can use to manage a variety of gastrointestinal bleeding conditions and promote healing of the injured site.",qs:"BizWest, May 2023",link:{t:"Read the BizWest article",u:BW}},
  {slug:"stephen-hoag",name:"Dr. Stephen Hoag",title:"Co-inventor",grp:"Founders",
   bio:["Dr. Stephen Hoag co-developed Origin Endoscopy’s primary technology, a sustained-release epinephrine gel designed to control and extend hemostasis of GI bleeding during endoscopy."]}
@@ -760,7 +780,7 @@ function sceneSvg(){
   var o='<svg class="scn" viewBox="150 30 640 380" aria-hidden="true">'+wall(true);
   o+='<ellipse id="scV" class="k" cx="410" cy="244" rx="18" ry="18"/>';
   o+='<g id="scBlood">';for(var i=0;i<14;i++)o+='<circle class="cf" r="'+(3+i%3)+'"/>';o+='</g>';
-  o+='<g id="scNeedle"><path class="k" d="M760 0L590 40" stroke-width="16" stroke-linecap="round" opacity=".35"/><path id="scN" class="nd" d="M600 38L600 38"/></g>';
+  o+='<g id="scNeedle"><path class="k" d="M760 0L590 40" stroke-width="16" stroke-linecap="round" opacity=".6"/><path id="scN" class="nd" d="M600 38L600 38"/></g>';
   o+='<g id="scGel"><path class="af" d="M300 150C330 96 500 96 520 150C480 214 360 214 300 150Z"/>';
   [[340,130],[377,160],[414,140],[451,170],[488,135],[365,186],[402,118],[439,190],[476,160],[352,152],[464,124]].forEach(function(c){o+='<circle class="mp" cx="'+c[0]+'" cy="'+c[1]+'" r="5"/>'});
   o+='</g><path id="scArrow" class="a" d="M410 196V214M396 206l14 10 14-10" opacity="0"/>';
@@ -778,7 +798,7 @@ function makeScene(svg){
     B.forEach(function(c,i){var ph=((i*.137+p*2.6)%1),x=400+((i*29)%40)-10+ph*((i%3)-1)*20,y=226-ph*150;c.setAttribute("cx",x.toFixed(1));c.setAttribute("cy",y.toFixed(1));c.setAttribute("opacity",(Math.sin(ph*Math.PI)*(1-stop)*.95).toFixed(3))});
     /* needle comes in from the endoscope, injects, then withdraws */
     var tx=600+(470-600)*inj,ty=38+(176-38)*inj;N.setAttribute("d","M600 38L"+tx.toFixed(1)+" "+ty.toFixed(1));N.setAttribute("opacity",(sm(p/.2)*(1-sm((p-.86)/.08))).toFixed(3));
-    q("scNeedle").firstChild.setAttribute("opacity",(.35*sm(p/.2)*(1-sm((p-.86)/.08))).toFixed(3));
+    q("scNeedle").firstChild.setAttribute("opacity",(.6*sm(p/.2)*(1-sm((p-.86)/.08))).toFixed(3));
     /* hydrogel dome grows out of the injection site */
     var k=.15+.85*gel;G.setAttribute("transform","translate(410 160) scale("+k.toFixed(4)+" "+(k*(.8+.2*gel)).toFixed(4)+") translate(-410 -160)");G.setAttribute("opacity",(sm((p-.33)/.06)).toFixed(3));
     /* vessel compressed */
@@ -935,11 +955,11 @@ function mapSvg(){
 function v404(){return head({k:"Not found",h:'This page didn’t <em>hold.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
   return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
-   '<div class="c"><img class="omark" src="https://static.wixstatic.com/media/09e77b_97341db15014415288d0e58566ddb16a~mv2.png/v1/fill/w_228,h_228,al_c,q_90,enc_auto/OE-O-all%20white.png" alt="Origin Endoscopy mark" loading="lazy" onerror="this.remove()"><span class="lab">Headquarters</span>Origin Endoscopy Inc.<br>Baltimore, Maryland</div>'+
+   '<div class="c"><span class="lab">Headquarters</span>Origin Endoscopy Inc.<br>Baltimore, Maryland</div>'+
    '<div class="c"><span class="lab">Program</span>EpiMAX<br>NIDDK SBIR Phase II</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/program">Program</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="#/contact">Early access and enquiries</a><br>Investigational product. Not approved by the FDA.</div>'+
-  '</div><span class="bigw" aria-hidden="true" id="bigwm">Origin</span>'+
+  '</div><span class="bigw logo-w" aria-hidden="true" id="bigwm"><img src="https://static.wixstatic.com/media/09e77b_3759b8307a544ab6b8ff4a84989fbae4~mv2.png/v1/crop/x_0,y_273,w_2562,h_971/fill/w_1600,h_606,al_c,q_90,usm_0.66_1.00_0.01,enc_auto/OE-full%20color%2Bwhite_dark%20backgrounds.png" alt="" loading="lazy" onerror="this.parentNode.textContent=\'Origin\'"></span>'+
   '<div class="legal"><span class="lab">© 2026 Origin Endoscopy Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
@@ -1009,7 +1029,7 @@ var field=(function(){
       c.fillStyle="rgba("+BLD+","+(.75*al)+")";c.beginPath();c.ellipse(bx,by,b.r*1.3,b.r,0,0,6.283);c.fill()}
     /* endoscope catheter and needle from the lumen */
     var nA=e*sm((u-1.0)/.8)*(1-sm((u-6.4)/.8));
-    if(nA>.01){var tipx=CX+70-60*inj,tipy=SURF+10+70*inj;c.globalAlpha=nA;
+    if(nA>.01&&w>=861){var tipx=CX+70-60*inj,tipy=SURF+10+70*inj;c.globalAlpha=nA;
       c.lineWidth=26;c.strokeStyle="rgba("+INK+",.08)";c.beginPath();c.moveTo(560,-330);c.lineTo(330,-250);c.stroke();
       c.lineWidth=1.2*lw;c.strokeStyle="rgba("+INK+",.55)";c.beginPath();c.moveTo(560,-343);c.lineTo(326,-263);c.moveTo(560,-317);c.lineTo(334,-237);c.stroke();
       c.lineWidth=2.2;c.strokeStyle="rgba("+INK+",.7)";c.beginPath();c.moveTo(330,-250);c.lineTo(tipx,tipy);c.stroke();c.globalAlpha=1}
@@ -1033,13 +1053,11 @@ var field=(function(){
     txt("MUCOSA",250,SURF+36,e*.9,sc,lc);
     txt("SUBMUCOSA",250,40,e*.9,sc,lc);
     txt("MUSCULARIS",250,222,e*.9,sc,lc);
-    txt("BLEEDING VESSEL",VX-40,VY+50,e*(1-stop*fade)*.95,sc,"rgb("+BLD+")","center");
-    txt("EPIMAX · IMMEDIATE + 72 H RELEASE",CX-150,SURF-70,e*gA*sm((u-4.4)/.6),sc,vc);
     c.restore();
     c.globalCompositeOperation="destination-out";var fg2;
     if(w<861){fg2=c.createLinearGradient(0,h*.4,0,h*.56);fg2.addColorStop(0,"rgba(0,0,0,0)");fg2.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fg2;c.fillRect(0,h*.4,w,h*.6)}
     else{var G=heroGrid(),f0=w<1100?.4:.3,f1=w<1100?.64:.56;fg2=c.createLinearGradient(G.l+G.c*f0,0,G.l+G.c*f1,0);fg2.addColorStop(0,"rgba(0,0,0,1)");fg2.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg2;c.fillRect(0,0,G.l+G.c*f1,h);
-      if(G.l>G.g+24){var rx=G.r+24,re=Math.min(w,G.r+Math.max(80,G.l*.75));var fr=c.createLinearGradient(rx,0,re,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fr;c.fillRect(rx,0,w-rx,h)}}
+      if(true){var rx=G.r-30,re=Math.min(w,G.r+50);var fr=c.createLinearGradient(rx,0,re,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fr;c.fillRect(rx,0,w-rx,h)}}
     c.globalCompositeOperation="source-over";
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
@@ -1053,7 +1071,7 @@ var field=(function(){
 })();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop();$("#field").style.visibility=any?"":"hidden"}
-function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)});chkField()}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
 
@@ -1202,9 +1220,9 @@ function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
   psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="psNoImg(this)">':psPlate(p);
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="src">'+BIO_SRC+'</p>';
+   '';
   psBody.scrollTop=0;
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $(".ps-step",bio).style.display=n<2?"none":"";$("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

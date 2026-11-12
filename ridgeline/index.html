@@ -588,6 +588,29 @@ em{font-style:italic;font-family:var(--serif);font-weight:300}
 .pathw figcaption{margin-top:12px;color:var(--stoneD)}
 .pathw{margin-bottom:14px}.pwcap{color:var(--stone);margin:0 0 36px}
 
+/* round 3 (critic) */
+.sfig .fb{fill:rgba(144,192,144,.08);stroke:rgba(245,246,242,.5);stroke-width:1.2}
+.sfig .fb.on{fill:rgba(144,192,144,.22);stroke:var(--sinL)}
+.sfig .st{stroke:rgba(245,246,242,.22);stroke-width:1}
+.sfig .st.on{stroke:rgba(144,192,144,.55)}
+.sfig .enz{fill:rgba(144,192,144,.16);stroke:var(--sinL);stroke-width:1.6}
+.sfig .nad{fill:rgba(245,246,242,.12);stroke:rgba(245,246,242,.6);stroke-width:1.1}
+.sfig .pill{fill:rgba(245,246,242,.08);stroke:rgba(245,246,242,.7);stroke-width:1.4}
+.sfig text{font-size:14px}
+.story{background:var(--ink3)}
+.story .rail span::before{background:var(--ink3)}
+.pgrid{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none}
+.pintro{border-top:1px solid var(--hairD);padding-top:18px;align-self:start}
+.pintro p{font-family:var(--serif);font-weight:300;font-size:clamp(20px,1.6vw,25px);line-height:1.3;margin:14px 0 0;color:var(--ink)}
+.pintro .lab{color:var(--sinD)}
+.stg-m{display:none;margin-top:8px;color:var(--sinD)}
+.pathw{background:var(--bone)}
+.ps .ps-media img{inset:auto;left:50%;top:clamp(28px,6vh,56px);transform:translateX(-50%);width:min(300px,78%);height:auto;aspect-ratio:1/1;border-radius:6px}
+.ps .ps-media{background:var(--ink)}
+@media (max-width:860px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.stg-m{display:block}.micro{aspect-ratio:auto}.micro img{aspect-ratio:2464/1400;height:auto}.micro figcaption{position:static;padding:12px 0 0;color:var(--stone)}}
+@media (max-width:760px){.ps .ps-media img{top:22px;width:auto;height:calc(100% - 44px)}}
+@media (max-width:480px){.pgrid{grid-template-columns:1fr}}
+
 /* ===== v13 shared: generous line masks (BH) ===== */
 .ln-mask{padding:.16em .14em .26em!important;margin:-.16em -.14em -.26em!important}
 /* ===== v13 shared: person sheet (BI), re-skinned with site tokens ===== */
@@ -636,6 +659,18 @@ em{font-style:italic;font-family:var(--serif);font-weight:300}
 .ps-media{border-radius:18px 0 0 18px}
 @media (max-width:760px){.ps-media{border-radius:18px 18px 0 0}}
 .moa svg{overflow:visible}
+
+/* v13 round 3 (critics) */
+.map svg text{paint-order:stroke;stroke:var(--bone2);stroke-width:6px;stroke-linejoin:round}
+.dark .tl li p,.dark2 .tl li p{color:var(--stone)}
+.dark .tl .ln0,.dark2 .tl .ln0{background:var(--hair)}
+.dark .tl li::before,.dark2 .tl li::before{background:var(--ink);border-color:var(--sinL)}
+.dark .tl li .lab,.dark2 .tl li .lab{color:var(--sinL)}
+.ftr .legal .lab{white-space:nowrap}
+.scn-wrap{display:flex;flex-direction:column;justify-content:center;align-items:stretch}
+.scn-wrap svg.scn{width:100%;height:auto;max-height:86%}
+.scn-wrap .sccaps{position:relative;bottom:auto;left:auto;right:auto;height:26px;margin-top:10px}
+@media (max-width:860px){.sfig text[y="400"],.sfig text[y="392"]{display:none}}
 
 </style>
 </head>
@@ -935,26 +970,31 @@ function head(o){
 }
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="rlNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.rlNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
+function pIntro(){return '<div class="pintro"><span class="lab">Core team</span><p>The co-inventors of Ridgeline’s NNMT inhibitors lead research and development, with finance and operations run by a scientist-entrepreneur.</p></div>'}
 function adv(){return '<div class="adv" data-group>'+ADV.map(function(a){return '<div><span class="lab">Business Advisory Board</span><b>'+a[0]+'</b><p>'+a[1]+'</p></div>'}).join("")+'</div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-var PIPE=[["RT-002 · muscle regeneration","Functional recovery after musculoskeletal injury in older adults",80,"GLP safety and toxicity complete; final IND studies funded by NIA (2026)."],["Obesity","Muscle-preserving weight loss, including alongside GLP-1 drugs",72,"NIA Phase II SBIR, 2025–2026."],["Type 2 diabetes","Metabolic disease",70,""],["Chronic kidney disease","Renal fibrosis and kidney function",60,""],["Glioblastoma","Metabolism-targeted brain tumor therapy",44,""],["Duchenne muscular dystrophy","Muscle strength in DMD",40,""],["New indications","Additional NNMT-driven diseases",17,""]];
+var PIPE=[["RT-002 · muscle regeneration","Functional recovery after musculoskeletal injury in older adults",80,"GLP safety and toxicity complete; final IND studies funded by NIA (2026)."],["Obesity","Muscle-preserving weight loss, including alongside GLP-1 drugs",70,"NIA Phase II SBIR, 2025–2026."],["Type 2 diabetes","Metabolic disease",70,""],["Chronic kidney disease","Renal fibrosis and kidney function",60,""],["Glioblastoma","Metabolism-targeted brain tumor therapy",50,""],["Duchenne muscular dystrophy","Muscle strength in DMD",40,""],["New indications","Additional NNMT-driven diseases",10,""]];
+function stageOf(v){return v>=80?"Preclinical complete · IND next":v>60?"Preclinical":v>40?"In vivo proof of concept":v>20?"In vitro":"Discovery"}
 function pipe(n){var rows=PIPE.slice(0,n||PIPE.length);return '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Discovery</span><span>In vitro</span><span>In vivo PoC</span><span>Preclinical</span><span>Phase I</span></span></div>'+
- rows.map(function(r,i){return '<div class="prow"><div><h3>'+r[0]+'</h3>'+(i===0?'<span class="tagp">Lead · NIA SBIR Phase II</span>':'')+'</div><div class="ind">'+r[1]+'</div><div class="track"><i></i><i></i><i></i><i></i><i></i><span class="bar'+(i?' p':'')+'" style="width:'+r[2]+'%"><b></b></span></div>'+(r[3]?'<p class="note">'+r[3]+'</p>':'')+'</div>'}).join("")+'</div>'}
+ rows.map(function(r,i){return '<div class="prow"><div><h3>'+r[0]+'</h3>'+(i===0?'<span class="tagp">Lead · NIA SBIR Phase II</span>':'')+'</div><div class="ind">'+r[1]+'<span class="stg-m lab">'+stageOf(r[2])+'</span></div><div class="track"><i></i><i></i><i></i><i></i><i></i><span class="bar'+(i?' p':'')+'" style="width:'+r[2]+'%"><b></b></span></div>'+(r[3]?'<p class="note">'+r[3]+'</p>':'')+'</div>'}).join("")+'</div>'}
 
-/* step figures */
-function fibers(n,th,gap,y0,cls){var o='';for(var i=0;i<n;i++){var y=y0+i*(th+10);if(gap){o+='<rect class="'+cls+'" x="120" y="'+y+'" width="250" height="'+th+'" rx="'+th/2+'"/><rect class="'+cls+'" x="400" y="'+y+'" width="'+(160+(i%2)*60)+'" height="'+th+'" rx="'+th/2+'"/>'}else o+='<rect class="'+cls+'" x="120" y="'+y+'" width="560" height="'+th+'" rx="'+th/2+'"/>'}return o}
+/* step figures: genuinely different scenes (aging fibres, the enzyme, the molecule, repaired fibres) */
+function bundle(n,th,gap,y0,thin){var o='',w=520;for(var i=0;i<n;i++){var y=y0+i*(th+8),t=thin?th*(.55+(i%3)*.12):th,yy=y+(th-t)/2;
+  if(gap){o+='<rect class="fb" x="140" y="'+yy.toFixed(1)+'" width="'+(230-(i%2)*30)+'" height="'+t.toFixed(1)+'" rx="'+(t/2).toFixed(1)+'"/><rect class="fb" x="'+(400-(i%2)*30)+'" y="'+yy.toFixed(1)+'" width="'+(200+(i%3)*40)+'" height="'+t.toFixed(1)+'" rx="'+(t/2).toFixed(1)+'"/>'}
+  else o+='<rect class="fb on" x="140" y="'+yy.toFixed(1)+'" width="'+w+'" height="'+t.toFixed(1)+'" rx="'+(t/2).toFixed(1)+'"/>';
+  for(var k=150;k<650;k+=14){if(gap&&k>370-(i%2)*30&&k<400-(i%2)*30)continue;if(gap&&k>(600+(i%3)*40-(i%2)*30))continue;o+='<path class="st'+(gap?'':' on')+'" d="M'+k+' '+(yy+2).toFixed(1)+'V'+(yy+t-2).toFixed(1)+'"/>'}}
+  return o}
 function stFig(st){
-  var o='<svg viewBox="0 0 800 420" aria-hidden="true">';
-  if(st===0){o+=fibers(6,14,1,110,'k');for(var i=0;i<6;i++)o+='<path class="k2" d="M140 '+(117+i*24)+'H350M420 '+(117+i*24)+'H540" stroke-dasharray="1 9"/>';o+='<text x="60" y="400">STRENGTH DECLINES FROM THE MID-30S · <tspan class="v">FASTER AFTER 60</tspan></text>'}
-  if(st===1){o+='<path class="af" d="M300 150C330 90 450 90 480 150S440 260 380 250 270 210 300 150Z"/><text x="352" y="180" class="v">NNMT</text>';
-    for(var j=0;j<9;j++){var a=j*.7;o+='<circle class="dh" cx="'+(390+Math.cos(a)*200).toFixed(1)+'" cy="'+(175+Math.sin(a)*110).toFixed(1)+'" r="'+(10-j*.8).toFixed(1)+'"/>'}
-    o+='<text x="60" y="400">NNMT ↑ · <tspan class="v">NAD+ ↓</tspan> · METHIONINE CYCLE DISRUPTED</text>'}
-  if(st===2){o+='<rect class="k" x="120" y="150" width="150" height="60" rx="30"/><path class="k2" d="M195 150V210"/>';
-    o+='<path class="a" d="M420 140l26 15v30l-26 15-26-15v-30z"/><path class="a" d="M446 170h40l18-20M486 170l18 20M394 185l-24 14"/>';
-    o+='<path class="af" d="M560 150C580 110 660 110 680 150S650 230 610 222 545 190 560 150Z"/><path class="a" d="M520 170H555" stroke-dasharray="3 5"/>';
-    o+='<text x="60" y="400">ONCE-DAILY ORAL · <tspan class="v">SELECTIVE NNMT INHIBITOR</tspan></text>'}
-  if(st===3){o+=fibers(5,22,0,96,'k');o+='<ellipse class="db" cx="300" cy="96" rx="14" ry="7"/><ellipse class="db" cx="330" cy="92" rx="14" ry="7"/><ellipse class="db" cx="520" cy="224" rx="14" ry="7"/><path class="a" d="M110 300H690"/>';
-    o+='<text x="60" y="400">AGED MICE · <tspan class="v">PEAK TORQUE +80% · FIBER SIZE 2×</tspan></text>'}
+  var o='<svg viewBox="80 40 640 330" aria-hidden="true">';
+  if(st===0){o+=bundle(6,22,1,90,1);o+='<text x="100" y="392">STRENGTH DECLINES FROM THE MID-30S · <tspan class="v">FASTER AFTER 60</tspan></text>'}
+  if(st===1){o+='<path class="enz" d="M300 150C320 80 470 70 500 140S480 260 400 255 280 220 300 150Z"/><path class="a" d="M372 150C380 132 420 132 428 150"/><text x="372" y="196" class="v">NNMT</text>';
+    for(var j=0;j<10;j++){var a=j*.63,r=190-j*9;o+='<circle class="nad" cx="'+(400+Math.cos(a)*r*1.3).toFixed(1)+'" cy="'+(170+Math.sin(a)*r*.62).toFixed(1)+'" r="'+(11-j*.75).toFixed(1)+'"/>'}
+    o+='<text x="100" y="392">NNMT ↑ · <tspan class="v">NAD+ ↓</tspan> · METHIONINE CYCLE DISRUPTED</text>'}
+  if(st===2){o+='<rect class="pill" x="150" y="160" width="190" height="78" rx="39"/><path class="k2" d="M245 160V238"/>';
+    o+='<path class="a" d="M470 150l30 17v34l-30 17-30-17v-34z"/><path class="a" d="M500 184h44l20-22M544 184l20 22M440 201l-28 16"/><circle class="db" cx="470" cy="184" r="6"/>';
+    o+='<text x="100" y="392">ONCE-DAILY ORAL · <tspan class="v">SELECTIVE NNMT INHIBITOR</tspan></text>'}
+  if(st===3){o+=bundle(5,30,0,92,0);o+='<ellipse class="db" cx="300" cy="90" rx="16" ry="8"/><ellipse class="db" cx="334" cy="86" rx="16" ry="8"/><ellipse class="db" cx="540" cy="250" rx="16" ry="8"/>';
+    o+='<text x="100" y="392">AGED MICE · <tspan class="v">PEAK TORQUE +80% · FIBER SIZE 2×</tspan></text>'}
   return o+'</svg>';
 }
 function icon(n){return ['<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="18" width="36" height="12" rx="6"/><path class="a" d="M24 18V30"/></svg>',
@@ -1016,7 +1056,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Inventors and <em>builders.</em></h2></div><p data-r>The scientists who invented Ridgeline’s NNMT inhibitors, with advisors from venture capital and biotech leadership.</p></div>'+
-   '<div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+adv()+
+   '<div class="pgrid" data-group>'+TEAM.map(tCard).join("")+pIntro()+'</div>'+adv()+
   '</div></section>'+
 
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
@@ -1059,7 +1099,7 @@ function vScience(){
    '</ol></div></div></section>'+cta();
 }
 function vPipeline(){
-  return head({k:"Pipeline",h:'Once-daily oral drugs for <em>chronic disease.</em>',p:'NNMT inhibitors across musculoskeletal and metabolic disease, led by RT-002 for recovery after musculoskeletal injury in older adults.'})+
+  return head({k:"Pipeline",h:'Once-daily oral drugs for <em>chronic disease.</em>',p:'NNMT inhibitors across musculoskeletal and metabolic disease, led by RT&#8209;002 for recovery after musculoskeletal injury in older adults.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+pipe()+'<p class="note-s" data-r>Stages as shown on Ridgeline’s current website and NIH award records.</p></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Why these diseases</span><h2 class="d2 split">Where NNMT <em>matters.</em></h2></div></div>'+
@@ -1071,8 +1111,8 @@ function vPipeline(){
    '</dl></div></section>'+cta();
 }
 function vTeam(){
-  return head({k:"Team",h:'Meet the <em>team.</em>',p:'The inventors of Ridgeline’s technology and the advisors helping take it to the clinic.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+adv()+'</div></section>'+cta();
+  return head({k:"Team",h:'Meet the <em>team.</em>',p:'The inventors of Ridgeline’s technology and the advisors helping take it to the&nbsp;clinic.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+pIntro()+'</div>'+adv()+'</div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'News and <em>publications.</em>',p:'Awards, coverage and research, each linked to its public source.'})+
@@ -1185,7 +1225,7 @@ var field=(function(){
     c.globalCompositeOperation="destination-out";var fg2;
     if(w<861){fg2=c.createLinearGradient(0,h*.38,0,h*.56);fg2.addColorStop(0,"rgba(0,0,0,0)");fg2.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fg2;c.fillRect(0,h*.38,w,h*.62)}
     else{var G=heroGrid(),f0=w<1100?.4:.3,f1=w<1100?.64:.56;fg2=c.createLinearGradient(G.l+G.c*f0,0,G.l+G.c*f1,0);fg2.addColorStop(0,"rgba(0,0,0,1)");fg2.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg2;c.fillRect(0,0,G.l+G.c*f1,h);
-      if(G.l>G.g+24){var rx=G.r+24,re=Math.min(w,G.r+Math.max(80,G.l*.75));var fr=c.createLinearGradient(rx,0,re,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fr;c.fillRect(rx,0,w-rx,h)}}
+      if(true){var rx=G.r-30,re=Math.min(w,G.r+50);var fr=c.createLinearGradient(rx,0,re,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fr;c.fillRect(rx,0,w-rx,h)}}
     c.globalCompositeOperation="source-over";
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
@@ -1199,7 +1239,7 @@ var field=(function(){
 })();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop();$("#field").style.visibility=any?"":"hidden"}
-function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)});chkField()}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.7)*(1-p*.5))}
 
@@ -1348,9 +1388,9 @@ function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
   psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="psNoImg(this)">':psPlate(p);
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="src">'+BIO_SRC+'</p>';
+   '';
   psBody.scrollTop=0;
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $(".ps-step",bio).style.display=n<2?"none":"";$("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

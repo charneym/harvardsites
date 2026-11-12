@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Objective Biotechnology — Biology in focus</title>
+<meta name="description" content="Objective Biotechnology, a University of Minnesota spin-out, builds the Autoinjector, a machine-vision guided microinjection robot, and neurotechnology for cortex-wide imaging in freely behaving mice.">
+<meta name="theme-color" content="#0d0b12">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0b12'/%3E%3Cg transform='translate(14 14) scale(.72)' fill='none' stroke='%239030f0' stroke-width='9'%3E%3Cpath d='M9.75 38A42 42 0 0 1 92 50'/%3E%3Cpath d='M90.25 62A42 42 0 0 1 8 50'/%3E%3Cpath d='M70.23 35.31A25 25 0 0 1 40.63 73.18'/%3E%3Cpath d='M34.61 69.7A25 25 0 0 1 63.98 29.27'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+/*@fonts Hanken Grotesk:300,400,400i,500; JetBrains Mono:400*/
+:root{
+  /* palette from the logo (BK): #9030f0 ring -> --vio; #7830d8/#6030a8 shades -> --vioD; #180018/#301848 deep -> --ink family */
+  --ink:#0d0b12;--ink2:#14111b;--ink3:#1c1826;--deep:#08070b;
+  --paper:#f4f3f7;--paper2:#eae8f0;--paper3:#dcd9e5;
+  --stone:#aba7b7;--stoneD:#555064;
+  --vio:#9030f0;--vioL:#bf95f9;--vioD:#6a22c4;--vioM:#7830d8;
+  --hair:rgba(244,243,247,.14);--hairD:rgba(13,11,18,.14);
+  --sans:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,72px);--gap:clamp(12px,1.6vw,28px);
+  --maxw:1320px;--side:max(var(--gut),calc((100% - var(--maxw)) / 2));
+  --sec:clamp(112px,14vh,200px);
+  --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--ink)}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--ink);color:var(--paper);font-family:var(--sans);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--vioL);color:var(--ink)}
+:focus-visible{outline:1.5px solid var(--vioL);outline-offset:4px;border-radius:2px}
+.light :focus-visible{outline-color:var(--vioD)}
+[tabindex="-1"]:focus{outline:none}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-60px;z-index:2000;background:var(--vioL);color:var(--ink);padding:10px 16px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.skip:focus{top:16px}
+.wrap{padding-left:var(--side);padding-right:var(--side)}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;line-height:1.5;color:var(--stone)}
+.light .lab{color:var(--stoneD)}
+em{font-style:italic;font-weight:400}
+.d1{font-family:var(--sans);font-weight:300;font-size:clamp(50px,8.4vw,164px);line-height:1;letter-spacing:-.045em;margin:0}
+.d2{font-family:var(--sans);font-weight:300;font-size:clamp(40px,5.2vw,96px);line-height:1.02;letter-spacing:-.04em;margin:0}
+.d3{font-family:var(--sans);font-weight:300;font-size:clamp(32px,3.4vw,58px);line-height:1.06;letter-spacing:-.03em;margin:0}
+.d1 em,.d2 em,.d3 em{color:var(--vioL)}
+.light .d1 em,.light .d2 em,.light .d3 em{color:var(--vioD)}
+.d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+.lede{font-family:var(--sans);font-weight:300;font-size:clamp(21px,1.9vw,29px);line-height:1.38;letter-spacing:-.012em;margin:0}
+p{margin:0 0 1.1em;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}
+.muted{color:var(--stone)}
+.light .muted{color:var(--stoneD)}
+.light{background:var(--paper);color:var(--ink)}
+.sec{position:relative;z-index:1;padding-top:var(--sec);padding-bottom:var(--sec)}
+.dark{background:var(--ink)}
+.dark2{background:var(--ink2)}
+.paper2{background:var(--paper2)}
+.shead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(44px,5.4vw,88px)}
+.shead .d2,.shead .d3{max-width:16ch}
+.shead p{max-width:46ch;margin:0;color:var(--stone)}
+.light .shead p{color:var(--stoneD)}
+.kick{display:block;margin-bottom:22px;color:var(--vioL)}
+.light .kick{color:var(--vioD)}
+
+/* grain */
+.grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* field canvas: the embryo plate under the objective */
+.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(80% 90% at 68% 50%,#1b1626 0%,#100d16 55%,#08070b 100%)}
+#field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
+#field.ready{opacity:1}
+
+/* preloader / veil */
+#pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
+#pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
+#pre .mk{width:68px;height:68px;color:var(--vio)}
+#pre .wm{font-family:var(--sans);font-weight:300;font-size:clamp(32px,4.2vw,60px);letter-spacing:-.035em;color:var(--paper);line-height:1.1;padding:.16em .18em .4em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm em{color:var(--vioL)}
+#pre .wm .c{display:inline-block}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
+#pre .bar i{position:absolute;inset:0;background:var(--vioL);transform-origin:left;transform:scaleX(0)}
+#pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--sans);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--paper);font-variant-numeric:tabular-nums lining-nums}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
+
+/* header */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:800;display:flex;align-items:center;justify-content:space-between;padding:20px var(--side);color:var(--paper);border-bottom:1px solid transparent;transition:color .15s linear,transform .6s var(--ease),background-color .3s var(--eo),border-color .3s var(--eo)}
+.hdr.solid{background:rgba(13,11,18,.74);-webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--hair)}
+.hdr.ink{color:var(--ink)}
+.hdr.solid.ink{background:rgba(244,243,247,.84);border-bottom-color:var(--hairD)}
+.hdr.hide{transform:translateY(-110%)}
+.brand{display:flex;align-items:center;gap:12px;height:44px}
+.brand .mk{width:34px;height:34px;color:var(--vio);flex:none}
+.hdr.ink .brand .mk{color:var(--vioM)}
+.brand .wmk{display:flex;flex-direction:column;line-height:1.02;font-weight:500;font-size:16px;letter-spacing:-.01em}
+.brand .wmk span:last-child{font-weight:300}
+.nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
+.nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
+.ul{position:relative}
+.ul::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .45s var(--ease)}
+.ul:hover::after,.ul[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+
+/* buttons: one system (AH) */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:48px;min-height:48px;padding:0 24px;border-radius:999px;border:1px solid currentColor;font-family:var(--mono);font-size:11px;line-height:1;letter-spacing:.16em;text-transform:uppercase;position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--eo),border-color .35s var(--eo);white-space:nowrap}
+.btn::before{content:"";position:absolute;inset:0;background:var(--vioL);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
+.btn:hover{color:var(--ink);border-color:var(--vioL)}
+.btn:hover::before{transform:none}
+.btn.solid{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.light .btn:hover{color:var(--paper);border-color:var(--vioD)}
+.light .btn::before{background:var(--vioD)}
+.light .btn.solid{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn svg{width:16px;height:10px;transition:transform .35s var(--eo)}
+.btn:hover svg{transform:translateX(4px)}
+.btn.sm{height:44px;min-height:44px;padding:0 18px}
+.burger{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;height:44px}
+.burger i{display:block;width:26px;height:8px;position:relative}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;right:0;height:1px;background:currentColor;transition:transform .5s var(--ease)}
+.burger i::before{top:0}.burger i::after{bottom:0}
+.menu-open .burger i::before{transform:translateY(3.5px) rotate(20deg)}
+.menu-open .burger i::after{transform:translateY(-3.5px) rotate(-20deg)}
+.mm{position:fixed;inset:0;z-index:790;background:var(--deep);clip-path:circle(0px at calc(100% - 40px) 40px);visibility:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:110px var(--side) 32px;overflow-y:auto}
+.mm ol{list-style:none;margin:0;padding:0}
+.mm li{border-top:1px solid var(--hair);overflow:hidden}
+.mm li a{display:block;padding:12px 0 .3em;font-family:var(--sans);font-weight:300;font-size:clamp(40px,11vw,68px);line-height:1.08;letter-spacing:-.04em}
+.mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6;margin-top:28px}
+
+/* masks (AD / AU / AX / BH): padded on all sides; unclipped once the reveal completes */
+.ln{overflow:visible!important}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask.open{overflow:visible!important;clip-path:none!important}
+
+/* hero */
+.hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(58% 74% at 14% 54%,rgba(8,7,11,.86),rgba(8,7,11,.55) 46%,rgba(8,7,11,0) 76%),linear-gradient(180deg,rgba(8,7,11,.45),rgba(8,7,11,0) 20%,rgba(8,7,11,0) 66%,#0d0b12 100%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:var(--vioL);margin-bottom:clamp(22px,3vh,34px)}
+.hero-h{font-size:clamp(56px,9.2vw,176px);line-height:.98;letter-spacing:-.05em}
+.hero-h .l{display:block;white-space:nowrap}
+.hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
+.hero-foot .s{max-width:44ch;margin:0;font-size:17.5px;line-height:1.6;color:rgba(244,243,247,.86)}
+.hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
+.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:rgba(244,243,247,.18);z-index:2}
+.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--vioL);animation:cue 2.2s var(--ease) infinite}
+@keyframes cue{to{top:110%}}
+.hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1;color:var(--stone)}
+.hero-key span{display:flex;align-items:center;gap:10px}
+.hero-key i{width:12px;height:8px;border:1px solid var(--vioL);display:block}
+.hero-key i.s{width:8px;height:8px;border:0;border-radius:50%;background:var(--vio)}
+.hero-key.gone{opacity:0!important;visibility:hidden;transition:opacity .35s ease-out,visibility 0s linear .35s}
+
+/* page heads */
+.ph-head{position:relative;min-height:72vh;min-height:72svh;display:flex;flex-direction:column;justify-content:flex-end;padding:150px var(--side) clamp(56px,7vw,110px);z-index:1}
+.ph-head::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(70% 80% at 18% 72%,rgba(8,7,11,.9),rgba(8,7,11,.5) 70%),linear-gradient(180deg,rgba(8,7,11,.35),rgba(8,7,11,.15) 40%,var(--ink) 100%)}
+.ph-head>*{position:relative}
+.ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--vioL)}
+.ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:54ch;color:rgba(244,243,247,.88)}
+.sec.first{padding-top:clamp(72px,9vh,120px)}
+.sec.after-pin{padding-top:clamp(84px,10vh,140px)}
+
+/* manifesto + stats */
+.mani-g{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(30px,5vw,90px);align-items:end}
+.mph{margin:0;display:flex;flex-direction:column;gap:12px}
+.mph img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:30% 50%}
+.mani .txt{font-family:var(--sans);font-weight:300;font-size:clamp(30px,3.7vw,62px);line-height:1.14;letter-spacing:-.03em;margin:0;max-width:25ch}
+.mani .txt .w{opacity:.18}
+.mani .txt em{color:var(--vioL)}
+.stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.stat{position:relative;padding-top:24px}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hair)}
+.stat .ln2{position:absolute;left:0;right:0;top:0;height:1px;background:var(--vioL);transform-origin:left;transform:scaleX(0)}
+.stat .v{font-family:var(--sans);font-weight:300;font-size:clamp(48px,5vw,92px);line-height:1;letter-spacing:-.05em;display:block;white-space:nowrap}
+.stat .v sup,.stat .v small{font-size:.38em;vertical-align:top;position:relative;top:.22em;margin-left:.06em;color:var(--vioL);letter-spacing:-.02em}
+.stat .k{display:block;margin-top:16px;max-width:28ch}
+
+/* story (pinned, one continuous scene) */
+.story{background:var(--ink2);padding:0;overflow:hidden}
+.story-pin{height:100vh;height:100svh;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap);align-items:center;padding:96px var(--side) 48px;position:relative}
+.story-l{position:relative;align-self:center}
+.story-l .kick{margin-bottom:18px}
+.story-l .d3{margin-bottom:clamp(26px,3.4vh,44px);max-width:13ch}
+.rail{display:flex;gap:0;margin-bottom:clamp(22px,3vh,36px);position:relative}
+.rail::before{content:"";position:absolute;left:0;right:0;top:4px;height:1px;background:var(--hair)}
+.rail .prog{position:absolute;left:0;right:0;top:4px;height:1px;background:var(--vioL);transform-origin:left;transform:scaleX(0)}
+.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#a29eae;transition:color .35s var(--eo)}
+.rail span::before{content:"";position:absolute;left:0;top:0;width:9px;height:9px;border-radius:50%;background:var(--ink2);border:1px solid #6f6a7c;transition:background .35s,border-color .35s}
+.rail span.on{color:var(--paper)}
+.rail span.done::before,.rail span.on::before{background:var(--vioL);border-color:var(--vioL)}
+.steps{position:relative;min-height:clamp(230px,31vh,310px)}
+.step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
+.step.on{opacity:1;visibility:visible}
+.step h3{font-family:var(--sans);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.025em;margin:0 0 16px}
+.step p{color:rgba(244,243,247,.8);max-width:44ch;margin:0;font-size:16px}
+.step .tagp{margin-top:16px}
+.story-r{position:relative;height:min(74vh,720px);align-self:center}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-mask-image:radial-gradient(circle closest-side,#000 90%,transparent 100%);mask-image:radial-gradient(circle closest-side,#000 90%,transparent 100%)}
+.scap{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);max-width:100%;text-align:center;white-space:normal;padding:6px 14px 5px;border:1px solid rgba(191,149,249,.45);border-radius:99px;background:rgba(13,11,18,.82);color:#d6cce8;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;line-height:1.4;opacity:0;pointer-events:none}
+.tagp{display:inline-flex;align-items:center;line-height:1;padding:7px 11px 6px;border:1px solid currentColor;border-radius:99px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--vioL)}
+.light .tagp{color:var(--vioD)}
+
+/* product feature (home) */
+.pfeat{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--gap);align-items:stretch}
+.pcol{display:grid;grid-template-rows:1fr 1fr;gap:var(--gap)}
+.pc{position:relative;display:flex;flex-direction:column;border:1px solid var(--hairD);background:#fff;overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.pc::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--vioD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo);z-index:2}
+.pc:hover,.pc:focus-visible{transform:translateY(-4px);box-shadow:0 30px 50px -34px rgba(13,11,18,.45)}
+.pc:hover::before,.pc:focus-visible::before{transform:scaleX(1)}
+.pc figure{margin:0;position:relative;overflow:hidden;background:#f2f1f5;flex:1;min-height:220px}
+.pc figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .6s var(--eo)}
+.pc figure img.cover{object-fit:cover}
+.pc:hover figure img{transform:scale(1.035)}
+.pc .pm{padding:clamp(20px,2vw,30px);display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--hairD)}
+.pc h3{font-weight:300;font-size:clamp(28px,2.4vw,42px);line-height:1.04;letter-spacing:-.03em;margin:4px 0 0;transition:color .3s}
+.pc:hover h3{color:var(--vioD)}
+.pc p{color:var(--stoneD);font-size:15.5px;margin:0;max-width:46ch}
+.pc .go{display:flex;align-items:center;gap:10px;color:var(--vioD);margin-top:8px}
+.pc .go svg{width:16px;height:10px;transition:transform .3s var(--eo)}
+.pc:hover .go svg{transform:translateX(5px)}
+.pc.big figure{min-height:420px}
+.pc.sm2{flex-direction:row}
+.pc.sm2 figure{flex:0 0 42%;min-height:0}
+.pc.sm2 .pm{border-top:0;border-left:1px solid var(--hairD);justify-content:center}
+.pc.sm2 h3{font-size:clamp(24px,2vw,32px)}
+img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0 0 -5%;object-fit:cover}
+.noimgf img{display:none}
+.noimgf::after{content:attr(data-alt);position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD);padding:20px;text-align:center}
+
+/* neuro block (home) */
+.neu{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(30px,5vw,90px);align-items:center}
+.neu .ph{position:relative;margin:0;display:flex;flex-direction:column;gap:12px}
+.neu .ph .im{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--ink3)}
+.neu .ph .im.lite{background:#f2f1f5}
+.neu .ph .im img{width:100%;height:100%;object-fit:cover}
+.neu .ph .im.lite img{object-fit:contain;padding:8%}
+.neu .duo{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+.specs{margin:28px 0 0;border-top:1px solid var(--hair)}
+.specs>div{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:var(--gap);padding:15px 0;border-bottom:1px solid var(--hair);align-items:baseline}
+.specs dt{margin:0}
+.specs dd{margin:0;font-weight:300;font-size:clamp(18px,1.5vw,22px);line-height:1.3}
+.light .specs{border-top-color:var(--hairD)}
+.light .specs>div{border-bottom-color:var(--hairD)}
+.ngrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px)}
+.nc{position:relative;display:flex;flex-direction:column;gap:14px;transition:transform .32s var(--eo)}
+.nc figure{margin:0;aspect-ratio:4/3;overflow:hidden;background:#f2f1f5;position:relative}
+.nc figure img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--eo)}
+.nc:hover{transform:translateY(-5px)}
+.nc:hover figure img{transform:scale(1.045)}
+.nc h3{font-weight:400;font-size:clamp(20px,1.6vw,25px);letter-spacing:-.02em;line-height:1.15;margin:0;transition:color .3s}
+.nc:hover h3{color:var(--vioL)}
+.nc p{margin:0;font-size:14.5px;color:var(--stone)}
+
+/* funding band */
+.grant{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.gr{border-top:1px solid var(--hair);padding-top:26px;position:relative}
+.gr .gv{display:block;font-weight:300;font-size:clamp(48px,5vw,88px);line-height:1;letter-spacing:-.05em;margin:18px 0 18px;white-space:nowrap}
+.gr h3{font-weight:300;font-size:clamp(22px,1.9vw,30px);line-height:1.2;letter-spacing:-.02em;margin:0 0 12px;max-width:26ch}
+.gr p{color:var(--stone);font-size:15px;max-width:52ch;margin:0}
+.gr a.ul{display:inline-block;margin-top:18px;color:var(--vioL)}
+
+/* field photos */
+.fgal{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--gap)}
+.fg{margin:0;display:flex;flex-direction:column;gap:12px}
+.fg .im{position:relative;overflow:hidden;background:var(--paper3)}
+.fg .im img{width:100%;height:100%;object-fit:cover}
+.fg figcaption{font-size:14px;line-height:1.5;color:var(--stoneD);max-width:46ch}
+.fg figcaption b{display:block;font-weight:500;color:var(--ink);font-size:15.5px;margin-bottom:2px}
+.fg .im{height:clamp(260px,27vw,390px)}
+.fg.a{grid-column:1/6}.fg.b{grid-column:6/10}.fg.c{grid-column:10/13}
+.fg.c .im img{object-position:50% 20%}
+
+/* rows (news) */
+.rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.light .rows{border-top-color:var(--hairD)}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.light .row-a{border-bottom-color:var(--hairD)}
+.row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--vioL);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
+.light .row-a::before{background:var(--vioD)}
+.row-a::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(191,149,249,.08),rgba(191,149,249,0) 70%);opacity:0;transition:opacity .3s ease-out;pointer-events:none}
+.row-a:hover::before{transform:scaleX(1)}
+.row-a:hover::after{opacity:1}
+.row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px}
+.row-a .tt{grid-column:4/12;display:flex;align-items:center;gap:clamp(16px,2vw,28px)}
+.row-a .th{flex:0 0 auto;width:clamp(84px,8vw,120px);aspect-ratio:4/3;overflow:hidden;background:var(--ink3);position:relative}
+.row-a .th img{width:100%;height:100%;object-fit:cover}
+.row-a h3{font-weight:300;font-size:clamp(20px,1.75vw,28px);line-height:1.22;letter-spacing:-.02em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a:hover h3{color:var(--vioL);transform:translateX(6px)}
+.light .row-a:hover h3{color:var(--vioD)}
+.row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center}
+.row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
+.row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
+
+/* people (Leavitt model, AC) */
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
+.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(13,11,18,.5)}
+.ph2{position:absolute;inset:0}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .45s ease-out,clip-path .45s ease-out}
+.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta .grp{display:none}
+.pc-meta h3{font-weight:400;font-size:clamp(22px,1.75vw,28px);letter-spacing:-.025em;line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--vioD);margin-top:6px}
+.pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
+.pcard:hover h3,.pcard:focus-visible h3{color:var(--vioD)}
+.pcard:hover h3 span{background-size:100% 1px}
+.pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));overflow:hidden}
+.pcard.noimg .pc-fig{display:none}
+.pcard.noimg .pc-meta{padding-top:0;height:100%}
+.pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--stoneD)}
+.pcard.noimg .go{margin-top:auto;padding-top:20px}
+
+/* cta */
+.cta{background:var(--paper2);color:var(--ink)}
+.cta .big{font-family:var(--sans);font-weight:300;font-size:clamp(52px,8vw,150px);line-height:1;letter-spacing:-.05em;margin:0}
+.cta .big em{color:var(--vioD)}
+.cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
+.cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
+
+/* footer */
+.ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
+.ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
+.ftr .c .lab{display:block;margin-bottom:14px;color:var(--vioL)}
+.ftr .c a{color:var(--paper)}
+.ftr .bigw{font-family:var(--sans);font-weight:300;font-size:min(15.5vw,250px);line-height:1;letter-spacing:-.06em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.12em;color:var(--paper)}
+.ftr .bigw em{color:var(--vioL)}
+.ftr .bigw .ch{display:inline-block}
+.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+
+/* inner page blocks */
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.two.r{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.prow{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(30px,5vw,90px);align-items:center;padding:clamp(56px,6vw,96px) 0;border-top:1px solid var(--hairD)}
+.prow:first-child{padding-top:0;border-top:0}
+.prow:last-child{padding-bottom:0}
+.prow.flip>figure{order:2}
+.prow figure{margin:0;position:relative;aspect-ratio:5/4;overflow:hidden;background:#fff;border:1px solid var(--hairD)}
+.prow figure img{width:100%;height:100%;object-fit:contain}
+.prow figure img.cover{object-fit:cover}
+.prow h2{font-weight:300;font-size:clamp(34px,3.4vw,56px);line-height:1.04;letter-spacing:-.035em;margin:10px 0 18px}
+.prow p{color:var(--stoneD);max-width:52ch}
+.dark .prow,.dark2 .prow{border-top-color:var(--hair)}
+.dark .prow figure,.dark2 .prow figure{border-color:var(--hair)}
+.dark .prow p,.dark2 .prow p{color:var(--stone)}
+.ticks{list-style:none;margin:22px 0 0;padding:0;border-top:1px solid var(--hairD)}
+.ticks li{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--hairD);font-size:16px;line-height:1.5}
+.ticks li::before{content:"";width:9px;height:9px;border:1px solid var(--vioD);margin-top:.5em}
+.dark .ticks,.dark2 .ticks{border-top-color:var(--hair)}
+.dark .ticks li,.dark2 .ticks li{border-bottom-color:var(--hair)}
+.dark .ticks li::before,.dark2 .ticks li::before{border-color:var(--vioL)}
+.aims{list-style:none;margin:0;padding:0}
+.aims li{display:grid;grid-template-columns:92px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hair);font-size:17px;line-height:1.5}
+.aims li:last-child{border-bottom:1px solid var(--hair)}
+.aims li b{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--vioL);padding-top:.35em}
+.light .aims li{border-color:var(--hairD)}
+.light .aims li b{color:var(--vioD)}
+.spgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.sp{border-top:1px solid var(--hair);padding:20px 0 6px;position:relative}
+.sp b{display:block;font-weight:300;font-size:clamp(22px,1.8vw,28px);line-height:1.12;letter-spacing:-.02em;margin:4px 0 10px}
+.sp i{font-style:italic}
+.sp .lab{color:var(--vioL)}
+.sku{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.sku li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr) minmax(0,2fr);gap:var(--gap);padding:18px 0;border-bottom:1px solid var(--hair);align-items:center}
+.sku li b{font-weight:400;font-size:clamp(19px,1.5vw,23px);letter-spacing:-.015em}
+.sku li span{color:var(--stone);font-size:15px}
+.sku li .lab{justify-self:end;text-align:right}
+.refs{list-style:none;margin:0;padding:0;font-size:15px;color:var(--stoneD)}
+.refs li{padding:16px 0;border-top:1px solid var(--hairD);display:grid;grid-template-columns:minmax(0,9fr) minmax(0,3fr);gap:var(--gap);align-items:center}
+.refs li b{display:block;font-weight:400;color:var(--ink);font-size:17px;line-height:1.35;margin-bottom:4px}
+.refs li .lab{justify-self:end;text-align:right}
+.refs li a.lab{color:var(--vioD)}
+.gal2{display:grid;grid-template-columns:3fr 2fr;gap:var(--gap);align-items:start}
+@media (min-width:1025px){.two.r>.gal2{position:sticky;top:110px}}
+.gal2 figure{margin:0;position:relative;overflow:hidden;background:#fff;border:1px solid var(--hairD)}
+.gal2 figure img{width:100%;height:100%;object-fit:cover}
+.gal2 figure:first-child{aspect-ratio:6/5}
+.gal2 figure:first-child{background:#eeedf2}
+.gal2 figure:first-child img{object-fit:contain;padding:7%}
+.gal2 figure:last-child{aspect-ratio:3/4}
+.gal2 figure:last-child img{object-position:50% 30%}
+
+/* contact */
+.cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
+.addr h3{font-weight:300;font-size:clamp(30px,3vw,48px);line-height:1.06;letter-spacing:-.03em;margin:14px 0 14px}
+.addr p{color:var(--stoneD)}
+.jobs{list-style:none;margin:30px 0 0;padding:0;border-top:1px solid var(--hairD)}
+.jobs li{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--hairD);font-size:16px}
+.form{display:grid;grid-template-columns:1fr 1fr;column-gap:var(--gap)}
+.fld{position:relative;padding-top:26px}
+.fld.w{grid-column:1/3}
+.fld label{position:absolute;left:0;top:44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD);transition:all .4s var(--ease);pointer-events:none}
+.fld input,.fld textarea{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(13,11,18,.3);padding:16px 0 12px;font-family:var(--sans);font-weight:300;font-size:24px;color:var(--ink);border-radius:0;outline:none;resize:none;-webkit-appearance:none;appearance:none}
+.fld textarea{min-height:120px}
+.fld .bar{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease)}
+.fld:focus-within .bar{transform:scaleX(1)}
+.fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--vioD)}
+.fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9a1c55;opacity:0;transition:opacity .3s}
+.fld.bad .err{opacity:1}
+.fld.bad input,.fld.bad textarea{border-bottom-color:#9a1c55}
+.subm{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.thanks{display:none;padding:30px 0 10px}
+.thanks svg{width:150px;height:110px;display:block;margin-bottom:24px;overflow:visible}
+.formwrap.done form{display:none}
+.lab.quiet{opacity:.75;font-size:10px}
+.formwrap.done .thanks{display:block}
+.map{margin-top:clamp(40px,5vw,72px);border:1px solid var(--hairD);aspect-ratio:2/1;background:var(--paper2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+
+/* transition cover */
+.xc{position:fixed;inset:0;z-index:900;pointer-events:none;background:var(--ink3)}
+.xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--vioL);opacity:.7}
+.xt{position:fixed;inset:0;z-index:901;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
+.xt .t{font-family:var(--sans);font-weight:300;font-size:clamp(54px,9vw,170px);line-height:1;letter-spacing:-.05em;color:var(--paper);overflow:hidden;padding:.16em .18em .3em;margin-bottom:-.3em}
+.xt .t span{display:inline-block}
+.xt .lab{color:var(--vioL)}
+
+/* PERSON SHEET (BI): _kit/components/person-sheet.html, re-skinned */
+.ps{position:fixed;inset:0;z-index:850;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:rgba(8,7,11,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--paper);color:var(--ink);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.6),0 0 0 1px var(--hairD);opacity:0}
+.ps-media{position:relative;background:var(--paper3);overflow:hidden;border-radius:18px 0 0 18px}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,rgba(144,48,240,.16),transparent 60%)}
+.ps-plate .k{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD)}
+.ps-plate .q{font:300 clamp(22px,2vw,30px)/1.25 var(--sans);letter-spacing:-.02em;margin-top:14px;padding-bottom:.12em}
+.ps-col{display:flex;flex-direction:column;min-height:0}
+.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--hairD);border-top-right-radius:18px}
+.ps-bar .ps-step{display:flex;gap:8px}
+.ps-body{border-bottom-right-radius:18px;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body .lab{color:var(--vioD)}
+.ps-body h2{font-weight:300;font-size:clamp(34px,3.6vw,54px);line-height:1.08;letter-spacing:-.035em;margin:14px 0 10px;padding-bottom:.1em}
+.ps-body .role{font-size:17px;line-height:1.5;color:var(--stoneD);margin:0 0 30px}
+.ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
+.ps-body blockquote{margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-weight:300;font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.35;letter-spacing:-.015em}
+.ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
+.ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
+.ps-body .src a{color:var(--vioD)}
+
+[data-r]{will-change:auto}
+.nf{min-height:70vh}
+
+@media (max-width:1100px){
+  .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero-key{display:none}
+  .ngrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
+  .spgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:1024px){
+  .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
+  .story-r{grid-row:1;height:40vh;height:40svh}
+  .story-l .d3{display:none}
+  .story-l .kick{display:none}
+  .two,.two.r,.cgrid,.neu,.prow,.mani-g{grid-template-columns:1fr}
+  .prow.flip>figure{order:0}
+  .pfeat{grid-template-columns:1fr}
+  .pc.big figure{min-height:340px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}
+  .grant{grid-template-columns:1fr;row-gap:56px}
+}
+@media (max-width:860px){
+  .nav .nl,.nav .btn{display:none}
+  .burger{display:inline-flex}
+  .hdr{padding-top:14px;padding-bottom:14px}
+  .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .hero::before{background:linear-gradient(180deg,rgba(8,7,11,.1) 0%,rgba(8,7,11,.25) 30%,rgba(8,7,11,.84) 50%,rgba(8,7,11,.94) 74%,#0d0b12 100%)}
+  .hero-h{font-size:clamp(52px,16vw,110px)}
+  .hero-foot .s{font-size:16px}
+  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+  .row-a .tt{grid-column:1/12}
+  .row-a .c4{grid-column:12/13}
+  .ftr .cols{grid-template-columns:1fr 1fr}
+  .form{grid-template-columns:1fr}
+  .fld.w,.subm{grid-column:1/2}
+  .fgal{grid-template-columns:1fr 1fr}
+  .fg.a,.fg.b,.fg.c{grid-column:auto}
+  .fg.a{grid-column:1/3}
+  .fg .im{height:auto;aspect-ratio:4/3}
+  .fg.c .im{aspect-ratio:3/4}
+  .sku li{grid-template-columns:1fr;gap:4px}
+  .sku li .lab{justify-self:start;text-align:left}
+  .refs li{grid-template-columns:1fr;gap:6px}
+  .refs li .lab{justify-self:start;text-align:left}
+  .pc.sm2{flex-direction:column}
+  .pc.sm2 figure{flex:none;min-height:220px}
+  .pc.sm2 .pm{border-left:0;border-top:1px solid var(--hairD)}
+}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .ps-media{height:min(36vh,300px);border-radius:18px 18px 0 0}
+  .ps-bar{padding:14px 18px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (max-width:560px){
+  .hm{display:none}
+  .stats{grid-template-columns:1fr 1fr;gap:36px 16px}
+  .stat .v{font-size:52px}
+  .ngrid,.spgrid{grid-template-columns:1fr}
+  .ftr .cols{grid-template-columns:1fr}
+  .step p{font-size:15px}
+  .specs>div{grid-template-columns:1fr;gap:4px}
+  .fld input,.fld textarea{font-size:21px}
+  .fgal{grid-template-columns:1fr}
+  .fg.a{grid-column:auto}
+  .gal2{grid-template-columns:1fr}
+  .gal2 figure:last-child{aspect-ratio:4/3}
+  .jobs li{flex-direction:column;align-items:flex-start;gap:4px}
+}
+@media (max-width:420px){.pgrid{grid-template-columns:1fr}}
+@media (max-width:560px),(hover:none){.ph2 .ph-c{clip-path:none!important}}
+@media (prefers-reduced-motion:reduce){
+  .grain,.cue i{animation:none}
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+  .mani .txt .w{opacity:1}
+  .ps-scrim{backdrop-filter:none}
+}
+</style>
+</head>
+<body>
+<script>try{if(sessionStorage.getItem("ob-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
+<a class="skip" href="#main">Skip to content</a>
+<div class="fieldbg" aria-hidden="true"></div>
+<canvas id="field" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="obmark" viewBox="0 0 100 100"><g fill="none" stroke="currentColor" stroke-width="8"><path d="M9.75 38A42 42 0 0 1 92 50"/><path d="M90.25 62A42 42 0 0 1 8 50"/><path d="M70.23 35.31A25 25 0 0 1 40.63 73.18"/><path d="M34.61 69.7A25 25 0 0 1 63.98 29.27"/></g><g fill="currentColor"><rect x="4" y="47" width="25" height="6"/><rect x="71" y="47" width="25" height="6"/></g></symbol></defs></svg>
+
+<div id="pre" aria-hidden="true">
+  <div class="pc">
+    <svg class="mk" viewBox="0 0 100 100"><use href="#obmark"/></svg>
+    <div class="wm"><span>Biology in <em>focus</em></span></div>
+  </div>
+  <span class="lab pl">Objective Biotechnology · Minneapolis</span>
+  <div class="bar"><i id="preBar"></i></div>
+  <span class="cnt" id="preCnt">000</span>
+</div>
+
+<header class="hdr" id="hdr">
+  <a href="#/" class="brand" id="brand" aria-label="Objective Biotechnology, home">
+    <svg class="mk" viewBox="0 0 100 100" aria-hidden="true"><use href="#obmark"/></svg>
+    <span class="wmk"><span>Objective</span><span>Biotechnology</span></span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <a class="nl ul" href="#/microinjection">Microinjection</a>
+    <a class="nl ul" href="#/neuroscience">Neuroscience</a>
+    <a class="nl ul" href="#/team">Team</a>
+    <a class="nl ul" href="#/news">News</a>
+    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
+  </nav>
+</header>
+
+<div class="mm" id="mm" aria-hidden="true" data-lenis-prevent>
+  <ol>
+    <li><a href="#/">Home</a></li>
+    <li><a href="#/microinjection">Microinjection</a></li>
+    <li><a href="#/neuroscience">Neuroscience</a></li>
+    <li><a href="#/team">Team</a></li>
+    <li><a href="#/news">News</a></li>
+    <li><a href="#/contact">Contact</a></li>
+  </ol>
+  <div class="mmf">
+    <div><span class="lab">Minneapolis, MN</span><br>225 Thomas Avenue North, Suite 50</div>
+    <div><span class="lab">Write</span><br><a href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a></div>
+  </div>
+</div>
+
+<main id="main" tabindex="-1"><div id="view"></div></main>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" id="psScrim"></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <a class="btn sm" href="#/team" data-close>Close</a>
+        <div class="ps-step"><a class="btn sm" id="psPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="psNext" href="#/team" data-replace aria-label="Next person">Next</a></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="xc" id="xc" aria-hidden="true"></div>
+<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Objective Biotechnology</span><div class="t" id="xtt"></div></div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
+<script>/* cover: GSAP yPercent is the only source of truth for its offset (BF) */gsap.set(".xc",{y:0,yPercent:101});</script>
+<script>
+(function(){
+"use strict";
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+var MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(iso){if(!iso)return "";var d=iso.split("-");return d.length<3?MO[+d[1]-1]+" "+d[0]:MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
+var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+var SITE="Objective Biotechnology";
+var SQ="https://images.squarespace-cdn.com/content/v1/648e38bae8ecbc050436b6c7/";
+
+/* ================= CONTENT (from the dossier; nothing invented) ================= */
+var IMG={
+ auto2:"https://i.postimg.cc/wML94zDf/Autoinjector-02-300dpi-20250602.png",
+ auto3:"https://i.postimg.cc/637WRnqN/Autoinjector-03-300dpi-20250602.png",
+ embryo:SQ+"8b6b3bed-d201-420d-8a03-5777365dd7a8/embryo_and_needle.jpg?format=1500w",
+ lab:SQ+"cd11860f-e4ef-47ce-befc-6091ee237b88/WhatsApp+Image+2023-11-08+at+8.22.21+PM.jpg?format=1500w",
+ cortex:SQ+"05068790-1229-4569-9643-6c830e63e359/lab+display+picture+1.png?format=750w",
+ mini:SQ+"cc2b6733-8eb1-4274-9b6b-68fc41fb52b3/mini-mScope_pic1.jpg?format=1500w",
+ miniKit:"https://i.imgur.com/cCFxorch.jpg",
+ miniMount:"https://i.imgur.com/jXKQy4j.jpg",
+ miniHand:"https://i.imgur.com/oMnzrI2h.jpg",
+ seeshell:SQ+"d70ef537-1ba5-4af2-ab13-dddecf814496/seeshell-hf-06.jpg?format=1500w",
+ seeshellFb:SQ+"715b9ffc-6aa7-4481-9bec-085635db5cb1/seeshell-fb-01.jpg?format=1000w",
+ meso:SQ+"27fcb0d5-6a04-411a-aef3-60dfa514dfee/seeshell_mesoscope4.JPG?format=1000w",
+ plate:SQ+"20c9f4dc-76be-436b-8814-ec00a43741e0/titanium-headplate-01.jpg?format=1000w",
+ magkine:SQ+"a1d6f3a1-b6e5-4aea-8989-ae507c31985b/Magkine_pic1.jpg?format=1500w",
+ robocomm:SQ+"d95f1e28-db14-4683-b266-8f7377047b0b/Robo-Comm_1.jpg?format=1500w",
+ box:"https://i.postimg.cc/xT1phy5t/Box-image-25-2.jpg",
+ needle40:"https://i.postimg.cc/xCWjh1D4/40X-needle-image-1.jpg",
+ droso:SQ+"fd353045-3bbe-40a2-87cc-a9f7059acbb5/Droso2025_4.jpg?format=1500w",
+ mncup:SQ+"dcd922cf-ac91-40e2-8b5f-5cfce6686190/MNCupAward.jpg?format=1500w",
+ genetics:SQ+"edba05a4-3c16-4cf2-b350-1ac2db11e82e/GeneticsImage.png?format=750w"
+};
+var REP="https://reporter.nih.gov/project-details/";
+var NEWS=[
+ {d:"2026-09-11",s:"NIH RePORTER",t:"NINDS STTR fast-track award for the Bionic Imaging Platform, a robotic system that follows a freely moving mouse for benchtop-grade brain imaging",u:REP+"11316597"},
+ {d:"2026-07-28",s:"NIH RePORTER",t:"SBIR Phase II award from the NIH Office of the Director to make the Autoinjector fully autonomous",u:REP+"11409842"},
+ {d:"2025-09-19",s:"Announcement",t:"NIH STTR grant to advance the mini-mScope for whole-brain imaging, with the University of Minnesota",u:"https://www.objectivebiotechnology.com/sttrneurotech"},
+ {d:"2025-06-18",s:"Business Wire",t:"Business Wire release on the Autoinjector’s March 2025 commercial launch",u:"https://www.businesswire.com/news/home/20250618501370/en"},
+ {d:"2025-04-10",s:"Announcement",t:"The Autoinjector launches commercially at the 66th Annual Drosophila Research Conference, March 2025",img:IMG.droso,u:"https://www.objectivebiotechnology.com/droso2025-press-release"},
+ {d:"2024-08-23",s:"NIH RePORTER",t:"SBIR Phase I award for machine-vision guided robotics for automated microinjection into fruit fly embryos",u:REP+"11013464"},
+ {d:"2024-04",s:"GENETICS",t:"The Autoinjector study is the journal’s featured article for April 2024",img:IMG.genetics,u:"https://academic.oup.com/genetics/issue/226/4#1875532-7593483"},
+ {d:"",s:"NSF Discovery Files",t:"The Autoinjector is featured on the NSF Discovery Files podcast",u:"https://www.youtube.com/watch?v=Nojw1Wk2kHg"},
+ {d:"",s:"MN Cup",t:"Objective Biotechnology recognized as MN Cup Top Founder of Color-Led Startup",img:IMG.mncup,u:"https://www.linkedin.com/company/medamn/posts/?feedView=all"}
+];
+var TEAM=[
+ {slug:"james-grabau",name:"James Grabau",title:"Chief Executive Officer",grp:"Leadership",img:"https://i.imgur.com/fEjkVIn.jpeg",
+  bio:["James leads Objective Biotechnology as CEO. He speaks for the company on the Autoinjector, launched commercially at the 66th Annual Drosophila Research Conference in San Diego in March 2025, and on the 2025 NIH STTR award that is taking the mini-mScope toward commercial deployment.","He is the company’s contact for Autoinjector demonstrations."],
+  q:"There is a growing need for a universal microinjection instrument that can meet the challenges posed by both traditional and emerging research species.",qs:"On the Autoinjector’s March 2025 launch (company announcement)"},
+ {slug:"daryl-gohl",name:"Daryl Gohl",title:"Chief Scientific Officer",grp:"Leadership",img:"https://i.imgur.com/wQAwmKh.jpeg",
+  bio:["Daryl is Objective Biotechnology’s Chief Scientific Officer. The company’s April 2025 announcement describes him as an assistant professor at the University of Minnesota Genomics Center’s Innovation Lab and the Department of Genetics, Cell Biology, and Development.","He is an author of the 2024 GENETICS paper on the machine-vision guided embryonic microinjection robot, and a named inventor on the company’s microinjection patent, US 12,094,161 B2."],
+  q:"The ability to rapidly and reliably inject embryos for gene editing applications is going to drastically streamline research in both basic and applied genetics.",qs:"On the Autoinjector’s March 2025 launch (company announcement)"},
+ {slug:"suhasa-kodandaramaiah",name:"Suhasa Kodandaramaiah",title:"Chief Technology Officer",grp:"Leadership",img:"https://i.imgur.com/tMYr7DZ.png",
+  bio:["Suhasa is Objective Biotechnology’s Chief Technology Officer and a professor of mechanical engineering at the University of Minnesota. He is senior author of the 2024 GENETICS study behind the Autoinjector.","His work in miniaturized neurotechnologies laid the foundation for the mini-mScope. He is a principal investigator on the company’s NIH STTR awards for the mini-mScope and the Bionic Imaging Platform."],
+  q:"We believe that this automated platform will significantly advance the field of genetic modification by improving consistency, reducing training time, and enabling researchers to focus on their scientific discoveries.",qs:"On the Autoinjector’s March 2025 launch (company announcement)"},
+ {slug:"andrew-alegria",name:"Andrew Alegria",title:"VP, Robotics",grp:"Leadership",img:"https://i.imgur.com/WeR0XLhl.jpg",
+  bio:["Andrew leads robotics at Objective Biotechnology. He is the principal investigator of the company’s NIH SBIR awards for the Autoinjector: the Phase I grant (2024) and the Phase II grant (2026) to build a fully autonomous microinjection robot.","He is co-first author of the 2024 GENETICS paper and the 2021 IEEE EMBC paper on imaging-assisted robotic microinjection, and a named inventor on US patent 12,094,161 B2."]},
+ {slug:"amey-joshi",name:"Amey Joshi",title:"VP, R&D Engineering",grp:"Leadership",img:"https://i.imgur.com/sPow72X.jpeg",
+  bio:["Amey leads R&D engineering at Objective Biotechnology. He is co-first author of the 2024 GENETICS paper on the machine-vision guided embryonic microinjection robot and of the 2021 IEEE EMBC paper on multiscale, multi-perspective imaging assisted robotic microinjection.","He is a named inventor on US patent 12,094,161 B2."]},
+ {slug:"daniel-surinach",name:"Daniel Surinach",title:"VP, Neural Engineering",grp:"Leadership",img:"https://i.imgur.com/tzhddwR.jpeg",
+  bio:["Daniel leads neural engineering at Objective Biotechnology. He is the contact principal investigator of the 2026 NINDS STTR award for the Bionic Imaging Platform and a principal investigator on the mini-mScope STTR.","He is co-first author of the 2021 Nature Methods paper introducing the miniaturized head-mounted microscope for whole-cortex mesoscale imaging in freely behaving mice."]},
+ {slug:"daniel-pomp",name:"Daniel Pomp",title:"Board of Directors",grp:"Board",img:"https://i.imgur.com/AJcf0Sxl.jpg",
+  bio:["Daniel serves on Objective Biotechnology’s Board of Directors."]}
+];
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+
+/* ================= VIEW HELPERS ================= */
+function head(o){
+  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
+  '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
+  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
+}
+function im(src,alt,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="obNoImg(this)">'}
+window.obNoImg=function(i){var f=i.parentNode;if(f){f.classList.add("noimgf");f.setAttribute("data-alt",i.alt||"")}};
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+window.obNoPh=function(i){var c=i.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
+function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm">'+(n.d?'<time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time>':'')+'<span class="lab">'+esc(n.s)+'</span></span><span class="tt">'+(n.img?'<span class="th">'+im(n.img,"")+'</span>':'')+'<h3>'+esc(n.t)+'</h3></span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function specs(list){return '<dl class="specs" data-group>'+list.map(function(s){return '<div class="srow"><dt class="lab">'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl>'}
+function ticks(list){return '<ul class="ticks">'+list.map(function(s){return '<li><span>'+s+'</span></li>'}).join("")+'</ul>'}
+
+/* ================= VIEWS ================= */
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Machine-vision robotics &amp; neurotechnology<span class="hm"> · Minneapolis</span></span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Biology</span><span class="l">in <em>focus.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>A University of Minnesota spin-out building robots that microinject embryos at scale, and imaging tools that record activity across the cortex of freely behaving mice.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/microinjection">Meet the Autoinjector '+ARR+'</a><a class="btn" href="#/neuroscience">Neuroscience tools</a></div></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Embryo detected</span><span><i class="s"></i>Injected at the posterior pole</span></div>'+
+   '<div class="cue" aria-hidden="true"><i></i></div>'+
+  '</section>'+
+
+  '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
+   '<div class="mani-g"><div><span class="lab kick" data-r>Our mission</span>'+
+   '<p class="txt" id="mani">We develop high-impact technologies that enable comprehensive <em>measurement and manipulation</em> of biological systems at multiple scales, unlocking new capabilities for researchers.</p></div>'+
+   '<figure class="mph">'+im(IMG.lab,"Building and testing an imaging and injection rig in the Objective Biotechnology lab","cover")+'<figcaption class="lab">In the lab</figcaption></figure></div>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">6<sup>×</sup></span><span class="lab k">Faster than manual microinjection (Phase&nbsp;I)</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">8×10<small>mm</small></span><span class="lab k">Field of view across dorsal cortex</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">3.8<small>g</small></span><span class="lab k">mini-mScope, worn by a freely behaving mouse</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1<small>yr+</small></span><span class="lab k">SeeShell implant stability</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How the Autoinjector works</span><h2 class="d3">One plate. <em>No hands.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Detect</span><span>Target</span><span>Inject</span><span>Recover</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h3>See every embryo.</h3><p>A camera looks down on the agar plate and machine-learning models trained on embryo images find each one, including embryos that sit clustered together.</p></article>'+
+     '<article class="step"><h3>Choose the spot.</h3><p>For every detected embryo the software sets an injection site, so the needle reaches the same location in each one, then plans its route across the plate.</p></article>'+
+     '<article class="step"><h3>Inject, embryo after embryo.</h3><p>The robot guides the micropipette into each target in turn: hundreds of embryos an hour, no uninjected embryos left behind, run by people with no prior microinjection experience.</p></article>'+
+     '<article class="step"><h3>Keep going on its own.</h3><p>The Phase II program adds automatic pipette changes when a clog is detected and multi-dish runs, so several constructs can be injected in one session without a human in the loop.</p><span class="tagp">NIH SBIR Phase II · in development</span></article>'+
+    '</div></div>'+
+   '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas><span class="scap" id="scap" aria-hidden="true"></span></div>'+
+  '</div></section>'+
+
+  '<section class="sec light after-pin" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Instruments</span><h2 class="d2 split">Built for the <em>bench.</em></h2></div><p data-r>Two families of research tools, both born in University of Minnesota labs: automated microinjection for genetics, and optical access to the brain for neuroscience.</p></div>'+
+   '<div class="pfeat">'+
+    '<a class="pc big" href="#/microinjection"><figure>'+im(IMG.auto2,"The Autoinjector automated microinjection system")+'</figure><div class="pm"><span class="lab">Microinjection · available</span><h3>Autoinjector</h3><p>A machine-vision guided robot that microinjects embryos of many species for transgenesis, mutagenesis and more, with minimal training and hands-on time.</p><span class="lab go">Explore microinjection '+ARR+'</span></div></a>'+
+    '<div class="pcol">'+
+     '<a class="pc sm2" href="#/microinjection"><figure>'+im(IMG.box,"Injecta micropipettes in their case","cover")+'</figure><div class="pm"><span class="lab">Consumables</span><h3>Injecta micropipettes</h3><p>Pre-pulled, pre-beveled and individually inspected, for manual or automated injection.</p></div></a>'+
+     '<a class="pc sm2" href="#/neuroscience"><figure>'+im(IMG.mini,"The mini-mScope miniaturized microscope held in a gloved hand","cover")+'</figure><div class="pm"><span class="lab">Neuroscience</span><h3>mini-mScope</h3><p>A miniaturized wide-field microscope for whole dorsal cortex imaging in freely behaving rodents.</p></div></a>'+
+    '</div>'+
+   '</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="neu">'+
+    '<div class="duo"><figure class="ph"><div class="im">'+im(IMG.cortex,"Wide-field image of the mouse dorsal cortex","cover")+'</div><figcaption class="lab">Dorsal cortex, wide-field</figcaption></figure><figure class="ph"><div class="im lite">'+im(IMG.miniMount,"The mini-mScope with its docking mounts")+'</div><figcaption class="lab">mini-mScope and mounts</figcaption></figure></div>'+
+    '<div><span class="lab kick" data-r>Neuroscience</span><h2 class="d2 split">The whole cortex, <em>on the move.</em></h2><p class="muted" style="margin-top:26px;max-width:46ch" data-r>A suite of neurotechnology tools for large-scale, cortex-wide optical access and neural recordings during unrestrained behavior in rodent models.</p>'+
+     specs([["Imaging","Whole dorsal cortex, mesoscale"],["Field of view","8 × 10 mm"],["Resolution","17–35 μm"],["Weight","Under 4 g"],["Docking","Magnetic, stress-free"]])+
+    '</div>'+
+   '</div>'+
+   '<div class="ngrid" data-group>'+
+    '<a class="nc" href="#/neuroscience"><figure>'+im(IMG.seeshell,"SeeShell implant with a titanium headplate","inset")+'</figure><h3>SeeShell implants</h3><p>3D-printed implants shaped to the mouse skull.</p></a>'+
+    '<a class="nc" href="#/neuroscience"><figure>'+im(IMG.plate,"Titanium headplate")+'</figure><h3>Titanium headplates</h3><p>Stable head-fixation for 1-photon and 2-photon imaging.</p></a>'+
+    '<a class="nc" href="#/neuroscience"><figure>'+im(IMG.magkine,"MagKine docking system on an optical breadboard")+'</figure><h3>MagKine docking</h3><p>Magnetic, kinematic head-fixation in an instant.</p></a>'+
+    '<a class="nc" href="#/neuroscience"><figure>'+im(IMG.robocomm,"Robo-Comm robotic commutator")+'</figure><h3>Robo-Comm</h3><p>A vision-guided commutator that keeps wires untangled.</p></a>'+
+   '</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Funding · 2026</span><h2 class="d2 split">Two new NIH <em>awards.</em></h2></div><p data-r>The Autoinjector award builds on a 2024 Phase I grant; the Bionic Imaging Platform is a fast-track STTR with the University of Minnesota.</p></div>'+
+   '<div class="grant" data-group>'+
+    '<div class="gr"><span class="lab">NIH Office of the Director · SBIR Phase II · July 2026</span><span class="gv">$1,200,472</span><h3>A fully autonomous Autoinjector, tested across 500+ experiments.</h3><p>Automatic pipette changes, multi-dish runs and software that lets users train new models for new species, beta-tested with Drosophila researchers at Baylor College of Medicine. First-year award.</p><a class="ul lab" href="'+REP+'11409842" target="_blank" rel="noopener">Project 2R44OD037625-02 ↗</a></div>'+
+    '<div class="gr"><span class="lab">NINDS · STTR fast track · September 2026</span><span class="gv">$479,794</span><h3>The Bionic Imaging Platform: benchtop-grade imaging during free behavior.</h3><p>A robotic, animal-actuated optical system that follows a mouse’s head through a 2D arena, so full-scale two-photon systems can image a brain on the move. First-year award, with the University of Minnesota.</p><a class="ul lab" href="'+REP+'11316597" target="_blank" rel="noopener">Project 1R42NS147759-01 ↗</a></div>'+
+   '</div>'+
+  '</div></section>'+
+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>In the lab and in the field</span><h2 class="d2 split">From the bench to <em>the booth.</em></h2></div><p data-r>The Autoinjector moved from a University of Minnesota prototype to a commercial instrument in 2025.</p></div>'+
+   '<div class="fgal">'+
+    '<figure class="fg a"><div class="im">'+im(IMG.droso,"The Objective Biotechnology team at its conference booth")+'</div><figcaption><b>Launch, March 2025</b>The Autoinjector launched commercially at the 66th Annual Drosophila Research Conference in San Diego.</figcaption></figure>'+
+    '<figure class="fg b"><div class="im">'+im(IMG.mncup,"Objective Biotechnology team members at the MN Cup awards")+'</div><figcaption><b>MN Cup</b>Recognized as Top Founder of Color-Led Startup.</figcaption></figure>'+
+    '<figure class="fg c"><div class="im">'+im(IMG.genetics,"Cover of GENETICS, April 2024")+'</div><figcaption><b>GENETICS, April 2024</b>The Autoinjector study was the featured article.</figcaption></figure>'+
+   '</div>'+
+  '</div></section>'+
+
+  '<section class="sec light paper2" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Engineers of <em>the instrument.</em></h2></div><p data-r>A team that includes the University of Minnesota researchers who first built the Autoinjector and the mini-mScope.</p></div>'+
+   '<div class="pgrid" data-group>'+[0,1,2,3].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
+   '<div style="margin-top:48px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead" style="margin-bottom:40px"><div><span class="lab kick" data-r>News</span><h2 class="d3 split">Latest from <em>Objective.</em></h2></div><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,4))+
+  '</div></section>'+
+  cta();
+}
+function cta(k){
+  return '<section class="sec cta light" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Work with us</span>'+
+   '<h2 class="big split">Put biology <em>in focus.</em></h2>'+
+   '<p class="sub" data-r>Request a quote or a demonstration of the Autoinjector, ask about custom micropipettes and implants, or talk to the team about neuroscience tools for your lab.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Request a quote '+ARR+'</a>'+(k==="team"?'<a class="btn" href="#/news">Latest news</a>':'<a class="btn" href="#/team">Meet the team</a>')+'</div>'+
+  '</div></section>';
+}
+function vMicro(){
+  var species=[["<i>Drosophila melanogaster</i>","Fruit fly"],["<i>Drosophila pseudoobscura</i>","Fruit fly"],["Zebrafish","Yolk injection"],["Zebrafish","Blastomere injection"],["Medaka","Fish embryo"],["Black soldier fly","Insect embryo"],["Aphids","Insect eggs"],["Mosquito","Under development"]];
+  var sku=[["Injecta Fly-Mg","Drosophila melanogaster embryos"],["Injecta Fly-Ds","Drosophila species other than melanogaster"],["Injecta Fish-Zf","Zebrafish embryos"],["Injecta Fish-As","Aquatic species other than zebrafish"],["Injecta Bug-Ap","Aphid eggs"],["Injecta Bug-Dl","Drosophila larvae"],["Custom","Engineered on request"]];
+  return head({k:"Microinjection",h:'Microinjection, <em>automated.</em>',p:'The Autoinjector replaces manual protocols that are operator-dependent, time-consuming and slow to learn, so large-scale genetic manipulation of embryos becomes routine.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two r">'+
+   '<div class="gal2">'+'<figure>'+im(IMG.auto3,"The Autoinjector, front view")+'</figure><figure>'+im(IMG.genetics,"GENETICS cover, April 2024: an embryo dish under a micropipette")+'</figure></div>'+
+   '<div><span class="lab kick" data-r>Autoinjector</span><h2 class="d3 split">A robot that sees <em>each embryo.</em></h2><p class="muted" style="margin-top:22px" data-r>Powered by computer vision and machine learning, the robot detects individual embryos on agar plates and guides the needle to a specific location in each, and it can be trained to target new organisms or structures.</p>'+
+    ticks(["Automated microinjection in a wide range of species","High-throughput transgenesis or mutagenesis experiments","Minimal staff training and hands-on time","Hundreds of embryos per hour","No uninjected embryos left behind"])+
+    '<div style="margin-top:34px" data-r><a class="btn solid" href="#/contact">Request a quote '+ARR+'</a></div></div>'+
+  '</div></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Species</span><h2 class="d2 split">One instrument, <em>many organisms.</em></h2></div><p data-r>The Autoinjector is shown in action across insects and fish. Pre-loaded methods cover widely used organisms, and the system can be adapted to emerging species.</p></div>'+
+   '<div class="spgrid" data-group>'+species.map(function(s){return '<div class="sp"><b>'+s[0]+'</b><span class="lab">'+s[1]+'</span></div>'}).join("")+'</div>'+
+  '</div></section>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>NIH SBIR Phase II · 2026</span><h2 class="d3 split">Toward a fully <em>autonomous</em> injector.</h2><p class="muted" style="margin-top:24px" data-r>Award 2R44OD037625-02 from the NIH Office of the Director, $1,200,472 in its first year, led by Andrew Alegria. It builds on a Phase I grant that took the Autoinjector to a pre-commercial system.</p></div>'+
+   '<ul class="aims" data-group><li><b>Aim 1</b><span>Hardware and software that change pipettes automatically when clogging or other issues are detected, with multi-dish capability for multiplexed experiments.</span></li><li><b>Aim 2</b><span>Robust testing over more than 500 injection experiments with Drosophila researchers at Baylor College of Medicine.</span></li><li><b>Aim 3</b><span>Software tools that let users train new machine-learning models to target new species or structures.</span></li></ul>'+
+  '</div></div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>Injecta micropipettes</span><h2 class="d3 split">Ready to inject, <em>out of the box.</em></h2><p class="muted" style="margin-top:22px" data-r>Pre-pulled and pre-beveled with sharp tips that increase survival and reduce clogging, each one inspected under a microscope. No pulling or beveling equipment needed. Packs of 40.</p>'+
+    '<figure class="gal2" style="display:block;margin:34px 0 0;border:1px solid var(--hairD);aspect-ratio:16/10;overflow:hidden">'+im(IMG.box,"Injecta micropipettes in their case","cover")+'</figure></div>'+
+   '<ul class="ticks" style="margin-top:0">'+sku.map(function(s){return '<li><span><b style="font-weight:400;font-size:19px;letter-spacing:-.01em">'+s[0]+'</b><br><span class="muted" style="font-size:15px">'+s[1]+'</span></span></li>'}).join("")+'</ul>'+
+  '</div></div></section>'+
+  '<section class="sec light paper2" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Publications and patent</span><h2 class="d3 split">Peer-reviewed <em>foundations.</em></h2></div></div>'+
+   '<ul class="refs">'+
+    '<li><span><b>High-throughput genetic manipulation of multi-cellular organisms using a machine-vision guided embryonic microinjection robot</b>Alegria*, Joshi* … Gohl, Kodandaramaiah · GENETICS, 2024</span><a class="lab ul" href="https://doi.org/10.1093/genetics/iyae025" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Multiscale, multi-perspective imaging assisted robotic microinjection of 3D biological structures</b>Joshi*, Alegria* … Gohl, Kodandaramaiah · IEEE EMBC, 2021 · conference paper</span><a class="lab ul" href="https://doi.org/10.1109/EMBC46164.2021.9630858" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Multi-perspective microscopic imaging-guided microinjection of microscopic objects across a large field of view</b>Kodandaramaiah, Gohl, Alegria, Joshi, Auch · US patent 12,094,161 B2, granted Sep 17, 2024</span><a class="lab ul" href="https://patents.google.com/patent/US12094161B2" target="_blank" rel="noopener">Patent ↗</a></li>'+
+    '<li><span><b>Deterministic genetic barcoding for multiplexed behavioral and single-cell transcriptomic studies</b>Blanco Mendana … Gohl · eLife, 2025 · uses the Autoinjector</span><a class="lab ul" href="https://doi.org/10.7554/eLife.88334.3" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Conduction-dominated cryomesh for organism vitrification</b>Guo … Kodandaramaiah … Bischof · Advanced Science, 2023 · uses the Autoinjector</span><a class="lab ul" href="https://doi.org/10.1002/advs.202303317" target="_blank" rel="noopener">DOI ↗</a></li>'+
+   '</ul>'+
+  '</div></section>'+cta();
+}
+function vNeuro(){
+  function row(o,flip){return '<div class="prow'+(flip?' flip':'')+'"><figure>'+im(o.img,o.alt,(o.cover?"cover":"")+(o.ins?" inset":""))+'</figure><div><span class="lab kick" data-r>'+o.k+'</span><h2 class="split">'+o.n+'</h2><p data-r>'+o.p+'</p>'+(o.s?specs(o.s):'')+(o.t?ticks(o.t):'')+'</div></div>'}
+  return head({k:"Neuroscience",h:'Neuroscience, <em>unrestrained.</em>',p:'Tools for large-scale, cortex-wide optical access and neural recordings while rodents behave freely, from implant to microscope to the cable that follows them.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+
+   row({img:IMG.miniKit,alt:"The mini-mScope with its implants and accessories",k:"Wide-field cortical imaging",n:'mini-mScope',p:'A miniaturized wide-field microscope for whole-brain imaging in freely behaving rodents, introduced in Nature Methods in 2021 and distributed to several laboratories worldwide.',s:[["Imaging","Whole dorsal cortex, mesoscale"],["Field of view","8 × 10 mm"],["Resolution","17–35 μm"],["Sensor","High-sensitivity CMOS"],["Weight","Under 4 g"],["Docking","Magnetic clamping, stress-free"]],cover:1})+
+   row({img:IMG.seeshell,alt:"SeeShell cranial implant mounted to a titanium headplate",ins:1,k:"Cranial implants",n:'SeeShell',p:'3D-printed implants shaped to the contour of the mouse skull for long-term optical access to large areas of dorsal cortex: head-fixed versions for microscopes, freely behaving versions that carry the mini-mScope.',s:[["Coverage","Up to 8 × 10 mm of cortex"],["Window","Optically clear PET"],["Imaging","1-photon and 2-photon"],["Stability","More than a year after implantation"]],cover:1},1)+
+   row({img:IMG.plate,alt:"Titanium headplate",k:"Head-fixation",n:'Titanium headplates',p:'Lightweight titanium headplates that head-fixed SeeShells screw onto and that clamp into a microscope rig, in teardrop, rectangular and ring designs, or custom-machined.',t:["Teardrop headplate with handle","Rectangular frame headplate","Teardrop headplate with triangular mount","Ring headplate"],cover:1})+
+   row({img:IMG.magkine,alt:"MagKine docking system",k:"Docking",n:'MagKine docking system',p:'A magnetic and kinematic docking station for near-instantaneous, stress-free docking to a head-fixation station, repeatable with micrometer-scale precision for longitudinal imaging.',t:["No prolonged fastening period","Compatible with multiple head-fixation setups","Reconfigurable headpost"],cover:1},1)+
+   row({img:IMG.robocomm,alt:"Robo-Comm robotic commutator",k:"Behavior",n:'Robo-Comm',p:'A computer-vision guided robotic commutator that estimates the rodent’s heading and position in the arena and rotates to keep wires from tangling.',t:["Embedded camera for behavioral imaging","Real-time decoding of position and heading","Wireless joystick and intuitive interface","Long-term, fully autonomous wire adjustment"],cover:1})+
+  '</div></section>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>In development</span><h2 class="d2 split">What the new grants <em>build.</em></h2></div><p data-r>Two NIH-funded programs with the University of Minnesota extend imaging into freer behavior.</p></div>'+
+   '<div class="two" style="row-gap:64px">'+
+    '<div><span class="lab kick" data-r>NINDS · STTR fast track · 2026</span><h3 class="d3 split">Bionic Imaging Platform</h3><p class="muted" style="margin-top:20px" data-r>A robotic, animal-actuated optical system that follows a mouse’s head as it moves through a 2D arena, so full-scale benchtop imaging systems can be used during free behavior. Award 1R42NS147759-01, $479,794 in its first year.</p></div>'+
+    '<ul class="aims" data-group><li><b>Phase I</b><span>Validate in vivo two-photon imaging in mice navigating an oval track, and build a modular optical headstage for widely used benchtop imaging systems.</span></li><li><b>Phase II</b><span>Optimize the feedback controller for low-latency, naturalistic motion, integrate a full mesoscopic two-photon system, and image first under head fixation, then during platform-supported movement, with real-time motion correction.</span></li></ul>'+
+    '<div><span class="lab kick" data-r>NIH Office of the Director · STTR</span><h3 class="d3 split">Through-skull mini-mScope</h3><p class="muted" style="margin-top:20px" data-r>Engineering the mini-mScope with a highly sensitive CMOS sensor and an intact-skull preparation, so the cortex can be imaged without a craniotomy. Award 5R41OD039877-02.</p></div>'+
+    '<ul class="aims" data-group><li><b>Aim 1</b><span>Integrate a new CMOS sensor into the existing footprint and benchtop-test against the validated lab prototype.</span></li><li><b>Aim 2</b><span>Evaluate the device in five behavioral assays and optimize the opto-mechanics for artifact-free imaging.</span></li></ul>'+
+   '</div>'+
+  '</div></section>'+
+  '<section class="sec light paper2" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Publications</span><h2 class="d3 split">Published, and <em>in use.</em></h2></div></div>'+
+   '<ul class="refs">'+
+    '<li><span><b>Miniaturized head-mounted microscope for whole-cortex mesoscale imaging in freely behaving mice</b>Rynes*, Surinach* … Kodandaramaiah · Nature Methods, 2021 · introduces the mini-mScope</span><a class="lab ul" href="https://doi.org/10.1038/s41592-021-01104-8" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Brain-wide neural recordings in mice navigating physical spaces enabled by robotic neural recording headstages</b>Hope et al. · Nature Methods, 2024</span><a class="lab ul" href="https://doi.org/10.1038/s41592-024-02434-z" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Computer vision–guided open-source active commutator for neural imaging in freely behaving animals</b>Oladepo, Saxena, Surinach, Lehman, Kodandaramaiah · Neurophotonics, 2024</span><a class="lab ul" href="https://doi.org/10.1117/1.NPh.11.3.034312" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Cortex-wide characterization of decision-making neural dynamics during spatial navigation</b>Haley, Surinach, Nietz et al. · Nature Communications, 2026 · uses the mini-mScope</span><a class="lab ul" href="https://doi.org/10.1038/s41467-026-71074-y" target="_blank" rel="noopener">DOI ↗</a></li>'+
+    '<li><span><b>Seizure network characterization by functional connectivity mapping and manipulation</b>Niemeyer et al. · Neurophotonics, 2025</span><a class="lab ul" href="https://doi.org/10.1117/1.NPh.12.S1.S14605" target="_blank" rel="noopener">DOI ↗</a></li>'+
+   '</ul>'+
+  '</div></section>'+cta();
+}
+function vTeam(){
+  return head({k:"Team",h:'The people behind <em>the robots.</em>',p:'Leadership, engineers and scientists, including the University of Minnesota researchers who first built the Autoinjector and the mini-mScope.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta("team");
+}
+function vNews(){
+  return head({k:"News",h:'News and <em>milestones.</em>',p:'Awards, launches and coverage, each linked to its source.'})+
+  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+newsRows(NEWS)+'</div></section>'+cta();
+}
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
+function vContact(){
+  return head({k:"Contact",h:'Request a <em>quote.</em>',p:'Instruments, micropipettes, implants, demonstrations or press: send a note and the team will route it to the right person.'})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Headquarters</span><h3>Minneapolis, Minnesota</h3><p>225 Thomas Avenue North, Suite 50<br>Minneapolis, MN 55405</p><p><a class="ul" href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a></p><p><a class="ul" href="https://www.linkedin.com/company/objective-biotechnology" target="_blank" rel="noopener">LinkedIn ↗</a></p>'+
+    '<span class="lab" style="display:block;margin-top:34px">Open roles · Minneapolis</span><ul class="jobs"><li><span>Mechatronics Engineer</span><span class="lab">Full-time</span></li><li><span>Assembly Technician</span><span class="lab">Part-time</span></li><li><span>Research Technician</span><span class="lab">Part-time</span></li></ul>'+
+    '</div>'+
+   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Institution or lab","text",0,1)+fld("msg","What do you need?","ta",1,1)+
+    '<div class="subm"><span class="lab quiet">Concept form · nothing is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="0 0 150 110" aria-hidden="true"><ellipse cx="75" cy="55" rx="62" ry="24" fill="rgba(144,48,240,.08)" stroke="#6a22c4" stroke-width="1"/><path d="M118 40l26-22" stroke="#6a22c4" stroke-width="1"/><circle cx="34" cy="55" r="9" fill="#9030f0"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. On the live site this form would reach the Objective Biotechnology team directly.</p></div><div class="map">'+mapSvg()+'</div></div>'+
+  '</div></div></section>';
+}
+function mapSvg(){
+  var g='';for(var i=0;i<14;i++){g+='<path d="M0 '+(30+i*26)+'H500" stroke="rgba(13,11,18,.07)"/>'}for(i=0;i<20;i++){g+='<path d="M'+(10+i*26)+' 0V400" stroke="rgba(13,11,18,.07)"/>'}
+  return '<svg viewBox="0 0 500 400" aria-label="Stylized map marking the North Loop, Minneapolis">'+g+
+  '<path class="mp" d="M300 0C290 70 330 120 320 190S260 300 280 400" fill="none" stroke="#555064" stroke-width="1.4"/>'+
+  '<g class="pin" transform="translate(118 222)"><circle r="30" fill="rgba(106,34,196,.12)" class="pr"/><circle r="6" fill="#6a22c4"/><text x="18" y="-10" font-family="Hanken Grotesk,sans-serif" font-weight="300" font-size="28" fill="#0d0b12">North Loop</text><text x="18" y="12" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="1.5" fill="#555064">MINNEAPOLIS, MN</text></g>'+
+  '<text x="334" y="370" font-family="JetBrains Mono,monospace" font-size="11" letter-spacing="1.5" fill="#555064">MISSISSIPPI RIVER</text></svg>';
+}
+function v404(){return head({k:"Not found",h:'Out of <em>focus.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
+function footer(){
+  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+   '<div class="c"><span class="lab">Headquarters</span>Objective Biotechnology, Inc.<br>225 Thomas Avenue North, Suite 50<br>Minneapolis, MN 55405</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a><br><a class="ul" href="https://www.linkedin.com/company/objective-biotechnology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/Objective_Bio" target="_blank" rel="noopener">X</a> · <a class="ul" href="https://bsky.app/profile/objectivebio.bsky.social" target="_blank" rel="noopener">Bluesky</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/microinjection">Microinjection</a><br><a class="ul" href="#/neuroscience">Neuroscience</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Instruments</span>Autoinjector · Injecta<br>mini-mScope · SeeShell<br>MagKine · Robo-Comm</div>'+
+  '</div><span class="bigw" aria-hidden="true" id="bigwm">Objective<em>.</em></span>'+
+  '<div class="legal"><span class="lab">© 2026 Objective Biotechnology, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER ================= */
+function route(h){
+  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(!p.length)return {k:"home",v:vHome,t:"Objective Biotechnology — Biology in focus",x:"Home"};
+  if(p[0]==="microinjection")return {k:"microinjection",v:vMicro,t:"Microinjection — "+SITE,x:"Microinjection"};
+  if(p[0]==="neuroscience")return {k:"neuroscience",v:vNeuro,t:"Neuroscience — "+SITE,x:"Neuroscience"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
+  if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
+  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
+  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+}
+
+/* ================= ENV ================= */
+var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
+CustomEase.create("flow","0.65,0.05,0.2,1");
+CustomEase.create("silk","0.22,1,0.36,1");
+var lenis=null;
+if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
+var MOBILE=function(){return innerWidth<861};
+
+/* ================= EMBRYO SPRITES (shared by hero and story) ================= */
+/* a Drosophila embryo seen from above: chorion ellipse, yolk granularity, two dorsal appendages at the anterior (+x) end */
+function makeSprite(L,blur,dpr,tone){
+  var pad=L*.5,w=Math.ceil((L*1.5+pad)*dpr),h=Math.ceil((L*.55+pad)*dpr);
+  var cv=document.createElement("canvas");cv.width=w;cv.height=h;var c=cv.getContext("2d");
+  c.translate(w/2,h/2);c.scale(dpr,dpr);
+  if(blur>0&&("filter" in c))c.filter="blur("+blur+"px)";
+  var rx=L/2,ry=L*.19;
+  /* soft contact shadow */
+  c.fillStyle="rgba(0,0,0,.28)";c.beginPath();c.ellipse(1.5,2.2,rx*1.02,ry*1.12,0,0,6.283);c.fill();
+  var g=c.createRadialGradient(-rx*.2,-ry*.35,ry*.2,0,0,rx);
+  g.addColorStop(0,"rgba(240,237,247,"+(.97*tone)+")");g.addColorStop(.55,"rgba(214,208,228,"+(.9*tone)+")");g.addColorStop(1,"rgba(150,142,172,"+(.82*tone)+")");
+  c.fillStyle=g;c.beginPath();c.ellipse(0,0,rx,ry,0,0,6.283);c.fill();
+  /* yolk granules */
+  for(var i=0;i<26;i++){var a=Math.sin(i*12.9898)*43758.5453;a-=Math.floor(a);var b=Math.sin(i*78.233)*43758.5453;b-=Math.floor(b);
+    var x=(a-.5)*rx*1.6,y=(b-.5)*ry*1.4;if((x*x)/(rx*rx)+(y*y)/(ry*ry)>.7)continue;c.fillStyle="rgba(255,255,255,"+(.16*tone)+")";c.beginPath();c.arc(x,y,.6+b*1.1,0,6.283);c.fill()}
+  /* rim */
+  c.lineWidth=.9;c.strokeStyle="rgba(250,248,255,"+(.55*tone)+")";c.beginPath();c.ellipse(0,0,rx,ry,0,0,6.283);c.stroke();
+  c.lineWidth=.7;c.strokeStyle="rgba(120,110,145,"+(.35*tone)+")";c.beginPath();c.ellipse(0,0,rx*.9,ry*.78,0,0,6.283);c.stroke();
+  /* dorsal appendages */
+  c.lineWidth=.8;c.lineCap="round";c.strokeStyle="rgba(226,221,236,"+(.42*tone)+")";
+  [-1,1].forEach(function(s){c.beginPath();c.moveTo(rx*.9,s*ry*.12);c.quadraticCurveTo(rx*1.08,s*ry*.2,rx*1.24,s*ry*.34);c.stroke()});
+  return {cv:cv,w:w/dpr,h:h/dpr};
+}
+
+/* ================= HERO FIELD: an agar plate under the objective; the stage moves, the needle injects ================= */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,W=0,H=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,SPR=[],bg=null,sc=1;
+  function R(i,k){var x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)}
+  var WORLD=2600,CELL=92,EM=[];
+  for(var gy=0;gy<WORLD/CELL;gy++)for(var gx=0;gx<WORLD/CELL;gx++){var id=gy*99+gx;if(R(id,1)<.34)continue;
+    var x=CELL*(gx+.5)+(R(id,2)-.5)*CELL*.62,y=CELL*(gy+.5)+(R(id,3)-.5)*CELL*.62,a=R(id,4)*6.283;
+    EM.push({x:x,y:y,a:a,L:.88+R(id,5)*.24,inj:-1});
+  }
+  /* minimum spacing: eggs never overlap (wrapped world) */
+  (function(){var keep=[];function wd(d){return d-Math.round(d/WORLD)*WORLD}EM.forEach(function(e){for(var j=0;j<keep.length;j++){if(Math.hypot(wd(keep[j].x-e.x),wd(keep[j].y-e.y))<74)return}keep.push(e)});EM=keep})();
+  var BL=[0,1.2,2.6,4.2,6.2];
+  function sprites(){SPR=BL.map(function(b,i){return makeSprite(58*sc,b*sc,dpr,i?.82:.95)})}
+  function mkBg(){bg=document.createElement("canvas");bg.width=cv.width;bg.height=cv.height;var b=bg.getContext("2d");
+    var g=b.createRadialGradient(bg.width*.68,bg.height*.5,0,bg.width*.68,bg.height*.5,Math.max(bg.width,bg.height)*.8);
+    g.addColorStop(0,"#1d1828");g.addColorStop(.5,"#110e18");g.addColorStop(1,"#08070b");b.fillStyle=g;b.fillRect(0,0,bg.width,bg.height);
+    for(var i=0;i<140;i++){var x=R(i,40)*bg.width,y=R(i,41)*bg.height,r=(40+R(i,42)*160)*dpr;var gg=b.createRadialGradient(x,y,0,x,y,r);gg.addColorStop(0,"rgba(144,48,240,"+(.012+R(i,43)*.018)+")");gg.addColorStop(1,"rgba(144,48,240,0)");b.fillStyle=gg;b.fillRect(x-r,y-r,r*2,r*2)}}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;sc=Math.max(.78,Math.min(1.3,Math.min(W/1440,H/820)));if(W<861)sc=Math.max(.7,Math.min(.9,W/480));
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);sprites();mkBg();if(!running)frame(true)}
+  /* needle point on screen (BM: the action sits on the right columns, the text on the header's left edge) */
+  function NP(){if(W<861)return [W*.62,H*.27];if(W<1100)return [W*.7,H*.42];return [W*(W>1700?.69:.7),H*.47]}
+  var AX=[Math.cos(-.62),Math.sin(-.62)];/* needle axis, tip to back, up-right */
+  var UI=true,tNow=0,S={x:1300,y:1300},cyc=-1,cur=null,prev=null,CT=2.9;
+  function post(e){return {x:e.x-Math.cos(e.a)*e.L*29*.92,y:e.y-Math.sin(e.a)*e.L*29*.92}}
+  function wrapd(d){return d-Math.round(d/WORLD)*WORLD}
+  function pick(from){/* next embryo: nearest posterior pole ahead of the stage, roughly along a gentle diagonal path */
+    var best=null,bd=1e9,dir=[.86,.5];
+    for(var i=0;i<EM.length;i++){var e=EM[i],pp=post(e);var dx=wrapd(pp.x-from.x),dy=wrapd(pp.y-from.y);var along=dx*dir[0]+dy*dir[1];if(along<40||along>260)continue;
+      var perp=Math.abs(-dx*dir[1]+dy*dir[0]);var s=along+perp*1.6;if(e.inj>=0&&tNow-e.inj<60)s+=400;if(s<bd){bd=s;best=i}}
+    return best==null?0:best}
+  function sm(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
+  function frame(once){
+    var t=(performance.now()-t0)/1000;if(RM)t=30;tNow=t;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    cv.style.opacity=shown?String(.4+.6*dim):"";
+    /* cycle state */
+    var k=Math.floor(t/CT),ph=(t/CT)-k;
+    if(k!==cyc){if(cur!=null){EM[cur].inj=t}prev=cur;var from=cur!=null?post(EM[cur]):{x:S.x,y:S.y};cur=pick(from);cyc=k;S.from=from}
+    var tgt=post(EM[cur]),gl=sm(ph/.42);
+    var sx=S.from.x+wrapd(tgt.x-S.from.x)*gl,sy=S.from.y+wrapd(tgt.y-S.from.y)*gl;S.x=sx;S.y=sy;
+    var np=NP(),k2=sc,wx=np[0]+m[0]*-16,wy=np[1]+m[1]*-12;
+    c.setTransform(1,0,0,1,0,0);c.drawImage(bg,0,0);
+    c.setTransform(dpr,0,0,dpr,0,0);
+    var focus=Math.max(0,1-IN.v);var zone=Math.min(W,H)*.62;
+    var hw=W/2/k2+80,hh=H/2/k2+80;
+    var lw=1/1;c.lineWidth=1;
+    var act=null;
+    for(var i=0;i<EM.length;i++){var e=EM[i];var dx=wrapd(e.x-sx),dy=wrapd(e.y-sy);var px=wx+dx*k2,py=wy+dy*k2;
+      if(px<-90||px>W+90||py<-90||py>H+90)continue;
+      var dd=Math.hypot(px-wx,py-wy)/zone;var bl=Math.min(4,Math.max(0,(dd-.42)*3.4)+focus*4);var bi=Math.min(4,Math.round(bl));
+      var s=SPR[bi];c.save();c.translate(px,py);c.rotate(e.a);c.scale(e.L,e.L);c.globalAlpha=Math.max(.22,.92-Math.max(0,dd-.5)*.55);c.drawImage(s.cv,-s.w/2,-s.h/2,s.w,s.h);
+      /* injected: a soft violet bloom stays at the posterior pole */
+      if(e.inj>=0||i===cur){var bAmt=i===cur?sm((ph-.6)/.3):1;if(bAmt>0){c.beginPath();c.ellipse(0,0,29*sc,11*sc,0,0,6.283);c.clip();var r=58*sc*.17*(.6+.6*bAmt);var gx2=-58*sc*.46;var gg=c.createRadialGradient(gx2,0,0,gx2,0,r*1.8);gg.addColorStop(0,"rgba(165,96,245,"+(.85*bAmt)+")");gg.addColorStop(.5,"rgba(144,48,240,"+(.45*bAmt)+")");gg.addColorStop(1,"rgba(144,48,240,0)");c.fillStyle=gg;c.beginPath();c.ellipse(gx2,0,r*1.6,r*.95,0,0,6.283);c.fill()}}
+      c.restore();c.globalAlpha=1;
+      /* detections: faint corner ticks on embryos in the field of view of the camera model */
+      if(i===cur)act={px:px,py:py,e:e};
+    }
+    if(act&&focus<.6&&UI){var bx=sm((ph-.12)/.3);var grow=1+(1-bx)*.45;var al2=bx*(1-focus);var Lb=act.e.L*58*sc;
+      ticksAt(act.px,act.py,act.e.a,Lb*1.22*grow,Lb*.5*grow,al2*.95,10,true);
+      var lab=ph<.6?"EMBRYO":"INJECTED";c.globalAlpha=al2;c.font="500 10px 'JetBrains Mono',monospace";c.fillStyle="rgb(191,149,249)";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";c.textAlign="left";
+      c.fillText(lab,act.px-Lb*.6,act.py-Lb*.66-8);c.globalAlpha=1}
+    /* the glass micropipette: tip at the needle point, advances into the embryo, retracts */
+    var adv=ph<.5?0:ph<.62?sm((ph-.5)/.12):ph<.78?1:1-sm((ph-.78)/.16);
+    var tipx=wx+AX[0]*(16-22*adv)*sc+m[0]*6,tipy=wy+AX[1]*(16-22*adv)*sc+m[1]*6;
+    needle(c,tipx,tipy,AX,Math.max(W,H)*1.4,sc,1-focus*.6,"rgba(144,48,240,.55)");
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size);size();
+  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setUI:function(v){UI=v},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
+  /* hoisted helpers bound to this canvas */
+  function ticksAt(x,y,a,w,h,al,len,full){if(al<.02)return;c.save();c.translate(x,y);c.rotate(a);c.globalAlpha=al;c.strokeStyle="rgb(191,149,249)";c.lineWidth=1;
+    var X=w/2,Y=h/2;c.strokeRect(-X,-Y,w,h);c.beginPath();var px=-w/2*.72;c.moveTo(px-7,0);c.lineTo(px-2.5,0);c.moveTo(px+2.5,0);c.lineTo(px+7,0);c.moveTo(px,-7);c.lineTo(px,-2.5);c.moveTo(px,2.5);c.lineTo(px,7);c.stroke();
+    c.restore();c.globalAlpha=1}
+})();
+/* a pulled-glass micropipette, drawn tip-first along axis A (shared) */
+function needle(c,x,y,A,len,s,al,fluid){if(al<.02)return;c.save();c.translate(x,y);c.rotate(Math.atan2(A[1],A[0]));c.globalAlpha=al;
+  var L1=170*s,L2=520*s,w1=4.2*s,w2=13*s;
+  c.beginPath();c.moveTo(0,0);c.lineTo(L1,-w1);c.quadraticCurveTo(L1+120*s,-w2,L2,-w2);c.lineTo(len,-w2);c.lineTo(len,w2);c.lineTo(L2,w2);c.quadraticCurveTo(L1+120*s,w2,L1,w1);c.closePath();
+  var g=c.createLinearGradient(0,-w2,0,w2);g.addColorStop(0,"rgba(244,243,247,.42)");g.addColorStop(.25,"rgba(244,243,247,.08)");g.addColorStop(.6,"rgba(244,243,247,.05)");g.addColorStop(1,"rgba(244,243,247,.3)");
+  c.fillStyle=g;c.fill();c.lineWidth=.8;c.strokeStyle="rgba(244,243,247,.55)";c.stroke();
+  /* loaded solution inside the taper */
+  c.beginPath();c.moveTo(6*s,0);c.lineTo(L1,-w1*.45);c.quadraticCurveTo(L1+120*s,-w2*.45,L2,-w2*.45);c.lineTo(len,-w2*.45);c.lineTo(len,w2*.45);c.lineTo(L2,w2*.45);c.quadraticCurveTo(L1+120*s,w2*.45,L1,w1*.45);c.closePath();
+  c.fillStyle=fluid;c.globalAlpha=al*.55;c.fill();
+  c.globalAlpha=al;c.strokeStyle="rgba(255,255,255,.65)";c.lineWidth=.6;c.beginPath();c.moveTo(30*s,-w1*.55);c.lineTo(L1,-w1*.8);c.stroke();
+  c.restore();c.globalAlpha=1}
+var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
+function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
+
+/* ================= STORY: ONE continuous scene (BL). The camera moves; the plate, needle and second dish are the same objects throughout ================= */
+var story=null;
+function makeStory(cv){
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now(),SP=null,curSc=1,capEl=document.getElementById("scap"),capTxt="",mob=false;
+  function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
+  var PAPER="244,243,247",VL="191,149,249",VIO="144,48,240",VB="214,190,252";
+  var D1={x:0,y:0,r:300},D2={x:760,y:0,r:300};
+  /* non-overlapping embryos; two parallel side-by-side pairs show the clustered case without overlap */
+  function seedDish(D,n,seed){var out=[];
+    [[-120,-60,.4],[110,120,1.4]].forEach(function(q){var a=q[2],px=-Math.sin(a)*14,py=Math.cos(a)*14;out.push({x:q[0]+px,y:q[1]+py,a:a,L:.96,pair:1},{x:q[0]-px,y:q[1]-py,a:a,L:.98,pair:1})});
+    var tries=0;while(out.length<n&&tries<8000){tries++;var a=R(tries,seed)*6.283,rr=Math.sqrt(R(tries,seed+1))*(D.r-44);var x=Math.cos(a)*rr,y=Math.sin(a)*rr;
+      var ok=true;for(var j=0;j<out.length;j++){if(Math.hypot(out[j].x-x,out[j].y-y)<(out[j].pair?78:68)){ok=false;break}}if(!ok)continue;out.push({x:x,y:y,a:R(tries,seed+2)*6.283,L:.9+R(tries,seed+3)*.14})}
+    out.sort(function(a,b){var ra=Math.floor((a.y+D.r)/90),rb=Math.floor((b.y+D.r)/90);if(ra!==rb)return ra-rb;return (ra%2?-1:1)*(a.x-b.x)});
+    out.forEach(function(e){e.px=e.x-Math.cos(e.a)*e.L*29*.9;e.py=e.y-Math.sin(e.a)*e.L*29*.9});return out}
+  var E1=seedDish(D1,28,10),E2=seedDish(D2,28,30);
+  /* camera keys: x, y, span across the short side of the (circular) viewport */
+  var CAM=[[0,0,700],[-60,-30,470],[0,0,660],[380,10,1500]];
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;mob=w<560;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);SP=makeSprite(58,0,dpr*2.4,.8)}
+  function sm(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
+  function cl(x){return Math.max(0,Math.min(1,x))}
+  function cam(s){var i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=sm((fr-.3)/.4);var A=CAM[i0],B=CAM[i0+1];
+    return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f)}}
+  function dish(D,al){c.globalAlpha=al;var g=c.createRadialGradient(D.x-60,D.y-80,20,D.x,D.y,D.r);g.addColorStop(0,"rgba(58,48,74,.75)");g.addColorStop(1,"rgba(34,28,44,.75)");c.fillStyle=g;c.beginPath();c.arc(D.x,D.y,D.r,0,6.283);c.fill();
+    c.lineWidth=1/curSc;c.strokeStyle="rgba("+PAPER+",.16)";c.stroke();c.globalAlpha=1}
+  /* detection: a thin full rectangle with a margin, never corner ticks (they read as legs) */
+  function box(e,x,y,al){if(al<.02)return;c.save();c.translate(x,y);c.rotate(e.a);c.globalAlpha=al;c.strokeStyle="rgb("+VL+")";c.lineWidth=1.3/curSc;var X=29*e.L+10,Y=11*e.L+8;c.strokeRect(-X,-Y,X*2,Y*2);c.restore();c.globalAlpha=1}
+  function cross(x,y,r,al){if(al<.02)return;c.globalAlpha=al;c.lineWidth=1.5/curSc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.moveTo(x-r,y);c.lineTo(x-r*.35,y);c.moveTo(x+r*.35,y);c.lineTo(x+r,y);c.moveTo(x,y-r);c.lineTo(x,y-r*.35);c.moveTo(x,y+r*.35);c.lineTo(x,y+r);c.stroke();c.globalAlpha=1}
+  /* an embryo with its dye bloom clipped to the egg, at the posterior pole */
+  function egg(e,x,y,al,bl,col){c.save();c.translate(x,y);c.rotate(e.a);c.scale(e.L,e.L);c.globalAlpha=al;c.drawImage(SP.cv,-SP.w/2,-SP.h/2,SP.w,SP.h);
+    if(bl>.02){c.beginPath();c.ellipse(0,0,29,11,0,0,6.283);c.clip();var gx=-26,r=10+10*bl;var g=c.createRadialGradient(gx,0,0,gx,0,r);g.addColorStop(0,"rgba("+col+","+(.95*bl)+")");g.addColorStop(1,"rgba("+col+",0)");c.fillStyle=g;c.fillRect(gx-r,-r,r*2,r*2)}
+    c.restore();c.globalAlpha=1}
+  function pathPts(E,ox,oy){return E.map(function(e){return [ox+e.px,oy+e.py]})}
+  /* needle position along a route with a dwell at each injection site; returns the index currently being injected and its progress */
+  function route(P,u){var n=P.length,v=u*(n-1+.5),i0=Math.min(n-1,Math.floor(v)),f=v-i0;var A=P[i0],B=P[Math.min(n-1,i0+1)];var mv=sm((f-.55)/.45);return {p:[A[0]+(B[0]-A[0])*mv,A[1]+(B[1]-A[1])*mv],i:i0,f:f}}
+  function injAmt(r,i){return i<r.i?1:i===r.i?sm((r.f-.12)/.3):0}
+  var P1=pathPts(E1,D1.x,D1.y),P2=pathPts(E2,D2.x,D2.y);
+  var AXS=[Math.cos(-.75),Math.sin(-.75)];
+  function setCap(t,a){if(!capEl)return;if(t!==capTxt){capTxt=t;capEl.textContent=t}capEl.style.opacity=String(Math.max(0,Math.min(1,a)))}
+  function draw(){
+    p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
+    var t=RM?10:(performance.now()-t0)/1000;var s=p*3;var C=cam(s);
+    var sc=Math.min(w,h)*.94/C.span;curSc=sc;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
+    var scan=cl(s/.62),tgt=cl((s-.78)/.7),inj=cl((s-1.5)/1.02),rec=cl((s-2.55)/.33),loop=s>2.9?((t*.06)%1):0;
+    var d2x=D2.x+(1-sm(rec/.7))*560,d2a=sm(rec*2);
+    dish(D1,1);if(d2a>.01)dish({x:d2x,y:D2.y,r:D2.r},d2a);
+    /* detect: a soft band sweeps fully across and off the plate */
+    var sx=-D1.r-90+scan*(D1.r*2+180);
+    if(scan>0&&scan<1){c.save();c.beginPath();c.arc(D1.x,D1.y,D1.r,0,6.283);c.clip();var g=c.createLinearGradient(sx-70,0,sx+30,0);g.addColorStop(0,"rgba("+VIO+",0)");g.addColorStop(.7,"rgba("+VIO+",.16)");g.addColorStop(1,"rgba("+VIO+",0)");c.fillStyle=g;c.fillRect(sx-70,-D1.r,100,D1.r*2);c.restore()}
+    if(tgt>0){c.save();c.setLineDash([4/sc,5/sc]);c.lineWidth=1/sc;c.strokeStyle="rgba("+VL+",.45)";var nn=tgt*(P1.length-1),k=Math.floor(nn);c.beginPath();c.moveTo(P1[0][0],P1[0][1]);for(var i=1;i<=k&&i<P1.length;i++)c.lineTo(P1[i][0],P1[i][1]);if(k+1<P1.length){var f=nn-k;c.lineTo(P1[k][0]+(P1[k+1][0]-P1[k][0])*f,P1[k][1]+(P1[k+1][1]-P1[k][1])*f)}c.stroke();c.restore()}
+    var r1=route(P1,inj);
+    E1.forEach(function(e,i){var x=D1.x+e.x,y=D1.y+e.y;var b=inj>0?injAmt(r1,i):0;egg(e,x,y,1,b,VIO);
+      var det=sm((sx-e.x)/50);box(e,x,y,det*(inj>0?(1-b)*.4:(tgt>0?.85-.4*tgt:.85))*(1-rec));
+      var ti=sm((tgt*(P1.length-1)-i+1)/1.2);cross(D1.x+e.px,D1.y+e.py,11,ti*(1-b)*(1-rec))});
+    var r2=route(P2.map(function(q){return [q[0]+(d2x-D2.x),q[1]]}),loop);
+    if(d2a>.01)E2.forEach(function(e,i){var x=d2x+e.x,y=D2.y+e.y;var b=s>2.9?injAmt(r2,i):0;egg(e,x,y,d2a,b*d2a,VB);box(e,x,y,d2a*.5*(1-b))});
+    /* needle: parked off the plate, then travelling the route (stage logic), then clog -> swap -> dish 2 */
+    var park=[D1.x+D1.r*.95,D1.y-D1.r*.9],tip,nal=sm((s-1.2)/.3),fluid="rgba("+VIO+",.6)",clog=0;
+    if(inj<=0||rec<=0){var k0=sm(inj/.05),q=r1.p;tip=[park[0]+(q[0]-park[0])*k0,park[1]+(q[1]-park[1])*k0]}
+    else{var last=P1[P1.length-1];clog=sm(rec/.22)*(1-sm((rec-.32)/.12));var swap=sm((rec-.3)/.3);
+      var out=sm((rec-.28)/.18)*(1-sm((rec-.46)/.18));var dest=s>2.9?r2.p:[d2x+P2[0][0]-D2.x,P2[0][1]];
+      var mv=sm((rec-.5)/.45);tip=[last[0]+(dest[0]-last[0])*mv+AXS[0]*out*900,last[1]+(dest[1]-last[1])*mv+AXS[1]*out*900];if(swap>.5)fluid="rgba("+VB+",.6)"}
+    needle(c,tip[0],tip[1],AXS,2600,.62,nal,fluid);
+    if(clog>.02){c.globalAlpha=clog;c.fillStyle="rgb(20,16,26)";c.beginPath();c.arc(tip[0]+AXS[0]*14,tip[1]+AXS[1]*14,4.5,0,6.283);c.fill();c.lineWidth=1.3/sc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.arc(tip[0]+AXS[0]*14,tip[1]+AXS[1]*14,13,0,6.283);c.stroke();c.globalAlpha=1}
+    c.restore();
+    /* dish captions share one baseline, inside the circular viewport */
+    var w3=sm((s-2.55)/.2);
+    function lab(txt,wx,wy,a){if(a<.02)return;var x=(wx-C.x)*sc+w/2,y=(wy-C.y)*sc+h/2;c.globalAlpha=Math.min(1,a);c.font="500 "+(mob?9:10.5)+"px 'JetBrains Mono',monospace";c.fillStyle="rgb(196,190,210)";c.textAlign="center";if(c.letterSpacing!==undefined)c.letterSpacing=(mob?"1px":"1.5px");c.fillText(txt,x,y);c.globalAlpha=1}
+    var ly=D1.y+D1.r+60;lab(mob?"DISH 1 · A":"DISH 1 · CONSTRUCT A",D1.x,ly,w3);lab(mob?"DISH 2 · B":"DISH 2 · CONSTRUCT B",d2x,ly,w3*d2a);
+    var w0=1-sm((s-.45)/.25),w1=sm((s-.65)/.25)*(1-sm((s-1.4)/.2)),w2=sm((s-1.5)/.2)*(1-sm((s-2.45)/.15));
+    if(w0>.02)setCap("Embryos detected on the agar plate",w0);else if(w1>.02)setCap("Injection site · same location in each",w1);else if(w2>.02)setCap("Needle follows the planned route",w2);
+    else if(rec>0&&rec<.45)setCap("Clog detected",sm(rec/.15)*(1-sm((rec-.35)/.1)));else if(rec>=.45)setCap("Pipette changed · dish 2 loaded",sm((rec-.45)/.15));else setCap(capTxt,0);
+  }
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();
+  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
+  return {set:function(v){pT=v},snap:function(v){p=pT=v;draw()},resize:function(){size();draw()},kill:function(){alive=false;io.disconnect()}};
+}
+
+document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+/* ================= HEADER THEME ================= */
+var hdr=$("#hdr"),lastSY=0;
+function hdrTheme(){
+  var els=document.elementsFromPoint(innerWidth*.5,36);var th="dark";
+  for(var i=0;i<els.length;i++){var s=els[i].closest&&els[i].closest("[data-theme]");if(s&&!hdr.contains(els[i])&&!els[i].closest(".mm")){th=s.getAttribute("data-theme");break}}
+  if(document.body.classList.contains("menu-open"))th="dark";
+  hdr.classList.toggle("ink",th==="light");
+  var y=window.scrollY;hdr.classList.toggle("solid",y>24);
+  if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
+}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+addEventListener("scroll",hdrTheme,{passive:true});
+hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
+
+/* ================= VIEW ANIMATIONS ================= */
+var ctx=null,HERO_TL=[];
+/* BH: a line mask clips only while its reveal moves; afterwards it opens */
+function unmask(st){if(!st)return;var ms=st.masks&&st.masks.length?st.masks:[];if(!ms.length&&st.lines)st.lines.forEach(function(l){if(l.parentNode&&/ln-mask/.test(l.parentNode.className))ms.push(l.parentNode)});ms.forEach(function(m){m.classList.add("open")})}
+function splitReveal(el,E){
+  if(RM)return;
+  var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){unmask(st)}});
+}
+var ENTRY=0;
+function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
+  var view=$("#view");
+  ctx=gsap.context(function(){
+    var t=$("#pageTitle",view);
+    if(k==="home"&&!RM){
+      var mob=MOBILE();
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var hr=$$(".hero [data-r]",view);
+      var paused=!!(first&&window._preShown);
+      var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(s)}});
+      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.01:.03}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      HERO_TL.push(htl);
+      gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    if(k==="home")homeScroll(view);
+    if(k==="contact")contactInit(view);
+    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    rvView(view,E);
+  },view);
+  var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
+  ScrollTrigger.refresh();
+}
+/* ================= AZ: GLOBAL REVEAL ================= */
+var RV_SEL=".srow,.ftr .c,h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_UNIT=".srow,.ftr .c,li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_LIVE=[];
+function rvMarks(root){var A=new Set(),K=new Set();
+  $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
+      for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
+  return {A:A,K:K}}
+function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
+  if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
+  if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
+  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&r.height>1)out.push(c);continue}
+  rvWalk(c,out,M)}}
+function rvHide(el){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+  var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
+  el.style.transition="none";
+  gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+  function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
+  var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+  if(!el._rvDone){rvGo([el],0);return}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}});
+  $$("#pageTitle .ln-mask").forEach(function(m){m.classList.add("open")})},2500)}
+
+function homeScroll(view){
+  var m=$("#mani",view);
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
+  var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
+  if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
+  var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
+  story=makeStory(cv);
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
+    rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
+  if(RM){story.snap(0);return}
+  function fxMap(p){return p<1/6?p*1.5:p<5/6?.25+(p-1/6)*.75:.75+(p-5/6)*1.5}
+  var tl=gsap.timeline();tl.to({},{duration:1});
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.round(p*3)));fx(fxMap(p))});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+    onRefresh:function(){if(story)story.resize()}});
+}
+function contactInit(view){
+  var f=$("#cform",view);if(!f)return;
+  $$(".fld input,.fld textarea",view).forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.toggle("f",!!i.value);i.parentNode.classList.remove("bad")})});
+  f.addEventListener("submit",function(e){e.preventDefault();var bad=false;
+    $$("[required]",f).forEach(function(i){var v=i.value.trim();var okv=v&&(i.type!=="email"||/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v));i.parentNode.classList.toggle("bad",!okv);if(!okv)bad=true});
+    if(bad){var fb=$(".fld.bad input, .fld.bad textarea",f);if(fb)fb.focus();return}
+    var fw=$("#fw",view);gsap.to(f,{opacity:0,y:-16,duration:.45,ease:"power2.in",onComplete:function(){fw.classList.add("done");var th=$("#thanks",view);th.focus({preventScroll:true});
+      if(!RM){gsap.from($$("#thanks svg *",view),{opacity:0,scale:.6,transformOrigin:"50% 50%",duration:1.2,ease:"silk",stagger:.12});gsap.from($$("#thanks h3, #thanks p",view),{y:24,opacity:0,duration:1,ease:"silk",stagger:.1,delay:.3})}
+      ScrollTrigger.refresh()}})});
+  if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
+    gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
+    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+}
+
+/* ================= PERSON SHEET (BI) ================= */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,lastFocus=null;
+function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+window.obPsNo=function(i){var m=i.parentNode;if(!m)return;var p=TEAM[+m.getAttribute("data-i")];i.remove();m.insertAdjacentHTML("beforeend",plate(p))};
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  psMedia.setAttribute("data-i",i);
+  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="obPsNo(this)">':plate(p);
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
+  psBody.scrollTop=0;
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  document.title=p.name+" — "+SITE;
+}
+function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
+  if(bioOpen){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.4,ease:"power1.out"});return}
+  bioOpen=true;lastFocus=document.activeElement;ps.classList.add("open");ps.setAttribute("aria-hidden","false");if(lenis)lenis.stop();document.documentElement.style.overflow="hidden";
+  gsap.killTweensOf([psSheet,"#psScrim"]);
+  var D=instant||RM?.01:1,d0=instant?(window._preShown?1.2:.3):0;
+  gsap.fromTo("#psScrim",{opacity:0},{opacity:1,duration:.45*D,delay:d0,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*D,delay:d0,ease:"power3.out"});
+  if(!RM)gsap.fromTo(psBody.children,{opacity:0,y:14},{opacity:1,y:0,duration:.55,stagger:.04,delay:d0+.12,ease:"power2.out"});
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
+}
+function hideBio(){if(!bioOpen)return;bioOpen=false;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});
+  gsap.to("#psScrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){if(!bioOpen){ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}}});
+  document.documentElement.style.overflow="";if(lenis)lenis.start();if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});var r=route(location.hash);document.title=r.t}
+function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
+$("#psScrim").addEventListener("click",closeBio);
+var bioFromClick=false,bioBase=null;
+document.addEventListener("keydown",function(e){if(!bioOpen||e.key!=="Tab")return;var f=$$("a[href],button,[tabindex='0']",ps);if(!f.length)return;var a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}});
+
+/* ================= NAV / ROUTING ================= */
+var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
+  if(a.hasAttribute("data-close")){e.preventDefault();closeBio();return}
+  if(a.hasAttribute("data-replace")){e.preventDefault();history.replaceState(null,"",h);prevHash=h;var r=route(h);if(r.bio)openBio(r.bio);return}
+  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();bioBase=location.hash||"#/";bioFromClick=true;history.pushState(null,"",h);prevHash=h;openBio(h.split("/")[2]);return}
+  navByClick=true;
+  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(document.body.classList.contains("menu-open"))closeMenu();
+  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function paint(r){
+  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
+  field.snapDim(r.k==="home"?1:.7);field.setUI(r.k==="home");observeField();
+  $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
+}
+function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
+function go(first,ready){
+  var r=route(location.hash);
+  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("ob-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
+    restoreY(sy,function(){if(r.bio){bioBase="#/team";openBio(r.bio,true)}if(ready)ready()});prevHash=location.hash||"#/";return}
+  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
+  if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
+  if(bioOpen){bioOpen=false;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set("#psScrim",{opacity:0});document.documentElement.style.overflow=""}
+  if(busy){queued=true;return}busy=true;
+  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
+  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
+  if(lenis)lenis.stop();
+  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
+  var D=RM?.01:1;
+  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  tl.call(function(){paint(r);if(r.bio)bioBase="#/team"},null,.74*D)
+    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)openBio(r.bio)},null,.8*D);
+  if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}
+  tl.to(xc,{yPercent:-101,duration:.7*D,ease:"power3.inOut"},1.18*D);
+}
+addEventListener("pagehide",function(){try{sessionStorage.setItem("ob-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
+try{history.scrollRestoration="manual"}catch(e){}
+addEventListener("hashchange",function(){go(false)});
+
+/* menu */
+var mm=$("#mm"),burger=$("#burger");
+function openMenu(){document.body.classList.add("menu-open");burger.setAttribute("aria-expanded","true");$("#burgerLab").textContent="Close";mm.setAttribute("aria-hidden","false");mm.style.visibility="visible";if(lenis)lenis.stop();hdr.classList.remove("ink","hide");
+  gsap.to(mm,{clipPath:"circle(150% at calc(100% - 40px) 40px)",duration:RM?.01:.9,ease:"flow"});
+  gsap.fromTo($$("#mm li a"),{yPercent:110},{yPercent:0,duration:.9,ease:"silk",stagger:.05,delay:.2});gsap.fromTo(".mmf",{opacity:0},{opacity:1,duration:.7,delay:.5})}
+function closeMenu(){document.body.classList.remove("menu-open");burger.setAttribute("aria-expanded","false");$("#burgerLab").textContent="Menu";mm.setAttribute("aria-hidden","true");if(lenis)lenis.start();
+  gsap.to(mm,{clipPath:"circle(0px at calc(100% - 40px) 40px)",duration:RM?.01:.7,ease:"flow",onComplete:function(){mm.style.visibility="hidden"}});hdrTheme()}
+burger.addEventListener("click",function(){document.body.classList.contains("menu-open")?closeMenu():openMenu()});
+addEventListener("keydown",function(e){if(e.key!=="Escape")return;if(document.body.classList.contains("menu-open")){closeMenu();return}if(bioOpen)closeBio()});
+
+/* ================= PRELOADER / RELOAD VEIL ================= */
+var SEEN=false;try{SEEN=sessionStorage.getItem("ob-pre")==="1"}catch(e){}
+var LOCKKEYS={32:1,33:1,34:1,35:1,36:1,37:1,38:1,39:1,40:1};
+function blockEv(e){e.preventDefault()}
+function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
+function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
+function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis&&!bioOpen)lenis.start();if(bioOpen)document.documentElement.style.overflow="hidden"}
+function preload(){
+  var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
+  if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
+  if(SEEN){
+    field.intro(1.4);field.start();ENTRY=.35;
+    go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
+  try{sessionStorage.setItem("ob-pre","1")}catch(e){}
+  lockScroll();
+  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
+  var mk=$$("#pre .mk");gsap.set(mk,{scale:.6,opacity:0,rotate:-40,transformOrigin:"50% 50%"});
+  window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
+  gsap.set("#hdr",{yPercent:-120});
+  var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
+  function runPre(){
+    var t0=performance.now(),ready=false,tasks=[];
+    $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
+    Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
+    gsap.timeline().to(mk,{scale:1,opacity:1,rotate:0,duration:.9,ease:"silk"},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.022},.15)
+      .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    function exit(){
+      var mob=MOBILE();
+      var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
+      tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
+        .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)
+        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){field.intro(2.2);field.start()},.3)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+    }
+  }
+}
+(function(){var done=false;function go2(){if(done)return;done=true;preload()}
+  if(document.fonts&&document.fonts.load){Promise.all(['300 1em "Hanken Grotesk"','400 1em "Hanken Grotesk"','italic 400 1em "Hanken Grotesk"','500 1em "Hanken Grotesk"','400 1em "JetBrains Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+})();
+</script>
+
+</body>
+</html>

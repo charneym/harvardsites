@@ -151,7 +151,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.08em .14em .2em;margin:-.08em -.14em -.2em}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -454,12 +454,64 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .facts>div{grid-template-columns:1fr;gap:4px}
   .fld input,.fld textarea{font-size:21px}
 }
+/* PERSON SHEET (PRINCIPLES BI) — kit component, re-skinned with this site's tokens */
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:var(--ps-scrim,rgba(10,12,14,.62));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
+.ps-media{position:relative;border-radius:18px 0 0 18px;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) contrast(1.04)}
+/* no photo: a typographic plate, never a monogram */
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,color-mix(in srgb,var(--ps-accent,#2b6) 16%,transparent),transparent 60%)}
+.ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
+.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
+.ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
+.ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
+.ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
+.ps-bar .ps-step{display:flex;gap:8px}
+.ps-body{flex:1;min-height:0;border-radius:0 0 18px 0;overflow-y:auto;overflow-x:clip;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body .lab{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-accent,#2b6)}
+.ps-body h2{font:400 clamp(34px,3.6vw,54px)/1.05 var(--ps-serif,Georgia);letter-spacing:-.02em;margin:14px 0 10px;padding-bottom:.14em}
+.ps-body .role{font:400 17px/1.5 var(--ps-sans,system-ui);color:var(--ps-mute,#5b6068);margin:0 0 30px}
+.ps-body p{font:400 17px/1.7 var(--ps-sans,system-ui);margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
+.ps-body .src{margin-top:28px;font-size:14px;color:var(--ps-mute,#5b6068)}
+.ps-x{min-height:44px;padding:0 18px}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .ps-media{border-radius:18px 18px 0 0}
+  .ps-col{border-radius:0}
+  .ps-body{border-radius:0}
+  .ps-media{height:min(38vh,300px)}
+  .ps-col{min-height:0}
+  .ps-bar{padding:14px 20px}
+  .ps-bar::after{left:20px;right:20px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
+
+/* site-level additions: quotes, links and the reveal hook inside the sheet */
+.ps-body blockquote{margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--ps-line,rgba(0,0,0,.08));font-family:var(--ps-serif,Georgia);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.35}
+.ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
+.ps-body .src{margin-top:30px}
+.ps-body .ul{text-decoration:none;border-bottom:1px solid currentColor;color:var(--ps-accent)}
+.ps-x{display:inline-flex;align-items:center;justify-content:center}
+.ps-body:focus-visible{outline:none}
+.ps-sheet:has(.ps-body:focus-visible){box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1.5px var(--ps-accent,#2b6)}
+.ps-sheet .btn{border-color:var(--ps-line,rgba(0,0,0,.18));color:var(--ps-ink)}
+.ps-sheet .btn::before{background:var(--ps-accent)}
+.ps-sheet .btn:hover{color:var(--ps-bg);border-color:var(--ps-accent)}
+
 /* ===== Highland Instruments: clinical teal on near-black, peach as the focal accent ===== */
 .hero .eyebrow,.ph-head .eyebrow,.dark .kick,.dark2 .kick{color:var(--sinL)}
 .light .kick{color:var(--sinD)}
 
 /* brand wordmark: the two emitters and the focus */
-.brand .wmk{display:flex;align-items:center;gap:12px}
+.brand.nologo .wmk{display:flex;align-items:center;gap:12px}
+.brand img{height:30px;width:auto}
+.brand .lg-d{display:none}
+.hdr.ink .brand .lg-w{display:none}
+.hdr.ink .brand .lg-d{display:block}
 .brand .wmk .mk{width:40px;height:27px;flex:none}
 .brand .wmk .mk g{stroke:var(--sinL)}
 .brand .wmk .mk .dot{fill:var(--peach)}
@@ -504,7 +556,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* indication cards */
 .inds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap) var(--gap)}
-.ind{position:relative;border-top:1px solid var(--hairD);padding:24px 20px 28px 0;overflow:hidden;transition:transform .32s var(--eo)}
+.ind{position:relative;border-top:1px solid var(--hairD);padding:24px 20px 28px 0;overflow:clip;overflow-clip-margin:16px;transition:transform .32s var(--eo)}
 .dark .ind,.dark2 .ind{border-top-color:var(--hair)}
 .ind::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--eo)}
 .ind::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(87,178,178,.08),rgba(87,178,178,0) 62%);opacity:0;transition:opacity .32s;pointer-events:none}
@@ -531,7 +583,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* team: refined text cards (no public headshots) */
 .pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-.pcard{position:relative;display:flex;flex-direction:column;border:1px solid var(--hairD);padding:26px 24px 24px;min-height:240px;background:linear-gradient(180deg,rgba(255,255,255,.44),rgba(255,255,255,0));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.pcard{position:relative;display:flex;flex-direction:column;border:1px solid var(--hairD);padding:26px 24px 24px;min-height:240px;background:linear-gradient(180deg,rgba(255,255,255,.44),rgba(255,255,255,0));overflow:clip;overflow-clip-margin:16px;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
 .pcard .pc-fig{display:none}
 .pcard .pc-meta{display:flex;flex-direction:column;gap:8px;height:100%}
 .pcard .grp{display:block;margin-bottom:18px;color:var(--stoneD)}
@@ -565,6 +617,43 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 /* A: accents must be legible on light sections too (deep tint on light, light tint on dark) */
 .light .mani .txt em,.light .stat .v sup,.light .stat .v .pre,.light .d1 em,.light .d2 em,.light .d3 em,.light .hero-h em,.light .cta .big em,.light .lede em,.light .qt em,.light .step h3 em,.light .ind h3 em,.light p em,.light li em{color:var(--sinD)}
 
+/* ===== One-scene story parts ===== */
+#scene svg *{stroke:rgba(242,246,246,.68)}
+#scene svg .a{stroke:var(--sinL);stroke-width:1.35}
+#scene svg .g{stroke:rgba(240,170,117,.62)}
+#scene svg .dot{stroke:rgba(242,246,246,.3);stroke-dasharray:3 6}
+#scene svg .f{fill:var(--peach);stroke:none}
+#scene svg .ring{stroke:var(--peach);stroke-width:1.3}
+#scene svg .ring2{stroke:rgba(240,170,117,.45)}
+#scene svg #scElec rect{fill:rgba(242,246,246,.08)}
+#scene{will-change:transform}
+.sfig svg{width:min(100%,560px);max-height:80%}
+
+/* ===== The ESStim device (BJ: the product photo belongs on the home page) ===== */
+.dev{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,5vw,80px);align-items:center}
+.dev-im{position:relative;margin:0;aspect-ratio:5/4;overflow:hidden;border-radius:4px;background:#fff;box-shadow:0 30px 60px -40px rgba(15,27,29,.5)}
+.dev-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:clamp(10px,2vw,28px);transition:transform .6s var(--eo)}
+.dev:hover .dev-im img{transform:scale(1.03)}
+.dev.noimg .dev-im{display:none}
+.dev-tx .d3{margin:14px 0 20px}
+.dev-tx p{color:var(--stoneD);max-width:46ch;font-size:16.5px}
+.dev-tx .note{display:block;margin-top:22px;padding-top:16px;border-top:1px solid var(--hairD);color:var(--peachD);max-width:50ch;line-height:1.6}
+.wear{margin:0;display:flex;flex-direction:column;gap:18px;align-items:center}
+.wear img{width:min(100%,620px);aspect-ratio:5/4;height:auto;object-fit:contain;border-radius:4px;background:#fff}
+.wear figcaption{color:var(--stoneD);max-width:52ch;text-align:center}
+@media (max-width:860px){.dev{grid-template-columns:1fr;row-gap:28px}}
+
+/* ===== Person sheet tokens ===== */
+.ps{--ps-bg:var(--bone);--ps-ink:var(--ink);--ps-mute:var(--stoneD);--ps-line:var(--hairD);--ps-accent:var(--sinD);--ps-scrim:rgba(10,20,22,.68);--ps-serif:var(--serif);--ps-sans:var(--sans)}
+.ps-body .lab{font-family:var(--mono);letter-spacing:.16em}
+
+/* ---- contact: a real photograph, not a decorative panel (client review, round 2) ---- */
+.cph{margin:clamp(34px,4vw,56px) 0 0}
+.cph-im{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+.cph figcaption{margin-top:14px;color:var(--stoneD)}
+.cph.noimg{display:none}
+
 </style>
 </head>
 <body>
@@ -586,8 +675,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 </div>
 
 <header class="hdr" id="hdr">
-  <a href="#/" class="brand nologo" id="brand" aria-label="Highland Instruments, home">
-    <span class="wmk"><svg class="mk" viewBox="0 0 96 64" aria-hidden="true"><g fill="none" stroke-width="3" stroke-linecap="round"><path d="M20 18a30 30 0 010 28"/><path d="M32 24a18 18 0 010 16"/><path d="M76 18a30 30 0 000 28"/><path d="M64 24a18 18 0 000 16"/></g><circle cx="48" cy="32" r="5.5" class="dot"/></svg><span class="wn">Highland Instruments<small>A neurotechnology company</small></span></span>
+  <a href="#/" class="brand" id="brand" aria-label="Highland Instruments, home">
+    <img class="lg-w" src="https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/531be80b-dd38-476a-b386-0412af0c56e1/Highlsnd-Color-1-HORZ-WHITE.png?format=750w" alt="Highland Instruments" onerror="document.getElementById('brand').classList.add('nologo')"><img class="lg-d" src="https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/d2a28cff-c540-4eb8-b6d2-2c20e47dff61/Highlsnd-Color-1-HORZ.png?format=750w" alt="" aria-hidden="true" onerror="this.remove()"><span class="wmk"><svg class="mk" viewBox="0 0 96 64" aria-hidden="true"><g fill="none" stroke-width="3" stroke-linecap="round"><path d="M20 18a30 30 0 010 28"/><path d="M32 24a18 18 0 010 16"/><path d="M76 18a30 30 0 000 28"/><path d="M64 24a18 18 0 000 16"/></g><circle cx="48" cy="32" r="5.5" class="dot"/></svg><span class="wn">Highland Instruments<small>A neurotechnology company</small></span></span>
   </a>
   <nav class="nav" aria-label="Primary">
     <a class="nl ul" href="#/technology">Technology</a>
@@ -614,17 +703,23 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 <main id="main" tabindex="-1"><div id="view"></div></main>
 
-<div class="bio" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName">
-  <div class="scr" id="bioScr"></div>
-  <div class="pan" id="bioPan">
-    <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
-    <div class="in" id="bioIn"></div>
-  </div>
-</div>
-
 <div class="xc" id="xc" aria-hidden="true"></div>
 <div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Highland Instruments</span><div class="t" id="xtt"></div></div>
 <div class="sr" aria-live="polite" id="live"></div>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <a class="btn ps-x" href="#/team" data-ps-close data-close>Close</a>
+        <div class="ps-step"><a class="btn ps-x" id="psPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn ps-x" id="psNext" href="#/team" data-replace aria-label="Next person">Next</a></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
 
 <script>/*!
  * GSAP 3.15.1
@@ -818,6 +913,14 @@ function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
 var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var SITE="Highland Instruments";
+var BIOSRC="Profile drawn from Highland Instruments\u2019 company page.";
+
+/* ================= BH: a mask clips ONLY while its reveal is moving ================= */
+function relMask(lines){if(!lines)return;(lines.length?lines:[lines]).forEach(function(l){
+  if(!l||!l.style)return;l.style.overflow="visible";l.style.clipPath="none";
+  var m=l.parentNode;if(m&&m.style){m.style.overflow="visible";m.style.clipPath="none"}})}
+function relAll(root){$$(".ln,.ln-mask",root||document).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
+
 function ini(n){var p=n.replace(/,.*$/,"").split(/\s+/).filter(Boolean);return p[0][0]+p[p.length-1][0]}
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
@@ -873,6 +976,16 @@ var IND=[
   p:"Causes numbness, pain and weakness in the hand and wrist, currently treated with medication, therapy and surgery.",
   s:"Following MINERVA 1, MINERVA 2 is investigating pain, quality of life, mood, function, mobility and pain medication use."}
 ];
+
+/* Highland's own product imagery (highlandinstruments.us) */
+var HIMG="https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/";
+var DEVICE={src:HIMG+"aaa6d186-74b5-4c6a-8eaa-bea720cd5186/HeadGear_Web_2_Vanity_White_v02.jpg?format=1500w",alt:"The ESStim headgear: a lightweight head-worn frame carrying the stimulation assembly"};
+var DEVICE_ON={src:HIMG+"7b3c8ddb-4fe6-40bc-9e30-3fc6df92b771/Highland_Headgear_Animation_Fall-2021.png?format=1500w",alt:"The ESStim headgear positioned on a head, with the transducer assembly over the target"};
+function deviceBand(){return '<div class="dev" data-r>'+
+  '<figure class="dev-im"><img src="'+DEVICE.src+'" alt="'+esc(DEVICE.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.dev\').classList.add(\'noimg\')"></figure>'+
+  '<div class="dev-tx"><span class="lab kick">The ESStim\u2122 system</span><h2 class="d3 split">Worn, not <em>implanted.</em></h2>'+
+  '<p>The stimulation assembly is carried on a light head-worn frame: the ultrasonic and electric fields are applied through the scalp, with no surgery and nothing left inside the patient.</p>'+
+  '<p class="lab note">Investigational device. Federal (or United States) law limits this device to investigational use.</p></div></div>'}
 function indCards(list){return '<div class="inds" data-group>'+list.map(function(o){return '<article class="ind"><span class="lab g">'+esc(o.g)+'</span><h3>'+esc(o.n)+'</h3><span class="lab code">'+esc(o.code)+' · '+esc(o.pop)+'</span><p>'+esc(o.p)+'</p><p class="st">'+esc(o.s)+'</p></article>'}).join("")+'</div>'}
 
 /* ================= VIEW HELPERS ================= */
@@ -903,6 +1016,8 @@ function vHome(){
     '<div class="stat"><span class="ln2"></span><span class="v">6</span><span class="lab k">Indications under investigation, from Parkinson’s to carpal tunnel</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.5<sup>M</sup></span><span class="lab k">First-year NINDS Phase IIB award, 2026</span></div>'+
    '</div></div></section>'+
+
+  '<section class="sec light" data-theme="light" style="background:var(--bone2);padding-top:clamp(72px,8vh,120px)"><div class="wrap">'+deviceBand()+'</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Couple. Focus. <em>Steer.</em></h2>'+
@@ -952,6 +1067,7 @@ function vTech(){
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 44c10-26 42-26 52 0"/><path class="a" d="M18 44c6-15 22-15 28 0"/><path d="M32 8v10"/><circle class="f" cx="32" cy="40" r="4"/></svg><h3>Focality and penetration</h3><p>Highland describes greater focality, penetration, duration and magnitude of effect, and better targeting control than other noninvasive options.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="14" width="48" height="36" rx="5"/><path class="a" d="M16 40l8-14 8 9 8-17 8 22"/><circle class="f" cx="48" cy="40" r="3"/></svg><h3>Measured, not assumed</h3><p>Trials read out on UPDRS Part III, Mini-BESTest, falls diaries, quality of life, EEG, MoCA and kinematics from Highland’s Integrated Motion Analysis Suite.</p></div>'+
    '</div>'+devnote()+'</div></section>'+
+  '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap"><figure class="wear" data-r><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.wear\').remove()"><figcaption class="lab">The headgear in position: two independently controlled fields, applied through the scalp.</figcaption></figure></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Beyond the headset</span><h2 class="d3 split">An IP portfolio that reaches <em>past stimulation.</em></h2><p class="muted" style="margin-top:24px" data-r>ESStim™ is protected by issued and pending patents nationally and globally. Highland also owns substantial intellectual property in artificial intelligence, imaging, neuromodulation, wearable sensors and human movement kinematics.</p></div>'+
    '<dl class="facts" data-group>'+
@@ -993,18 +1109,12 @@ function vContact(){
   return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Clinical sites, partnering, investment and press: send a note and it will reach the team.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Highland Instruments, Inc.</span><h3>Cambridge, Massachusetts</h3><p><a class="ul" href="mailto:info@highlandinstruments.com">info@highlandinstruments.com</a></p>'+
-    '<div class="map">'+mapSvg()+'</div></div>'+
+    '<figure class="cph" data-r><div class="cph-im"><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
+     '<figcaption class="lab">The ESStim headgear in position</figcaption></figure></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
-    '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="sub"><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Highland team directly.</p></div></div>'+
   '</div>'+devnote()+'</div></section>';
-}
-function mapSvg(){
-  var g='';for(var i=0;i<72;i++){var a=i*2.39996,r=Math.sqrt(i/72)*150;g+='<circle cx="'+(250+Math.cos(a)*r).toFixed(1)+'" cy="'+(200+Math.sin(a)*r*.8).toFixed(1)+'" r="'+(1.3+Math.sqrt(i/72)*2.3).toFixed(2)+'" fill="rgba(15,27,29,.14)"/>'}
-  return '<svg viewBox="0 0 500 400" aria-label="Stylized map marking Cambridge, Massachusetts">'+g+
-  '<path class="mp" d="M0 300C80 282 130 312 198 274S330 244 386 202 492 172 500 178" fill="none" stroke="#49595b" stroke-width="1.2"/>'+
-  '<g class="pin" transform="translate(250 200)"><circle r="30" fill="rgba(87,178,178,.18)" class="pr"/><circle r="6" fill="#2b6e6e"/><text x="18" y="-8" font-family="Spectral,serif" font-size="27" fill="#0f1b1d">Cambridge</text><text x="18" y="14" font-family="DM Mono,monospace" font-size="11" letter-spacing="1.5" fill="#49595b">MASSACHUSETTS</text></g>'+
-  '<text x="30" y="372" font-family="DM Mono,monospace" font-size="11" letter-spacing="1.5" fill="#49595b">CHARLES RIVER</text></svg>';
 }
 function v404(){return head({k:"Not found",h:'This page is <em>out of range.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
@@ -1167,7 +1277,7 @@ function splitReveal(el,E){
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   /* BB: a heading already on the first screen rises with the page entrance (after the cover), not underneath it; others fire well inside the viewport */
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
-  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,onComplete:function(){relMask(st.lines)},scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
 }
 var ENTRY=0;
 function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
@@ -1182,10 +1292,10 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
       htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
          .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
-      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      htl.eventCallback("onComplete",function(){relMask(s.lines);relAll($("#view"))});if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1242,7 +1352,7 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
-function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+function rvFail(){relAll($("#view"));relAll($("#psBody"));RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
@@ -1250,35 +1360,99 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 var story=null;
-/* ===== STORY FIGURES: why ESStim differs, built in by StoryFX as you scroll ===== */
-function sfig(inner,lab){return '<figure class="sfig"><svg viewBox="0 0 420 320" aria-hidden="true">'+inner+'</svg><figcaption class="lab">'+lab+'</figcaption></figure>'}
-var FIGS=[
- /* 1. conventional stimulation: current spreads broadly and stays shallow */
- sfig('<ellipse cx="210" cy="178" rx="128" ry="110"/><path d="M118 282c24 14 60 20 92 20s68-6 92-20" stroke-dasharray="3 6"/><path d="M96 142c22-12 44-12 66 0M258 142c22-12 44-12 66 0" stroke-dasharray="2 6"/><rect x="176" y="48" width="68" height="16" rx="6" class="a"/><path class="g" d="M196 66c-26 22-38 44-40 66M224 66c26 22 38 44 40 66M210 66c-4 24-4 44 0 62"/><circle cx="210" cy="198" r="13" stroke-dasharray="3 5"/>','Conventional stimulation'),
- /* 2. two independently controlled fields */
- sfig('<ellipse cx="210" cy="178" rx="128" ry="110"/><path d="M118 282c24 14 60 20 92 20s68-6 92-20" stroke-dasharray="3 6"/><path d="M96 142c22-12 44-12 66 0M258 142c22-12 44-12 66 0" stroke-dasharray="2 6"/><path class="a" d="M44 142a44 44 0 010 52M68 152a28 28 0 010 32M376 142a44 44 0 000 52M352 152a28 28 0 000 32"/><rect x="176" y="48" width="68" height="16" rx="6"/><path class="g" d="M192 70v64M228 70v64"/><circle class="f" cx="210" cy="168" r="4"/>','Two fields, independently controlled'),
- /* 3. coupling: focused and steerable at depth */
- sfig('<ellipse cx="210" cy="178" rx="128" ry="110"/><path d="M118 282c24 14 60 20 92 20s68-6 92-20" stroke-dasharray="3 6"/><path d="M96 142c22-12 44-12 66 0M258 142c22-12 44-12 66 0" stroke-dasharray="2 6"/><path class="a" d="M62 146a38 38 0 010 44M358 146a38 38 0 000 44"/><path class="g" d="M104 168h66M250 168h66"/><circle cx="210" cy="168" r="34"/><circle cx="210" cy="168" r="19" class="g2"/><circle class="f" cx="210" cy="168" r="6"/>','Coupled, focused, steered'),
- /* 4. measured outcomes over twelve weeks */
- sfig('<path d="M48 252h324"/><path d="M48 56v196"/><path class="g" d="M48 122h324" stroke-dasharray="4 8"/><path class="a" d="M70 216l52-34 54 12 52-56 52 22 50-46"/><circle class="f" cx="122" cy="182" r="5"/><circle class="f" cx="228" cy="138" r="5"/><circle class="f" cx="330" cy="114" r="5"/><path d="M70 272h58M150 272h92M264 272h66"/>','Measured, week by week')
-];
+/* ===== ONE CONTINUOUS SCENE (PRINCIPLES BL) =====
+   One head, one stage. Electrodes land and current spreads broadly; two ultrasonic transducers
+   arrive and their arcs converge; the coupling pulls the field into a focus at depth; then the
+   twelve-week readout draws beneath it. Parts move, draw and actuate along the scrubbed progress. */
+var SCENE='<figure class="sfig" id="scene"><svg viewBox="0 0 460 330" aria-label="One head: electrodes spread current broadly, two independently controlled fields converge, the coupled field focuses at depth, and the response is measured over twelve weeks">'+
+  '<g id="scHead"><ellipse cx="230" cy="150" rx="140" ry="112"/>'+
+    '<path class="dot" d="M132 118c24-13 48-13 72 0M256 118c24-13 48-13 72 0"/>'+
+    '<path class="dot" d="M134 252c28 16 64 24 96 24s68-8 96-24"/></g>'+
+  '<g id="scElec"><rect x="196" y="20" width="68" height="16" rx="5"/><path d="M204 36v8M230 36v8M256 36v8"/></g>'+
+  '<g id="scSpread"><path class="g" d="M206 46c-30 28-44 56-46 86M230 46c-4 32-4 62 0 86M254 46c30 28 44 56 46 86"/></g>'+
+  '<g id="scTrans"><g id="scTL"><rect x="58" y="128" width="16" height="48" rx="4"/><path class="a" d="M84 126a44 44 0 010 52M104 138a28 28 0 010 28"/></g>'+
+    '<g id="scTR"><rect x="386" y="128" width="16" height="48" rx="4"/><path class="a" d="M376 126a44 44 0 000 52M356 138a28 28 0 000 28"/></g></g>'+
+  '<g id="scFocus"><circle class="ring" cx="230" cy="158" r="42"/><circle class="ring2" cx="230" cy="158" r="24"/><circle class="f" cx="230" cy="158" r="7"/></g>'+
+  '<g id="scRead"><path d="M66 326h328"/><path class="dot" d="M66 290h328"/>'+
+    '<path class="a" id="scTrace" d="M78 320l62-10 62 4 62-20 62 6 62-14"/>'+
+    '<circle class="f" cx="140" cy="310" r="4.5"/><circle class="f" cx="264" cy="290" r="4.5"/><circle class="f" cx="388" cy="282" r="4.5"/></g>'+
+  '</svg><figcaption class="lab" id="scCap">Conventional stimulation</figcaption></figure>';
+var FIGS=[SCENE];
+
+function sceneSet(p){
+  var el=document.getElementById("scene");if(!el)return;
+  var q=function(s){return document.getElementById(s)},qq=function(s){return [].slice.call(el.querySelectorAll(s))};
+  var cl=function(v){return v<0?0:v>1?1:v},ea=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},out=function(t){return 1-Math.pow(1-t,3)};
+  var draw=function(node,len,e){node.style.strokeDasharray=len+" "+len;node.style.strokeDashoffset=(len*(1-out(cl(e)))).toFixed(1)};
+  /* the head is always there, settling in at the start */
+  var hd=q("scHead");
+  if(hd){hd.style.filter="opacity("+((.25+.75*ea(cl(p/.1)))*(1-.2*cl((p-.8)/.2))).toFixed(3)+")";hd.style.translate="0 "+((1-ea(cl(p/.12)))*14).toFixed(1)+"px"}
+  /* phase 0 (0–.3): electrodes land, current spreads broadly and shallow */
+  var e0=cl(p/.22);
+  var el0=q("scElec");
+  if(el0){el0.style.translate="0 "+((1-ea(e0))*-30).toFixed(1)+"px";el0.style.filter="opacity("+ea(cl(p/.1)).toFixed(3)+")"}
+  qq("#scSpread .g").forEach(function(n,i){draw(n,120,(e0-i*.08)/.6)});
+  var sp=q("scSpread");
+  /* the broad spread fades back as the focused field takes over */
+  if(sp)sp.style.filter="opacity("+(ea(cl((p-.08)/.2))*(1-.86*cl((p-.42)/.22))).toFixed(3)+")";
+  /* phase 1 (.26–.56): the two transducers arrive and their arcs draw */
+  var e1=cl((p-.26)/.3);
+  var tl2=q("scTL"),tr=q("scTR");
+  if(tl2){tl2.style.translate=((1-ea(e1))*-120).toFixed(1)+"px 0";tl2.style.filter="opacity("+ea(cl((p-.26)/.16)).toFixed(3)+")"}
+  if(tr){tr.style.translate=((1-ea(e1))*120).toFixed(1)+"px 0";tr.style.filter="opacity("+ea(cl((p-.26)/.16)).toFixed(3)+")"}
+  qq("#scTrans .a").forEach(function(n,i){draw(n,110,(e1-.18-(i%2)*.1)/.5)});
+  /* phase 2 (.5–.8): coupling — the focus tightens and pulses */
+  var e2=cl((p-.5)/.3);
+  var fc=q("scFocus");
+  if(fc){fc.style.filter="opacity("+ea(cl((p-.5)/.18)).toFixed(3)+")";
+    fc.style.transformBox="fill-box";fc.style.transformOrigin="50% 50%";
+    fc.style.transform="scale("+(1.5-.5*ea(e2)).toFixed(3)+")"}
+  var rg=el.querySelector("#scFocus .ring"),rg2=el.querySelector("#scFocus .ring2");
+  if(rg)rg.setAttribute("r",(42-12*ea(e2)).toFixed(1));
+  if(rg2)rg2.setAttribute("r",(24-7*ea(e2)).toFixed(1));
+  /* the transducer arcs bend inwards as the fields couple */
+  var tt=q("scTrans");
+  if(tt)tt.style.translate="0 0",tt.style.filter="opacity("+(ea(cl((p-.26)/.16))*(1-.25*cl((p-.82)/.18))).toFixed(3)+")";
+  /* phase 3 (.76–1): the readout draws under the head */
+  var e3=cl((p-.76)/.24);
+  var rd=q("scRead");
+  if(rd)rd.style.filter="opacity("+ea(e3).toFixed(3)+")";
+  var tr2=q("scTrace");
+  if(tr2)draw(tr2,340,e3/.8);
+  qq("#scRead .f").forEach(function(n,i){n.style.filter="opacity("+ea(cl((e3-.35-i*.14)/.4)).toFixed(3)+")"});
+  /* the head lifts slightly to make room for the readout, so the scene stays composed */
+  var svg=el.querySelector("svg");
+  if(svg)svg.style.translate="0 "+(-26*ea(e3)).toFixed(1)+"px";
+  var cap=document.getElementById("scCap");
+  if(cap){var t=p<.26?"Conventional stimulation":p<.5?"Two fields, independently controlled":p<.76?"Coupled, focused, steered":"Measured, week by week";
+    if(cap.textContent!==t)cap.textContent=t}
+}
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){relMask(s.lines)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
   /* BA: stats reveal at their final value, never counted up */
-  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){relMask(st.lines)},scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   var sec=$("#story",view);if(!sec)return;
-  var steps=$$(".step",view),figs=$$(".sfig",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0,NS=Math.max(steps.length,1);
+  /* AK: the track and the fill both END on the last node, and the fill head sits exactly on
+     the active node. Fill and step text are driven by the SAME progress value. */
+  function railGeom(){if(!rail.length||!prog||!prog.parentNode)return;var r=prog.parentNode,w=r.clientWidth;if(!w)return;
+    r.style.setProperty("--rx0","4.5px");
+    r.style.setProperty("--rspan",((rail.length-1)*(w/rail.length)).toFixed(2)+"px")}
+  railGeom();
   function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
     rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
-  if(RM){steps.forEach(function(s){s.classList.add("on")});return}
+  if(RM){steps.forEach(function(s){s.classList.add("on")});if(prog)prog.style.transform="scaleX(1)";sceneSet(1);return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:figs,steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.round(p*3)));fx(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();
+    prog.style.transform="scaleX("+(NS>1?Math.min(p*NS,NS-1)/(NS-1):p)+")";
+    setStep(Math.min(NS-1,Math.floor(p*NS)));fx(p);sceneSet(p)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:railGeom});
+  sceneSet(0);
 }
 
 function contactInit(view){
@@ -1294,28 +1468,61 @@ function contactInit(view){
     gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
     $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
 }
-/* ================= BIO OVERLAY ================= */
-var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{xPercent:102});
-function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  $("#bioIn").innerHTML='<figure class="bio-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.remove()"></figure><span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
-   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="lab src">Profile drawn from Highland Instruments’ company page.</p>';
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+/* ================= PERSON SHEET (PRINCIPLES BI) =================
+   Centred two-column sheet over a dimmed, blurred page. The bio column is the only scroll
+   container and carries data-lenis-prevent, so the wheel and trackpad scroll it while Lenis is stopped.
+   Close returns to the route, Prev/Next replaceState, Esc closes, focus is trapped. */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psCur=-1,psLastFocus=null;
+function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psFill(i){
+  var p=TEAM[i];
+  window.__psPlate=psPlate(p);
+  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
+    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+    '<p class="src lab">'+BIOSRC+'</p>';
+  psBody.scrollTop=0;
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
+  $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);
   document.title=p.name+" — "+SITE;
 }
-function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
-  if(bioOpen){rvPlay($("#bioIn"),0);return}
-  bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();
-  gsap.killTweensOf(["#bioPan","#bioScr"]);
-  gsap.fromTo("#bioPan",{xPercent:102},{xPercent:0,duration:instant||RM?.01:.7,ease:"flow"});gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
-  /* direct load: the panel is already open, so its bar and content enter once the page is uncovered */
-  var d0=instant?(window._preShown?1.5:.4):.25;rvPlay($("#bioIn"),d0);
-  if(!RM)gsap.fromTo($$(".bar0 .btn",bio),{opacity:0,y:-12},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
-  setTimeout(function(){var c=$("[data-close]",bio);if(c)c.focus({preventScroll:true})},50);
+function openBio(slug,instant){
+  var i=pBy(slug);if(i<0)return;
+  var was=bioOpen;psCur=i;psFill(i);
+  if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,0);return}
+  bioOpen=true;psLastFocus=document.activeElement;
+  ps.classList.add("open");ps.setAttribute("aria-hidden","false");
+  if(lenis)lenis.stop();
+  gsap.killTweensOf([psSheet,"#ps .ps-scrim"]);
+  var d=instant||RM?.01:1;
+  gsap.fromTo("#ps .ps-scrim",{opacity:0},{opacity:1,duration:.45*d,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*d,ease:"power3.out",clearProps:"transform"});
+  var d0=instant?(window._preShown?1.5:.4):.2;
+  rvPlay(psBody,d0);
+  if(!RM)gsap.fromTo($$(".ps-bar .btn",ps),{opacity:0,y:-10},{opacity:1,y:0,duration:.7,ease:"silk",stagger:.05,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
 }
-function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{xPercent:102,duration:RM?.01:.55,ease:"flow"});gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
+function hideBio(){
+  if(!bioOpen)return;bioOpen=false;psCur=-1;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});
+  gsap.to("#ps .ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
+  if(lenis)lenis.start();
+  if(psLastFocus&&psLastFocus.focus)psLastFocus.focus({preventScroll:true});
+  var r=route(location.hash);document.title=r.t;
+}
+function psHardClose(){bioOpen=false;psCur=-1;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set("#ps .ps-scrim",{opacity:0})}
 function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
-$("#bioScr").addEventListener("click",closeBio);
+/* the Close anchor carries data-close and is handled by the router; the scrim is ours */
+$(".ps-scrim",ps).addEventListener("click",function(){closeBio()});
+ps.addEventListener("keydown",function(e){
+  if(!bioOpen||e.key!=="Tab")return;
+  var f=$$("button,a[href],[tabindex='0']",ps).filter(function(x){return x.offsetWidth||x.offsetHeight});
+  if(!f.length)return;var a=f[0],z=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+  else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+});
 var bioFromClick=false,bioBase=null;
 
 /* ================= NAV / ROUTING ================= */
@@ -1344,7 +1551,7 @@ function go(first,ready){
   /* bio overlay routes never repaint */
   if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
   if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
-  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{xPercent:102});gsap.set("#bioScr",{opacity:0})}
+  if(bioOpen){psHardClose()}
   if(busy){queued=true;return}busy=true;
   scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
   var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";

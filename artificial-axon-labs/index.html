@@ -151,7 +151,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.08em .14em .2em;margin:-.08em -.14em -.2em}
+.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -454,6 +454,54 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .facts>div{grid-template-columns:1fr;gap:4px}
   .fld input,.fld textarea{font-size:21px}
 }
+/* PERSON SHEET (PRINCIPLES BI) — kit component, re-skinned with this site's tokens */
+.ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
+.ps.open{visibility:visible;pointer-events:auto}
+.ps-scrim{position:absolute;inset:0;background:var(--ps-scrim,rgba(10,12,14,.62));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--ps-bg,#f6f4ef);color:var(--ps-ink,#14161a);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1px var(--ps-line,rgba(0,0,0,.08));opacity:0}
+.ps-media{position:relative;border-radius:18px 0 0 18px;background:color-mix(in srgb,var(--ps-ink,#14161a) 6%,var(--ps-bg,#f6f4ef));overflow:hidden}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) contrast(1.04)}
+/* no photo: a typographic plate, never a monogram */
+.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;background:linear-gradient(160deg,color-mix(in srgb,var(--ps-accent,#2b6) 16%,transparent),transparent 60%)}
+.ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
+.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
+.ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
+.ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
+.ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
+.ps-bar .ps-step{display:flex;gap:8px}
+.ps-body{flex:1;min-height:0;border-radius:0 0 18px 0;overflow-y:auto;overflow-x:clip;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin}
+.ps-body .lab{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-accent,#2b6)}
+.ps-body h2{font:400 clamp(34px,3.6vw,54px)/1.05 var(--ps-serif,Georgia);letter-spacing:-.02em;margin:14px 0 10px;padding-bottom:.14em}
+.ps-body .role{font:400 17px/1.5 var(--ps-sans,system-ui);color:var(--ps-mute,#5b6068);margin:0 0 30px}
+.ps-body p{font:400 17px/1.7 var(--ps-sans,system-ui);margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
+.ps-body .src{margin-top:28px;font-size:14px;color:var(--ps-mute,#5b6068)}
+.ps-x{min-height:44px;padding:0 18px}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
+  .ps-media{border-radius:18px 18px 0 0}
+  .ps-col{border-radius:0}
+  .ps-body{border-radius:0}
+  .ps-media{height:min(38vh,300px)}
+  .ps-col{min-height:0}
+  .ps-bar{padding:14px 20px}
+  .ps-bar::after{left:20px;right:20px}
+  .ps-body{padding:26px 20px 48px}
+}
+@media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
+
+/* site-level additions: quotes, links and the reveal hook inside the sheet */
+.ps-body blockquote{margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--ps-line,rgba(0,0,0,.08));font-family:var(--ps-serif,Georgia);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.35}
+.ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
+.ps-body .src{margin-top:30px}
+.ps-body .ul{text-decoration:none;border-bottom:1px solid currentColor;color:var(--ps-accent)}
+.ps-x{display:inline-flex;align-items:center;justify-content:center}
+.ps-body:focus-visible{outline:none}
+.ps-sheet:has(.ps-body:focus-visible){box-shadow:0 40px 120px -30px rgba(0,0,0,.45),0 0 0 1.5px var(--ps-accent,#2b6)}
+.ps-sheet .btn{border-color:var(--ps-line,rgba(0,0,0,.18));color:var(--ps-ink)}
+.ps-sheet .btn::before{background:var(--ps-accent)}
+.ps-sheet .btn:hover{color:var(--ps-bg);border-color:var(--ps-accent)}
+
 /* ===== Artificial Axon Labs: printed-line typography, rust accent, fibre motifs ===== */
 em{font-family:var(--ital);font-style:italic}
 .d1,.d2,.d3,.hero-h,.cta .big,.step h3,.tcard h3,.row-a h3,.pl3 h3,.bio h2,.pc-meta h3,.mani .txt,.evi blockquote,.gq,.lede,.addr h3,.sv h3,.fg b{font-family:var(--sans);font-weight:300;letter-spacing:-.025em}
@@ -499,12 +547,22 @@ em{font-family:var(--ital);font-style:italic}
 .story-r{display:flex;align-items:center;justify-content:center}
 .figs{position:relative;width:100%;height:100%}
 .sfig{position:absolute;inset:0;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
-.sfig svg{width:min(100%,520px);height:auto;max-height:72%;overflow:visible}
+.sfig svg{width:min(100%,690px);height:auto;max-height:80%;overflow:visible}
 .sfig svg *{fill:none;stroke:rgba(243,239,234,.55);stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
 .sfig svg .a{stroke:var(--sinL)}
 .sfig svg .g{stroke:rgba(227,132,106,.45)}
 .sfig svg .f{fill:var(--sin);stroke:none}
 .sfig svg .a2{stroke:var(--sinL);fill:rgba(227,132,106,.12)}
+/* one-scene story parts */
+.sfig svg .sl{fill:rgba(243,239,234,.14);stroke:rgba(243,239,234,.78)}
+.sfig svg .pr{stroke:rgba(243,239,234,.62)}
+.sfig svg .bar{fill:rgba(227,132,106,.3);stroke:var(--sinL);stroke-width:1.2}
+.sfig svg .tie{stroke:rgba(243,239,234,.22);stroke-dasharray:2 6}
+.sfig svg .bm{stroke:rgba(227,132,106,.35);stroke-width:4;stroke-linecap:round}
+.sfig svg #scFibre{stroke:var(--sinL);stroke-width:2}
+#scene svg *{stroke:rgba(243,239,234,.72)}
+#scene svg .f{fill:var(--sin);stroke:none}
+.sfig #scene{will-change:transform}
 .sfig figcaption{color:var(--stone)}
 .step h3{font-weight:300}
 .rail span{font-size:10px}
@@ -521,9 +579,9 @@ em{font-family:var(--ital);font-style:italic}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
 .pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(20,19,19,.5)}
 .ph2{position:absolute;inset:0}
-.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:transform .45s ease-out,clip-path .45s ease-out}
-.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
-.ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:clip-path .45s ease-out}
+.pcard:hover .ph2,.pcard:focus-visible .ph2{scale:calc(var(--zm,1) * 1.045)}
+.ph2 .ph-g{filter:grayscale(1) contrast(1.04) brightness(.985)}
 .ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
 .pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
@@ -536,7 +594,7 @@ em{font-family:var(--ital);font-style:italic}
 .pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}
 .pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
-.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));overflow:hidden}
+.pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));overflow:clip;overflow-clip-margin:16px}
 .pcard.noimg .pc-fig{display:none}
 .pcard.noimg .pc-meta{padding-top:0;height:100%}
 .pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--stoneD)}
@@ -566,6 +624,76 @@ em{font-family:var(--ital);font-style:italic}
 
 /* A: accents must be legible on light sections too (deep tint on light, light tint on dark) */
 .light .mani .txt em,.light .stat .v sup,.light .stat .v .pre,.light .d1 em,.light .d2 em,.light .d3 em,.light .hero-h em,.light .cta .big em,.light .lede em,.light .qt em,.light .step h3 em,.light .ind h3 em,.light p em,.light li em{color:var(--sinD)}
+
+/* ===== Company imagery (BJ): assay micrographs, the printer, collaborator plates ===== */
+.sci{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(56px,6vw,96px)}
+.scf{margin:0;display:flex;flex-direction:column;gap:14px}
+.scf .lab{color:var(--sinD)}
+.dark .scf .lab,.dark2 .scf .lab{color:var(--sinL)}
+.scf-im{position:relative;aspect-ratio:16/11;overflow:hidden;border-radius:2px;background:var(--bone3);box-shadow:0 24px 44px -34px rgba(20,19,19,.55)}
+.dark .scf-im,.dark2 .scf-im{background:var(--ink2)}
+.scf-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s var(--eo)}
+.scf:hover .scf-im img{transform:scale(1.035)}
+.scf.noimg .scf-im{display:none}
+.scf figcaption{font-size:14.5px;line-height:1.5;color:var(--stoneD);max-width:34ch}
+.dark .scf figcaption,.dark2 .scf figcaption{color:var(--stone)}
+.plates{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:var(--gap)}
+.plate{display:flex;align-items:center;justify-content:center;aspect-ratio:3/2;padding:18px;background:var(--bone);border-radius:2px;transition:transform .3s var(--eo),box-shadow .3s var(--eo)}
+.plate img{width:100%;height:100%;object-fit:contain;filter:grayscale(1) contrast(1.05);opacity:.78;transition:filter .35s var(--eo),opacity .35s var(--eo)}
+.plate:hover{transform:translateY(-3px);box-shadow:0 20px 36px -26px rgba(0,0,0,.5)}
+.plate:hover img{filter:none;opacity:1}
+.plate .pl-t{font-family:var(--sans);font-size:13px;line-height:1.3;color:var(--stoneD);text-align:center}
+@media (max-width:1100px){.plates{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.sci{grid-template-columns:1fr;row-gap:36px}.plates{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ===== Person sheet tokens ===== */
+.ps{--ps-bg:var(--bone);--ps-ink:var(--ink);--ps-mute:var(--stoneD);--ps-line:var(--hairD);--ps-accent:var(--sinD);--ps-scrim:rgba(13,12,12,.66);--ps-serif:var(--sans);--ps-sans:var(--sans)}
+.ps-body h2{font-weight:300;letter-spacing:-.025em}
+.ps-body .lab{font-family:var(--mono);letter-spacing:.16em}
+.ps-plate .q{font-weight:300}
+
+/* ---- team grid: one eye-line, one head size, one grade (PRINCIPLES BJ) ----
+   Per-portrait zoom and pan, measured from the faces in the company's own photographs,
+   so every head is the same size and every eye-line sits at 40% of the card. */
+.ph2{translate:var(--tx,0) var(--ty,0);scale:var(--zm,1);transition:scale .45s ease-out}
+.ph2:has(img[src*="Capture.JPG"]){--zm:1.205;--tx:-0.64%;--ty:-2.39%}
+.ph2:has(img[src*="Kavin"]){--zm:1.093;--tx:-0.60%;--ty:4.10%}
+.ph2:has(img[src*="VanVliet"]){--zm:1.154;--tx:3.26%;--ty:5.20%}
+.ph2:has(img[src*="fang"]){--zm:1.000;--tx:3.29%;--ty:0%}
+.ph2:has(img[src*="LOWE"]){--zm:1.000;--tx:2.03%;--ty:0%}
+.ph2:has(img[src*="Terrett"]){--zm:1.380;--tx:-5.50%;--ty:7.57%}
+.ph2:has(img[src*="AVoronova"]){--zm:1.021;--tx:5.74%;--ty:-1.04%}
+/* one tonal range across seven photographs shot by seven different people */
+.pc-fig::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(180deg,rgba(20,19,19,.16),rgba(20,19,19,0) 34%,rgba(20,19,19,0) 64%,rgba(20,19,19,.18));
+  mix-blend-mode:multiply}
+
+/* ---- manifesto: the argument and the product photograph share one grid (BM, BJ) ---- */
+.mgrid{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:clamp(30px,5vw,86px);align-items:end}
+.mfig{margin:0}
+.mfig-im{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.mfig-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+.mfig figcaption{margin-top:14px;color:var(--stoneD)}
+.mfig.noimg{display:none}
+
+/* ---- the problem heading holds its column down the bullet list ---- */
+.pfig{margin:clamp(34px,4vw,60px) 0 0;max-width:470px}
+.pfig-im{position:relative;aspect-ratio:5/3;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.pfig-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+.pfig figcaption{margin-top:14px;color:var(--stoneD)}
+.pfig.noimg{display:none}
+
+/* ---- contact: a real photograph, not a decorative panel ---- */
+.cph{margin:clamp(34px,4vw,56px) 0 0}
+.cph-im{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+.cph figcaption{margin-top:14px;color:var(--stoneD)}
+.cph.noimg{display:none}
+
+@media (max-width:860px){
+  .mgrid{grid-template-columns:1fr;gap:34px;align-items:start}
+  .pfig{max-width:none}
+}
 
 </style>
 </head>
@@ -616,17 +744,23 @@ em{font-family:var(--ital);font-style:italic}
 
 <main id="main" tabindex="-1"><div id="view"></div></main>
 
-<div class="bio" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName">
-  <div class="scr" id="bioScr"></div>
-  <div class="pan" id="bioPan">
-    <div class="bar0"><a class="btn sm" href="#/team" data-close>Close</a><div class="pn"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
-    <div class="in" id="bioIn"></div>
-  </div>
-</div>
-
 <div class="xc" id="xc" aria-hidden="true"></div>
 <div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Artificial Axon Labs</span><div class="t" id="xtt"></div></div>
 <div class="sr" aria-live="polite" id="live"></div>
+
+<div class="ps" id="ps" role="dialog" aria-modal="true" aria-labelledby="psName" aria-hidden="true">
+  <div class="ps-scrim" data-ps-close></div>
+  <div class="ps-sheet" id="psSheet">
+    <div class="ps-media" id="psMedia"></div>
+    <div class="ps-col">
+      <div class="ps-bar">
+        <a class="btn ps-x" href="#/team" data-ps-close data-close>Close</a>
+        <div class="ps-step"><a class="btn ps-x" id="psPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn ps-x" id="psNext" href="#/team" data-replace aria-label="Next person">Next</a></div>
+      </div>
+      <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
+    </div>
+  </div>
+</div>
 
 <script>/*!
  * GSAP 3.15.1
@@ -820,6 +954,14 @@ function fd(iso){var d=iso.split("-");return MO[+d[1]-1]+" "+(+d[2])+", "+d[0]}
 var ARR='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h16M11 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
 var SITE="Artificial Axon Labs";
+var BIOSRC="";
+
+/* ================= BH: a mask clips ONLY while its reveal is moving ================= */
+function relMask(lines){if(!lines)return;(lines.length?lines:[lines]).forEach(function(l){
+  if(!l||!l.style)return;l.style.overflow="visible";l.style.clipPath="none";
+  var m=l.parentNode;if(m&&m.style){m.style.overflow="visible";m.style.clipPath="none"}})}
+function relAll(root){$$(".ln,.ln-mask",root||document).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
+
 function ini(n){var p=n.replace(/,.*$/,"").split(/\s+/).filter(Boolean);return p[0][0]+p[p.length-1][0]}
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
@@ -855,6 +997,22 @@ var TEAM=[
  {slug:"anna-voronova",name:"Anna Voronova, PhD",title:"Strategic Advisor",grp:"Advisors",img:IMG+"1629729329645-WCYZZPUDC3L5OJOXZTGG/AVoronova2_0.jpeg?format=500w",
   bio:["Anna Voronova is a strategic advisor to Artificial Axon Labs."]}
 ];
+
+var SCI=[
+ {src:IMG+"1629689813898-88IN46UUXUC98NRHFBYM/Capture2.JPG?format=1500w",alt:"Fluorescence micrograph: oligodendrocytes (green) wrapping myelin along artificial axons (red)",cap:"Oligodendrocytes wrapping myelin along printed axons",k:"Myelination assay"},
+ {src:IMG+"1645809425093-HARNPW4DS37RTOJ674FK/Capture.PNG?format=1500w",alt:"Micrograph labelled artificial axon and myelin membrane, with a 10 micrometre scale bar",cap:"One printed axon, one myelin membrane, 10 µm across",k:"Direct 3D readout"},
+ {src:IMG+"1645809505764-2EN149GR2Z6349KN3H3Q/HR3DP.jpg?format=1500w",alt:"High-resolution 3D printing optics writing structures with a magenta laser path",cap:"The light-based printer that writes the axons",k:"Sub-micrometre printing"}
+];
+function sciFigs(list){return '<div class="sci" data-group>'+list.map(function(f){return '<figure class="scf"><span class="lab">'+esc(f.k)+'</span><div class="scf-im"><img src="'+f.src+'" alt="'+esc(f.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.scf\').classList.add(\'noimg\')"></div><figcaption>'+esc(f.cap)+'</figcaption></figure>'}).join("")+'</div>'}
+var COLLAB=[
+ ["Sanofi",IMG+"1629686076898-8Y1PJ5RKMMG27ZCCIX0K/Sanofi_Artificial+Axon+Labs?format=750w"],
+ ["Massachusetts Institute of Technology",IMG+"1629686775498-GH8NJT5DQY4L2JHO0OBT/Massachusetts+Institute+of+Technology+%28MIT%29_Artificial+Axon+Labs?format=750w"],
+ ["Harvard University",IMG+"1629686343834-3ANEMQO6MZUJ0P30T0EW/Harvard+University_Artificial+Axon+Labs?format=750w"],
+ ["Massachusetts General Hospital",IMG+"1629686568621-UK52A6XA8NPHY8P19ASN/Massachusetts+General+Hospital+%28MGH%29_Artificial+Axon+Labs?format=750w"],
+ ["The New York Stem Cell Foundation",IMG+"1629685851878-6E9JEZ4VGRDJESTMPPM0/New+York+Stem+Cell+Foundation_Artificial+Axon+Labs?format=750w"],
+ ["NIH SEED",IMG+"99af027c-2325-41f2-8efd-47f06f2d3183/NIH+SBIR.JPG?format=750w"]
+];
+function collabRow(){return '<div class="plates" data-group>'+COLLAB.map(function(c){return '<div class="plate"><img src="'+c[1]+'" alt="'+esc(c[0])+'" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=\'<span class=&quot;pl-t&quot;>'+esc(c[0])+'</span>\'"></div>'}).join("")+'</div>'}
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 var PAPERS=[
  ["Artificial axons as a biomimetic 3D myelination platform for the discovery and validation of promyelinating compounds","Scientific Reports, 2023","https://doi.org/10.1038/s41598-023-44675-6"],
@@ -883,16 +1041,20 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Today’s MS therapies stop new lesions. They do not rebuild the myelin that is already lost, because no screening tool measures <em>wrapping itself.</em></p>'+
+   '<div class="mgrid">'+
+    '<div class="mcol"><span class="lab kick" data-r>Why it matters</span>'+
+     '<p class="txt" id="mani">A compound that rebuilds lost myelin is invisible to a screen that scores cell differentiation instead of <em>the wrapping itself.</em></p></div>'+
+    '<figure class="mfig" data-r><div class="mfig-im"><img src="'+IMG+"441d1900-8a41-4044-955a-1594b8a3ba64/Artificial+Axons?format=1500w"+'" alt="Array of 3D-printed artificial axons" loading="lazy" decoding="async" onerror="this.closest(\'.mfig\').classList.add(\'noimg\')"></div>'+
+     '<figcaption class="lab">3D-printed axon mimics</figcaption></figure>'+
+   '</div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.48<sup>M</sup></span><span class="lab k">First-year NINDS Phase II award, 2026</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">3D</span><span class="lab k">Printed axon mimics at the stiffness of nervous tissue</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2028</span><span class="lab k">Phase II program runs to July 2028</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><span class="lab k">NINDS SBIR awards to date, Phase I and Phase II</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2028</span><span class="lab k">Phase II award period ends in July</span></div>'+
    '</div></div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Print. Seed. <em>Measure.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Print. Seed. Challenge. <em>Measure.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Print</span><span>Seed</span><span>Challenge</span><span>Measure</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>Print axons out of light.</h3><p>Light-based 3D printing writes sub-micrometre fibres from ultra-low-stiffness, biocompatible materials, matching both the geometry and the softness of biological axons. Glass cones and electrospun fibres are orders of magnitude stiffer than nervous tissue.</p></article>'+
@@ -909,11 +1071,11 @@ function vHome(){
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path class="a" d="M10 10l18 18"/><path d="M6 46h52"/><circle cx="32" cy="36" r="7"/><path d="M20 46v-6M44 46v-9"/></svg><h3>Printed with light</h3><p>Sub-micrometre features in ultra-low-stiffness, biocompatible materials, pushing past the limits of standard 3D printing.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 32h56"/><ellipse cx="24" cy="32" rx="10" ry="7"/><ellipse class="a" cx="44" cy="32" rx="7" ry="5"/><circle class="f" cx="24" cy="32" r="2.4"/></svg><h3>Direct 3D readout</h3><p>Myelin wrapping is quantified directly in an axon-like, three-dimensional environment, rather than inferred from differentiation.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="20" cy="22" r="9"/><circle class="a" cx="42" cy="38" r="12"/><path d="M6 56c6-10 16-14 26-14"/></svg><h3>Human cells</h3><p>Compatible with human cells, so human disease is addressed directly instead of through animal cells that have repeatedly failed to predict clinical effect.</p></div>'+
-   '</div></div></section>'+
+   '</div>'+sciFigs([SCI[1],SCI[2]])+'</div></section>'+
 
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Validated with</span><h2 class="d2 split">Built and tested <em>at MIT.</em></h2></div><p data-r>The platform has been validated at MIT with industry and academic collaborators, and the company has published its validation work in peer-reviewed journals.</p></div>'+
-   paperRows()+
+   collabRow()+'<div style="margin-top:clamp(56px,6vw,90px)">'+paperRows()+'</div>'+
   '</div></section>'+
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
@@ -940,7 +1102,9 @@ function cta(){
 function vPlatform(){
   return head({k:"Platform",h:'Artificial <em>Axons.</em>',p:'A biomimetic 3D drug-discovery platform for remyelinating compounds: printed axon mimics, human cells, and direct quantification of myelin wrapping in conditions that model a multiple sclerosis lesion.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>The problem</span><h2 class="d3 split">Current therapies stop lesions. They don’t <em>rebuild myelin.</em></h2></div>'+
+   '<div><span class="lab kick" data-r>The problem</span><h2 class="d3 split">Current therapies stop lesions. They don’t <em>rebuild myelin.</em></h2>'+
+    '<figure class="pfig" data-r><div class="pfig-im"><img src="'+IMG+"1629689813898-88IN46UUXUC98NRHFBYM/Capture2.JPG?format=1500w"+'" alt="Fluorescence micrograph: oligodendrocytes in green wrapping myelin along artificial axons in red" loading="lazy" decoding="async" onerror="this.closest(\'.pfig\').classList.add(\'noimg\')"></div>'+
+     '<figcaption class="lab">Oligodendrocytes wrapping printed axons</figcaption></figure></div>'+
    '<div><ul class="aims" data-group>'+
    '<li><span>Disease-modifying therapies prevent new inflammatory lesions in the CNS, but most prior lesions fail to remyelinate, and no clinically available therapy promotes remyelination.</span></li>'+
    '<li><span>Tissue and co-culture assays are too complex for effective screening; 2D assays score only oligodendrocyte differentiation, not wrapping, which needs three-dimensional axon-like structures.</span></li>'+
@@ -958,7 +1122,7 @@ function vPlatform(){
     '<div><dt class="lab">Validation</dt><dd>Known pro-myelinating compounds re-tested in the lesion-like environment to measure how their efficacy changes.</dd></div>'+
    '</dl></div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Published work</span><h2 class="d2 split">The platform <em>in print.</em></h2></div></div>'+paperRows()+
+   '<div class="shead"><div><span class="lab kick" data-r>From the assay</span><h2 class="d2 split">What the readout <em>looks like.</em></h2></div><p data-r>Images from Artificial Axon Labs: human cells wrapping myelin along printed axon mimics, and the light-based printer that makes them.</p></div>'+sciFigs(SCI)+'<div class="shead" style="margin-top:var(--sec)"><div><span class="lab kick" data-r>Published work</span><h2 class="d2 split">The platform <em>in print.</em></h2></div></div>'+paperRows()+
   '</div></section>'+cta();
 }
 function vTeam(){
@@ -974,17 +1138,12 @@ function vContact(){
   return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Screening collaborations, partnerships and press: send a note and it will reach the team directly.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Artificial Axon Labs Inc.</span><h3>Topsfield, Massachusetts</h3><p><a class="ul" href="mailto:anna.jagielska@artificialaxonlabs.com">anna.jagielska@artificialaxonlabs.com</a></p><p><a class="ul" href="https://linkedin.com/company/artificial-axon-labs/" target="_blank" rel="noopener">LinkedIn ↗</a></p>'+
-    '<div class="map">'+mapSvg()+'</div></div>'+
+    '<figure class="cph" data-r><div class="cph-im"><img src="'+IMG+"1645809505764-2EN149GR2Z6349KN3H3Q/HR3DP.jpg?format=1500w"+'" alt="The light-based 3D printing optics used to write the artificial axons" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
+     '<figcaption class="lab">Light-based 3D printing at Artificial Axon Labs</figcaption></figure></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
-    '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
+    '<div class="sub"><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Artificial Axon Labs team directly.</p></div></div>'+
   '</div></div></section>';
-}
-function mapSvg(){
-  var g='';for(var i=0;i<70;i++){var x=18+(i%10)*52,y=40+Math.floor(i/10)*48;g+='<rect x="'+x+'" y="'+(y+(i%3)*4)+'" width="2" height="'+(26+(i%5)*9)+'" fill="rgba(20,19,19,.14)"/>'}
-  return '<svg viewBox="0 0 540 400" aria-label="Stylized map marking Topsfield, Massachusetts">'+g+
-  '<path class="mp" d="M0 318C70 300 120 330 190 292S330 262 390 220 500 190 540 196" fill="none" stroke="#56514b" stroke-width="1.2"/>'+
-  '<g class="pin" transform="translate(250 200)"><circle r="30" fill="rgba(192,80,56,.12)" class="pr"/><circle r="6" fill="#a13f2a"/><text x="18" y="-8" font-family="Epilogue,sans-serif" font-size="26" fill="#141313">Topsfield</text><text x="18" y="14" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.5" fill="#56514b">MASSACHUSETTS</text></g></svg>';
 }
 function v404(){return head({k:"Not found",h:'This page isn’t <em>wrapped.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
@@ -1065,7 +1224,7 @@ var field=(function(){
       var cl=cells[i],f=fibs[cl.f];if(!f)continue;
       var p=(cl.p+t*cl.sp)%1;if(p<0)p+=1;
       var cx=f.xa+(f.xb-f.xa)*(.08+p*.84),cy=fibY(f,cx,t);
-      var s=cl.s*L.sc*(.6+.7*f.d),al2=e*(.5+.5*dim)*(.45+.55*f.d);
+      var s=cl.s*L.sc*(.6+.7*f.d),al2=e*(.66+.34*dim)*(.64+.36*f.d);
       var seg=44*s,hh=(5+4*f.d)*s*1.4;
       /* myelin sheath: filled segments hugging the fibre, with node gaps between them */
       for(var k=-Math.floor(cl.n/2);k<=Math.floor(cl.n/2);k++){
@@ -1074,35 +1233,35 @@ var field=(function(){
         c.save();c.translate(sx,sy);c.rotate(Math.atan2(fibY(f,sx+18,t)-fibY(f,sx-18,t),36));
         var hs=hh*(.62+.38*fade);
         var sg=c.createLinearGradient(0,-hs,0,hs);
-        sg.addColorStop(0,"rgba(243,239,234,"+(al2*.07*fade).toFixed(3)+")");
-        sg.addColorStop(.42,"rgba(243,239,234,"+(al2*.34*fade).toFixed(3)+")");
-        sg.addColorStop(.58,"rgba(243,239,234,"+(al2*.34*fade).toFixed(3)+")");
-        sg.addColorStop(1,"rgba(243,239,234,"+(al2*.07*fade).toFixed(3)+")");
+        sg.addColorStop(0,"rgba(243,239,234,"+(al2*.11*fade).toFixed(3)+")");
+        sg.addColorStop(.42,"rgba(243,239,234,"+(al2*.5*fade).toFixed(3)+")");
+        sg.addColorStop(.58,"rgba(243,239,234,"+(al2*.5*fade).toFixed(3)+")");
+        sg.addColorStop(1,"rgba(243,239,234,"+(al2*.11*fade).toFixed(3)+")");
         c.fillStyle=sg;
         var hw=seg/2,tp=hs*.34;
         c.beginPath();
         c.moveTo(-hw,-tp);c.bezierCurveTo(-hw*.6,-hs,hw*.6,-hs,hw,-tp);
         c.lineTo(hw,tp);c.bezierCurveTo(hw*.6,hs,-hw*.6,hs,-hw,tp);c.closePath();c.fill();
-        c.strokeStyle="rgba(243,239,234,"+(al2*.5*fade).toFixed(3)+")";c.lineWidth=1;c.stroke();
-        c.strokeStyle="rgba(243,239,234,"+(al2*.2*fade).toFixed(3)+")";
+        c.strokeStyle="rgba(243,239,234,"+(al2*.78*fade).toFixed(3)+")";c.lineWidth=1;c.stroke();
+        c.strokeStyle="rgba(243,239,234,"+(al2*.34*fade).toFixed(3)+")";
         for(var q=-2;q<=2;q++){var qx=q*(hw/3.1),qh=hs*(.78-Math.abs(q)*.12);c.beginPath();c.moveTo(qx,-qh);c.lineTo(qx,qh);c.stroke()}
         c.restore();
       }
       /* cell body above the fibre, with processes reaching down to the sheath */
       var by=cy-(34+26*f.d)*s,r=(9+7*f.d)*s;
-      c.strokeStyle="rgba(243,239,234,"+(al2*.4).toFixed(3)+")";c.lineWidth=1;
+      c.strokeStyle="rgba(243,239,234,"+(al2*.6).toFixed(3)+")";c.lineWidth=1;
       for(var pr=-1;pr<=1;pr++){
         var px=cx+pr*(seg*.62);
         c.beginPath();c.moveTo(cx+pr*r*.5,by+r*.7);
         c.bezierCurveTo(cx+pr*r*1.6,by+r*2.2,px,fibY(f,px,t)-hh*2.4,px,fibY(f,px,t)-hh*1.05);c.stroke();
       }
       var rg=c.createRadialGradient(cx,by,0,cx,by,r*2.4);
-      rg.addColorStop(0,"rgba(243,239,234,"+(al2*.16).toFixed(3)+")");rg.addColorStop(1,"rgba(243,239,234,0)");
+      rg.addColorStop(0,"rgba(243,239,234,"+(al2*.24).toFixed(3)+")");rg.addColorStop(1,"rgba(243,239,234,0)");
       c.fillStyle=rg;c.beginPath();c.arc(cx,by,r*2.1,0,6.283);c.fill();
-      c.fillStyle="rgba(243,239,234,"+(al2*.14).toFixed(3)+")";
+      c.fillStyle="rgba(243,239,234,"+(al2*.22).toFixed(3)+")";
       c.beginPath();c.ellipse(cx,by,r,r*.82,Math.sin(cl.o+t*.2)*.2,0,6.283);c.fill();
-      c.strokeStyle="rgba(243,239,234,"+(al2*.62).toFixed(3)+")";c.lineWidth=1.1;c.stroke();
-      c.fillStyle="rgba(227,132,106,"+(al2*.5).toFixed(3)+")";
+      c.strokeStyle="rgba(243,239,234,"+(al2*.86).toFixed(3)+")";c.lineWidth=1.1;c.stroke();
+      c.fillStyle="rgba(227,132,106,"+(al2*.72).toFixed(3)+")";
       c.beginPath();c.arc(cx-r*.22,by-r*.1,r*.26,0,6.283);c.fill();
     }
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
@@ -1145,7 +1304,7 @@ function splitReveal(el,E){
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   /* BB: a heading already on the first screen rises with the page entrance (after the cover), not underneath it; others fire well inside the viewport */
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
-  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,onComplete:function(){relMask(st.lines)},scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
 }
 var ENTRY=0;
 function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
@@ -1160,10 +1319,10 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
       htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
          .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
-      if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
+      htl.eventCallback("onComplete",function(){relMask(s.lines);relAll($("#view"))});if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1220,7 +1379,7 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
-function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+function rvFail(){relAll($("#view"));relAll($("#psBody"));RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
@@ -1228,35 +1387,117 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 var story=null;
-/* ===== STORY FIGURES: four line drawings, built in by StoryFX as you scroll ===== */
-function sfig(inner,lab){return '<figure class="sfig"><svg viewBox="0 0 420 320" aria-hidden="true">'+inner+'</svg><figcaption class="lab">'+lab+'</figcaption></figure>'}
-var FIGS=[
- /* 1. printing: light writes a fibre */
- sfig('<rect x="150" y="18" width="120" height="40" rx="6"/><path class="a" d="M210 58L178 196M210 58l32 138"/><path class="a" d="M196 118h28M188 158h44"/><path d="M60 230h300"/><path d="M120 230v-18M300 230v-24"/><path class="g" d="M178 196h64"/><circle class="f" cx="210" cy="196" r="5"/><path d="M60 262h300" stroke-dasharray="4 7"/><path d="M96 196v34M324 196v34"/>','Light-based 3D printing'),
- /* 2. the printed array, at tissue stiffness */
- sfig('<path d="M40 70h340M40 130h340M40 190h340M40 250h340"/><path class="g" d="M40 40v240"/><ellipse cx="150" cy="70" rx="30" ry="11"/><ellipse cx="226" cy="70" rx="30" ry="11"/><ellipse cx="186" cy="130" rx="30" ry="11"/><ellipse cx="124" cy="190" rx="30" ry="11"/><ellipse cx="200" cy="190" rx="30" ry="11"/><ellipse cx="262" cy="250" rx="30" ry="11"/><path class="a" d="M150 59v22M226 59v22M186 119v22M124 179v22M200 179v22M262 239v22"/><circle class="f" cx="150" cy="44" r="9"/><circle class="f" cx="186" cy="104" r="9"/><circle class="f" cx="200" cy="164" r="9"/><circle class="f" cx="262" cy="224" r="9"/>','Human cells wrap myelin'),
- /* 3. the lesion environment: inflammatory factors and myelin debris break the sheath */
- sfig('<path d="M40 150h340"/><ellipse cx="120" cy="150" rx="34" ry="13"/><ellipse cx="300" cy="150" rx="34" ry="13"/><path class="a" d="M196 134c8 6 18 6 26 0M196 166c8-6 18-6 26 0"/><path class="g" d="M176 120l-22-28M212 112l-6-34M252 120l24-28"/><circle class="f" cx="152" cy="88" r="5"/><circle class="f" cx="206" cy="74" r="5"/><circle class="f" cx="278" cy="88" r="5"/><path d="M150 214c10-8 22-8 32 0M212 220c10-8 22-8 32 0M262 206c10-8 22-8 32 0"/><path d="M40 258h340" stroke-dasharray="4 8"/><text x="40" y="282" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">IFN-GAMMA + MYELIN DEBRIS</text>','An MS lesion-like environment'),
- /* 4. quantified wrapping: coverage per printed axon */
- sfig('<path d="M48 250h320"/><path d="M48 60v190"/><path class="g" d="M48 104h320" stroke-dasharray="5 8"/><rect class="a2" x="78" y="178" width="34" height="72"/><rect class="a2" x="132" y="142" width="34" height="108"/><rect class="a2" x="186" y="92" width="34" height="158"/><rect class="a2" x="240" y="158" width="34" height="92"/><rect class="a2" x="294" y="122" width="34" height="128"/><circle class="f" cx="203" cy="92" r="5"/><text x="48" y="286" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">MYELIN PER AXON</text><text x="48" y="52" font-family="Geist Mono,monospace" font-size="11" fill="rgba(243,239,234,.5)" stroke="none">COMPOUND RESPONSE</text>','Wrapping, quantified')
-];
+/* ===== ONE CONTINUOUS SCENE (PRINCIPLES BL) =====
+   A single stage: the printer writes one axon, cells arrive and wrap myelin along it,
+   the lesion environment pushes back, and the readout measures what is left.
+   Everything is one SVG whose parts move, draw and actuate along the scrubbed progress. */
+var SCENE='<figure class="sfig" id="scene"><svg viewBox="58 -16 376 334" aria-label="One printed axon: written by light, wrapped by human cells, challenged by the lesion environment, then measured">'+
+  /* printer head: descends and writes */
+  '<g id="scPrinter"><rect x="198" y="6" width="64" height="18" rx="5"/><path class="a" d="M230 24L212 150M230 24l18 126"/><path class="bm" d="M230 24v136"/><path class="a" d="M220 62h20M216 92h28M212 122h36"/></g>'+
+  /* the stage line and the printed fibre */
+  '<path id="scStage" d="M70 250h320"/>'+
+  '<path id="scFibre" class="a" d="M70 160h320"/>'+
+  /* myelin sleeves, drawn along the fibre */
+  '<g id="scSleeves">'+
+    '<ellipse class="sl" cx="128" cy="160" rx="33" ry="13"/>'+
+    '<ellipse class="sl" cx="202" cy="160" rx="33" ry="13"/>'+
+    '<ellipse class="sl" cx="276" cy="160" rx="33" ry="13"/>'+
+    '<ellipse class="sl" cx="350" cy="160" rx="33" ry="13"/>'+
+  '</g>'+
+  /* the oligodendrocyte: body above, processes down onto the sleeves */
+  '<g id="scCell"><ellipse cx="202" cy="92" rx="21" ry="17"/><circle class="f" cx="196" cy="88" r="5"/>'+
+    '<path class="pr" d="M190 106c-14 12-26 26-60 40M214 106c14 12 26 26 60 40M202 109v38"/></g>'+
+  /* lesion challenge: inflammatory factors arriving, sleeve fragments breaking off */
+  '<g id="scLesion"><circle class="f" cx="96" cy="52" r="5"/><circle class="f" cx="300" cy="44" r="5"/><circle class="f" cx="392" cy="66" r="5"/>'+
+    '<path class="g" d="M100 60l24 84M300 52l-18 92M388 74l-30 72"/>'+
+    '<path class="g" d="M300 206c12-9 26-9 38 0M344 214c12-9 26-9 38 0"/></g>'+
+  /* readout: a coverage bar per sleeve, drawn at the end */
+  '<g id="scRead"><path d="M70 300h320"/><path class="tie" d="M128 184v70M202 184v64M276 184v78M350 184v84"/>'+
+    '<rect class="bar" x="104" y="268" width="48" height="26"/>'+
+    '<rect class="bar" x="178" y="262" width="48" height="32"/>'+
+    '<rect class="bar" x="252" y="276" width="48" height="18"/>'+
+    '<rect class="bar" x="326" y="282" width="48" height="12"/></g>'+
+  '</svg><figcaption class="lab" id="scCap">Light-based 3D printing</figcaption></figure>';
+var FIGS=[SCENE];
+
+/* progress → scene state. Everything is continuous: nothing is toggled. */
+function sceneSet(p){
+  var el=document.getElementById("scene");if(!el)return;
+  var $$$=function(s){return [].slice.call(el.querySelectorAll(s))};
+  var cl=function(v){return v<0?0:v>1?1:v},ea=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+  /* phase 0: print (0 – .3) */
+  var pr=cl(p/.3);
+  var head=document.getElementById("scPrinter");
+  if(head){head.style.translate=(70+pr*320-230+0).toFixed(1)+"px "+(-18+ea(cl(p/.12))*18).toFixed(1)+"px";
+    head.style.filter="opacity("+(cl(p/.06)*(1-cl((p-.3)/.12))).toFixed(3)+")"}
+  var fib=document.getElementById("scFibre");
+  if(fib){var L=320;fib.style.strokeDasharray=L+" "+L;fib.style.strokeDashoffset=(L*(1-ea(pr))).toFixed(1)}
+  var st=document.getElementById("scStage");
+  if(st){st.style.filter="opacity("+((.3+.7*cl(p/.1))*(1-.75*cl((p-.78)/.18))).toFixed(3)+")"}
+  /* phase 1: the cell arrives and wraps (.28 – .58) */
+  var cp=cl((p-.26)/.3);
+  var cell=document.getElementById("scCell");
+  if(cell){cell.style.translate="0 "+((1-ea(cp))*-42).toFixed(1)+"px";
+    cell.style.filter="opacity("+(ea(cl((p-.26)/.14))*(1-.45*cl((p-.72)/.2))).toFixed(3)+")"}
+  $$$("#scCell .pr").forEach(function(q,i){var e=cl((cp-.25-i*.12)/.4),Ln=120;
+    q.style.strokeDasharray=Ln+" "+Ln;q.style.strokeDashoffset=(Ln*(1-ea(e))).toFixed(1)});
+  $$$("#scSleeves .sl").forEach(function(q,i){
+    var grow=cl((cp-.18-i*.14)/.45);
+    /* phase 2 shrinks the outer sleeves back: the lesion blocks repair (.6 – .82) */
+    var lose=cl((p-.6-i*.05)/.26)*(i===0||i===3?.78:.3);
+    var k=ea(grow)*(1-lose);
+    q.style.transformBox="fill-box";q.style.transformOrigin="50% 50%";
+    q.style.transform="scale("+(.12+.88*k).toFixed(3)+","+(.3+.7*k).toFixed(3)+")";
+    q.style.opacity=(.1+.9*k).toFixed(3);
+  });
+  /* phase 2: the lesion environment (.56 – .84) */
+  var lp=cl((p-.56)/.28);
+  var les=document.getElementById("scLesion");
+  if(les){les.style.filter="opacity("+(ea(lp)*(1-.5*cl((p-.86)/.14))).toFixed(3)+")";
+    les.style.translate="0 "+((1-ea(lp))*-14).toFixed(1)+"px"}
+  $$$("#scLesion .g").forEach(function(q,i){var e=cl((lp-i*.08)/.5),Ln=110;
+    q.style.strokeDasharray=Ln+" "+Ln;q.style.strokeDashoffset=(Ln*(1-ea(e))).toFixed(1)});
+  /* phase 3: the readout measures what is left (.78 – 1) */
+  var rp=cl((p-.78)/.22);
+  var rd=document.getElementById("scRead");
+  if(rd)rd.style.filter="opacity("+ea(rp).toFixed(3)+")";
+  $$$("#scRead .bar").forEach(function(q,i){var e=ea(cl((rp-i*.1)/.55));
+    q.style.transformBox="fill-box";q.style.transformOrigin="50% 100%";
+    q.style.transform="scaleY("+Math.max(.02,e).toFixed(3)+")"});
+  /* the whole stage lifts a little as the readout appears, so the scene stays composed */
+  var svg=el.querySelector("svg");
+  if(svg)svg.style.translate="0 "+(-10*ea(rp)).toFixed(1)+"px";
+  var cap=document.getElementById("scCap");
+  if(cap){var t=p<.28?"Printer head · axon mimic":p<.56?"Oligodendrocyte · myelin sleeves":p<.78?"Interferon gamma · myelin debris":"Myelin coverage, per axon";
+    if(cap.textContent!==t)cap.textContent=t}
+}
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){relMask(s.lines)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
   /* BA: stats reveal at their final value, never counted up */
-  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){relMask(st.lines)},scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   var sec=$("#story",view);if(!sec)return;
-  var steps=$$(".step",view),figs=$$(".sfig",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0;
+  var steps=$$(".step",view),rail=$$(".rail span",view),prog=$("#rprog",view),cur=0,NS=Math.max(steps.length,1);
+  /* AK: the track and the fill both END on the last node, and the fill head sits exactly on
+     the active node. Fill and step text are driven by the SAME progress value. */
+  function railGeom(){if(!rail.length||!prog||!prog.parentNode)return;var r=prog.parentNode,w=r.clientWidth;if(!w)return;
+    r.style.setProperty("--rx0","4.5px");
+    r.style.setProperty("--rspan",((rail.length-1)*(w/rail.length)).toFixed(2)+"px")}
+  railGeom();
   function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
     rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
-  if(RM){steps.forEach(function(s){s.classList.add("on")});return}
+  if(RM){steps.forEach(function(s){s.classList.add("on")});if(prog)prog.style.transform="scaleX(1)";sceneSet(1);return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:figs,steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.round(p*3)));fx(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  /* StoryFX drives the step text; the single scene is driven directly by progress */
+  var fx=StoryFX({section:sec,steps:steps});
+  tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();
+    prog.style.transform="scaleX("+(NS>1?Math.min(p*NS,NS-1)/(NS-1):p)+")";
+    setStep(Math.min(NS-1,Math.floor(p*NS)));fx(p);sceneSet(p)});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:railGeom});
+  sceneSet(0);
 }
 
 function contactInit(view){
@@ -1272,28 +1513,61 @@ function contactInit(view){
     gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
     $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
 }
-/* ================= BIO OVERLAY ================= */
-var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{xPercent:102});
-function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  $("#bioIn").innerHTML='<figure class="bio-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.remove()"></figure><span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
-   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="lab src">Profile drawn from the Artificial Axon Labs team page.</p>';
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+/* ================= PERSON SHEET (PRINCIPLES BI) =================
+   Centred two-column sheet over a dimmed, blurred page. The bio column is the only scroll
+   container and carries data-lenis-prevent, so the wheel and trackpad scroll it while Lenis is stopped.
+   Close returns to the route, Prev/Next replaceState, Esc closes, focus is trapped. */
+var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psCur=-1,psLastFocus=null;
+function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psFill(i){
+  var p=TEAM[i];
+  window.__psPlate=psPlate(p);
+  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
+    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
+    '<p class="src lab">'+BIOSRC+'</p>';
+  psBody.scrollTop=0;
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
+  $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);
   document.title=p.name+" — "+SITE;
 }
-function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
-  if(bioOpen){rvPlay($("#bioIn"),0);return}
-  bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();
-  gsap.killTweensOf(["#bioPan","#bioScr"]);
-  gsap.fromTo("#bioPan",{xPercent:102},{xPercent:0,duration:instant||RM?.01:.7,ease:"flow"});gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:instant||RM?.01:.5});
-  /* direct load: the panel is already open, so its bar and content enter once the page is uncovered */
-  var d0=instant?(window._preShown?1.5:.4):.25;rvPlay($("#bioIn"),d0);
-  if(!RM)gsap.fromTo($$(".bar0 .btn",bio),{opacity:0,y:-12},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
-  setTimeout(function(){var c=$("[data-close]",bio);if(c)c.focus({preventScroll:true})},50);
+function openBio(slug,instant){
+  var i=pBy(slug);if(i<0)return;
+  var was=bioOpen;psCur=i;psFill(i);
+  if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,0);return}
+  bioOpen=true;psLastFocus=document.activeElement;
+  ps.classList.add("open");ps.setAttribute("aria-hidden","false");
+  if(lenis)lenis.stop();
+  gsap.killTweensOf([psSheet,"#ps .ps-scrim"]);
+  var d=instant||RM?.01:1;
+  gsap.fromTo("#ps .ps-scrim",{opacity:0},{opacity:1,duration:.45*d,ease:"power2.out"});
+  gsap.fromTo(psSheet,{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*d,ease:"power3.out",clearProps:"transform"});
+  var d0=instant?(window._preShown?1.5:.4):.2;
+  rvPlay(psBody,d0);
+  if(!RM)gsap.fromTo($$(".ps-bar .btn",ps),{opacity:0,y:-10},{opacity:1,y:0,duration:.7,ease:"silk",stagger:.05,delay:d0,clearProps:"transform,opacity"});
+  setTimeout(function(){psBody.focus({preventScroll:true})},60);
 }
-function hideBio(){if(!bioOpen)return;bioOpen=false;gsap.to("#bioPan",{xPercent:102,duration:RM?.01:.55,ease:"flow"});gsap.to("#bioScr",{opacity:0,duration:RM?.01:.45,onComplete:function(){bio.classList.remove("open")}});if(lenis)lenis.start();var r=route(location.hash);document.title=r.t}
+function hideBio(){
+  if(!bioOpen)return;bioOpen=false;psCur=-1;
+  gsap.to(psSheet,{opacity:0,y:18,duration:RM?.01:.35,ease:"power2.in"});
+  gsap.to("#ps .ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
+  if(lenis)lenis.start();
+  if(psLastFocus&&psLastFocus.focus)psLastFocus.focus({preventScroll:true});
+  var r=route(location.hash);document.title=r.t;
+}
+function psHardClose(){bioOpen=false;psCur=-1;ps.classList.remove("open");ps.setAttribute("aria-hidden","true");gsap.set(psSheet,{opacity:0});gsap.set("#ps .ps-scrim",{opacity:0})}
 function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
-$("#bioScr").addEventListener("click",closeBio);
+/* the Close anchor carries data-close and is handled by the router; the scrim is ours */
+$(".ps-scrim",ps).addEventListener("click",function(){closeBio()});
+ps.addEventListener("keydown",function(e){
+  if(!bioOpen||e.key!=="Tab")return;
+  var f=$$("button,a[href],[tabindex='0']",ps).filter(function(x){return x.offsetWidth||x.offsetHeight});
+  if(!f.length)return;var a=f[0],z=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}
+  else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}
+});
 var bioFromClick=false,bioBase=null;
 
 /* ================= NAV / ROUTING ================= */
@@ -1322,7 +1596,7 @@ function go(first,ready){
   /* bio overlay routes never repaint */
   if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){openBio(r.bio);prevHash=location.hash;return}
   if(!r.bio&&r.k===curKey&&(bioOpen||route(prevHash).bio)){bioFromClick=false;hideBio();prevHash=location.hash||"#/";return}
-  if(bioOpen){bioOpen=false;bio.classList.remove("open");gsap.set("#bioPan",{xPercent:102});gsap.set("#bioScr",{opacity:0})}
+  if(bioOpen){psHardClose()}
   if(busy){queued=true;return}busy=true;
   scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
   var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";

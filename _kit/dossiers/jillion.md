@@ -24,4 +24,11 @@
 
 ## Brand
 - Logo: two interlaced sine waves (orange + indigo) and "Jillion" (orange) / "Therapeutics" (indigo). Logo: https://static.wixstatic.com/media/7d4976_67a45f86bf1349beb7ab831c5c9f7a7a~mv2.png
-- Colours: orange #f09837 / #f89830, indigo #483e97 / #404090.
+- Logo colours sampled from that file (photo-inventory): #f09030 40%, #484890 8%, #f0a830 4%.
+- Palette mapping: logo #f09030 → --sin (accent) #f09837; its light tint → --sinL #f7b464 (accent on dark); its deep shade → --sinD #8f5000 (accent on light, WCAG AA on the bone tones); logo #484890 → --indigo #483e97 and --indigoL #6c61c4, which also set the deep base --ink #14132a / --deep #0e0d1e; neutrals --bone #f4f1ea and greys mixed from the same indigo. No hue outside the logo is used.
+- The header wordmark is a faithful inline SVG re-draw of the two interlaced waves in the same two colours, with the indigo lifted to #6c61c4 so it stays legible on the deep indigo base; the raster logo is indigo-on-transparent and would lose "Therapeutics" on that background.
+
+## Image inventory (PRINCIPLES BJ)
+Used: the DNA-encoded library illustration and the sequencing-readout illustration from /our-technology, and the microplate/pipette laboratory photo from the same page.
+Not used, with reasons: "Untitled design (1/2/3).png" — AI-generated filler renders of neurons, DNA and cells, no company content; the blue neuron hero photograph — stock imagery; ContactIcon.png — a phone mock-up used as a UI icon; Jillion_FCOI_Report_Summary_Table.png — a policy table, not brand content; Jillion_Logo (5).png — a low-resolution (320×295) self-positioning hexagon diagram whose text is unreadable at any size it could be used; duplicate CDN size variants of the logo.
+Note: the company publishes no team photographs, no laboratory of its own and no product imagery, which is why the concept leans on typography and the drawn platform scene.

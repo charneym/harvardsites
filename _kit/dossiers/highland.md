@@ -38,5 +38,13 @@
 - Wagner T et al. Impact of brain tissue filtering on neurostimulation fields: a modeling study. NeuroImage 2014. https://doi.org/10.1016/j.neuroimage.2013.06.079
 
 ## Brand
-- Logo: thin sans "Highland Instruments" in teal (#508888 / site #57b2b2) with "A NEUROTECHNOLOGY COMPANY" in peach (#f8a868 / #f0aa75). Text #434242. Font Libre Franklin. Logo: https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/d2a28cff-c540-4eb8-b6d2-2c20e47dff61/Highlsnd-Color-1-HORZ.png
+- Logo: thin sans "Highland Instruments" in teal with "A NEUROTECHNOLOGY COMPANY" in peach. Colour logo: https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/d2a28cff-c540-4eb8-b6d2-2c20e47dff61/Highlsnd-Color-1-HORZ.png ; white version: .../531be80b-dd38-476a-b386-0412af0c56e1/Highlsnd-Color-1-HORZ-WHITE.png
+- Logo colours sampled from the file (photo-inventory): #78c0c0 17% teal on white, with the peach sub-line #f8a868 and text grey #434242.
+- Palette mapping: logo teal #78c0c0 → --sin (accent) #57b2b2, light tint --sinL #8ad2d2 (on dark), deep shade --sinD #2b6e6e (on light); logo peach #f8a868 → --peach #f0aa75, reserved for one thing only: the focal point and the investigational-device notice, with --peachD #96511c for the same accent on light sections; the teal's deepest shade sets the base --ink #0f1b1d / --deep #0a1416; neutrals --bone #f2f6f6 and greys mixed from the same teal. No hue outside the logo is used.
+- Both real logo files are used in the header: the white version on dark sections, the colour version on light ones, with an inline SVG wordmark as the onerror fallback.
+
+## Image inventory (PRINCIPLES BJ)
+Used: HeadGear_Web_2_Vanity_White_v02.jpg — the ESStim headgear product render, on the home page; Highland_Headgear_Animation_Fall-2021.png — the headgear in position on a head, on the technology page.
+Not used, with reasons: ForPD.jpg (couple walking), the swimmer, the beach couple, the yoga class and shutterstock_204800416 (grandfather and child) — licensed stock lifestyle photography, not company content; the "Meet ESStim" video poster — a dark video thumbnail whose only content is the title text, which the page states in type; shutterstock_192317513 and shutterstock_118867258 — stock backgrounds behind their headers.
+Note: the company publishes no team headshots, so the team page uses refined typographic cards rather than monograms.
 - Product render (headgear): https://images.squarespace-cdn.com/content/v1/61a65d872b6f1364f4514b30/aaa6d186-74b5-4c6a-8eaa-bea720cd5186/HeadGear_Web_2_Vanity_White_v02.jpg

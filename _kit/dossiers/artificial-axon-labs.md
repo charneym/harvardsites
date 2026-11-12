@@ -28,4 +28,33 @@
 - Espinosa-Hoyos D et al. Engineered 3D-printed artificial axons. Sci Rep 2018. https://doi.org/10.1038/s41598-017-18744-6
 
 ## Brand
-- Logo: row of vertical rust-red lines (axons) + "ARTIFICIAL AXON·LABS" in thin geometric caps, A's in rust. Rust ≈ #c05038 / #b85038, ink #181818. Logo: https://images.squarespace-cdn.com/content/v1/6122f571b3151f3c2a11b4ac/c3fc178f-1d40-4125-93d8-61d0dcfd284a/Cropped+horiz+logo.jpg
+- Logo: row of vertical rust-red lines (axons) + "ARTIFICIAL AXON·LABS" in thin geometric caps, A's in rust. Logo file: https://images.squarespace-cdn.com/content/v1/6122f571b3151f3c2a11b4ac/c3fc178f-1d40-4125-93d8-61d0dcfd284a/Cropped+horiz+logo.jpg
+- Logo colours sampled from that file (photo-inventory): #181818 23%, #c04830 12%, #d84830 10%, #303030 5%.
+- Palette mapping: logo #c04830 → --sin (accent) #c05038; its light tint → --sinL #e3846a (accent on dark); its deep shade → --sinD #a13f2a (accent on light); logo #181818 → --ink #141313 / --deep #0d0c0c (base); neutrals --bone #f3efea and greys derived from the same ink. No hue outside the logo is used.
+- The header wordmark is a faithful inline SVG re-draw (line array + caps with rust A's) because the only logo file is a JPEG on a white background, which cannot sit cleanly on the dark brand base.
+
+## Image inventory (PRINCIPLES BJ)
+Used: all 7 team headshots (one eye-line, one head size and one grade across the grid — the per-portrait
+zoom and pan were measured from the faces in the company's own photographs); "Artificial Axons"
+(the red fluorescence image of the printed axon array) on the HOME page, as the product photo BJ asks for;
+Capture2.JPG (oligodendrocytes in green wrapping myelin along artificial axons in red) in the problem
+section of the platform page; Capture.PNG (artificial axon + myelin membrane, 10 µm scale bar) and
+HR3DP.jpg (the light-based 3D printing optics) in the figure row on the platform page, and all three
+together on the news page; HR3DP.jpg again on the contact page; collaborator and validation marks for
+Sanofi, MIT, Harvard, MGH, NYSCF and NIH SEED.
+
+Not used, with reasons: "ChatGPT Image Jun 8 2025" (new-team-member card) — AI-generated social card,
+excluded by BJ; AAL Sci Rep 2023.JPG and the Koch Institute Image Award page capture — screenshots of
+web pages rather than image assets (both are linked instead, from the papers list and the news list);
+the Sanofi iDEA-TECH certificate — low-resolution certificate scan, the Sanofi mark carries the same
+fact; MassChallenge / Biotech Showcase / MALSI / Orbital Reef / Align Summit event posters — event
+flyers, superseded by the dated news list with source links; the company logo JPEG — white-background
+raster, re-drawn as an inline SVG wordmark (see above).
+
+Correction from the first build: "Artificial Axons" was previously recorded here as a decorative flat
+graphic and left out. It is in fact a fluorescence micrograph of their printed axon array, and it is now
+the product photo on the home page.
+
+Note: the kit's photo-inventory crawler reports only the logo for this site, because every other image is
+lazy-loaded and reports naturalWidth 0 during the crawl; the inventory above was taken from the rendered
+page with a scrolling Playwright pass.

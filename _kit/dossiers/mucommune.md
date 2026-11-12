@@ -84,3 +84,31 @@
 5. The team page shows 15 names, titles and photos with no bios of any kind.
 6. The News page ends with "More Coming Soon…", and the Spin-Offs page misspells "Inhalon rasied Series Seed in 2020".
 7. Wix default metadata left in place: `og:site_name=Mysite`, `generator=Wix.com Website Builder`.
+
+## Brand palette, derived from the logo (PRINCIPLES BK)
+Pixel sampling of the full-resolution logo asset (`a11892_4251e2a68c464b798d861c12a8819313~mv2.png`, 5043×776, opaque pixels only) gives three brand colours: indigo **#2b19dd** (114,158 px), orange **#ea8124** (111,092 px) and wordmark grey **#545453** (682,651 px). (`photo-inventory.js` samples the 210×28 served copy, whose dominant values are the white plate and anti-aliased greys, so the full-size asset was sampled for the hues.)
+
+| Logo colour | Token | Use on the concept site |
+| --- | --- | --- |
+| #2b19dd indigo (mark, left strokes) | `--sin` (accent) | links, accents, buttons on light, kickers, pipeline bars, person-sheet accent |
+| #2b19dd lightened to #a3a8ee / #9aa0f5 | `--sinL` | the same accent on dark sections, antibody strokes in the story scene |
+| #2b19dd deepened to #111428 / #171b35 / #1e2342 / #0a0c1c | `--ink`, `--ink2`, `--ink3`, `--deep` | page base, section tones, transition cover |
+| #2b19dd tinted to #f3f5fb / #e7ebf6 / #d6dcee | `--bone`, `--bone2`, `--bone3` | light sections, CTA band, image plates |
+| #ea8124 orange (mark, right strokes) | `--org`, `--orgL` #ff9e55, `--orgD` #8a4208 | the "trapped" signal: held particles in the hero and story, award labels, stat units (the deepened shade is used on light backgrounds for AA contrast) |
+| #545453 wordmark grey | `--stone` #a8aecb / `--stoneD` #4d5370 | secondary text (shifted a few degrees toward the indigo hue so the neutrals sit in the same family) |
+
+No hue outside the logo is used anywhere, including the hero canvas and the story scene.
+
+## Images used, and why the rest were left out (PRINCIPLES BJ)
+`photo-inventory.js` found 27 meaningful images across 24 pages of mucommune.com.
+
+**Used (19):** all 15 team headshots (team grid and person sheet); the three funder logos on the Funders page — NICHD, the David and Lucile Packard Foundation, and the One North Carolina Small Business Program (home "Support" section); and the *Journal of Controlled Release* cover carrying the 2026 capsule-IVR paper (Science page).
+
+**Not used, with reasons:**
+- `a11892_91e5745d42cd40a58f97ba12fa8db60c~mv2.png` (home hero montage) — stock medical collage, not a photograph of the company; replaced by the live mucin-mesh hero.
+- `nsplsh_a91eb2fa50fa447c98784ba0f05879cf~mv2.jpg` ("Image by FlyD"), `nsplsh_ae03f576fb594bd08d75ecb234cfe2ea~mv2.jpg` — Unsplash stock (the `nsplsh_` prefix is Wix's Unsplash namespace).
+- `3bf8a58c84dc48d6a4cc9c5a340703fa.jpg` ("Laboratory Research Equipment") — Wix stock banner, not their lab.
+- `a11892_1ea7d141c7e54976bada18ce2bb4abc2~mv2.webp` (donation-process background) — stock petri-dish crop, 274px tall.
+- `a11892_90266be16e64459cb282f0efa23e2d31~mv2.png` is used; `4253-2jpeg.webp` (192×192 specimen cup) and `svg-50ml-conical-tube--freesvgorg98791_edited.png` (184×184 freesvg.org clip art) — stock clip art for the sample-donation page, and too small to present well.
+- `Mucommune Logo.png` — the served logo is a 210×28 raster whose wordmark is grey #545453 on transparency, unreadable on this site's dark base; the mark is re-drawn as a faithful inline SVG from the full-resolution asset (same two paths, same two colours) with the wordmark set in the site's typeface.
+- No product, device, lab or event photograph of their own exists anywhere on the site, so none could be used; the home page therefore leads with the mechanism rather than a device.

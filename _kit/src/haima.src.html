@@ -236,13 +236,13 @@ i.sp{font-style:italic}
 .ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
 .ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
 @media (hover:hover){.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}}
-.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
+.pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px;flex:1 1 auto}
 .pc-meta .grp{display:none}
 .pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(25px,1.9vw,30px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
 .pc-meta h3 span{display:inline-block;padding-bottom:.16em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--stone)}
-.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:6px}
+.pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:auto;padding-top:10px}
 .dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--sinL)}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
 @media (hover:hover){.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}}
@@ -941,7 +941,7 @@ function vTeam(){
   return head({k:"Team",h:'The people behind <em>the particle.</em>',p:'Executive management, the scientific advisory board and the research team at Haima Therapeutics in Cleveland.'})+
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
    groups.map(function(g){var m=TEAM.filter(function(p){return p.grp===g});if(!m.length)return "";
-     return '<div class="tgroup"><span class="lab">'+esc(g)+'</span><div class="pgrid" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
+     return '<div class="tgroup"><span class="lab">'+esc(g)+'</span><div class="pgrid'+(m.length<7?' n'+m.length:'')+'" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
   '</div></section>'+cta();
 }
 function vNews(){
@@ -1338,12 +1338,12 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});gsap.set(el,{y:16});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
-function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){unmask(s);if(el._rvS===s){s.revert();el._rvS=null}}})}
+function rvGo(b,d,gap){var g=gap==null?Math.min(.06,.3/Math.max(1,b.length)):gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+  if(el._rvS){var s=el._rvS;gsap.to(el,{y:0,duration:.85,ease:"silk",delay:d,overwrite:"auto",clearProps:"transform"});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){unmask(s);if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
@@ -1375,7 +1375,7 @@ function homeScroll(view){
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,steps:steps});
   tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*3+1e-6)));fx(fxMap(p))});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,refreshPriority:1,
     onRefresh:function(){story.resize()}});
 }
 function contactInit(view){
@@ -1464,7 +1464,11 @@ function spItalics(root){
     t.parentNode.replaceChild(f,t)})}
 function paint(r){
   var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
-  view.innerHTML=r.v()+footer();spItalics(view);document.title=r.t;curKey=r.k;
+  view.innerHTML=r.v()+footer();spItalics(view);
+  /* a lazy image that lands later makes the page taller than the triggers were
+     measured against, which fires a reveal while its element is still below the fold */
+  (function(){var rt;function bump(){clearTimeout(rt);rt=setTimeout(function(){try{ScrollTrigger.refresh()}catch(e){}},140)}
+   $$("img",view).forEach(function(im){if(im.complete)return;im.addEventListener("load",bump,{once:true});im.addEventListener("error",bump,{once:true})})})();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.45);observeField();

@@ -137,7 +137,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -659,6 +659,10 @@ em{font-style:normal;font-family:inherit}
 .pipeL{list-style:none;margin:0;padding:0}
 .prow .ptn .chip.vl{width:44px;height:38px;padding:0;background-color:var(--ink);background-repeat:no-repeat;background-position:center;background-size:30px auto}
 .sec.first.tall{padding-top:clamp(140px,22vh,240px)}
+.ftr .ffield{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0}
+.ftr .ffield.ready{opacity:.34}
+.ftr>*:not(.ffield){position:relative;z-index:1}
+.mblk{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 
 </style>
 </head>
@@ -810,26 +814,23 @@ function awards(){return '<div class="awds" data-group>'+
 /* ---------- story: ONE scene whose parts move with the scroll (BL) ---------- */
 function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
 function sceneSvg(){
-  var xt='',mol='';
-  for(var i=0;i<46;i++){var a=R(i,1)*6.283,r=Math.sqrt(R(i,2))*30,s=2.4+R(i,3)*3.2,x=200+Math.cos(a)*r*1.25,y=262+Math.sin(a)*r*.8,rot=(R(i,4)*90).toFixed(0);
+  /* ONE object: a cross-section of the body at the injection site, drawn once; each step changes one labelled part */
+  var xt='',mol='',mo='';
+  for(var i=0;i<46;i++){var a=R(i,1)*6.283,r=Math.sqrt(R(i,2))*30,s=2.4+R(i,3)*3.2,x=300+Math.cos(a)*r*1.25,y=262+Math.sin(a)*r*.8;
     var a0=R(i,4)*1.57,pts=[0,1,2,3].map(function(k){var aa=a0+k*1.5708;return (x+Math.cos(aa)*s*1.35).toFixed(1)+","+(y+Math.sin(aa)*s*1.35).toFixed(1)}).join(" ");
     xt+='<polygon class="xtal" points="'+pts+'" data-o="'+R(i,5).toFixed(3)+'"/>'}
-  for(var j=0;j<22;j++)mol+='<circle class="mol" r="3.4" cx="200" cy="262" data-k="'+j+'"/>';
-  var ty=[0,1,2,3,4,5,6].map(function(m){var x=402+m*28;return '<path class="ly2" d="M'+x+' 318v5"/><text x="'+x+'" y="340" text-anchor="middle">'+(m?m:'')+'</text>'}).join("");
-  return '<svg viewBox="0 0 600 480" aria-hidden="true"><defs><linearGradient id="pkg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e84a40" stop-opacity=".22"/><stop offset="1" stop-color="#e84a40" stop-opacity="0"/></linearGradient></defs>'+
-   '<text x="20" y="96">SKIN</text><path class="ly" d="M20 110C80 104 140 116 200 110S320 104 360 110"/>'+
-   '<path class="ly2" d="M20 150C90 146 150 156 210 150S320 146 360 150"/><text x="20" y="190">SUBCUTANEOUS</text>'+
-   '<path class="ly2" d="M20 214C90 220 150 208 210 214S320 220 360 214"/><text x="20" y="236">MUSCLE</text>'+
-   '<path class="vs" d="M20 380C120 368 240 392 360 380V420C240 432 120 408 20 420Z"/><text x="20" y="452">BLOODSTREAM</text>'+
-   '<g id="scDev"><rect class="dev" x="182" y="-6" width="36" height="78" rx="8"/><path class="ndl" d="M200 72V250"/></g>'+
-   '<g id="scDepot">'+xt+'</g><text id="scDepL" x="246" y="270">PRODRUG DEPOT</text>'+
-   '<g id="scMol">'+mol+'</g><text id="scActL" x="250" y="368">ACTIVE DRUG</text>'+
-   '<text class="tt" x="398" y="130">Exposure</text><text x="398" y="152">ILLUSTRATIVE</text>'+
-   '<path class="ly" d="M398 318H580M398 318V176"/><path class="thr" d="M398 268H580"/><text x="580" y="260" text-anchor="end">THRESHOLD</text>'+
-   '<path id="scPkF" class="pkf" d="M398 318Z"/><path id="scPk" class="pk" d="M398 318"/><circle id="scDot" class="acf" r="4.5" cx="398" cy="318"/>'+ty+'<text x="490" y="362" text-anchor="middle">MONTHS</text></svg>'}
-/* the illustrative exposure curve: rapid rise after the injection, then a slow, flat decline that stays above threshold */
-function pkY(m){var t=Math.max(0,m);return 318-128*(1-Math.exp(-t*3.2))*Math.exp(-t*.055)}
-function pkPath(u){var d="M398 318",n=Math.max(2,Math.round(u*120));for(var i=1;i<=n;i++){var m=i/120*6.2;d+="L"+(398+m/6*168).toFixed(1)+" "+pkY(m).toFixed(1)}return d}
+  for(var j=0;j<22;j++)mol+='<circle class="mol" r="3.6" cx="300" cy="262" data-k="'+j+'"/>';
+  for(var m=0;m<=6;m++){var x2=120+m*60;mo+='<path class="ly" d="M'+x2+' 452v8"/><text x="'+x2+'" y="476" text-anchor="middle">'+(m?m:'DOSE')+'</text>'}
+  return '<svg viewBox="0 0 600 490" aria-hidden="true">'+
+   '<text x="40" y="100">SKIN</text><path class="ly" d="M40 110C140 104 240 116 340 110S480 104 560 110"/>'+
+   '<path class="ly2" d="M40 150C140 146 240 156 340 150S480 146 560 150"/><text x="40" y="190">FAT</text>'+
+   '<path class="ly2" d="M40 214C140 220 240 208 340 214S480 220 560 214"/><text x="40" y="236">MUSCLE</text>'+
+   '<path class="vs" d="M40 372C200 362 380 384 560 372V412C380 424 200 402 40 412Z"/><text x="40" y="432">BLOODSTREAM</text>'+
+   '<g id="scDev"><rect class="dev" x="282" y="-6" width="36" height="78" rx="8"/><path class="ndl" d="M300 72V250"/><text class="dyn" x="330" y="30">AUTO-INJECTOR</text></g>'+
+   '<g id="scDepot">'+xt+'</g><text id="scDepL" class="dyn" x="346" y="266">PRODRUG DEPOT</text>'+
+   '<g id="scMol">'+mol+'</g><text id="scActL" class="dyn" x="404" y="352">ACTIVE DRUG IN BLOOD</text>'+
+   '<path class="ly2" d="M120 456H480"/><path id="scMo" class="pk" d="M120 456H120"/><circle id="scDot" class="acf" r="5" cx="120" cy="456"/>'+mo+
+   '<text x="40" y="460">MONTHS</text></svg>'}
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -844,8 +845,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Today’s HIV medicines are potent and well tolerated. The hard part is taking them, every day, for life. Exavir turns proven antivirals into prodrugs that last for <em>months</em> from a single injection.</p>'+
+   '<div class="mblk">'+'<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Today’s HIV medicines are potent and well tolerated. The hard part is taking them, every day, for life. Exavir turns proven antivirals into prodrugs that last for <em>months</em> from a single injection.</p>'+'</div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">Q6M<small>+</small></span><span class="lab k">Expected dosing interval for <span class="nw">VH-310</span>, partnered with ViiV</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">Q4M</span><span class="lab k">Target interval for <span class="nw">XV-122</span>, designed for an auto-injector</span></div>'+
@@ -978,7 +979,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Nothing <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Exavir Therapeutics, Inc.<br>San Francisco, California</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:media@exavirtx.com">media@exavirtx.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1001,7 +1002,7 @@ function route(h){
   return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
 }
 
-window.siteInit=function(k){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden"};
+window.siteInit=function(k,view){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden";footField(view)};
 
 /* ================= ENV ================= */
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1016,17 +1017,18 @@ var MOBILE=function(){return innerWidth<861};
    Back rows: the daily saw-tooth of oral dosing (stone). Front rows morph into one ultra-long-acting
    profile per row (logo crimson): a rise after the injection, then a slow, flat decline across six months.
    Canvas 2D at native devicePixelRatio (cap 2), true hidden-line occlusion via destination-out. Illustrative. */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false;
+function mkField(cv,FOOT){
+  var c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,dpr=1,W=0,H=0;
   var ROWS=[];
   function sm(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
   function mkRows(n){ROWS=[];for(var i=0;i<n;i++){ROWS.push({ka:3.2*(.85+R(i,31)*.3),ke:.09*(.8+R(i,32)*.4),a:.92+R(i,33)*.16,ph:R(i,34)*6.283,dph:R(i,35)})}}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);mkRows(W<861?20:26);if(!running)frame(true)}
-  function layout(){var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);if(FOOT&&!cv.isConnected)return;W=FOOT?(cv.clientWidth||innerWidth):innerWidth;H=FOOT?(cv.clientHeight||400):innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);mkRows(W<861?20:26);if(!running)frame(true)}
+  function layout(){if(FOOT)return FOOTL();var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
     if(W<861)return {x0:16,x1:W-16,y0:H*.1,y1:H*.29,ax:1};
     if(W<1100)return {x0:W*.5,x1:W-side,y0:H*.2,y1:H*.78,ax:1};
     return {x0:W*.46,x1:W-side,y0:H*.17,y1:H*.82,ax:1}}
+  function FOOTL(){return {x0:W*.05,x1:W*.95,y0:H*.22,y1:H*.97,ax:1}}
   var SPAN=7;/* months across the row */
   function la(t,r){var v=0,inj=[.35,6.35];for(var k=0;k<2;k++){var u=t-inj[k];if(u>0)v+=(1-Math.exp(-u*r.ka))*Math.exp(-u*r.ke)}return v*r.a*.78}
   function oral(t,r,T){var d=t*30.4+T*.35+r.dph,f=d-Math.floor(d);return .22+.3*Math.exp(-f*3.2)*(1-Math.exp(-f*30))+.06*Math.sin(r.ph+t)}
@@ -1056,7 +1058,7 @@ var field=(function(){
       if(i===N-1){c.beginPath();c.moveTo(pts[0],pts[1]);for(k=2;k<pts.length;k+=2)c.lineTo(pts[k],pts[k+1]);c.strokeStyle="rgba(232,74,64,"+(.16*dim).toFixed(3)+")";c.lineWidth=7;c.stroke()}
       c.beginPath();c.moveTo(pts[0],pts[1]);for(k=2;k<pts.length;k+=2)c.lineTo(pts[k],pts[k+1]);
       c.strokeStyle="rgba("+cr+","+cg+","+cb+","+al.toFixed(3)+")";c.lineWidth=.8+1.1*z*z;c.stroke();
-      if(i===N-1){
+      if(i===N-1&&!FOOT){
         /* month axis under the front row */
         var ay=base+py+(mob?18:26);c.fillStyle="rgba(246,242,239,"+(.62*dim*rev).toFixed(3)+")";c.font="400 10px 'IBM Plex Mono',monospace";c.textAlign="center";
         c.strokeStyle="rgba(246,242,239,"+(.22*dim*rev).toFixed(3)+")";c.lineWidth=1;c.beginPath();c.moveTo(lx0,ay-12.5);c.lineTo(lx0+lw*rev,ay-12.5);c.stroke();
@@ -1070,7 +1072,7 @@ var field=(function(){
       }
     }
     /* soft fade where the field slips under the headline (BM: deliberate overlap under the scrim) */
-    if(!mob){c.globalCompositeOperation="destination-out";var fg=c.createLinearGradient(L.x0-20,0,L.x0+Wd*.3,0);fg.addColorStop(0,"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg;c.fillRect(0,0,L.x0+Wd*.3,H);c.globalCompositeOperation="source-over"}
+    if(!mob&&!FOOT){c.globalCompositeOperation="destination-out";var fg=c.createLinearGradient(L.x0-20,0,L.x0+Wd*.3,0);fg.addColorStop(0,"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg;c.fillRect(0,0,L.x0+Wd*.3,H);c.globalCompositeOperation="source-over"}
     else{c.globalCompositeOperation="destination-out";var fb=c.createLinearGradient(0,L.y1-10,0,L.y1+60);fb.addColorStop(0,"rgba(0,0,0,0)");fb.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fb;c.fillRect(0,L.y1-10,W,H);c.globalCompositeOperation="source-over"}
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
@@ -1081,7 +1083,14 @@ var field=(function(){
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=mkField($("#field"),false);
+
+/* BT: the hero's living visual, quieter, behind the footer wordmark; paused off-screen */
+var ffield=null,ffIO=null;
+function footField(view){if(ffield){ffield.stop();ffield=null}if(ffIO){ffIO.disconnect();ffIO=null}
+  var cv=$(".ffield",view);if(!cv||RM)return;ffield=mkField(cv,true);var f=ffield;
+  ffIO=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?f.start():f.stop()})});ffIO.observe(cv);}
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1205,33 +1214,30 @@ function homeScroll(view){
 /* ---------- pinned story: one scene, parts move with the scrubbed timeline (BL) ---------- */
 function sm01(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
 function sceneInit(view){
-  var dev=$("#scDev",view),xt=$$("#scDepot polygon",view),mol=$$("#scMol circle",view),dl=$("#scDepL",view),al=$("#scActL",view),pk=$("#scPk",view),pf=$("#scPkF",view),dot=$("#scDot",view);
+  var dev=$("#scDev",view),xt=$$("#scDepot polygon",view),mol=$$("#scMol circle",view),dl=$("#scDepL",view),al=$("#scActL",view),mo=$("#scMo",view),dot=$("#scDot",view);
   var XO=xt.map(function(r){return {el:r,o:+r.getAttribute("data-o")}});
   XO.forEach(function(x){x.el.style.transformBox="fill-box";x.el.style.transformOrigin="50% 50%"});
   var last=-1;
   return function(p){if(!dev||!dev.isConnected)return;if(Math.abs(p-last)<.0004)return;last=p;var q=p*4;
-    /* 1 inject: the device comes down to the skin and the needle reaches the depot site, then withdraws */
+    /* 1 inject: the auto-injector comes down and the needle reaches the depot site, then lifts away */
     var dn=sm01(0,.55,q),up=sm01(.95,1.45,q);
     dev.setAttribute("transform","translate(0 "+(-95*(1-dn)-140*up).toFixed(1)+")");dev.style.opacity=(1-sm01(1.15,1.5,q)).toFixed(3);
-    /* 2 depot: crystals form, then dissolve a little at a time */
+    /* 2 depot: crystals form, then dissolve a little at a time across the remaining steps */
     var form=sm01(.4,.95,q),diss=sm01(1.05,4,q);
-    XO.forEach(function(x){var a=sm01(x.o*.5,x.o*.5+.5,form)*(1-sm01(x.o*.92,x.o*.92+.08,diss*1.05));var s=(.4+.6*a)*(1-.45*diss);
-      x.el.style.opacity=a.toFixed(3);x.el.style.scale=s.toFixed(3)});
-    dl.style.opacity=(sm01(.7,1.05,q)*(1-sm01(3.3,3.9,q))).toFixed(3);
-    /* 3 convert: released prodrug (outlined) travels to the bloodstream and becomes active drug (filled) */
-    for(var j=0;j<mol.length;j++){var s0=1.05+j/mol.length*2.75,u=q-s0,el=mol[j];
+    XO.forEach(function(x){var a=sm01(x.o*.5,x.o*.5+.5,form)*(1-sm01(x.o*.85,x.o*.85+.1,diss));x.el.style.opacity=a.toFixed(3);x.el.style.scale=((.4+.6*a)*(1-.4*diss)).toFixed(3)});
+    dl.style.opacity=(sm01(.7,1.05,q)*(1-sm01(3.4,3.95,q))).toFixed(3);
+    /* 3 convert: released prodrug (outlined) reaches the bloodstream and becomes active drug (filled) */
+    for(var j=0;j<mol.length;j++){var s0=1.05+j/mol.length*2.8,u=q-s0,el=mol[j];
       if(u<=0||u>1.9){el.style.opacity="0";continue}
       var jx=(R(j,41)-.5)*60,x,y;
-      if(u<.55){var k=u/.55;x=200+jx*k;y=262+(398-262)*k}else{var k2=(u-.55)/1.35;x=200+jx+k2*(370-200-jx);y=398+Math.sin(k2*6+j)*6}
+      if(u<.55){var k=u/.55;x=300+jx*k;y=262+(390-262)*k}else{var k2=(u-.55)/1.35;x=300+jx+k2*(540-300-jx);y=390+Math.sin(k2*6+j)*5}
       el.setAttribute("cx",x.toFixed(1));el.setAttribute("cy",y.toFixed(1));
-      var conv=u>.55?sm01(2,2.3,q)*sm01(.55,.8,u):0;
+      var conv=u>.55?sm01(1.95,2.3,q)*sm01(.55,.8,u):0;
       el.style.fill=conv>.01?"rgba(232,74,64,"+conv.toFixed(3)+")":"";el.style.stroke=conv>.5?"#e84a40":"";
       el.style.opacity=(Math.min(1,u*6)*(1-sm01(1.6,1.9,u))).toFixed(3)}
-    al.style.opacity=sm01(2,2.35,q).toFixed(3);
-    /* 4 sustain: the exposure trace runs on across six months, above threshold */
-    var w=sm01(.95,3.95,q),n=Math.round(w*120),d="M398 318",m=0;for(var i=1;i<=n;i++){m=i/120*6.2;d+="L"+(398+m/6*168).toFixed(1)+" "+pkY(m).toFixed(1)}
-    pk.setAttribute("d",d);pf.setAttribute("d",n>1?d+"L"+(398+m/6*168).toFixed(1)+" 318Z":"M398 318Z");
-    dot.setAttribute("cx",(398+m/6*168).toFixed(1));dot.setAttribute("cy",pkY(m).toFixed(1));dot.style.opacity=w>0?"1":"0";
+    al.style.opacity=sm01(1.95,2.3,q).toFixed(3);
+    /* 4 sustain: the month scale fills from the dose to month 6 while the depot keeps releasing */
+    var w=sm01(3,3.95,q),xe=120+360*w;mo.setAttribute("d","M120 456H"+xe.toFixed(1));dot.setAttribute("cx",xe.toFixed(1));
   }}
 function homeStory(view){
   var sec=$("#story",view);if(!sec)return;
@@ -1242,7 +1248,7 @@ function homeStory(view){
   S(0);
   /* the static layers of the scene draw in as the section arrives */
   $$("#scene .ly,#scene .ly2,#scene .vs",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.6,ease:"flow",scrollTrigger:{trigger:sec,start:"top 75%"}})});
-  gsap.from($$("#scene text,#scene .thr",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
+  gsap.from($$("#scene text:not(.dyn)",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});story={kill:function(){story=null}};
   tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4)));fx(p);S(p)});
@@ -1267,11 +1273,11 @@ var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),
 gsap.set([psSheet,psScrim],{opacity:0});
 function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  psMode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+  psMode(p.img&&!(p.imgW&&p.imgW<480)?"":"noimg");
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(bioOpen&&pBy(location.hash.split("/")[2])===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(bioOpen)fillBio(i)};pr.src=p.img}
   var slim=ps.classList.contains("slim");
-  psMedia.innerHTML=p.img&&!slim?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
-  var head=slim?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psMedia.innerHTML=p.img&&!ps.classList.contains("noimg")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
+  var head='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   psBody.scrollTop=0;

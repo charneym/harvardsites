@@ -438,7 +438,17 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body .role{font-size:17px;line-height:1.5;color:var(--mutL);margin:0 0 30px}
 .ps-body p{font-size:17px;line-height:1.7;max-width:62ch}
 .ps-body .src{margin-top:28px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mutL)}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
+.ps-head h2{margin:0!important}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;box-shadow:0 0 0 1px rgba(138,193,201,.7),0 0 0 5px var(--l0),0 0 0 6px rgba(138,193,201,.45)}
 @media (max-width:760px){
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
+  .ps-head img{width:72px;height:72px}
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(30vh,240px);border-radius:18px 18px 0 0}
@@ -756,10 +766,9 @@ SITE.views.home=function(){
    {r:"Load",h:"Load the drug after printing.",p:"Patent-pending methods add the drug after fabrication. They work with polar and nonpolar small and large molecules, including biologics."},
    {r:"Release",h:"Release it steadily.",p:"ANLO102 is designed to release natural progesterone over about 28 days from a single, self-administered and retrievable ring."},
    {r:"Cover",h:"Cover the whole treatment period.",p:"Two to three rings are designed to cover the 8–10 weeks of progesterone support in assisted reproduction."}]})+
-  '<section class="sec" data-tone="light"><div class="wrap"><div class="prod">'+
-   '<figure class="prod-fig"><img src="'+UP+'2020/06/anelleo-ring-1.png" alt="A 3D-printed AnelleO intravaginal ring with a honeycomb lattice wall" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\');this.remove()"></figure>'+
-   '<div><span class="lab kick" data-r>The device</span><h2 class="d2 split">Geometry is the <em>dial.</em></h2>'+
-   '<p class="muted" style="margin-top:26px;max-width:44ch" data-r>Rings have been made by injection molding and hot-melt extrusion for decades, with limited design freedom. Printing the ring lets AnelleO vary design, surface area, size and compression, and so tune how fast and how completely a drug is released.</p>'+
+  '<section class="sec" data-tone="light"><div class="wrap"><div class="two">'+
+   '<div><span class="lab kick" data-r>The device</span><h2 class="d2 split">Geometry is the <em>dial.</em></h2></div>'+
+   '<div><p class="lede" data-r>Rings have been made by injection molding and hot-melt extrusion for decades, with limited design freedom. Printing the ring lets AnelleO vary design, surface area, size and compression, and so tune how fast and how completely a drug is released.</p>'+
    '<div style="margin-top:34px" data-r><a class="btn" href="#/technology">Inside the ring '+ARR+'</a></div></div>'+
   '</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap">'+
@@ -803,10 +812,7 @@ SITE.views.technology=function(){
   '<section class="sec" data-tone="light2"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Drug loading</span><h2 class="d3 split">Load after the <em>print.</em></h2><p class="muted" style="margin-top:24px" data-r>Layer-by-layer printing can be harsh on most drugs. AnelleO’s published work investigates loading a silicone-based ring by absorption after fabrication.</p></div>'+
    '<ul class="aims"><li><span>Patent-pending drug incorporation methods, compatible with polar and nonpolar small and large molecules, including biologics.</span></li><li><span>Rings from AnelleO’s library can be matched to a partner’s target molecule to create the delivery platform in months, not years.</span></li><li><span>An expanding intellectual property portfolio, including license rights to IP generated at the University of North Carolina at Chapel Hill.</span></li></ul>'+
-  '</div></div></section>'+
-  '<section class="sec" data-tone="light"><div class="wrap">'+
-   '<figure class="photo-wide"><div class="pw"><img src="'+UP+'2020/03/anelleo-poducts-2.jpg" alt="A 3D-printed AnelleO ring held up to the camera" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>'+
-   '<p class="capt" data-r>A 3D-printed AnelleO intravaginal ring</p></div></section>'+cta();
+  '</div></div></section>'+cta();
 };
 SITE.views.pipeline=function(){
   return head({k:"Pipeline",h:'Programs for <em>women’s health.</em>',p:'AnelleO’s first products are intravaginal rings. Its lead ring addresses progesterone support during infertility treatment; a mucoadhesive film addresses vestibulodynia.'})+
@@ -1053,9 +1059,10 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psScr=$(".ps-scrim",ps),bioOpen=false,bioCur=-1,bioLastFocus=null;
 function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
 function fillBio(i){var p=TEAM[i];bioCur=i;
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'"><div class="ps-cap"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>':psPlate(p);
-  var im=$("img",psMedia);if(im)im.addEventListener("error",function(){psMedia.innerHTML=psPlate(p)},{once:true});
-  psBody.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+  /* BQ: every AnelleO headshot is under 480px wide, so never upscale: slim mode (96px circle beside the name); none -> noimg */
+  psMedia.innerHTML="";ps.classList.toggle("slim",!!p.img);ps.classList.toggle("noimg",!p.img);
+  var hd=p.img?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" style="color:var(--accL)" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+'<p class="src">'+esc(SITE.bioSrc)+'</p>';
   psBody.scrollTop=0;document.title=p.name+" — "+SITE.name}
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

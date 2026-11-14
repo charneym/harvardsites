@@ -49,8 +49,9 @@ Logo files: anelleo-logo-ring.svg (grey #9b9c9c wordmark + teal #8ac1c9 woven-ri
 Fonts: Kulim Park (their site font) 300/400/600, Newsreader italic for emphasis, DM Mono labels.
 
 ## Photo inventory (BJ) — used / unused with reasons
-Used: all 7 headshots (Wagoner.png, RahimaBenhabbour.png, Janusziewicz.jpg, Orr.jpg, j-holt.jpg, Mersereau.jpg, B.Maynor.jpg); anelleo-ring-1.png (product photo, home); ringArchitecture.png (4 micrographs, Technology); anelleo-poducts-2.jpg (ring held to camera, Technology); logo SVGs anelleo-logo-ring.svg / anelleo-logo-white.svg.
+Used: all 7 headshots (Wagoner.png, RahimaBenhabbour.png, Janusziewicz.jpg, Orr.jpg, j-holt.jpg, Mersereau.jpg, B.Maynor.jpg); ringArchitecture.png (4 micrographs with scale bars, presented as a figure on Technology — real data); logo SVGs anelleo-logo-ring.svg / anelleo-logo-white.svg.
 Unused:
+- anelleo-ring-1.png (product render) and anelleo-poducts-2.jpg (ring held to camera) — removed under BR: the hero and pinned story already show the ring; neither adds information.
 - website_rotating_logo.png, website_rotating_ring_1/2.png — animated copies of the logo ring; logo already used.
 - stepsbackground-01.png, steps1–5-01.png, steps*-text-01.png, panel1–5-01.png, panel*-icon-01.png, triangle-pieces-*.png — text-baked infographic fragments (raster text); their content is rendered as live text in the concept.
 - in-the-us-01.png — infographic of the 13–15% / 1.7 million figures; figures stated as text on Pipeline.

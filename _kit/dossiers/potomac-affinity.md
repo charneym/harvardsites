@@ -45,3 +45,6 @@ Sources: potomac-affinity-proteins.com (crawled 2026-11-12), NIH RePORTER API, P
 ## Images harvested and how they are used
 USED: 107684_2b4813ba… (prodomain–subtilisin complex structure, used as the science plate); RAS.png (target sequence QEEYSAM in RAS and in the protease active site); procr photo 1.jpg (Pro-CR assay photograph); antibody with prot A red.jpg (antibody–protein A–protease conjugate figure).
 UNUSED, with reasons: anti-toxin protease graphic.jpg — 200×180, too small to present at the site's scale and duplicated by the collaboration text; mosquito.jpg (198×136) and raindrops-on-green-leaf.jpg (200×150) — generic stock illustrations of the collaboration topics, below the quality bar; Wix social sprites (w-facebook, Twitter Clean, w-flickr, 28×28) — template chrome for accounts the site does not actually link.
+
+## Round 2 image audit (PRINCIPLES BR, Nov 2026)
+Every image now appears exactly once: the prodomain–subtilisin complex structure and the RAS target-sequence figure on the home page, the antibody–protein A–protease figure and the Pro-CR assay photograph on the Pro-CR page. The duplicate copies of the structure and of the assay photograph were removed. All four are the company's own figures and photographs — real structural and experimental material that the drawn hero and story cannot substitute for.

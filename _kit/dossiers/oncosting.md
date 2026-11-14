@@ -42,3 +42,7 @@ Sources: oncosting.com (crawled 2026-11-12), NIH RePORTER API.
 ## Images harvested and how they are used
 USED: logo; the four leadership headshots listed above; Technology_02.jpg (the company's own mechanism figure).
 UNUSED, with reasons: Oncosting_landing.jpg, Technology.jpg and Team.jpg — wide page-banner photographs of generic laboratory scenes used as Squarespace headers, not company content; Landing_01.jpg and Landing_02.jpg — the same generic imagery at 461×307, too small and too generic for the concept's scale.
+
+## Round 2 image audit (PRINCIPLES BR, Nov 2026)
+Removed: Technology_02.jpg, the company's own mechanism schematic — the pinned story already shows the same two-pronged mechanism as one continuous scene, so the figure's only job on the page was to be a picture.
+Kept: the four leadership headshots. Todd Wallach's portrait is only 141×187 even at the largest Squarespace size, so he is shown as a refined text card in the team grid and as a 96px circle in his bio sheet (PRINCIPLES BQ slim mode) rather than upscaled; Bivalacqua (1500px), Bishai (501px) and Bellete (975px) are large enough for the two-column sheet.

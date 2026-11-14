@@ -397,29 +397,44 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .xt .t span{display:inline-block}
 .xt .lab{color:var(--acL)}
 
-/* person sheet (PRINCIPLES BI) */
+/* person sheet (PRINCIPLES BI + BQ): the mode follows the photo that actually exists */
 .ps{position:fixed;inset:0;z-index:900;display:grid;place-items:center;visibility:hidden;pointer-events:none}
 .ps.open{visibility:visible;pointer-events:auto}
-.ps-scrim{position:absolute;inset:0;background:rgba(4,8,26,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
-.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:clamp(420px,70vh,700px);max-height:calc(100vh - 96px);background:var(--paper);color:var(--ink);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px -30px rgba(0,0,0,.6),0 0 0 1px var(--hairD);opacity:0}
-.ps-media{min-height:320px;position:relative;background:var(--paper3);overflow:hidden}
-.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 12%}
-.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:36px;background:linear-gradient(160deg,rgba(43,58,158,.16),transparent 60%)}
-.ps-plate .k{font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mistD)}
-.ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--serif);margin-top:14px;padding-bottom:.14em}
+.ps-scrim{position:absolute;inset:0;background:var(--ps-scrim);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0}
+.ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1060px,calc(100vw - 64px));height:clamp(420px,70vh,700px);max-height:calc(100vh - 96px);background:var(--paper);color:var(--ink);border-radius:16px;box-shadow:0 40px 120px -30px rgba(0,0,0,.55),0 0 0 1px var(--hairD);opacity:0}
+.ps-media{position:relative;overflow:hidden;border-radius:16px 0 0 16px;background:var(--paper3)}
+.ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 16%}
 .ps-col{display:flex;flex-direction:column;min-height:0}
-.ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 26px;border-bottom:1px solid var(--hairD)}
+.ps-bar{border-radius:0 16px 0 0;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 26px;border-bottom:1px solid var(--hairD)}
 .ps-step{display:flex;gap:8px}
 .ps-body:focus{outline:none}
-.ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,50px) clamp(26px,4vw,54px) 56px;scrollbar-width:thin;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);mask-image:linear-gradient(to bottom,transparent 0,#000 18px)}
+.ps-body{border-radius:0 0 16px 0;flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,50px) clamp(26px,4vw,54px) 52px;scrollbar-width:thin;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18px);mask-image:linear-gradient(to bottom,transparent 0,#000 18px)}
 .ps-body .lab{color:var(--acD)}
-.ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.4vw,50px);line-height:1.06;letter-spacing:-.025em;margin:14px 0 10px;padding-bottom:.1em}
+.ps-body h2{font-family:var(--serif);font-weight:400;font-size:clamp(32px,3.2vw,46px);line-height:1.06;letter-spacing:-.025em;margin:14px 0 10px;padding-bottom:.1em}
 .ps-body .role{font-size:17px;line-height:1.5;color:var(--mistD);margin:0 0 28px}
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:60ch}
 .ps-body blockquote{margin:28px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34}
 .ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
 .ps-body .src{margin-top:26px;font-size:14px;color:var(--mistD)}
 .ps-body .src a{color:var(--acD)}
+/* slim (small source photo) and noimg: one compact column, sized to its content */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:16px 16px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 16px 16px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:20px;margin:6px 0 0}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 20%;flex:none;filter:grayscale(1) contrast(1.04)}
+.ps-head h2{margin:0;padding-bottom:.06em}
+@media (max-width:760px){
+  .ps{place-items:end stretch}
+  .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:16px 16px 0 0}
+  .ps-media{height:min(34vh,260px);border-radius:16px 16px 0 0}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 130px)}
+  .ps-bar{border-radius:0;padding:14px 18px}
+  .ps-body{border-radius:0;padding:26px 20px 48px}
+  .ps-head img{width:72px;height:72px}
+}
 
 [data-r]{will-change:auto}
 
@@ -581,7 +596,7 @@ var PRESS=[
  {d:"February 23, 2018",t:"OncoSTING, LLC awarded Maryland Innovation Initiative Technology Development grant by Maryland TEDCO"}
 ];
 var TEAM=[
- {slug:"todd-wallach",name:"Todd Wallach, MS",title:"Chief Executive Officer",grp:"Management",img:IMG.h4,
+ {slug:"todd-wallach",name:"Todd Wallach, MS",title:"Chief Executive Officer",grp:"Management",img:IMG.h4,small:1,
   bio:["Todd Wallach leads OncoSTING as Chief Executive Officer. The company lists his earlier roles as CEO of Evogen and founder of Aton, acquired by Valeant, and of Acuity, acquired by OPKO.",
        "He is the principal investigator on OncoSTING’s National Institutes of Health awards from 2022 onward — the NCI bladder cancer program and the NIAID tuberculosis vaccine program — and is named with William Bishai on the 2026 Direct to Phase II award."],
   src:'<a href="https://www.oncosting.com/about" target="_blank" rel="noopener">oncosting.com/about</a> and NIH RePORTER'},
@@ -606,7 +621,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="osNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){return '<a class="pcard'+(p.small?' noimg':'')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="osNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.osNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},140)};
 function rowsAwards(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.ic)+' · '+esc(n.amt)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function plate(src,cap,alt){return '<div class="plate"><figure><img src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.closest(\'.plate\').style.display=\'none\'"></figure><figcaption>'+cap+'</figcaption></div>'}
@@ -664,9 +679,7 @@ function vHome(){
    '<div class="two" data-r><div><span class="lab kick">National Cancer Institute · Direct to Phase II · September 2026</span><h2 class="d3" style="margin-top:14px">An award that ends in an <em>IND.</em></h2></div>'+
    '<div><p class="muted">Award 1R44CA310037-01, first-year amount $1,030,215 on NIH RePORTER, running to August 2028. It takes BCG-STING through the work a first-in-human trial requires.</p>'+
    '<ul class="aims" data-group><li><span>Dose-response studies in ISG reporter macrophages and in the MB49 and BBN mouse models, to fix dose and dosing frequency.</span></li><li><span>A non-GLP dose-range finding study in rabbits, to predict the doses for the GLP toxicology study.</span></li><li><span>A GMP batch, fermentation-based: the strain has already been transferred to ArrantaBio-ReciBioPharm, a CDMO with experience manufacturing BCG.</span></li><li><span>A GLP toxicology study, as the IND-enabling confirmation of safety at the proposed dose and regimen.</span></li></ul></div></div>'+
-   '<div class="plates" data-group style="margin-top:var(--sec)">'+
-    plate(IMG.tech,"OncoSTING’s own schematic of the two-pronged mechanism: BCG-mediated trained immunity alongside STING agonist signaling.","OncoSTING mechanism of action figure")+
-   '</div>'+
+   
   '</div></section>'+
 
   '<section class="sec light" data-theme="light" style="background:var(--paper2)"><div class="wrap">'+
@@ -1167,11 +1180,19 @@ function contactInit(view){
 
 /* ================= PERSON SHEET (PRINCIPLES BI) ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psCur=-1,psLast=null,psFromClick=false,psBase="#/team";
-function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psMode(p){
+  var m=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";
+  ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");return m}
 function psFill(i){var p=TEAM[i];
-  window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.remove();document.getElementById(\'psMedia\').insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+  if(p.img&&!p.imgW&&!p._probing){p._probing=1;var pr=new Image();
+    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i)psFill(i)};
+    pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
+  var m=psMode(p);
+  psMedia.innerHTML=(m==="")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.remove()">':'';
+  var head=(m==="slim")
+    ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
+    : '<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
     (p.src?'<p class="src">Source: '+p.src+'</p>':'');

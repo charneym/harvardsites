@@ -460,11 +460,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--paper);color:var(--ink);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.5),0 0 0 1px var(--hairD);opacity:0}
 .ps-media{position:relative;background:var(--ink);overflow:hidden;border-radius:18px 0 0 18px}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
-.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;color:var(--paper);background:linear-gradient(165deg,rgba(46,143,174,.3),rgba(24,51,79,0) 58%),linear-gradient(180deg,var(--ink2),var(--ink))}
-.ps-plate::before{content:"";position:absolute;left:40px;right:40px;top:40px;height:1px;background:var(--accL);opacity:.6}
-.ps-art{position:absolute;right:-18px;top:46px;width:62%;height:auto;opacity:.9}
-.ps-plate .k{position:relative;font:500 12px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accL)}
-.ps-plate .q{position:relative;font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,30px);line-height:1.26;margin-top:14px;padding-bottom:.14em;color:var(--paper)}
 .ps-col{display:flex;flex-direction:column;min-height:0}
 .ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 28px;border-bottom:1px solid var(--hairD)}
 .ps-step{display:flex;gap:8px}
@@ -476,12 +471,22 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--accD)}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
+.ps-head h2{margin:0;padding-bottom:.1em}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(34vh,260px);border-radius:18px 18px 0 0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
+  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -714,7 +719,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -754,12 +759,9 @@ var SITE="Limax Biosciences";
 /* ============ CONTENT (dossier only; nothing invented) ============ */
 var WIX="https://static.wixstatic.com/media/";
 var P_LIVER=WIX+"d1609a_2a00c989d0f74aaea85abf40bd375945~mv2.jpg/v1/crop/x_11,y_0,w_839,h_1035/fill/w_900,h_1116,al_c,q_85/Untitled-1_edited.jpg";
-var P_SKIN=WIX+"d1609a_42bfba02390442168f9aa41a03d03b64~mv2.jpeg/v1/crop/x_470,y_0,w_1108,h_1365/fill/w_900,h_1116,al_c,q_85/Tough-Gel-Adhesive---2019-Photos-3757.jpeg";
-var P_APPLY=WIX+"d1609a_02f46935cb5e4cc78aca6683c1dc761d~mv2.jpg/v1/crop/x_4,y_0,w_822,h_1012/fill/w_900,h_1116,al_c,q_85/Untitled_edited_edited_edited.jpg";
 var P_TEAM1=WIX+"d1609a_a9a9681ab4d24029afadc9fbfe41d90c~mv2.png/v1/fill/w_994,h_522,al_c,q_90/d1609a_a9a9681ab4d24029afadc9fbfe41d90c~mv2.png";
 var P_TEAM2=WIX+"d1609a_18a36642bb394281be7fd3d01ebfbe1d~mv2.jpg/v1/crop/x_188,y_139,w_2622,h_1354/fill/w_972,h_504,al_c,q_85/IMG_6195_JPG.jpg";
 var P_AWARD=WIX+"d1609a_7796b39281d047debf6b4e49719ccdb8~mv2.jpg/v1/fill/w_560,h_550,al_c,q_85/images_edited.jpg";
-var P_MECH=WIX+"d1609a_577606ada27347fbbc880731be7f36b2~mv2.png/v1/crop/x_3,y_3,w_947,h_586/fill/w_1394,h_862,al_c,q_90/d1609a_577606ada27347fbbc880731be7f36b2~mv2.png";
 var L_GATES=WIX+"d1609a_ba157a6de4c948779a235d61bb3ee6f3~mv2.png/v1/fill/w_576,h_288,al_c,q_85/d1609a_ba157a6de4c948779a235d61bb3ee6f3~mv2.png";
 var L_WYSS=WIX+"d1609a_3f6d75b2a0fe4f57a7b49521e5175d63~mv2.jpg/v1/fill/w_524,h_178,al_c,q_85/wyss_logo.jpg";
 var NEWS=[
@@ -885,14 +887,6 @@ function vHome(){
    '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
   '</div></section>'+
 
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>In the hand</span><h2 class="d2 split">A material you can <em>see working.</em></h2></div><p data-r>The same gel seals a bleeding liver, stretches over skin and is applied from a simple applicator.</p></div>'+
-   '<div class="gal" data-group>'+
-    fig(P_LIVER,"Tough gel sealing a bleeding liver","Limax tough gel adhesive applied to a bleeding liver")+
-    fig(P_SKIN,"The adhesive on skin","Limax tough gel adhesive on skin")+
-    fig(P_APPLY,"Applied directly to tissue","A Limax applicator placing the tough gel adhesive on tissue")+
-   '</div></div></section>'+
-
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Applications</span><h2 class="d2 split">Where a seal has to hold <em>under pressure.</em></h2></div><p data-r>The lead program is postpartum hemorrhage, funded by an NHLBI Phase II SBIR awarded in September 2026 and heading for a 510(k).</p></div>'+
    pipeTable()+
@@ -901,7 +895,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--paper2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Evidence</span><h2 class="d2 split">Measured against the products <em>in use today.</em></h2></div><p data-r>Limax counts more than 17 publications and over 6,000 citations behind the platform. These are the results it puts forward.</p></div>'+
-   '<div class="two"><div>'+fig(P_TEAM2,"At the Glavatnik Harvard Life Lab","The Limax team at the Glavatnik Harvard Life Lab")+'</div>'+
+   '<div class="two"><div>'+fig(P_LIVER,"The gel sealing a bleeding liver","Limax tough gel adhesive applied to a bleeding liver")+'</div>'+
    '<div><ul class="aims" data-group>'+
     '<li><span>In a porcine model of solid organ injury, Hemostatic Tough Adhesives achieved complete hemostasis in liver and spleen wounds and outperformed leading commercial hemostatic products.</span></li>'+
     '<li><span>For dural repair, the bioadhesive sealed the membrane without sutures and outperformed commercial sealants in porcine and human ex vivo models.</span></li>'+
@@ -914,7 +908,7 @@ function vHome(){
 
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>The company</span><h2 class="d2 split">A Wyss Institute spinout, <em>in Boston.</em></h2></div><p data-r>Founded in 2021 to take the tough adhesive out of the laboratory and into surgery.</p></div>'+
-   '<div class="gal two" data-group>'+fig(P_TEAM1,"The Limax team","The Limax Biosciences team")+fig(P_MECH,"From slug mucus to a fast, tough bioadhesive","Limax diagram: slug-inspired dual network and fast bioadhesion")+'</div>'+
+   '<div class="gal two" data-group>'+fig(P_TEAM1,"The Limax team","The Limax Biosciences team")+fig(P_TEAM2,"At the Glavatnik Harvard Life Lab","The Limax team at the Glavatnik Harvard Life Lab")+'</div>'+
    '<div style="margin-top:clamp(56px,6vw,96px)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">The team</h2><a class="btn" href="#/team" data-r>Meet everyone '+ARR+'</a></div>'+
    '<div class="pgrid" data-group>'+TEAM.slice(0,4).map(function(p){return pCard(p)}).join("")+'</div></div>'+
   '</div></section>'+
@@ -966,20 +960,13 @@ function vTech(){
     '<div><dt class="lab">Consequences</dt><dd>Up to $61k spent per patient, a 7% risk of mortality and a 70% chance of requiring transfusion.</dd></div>'+
    '</dl></div></div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>The material</span><h2 class="d2 split">Nature first, then <em>the chemistry.</em></h2></div><p data-r>Limax’s own diagram of the route from slug mucus to a tough, stretchable bioadhesive that bonds fast.</p></div>'+
-   '<div class="gal two" data-group>'+fig(P_MECH,"Nature inspiration · tough, stretchable bioadhesive · fast bioadhesion","Limax diagram: slug-inspired dual network and fast bioadhesion")+fig(P_SKIN,"The adhesive on skin","Limax tough gel adhesive on skin")+'</div>'+
-   '<div style="margin-top:var(--sec)"><div class="shead"><div><span class="lab kick" data-r>Publications</span><h2 class="d2 split">The published <em>record.</em></h2></div><p data-r>Selected work behind the platform, as cited by Limax.</p></div>'+
+   '<div><div class="shead"><div><span class="lab kick" data-r>Publications</span><h2 class="d2 split">The published <em>record.</em></h2></div><p data-r>Selected work behind the platform, as cited by Limax.</p></div>'+
    '<div data-r>'+paperRows()+'</div></div>'+
   '</div></section>'+cta();
 }
 function vApps(){
   return head({k:"Applications",h:'One material, many <em>bleeds.</em>',p:'The lead program is postpartum hemorrhage. Behind it sit vascular sealing, dural repair, tendon repair and intraoral drug delivery — each already reported in the peer-reviewed literature.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap">'+pipeTable()+
-   '<div class="gal" style="margin-top:var(--sec)" data-group>'+
-   fig(P_LIVER,"Sealing a bleeding liver","Limax tough gel adhesive applied to a bleeding liver")+
-   fig(P_APPLY,"Applied directly to tissue","A Limax applicator placing the tough gel adhesive on tissue")+
-   fig(P_AWARD,"MassChallenge, 2023","Limax Biosciences receiving a MassChallenge award")+
-   '</div></div></section>'+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+pipeTable()+'</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>HemoMax-PPH</span><h2 class="d3 split">The leading cause of maternal death, <em>worldwide.</em></h2></div>'+
    '<div><p class="lede" data-r style="margin-bottom:30px">Postpartum hemorrhage kills more mothers than anything else. Balloon tamponade and vacuum devices apply mechanical pressure, but they do not address the hemostatic dysfunction that makes the bleeding continue.</p>'+
@@ -1026,7 +1013,7 @@ function vNews(){
   return head({k:"News",h:'Awards, papers <em>and recognition.</em>',p:'Each item links to its source: NIH RePORTER for the awards, PubMed or Limax’s own publications page for the papers.'})+
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+newsRows(NEWS)+
   '<div style="margin-top:var(--sec)"><div class="shead"><div><span class="lab kick" data-r>Recognition</span><h2 class="d3 split">Competitions <em>and accelerators.</em></h2></div></div>'+
-  '<div class="two"><div>'+fig(P_TEAM1,"The Limax team","The Limax Biosciences team")+'</div>'+
+  '<div class="two"><div>'+fig(P_AWARD,"MassChallenge, 2023","Limax Biosciences receiving a MassChallenge award")+'</div>'+
   '<div><ul class="aims" data-group>'+
    '<li><span>Winner, Harvard University President’s Innovation Challenge, 2022; finalist again in 2025 in the alumni track.</span></li>'+
    '<li><span>MassChallenge, 2023.</span></li>'+
@@ -1492,30 +1479,27 @@ function contactInit(view){
 }
 
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
-var PLATE_ART=(function(){
-  var g="",pts=[[54,74],[126,74],[90,136],[18,136],[162,136],[54,198],[126,198],[90,260]];
-  pts.forEach(function(q){var pz=[];for(var i=0;i<6;i++){var a=Math.PI/180*(60*i-30);pz.push((q[0]+Math.cos(a)*38).toFixed(1)+","+(q[1]+Math.sin(a)*38).toFixed(1))}
-    g+='<polygon points="'+pz.join(" ")+'" fill="none" stroke="rgba(244,245,247,.16)" stroke-width="1"/>'});
-  return '<svg class="ps-art" viewBox="0 0 200 300" aria-hidden="true">'+g+
-    '<path d="M196 18C150 40 128 72 96 96S42 128 10 134" fill="none" stroke="rgba(95,194,216,.75)" stroke-width="1.6"/>'+
-    '<path d="M96 96c-10 32-30 52-58 62" fill="none" stroke="rgba(95,194,216,.55)" stroke-width="1.2"/>'+
-    '<path d="M96 96c8 36 2 62-14 84" fill="none" stroke="rgba(95,194,216,.55)" stroke-width="1.2"/>'+
-    '<circle cx="196" cy="18" r="4" fill="rgba(95,194,216,.95)"/>'+
-    '<circle cx="54" cy="150" r="2.6" fill="rgba(95,194,216,.9)"/><circle cx="104" cy="196" r="2.6" fill="rgba(95,194,216,.9)"/>'+
-  '</svg>'})();
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia"),cur=-1,lastFocus=null,base="#/team";
-  function plate(p){return '<div class="ps-plate">'+PLATE_ART+'<span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    media.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();window.__psPlateIn()">':plate(p);
-    window.__psPlate=plate(p);
-    body.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    /* BQ: the sheet adapts to the photo — big and sharp: two columns; small: a 96px circle; none: one compact column */
+    mode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+    if(p.img&&!p.imgW){var probe=new Image();
+      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i&&p.imgW<480)fill(i)};
+      probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=p.img}
+    var slim=ps.classList.contains("slim");
+    media.innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
+    var head=slim
+      ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
+      : '<h2 id="psName">'+esc(p.name)+'</h2>';
+    body.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
       (p.q?'<blockquote style="margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34">“'+esc(p.q)+'”<cite class="lab" style="display:block;margin-top:14px;font-style:normal">'+esc(p.qs)+'</cite></blockquote>':'')+
       (p.src?'<p class="src">Source: '+p.src+'</p>':'');
     body.scrollTop=0;
   }
-  window.__psPlateIn=function(){media.insertAdjacentHTML("beforeend",window.__psPlate)};
+  window.__psDrop=function(i){if(TEAM[i]){TEAM[i].img=null}if(cur===i)fill(i)};
   function open(i,instant){
     var was=cur>=0;cur=i;fill(i);
     document.title=TEAM[i].name+" — "+SITE;

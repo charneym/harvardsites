@@ -110,6 +110,16 @@ Used in the concept:
   image-6_edited.png), Phoebe Kwon (183×175, phoebe_edited.png), Hamza Ijaz (169×175, hamza image_edited.png).
 - Mechanism figure "nature inspiration → tough, stretchable bioadhesive → fast bioadhesion" (697×431).
 - Bill & Melinda Gates Foundation logo (288×144) and Wyss Institute logo (262×89) — funders/partners.
+Removed in the client's second review under PRINCIPLES BR (photos must earn their place):
+- The gel on skin, and the applicator placing the gel — real but redundant: the hero and the pinned story already
+  show the gel bonding to tissue, and both lived in galleries whose only job was to show photographs.
+- The company's own "nature inspiration → tough, stretchable bioadhesive → fast bioadhesion" diagram — it states
+  exactly what the five-step pinned story states, so it repeated the site's own visual.
+What remains, and why each earns its place: the four headshots (real people); the gel sealing a bleeding liver,
+inside the Evidence block it supports (the product in real use, which line art cannot show); the team photo and
+the Glavatnik Harvard Life Lab photo in the company block (team at work); the MassChallenge award photograph
+beside the recognition list on News; the Gates Foundation and Wyss Institute logos in the funders block.
+
 Not used, with reasons:
 - The 1440×900 operating-theatre photograph on their home page — generic stock surgical imagery (flagged by the
   tool as likely stock).

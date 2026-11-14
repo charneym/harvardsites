@@ -650,6 +650,15 @@ em{font-weight:300}
 .scn-wrap .sccaps{position:relative;bottom:auto;left:auto;right:auto;height:26px;margin-top:10px}
 @media (max-width:860px){.sfig text[y="400"],.sfig text[y="392"]{display:none}}
 
+/* v14 BQ: sheet mode follows the photo */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head h2{margin:0!important}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+@media (max-width:760px){.ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}.ps-head img{width:72px;height:72px}}
+
 </style>
 </head>
 <body>
@@ -1215,10 +1224,14 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI): centred sheet, wheel-scrollable body ================= */
 var bio=$("#ps"),bioOpen=false,psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psScrim=$("#ps .ps-scrim");
 function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+' \u00b7 '+esc(SITE)+'</span><span class="q">'+esc(p.name.replace(/,.*$/,''))+'</span></div>'}
-window.psNoImg=function(im){var m=im.parentNode;im.remove();if(m)m.insertAdjacentHTML("beforeend",window.__psPlate||"")};
-function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="psNoImg(this)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+function psMode(m){bio.classList.toggle("slim",m==="slim");bio.classList.toggle("noimg",m==="noimg")}
+window.psNoImg=function(im){im.remove();psMode("noimg")};
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  /* big sharp headshot -> two columns; small headshot -> slim (96px circle by the name); none -> compact single column */
+  var m=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";psMode(m);
+  psMedia.innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="psNoImg(this)">':'';
+  var hd=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+(p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
    '';
   psBody.scrollTop=0;

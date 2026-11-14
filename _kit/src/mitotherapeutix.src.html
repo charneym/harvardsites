@@ -130,7 +130,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (BH): padded on all sides, and unclipped once the reveal is done */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -165,6 +165,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* manifesto + stats */
 .mani .txt{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3.9vw,64px);line-height:1.12;letter-spacing:-.025em;margin:0;max-width:30ch}
+.mani-in{width:fit-content;max-width:100%;margin:0 auto}
 .mani .txt .w{opacity:.16}
 .mani .txt em{color:var(--sinL)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -288,7 +289,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px}
 .pcard.noimg .pc-fig{display:none}
 .mgroup{margin-top:clamp(72px,8vw,120px)}
-.mgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap)}
+.mgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:36px var(--gap)}
+.mgrid>.mini{flex:0 0 calc((100% - 3 * var(--gap)) / 4)}
+.pcard.static{cursor:default}
+.pcard.static:hover,.pcard.static:focus-visible{transform:none}
 .mini{margin:0;display:flex;gap:16px;align-items:center}
 .mph{width:72px;height:72px;flex:none;border-radius:50%;overflow:hidden;background:var(--bone3)}
 .mph img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1);transition:filter .35s ease-out,transform .35s ease-out}
@@ -301,15 +305,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fg .lab{margin-top:0}
 .fg b{margin-top:12px}
 .fieldgrid{margin-top:var(--sec)}
-@media (max-width:1100px){.mgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:860px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}.mgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:480px){.pgrid{grid-template-columns:1fr;max-width:320px}.mgrid{grid-template-columns:1fr}}
+@media (max-width:1100px){.mgrid>.mini{flex-basis:calc((100% - 2 * var(--gap)) / 3)}}
+@media (max-width:860px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}.mgrid>.mini{flex-basis:calc((100% - var(--gap)) / 2)}}
+@media (max-width:480px){.pgrid{grid-template-columns:1fr;max-width:320px}.mgrid>.mini{flex-basis:100%}}
 /* text cards (people: no portraits published) */
 .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-.tcard{position:relative;display:flex;flex-direction:column;min-height:260px;padding:24px 22px 22px;border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.tcard{position:relative;display:flex;flex-direction:column;padding:20px 0 4px;border:0;border-top:1px solid var(--hairD);background:none;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
 .tcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
-.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(30,122,18,.08),rgba(30,122,18,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
-.tcard:hover,.tcard:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(10,20,12,.45)}
+.tcard::after{content:"";position:absolute;inset:0;display:none;background:linear-gradient(0deg,rgba(30,122,18,.08),rgba(30,122,18,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.tcard:hover,.tcard:focus-visible{transform:translateY(-4px)}
 .tcard:hover::before,.tcard:focus-visible::before{transform:scaleX(1)}
 .tcard:hover::after,.tcard:focus-visible::after{opacity:1}
 .tcard .grp{color:var(--stoneD)}
@@ -318,7 +322,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .tcard:hover h3,.tcard:focus-visible h3{transform:translateX(5px);color:var(--sinD)}
 .tcard:hover h3 span,.tcard:focus-visible h3 span{background-size:100% 1px}
 .tcard .ttl{font-size:14.5px;line-height:1.45;color:var(--stoneD);margin:0;max-width:30ch}
-.tcard .go{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:22px;color:var(--sinD)}
+.tcard .go{display:flex;align-items:center;gap:10px;margin-top:18px;color:var(--sinD)}
+.tcard h3{margin-top:18px!important}
 .tcard .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--eo),transform .32s var(--eo)}
 .tcard:hover .go svg,.tcard:focus-visible .go svg{opacity:1;transform:none}
 
@@ -343,6 +348,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
 /* footer */
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:.42;z-index:0}
+.ftr>*:not(.fcv){position:relative;z-index:1}
 .ftr{position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
@@ -618,11 +625,11 @@ var TEAM=[
  {slug:"mercedes-rincon",name:"Mercedes Rincón",title:"Scientific Founder",img:IMG+"08/rincon-1.png",grp:"Leadership",
   bio:["Mercedes Rincon is the scientific founder of Mitotherapeutix and sits on its Scientific Advisory Board.","She is senior author of the studies that defined MCJ (DnaJC15) as an endogenous repressor of the mitochondrial respiratory chain, and of the Nature Communications papers showing that silencing MCJ in the liver protects against fatty liver disease and acetaminophen-induced liver injury.","She led the company’s first NIDDK awards, in 2017 for NASH and in 2018 for acetaminophen-induced liver injury."],
   src:'<a href="'+NC20+'" target="_blank" rel="noopener">PubMed</a>; <a href="'+RP+'1R41DK112429" target="_blank" rel="noopener">NIH RePORTER</a>.'},
- {slug:"robert-hennessey",name:"Robert Hennessey",title:"Co-founder & Chairman of the Board",img:IMG+"09/hennessey-1.png",grp:"Leadership",
+ {slug:"robert-hennessey",static:1,name:"Robert Hennessey",title:"Co-founder & Chairman of the Board",img:IMG+"09/hennessey-1.png",grp:"Leadership",
   bio:["Robert Hennessey co-founded Mitotherapeutix and chairs its Board of Directors."],src:"mitotherapeutix.com."},
- {slug:"robert-hemley",name:"Robert Hemley",title:"Co-founder & Chief Operating Officer",img:IMG+"08/hemley-1.png",grp:"Leadership",
+ {slug:"robert-hemley",static:1,name:"Robert Hemley",title:"Co-founder & Chief Operating Officer",img:IMG+"08/hemley-1.png",grp:"Leadership",
   bio:["Robert Hemley co-founded Mitotherapeutix, serves as Chief Operating Officer and sits on the Board of Directors."],src:"mitotherapeutix.com."},
- {slug:"rajini-reddy",name:"Rajini Reddy",title:"Director, Business Development",img:IMG+"08/reddy-1.png",grp:"Leadership",
+ {slug:"rajini-reddy",static:1,name:"Rajini Reddy",title:"Director, Business Development",img:IMG+"08/reddy-1.png",grp:"Leadership",
   bio:["Rajini Reddy leads business development at Mitotherapeutix."],src:"mitotherapeutix.com."}
 ];
 var BOARD=[["Dan Wagner","Board member","08/wagner-1.png"],["Fenel Eloi","Board member","08/eloi-1.png"],["David Meeker","Advisor","08/meeker-1.png"],["Frank Marco","Advisor","08/marco-1.png"]];
@@ -643,7 +650,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"'+(p.z?' style="--z:'+p.z+'"':'')+'><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){if(p.static)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"'+(p.z?' style="--z:'+p.z+'"':'')+'><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.mtNoImg=function(im){var c=im.closest(".pcard,.mini");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function mini(list,lab){return '<div class="mgroup"><span class="lab kick" data-r>'+lab+'</span><div class="mgrid" data-group>'+list.map(function(a){return '<figure class="mini"><div class="mph"><img src="'+IMG+a[2]+'" alt="Portrait of '+esc(a[0])+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"></div><figcaption><b>'+esc(a[0])+'</b><span class="lab">'+esc(a[1])+'</span></figcaption></figure>'}).join("")+'</div></div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
@@ -667,7 +674,7 @@ function scene(){
   return '<svg viewBox="0 0 800 460" aria-hidden="true">'+
    '<path class="cell" d="M90 60H700l40 40V380l-40 40H90l-40-40V100z"/>'+
    '<ellipse class="nuc" cx="150" cy="130" rx="44" ry="36"/><text x="112" y="186">NUCLEUS</text>'+
-   '<g id="scRec"><path class="asgpr" d="M740 196h-18M740 214h-18M740 232h-18"/><text x="610" y="96" id="scRecT">ASGPR</text></g>'+
+   '<g id="scRec"><path class="asgpr" d="M740 196h-18M740 214h-18M740 232h-18"/><text x="664" y="182" id="scRecT">ASGPR</text></g>'+
    '<g id="scLip">'+ld+'</g><g id="scMito">'+cr+'</g><g id="scFa">'+fa+'</g>'+
    '<g id="scSi" transform="translate(860 214)"><path class="si" d="M0 -6H46M0 6H46"/><path class="si2" d="M4 -6v12M14 -6v12M24 -6v12M34 -6v12M44 -6v12"/><path class="gal" d="M-4 0l-12 -12M-4 0h-16M-4 0l-12 12"/><circle class="galc" cx="-18" cy="-14" r="4"/><circle class="galc" cx="-22" cy="0" r="4"/><circle class="galc" cx="-18" cy="14" r="4"/><text x="-6" y="-22">MITO-1041</text></g>'+
    '<g id="scFib">'+fib+'<text x="110" y="446" id="scFibT">FIBROSIS</text></g>'+
@@ -688,8 +695,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">About five million people in the United States are diagnosed with MASH each year. Fat builds up in the liver and can progress to cirrhosis, liver failure or cancer. Patients need drugs that further reduce liver fat, fibrosis and inflammation. We start <em>inside the mitochondria.</em></p>'+
+   '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">About five million people in the United States are diagnosed with MASH each year. Fat builds up in the liver and can progress to cirrhosis, liver failure or cancer. Patients need drugs that further reduce liver fat, fibrosis and inflammation. We start <em>inside the mitochondria.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">55–65<sup>%</sup></span><span class="k">Less liver steatosis and lipid with <span class="nw">MITO-1041</span> in mouse models of MASH</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">75–85<sup>%</sup></span><span class="k">Less liver fibrosis in the same preclinical models</span></div>'+
@@ -814,7 +821,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'This page <em>is not here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Mitotherapeutix, LLC<br>Cheshire, Connecticut</div>'+
    '<div class="c"><span class="lab">Lead program</span>MITO-1041 · GalNAc-siMCJ<br>MASH · NIDDK SBIR</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -829,7 +836,7 @@ function route(h){
   if(!p.length)return {k:"home",v:vHome,t:"Mitotherapeutix — RNA silencing for mitochondrial metabolism",x:"Home"};
   if(p[0]==="science")return {k:"science",v:vScience,t:"Science — "+SITE,x:"Science"};
   if(p[0]==="pipeline")return {k:"pipeline",v:vPipeline,t:"Pipeline — "+SITE,x:"Pipeline"};
-  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0&&!TEAM[pBy(p[1])].static)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
   if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
   if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
   if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
@@ -971,7 +978,11 @@ function hdrTheme(){
   var y=window.scrollY;hdr.classList.toggle("solid",y>24);
   if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
 }
-var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+/* BT: the hero's living visual, quieter, behind the footer wordmark (copied from the field canvas only while the footer is on screen) */
+function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
+  var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
+  var c=f.getContext("2d"),sw=src.width,sh=src.height,k=Math.max(W/sw,H/sh);c.clearRect(0,0,W,H);c.drawImage(src,(W-sw*k)/2,(H-sh*k)/2,sw*k,sh*k)}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
 
@@ -1090,7 +1101,7 @@ function hideBio(){if(!bioOpen)return;bioOpen=false;bioIdx=-1;
   gsap.to(".ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
   if(lenis)lenis.start();if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});var r=route(location.hash);document.title=r.t}
 function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
-function stepBio(d){if(bioIdx<0)return;var n=TEAM.length,i=(bioIdx+d+n)%n,h="#/team/"+TEAM[i].slug;history.replaceState(null,"",h);prevHash=h;openBio(TEAM[i].slug)}
+function stepBio(d){if(bioIdx<0)return;var n=TEAM.length,i=(bioIdx+d+n)%n;while(TEAM[i].static)i=(i+d+n)%n;var h="#/team/"+TEAM[i].slug;history.replaceState(null,"",h);prevHash=h;openBio(TEAM[i].slug)}
 $$("[data-ps-close]",ps).forEach(function(b){b.addEventListener("click",closeBio)});
 $("#psPrev").addEventListener("click",function(){stepBio(-1)});
 $("#psNext").addEventListener("click",function(){stepBio(1)});

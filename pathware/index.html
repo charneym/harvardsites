@@ -133,7 +133,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (BH): padded on all sides, and unclipped once the reveal is done */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -168,6 +168,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* manifesto + stats */
 .mani .txt{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3.9vw,64px);line-height:1.12;letter-spacing:-.025em;margin:0;max-width:30ch}
+.mani-in{width:fit-content;max-width:100%;margin:0 auto}
 .mani .txt .w{opacity:.16}
 .mani .txt em{color:var(--sinL)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -283,10 +284,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero-h{font-size:clamp(42px,5.6vw,96px)}
 /* text cards (people: no portraits published) */
 .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-.tcard{position:relative;display:flex;flex-direction:column;min-height:260px;padding:24px 22px 22px;border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.tcard{position:relative;display:flex;flex-direction:column;padding:20px 0 4px;border:0;border-top:1px solid var(--hairD);background:none;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
 .tcard::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
-.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(200,30,30,.08),rgba(200,30,30,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
-.tcard:hover,.tcard:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(11,20,29,.45)}
+.tcard::after{content:"";position:absolute;inset:0;display:none;background:linear-gradient(0deg,rgba(200,30,30,.08),rgba(200,30,30,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
+.tcard:hover,.tcard:focus-visible{transform:translateY(-4px)}
 .tcard:hover::before,.tcard:focus-visible::before{transform:scaleX(1)}
 .tcard:hover::after,.tcard:focus-visible::after{opacity:1}
 .tcard .grp{color:var(--stoneD)}
@@ -295,7 +296,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .tcard:hover h3,.tcard:focus-visible h3{transform:translateX(5px);color:var(--sinD)}
 .tcard:hover h3 span,.tcard:focus-visible h3 span{background-size:100% 1px}
 .tcard .ttl{font-size:14.5px;line-height:1.45;color:var(--stoneD);margin:0;max-width:30ch}
-.tcard .go{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:22px;color:var(--sinD)}
+.tcard .go{display:flex;align-items:center;gap:10px;margin-top:18px;color:var(--sinD)}
+.tcard h3{margin-top:18px!important}
 .tcard .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--eo),transform .32s var(--eo)}
 .tcard:hover .go svg,.tcard:focus-visible .go svg{opacity:1;transform:none}
 
@@ -320,6 +322,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
 /* footer */
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;opacity:.42;z-index:0}
+.ftr>*:not(.fcv){position:relative;z-index:1}
 .ftr{position:relative;z-index:1;background:var(--deep);color:var(--bone);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
@@ -824,8 +828,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
-   '<span class="lab kick" data-r>The problem</span>'+
-   '<p class="txt" id="mani">Too many biopsies come back inadequate for diagnosis, and patients wait weeks for a repeat. A pathologist at the bedside could catch it, but is rarely there. Pathware moves that check <em>to the point of care.</em></p>'+
+   '<div class="mani-in"><span class="lab kick" data-r>The problem</span>'+
+   '<p class="txt" id="mani">Too many biopsies come back inadequate for diagnosis, and patients wait weeks for a repeat. A pathologist at the bedside could catch it, but is rarely there. Pathware moves that check <em>to the point of care.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">20–25<sup>%</sup></span><span class="k">of biopsies are inadequate for diagnosis, on average</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">90<sup>days</sup></span><span class="k">added to diagnosis and treatment by a repeat lung biopsy</span></div>'+
@@ -954,7 +958,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'This page <em>is not here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Pathware Inc.<br>2221 East Street, Suite 208<br>Golden, CO 80401</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:contact@pathware.com">contact@pathware.com</a><br><a class="ul" href="tel:+17204326145">+1 720 432-6145</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/clinical">Clinical focus</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1118,7 +1122,11 @@ function hdrTheme(){
   var y=window.scrollY;hdr.classList.toggle("solid",y>24);
   if(document.body.classList.contains("menu-open")||hdr.contains(document.activeElement)){hdr.classList.remove("hide");lastSY=y}else{if(y<80||y<lastSY-6){hdr.classList.remove("hide");lastSY=y}else if(y>lastSY+6){hdr.classList.add("hide");lastSY=y}}
 }
-var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&7)===0)hdrTheme()});
+/* BT: the hero's living visual, quieter, behind the footer wordmark (copied from the field canvas only while the footer is on screen) */
+function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
+  var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
+  var c=f.getContext("2d"),sw=src.width,sh=src.height,k=Math.max(W/sw,H/sh);c.clearRect(0,0,W,H);c.drawImage(src,(W-sw*k)/2,(H-sh*k)/2,sw*k,sh*k)}
+var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
 
@@ -1237,7 +1245,7 @@ function hideBio(){if(!bioOpen)return;bioOpen=false;bioIdx=-1;
   gsap.to(".ps-scrim",{opacity:0,duration:RM?.01:.4,onComplete:function(){ps.classList.remove("open");ps.setAttribute("aria-hidden","true")}});
   if(lenis)lenis.start();if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true});var r=route(location.hash);document.title=r.t}
 function closeBio(){if(!bioOpen)return;if(bioFromClick){bioFromClick=false;history.back()}else{history.replaceState(null,"",bioBase||"#/team");prevHash=location.hash||"#/";hideBio()}}
-function stepBio(d){if(bioIdx<0)return;var n=TEAM.length,i=(bioIdx+d+n)%n,h="#/team/"+TEAM[i].slug;history.replaceState(null,"",h);prevHash=h;openBio(TEAM[i].slug)}
+function stepBio(d){if(bioIdx<0)return;var n=TEAM.length,i=(bioIdx+d+n)%n;while(TEAM[i].static)i=(i+d+n)%n;var h="#/team/"+TEAM[i].slug;history.replaceState(null,"",h);prevHash=h;openBio(TEAM[i].slug)}
 $$("[data-ps-close]",ps).forEach(function(b){b.addEventListener("click",closeBio)});
 $("#psPrev").addEventListener("click",function(){stepBio(-1)});
 $("#psNext").addEventListener("click",function(){stepBio(1)});

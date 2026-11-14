@@ -47,19 +47,19 @@ Launch wording used consistently: launched commercially at the 66th Annual Droso
 - Logo: violet split-ring mark on black (OBT_Logo_VectorizedB3.png); re-drawn as inline SVG. Site typeface Halyard Display → Hanken Grotesk (closest open geometric grotesk) + JetBrains Mono labels.
 - Palette mapping: logo #9030f0 (39%) → `--vio` (mark, blooms); #7830d8 → `--vioM` (mark on light header); #6030a8 deepened → `--vioD #6a22c4` (accent on light, AA); tint `--vioL #bf95f9` (accent text on dark, AA); #180018/#301848 → `--ink #0d0b12`, `--ink2/3`, `--deep`; neutrals `--paper #f4f3f7`, `--stone`. No other hues.
 
-## Photo inventory (BJ) — used / unused with reasons
-Used: Autoinjector-02 and -03 product renders, WhatsApp lab photo (mission block), lab display picture (cortex), mini-mScope_pic1, imgur jXKQy4j (mini-mScope mount), imgur cCFxorc (kit, via 1024px "h" variant), seeshell-hf-06, titanium-headplate-01, Magkine_pic1, Robo-Comm_1, Box-image-25-2, Droso2025_4 (also as news thumbnail), MNCupAward, GeneticsImage, all 7 team headshots.
-Unused / variant reasons:
-- imgur WeR0XLh.jpeg (Alegria) and AJcf0Sx.jpeg (Pomp): used as imgur "l" reduced-size variants (WeR0XLhl.jpg, AJcf0Sxl.jpg) of the same photo, because the originals are 2.6 MB / 0.6 MB; the inventory tool matches filenames, so it may list them as unused.
-- imgur cCFxorc.jpg: same, used as cCFxorch.jpg (6000 px original is 2.4 MB).
-- imgur oMnzrI2 (mini-mScope in hand): duplicate of squarespace mini-mScope_pic1, which is used.
-- imgur HClpwYt / GxKEmwR / bbmWTpP / D98t9Rs (MagKine carousel): near-duplicate angles of Magkine_pic1, which is used.
-- imgur DAaEDHS / vbayQYD / 39IFHfv (Robo-Comm carousel): duplicates of Robo-Comm_1 (used) and the wireless joystick (off-topic detail).
+## Photo inventory (BJ, refined by BR after client review round 2)
+Kept (each adds people, real use, real data or event credibility the custom visuals cannot):
+- All 7 team headshots (person sheet mode per BQ: two-column for Grabau 649px, Alegria/Pomp imgur 640px variants, Joshi 1369px, Surinach 1060px; `.slim` 96px circle for Gohl wQAwmKh 400px and Kodandaramaiah tMYr7DZ 442px).
+- WhatsApp lab photo (cd11860f): a scientist at the rig, the instruments in real use (home mission block).
+- Wide-field dorsal cortex image ("lab display picture 1"): real imaging data (home neuroscience block, single figure).
+- GENETICS April 2024 cover: published figure of an embryo dish under a micropipette (home launch block, microinjection page, news thumbnail).
+- Droso2025_4 (launch booth) and MNCupAward: launch/award event photos, in their own "bench to booth" block and as news thumbnails.
+Removed in round 2 (BR: a product render beside a spec list repeats what the hero canvas and pinned story already show; replaced by typography, spec rows and the site's own line drawings):
+- Autoinjector-02/-03 renders (postimg), Injecta Box-image-25-2 and Box-image-7-2, mini-mScope_pic1 / imgur oMnzrI2 (hand-held scope), imgur jXKQy4j (scope on mounts), imgur cCFxorc (kit layout), seeshell-hf-06 / seeshell-fb-01 and the other SeeShell variants, titanium-headplate-01..04, Magkine_pic1 and imgur HClpwYt / GxKEmwR / bbmWTpP / D98t9Rs, Robo-Comm_1 and imgur DAaEDHS / vbayQYD / 39IFHfv: product renders/shots that would sit beside spec lists.
+- 40X-needle-image-1: mostly flat orange background; read as a blank tile.
+- embryo_and_needle.jpg: ~430px source, soft and muddy when enlarged.
+Other unused:
+- imgur WeR0XLh.jpeg and AJcf0Sx.jpeg: used as imgur "l" reduced-size variants (WeR0XLhl.jpg, AJcf0Sxl.jpg) of the same photos; originals are 2.6 MB / 0.6 MB, and the inventory tool matches filenames so it lists them as unused.
 - Squarespace 045f3b0b (portrait lab photo on product pages): repeated banner; the lab is represented by the WhatsApp lab photo.
-- embryo_and_needle.jpg: source is ~430 px and soft; dropped after design review (low resolution, muddy when enlarged).
-- 40X-needle-image-1 (postimg): mostly flat orange background; at card size it read as a blank tile, replaced by the GENETICS cover showing a dish under a micropipette.
-- Box-image-7-2: duplicate of Box-image-25-2 (used).
-- SBIR/STTR logo images: generic programme logos, not company imagery.
-- MinneapolisDowntown.jpg: generic city photo (stock-like), careers banner.
-- Species GIFs and micropipette species photos: animated GIFs/organism stock-style photos; species are listed as text.
-- seeshell atlas/fb/hf series beyond hf-06 and fb-01: variants of the same implant.
+- SBIR/STTR programme logos: generic, not company imagery. MinneapolisDowntown.jpg: generic city photo (careers banner).
+- Species GIFs and micropipette organism photos: animated GIFs / stock-style organism photos; species are listed as text.

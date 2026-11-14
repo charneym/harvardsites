@@ -48,6 +48,23 @@ async function run(b, file, route, w, h, maxN, problems, tag) {
       const after = await p.evaluate(() => ({ top: document.querySelector('[data-oa-sc]').scrollTop, sy: scrollY }));
       if (after.top <= info.top + 20) problems.push(`${tag} person #${i}: WHEEL DOES NOT SCROLL the overlay (scrollTop ${info.top}->${after.top}); add data-lenis-prevent to the scroll container and keep overscroll-behavior:contain`);
       if (Math.abs(after.sy - info.sy) > 2) problems.push(`${tag} person #${i}: wheel over the overlay scrolled the PAGE behind it (${info.sy}->${after.sy})`);
+      const lay = await p.evaluate(() => {
+        const d = [...document.querySelectorAll('[role=dialog],[aria-modal=true]')].find(e => { const s = getComputedStyle(e); return s.visibility !== 'hidden' && s.display !== 'none' && e.getBoundingClientRect().height > 100; });
+        if (!d) return null;
+        const vis = e => { const r = e.getBoundingClientRect(), s = getComputedStyle(e); return r.width > 4 && r.height > 4 && s.visibility !== 'hidden' && s.display !== 'none' && +s.opacity > 0.05; };
+        const card = [d, ...d.querySelectorAll('*')].filter(vis).filter(e => getComputedStyle(e).backgroundColor !== 'rgba(0, 0, 0, 0)' || getComputedStyle(e).boxShadow !== 'none').sort((a, b) => a.getBoundingClientRect().width * a.getBoundingClientRect().height - b.getBoundingClientRect().width * b.getBoundingClientRect().height).filter(e => e.getBoundingClientRect().width < innerWidth * 0.98)[0];
+        const imgs = [...d.querySelectorAll('img')].filter(vis).map(im => ({ w: im.getBoundingClientRect().width, h: im.getBoundingClientRect().height, nw: im.naturalWidth }));
+        const name = (d.querySelector('h2,h3')?.textContent || '').trim();
+        const count = name ? [...d.querySelectorAll('*')].filter(vis).filter(e => [...e.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim()) && e.textContent.trim().length <= name.length + 4 && e.textContent.includes(name)).length : 0;
+        const cr = (card || d).getBoundingClientRect();
+        return { imgs, name, count, cw: Math.round(cr.width), ch: Math.round(cr.height), textH: Math.round([...d.querySelectorAll('p,h2,h3')].filter(vis).reduce((a, e) => Math.max(a, e.getBoundingClientRect().bottom), 0) - cr.top) };
+      });
+      if (lay) {
+        if (lay.count > 1) problems.push(`${tag} person #${i}: the name "${lay.name}" appears ${lay.count}x in the sheet (a plate repeating the name/role is wasted space; BI)`);
+        const big = lay.imgs.find(m => m.w * m.h > 200 * 200);
+        if (w >= 1024 && !big && lay.cw > 820) problems.push(`${tag} person #${i}: no large photo but the sheet is ${lay.cw}px wide; use the compact single-column mode (BI)`);
+        if (big && big.nw && big.nw < big.w * 0.98) problems.push(`${tag} person #${i}: portrait upscaled (${big.nw}px source shown ${Math.round(big.w)}px wide); use the slim mode with a small circle (BI)`);
+      }
       if (i === 0 && w >= 1024 && info.left > w * 0.25 && info.right < 4) problems.push(`${tag} overlay is an edge-docked side drawer (x=${info.left}..${w - info.right}); BI requires the centred person sheet`);
     }
     await p.evaluate(() => { document.querySelector('[data-oa-fill]')?.remove(); document.querySelector('[data-oa-sc]')?.removeAttribute('data-oa-sc'); });

@@ -7,6 +7,11 @@
   Re-skin with the site's tokens only: --ps-bg, --ps-ink, --ps-mute, --ps-line, --ps-accent, --ps-scrim, --ps-serif, --ps-sans.
   The sheet itself must NOT clip (no overflow:hidden): each child rounds its own corners, so the scroll body is the only
   clipping ancestor of the bio text (otherwise clip-audit --bios fails as soon as a bio is long enough to scroll).
+  THREE MODES, chosen per person at open time (PRINCIPLES BI, revised after client review):
+   - .ps (default): high-quality headshot (natural width >= 480px) -> two-column sheet, portrait left.
+   - .ps.slim: small/low-res headshot -> ONE column; the portrait is a 96px circle beside the name at native-ish size.
+   - .ps.noimg: no headshot -> ONE compact column, sized to its content. NEVER a plate that repeats the name/role
+     (the client called the empty plate "a terrible use of space").
   Gate: node _kit/overlay-audit.js <file> "#/team" must print OK.
 -->
 <style>
@@ -30,10 +35,19 @@
 .ps-body p{font:400 17px/1.7 var(--ps-sans,system-ui);margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--ps-mute,#5b6068)}
 .ps-x{min-height:44px;padding:0 18px}
+/* slim + noimg: single compact column, height fits the content */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(38vh,300px);border-radius:18px 18px 0 0}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
   .ps-bar{border-top-right-radius:0}
   .ps-body{border-bottom-right-radius:0}
   .ps-col{min-height:0}
@@ -63,14 +77,20 @@ function PersonSheet(PEOPLE, opts) {
   var ps = document.getElementById('ps'), sheet = document.getElementById('psSheet'), body = document.getElementById('psBody'), media = document.getElementById('psMedia');
   var cur = -1, lastFocus = null, base = opts.baseRoute; /* e.g. '#/team' */
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function mode(m){ ps.classList.toggle('slim', m === 'slim'); ps.classList.toggle('noimg', m === 'noimg'); }
   function fill(i) {
     var p = PEOPLE[i];
+    // pick the layout from the photo actually available: big photo -> two columns; small -> slim; none -> noimg
+    mode(p.img ? (p.imgW && p.imgW < 480 ? 'slim' : '') : 'noimg');
+    if (p.img && !p.imgW) { var probe = new Image(); probe.onload = function () { p.imgW = probe.naturalWidth; if (cur === i && p.imgW < 480) { mode('slim'); fill(i); } }; probe.onerror = function () { p.img = null; if (cur === i) fill(i); }; probe.src = p.img; }
     media.innerHTML = p.img
       ? '<img src="' + p.img + '" alt="Portrait of ' + esc(p.name) + '" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">'
       : plate(p);
     window.__psPlate = plate(p);
-    body.innerHTML = '<span class="lab">' + esc(p.group || '') + '</span><h2 id="psName">' + esc(p.name) + '</h2><p class="role">' + esc(p.title) + '</p>' +
-      p.bio.map(function (b) { return '<p>' + esc(b) + '</p>'; }).join('') + (p.src ? '<p class="src">Source: ' + p.src + '</p>' : '');
+    var head = '<h2 id="psName">' + esc(p.name) + '</h2>';
+    if (ps.classList.contains('slim')) head = '<div class="ps-head"><img src="' + p.img + '" alt="Portrait of ' + esc(p.name) + '" onerror="this.remove()"><h2 id="psName">' + esc(p.name) + '</h2></div>';
+    body.innerHTML = '<span class="lab">' + esc(p.group || '') + '</span>' + head + '<p class="role">' + esc(p.title) + '</p>' +
+      p.bio.map(function (b) { return '<p>' + esc(b) + '</p>'; }).join('') + '';
     body.scrollTop = 0;
   }
   function plate(p){return '<div class="ps-plate"><span class="k">' + esc(p.group || 'Team') + '</span><span class="q">' + esc(p.title) + '</span></div>'}

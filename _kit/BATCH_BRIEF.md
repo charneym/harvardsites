@@ -19,6 +19,9 @@ FIRST read the binding client spec `_kit/SPEC.md`, then `_kit/PRINCIPLES.md` in 
 3. Run ALL QA gates in spec section 5 on every route, and LOOK at the screenshots and frames yourself. Then the v13 gates (PRINCIPLES BH–BN):
    - `node _kit/clip-audit.js <file> "<route>" 1440 900` and `... 390 844` on EVERY route (add `--bios` on the people route). Must print OK.
    - `node _kit/overlay-audit.js <file> "<people route>"` must print OK (person sheet from `_kit/components/person-sheet.html`).
+   - v15 gates (PRINCIPLES BS-CB), each must print OK: `node _kit/split-audit.js <file>`, `node _kit/balance-audit.js <file>`, `node _kit/logo-audit.js <file>`.
+   - Run browser gates ONE AT A TIME (parallel Chromium runs produce false failures).
+   - Then the mandatory visual sign-off (PRINCIPLES CB): screenshots of every route at 1440 and 390, every story step, every person sheet, reviewed by a FRESH critic subagent against every client critique in PRINCIPLES, until it finds nothing.
    - `node _kit/photo-inventory.js <their site> <scratch>/<slug>-inv <file>`, done BEFORE design to harvest photos and the logo palette, and again at the end. Every UNUSED non-stock image has a recorded reason.
    - Design critic (BN): from your MAIN thread (sub-agents can't spawn sub-agents), spawn a fresh sub-agent with only the screenshots (1920/1440/390 every route, story frames, person sheet open), their original-site screenshot and PRINCIPLES.md; fix or explicitly reject every finding.
    Run navtest first after any templating change: it catches broken heads instantly. Run the contrast script on any site whose base tone differs from the file you started from. Fix everything and re-run until all pass. Never weaken a check.

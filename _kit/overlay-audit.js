@@ -20,6 +20,7 @@ async function run(b, file, route, w, h, maxN, problems, tag) {
     const h0 = await p.evaluate(() => history.length);
     await p.evaluate(([s, i]) => { const e = [...document.querySelectorAll(s)].filter(e => e.offsetParent || e.getClientRects().length)[i]; e.scrollIntoView({ block: 'center' }); }, [TRIG, i]);
     await p.waitForTimeout(700);
+    const cardText = await p.evaluate(([s, i]) => { const e = [...document.querySelectorAll(s)].filter(e => e.offsetParent || e.getClientRects().length)[i]; const c = e.closest('article,li,[class*=card],[class*=person],[class*=member],[class*=tile]') || e; return c.innerText || ''; }, [TRIG, i]);
     await p.evaluate(([s, i]) => [...document.querySelectorAll(s)].filter(e => e.offsetParent || e.getClientRects().length)[i].click(), [TRIG, i]);
     await p.waitForTimeout(1800);
     const info = await p.evaluate(() => {
@@ -49,7 +50,7 @@ async function run(b, file, route, w, h, maxN, problems, tag) {
       const after = await p.evaluate(() => ({ top: document.querySelector('[data-oa-sc]').scrollTop, sy: scrollY }));
       if (after.top <= info.top + 20) problems.push(`${tag} person #${i}: WHEEL DOES NOT SCROLL the overlay (scrollTop ${info.top}->${after.top}); add data-lenis-prevent to the scroll container and keep overscroll-behavior:contain`);
       if (Math.abs(after.sy - info.sy) > 2) problems.push(`${tag} person #${i}: wheel over the overlay scrolled the PAGE behind it (${info.sy}->${after.sy})`);
-      const lay = await p.evaluate(() => {
+      const lay = await p.evaluate((cardText) => {
         const d = [...document.querySelectorAll('[role=dialog],[aria-modal=true]')].find(e => { const s = getComputedStyle(e); return s.visibility !== 'hidden' && s.display !== 'none' && e.getBoundingClientRect().height > 100; });
         if (!d) return null;
         const vis = e => { const r = e.getBoundingClientRect(), s = getComputedStyle(e); return r.width > 4 && r.height > 4 && s.visibility !== 'hidden' && s.display !== 'none' && +s.opacity > 0.05; };
@@ -58,12 +59,19 @@ async function run(b, file, route, w, h, maxN, problems, tag) {
         const name = (d.querySelector('h2,h3')?.textContent || '').trim();
         const count = name ? [...d.querySelectorAll('*')].filter(vis).filter(e => [...e.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim()) && e.textContent.trim().length <= name.length + 4 && e.textContent.includes(name)).length : 0;
         const cr = (card || d).getBoundingClientRect();
-        return { imgs, name, count, cw: Math.round(cr.width), ch: Math.round(cr.height), textH: Math.round([...d.querySelectorAll('p,h2,h3')].filter(vis).reduce((a, e) => Math.max(a, e.getBoundingClientRect().bottom), 0) - cr.top) };
-      });
+        const words = t => (t.toLowerCase().match(/[a-z0-9'’-]{3,}/g) || []);
+        const cw = new Set(words(cardText)); const sheetBody = [...d.querySelectorAll('p')].filter(vis).filter(e => !e.closest('[data-oa-fill]')).map(e => e.innerText).join(' ');
+        const sw = words(sheetBody); const extra = sw.filter(x => !cw.has(x)).length; const overlap = sw.length ? 1 - extra / sw.length : 1;
+        const lastInk = [...d.querySelectorAll('p,h2,h3,li,a,button,img,span')].filter(vis).filter(e => !e.closest('[data-oa-fill]')).reduce((a, e) => Math.max(a, e.getBoundingClientRect().bottom), 0);
+        return { imgs, name, count, extra, overlap, voidB: Math.round(cr.bottom - lastInk), cw: Math.round(cr.width), ch: Math.round(cr.height) };
+      }, cardText);
       if (lay) {
         if (lay.count > 1) problems.push(`${tag} person #${i}: the name "${lay.name}" appears ${lay.count}x in the sheet (a plate repeating the name/role is wasted space; BI)`);
         const big = lay.imgs.find(m => m.w * m.h > 200 * 200);
         if (w >= 1024 && !big && lay.cw > 820) problems.push(`${tag} person #${i}: no large photo but the sheet is ${lay.cw}px wide; use the compact single-column mode (BI)`);
+        const small = lay.imgs.find(m => m.w >= 24 && m.w < 200);
+        if (small) problems.push(`${tag} person #${i}: small ${Math.round(small.w)}px portrait in the sheet looks unprofessional; show a large high-quality portrait or none (BV)`);
+        if (lay.extra < 10 || lay.overlap > 0.6) problems.push(`${tag} person #${i} "${lay.name}": ${Math.round(lay.overlap * 100)}% of the sheet repeats the card (only ${lay.extra} new words); don't open a profile that repeats the card, show the short bio on the card and make it non-clickable (BV)`);
         if (big && big.nw && big.nw < big.w * 0.98) problems.push(`${tag} person #${i}: portrait upscaled (${big.nw}px source shown ${Math.round(big.w)}px wide); use the slim mode with a small circle (BI)`);
       }
       if (i === 0 && w >= 1024 && info.left > w * 0.25 && info.right < 4) problems.push(`${tag} overlay is an edge-docked side drawer (x=${info.left}..${w - info.right}); BI requires the centred person sheet`);

@@ -50,8 +50,10 @@ Logo sampled from https://static.wixstatic.com/media/f2ff6e_19fb09e81a294b0ea037
 - Concept: the logo's red-to-navy dot row is read as the M1→M2 transition; the hero and story animate exactly that colour change.
 
 ## Photos (BJ) — photo-inventory
-Used: all 17 distinct leadership headshots (Giordano appears twice on their page; shown once), the R&D mechanism figure (f2ff6e_b58dca4b…), the 8 investor/funder logos, the logo.
+Used: all 17 distinct leadership headshots (Giordano appears twice on their page; shown once), the 8 investor/funder logos (tight crops of their own files, in their own block), the logo.
+- Person sheet modes (BQ): two-column for headshots with sources ≥540px; slim (96px circle) for Reher 199px, Burstein 480px, Sabbagh 200px, Johnson 134px, Rissman 147px.
 Unused, with reasons:
+- R&D mechanism schematic (f2ff6e_b58dca4b…, 736×416): cut under BR. The custom hero and pinned story already show the microglia state change and CB2/NTRX-07 binding, and its labels are illegible at mobile size. Its one extra fact (IL-6 and the CCL4/CCL5/CCL17 chemokines) is now live text on /science.
 - Six 1440×900 page-header backgrounds (cd090d…, ec1bb6…, 266fa1…, b3d039…, 452012…, 2acc42…): generic stock neural/neuron renders and MRI stock; replaced by the bespoke microglia hero.
 - 47848a… (368×291) MRI slices: stock, duplicate of a header background.
 - ironpatern.bb7ea6a2.png: Wix template CSS texture.

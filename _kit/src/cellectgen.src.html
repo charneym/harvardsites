@@ -344,10 +344,21 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body a.ul{color:var(--accL)}
 .ps-body .src{margin-top:28px;font-size:11px;color:var(--mutL)}
+/* BQ: the sheet adapts to the photo. slim = small headshot as a 96px circle by the name; noimg = one compact column */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-col,.ps.noimg .ps-col{max-height:calc(100vh - 96px)}
+.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+.ps-head h2{margin:0!important}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr);width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(38vh,300px);border-radius:18px 18px 0 0}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px);grid-template-rows:auto}
+  .ps.slim .ps-col,.ps.noimg .ps-col{max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
 }
@@ -430,9 +441,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fr-meta .go svg{width:16px;height:10px;transition:transform .32s var(--eo)}
 .frow:hover .go svg{transform:translateX(5px)}
 .tfig{position:relative;height:clamp(300px,30vw,420px);margin-top:48px}
-.ps-sheet{height:min(600px,calc(100vh - 96px))}
-.ps-media .ps-small{justify-content:center;align-items:center;gap:22px}
-.ps-media .ps-small img{position:relative;inset:auto;width:200px;height:200px;border-radius:50%;object-fit:cover}
 @media (max-width:860px){.frows{grid-template-columns:1fr}}
 @media (max-width:560px){.frow{grid-template-columns:88px minmax(0,1fr);gap:18px;padding:20px}.fr-ph{width:88px;height:88px}}
 .feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:44px var(--gap)}
@@ -865,15 +873,17 @@ function contactInit(view){
 
 /* ================= BIO OVERLAY (K) ================= */
 var bio=$("#ps"),bioOpen=false,bioFocus=null;
-function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
-window.xPsNoImg=function(im){var m=im.parentNode;im.remove();if(m)m.innerHTML=window.__psPlate||""};
-function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
-  /* small source portraits are never upscaled: they sit at native size on a tinted plate */
-  $("#psMedia").innerHTML=p.img?(p.small?'<div class="ps-plate ps-small"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"></div>':'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="xPsNoImg(this)">'):psPlate(p);
+function psMode(m){bio.classList.toggle("slim",m==="slim");bio.classList.toggle("noimg",m==="noimg")}
+window.xPsNoImg=function(im){var i=pBy((location.hash.split("/")[2])||"");if(i>=0)TEAM[i].img=null;psMode("noimg");im.remove()};
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  /* big sharp headshot -> two columns; small or soft -> slim; none -> noimg (BQ) */
+  var m=p.img?(p.small||(p.imgW&&p.imgW<480)?"slim":""):"noimg";psMode(m);
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(p.imgW<480&&$("#psName")&&$("#psName").textContent===p.name&&!bio.classList.contains("slim"))fillBio(i)};pr.onerror=function(){p.img=null;if($("#psName")&&$("#psName").textContent===p.name)fillBio(i)};pr.src=p.img}
+  $("#psMedia").innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="xPsNoImg(this)">':"";
+  var hd=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
   var b=$("#psBody");
-  b.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(x){return '<p>'+esc(x)+'</p>'}).join("")+
-   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
-   '<p class="lab src">'+esc(SITE.bioSrc)+'</p>';
+  b.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(x){return '<p>'+esc(x)+'</p>'}).join("")+
+   (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'');
   b.scrollTop=0;
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE.name;

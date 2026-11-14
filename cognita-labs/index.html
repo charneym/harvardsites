@@ -209,7 +209,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .prod:hover .pr-fig img{transform:scale(1.035)}
 .pr-fig .fb{display:none;font-family:var(--sans);font-weight:300;font-size:30px;letter-spacing:-.03em;color:var(--stoneD)}
 .pr-fig.noimg img{display:none}.pr-fig.noimg .fb{display:block}
-.pr-meta{display:flex;flex-direction:column;gap:10px;padding:clamp(20px,2vw,28px);flex:1}
+.pr-meta{display:flex;flex-direction:column;gap:10px;padding:clamp(24px,2.4vw,34px);flex:1;min-height:340px}
+.pr-big{display:block;font-family:var(--sans);font-weight:300;font-size:clamp(56px,5vw,88px);line-height:1.04;letter-spacing:-.05em;color:var(--skyD);margin-bottom:auto;padding-bottom:28px}
+.pr-big small{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--stoneD);margin-top:10px;line-height:1.5}
 .pr-meta h3{font-family:var(--sans);font-weight:300;font-size:clamp(30px,2.6vw,44px);line-height:1.06;letter-spacing:-.035em;margin:4px 0 2px;transition:color .3s}
 .prod:hover h3{color:var(--skyD)}
 .pr-meta p{color:var(--stoneD);font-size:15.5px;margin:0}
@@ -414,6 +416,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,36%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(760px,calc(100vh - 96px));background:var(--mist);color:var(--ink);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.5),0 0 0 1px var(--hairD);opacity:0}
 .ps-media{position:relative;overflow:hidden;border-radius:18px 0 0 18px;background:linear-gradient(165deg,#163445 0%,#0b1a23 100%);color:var(--mist);display:flex;flex-direction:column;justify-content:center;gap:30px;padding:clamp(28px,3vw,44px)}
 .ps-media::after{content:"";position:absolute;inset:0;background:radial-gradient(80% 50% at 50% 30%,rgba(108,201,242,.16),rgba(108,201,242,0) 70%);pointer-events:none}
+.ps.slim .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto!important;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media{display:none}
+.ps.slim .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
+.ps-head h2{margin:0!important}
+.ps-av{width:96px;height:96px;border-radius:50%;overflow:hidden;flex:none;background:var(--mist3)}
+.ps-av img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:filter 1.2s ease-out .45s}
+.ps.open .ps-av img{filter:none}
 .ps-por{position:relative;z-index:1;margin:0 auto;width:min(100%,280px);aspect-ratio:4/5;overflow:hidden;border-radius:4px;background:#163445;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
 .ps-por img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) contrast(1.04);transition:filter 1.2s ease-out .45s}
 .ps.open .ps-por img{filter:none}
@@ -482,6 +493,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-plate{width:auto;margin:0}
   .ps-plate .q{font-size:19px}
   .ps-bar{padding:14px 18px;border-top-right-radius:0}
+  .ps.slim .ps-sheet{width:100%;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body{max-height:calc(100dvh - 120px)}
+  .ps.slim .ps-bar{border-radius:18px 18px 0 0}
   .ps-body{border-bottom-right-radius:0}
   .ps-body{padding:26px 20px 48px}
 }
@@ -729,7 +743,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -771,8 +785,7 @@ var SITE="Cognita Labs";
 /* ================= CONTENT (from dossier; nothing invented) ================= */
 var WP="https://cognitalabs.com/wp-content/uploads/",PS="https://d3gobs72u3mdm0.cloudfront.net/wp-content/uploads/",CM="https://capmedicinhaler.com/wp-content/uploads/";
 var IMG={
- pulmo:WP+"2022/05/final3_nobackground-FDA.png",capmedic:WP+"2020/03/CapMedic-1536x864.png",ultra:WP+"2020/03/UltraSpiro_1-1536x744.png",
- hand:CM+"2022/02/hand_LED_ON-1024x1002.png",dash:WP+"2020/07/Combined-DashboardPortal3.png",app:WP+"2020/05/Snapshot1.png",
+
  clinic:PS+"2025/08/Pulmoscan-Test-Child-3-1200x794.jpg",child:PS+"2025/08/Pulmoscan-Test-Child-2.jpg",self:PS+"2025/07/Self-test6.jpg",
  lab:WP+"2025/08/170217_-inhaler_fitlow_199-1536x1022.jpg",nih:WP+"2020/03/NIH-logo.jpg",nsf:WP+"2020/03/NSF-Logo-768x318.png"};
 var INS=[
@@ -783,7 +796,7 @@ var INS=[
  {d:"2024-05-10",a:"Rajoshi Biswas, PhD",t:"Rethinking lung function tests as part of clinic workflows",u:"https://pulmoscan.cognitalabs.com/2024/05/10/"}
 ];
 var TEAM=[
- {slug:"gaurav-patel",name:"Gaurav Patel",title:"CEO & Cofounder",grp:"Leadership",pos:"52% 16%",z:1.7,img:WP+"2025/08/53254127009_fb602f51eb_b-e1754418586606.jpg",
+ {slug:"gaurav-patel",name:"Gaurav Patel",title:"CEO & Cofounder",grp:"Leadership",pos:"52% 16%",z:1.7,slim:1,img:WP+"2025/08/53254127009_fb602f51eb_b-e1754418586606.jpg",
   bio:["Gaurav brings a rare blend of engineering precision and entrepreneurial vision to Cognita Labs. With a background in biomedical innovation and a deep commitment to solving real-world clinical challenges, he leads the company’s mission to transform respiratory care through accessible, data-driven technology.","At Cognita, he raised multimillion R&D funds, scaled the initial vision into FDA 510(k) cleared devices and led widescale adoption through strategic partnerships worldwide.","Before founding Cognita Labs, Gaurav held research and leadership roles in product development and R&D across academic collaborations."]},
  {slug:"rajoshi-biswas",name:"Rajoshi Biswas, PhD",title:"CSO & Cofounder",grp:"Leadership",img:WP+"2020/05/Pic2-scaled-e1590434282762.jpg",
   bio:["Rajoshi is the scientific force behind Cognita Labs’ patient-centric innovations. With a PhD in Electrical and Computer Engineering from Rice University, her research has focused on aerosol drug deposition and quantified inhaler-use behavior, bridging engineering precision with clinical relevance.","She cofounded Cognita Labs to address real-world gaps in respiratory care, drawing on early academic collaborations. Her work has led to multiple FDA filings and to tools like CapMedic and UltraSpiro, designed to simplify inhaler technique and enable remote lung monitoring.","Rajoshi is the principal investigator of the NIH-funded SonoHeal program, and her leadership keeps every Cognita solution rooted in rigorous science, clinical empathy and a deep understanding of how patients and providers use technology."]},
@@ -805,10 +818,10 @@ window.cgNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noi
 function rows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.a)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fig(src,alt,cls,cap){return '<figure class="ph '+(cls||'')+'"><img src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')">'+(cap?'<figcaption class="lab">'+cap+'</figcaption>':'')+'</figure>'}
 function dev(src,alt,cls){return '<figure class="devfig '+(cls||'')+'"><img src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"></figure>'}
-function product(o){return '<a class="prod" href="#/devices"><figure class="pr-fig"><img src="'+o.img+'" alt="'+esc(o.alt)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"><span class="fb" aria-hidden="true">'+o.name+'</span></figure><div class="pr-meta"><span class="tagp'+(o.sg?' sg':'')+'">'+o.k+'</span><h3>'+o.name+'</h3><p>'+o.p+'</p><span class="lab go">Details '+ARR+'</span></div></a>'}
-var P_PULMO={k:"FDA cleared · Class II",name:"PulmoScan",img:IMG.pulmo,alt:"PulmoScan handheld oscillometry device with its coaching tablet app",p:"Effort-free airway impedance testing: resistance and reactance measured during quiet breathing, in under a minute."};
-var P_CAP={k:"FDA cleared · Class II",name:"CapMedic",img:IMG.capmedic,alt:"CapMedic inhaler attachment with its companion app",p:"An attachment for everyday inhalers that coaches correct use in real time and doubles as a home spirometer for FEV1 and PEF."};
-var P_ULTRA={k:"Coaching spirometer",name:"UltraSpiro",img:IMG.ultra,alt:"UltraSpiro connected coaching spirometer",p:"An intelligent coaching spirometer with high flow sensitivity, connected to a mobile app and cloud platform."};
+function product(o){return '<a class="prod" href="#/devices"><div class="pr-meta"><span class="pr-big">'+o.f+'<small>'+o.fk+'</small></span><span class="tagp'+(o.sg?' sg':'')+'">'+o.k+'</span><h3>'+o.name+'</h3><p>'+o.p+'</p><span class="lab go">Details '+ARR+'</span></div></a>'}
+var P_PULMO={f:"&lt;1 min",fk:"Effort-free test, from age 4",k:"FDA cleared · Class II",name:"PulmoScan",p:"Effort-free airway impedance testing: resistance and reactance measured during quiet breathing, in under a minute."};
+var P_CAP={f:"3×",fk:"Better inhaler use in a clinic study",k:"FDA cleared · Class II",name:"CapMedic",p:"An attachment for everyday inhalers that coaches correct use in real time and doubles as a home spirometer for FEV1 and PEF."};
+var P_ULTRA={f:"&lt;1%",fk:"Error rate, according to Cognita",k:"Coaching spirometer",name:"UltraSpiro",p:"An intelligent coaching spirometer with high flow sensitivity, connected to a mobile app and cloud platform."};
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -922,30 +935,22 @@ function moaSvg(){
 }
 function vDevices(){
   return head({k:"Devices",h:'Lung function, <em>wherever care happens.</em>',p:'Two FDA-cleared Class II devices, a coaching spirometer and a remote monitoring platform, built so minimally trained staff and patients at home can get reliable measurements.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two r">'+
-   '<div>'+dev(IMG.pulmo,"PulmoScan device in front of its tablet app showing an oscillometry report")+'</div>'+
-   '<div><span class="tagp" data-r>FDA cleared · Class II</span><h2 class="d2 split" style="margin-top:18px">Pulmo<em>Scan</em></h2><p class="muted" style="margin-top:22px" data-r>A smart, portable airway assessment device with an assistive coaching tablet app and cloud support. Its zero-effort quick test brings lung testing into high-volume clinics and pediatric offices, where quality spirometry is often difficult.</p>'+
-    '<dl class="facts"><div><dt class="lab">Method</dt><dd>Oscillometry, 5–30 Hz</dd></div><div><dt class="lab">Tests conducted</dt><dd>More than 260,000</dd></div><div><dt class="lab">Deployed</dt><dd>More than 20 countries</dd></div><div><dt class="lab">Manufacturing</dt><dd>ISO 13485 facility</dd></div></dl>'+
-    '<div style="margin-top:32px" data-r><a class="btn" href="https://pulmoscan.cognitalabs.com/" target="_blank" rel="noopener">PulmoScan site ↗</a></div></div>'+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div><span class="tagp" data-r>FDA cleared · Class II</span><h2 class="d2 split" style="margin-top:18px">Pulmo<em>Scan</em></h2><p class="muted" style="margin-top:22px" data-r>A smart, portable airway assessment device with an assistive coaching tablet app and cloud support. Its zero-effort quick test brings lung testing into high-volume clinics and pediatric offices, where quality spirometry is often difficult.</p><div style="margin-top:28px" data-r><a class="btn" href="https://pulmoscan.cognitalabs.com/" target="_blank" rel="noopener">PulmoScan site ↗</a></div></div>'+
+   '<dl class="facts"><div><dt class="lab">Method</dt><dd>Oscillometry, 5–30 Hz, during quiet breathing</dd></div><div><dt class="lab">Test time</dt><dd>Under a minute, no calibration</dd></div><div><dt class="lab">Patients</dt><dd>Children from age 4 to adults</dd></div><div><dt class="lab">Tests conducted</dt><dd>More than 260,000</dd></div><div><dt class="lab">Deployed</dt><dd>More than 20 countries</dd></div><div><dt class="lab">Manufacturing</dt><dd>ISO 13485 facility</dd></div></dl>'+
    '</div>'+
    '<div class="duo">'+fig(IMG.child,"A child breathes normally into PulmoScan during a test","r32")+fig(IMG.self,"An adult takes a PulmoScan test at home","r32")+'</div>'+
   '</div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two r">'+
-   '<div><span class="tagp" style="color:var(--skyL)" data-r>FDA cleared · Class II</span><h2 class="d2 split" style="margin-top:18px">Cap<em>Medic</em></h2><p class="muted" style="margin-top:22px" data-r>The first inhaler attachment for metered dose inhalers that measures inhaler use with high granularity. CapMedic gives real-time audio-visual guidance, measures the correctness, time and frequency of use, and works as a home spirometer for FEV1 and PEF.</p>'+
-    '<ul class="aims"><li><span>In a clinic study presented at ATS 2020, 90% of patients made at least two critical errors before any intervention.</span></li><li><span>Standard-of-care instruction brought no significant improvement.</span></li><li><span>With CapMedic feedback, every patient completed at least three of four correct steps.</span></li></ul>'+
-    '<div style="margin-top:32px" data-r><a class="btn" href="https://capmedicinhaler.com/" target="_blank" rel="noopener">CapMedic site ↗</a></div></div>'+
-   '<div>'+dev(IMG.hand,"CapMedic attached to a rescue inhaler, held in a hand")+'</div>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
+   '<div><span class="tagp" style="color:var(--skyL)" data-r>FDA cleared · Class II</span><h2 class="d2 split" style="margin-top:18px">Cap<em>Medic</em></h2><p class="muted" style="margin-top:22px" data-r>The first inhaler attachment for metered dose inhalers that measures inhaler use with high granularity. CapMedic gives real-time audio-visual guidance, measures the correctness, time and frequency of use, and works as a home spirometer for FEV1 and PEF.</p><div style="margin-top:28px" data-r><a class="btn" href="https://capmedicinhaler.com/" target="_blank" rel="noopener">CapMedic site ↗</a></div></div>'+
+   '<div><span class="lab kick" data-r>Clinic study, ATS 2020</span><ul class="aims"><li><span>90% of patients made at least two critical inhaler errors before any intervention.</span></li><li><span>Standard-of-care instruction brought no significant improvement.</span></li><li><span>With CapMedic feedback, every patient completed at least three of four correct steps.</span></li></ul></div>'+
   '</div></div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two r">'+
-   '<div>'+dev(IMG.ultra,"UltraSpiro coaching spirometer")+'</div>'+
-   '<div><span class="tagp" data-r>Coaching spirometer</span><h2 class="d2 split" style="margin-top:18px">Ultra<em>Spiro</em></h2><p class="muted" style="margin-top:22px" data-r>An intelligent coaching spirometer with high flow sensitivity and error rates below 1%, according to Cognita. It connects to a mobile app and cloud platform, and is designed to be mobile, data-driven and interactive for better patient engagement.</p></div>'+
-  '</div></div></section>'+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Remote monitoring</span><h2 class="d2 split">The full history, <em>even remotely.</em></h2></div><p data-r>Patients securely share medication use and lung health with their physician, and providers make data-driven decisions with complete medication and lung function history. Remote monitoring is reimbursable under the CMS telehealth policy.</p></div>'+
-   dev(IMG.dash,"Cognita remote monitoring dashboard on desktop and mobile","screen")+
-  '</div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<a class="dev-next" href="#/technology" style="margin-top:0"><div><span class="tagp sg">In development · NIH NHLBI</span><h3>Next: SonoHeal.</h3><p>A closed-loop airway clearance system that measures airway resistance, localizes obstruction and tunes its therapy frequency to each patient. It is investigational and not available for sale.</p></div><span class="lab go">How it works '+ARR+'</span></a>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="pillars">'+
+   '<div class="pl3"><span class="tagp" data-r>Coaching spirometer</span><h3 style="margin-top:18px">UltraSpiro</h3><p>An intelligent coaching spirometer with high flow sensitivity and error rates below 1%, according to Cognita, connected to a mobile app and cloud platform.</p></div>'+
+   '<div class="pl3"><span class="tagp" data-r>Remote monitoring</span><h3 style="margin-top:18px">The full history</h3><p>Patients securely share medication use and lung health with their physician, so providers can decide with complete medication and lung function history, even remotely.</p></div>'+
+   '<div class="pl3"><span class="tagp" data-r>Reimbursement</span><h3 style="margin-top:18px">CMS telehealth</h3><p>Remote monitoring with Cognita’s devices is reimbursable under the CMS telehealth policy, according to the company.</p></div>'+
+  '</div>'+
+   '<a class="dev-next" href="#/technology"><div><span class="tagp sg">In development · NIH NHLBI</span><h3>Next: SonoHeal.</h3><p>A closed-loop airway clearance system that measures airway resistance, localizes obstruction and tunes its therapy frequency to each patient. It is investigational and not available for sale.</p></div><span class="lab go">How it works '+ARR+'</span></a>'+
   '</div></section>'+cta();
 }
 function vTeam(){
@@ -1330,9 +1335,10 @@ var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),
 function psFill(i){var p=TEAM[i];
   window.__psPlate='<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>';
   psMedia.innerHTML='<figure class="ps-por"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" style="object-position:'+(p.pos||'50% 22%')+';transform:scale('+(p.z||1)+');transform-origin:'+(p.pos||'50% 22%')+'" onerror="this.parentNode.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate);this.parentNode.remove()"></figure>';
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'<p class="src lab">Profile drawn from cognitalabs.com</p>';
+  ps.classList.toggle("slim",!!p.slim);var hd='<h2 id="psName">'+esc(p.name)+'</h2>';if(p.slim)hd='<div class="ps-head"><span class="ps-av"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" style="object-position:'+(p.pos||'50% 22%')+';transform:scale('+(p.z||1)+');transform-origin:'+(p.pos||'50% 22%')+'" onerror="this.parentNode.remove()"></span>'+hd+'</div>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'<p class="src lab">Profile drawn from cognitalabs.com</p>';
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;psFit()}
-function psFit(){psSheet.style.height="";if(innerWidth<=760)return;var bar=psSheet.querySelector(".ps-bar").offsetHeight,need=bar+psBody.scrollHeight+2,mx=Math.min(760,innerHeight-96);psSheet.style.height=Math.max(Math.min(480,mx),Math.min(mx,need))+"px"}
+function psFit(){psSheet.style.height="";if(innerWidth<=760||ps.classList.contains("slim"))return;var bar=psSheet.querySelector(".ps-bar").offsetHeight,need=bar+psBody.scrollHeight+2,mx=Math.min(760,innerHeight-96);psSheet.style.height=Math.max(Math.min(480,mx),Math.min(mx,need))+"px"}
 addEventListener("resize",function(){if(psCur>=0)psFit()});
 function psOpen(slug,instant){var i=pBy(slug);if(i<0)return;var was=psCur>=0;psCur=i;psFill(i);
   if(was){if(!RM){gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});gsap.fromTo(psBody.children,{opacity:0,y:12},{opacity:1,y:0,duration:.5,stagger:.04,ease:"power2.out"})}return}

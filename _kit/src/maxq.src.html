@@ -588,6 +588,16 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* BQ: the sheet adapts to the photo. Big sharp headshot: two columns. Small one: slim (96px circle by the name). None: one compact column sized to content */
+.bio.noimg .pan,.bio.slim .pan{grid-template-columns:1fr;grid-template-rows:auto;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.bio.noimg .pmed,.bio.slim .pmed{display:none}
+.bio.noimg .bar0,.bio.slim .bar0{border-radius:18px 18px 0 0}
+.bio.noimg .in,.bio.slim .in{flex:none;border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.bio .phead{display:flex;align-items:center;gap:22px;margin:14px 0 4px}
+.bio .phead img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1)}
+.bio .phead h2{margin:0}
+@media (max-width:760px){.bio.noimg .pan,.bio.slim .pan{width:100%;height:auto;max-height:calc(100dvh - 40px)}.bio.noimg .in,.bio.slim .in{max-height:calc(100dvh - 120px)}.bio .phead img{width:72px;height:72px}}
+
 /* BG/BK: no template-gold leftovers; every tint derives from the site's own tokens */
 .hdr.solid{background:color-mix(in srgb,var(--ink) 76%,transparent)}
 .hdr.solid.ink{background:color-mix(in srgb,var(--bone) 86%,transparent)}
@@ -606,7 +616,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* critic round: sheet focus ring stays inside, plate never empty, touch devices get no sticky hovers, mobile story centred */
 .bio .in:focus,.bio .in:focus-visible{outline:none}
-@media (min-width:761px){.bio .pmed.isplate ~ .pcol .pq{display:none}}
 .bio .plate .who{font-family:var(--serif);font-size:clamp(28px,2.6vw,40px);line-height:1.05;letter-spacing:-.03em;padding-bottom:.12em}
 .bio .plate .q{font-size:clamp(17px,1.5vw,21px);line-height:1.4;color:rgba(255,255,255,.78);max-width:28ch}
 @media (max-width:760px){.bio .pmed.isplate{height:116px}.bio .pmed.isplate .plate{padding:20px}.bio .pmed.isplate .plate::before,.bio .pmed.isplate .q{display:none}.bio .pmed.isplate .who{font-size:26px}}
@@ -828,11 +837,6 @@ function vHome(){
     '</div></div>'+
    '<div class="story-r"><div class="sfigs"><div class="sfig" id="scene">'+sceneSVG()+'</div></div><div class="ax lab" aria-hidden="true"><span>Axial view</span><span>Schematic</span></div></div>'+
   '</div></section>'+
-
-  '<section class="sec dark" data-theme="dark" style="background:#000"><div class="wrap"><div class="sys">'+
-   '<figure class="sys-fig"><img src="https://cdn.prod.website-files.com/67f44cf0483f1b4454d55068%2F680bf5d0cfbd3217d8bb68a0_Revised%20Final%20Website%20Video-poster-00001.jpg" alt="Render of the MaxQ transurethral probe and handpiece beside a prostate model" loading="lazy" decoding="async" onerror="this.closest(\'.sys\').classList.add(\'noimg\')"></figure>'+
-   '<div class="sys-t"><span class="lab kick" data-r>The system</span><h2 class="d3 split">One probe. <em>One sitting.</em></h2><p class="muted" data-r>A single transurethral device carries both the ultrasound imaging and the targeted therapy, designed for a fully automated, outpatient procedure tailored to each patient’s anatomy.</p><p class="cmt" data-r>MaxQ System render. Investigational device; not available for commercial use in the United States.</p></div>'+
-  '</div></div></section>'+
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Indications</span><h2 class="d2 split">BPH first. <em>Then further.</em></h2></div><p data-r>The first indication is benign prostatic hyperplasia. The same platform is planned for focal therapy of prostate cancer and, longer term, broader prostate diagnostics.</p></div>'+
@@ -1232,15 +1236,19 @@ function contactInit(view){
 
 /* ================= BIO OVERLAY ================= */
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
-function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  window.__plate='<div class="plate"><span class="lab">'+esc(p.grp)+' · '+esc(SITE)+'</span><span class="who">'+esc(p.name)+'</span><span class="q">'+esc(p.q?('“'+p.q+'”'):p.title)+'</span></div>';$("#bioMed").classList.toggle("isplate",!p.img);
-  $("#bioMed").innerHTML=(p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.innerHTML=window.__plate">':'')+(p.img?'':window.__plate);
-  $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
-   (p.q?'<blockquote class="pq">“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-   '<p class="lab src">Profile drawn from MaxQ Medical’s August 2026 Series A announcement.</p>';
+function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
+  /* BQ: pick the layout from the photo actually available */
+  bio.classList.toggle("slim",!!(p.img&&p.imgW&&p.imgW<480));bio.classList.toggle("noimg",!p.img);
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
+  var slim=bio.classList.contains("slim");
+  $("#bioMed").innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
+  $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
+   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;
 }
+window.TEAM_NOIMG=function(i){TEAM[i].img=null;if(window.__bioCur===i)fillBio(i)};
+TEAM.forEach(function(p){if(p.img){var im=new Image();im.onload=function(){p.imgW=im.naturalWidth};im.src=p.img}});
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
   if(bioOpen){$("#bioIn").scrollTop=0;gsap.fromTo(["#bioMed","#bioIn"],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}
   bioOpen=true;bio.classList.add("open");if(lenis)lenis.stop();

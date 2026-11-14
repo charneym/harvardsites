@@ -466,10 +466,16 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-plate .k{font:500 12px/1.4 var(--ps-sans,system-ui);letter-spacing:.14em;text-transform:uppercase;color:var(--ps-mute,#5b6068)}
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
-.ps-sheet.noimg{grid-template-columns:1fr;width:min(760px,calc(100vw - 64px))}
-.ps-sheet.noimg .ps-media{display:none}
-.ps-sheet.noimg .ps-col{border-radius:18px}
-.ps-sheet.noimg .ps-body{border-radius:0 0 18px 18px}
+/* BQ: slim and noimg are one compact column sized to the content (<=820px) */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
+.ps-head h2{margin:0;padding-bottom:.08em}
+@media (max-width:760px){.ps-head{gap:16px}.ps-head img{width:72px;height:72px}}
 .ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
 .ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
@@ -709,14 +715,6 @@ em{font-family:var(--ital);font-style:italic}
   .hero .lede,.hero .sub,.hero p{max-width:620px}
 }
 
-/* contact: one full-width photographic band under both columns, so neither column
-   leaves a dead quadrant beside the form (client review, round 2) */
-.cph{margin:clamp(56px,7vw,100px) 0 0;grid-column:1/-1}
-.cph-im{position:relative;aspect-ratio:26/10;overflow:hidden;border-radius:2px;background:var(--bone3)}
-.cph-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 42%;filter:saturate(.92) contrast(1.02)}
-.cph figcaption{margin-top:14px;color:var(--stoneD)}
-.cph.noimg{display:none}
-@media (max-width:860px){.cph-im{aspect-ratio:3/2}}
 .cgrid .addr{align-self:center}
 
 </style>
@@ -942,7 +940,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -1095,7 +1093,7 @@ function vHome(){
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path class="a" d="M10 10l18 18"/><path d="M6 46h52"/><circle cx="32" cy="36" r="7"/><path d="M20 46v-6M44 46v-9"/></svg><h3>Printed with light</h3><p>Sub-micrometer features in ultra-low-stiffness, biocompatible materials, pushing past the limits of standard 3D printing.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 32h56"/><ellipse cx="24" cy="32" rx="10" ry="7"/><ellipse class="a" cx="44" cy="32" rx="7" ry="5"/><circle class="f" cx="24" cy="32" r="2.4"/></svg><h3>Direct 3D readout</h3><p>Myelin wrapping is quantified directly in an axon-like, three-dimensional environment, rather than inferred from differentiation.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="20" cy="22" r="9"/><circle class="a" cx="42" cy="38" r="12"/><path d="M6 56c6-10 16-14 26-14"/></svg><h3>Human cells</h3><p>Compatible with human cells, so human disease is addressed directly instead of through animal cells that have repeatedly failed to predict clinical effect.</p></div>'+
-   '</div>'+sciFigs([SCI[1],SCI[2]])+'</div></section>'+
+   '</div>'+sciFigs([SCI[1]])+'</div></section>'+
 
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Validated with</span><h2 class="d2 split">Built and tested <em>at MIT.</em></h2></div><p data-r>The platform has been validated at MIT with industry and academic collaborators, and the company has published its validation work in peer-reviewed journals.</p></div>'+
@@ -1146,7 +1144,7 @@ function vPlatform(){
     '<div><dt class="lab">Validation</dt><dd>Known pro-myelinating compounds re-tested in the lesion-like environment to measure how their efficacy changes.</dd></div>'+
    '</dl></div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>From the assay</span><h2 class="d2 split">What the readout <em>looks like.</em></h2></div><p data-r>Images from Artificial Axon Labs: human cells wrapping myelin along printed axon mimics, and the light-based printer that makes them.</p></div>'+sciFigs(SCI)+'<div class="shead" style="margin-top:var(--sec)"><div><span class="lab kick" data-r>Published work</span><h2 class="d2 split">The platform <em>in print.</em></h2></div></div>'+paperRows()+
+   '<div class="shead"><div><span class="lab kick" data-r>Published work</span><h2 class="d2 split">The platform <em>in print.</em></h2></div></div>'+paperRows()+
   '</div></section>'+cta();
 }
 function vTeam(){
@@ -1167,8 +1165,6 @@ function vContact(){
     '<div class="sub"><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:var(--sinD);stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the Artificial Axon Labs team directly.</p></div></div>'+
   '</div>'+
-   '<figure class="cph" data-r><div class="cph-im"><img src="'+IMG+"1645809505764-2EN149GR2Z6349KN3H3Q/HR3DP.jpg?format=1500w"+'" alt="The light-based 3D printing optics used to write the artificial axons" loading="lazy" decoding="async" onerror="this.closest(\'.cph\').classList.add(\'noimg\')"></div>'+
-     '<figcaption class="lab">Light-based 3D printing at Artificial Axon Labs</figcaption></figure>'+
   '</div></section>';
 }
 function v404(){return head({k:"Not found",h:'This page isn’t <em>wrapped.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
@@ -1573,14 +1569,23 @@ function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"
 function psFill(i){
   var p=TEAM[i];
   window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  /* no portrait: run the sheet as one centred column rather than an empty plate */
-  psSheet.classList.toggle("noimg",!p.img);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+  /* BQ: the sheet adapts to the photo actually available.
+     big sharp headshot (>=480px) -> two columns; small/soft -> slim (96px circle beside the
+     name); none -> noimg (one compact column). Nothing repeats the name or the role. */
+  var md=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";
+  ps.classList.toggle("slim",md==="slim");ps.classList.toggle("noimg",md==="noimg");
+  if(p.img&&!p.imgW){var pr=new Image();
+    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};
+    pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
+  psMedia.innerHTML=(p.img&&md==="")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
+  var psHead=(md==="slim")
+    ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
+    : '<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+psHead+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
-    (BIOSRC?'<p class="src lab">'+BIOSRC+'</p>':'');
+    '';
   psBody.scrollTop=0;
   $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
   $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);

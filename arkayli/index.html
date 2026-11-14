@@ -417,6 +417,17 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 }
 @media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
 
+/* BQ: per-person mode. slim = small headshot as a circle by the name; noimg = one compact column */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+.ps-head h2{margin:0!important}
+@media (max-width:760px){.ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px);border-radius:18px 18px 0 0}.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px 18px 0 0}.ps-head img{width:72px;height:72px}}
+
 
 [data-r]{will-change:auto}
 .nf{min-height:70vh}
@@ -659,6 +670,7 @@ body{background:var(--bone)}
 @media (max-width:860px){.goals li{grid-template-columns:1fr;row-gap:8px}.pgrid.g3{grid-template-columns:1fr 1fr}}
 @media (max-width:1024px){.scene text{font-size:14px}.scene .minor{display:none}}
 .row-a{overflow:visible}
+.newsimg.noimg{grid-template-columns:1fr}.newsimg.noimg>div{max-width:760px}
 
 </style>
 </head>
@@ -886,7 +898,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -1114,7 +1126,7 @@ function vTeam(){
 function vNews(){
   return head({k:"News",h:'News and <em>milestones.</em>',p:'Regulatory, funding and company news, each linked to its source.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+
-   '<div class="newsimg" id="nimg"><div class="im"><img src="'+NEWSIMG+'" alt="A baby with an infantile hemangioma, from Arkayli’s October 2026 announcement" loading="lazy" onerror="document.getElementById(\'nimg\').classList.add(\'noimg\')"></div><div><span class="lab kick" data-r>October 2026</span><h2 class="d3 split">FDA says the study <em>may proceed.</em></h2><p class="muted" style="margin-top:18px" data-r>Arkayli is preparing a Phase 1b trial of ARK001 in infants with proliferating infantile hemangioma, funded in part by a new NIH SBIR grant.</p><div style="margin-top:22px" data-r><a class="btn" href="'+PRN+'" target="_blank" rel="noopener">Read the release ↗</a></div></div></div>'+
+   '<div class="newsimg noimg" id="nimg"><div><span class="lab kick" data-r>October 2026</span><h2 class="d3 split">FDA says the study <em>may proceed.</em></h2><p class="muted" style="margin-top:18px" data-r>Arkayli is preparing a Phase 1b trial of ARK001 in infants with proliferating infantile hemangioma, funded in part by a new NIH SBIR grant.</p><div style="margin-top:22px" data-r><a class="btn" href="'+PRN+'" target="_blank" rel="noopener">Read the release ↗</a></div></div></div>'+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>All news</span>'+newsRows(NEWS)+'</div></section>'+cta();
 }
@@ -1337,7 +1349,7 @@ function rvHide(el){
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
-function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+function rvGo(b,d,gap){var g=Math.min(gap==null?.07:gap,.3/Math.max(1,b.length));b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
   if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
@@ -1422,11 +1434,15 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI): centred sheet, wheel-scrollable bio column ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psScrim=$(".ps-scrim"),bioOpen=false,psLast=null;
 gsap.set([psSheet,psScrim],{opacity:0});
-function psPlate(p){return '<div class="ps-plate">'+(window.PLATE_MARK||'')+'<span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(SITE)+'</span></div>'}
-function fillBio(i){var p=TEAM[i],n=TEAM.length;window.__psPlate=psPlate(p);
-  psMedia.classList.toggle('noimg',!p.img);psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var m=this.parentNode;this.remove();m&&m.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
-   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+(p.src?'<p class="src">Source: '+p.src+'</p>':'');
+function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+function fillBio(i){var p=TEAM[i],n=TEAM.length;
+  psMode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(bioOpen&&pBy(location.hash.split("/")[2])===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(bioOpen)fillBio(i)};pr.src=p.img}
+  var slim=ps.classList.contains("slim");
+  psMedia.innerHTML=p.img&&!slim?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
+  var head=slim?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   psBody.scrollTop=0;
   $("#psPrev").setAttribute("data-slug",TEAM[(i-1+n)%n].slug);$("#psNext").setAttribute("data-slug",TEAM[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;

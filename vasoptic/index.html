@@ -505,6 +505,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pf.noimg img{display:none}
 .pf .alt{display:none;font-family:var(--serif);font-size:30px;color:var(--stoneD)}
 .pf.noimg .alt{display:block}
+.plat.txt .pm{padding:clamp(26px,2.4vw,38px);min-height:300px}
+.plat.txt h3{font-size:clamp(34px,3vw,50px);margin-top:18px}
 .pm{padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
 .pm h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,2.4vw,40px);line-height:1.02;margin:4px 0 2px;transition:color .3s}
 .plat:hover h3{color:var(--sinD)}
@@ -663,6 +665,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
 }
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-body{max-height:calc(100vh - 190px)}
+@media (max-width:760px){.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
 @media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
 @media (min-width:1025px){.shead{flex-wrap:nowrap}.shead>div{flex:0 1 auto;min-width:0}.shead>p{flex:0 0 auto;width:min(46ch,32%)}}
 @media (max-width:1100px){.featgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -742,7 +748,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 <main id="main" tabindex="-1"><div id="view"></div></main>
 
-<div class="ps" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName" aria-hidden="true">
+<div class="ps noimg" id="bio" role="dialog" aria-modal="true" aria-labelledby="bioName" aria-hidden="true">
   <div class="ps-scrim" id="bioScr"></div>
   <div class="ps-sheet" id="bioPan">
     <div class="ps-media" id="psMedia"></div>
@@ -913,7 +919,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -1005,7 +1011,7 @@ function head(o){
 }
 function tCard(p){return '<a class="tcard" href="#/company/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab"'+(n.d.length>4?' datetime="'+n.d+'"':'')+'>'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-function platCard(o){return '<a class="plat" href="#/platforms"><figure class="pf'+(o.ct?' ct':'')+(o.img===IM.g1?' g1':'')+'"><img src="'+wix(o.img,o.w,o.h)+'" alt="'+esc(o.name)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"><span class="alt">'+esc(o.name)+'</span></figure><div class="pm"><span class="lab">'+o.k+'</span><h3>'+o.name+'</h3><p>'+o.p+'</p><span class="lab go">Platform details '+ARR+'</span></div></a>'}
+function platCard(o){return '<a class="plat txt" href="#/platforms"><div class="pm"><span class="lab">'+o.k+'</span><h3>'+o.name+'</h3><p>'+o.p+'</p><span class="lab go">Platform details '+ARR+'</span></div></a>'}
 function progRows(list){return '<ul class="prg">'+list.map(function(o){return '<li><a class="row-p" href="'+o.u+'" target="_blank" rel="noopener"><div><h3>'+o.n+'</h3><span class="ind">'+o.pl+'</span></div><div class="tg"><span class="tagp">'+o.tag+'</span><span class="lab">RePORTER ↗</span></div><p>'+o.p+'</p></a></li>'}).join("")+'</ul>'}
 function awards(){return '<div class="awds" data-group>'+
   '<a class="awd" href="'+RP+'11407312" target="_blank" rel="noopener"><span class="lab">NEI · SBIR Phase II · Aug 2026</span><h3>Imaging episcleral blood flow to guide glaucoma surgery.</h3><p>Phase I built a VasoVUE prototype combining speckle, reflectance and fluorescence imaging, and showed in animal models that episcleral venous blood flow changes with eye pressure and after goniotomy. Phase II takes it into clinical studies and the operating room.</p><div class="amt"><b>$999,883</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
@@ -1139,11 +1145,10 @@ function vScience(){
     gfig(WX+IM.ts,"Time-series graph of blood flow beside a video of pulsatile blood flow in the human retina","Blood flow over time, with a video of pulsatile flow dynamics in the human retina, captured with the XyCAM CRE.","2/1")+
    '</div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>In the lab</span><h2 class="d2 split">Research views from <em>VasoVUE.</em></h2></div><p data-r>VasoVUE records reflectance, fluorescence and laser speckle images of the same tissue, synchronized and registered, and follows blood flow over days.</p></div>'+
-   '<div class="gal g3" data-group>'+
+   '<div class="shead"><div><span class="lab kick" data-r>In the lab</span><h2 class="d2 split">Research views from <em>VasoVUE.</em></h2></div><p data-r>VasoVUE records reflectance, fluorescence and laser speckle images of the same tissue, synchronized and registered for comparison.</p></div>'+
+   '<div class="gal" data-group>'+
     '<figure class="gfig"><div class="im"><img src="'+wix(IM.epi,1400,700)+'" alt="Episcleral vessels in the rabbit eye imaged with high contrast reflectance, ICG fluorescence and laser speckle contrast imaging" loading="lazy" onerror="this.closest(\'figure\').classList.add(\'noimg\')"></div><figcaption>Episcleral vessels in the rabbit eye: high contrast reflectance, ICG fluorescence and laser speckle contrast imaging.</figcaption></figure>'+
     '<figure class="gfig"><div class="im"><img src="'+wix(IM.cbf,1400,700)+'" alt="Cerebral blood flow through a cranial window imaged with reflectance, rhodamine fluorescence and laser speckle contrast imaging" loading="lazy" onerror="this.closest(\'figure\').classList.add(\'noimg\')"></div><figcaption>Cerebral blood flow through a cranial window: reflectance, fluorescence (rhodamine) and laser speckle contrast imaging.</figcaption></figure>'+
-    gfig(wix(IM.wh,1000,830),"VasoVUE G1 laser speckle images of angiogenesis across the stages of wound healing in a mouse ear","Angiogenesis through the stages of wound healing in a mouse ear model, imaged with VasoVUE G1.","811/672")+
    '</div></div></section>'+
   '<section class="sec dark2" data-theme="dark" style="background:var(--ink2)"><div class="wrap">'+
    '<div class="shead" style="margin-bottom:36px"><div><span class="lab kick" data-r>Selected publications</span><h2 class="d3 split">Peer-reviewed <em>evidence.</em></h2></div><p data-r>Research by Vasoptic and the clinical and preclinical users of its technology.</p></div>'+newsRows(PUBS.slice(0,3))+'<div style="margin-top:36px" data-r><a class="btn" href="#/news">All publications '+ARR+'</a></div>'+
@@ -1155,18 +1160,13 @@ function vPlatforms(){
   '<section class="sec light first" data-theme="light"><div class="wrap">'+
    pd({k:"Clinical · Ophthalmology & optometry",name:'XyCAM <em>RI</em>',lede:'A clinical-grade retinal blood flow imager that gives quantitative estimates of relative retinal blood flow.'},0,
      ["Dynamic blood flow visualization with video data output","Analysis of blood flow dynamics for clinical insight","Non-mydriatic imaging","Soft infrared illumination for patient comfort","A workflow similar to fundus photography, with minimal training"],
-     "An FDA-cleared Class II medical device (510(k)), available for clinical use only in the United States.",{img:IM.ri,w:1400,h:1050,alt:"XyCAM RI retinal blood flow imager beside its display"})+
+     "An FDA-cleared Class II medical device (510(k)), available for clinical use only in the United States.",{img:IM.pt,w:1400,h:1050,alt:"A clinician imaging a patient’s eye with the XyCAM RI"})+
    pd({k:"Investigational · Ocular research",name:'XyCAM <em>CRE</em>',lede:'Versions of the XyCAM RI customized for the needs of a clinical research study. CRE stands for Custom Research Equipment.'},1,
      ["Mounting on an articulating arm, with hand or foot controlled acquisition, for subjects lying down","Research-friendly, de-identified data acquisition and longer acquisitions","Customized spatio-temporal analysis of blood flow dynamics"],
-     "For research use only, under protocols overseen by a competent ethics committee. Researchers have used it to image the eyes of premature infants.",{img:IM.cre,w:1200,h:1000,ct:1,alt:"XyCAM CRE on a mobile cart with positioning arm"})+
+     "For research use only, under protocols overseen by a competent ethics committee. Researchers have used it to image the eyes of premature infants.",{img:IM.cre,w:1200,h:1000,ct:1,alt:"XyCAM CRE on a mobile cart, and in use in retinopathy of prematurity investigations"})+
    pd({k:"Laboratory · Tissue blood flow",name:'VasoVUE <em>G1</em>',lede:'Vasoptic’s most customizable speckle imager: a multimodal platform for optically accessible tissue in the animal laboratory.'},0,
      ["High frame-rate laser speckle imaging for dynamic blood flow","Fluorescence (such as ICG) angiography for perfusion status","High contrast reflectance imaging for a live view","Synchronized, registered acquisition and a long working distance"],
-     "For investigational use in laboratory animals or other tests that do not involve human subjects.",{img:IM.g1,w:610,h:646,ct:1,alt:"VasoVUE G1 speckle imager"})+
-  '<div class="inuse"><div class="shead"><div><span class="lab kick" data-r>In use</span><h2 class="d3 split">In the clinic and <em>the lab.</em></h2></div></div>'+
-   '<div class="gal" data-group>'+
-    gfig(wix(IM.pt,1400,790),"A clinician imaging a patient’s eye with the XyCAM RI","A retinal exam with the XyCAM RI: the workflow follows familiar fundus photography.","16/9")+
-    gfig(wix(IM.inc,1300,782),"XyCAM CRE mounted in an inclined configuration, with blood flow patterns from the rabbit retina and choroid","A XyCAM CRE in an inclined configuration, with blood flow patterns from the rabbit retina and choroid.","16/9")+
-   '</div></div>'+
+     "For investigational use in laboratory animals or other tests that do not involve human subjects.",{img:IM.wh,w:1000,h:830,ct:1,alt:"VasoVUE G1 laser speckle images of angiogenesis across the stages of wound healing in a mouse ear"})+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Every system</span><h2 class="d2 split">Shared by <em>design.</em></h2></div><p data-r>All of Vasoptic’s products obtain blood flow information and share the same core qualities.</p></div>'+
@@ -1510,7 +1510,7 @@ function contactInit(view){
 var bio=$("#bio"),bioOpen=false,bioLastFocus=null;
 var MARK='<svg viewBox="-2 -3 68 32" aria-hidden="true"><path d="M2 2L12 25L22.3 4L32.3 19.5L42 4L50.4 25L59.2 7.5" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="61.6" cy="1.6" r="2.5" fill="currentColor"/></svg>';
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  $("#psMedia").innerHTML='<div class="ps-plate">'+MARK+'<div><span class="k">'+esc(p.grp)+' · Vasoptic Medical</span>'+'<span class="nm">'+esc(p.name.replace(/,.*$/,""))+'</span>'+(p.q?'<span class="q">“'+esc(p.q)+'”</span><span class="c">'+esc(p.qs)+'</span>':'')+'</div></div>';
+  $("#psMedia").innerHTML="";
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="bioName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    '';
   $("#bioIn").scrollTop=0;
@@ -1525,7 +1525,7 @@ function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
   gsap.fromTo("#bioScr",{opacity:0},{opacity:1,duration:.45*d,ease:"power2.out"});
   gsap.fromTo("#bioPan",{opacity:0,y:26,scale:.985},{opacity:1,y:0,scale:1,duration:.6*d,ease:"power3.out"});
   var d0=instant?(window._preShown?1.5:.4):.2;rvPlay($("#bioIn"),d0);
-  if(!RM)gsap.fromTo($$(".ps-bar .btn, #psMedia .ps-plate > *",bio),{opacity:0,y:-10},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
+  if(!RM)gsap.fromTo($$(".ps-bar .btn",bio),{opacity:0,y:-10},{opacity:1,y:0,duration:.8,ease:"silk",stagger:.06,delay:d0,clearProps:"transform,opacity"});
   setTimeout(function(){$("#bioIn").focus({preventScroll:true})},60);
 }
 function hideBio(){if(!bioOpen)return;bioOpen=false;

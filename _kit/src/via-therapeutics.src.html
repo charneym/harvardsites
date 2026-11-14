@@ -399,6 +399,12 @@ i.sp{font-style:italic}
 .ps-scrim{position:absolute;inset:0;background:var(--psScrim);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0}
 .ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(760px,calc(100vh - 110px));background:var(--bone);color:var(--ink);box-shadow:0 48px 130px -34px rgba(0,0,0,.62);opacity:0}
 .ps-media{position:relative;background:var(--bone3);overflow:hidden}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 110px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100vh - 200px)}
+.ps-head{display:flex;align-items:center;gap:20px;margin:0 0 4px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.02)}
+.ps-head h2{margin:0;padding-bottom:.06em}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(24px,3vw,40px);background:linear-gradient(165deg,var(--ps-plate),transparent 62%),var(--bone2)}
 .ps-plate .k{color:var(--stoneD)}
@@ -422,6 +428,9 @@ i.sp{font-style:italic}
 @media (max-width:860px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 36px);height:calc(100dvh - 36px)}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 36px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 130px)}
+  .ps-head img{width:76px;height:76px}
   .ps-media{height:min(34vh,260px)}
   .ps-media img{object-position:50% 16%}
   .ps-bar{padding:14px 18px}
@@ -905,7 +914,6 @@ function vTech(){
    '</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>OINDP services</span><h2 class="d2 split">Orally inhaled and nasal <em>drug products.</em></h2></div><p data-r>Success depends on the interplay between formulation, particle properties, device performance and analytical testing, which takes iterative design and integrated data to make regulator-ready decisions early.</p></div>'+
-   '<div style="margin-bottom:clamp(44px,5vw,80px)">'+fig({src:PIC.lab,alt:"Laboratory equipment at Via Therapeutics",cls:"wide",cap:"Via Therapeutics"})+'</div>'+
    '<div class="fieldgrid" data-group>'+OINDP.map(function(s){return '<div class="fg"><b>'+esc(s[0])+'</b><p>'+esc(s[1])+'</p></div>'}).join("")+'</div>'+
   '</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
@@ -1354,14 +1362,22 @@ function contactInit(view){
 
 /* ============ PERSON SHEET (BI) ============ */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psIdx=-1,psFocus=null;
-function psPlate(p){return '<div class="ps-plate"><span class="lab k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+/* a portrait that fails to load drops the sheet to its compact no-photo mode */
+window.__psDrop=function(){if(psIdx<0)return;TEAM[psIdx].img=null;fillBio(psIdx)};
+/* BQ: a sheet with no photo must not be a wide two-column panel with a plate echoing
+   the name; and a 300px headshot must not be blown up to fill a 410px column. */
+function psMode(p){if(!p.img)return "noimg";if(p.imgW&&p.imgW<480)return "slim";return ""}
+function psSetMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i];psIdx=i;
-  window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var m=this.parentNode;this.remove();m.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+  psSetMode(psMode(p));
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(psIdx===i)fillBio(i)};pr.onerror=function(){p.img=null;if(psIdx===i)fillBio(i)};pr.src=p.img}
+  psMedia.innerHTML=p.img&&psMode(p)===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var t=this;t.remove();window.__psDrop&&window.__psDrop()">':"";
+  var psHead=psMode(p)==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psRole=(p.title||'').toLowerCase()===(p.grp||'').toLowerCase()?'':'<p class="role">'+esc(p.title)+'</p>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+psHead+psRole+
    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
-   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+';'
+   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   spItalics(psBody);psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;var was=bioOpen;fillBio(i);

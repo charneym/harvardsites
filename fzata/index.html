@@ -403,6 +403,12 @@ i.sp{font-style:italic}
 .ps-scrim{position:absolute;inset:0;background:var(--psScrim);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);opacity:0}
 .ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(760px,calc(100vh - 110px));background:var(--bone);color:var(--ink);box-shadow:0 48px 130px -34px rgba(0,0,0,.62);opacity:0}
 .ps-media{position:relative;background:var(--bone3);overflow:hidden}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 110px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100vh - 200px)}
+.ps-head{display:flex;align-items:center;gap:20px;margin:0 0 4px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.02)}
+.ps-head h2{margin:0;padding-bottom:.06em}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(24px,3vw,40px);background:linear-gradient(165deg,var(--ps-plate),transparent 62%),var(--bone2)}
 .ps-plate .k{color:var(--stoneD)}
@@ -426,6 +432,9 @@ i.sp{font-style:italic}
 @media (max-width:860px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 36px);height:calc(100dvh - 36px)}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 36px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 130px)}
+  .ps-head img{width:76px;height:76px}
   .ps-media{height:min(34vh,260px)}
   .ps-media img{object-position:50% 16%}
   .ps-bar{padding:14px 18px}
@@ -929,15 +938,15 @@ function vHome(){
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Inside Fzata</span><h2 class="d2 split">A small team in <em>Halethorpe.</em></h2></div><p data-r>Fzata works out of the bwtech@UMBC research park in Halethorpe, Maryland, where its strains are engineered, characterized and manufactured.</p></div>'+
    '<div class="shots">'+
-    fig({src:PIC.team,alt:"The Fzata team photographed together outdoors",cls:"a",cap:"Published by Fzata, April 2026"})+
-    '<div class="s2">'+fig({src:PIC.lab1,alt:"A Fzata scientist at a laboratory instrument",cls:"b",cap:"In the lab"})+fig({src:PIC.flask,alt:"Aurora Dennison, IBD advocate, holding a flask at Fzata",cls:"b",cap:"From Fzata\u2019s World IBD Day post, May 2025"})+'</div>'+
+    fig({src:PIC.lab1,alt:"A Fzata scientist at a laboratory instrument",cls:"a",cap:"In the lab"})+
+    '<div class="s2">'+fig({src:PIC.flask,alt:"Aurora Dennison, IBD advocate, holding a flask at Fzata",cls:"b",cap:"From Fzata\u2019s World IBD Day post, May 2025"})+'</div>'+
    '</div>'+
   '</div></section>'+
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="figrow" style="margin-bottom:clamp(48px,5vw,84px)">'+
     '<div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">Five programs, <em>one platform.</em></h2><p class="muted" style="margin-top:24px;max-width:52ch" data-r>Every candidate is the same organism carrying a different payload, which is what makes a small company able to run this many programs at once. The product is a capsule of live, lyophilized yeast, stored at room temperature.</p></div>'+
-    fig({src:PIC.bottle,alt:"Conceptual rendering of a bottle of Fzata BioPYM therapeutic yeast capsules",cls:"plate",cap:"A bottle of BioPYM capsules"})+
+    
    '</div>'+
    pipeTable()+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/pipeline">Program detail '+ARR+'</a></div>'+
@@ -983,11 +992,7 @@ function vPlatform(){
     '<li><span>The yeast does not colonize the microbiome, so pharmacokinetics are controlled through dosing.</span></li>'+
    '</ul>'+
    '<div class="qt" data-r><p>“Patients will take an oral capsule containing live, lyophilized therapeutic yeast. Once re‑hydrated in the GI, yeast act like micro‑factories and make biologic in the gut at the disease location.”</p><span class="lab">Fzata, on the BioPYM™ platform</span></div>'+
-   '<div style="margin-top:clamp(34px,4vw,56px)">'+fig({src:PIC.moa,alt:"Fzata diagram of the BioPYM mechanism of action: recombinant yeast carrying therapeutic DNA secreting a biologic in the gut",cls:"plate",cap:"Fzata’s own mechanism-of-action diagram"})+'</div></div>'+
-  '</div></div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>The payloads</span><h2 class="d2 split">Antibodies the <em>company built itself.</em></h2></div><p data-r>The Fzata Tetrabody platform creates multi-targeted, highly potent IgGs from humanized VHH domain antibodies — the molecules the yeast is engineered to secrete.</p></div>'+
-   '<div class="moa" data-r>'+'<svg viewBox="58 8 184 258" role="img" aria-label="Diagram: four VHH domains fused into one antitoxin that binds two epitopes on TcdA and two on TcdB">'+'<path d="M150 44v212" stroke="rgba(246,241,243,.32)" fill="none"/>'+'<g stroke="var(--sinL)" fill="none" stroke-width="1.5">'+'<path d="M150 92h-46M150 134h46M150 166h-46M150 208h46"/>'+'<circle cx="86" cy="92" r="18"/><circle cx="214" cy="134" r="18"/>'+'<circle cx="86" cy="166" r="18"/><circle cx="214" cy="208" r="18"/>'+'</g>'+'<g stroke="var(--livL)" fill="none" stroke-width="1.3"><path d="M150 30c0-6 0-10 0-14"/></g>'+'</svg>'+'<dl class="kl">'+'<div><dt>A · B · A · B</dt><dd>Four VHH domains fused into a single chain — one antitoxin, four binding sites.</dd></div>'+'<div><dt>TcdA</dt><dd>Two epitopes on toxin A.</dd></div>'+'<div><dt>TcdB</dt><dd>Two epitopes on toxin B.</dd></div>'+'<div><dt>Coverage</dt><dd>Broadly active across 64 clinical isolates.</dd></div>'+'</dl>'+'</div>'+
+   
    '<ul class="refs" style="margin-top:36px" data-group>'+
     '<li>Preclinical publication: <a class="ul" href="https://www.science.org/doi/10.1126/scitranslmed.aax4905" target="_blank" rel="noopener">Science Translational Medicine, 2020 ↗</a></li>'+
     '<li>Issued US patents: <a class="ul" href="https://patents.google.com/patent/US10961299B2/en" target="_blank" rel="noopener">10,961,299</a> · <a class="ul" href="https://patents.google.com/patent/US11466075B2/en" target="_blank" rel="noopener">11,466,075</a> · <a class="ul" href="https://patents.google.com/patent/US12077575B2/en" target="_blank" rel="noopener">12,077,575</a></li>'+
@@ -997,9 +1002,7 @@ function vPlatform(){
 function vPipeline(){
   return head({k:"Pipeline",h:'One organism, <em>five payloads.</em>',p:'Programs in C. difficile infection, inflammatory bowel disease, irritable bowel syndrome and checkpoint-inhibitor colitis, each delivered by the same engineered probiotic yeast.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+pipeTable()+
-   '<div style="margin-top:clamp(56px,6vw,96px)">'+
-    fig({src:PIC.bottle,alt:"Conceptual rendering of a bottle of BioPYM capsules",cls:"plate wide",cap:"A bottle of BioPYM capsules"})+
-   '</div>'+
+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Lead program</span><h2 class="d3 split">FZ002, <em>toward the clinic.</em></h2><p class="muted" style="margin-top:24px" data-r>FZ002 is on track for IND submission in May 2026 with NIH sponsorship, and a first‑in‑human trial in summer 2026. cGMP manufacturing of FZ002 was completed in May 2024.</p></div>'+
@@ -1430,14 +1433,22 @@ function contactInit(view){
 
 /* ============ PERSON SHEET (BI) ============ */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,psIdx=-1,psFocus=null;
-function psPlate(p){return '<div class="ps-plate"><span class="lab k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+/* a portrait that fails to load drops the sheet to its compact no-photo mode */
+window.__psDrop=function(){if(psIdx<0)return;TEAM[psIdx].img=null;fillBio(psIdx)};
+/* BQ: a sheet with no photo must not be a wide two-column panel with a plate echoing
+   the name; and a 300px headshot must not be blown up to fill a 410px column. */
+function psMode(p){if(!p.img)return "noimg";if(p.imgW&&p.imgW<480)return "slim";return ""}
+function psSetMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i];psIdx=i;
-  window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var m=this.parentNode;this.remove();m.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+  psSetMode(psMode(p));
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(psIdx===i)fillBio(i)};pr.onerror=function(){p.img=null;if(psIdx===i)fillBio(i)};pr.src=p.img}
+  psMedia.innerHTML=p.img&&psMode(p)===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var t=this;t.remove();window.__psDrop&&window.__psDrop()">':"";
+  var psHead=psMode(p)==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psRole=(p.title||'').toLowerCase()===(p.grp||'').toLowerCase()?'':'<p class="role">'+esc(p.title)+'</p>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+psHead+psRole+
    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
-   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+';'
+   (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   spItalics(psBody);psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;var was=bioOpen;fillBio(i);

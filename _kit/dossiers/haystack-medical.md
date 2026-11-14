@@ -38,5 +38,6 @@
 - Site headline colour rgb(0,17,34) = #001122 → `--navy` (dark sections, primary buttons, ink).
 - SEM microneedle photo palette (photo-inventory pixel sample): #004860 77%, #006078 3%, #003060 → `--accD #004860` (accent on light), `--acc #006078`; tint `--accL #8fcadb` for accent on dark sections. Off-white #f7f7f7 (site) → cool base `--bone #f3f6f7`. Fonts: site uses Inter → Inter Tight, with Newsreader italic for emphasis and IBM Plex Mono labels.
 
-## Images (BJ)
-Used: logo; SEM needle array LIU7zDon6GQJBSkMulTITwAxbuc.jpg (home band); needle micrograph bkPVn0HNe7jAE594hER2uX1ix1M.jpg and membrane/needle micrograph q3oY8adQpQarZrWEgos2m84nc5Q.png (home + science); all six headshots; Columbia Engineering logo h0ybqv5uiIPYwXoSa0Sbwq6lX0.png and NIDCD logo wNrNvcWtbel5Yt1EsXBTf7XfAo.png (home support plates). Unused: none.
+## Images (BJ / BR)
+Used: logo (header; mark cropped for the footer lockup); all six headshots (team grid; person sheet two-column for Aksit 1024px, Heller 700px, Curro 654px; slim 96px circle for Lalwani 300px, Kysar 400px, Murphy 150px); needle micrograph bkPVn0HNe7jAE594hER2uX1ix1M.jpg and RWM perforation/needle micrograph q3oY8adQpQarZrWEgos2m84nc5Q.png (Science, beside the needle-making methods list, as real figures); Columbia Engineering and NIDCD logos (origins block).
+Unused: SEM needle-array image LIU7zDon6GQJBSkMulTITwAxbuc.jpg (BR: it shows the needle form that the hero, story and the two micrographs already convey; its section existed mainly to display it, so it was cut).

@@ -231,6 +231,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pg .lab{display:block;color:var(--accL);margin-bottom:14px}
 .pg h3{font-family:var(--sans);font-weight:400;font-size:clamp(21px,1.8vw,28px);line-height:1.14;letter-spacing:-.025em;margin:0 0 12px}
 .pg p{color:var(--stone);font-size:15px;margin:0}
+.light .pg{border-top-color:var(--hairD)}
+.light .pg::before{background:var(--bone);border-color:var(--accD)}
+.light .pg.now::before{background:var(--accD)}
+.light .pg .lab{color:var(--accD)}
+.light .pg p{color:var(--stoneD)}
+.light .pg .amt{color:var(--navy)}
 .pg .amt{display:block;margin-top:auto;padding-top:22px;font-family:var(--sans);font-weight:300;font-size:clamp(26px,2.2vw,34px);letter-spacing:-.04em;color:var(--bone)}
 
 /* people (Leavitt model) */
@@ -428,7 +434,13 @@ html.xing #view,html.xing #field{visibility:hidden}
 .ps-body .role{font-size:17px;line-height:1.5;color:var(--stoneD);margin:0 0 30px}
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch;text-wrap:pretty}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
-.ps-body .src a{color:var(--accD)}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
+.ps-head h2{margin:0}
 .ps .btn{height:44px;min-height:44px;padding:0 18px}
 @media (max-width:760px){
   .ps{place-items:end stretch}
@@ -438,6 +450,10 @@ html.xing #view,html.xing #field{visibility:hidden}
   .ps-body{border-bottom-right-radius:0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px);grid-template-rows:auto}
+  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
+  .ps-head img{width:72px;height:72px}
 }
 
 .nf{min-height:70vh}
@@ -771,21 +787,18 @@ var IMG={
 };
 var SRC_SITE='<a href="https://www.haystackmedical.com/" target="_blank" rel="noopener">haystackmedical.com</a>';
 var TEAM=[
- {slug:"aykut-aksit",name:"Aykut Aksit, PhD",title:"Co-founder & CEO",grp:"Founding team",img:FR+"pY6MuSokw9uXERNAEWZoNmuFjg.jpg?scale-down-to=1024",
-  bio:["Mechanical engineer specializing in microneedle-based inner ear drug delivery.","Aykut is the contact principal investigator on both of Haystack’s NIDCD STTR awards: the 2023 Phase I project on endoscopy-assisted intracochlear access and the 2026 Phase II project, which plans the first-in-human clinical trial of microneedle-mediated inner ear access.","He is first author of the team’s papers on ultra-sharp fully metallic microneedles, simulation-assisted microneedle manufacturing by two-photon templated electrodeposition, and in vitro perforation of the round window membrane with 3D-printed microneedles."],
-  src:"Haystack Medical team page; NIH RePORTER 1R41DC021128-01 and 2R42DC021128-02A1; PubMed."},
- {slug:"anil-lalwani",name:"Anil K. Lalwani, MD",title:"Co-founder",grp:"Founding team",img:FR+"f6bsnhhuEsd0YwxG1QZuTXx3HI.webp",
-  bio:["World-renowned otologic surgeon with deep expertise in inner ear disorders.","Anil is listed as a principal investigator alongside Aykut Aksit on Haystack’s NIDCD STTR awards, and is senior author across the group’s microneedle studies, from round window perforation in human temporal bones to intracochlear dexamethasone delivery."],
-  src:"Haystack Medical team page; NIH RePORTER; PubMed."},
- {slug:"jeffrey-kysar",name:"Jeffrey W. Kysar, PhD",title:"Co-founder",grp:"Founding team",img:FR+"oRwcEss2XhLc3tpbEOS5QxzU2VU.webp",
-  bio:["Expert in microscale mechanical systems and medical device engineering.","Jeffrey is a co-author on the full body of Haystack’s microneedle research, including the dual-lumen microneedle, glassy carbon microneedles and 3D-printed hollow microneedles for perilymph sampling."],
-  src:"Haystack Medical team page; PubMed."},
- {slug:"stefan-heller",name:"Stefan Heller, PhD",title:"Scientific Advisory Board",grp:"Advisors",img:FR+"9m2xL9uePiYiiwHUFOpGWo5Gv4.webp?scale-down-to=512",
-  bio:["A pioneer in inner ear development and hair cell regeneration, advising Haystack on translational strategy."],src:"Haystack Medical team page."},
- {slug:"anthony-curro",name:"Anthony Curro, MBA",title:"Business Advisor",grp:"Advisors",img:FR+"PidaTJCxAPugojwWUn4htg6ScU.jpg",
-  bio:["Veteran med-device executive guiding business strategy, go-to-market, and commercial operations."],src:"Haystack Medical team page."},
- {slug:"george-murphy",name:"George Murphy, MBA",title:"Business Advisor",grp:"Advisors",img:FR+"XgxC7mRZWRE3qpLSZTOvcuZGgI.jpeg",small:1,
-  bio:["Life-science entrepreneur and venture expert with extensive experience commercializing early-stage technologies."],src:"Haystack Medical team page."}
+ {slug:"aykut-aksit",name:"Aykut Aksit, PhD",title:"Co-founder & CEO",grp:"Founding team",img:FR+"pY6MuSokw9uXERNAEWZoNmuFjg.jpg?scale-down-to=1024",imgW:1024,
+  bio:["Mechanical engineer specializing in microneedle-based inner ear drug delivery.","Aykut is the contact principal investigator on both of Haystack’s NIDCD STTR awards: the 2023 Phase I project on endoscopy-assisted intracochlear access and the 2026 Phase II project, which plans the first-in-human clinical trial of microneedle-mediated inner ear access.","He is first author of the team’s papers on ultra-sharp fully metallic microneedles, simulation-assisted microneedle manufacturing by two-photon templated electrodeposition, and in vitro perforation of the round window membrane with 3D-printed microneedles."]},
+ {slug:"anil-lalwani",name:"Anil K. Lalwani, MD",title:"Co-founder",grp:"Founding team",img:FR+"f6bsnhhuEsd0YwxG1QZuTXx3HI.webp",imgW:300,
+  bio:["World-renowned otologic surgeon with deep expertise in inner ear disorders.","Anil is listed as a principal investigator alongside Aykut Aksit on Haystack’s NIDCD STTR awards, and is senior author across the group’s microneedle studies, from round window perforation in human temporal bones to intracochlear dexamethasone delivery."]},
+ {slug:"jeffrey-kysar",name:"Jeffrey W. Kysar, PhD",title:"Co-founder",grp:"Founding team",img:FR+"oRwcEss2XhLc3tpbEOS5QxzU2VU.webp",imgW:400,
+  bio:["Expert in microscale mechanical systems and medical device engineering.","Jeffrey is a co-author on the full body of Haystack’s microneedle research, including the dual-lumen microneedle, glassy carbon microneedles and 3D-printed hollow microneedles for perilymph sampling."]},
+ {slug:"stefan-heller",name:"Stefan Heller, PhD",title:"Scientific Advisory Board",grp:"Advisors",img:FR+"9m2xL9uePiYiiwHUFOpGWo5Gv4.webp",imgW:700,
+  bio:["A pioneer in inner ear development and hair cell regeneration, advising Haystack on translational strategy."]},
+ {slug:"anthony-curro",name:"Anthony Curro, MBA",title:"Business Advisor",grp:"Advisors",img:FR+"PidaTJCxAPugojwWUn4htg6ScU.jpg",imgW:654,
+  bio:["Veteran med-device executive guiding business strategy, go-to-market, and commercial operations."]},
+ {slug:"george-murphy",name:"George Murphy, MBA",title:"Business Advisor",grp:"Advisors",img:FR+"XgxC7mRZWRE3qpLSZTOvcuZGgI.jpeg",imgW:150,
+  bio:["Life-science entrepreneur and venture expert with extensive experience commercializing early-stage technologies."]}
 ];
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 var J={bm:"Biomedical Microdevices",dd:"Drug Delivery and Translational Research",on:"Otology & Neurotology",lar:"The Laryngoscope",hr:"Hearing Research",aem:"Advanced Engineering Materials",jcm:"Journal of Clinical Medicine",jpr:"Journal of Proteome Research",jmp:"Journal of Manufacturing Processes",csb:"Colloids and Surfaces B: Biointerfaces"};
@@ -860,13 +873,7 @@ function vHome(){
    '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
   '</div></section>'+
 
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><span class="lab kick" data-r>Engineering</span><h2 class="d2">Fine enough to <em>part fibers.</em></h2><p data-r>A decade of work at Columbia University on making, and safely using, needles fine enough to cross the round window membrane: metallic, 3D-printed, glassy carbon and dual-lumen designs.</p></div>'+
-   '<figure class="sem"><div class="fr"><img src="'+IMG.sem+'" alt="Scanning electron micrograph of an array of ultra-sharp microneedles, tinted blue" loading="lazy" onerror="this.closest(\'figure\').remove()"></div><figcaption><b>An array of ultra-sharp microneedles.</b><span>Scanning electron micrograph, color-tinted. Image from Haystack Medical.</span></figcaption></figure>'+
-   micro()+
-  '</div></section>'+
-
-  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light prog" data-theme="light"><div class="wrap">'+
    '<div class="shead"><span class="lab kick" data-r>The program</span><h2 class="d2">From temporal bone to <em>first in human.</em></h2><p data-r>Two STTR awards from the National Institute on Deafness and Other Communication Disorders carry the work from cadaver studies to the clinic.</p></div>'+
    '<div class="prog-grid" data-group>'+
     '<div class="pg"><span class="lab">Columbia University · a decade</span><h3>Animal models and human temporal bones</h3><p>Microneedle delivery in guinea pigs without physiologic injury; controlled perforation of the human round window membrane.</p><span class="amt">&nbsp;</span></div>'+
@@ -1287,8 +1294,8 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
-  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base(),Math.min(.07,.3/Math.max(1,b.length-1)))}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base(),Math.min(.07,.3/Math.max(1,b.length-1)))}})}
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
@@ -1329,12 +1336,17 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI) ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i];bioIdx=i;
-  psMedia.className="ps-media"+(p.small?" small":"");
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="hsPlate(this)">':plate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'';
+  /* BQ: big sharp headshot -> two columns; small one -> slim (96px circle by the name); none -> compact column */
+  var m=p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg";psMode(m);
+  psMedia.className="ps-media";
+  psMedia.innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="hsPlate(this)">':"";
+  var hd='<h2 id="psName">'+esc(p.name)+'</h2>';
+  if(m==="slim")hd='<div class="ps-head"><img src="'+p.img+'" alt="" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("");
   psBody.scrollTop=0;document.title=p.name+" — "+SITE}
-window.hsPlate=function(im){var m=im.parentNode;im.remove();if(m&&bioIdx>=0)m.insertAdjacentHTML("beforeend",plate(TEAM[bioIdx]))};
+window.hsPlate=function(im){im.remove();if(bioIdx>=0){TEAM[bioIdx].img=null;fillBio(bioIdx)}};
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;
   if(bioOpen){fillBio(i);if(!RM){gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.4,ease:"power1.out"});gsap.fromTo(psBody.children,{y:12},{y:0,duration:.5,ease:"silk",stagger:.03})}return}
   fillBio(i);bioOpen=true;lastFocus=document.activeElement;ps.classList.add("open");ps.setAttribute("aria-hidden","false");

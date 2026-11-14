@@ -41,10 +41,10 @@
 - Investors, headcount, clinical data, regulatory status beyond the 510(k)-preparation goal, street address, other team members' titles.
 
 ## Photo inventory (PRINCIPLES BJ; `_kit/photo-inventory.js` + WordPress media library `/wp-json/wp/v2/media`)
-- USED: https://elementsendoscopy.com/wp-content/uploads/2019/04/Picture2.jpg (538×309): rendering of the handle with a separate flexible insertion module. Home page ("The system") and Technology page ("Built to come apart."), on a pure-white section so the JPEG blends; lower edge faded instead of hard-cropping the cable.
+- UNUSED (BR): https://elementsendoscopy.com/wp-content/uploads/2019/04/Picture2.jpg (538×309) rendering of the handle and insertion module. Removed in client review round 2: it repeats the device that the hero and the pinned story already show, adds no real-use, people or data information, and is low resolution.
 - USED: elements_endoscopy_logo_w.png / elements_endoscopy_logo.png: header logo (light/dark headers).
 - UNUSED: Picture1.tif and Picture1-1.tif (538×309): duplicates of Picture2 as TIFF with a broken alpha channel (black blotches); TIFF is not web-displayable.
-- USED (derived): elements_endoscopy_logo.jpg (2400×600): the petal mark was cropped from it at native aspect (236×240), background removed, white petal kept; used for the loader, favicon, person sheet and Team page visual.
+- USED (derived): elements_endoscopy_logo.jpg (2400×600): the petal mark was cropped from it at native aspect (236×240), background removed, white petal kept; used for the loader, favicon and Team page visual.
 - No headshots, lab or facility photos exist on the site or in its media library.
 
 ## Palette (PRINCIPLES BK): logo pixel samples → tokens

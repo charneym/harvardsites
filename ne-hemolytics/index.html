@@ -444,8 +444,6 @@ b,strong{font-weight:500}
 .pcard.noimg{grid-column:span 2}
 .pcard .ex{margin:14px 0 0;font-size:14.5px;line-height:1.6;color:var(--mute);max-width:46ch}
 .mani .txt{max-width:31ch}
-.ps-media{display:grid;place-items:center;background:linear-gradient(160deg,#dfe8ef,#eef3f6)}
-.ps-media img{position:static;width:min(240px,62%);height:auto;aspect-ratio:1;object-fit:cover;border-radius:6px;box-shadow:0 20px 40px -24px rgba(15,34,54,.45)}
 .ftr .bigw{font-size:min(6.6vw,120px);letter-spacing:-.035em}
 @media (min-width:561px){.ftr .legal{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}.ftr .legal>:last-child{justify-self:end}}
 .brand .wmk{align-items:flex-start;text-align:left}
@@ -458,6 +456,14 @@ b,strong{font-weight:500}
 @media (max-width:420px){.pgrid.duo{grid-template-columns:1fr}.pcard.noimg{grid-column:auto}}
 .row-a{overflow:visible}
 @media (hover:none){.row-a:hover h3{transform:none}.row-a:hover .arr{transform:none}.ap:hover{transform:none}}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
+.ps-head h2{margin:0!important}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1)}
+@media (max-width:760px){.ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
 
 </style>
 </head>
@@ -682,7 +688,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -818,11 +824,10 @@ function vHome(){
    '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
   '</div></section>'+
 
-  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="prod">'+
-   photo()+
-   '<div class="pmeta"><span class="lab kick" data-r>The instrument</span><h2 class="d2">XB100 <em>blood processor.</em></h2>'+
-   '<p class="muted" style="margin-top:24px;max-width:44ch" data-r>A portable, one-touch instrument with a single-use extraction cartridge, designed and manufactured by New England Hemolytics.</p>'+
-   '<dl class="mini" data-group><div><dt class="lab">Process</dt><dd>~15 min</dd></div><div><dt class="lab">Hands-on</dt><dd>1 min</dd></div><div><dt class="lab">Human DNA removed</dt><dd>99.9%</dd></div><div><dt class="lab">Footprint</dt><dd>10 × 5 × 7 in</dd></div></dl>'+
+  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>The instrument</span><h2 class="d2">XB100 <em>blood processor.</em></h2>'+
+   '<p class="muted" style="margin-top:24px;max-width:44ch" data-r>A portable, one-touch instrument with a single-use extraction cartridge, designed and manufactured by New England Hemolytics.</p></div>'+
+   '<div><dl class="mini" data-group><div><dt class="lab">Process</dt><dd>~15 min</dd></div><div><dt class="lab">Hands-on</dt><dd>1 min</dd></div><div><dt class="lab">Human DNA removed</dt><dd>99.9%</dd></div><div><dt class="lab">Footprint</dt><dd>10 × 5 × 7 in</dd></div></dl>'+
    '<div style="margin-top:34px" data-r><a class="btn" href="#/technology">Full specifications '+ARR+'</a></div></div>'+
   '</div></div></section>'+
 
@@ -878,11 +883,9 @@ function vTech(){
     '<li><span class="lab">04</span><h3>Ultrasonic extraction</h3><p>Ultrasound disrupts the captured pathogens and releases their DNA.</p></li>'+
     '<li><span class="lab">05</span><h3>Automated elution</h3><p>50–100 µL of PCR-ready DNA, concentrated about 100-fold, goes straight to the molecular test.</p></li>'+
    '</ol></div></div></section>'+
-  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="prod">'+
-   photo()+
-   '<div class="pmeta"><span class="lab kick" data-r>Specifications</span><h2 class="d3">XB100 <em>at a glance.</em></h2>'+
-   '<dl class="facts" style="margin-top:30px" data-group>'+SPECS.map(function(s){return '<div><dt>'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl>'+
-   '<p class="lab" style="margin-top:20px" data-r>Specifications subject to change</p></div>'+
+  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="two">'+
+   '<div class="stk"><span class="lab kick" data-r>Specifications</span><h2 class="d3">XB100 <em>at a glance.</em></h2><p class="lab" style="margin-top:20px" data-r>Specifications subject to change</p></div>'+
+   '<div><dl class="facts" data-group>'+SPECS.map(function(s){return '<div><dt>'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl></div>'+
   '</div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Phase I results</span><h2 class="d2">Nine pathogens, <em>all found.</em></h2></div><p data-r>Each species was extracted from 6 mL of whole blood in about 30 minutes and reliably identified at clinically relevant concentrations of 1 to 7 viable cells per millilitre.</p></div>'+
@@ -1183,9 +1186,12 @@ var ps=$("#ps"),psBody=$("#psBody"),psMedia=$("#psMedia"),psSheet=$("#psSheet"),
 function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
 window.ssPlate=function(im){var m=im.parentNode;im.remove();if(m)m.insertAdjacentHTML("beforeend",m.getAttribute("data-plate")||"")};
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  psMedia.setAttribute("data-plate",plate(p));
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="ssPlate(this)">':plate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
+  /* BQ: every NEH headshot is a small source (156-243px) -> slim mode (96px circle beside the name); no photo -> compact noimg */
+  var m=p.img?"slim":"noimg";
+  ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
+  psMedia.innerHTML="";
+  var head=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.links?'<ul>'+p.links.map(function(l){return '<li><a class="ul" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a></li>'}).join("")+'</ul>':'')+
    '<p class="lab src">Profile drawn from newenglandhemolytics.com, company releases and NSF award records.</p>';
   psBody.scrollTop=0;

@@ -6,6 +6,7 @@
 // stays put. Then: Next/Prev must not add history entries, Escape must close it and return to the route.
 // Also repeats the wheel test at 390x844 (touch-size viewport) for the first person.
 // Prints OK or one line per problem.
+// Run audits SERIALLY: several Chromium instances at once slow the page past the fixed waits and give false "Escape did not close" failures.
 const { chromium } = require('playwright');
 const path = require('path');
 const TRIG = '[data-bio],[data-person],[href*="#/team/"],[href*="#/people/"],[href*="#/leadership/"],[href*="#/founder/"],[href*="#/company/"]';

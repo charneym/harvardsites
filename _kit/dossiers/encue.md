@@ -43,7 +43,8 @@ Logo https://encueinc.com/wp-content/uploads/2023/10/encue-logo-1536x569.png (ph
 Mapping: logo blue #0f30c4 → `--accL` (accent on light), `--cover` (transition), tint #a9b8ff → `--accD` (accent on dark); deep shades of the blue #060b27/#0a1236/#0d1742 → dark base; logo green #018001 → `--green` (synaptic-contact dots, pipeline bars), tint #86d486 → `--greenD`; neutrals #f6f7fa/#eceef4 paper, #0b1433 ink. DM Sans kept from their site; Instrument Serif added for display.
 
 ## Photo inventory (photo-inventory.js) — used / unused with reasons
-- Used: all 7 headshots; logo (header); ENCUE-new-slides (diseased vs healthy neuron, NQ-13/IGFR schematic) as a figure on Science.
+- Used: all 7 headshots (all 378×420 sources, so the person sheet uses the slim mode: 96px circle beside the name, never upscaled); logo (header).
+- ENCUE-new-slides (diseased vs healthy neuron, NQ-13/IGFR schematic): removed under BR; it is an illustration, not data, and repeats what the pinned story already shows. The Science mechanism section now lists the Phase I mechanism findings instead.
 - EncuePipeline_v4.jpg: content rebuilt as a native, accessible pipeline table (same bars) rather than a raster screenshot.
 - ENCUE-new-slide-updated (JB2 platform slide): content rebuilt natively as the platform section on Pipeline.
 - brain-banner2 / brain-banner-3 (rainbow brain render): generic stock-style render, off-palette.

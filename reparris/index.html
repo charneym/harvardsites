@@ -410,6 +410,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--sinD);text-decoration:underline;text-underline-offset:3px}
 
+/* BQ: photo-less people get one compact column sized to its content */
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-body{max-height:calc(100vh - 190px)}
+@media (max-width:760px){.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
 [data-r]{will-change:auto}
 @media (max-width:1100px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-key{display:none}.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}}
 @media (max-width:1024px){
@@ -685,7 +690,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -1213,8 +1218,8 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI) ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 var PLATE='<svg viewBox="0 0 110 110" aria-hidden="true"><path d="M8 96C30 40 80 40 102 96" fill="none" stroke="#6a9ad0" stroke-width="1"/><circle cx="30" cy="62" r="5" fill="none" stroke="#f6f2ea" stroke-width="1"/><circle cx="55" cy="50" r="5" fill="#dcb57e"/><circle cx="80" cy="62" r="5" fill="none" stroke="#9cc0e6" stroke-width="1"/></svg>';
-function fillBio(i){var p=TEAM[i];bioIdx=i;
-  psMedia.innerHTML='<div class="ps-plate">'+PLATE+'<span class="q">'+esc(p.q)+'</span></div>';
+function fillBio(i){var p=TEAM[i];bioIdx=i;ps.classList.toggle("noimg",!p.img);
+  psMedia.innerHTML='';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'<p class="src">Sources: '+p.src+'</p>';
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }

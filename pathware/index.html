@@ -430,6 +430,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--sinD);text-decoration:underline;text-underline-offset:3px}
 
+/* BQ: photo-less people get one compact column sized to its content */
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-body{max-height:calc(100vh - 190px)}
+@media (max-width:760px){.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
 [data-r]{will-change:auto}
 @media (max-width:1100px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-key{display:none}.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}}
 @media (max-width:1024px){
@@ -705,7 +710,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t+.05)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -841,7 +846,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Product</span><h2 class="d2 split">Bioptic, built for <em>the procedure room.</em></h2></div><p data-r>Real-time biopsy quality assessment: imaging hardware, AI and cloud slide management designed around the proceduralist and the pathologist.</p></div>'+
-   '<figure class="prod" data-r><div class="prod-ph"><img src="https://images.squarespace-cdn.com/content/v1/5c357eb32714e5a8962363e9/1620148575035-O8QIDG299TUY7NYZE23J/slide+for+website+-+adjusted.png?format=1500w" alt="Pathware rendering of a biopsy slide with tissue being digitized" loading="lazy" decoding="async" onerror="this.closest(\'.prod\').classList.add(\'noimg\')"></div><figcaption class="lab">A slide as Bioptic digitizes it · image: Pathware</figcaption></figure>'+
+
    '<div class="fieldgrid" data-group>'+
     '<div class="fg">'+icon(0)+'<b>Stain-free</b><p>Imaging without stain keeps the sample intact for the full downstream workup.</p></div>'+
     '<div class="fg">'+icon(1)+'<b>Coded ptychography</b><p>Super-resolution quantitative phase images from a compact, multiwavelength system.</p></div>'+
@@ -1212,8 +1217,8 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI) ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 var PLATE='<svg viewBox="0 0 110 110" aria-hidden="true"><path d="M50 8V50H8Z" fill="#f4f5f6" opacity=".9"/><path d="M60 102V60H102Z" fill="#f4f5f6" opacity=".9"/><rect x="50" y="50" width="10" height="10" fill="#ff3333"/></svg>';
-function fillBio(i){var p=TEAM[i];bioIdx=i;
-  psMedia.innerHTML='<div class="ps-plate">'+PLATE+'<span class="q">'+esc(p.q)+'</span></div>';
+function fillBio(i){var p=TEAM[i];bioIdx=i;ps.classList.toggle("noimg",!p.img);
+  psMedia.innerHTML='';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'<p class="src">Sources: '+p.src+'</p>';
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }

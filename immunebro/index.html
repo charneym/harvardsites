@@ -387,10 +387,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 
 /* their own imagery */
-.figband{position:relative;margin:0;overflow:hidden;border:1px solid var(--hair);border-radius:3px;aspect-ratio:16/7;background:#141A1F}
-.figband img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.06) brightness(.92)}
-.figband::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,16,19,.1),rgba(12,16,19,.72)),radial-gradient(60% 70% at 70% 40%,rgba(133,212,92,.12),transparent 70%);pointer-events:none}
-.figband figcaption{position:absolute;left:clamp(16px,2.4vw,28px);bottom:clamp(14px,2vw,22px);margin:0;z-index:1;max-width:46ch}
 .plate{display:inline-flex;align-items:center;justify-content:center;background:#fff;border-radius:10px;padding:14px 18px;margin-bottom:20px}
 .plate img{height:38px;width:auto;display:block}
 
@@ -412,10 +408,14 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-sheet{position:relative;display:grid;grid-template-columns:minmax(260px,38%) 1fr;width:min(1080px,calc(100vw - 64px));height:min(780px,calc(100vh - 96px));background:var(--bone);color:var(--ink);border-radius:18px;box-shadow:0 40px 120px -30px rgba(0,0,0,.5),0 0 0 1px var(--hairD);opacity:0}
 .ps-media{position:relative;background:var(--bone2);overflow:hidden;border-radius:18px 0 0 18px}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
-.ps-plate{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(26px,3vw,40px);background:linear-gradient(160deg,rgba(60,122,32,.18),transparent 62%)}
-.ps-plate .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stoneD)}
-.ps-plate .q{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,30px);line-height:1.26;margin-top:14px;padding-bottom:.14em;color:var(--ink)}
 .ps-col{display:flex;flex-direction:column;min-height:0}
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
+.ps-head h2{margin:0}
 .ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px clamp(20px,2.4vw,28px);border-bottom:1px solid var(--hairD);border-radius:0 18px 0 0}
 .ps-step{display:flex;gap:8px}
 .ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin;border-radius:0 0 18px 0}
@@ -426,7 +426,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body .role{font-size:17px;line-height:1.5;color:var(--stoneD);margin:0 0 30px}
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body a.ul{color:var(--sinD)}
-.ps-body .src{margin-top:30px;padding-top:18px;border-top:1px solid var(--hairD);font-size:13.5px;line-height:1.6;font-style:italic;font-family:var(--serif);color:var(--stoneD)}
 .ps .btn{min-height:48px;height:48px;padding:0 20px;border-color:rgba(12,16,19,.3);color:var(--ink)}
 .ps .btn::before{background:var(--sinD)}
 .ps .btn:hover{color:var(--bone);border-color:var(--sinD)}
@@ -435,6 +434,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(36vh,280px);border-radius:18px 18px 0 0}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
   .ps-bar{padding:14px 18px;border-radius:0}
   .ps-body{padding:26px 20px 48px;border-radius:0}
 }
@@ -714,7 +715,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -863,7 +864,7 @@ function vPlatform(){
    '</ul>'+
    '<div class="qt" data-r><p>“A healthy donor-derived allogeneic T cell is the right chassis to start with.”</p><span class="lab">ImmuneBro Therapeutics</span></div></div>'+
   '</div></div></section>'+
-  '<section class="sec dark" data-theme="dark" style="padding-top:0"><div class="wrap">'+'<figure class="figband" data-r><img src="https://static.wixstatic.com/media/ffee3a_4853d5d12b9b45e796e660d6facf7e79~mv2.png/v1/fill/w_1600,h_700,al_c,q_90,enc_auto/ffee3a_4853d5d12b9b45e796e660d6facf7e79~mv2.png" alt="Microscopy image published by ImmuneBro Therapeutics" loading="lazy" decoding="async" onerror="this.closest(\'section\').remove()">'+'<figcaption class="lab">Imagery published by ImmuneBro Therapeutics</figcaption></figure>'+'</div></section>'+'<section class="sec dark2" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Mechanism</span><h2 class="d3 split" style="margin-bottom:clamp(36px,4vw,60px);max-width:20ch">One secreted protein, <em>two jobs.</em></h2>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Mechanism</span><h2 class="d3 split" style="margin-bottom:clamp(36px,4vw,60px);max-width:20ch">One secreted protein, <em>two jobs.</em></h2>'+
    moaSvg()+
   '</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
@@ -1365,15 +1366,16 @@ function contactInit(view){
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
 var PSn=TEAM.length,psCur=-1,psFocus=null,PSBASE="#/team";
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia");
-function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(SITE)+'</span><span class="q">Chicago, Illinois</span></div>'}
-function psFill(i){var p=TEAM[i];
-  window.__psPlate=psPlate(p);
-  psMedia.innerHTML=p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+function psMode(p){return p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg"}
+function psFill(i){var p=TEAM[i],m=psMode(p);
+  ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth||9999;if(psCur===i&&p.imgW<480)psFill(i)};pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
+  psMedia.innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM['+i+'].img=null;psFill('+i+')">':"";
+  var hd=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
-    (p.mail?'<p><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></p>':'')+
-    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'')+
-    '<p class="src">'+esc(p.src||PSSRC)+'</p>';
+    (p.mail?'<p><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></p>':"")+
+    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':"");
   psBody.scrollTop=0;document.title=p.name+" \u2014 "+SITE}
 function psOpen(slug,instant){var i=pBy(slug);if(i<0)return;var was=psCur>=0;psCur=i;psFill(i);
   if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}

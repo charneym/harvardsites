@@ -635,8 +635,21 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps .btn::before{background:var(--sin)}
 .ps .btn:hover{color:#fff;border-color:var(--sin)}
 .ps-x{height:44px;min-height:44px;padding:0 18px}
+/* BQ: the sheet adapts to the photo. 187px headshots are slim; nobody gets a plate that repeats the name. */
+.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(700px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
+.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 186px)}
+.ps-head{display:flex;align-items:center;gap:22px;margin:12px 0 10px}
+.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 26%;flex:none;filter:grayscale(1) contrast(1.06);background:var(--bone3)}
+.ps-head h2{margin:0;font-size:clamp(28px,2.6vw,38px)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
+  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 128px);border-radius:0}
+  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+  .ps-head{gap:16px}
+  .ps-head img{width:76px;height:76px}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:auto;padding:26px;border-radius:18px 18px 0 0}
   .ps-media img{width:min(60%,176px)}
@@ -646,7 +659,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-body{padding:26px 20px 48px}
 }
 @media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
-/* funders + journal cover */
+/* funder logos */
 .logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
 .lg{display:flex;align-items:center;justify-content:center;min-height:150px;padding:26px 30px;background:#fff;border:1px solid var(--hairD);transition:box-shadow .32s var(--eo),transform .32s var(--eo)}
 .lg img{max-width:100%;max-height:74px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.78;transition:filter .35s var(--eo),opacity .35s var(--eo)}
@@ -655,13 +668,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .lg .alt{display:none;font-family:var(--serif);font-size:20px;color:var(--stoneD);text-align:center}
 .lg.noimg img{display:none}
 .lg.noimg .alt{display:block}
-.cover{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:clamp(22px,3vw,44px);align-items:center;border-top:1px solid var(--hair);padding-top:clamp(26px,3vw,40px);margin-top:clamp(30px,4vw,56px)}
-.cover figure{margin:0;background:var(--ink3);border:1px solid var(--hair);overflow:hidden;aspect-ratio:339/451}
-.cover img{width:100%;height:100%;object-fit:cover}
-.cover figure.noimg{display:none}
-.cover p{margin:0;color:var(--stone);font-size:15.5px;max-width:58ch}
-.cover h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,30px);line-height:1.15;margin:0 0 10px}
-@media (max-width:860px){.logos{grid-template-columns:1fr}.cover{grid-template-columns:1fr}.cover figure{width:min(180px,46%)}}
+@media (max-width:860px){.logos{grid-template-columns:1fr}}
 /* facts / aims */
 .aims li::before{background:var(--sin)}
 .dark .aims li::before,.dark2 .aims li::before{background:var(--sinL)}
@@ -941,7 +948,7 @@ function meshPaths(seed,w,h,n,pad){
   }
   return out}
 
-/* funder logos and the journal cover: real company-hosted images (PRINCIPLES BJ) */
+/* funder logos: their own block, the only non-people images on the site (PRINCIPLES BJ/BR) */
 var FUND=[
  {n:"Eunice Kennedy Shriver National Institute of Child Health and Human Development",img:"a11892_3854012add3d4ba3ab1c9c78b985f1b4~mv2.png",w:575,h:75},
  {n:"The David and Lucile Packard Foundation",img:"a11892_3b528d8f60d449b98a9efe336da360db~mv2.jpg",w:494,h:192},
@@ -949,9 +956,6 @@ var FUND=[
 ];
 function logos(){return '<div class="logos" data-group>'+FUND.map(function(f){
   return '<div class="lg"><img src="'+WX+f.img+'/v1/fit/w_'+f.w+',h_'+f.h+',q_90/'+f.img+'" alt="'+esc(f.n)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"><span class="alt">'+esc(f.n)+'</span></div>'}).join("")+'</div>'}
-function journalCover(){var id="a11892_90266be16e64459cb282f0efa23e2d31~mv2.png";
-  return '<div class="cover"><figure><img src="'+WX+id+'/v1/fit/w_678,h_902,q_90/'+id+'" alt="Cover of the Journal of Controlled Release issue carrying Mucommune’s capsule-intravaginal ring paper" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"></figure>'+
-  '<div><h3>Journal of Controlled Release, 2026</h3><p>“A versatile capsule-intravaginal ring platform enables rapid and sustained release of monoclonal antibodies for non-hormonal contraception.” Kushiro et al., volume 394, article 114886.</p></div></div>'}
 /* ---------- ONE continuous scene for the pinned story (PRINCIPLES BL) ----------
    A single mucin mesh. Particles fall into it, three slip through the pores, antibodies appear and
    tether them to the strands, and the camera then pushes in on one antibody as it opens into the
@@ -1092,7 +1096,7 @@ function vScience(){
    '<div class="featgrid" data-group>'+[["Fast-dissolving tablet","A tablet of antibody and routinely used excipients that disintegrates in under two minutes."],["Capsule-intravaginal ring","A capsule-ring system that releases monoclonal antibodies rapidly and then steadily."],["Reservoir ring","A reservoir design that tunes release with near zero-order kinetics for at least 30 days."],["Nebulized delivery","Inhaled muco-trapping antibodies delivered to the airway with a vibrating mesh nebulizer."]].map(function(f){return '<div class="fg"><b>'+f[0]+'</b><p>'+f[1]+'</p></div>'}).join("")+'</div>'+
   '</div></section>'+
   '<section class="sec dark2" data-theme="dark" style="background:var(--ink2)"><div class="wrap">'+
-   '<div class="shead" style="margin-bottom:36px"><div><span class="lab kick" data-r>Publications</span><h2 class="d3 split">Peer-reviewed <em>record.</em></h2></div><p data-r>Selected papers from the company and its academic collaborators, listed on Mucommune’s publications page.</p></div>'+newsRows(PUBS)+journalCover()+
+   '<div class="shead" style="margin-bottom:36px"><div><span class="lab kick" data-r>Publications</span><h2 class="d3 split">Peer-reviewed <em>record.</em></h2></div><p data-r>Selected papers from the company and its academic collaborators, listed on Mucommune’s publications page.</p></div>'+newsRows(PUBS)+
   '</div></section>'+cta();
 }
 function vPlatforms(){
@@ -1374,7 +1378,6 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     if(!RM)$$(".pgrid .pcard",view).forEach(function(el,i){if(el.getBoundingClientRect().top+scrollY<innerHeight)return;gsap.from(el,{opacity:0,duration:.95,ease:"silk",delay:(i%4)*.05,scrollTrigger:{trigger:el,start:"top 92%"}})});
     /* funder logo plates and the journal cover: an explicit group entrance (imgfx turns it into the photo fade-and-settle) */
     if(!RM)$$(".logos .lg",view).forEach(function(el,i){gsap.from(el,{opacity:0,duration:.9,ease:"silk",delay:i*.07,scrollTrigger:{trigger:el,start:"top 92%"}})});
-    if(!RM)$$(".cover figure",view).forEach(function(el){gsap.from(el,{opacity:0,duration:1,ease:"silk",scrollTrigger:{trigger:el.closest(".cover"),start:"top 88%"}})});
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
@@ -1498,15 +1501,22 @@ function contactInit(view){
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia");
   var cur=-1,lastFocus=null,BASE="#/team";
-  function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
+  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    window.__psPlate=plate(p);
-    media.innerHTML=p.img?'<img src="'+wix(p.img,760,950)+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':plate(p);
-    body.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
+    /* BQ: the layout follows the photo that actually exists. Their headshots are 187px, so they are slim. */
+    mode(p.img?((p.imgW&&p.imgW>=480)?"":"slim"):"noimg");
+    if(p.img&&!p.imgW){var probe=new Image();probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i)fill(i)};
+      probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=wix(p.img,374,374)}
+    var slim=ps.classList.contains("slim");
+    media.innerHTML=(p.img&&!slim)?'<img src="'+wix(p.img,760,950)+'" alt="Portrait of '+esc(p.name)+'">':"";
+    var head=slim
+      ? '<div class="ps-head"><img src="'+wix(p.img,374,374)+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
+      : '<h2 id="psName">'+esc(p.name)+'</h2>';
+    body.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
-      (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
+      (p.q?'<blockquote>\u201c'+esc(p.q)+'\u201d<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
     body.scrollTop=0;
-    document.title=p.name+" — "+SITE;
+    document.title=p.name+" \u2014 "+SITE;
   }
   function open(i,instant){
     if(i<0)return;var was=cur>=0;cur=i;fill(i);

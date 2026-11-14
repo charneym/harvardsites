@@ -102,13 +102,14 @@ No hue outside the logo is used anywhere, including the hero canvas and the stor
 ## Images used, and why the rest were left out (PRINCIPLES BJ)
 `photo-inventory.js` found 27 meaningful images across 24 pages of mucommune.com.
 
-**Used (19):** all 15 team headshots (team grid and person sheet); the three funder logos on the Funders page — NICHD, the David and Lucile Packard Foundation, and the One North Carolina Small Business Program (home "Support" section); and the *Journal of Controlled Release* cover carrying the 2026 capsule-IVR paper (Science page).
+**Used (18):** all 15 team headshots (team grid and person sheet), and the three funder logos from their Funders page — NICHD, the David and Lucile Packard Foundation, and the One North Carolina Small Business Program — in their own block on the home page.
 
 **Not used, with reasons:**
 - `a11892_91e5745d42cd40a58f97ba12fa8db60c~mv2.png` (home hero montage) — stock medical collage, not a photograph of the company; replaced by the live mucin-mesh hero.
 - `nsplsh_a91eb2fa50fa447c98784ba0f05879cf~mv2.jpg` ("Image by FlyD"), `nsplsh_ae03f576fb594bd08d75ecb234cfe2ea~mv2.jpg` — Unsplash stock (the `nsplsh_` prefix is Wix's Unsplash namespace).
 - `3bf8a58c84dc48d6a4cc9c5a340703fa.jpg` ("Laboratory Research Equipment") — Wix stock banner, not their lab.
 - `a11892_1ea7d141c7e54976bada18ce2bb4abc2~mv2.webp` (donation-process background) — stock petri-dish crop, 274px tall.
-- `a11892_90266be16e64459cb282f0efa23e2d31~mv2.png` is used; `4253-2jpeg.webp` (192×192 specimen cup) and `svg-50ml-conical-tube--freesvgorg98791_edited.png` (184×184 freesvg.org clip art) — stock clip art for the sample-donation page, and too small to present well.
+- `a11892_90266be16e64459cb282f0efa23e2d31~mv2.png` (the *Journal of Controlled Release* cover for the 2026 capsule-IVR paper) — removed under PRINCIPLES BR: the paper is already cited and linked in the publications rows, so a picture of the journal cover added no information or credibility the page did not already have, and the block existed only to show it.
+- `4253-2jpeg.webp` (192×192 specimen cup) and `svg-50ml-conical-tube--freesvgorg98791_edited.png` (184×184 freesvg.org clip art) — stock clip art for the sample-donation page, and too small to present well.
 - `Mucommune Logo.png` — the served logo is a 210×28 raster whose wordmark is grey #545453 on transparency, unreadable on this site's dark base; the mark is re-drawn as a faithful inline SVG from the full-resolution asset (same two paths, same two colours) with the wordmark set in the site's typeface.
 - No product, device, lab or event photograph of their own exists anywhere on the site, so none could be used; the home page therefore leads with the mechanism rather than a device.

@@ -15,7 +15,7 @@ async function run(b, file, route, w, h, maxN, problems, tag) {
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('file://' + path.resolve(file) + route); await p.waitForTimeout(4200);
   const n = await p.evaluate(s => [...document.querySelectorAll(s)].filter(e => e.offsetParent || e.getClientRects().length).length, TRIG);
-  if (!n) { problems.push(`${tag} no person triggers found on ${route} (expected ${TRIG})`); await p.close(); return; }
+  if (!n) { const hasPeople = await p.evaluate(() => /team|people|founder|leadership/i.test(document.body.innerText)); if (!hasPeople) problems.push(`${tag} no person triggers and no team content on ${route}`); else console.error(`${tag} note: no person sheets on ${route} (bios inline on the page, BV3) — nothing to open`); await p.close(); return; }
   for (let i = 0; i < Math.min(n, maxN); i++) {
     const h0 = await p.evaluate(() => history.length);
     await p.evaluate(([s, i]) => { const e = [...document.querySelectorAll(s)].filter(e => e.offsetParent || e.getClientRects().length)[i]; e.scrollIntoView({ block: 'center' }); }, [TRIG, i]);

@@ -1264,6 +1264,20 @@ function makeStory(cv){
     var tangle=seg(p,.42,.62);        /* entanglement at the interface */
     var load=seg(p,.6,.8);            /* the joint takes load, the sacrificial net breaks */
     var sealed=seg(p,.78,.95);        /* bleeding stops, the gel degrades */
+    /* ---------- the three layers, as distinct bands, so the section reads at a glance ---------- */
+    var slabA=cl((C.span-190)/210),liftS=(1-bridge)*40;
+    if(slabA>.01){
+      c.fillStyle="rgba(122,95,176,"+(.1*slabA).toFixed(3)+")";
+      c.beginPath();c.rect(X0,GEL.y0-liftS,X1-X0,(GEL.y1-GEL.y0));c.fill();
+      c.lineWidth=px(1.1);c.strokeStyle="rgba("+VIO+","+(.34*slabA).toFixed(3)+")";
+      c.beginPath();c.moveTo(X0,GEL.y0-liftS);c.lineTo(X1,GEL.y0-liftS);
+      c.moveTo(X0,GEL.y1-liftS);c.lineTo(X1,GEL.y1-liftS);c.stroke();
+    }
+    c.fillStyle="rgba(24,51,79,.46)";
+    c.beginPath();c.moveTo(X0,SURF+150);c.lineTo(X0,surfY(X0));
+    for(var bx=X0;bx<=X1;bx+=8){var inWb=Math.abs(bx-WX)<WW/2;
+      c.lineTo(bx,surfY(bx)+(inWb?(1-sealed*.55)*Math.cos((bx-WX)/WW*3.14159)*26:0))}
+    c.lineTo(X1,SURF+150);c.closePath();c.fill();
     /* ---------- tissue ---------- */
     c.lineWidth=px(1.6);c.strokeStyle="rgba("+DIM+",.6)";
     c.beginPath();

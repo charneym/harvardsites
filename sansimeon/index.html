@@ -125,7 +125,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm li a{display:block;padding:12px 0 .3em;font-family:var(--disp);font-weight:300;font-size:clamp(38px,10vw,64px);line-height:1.12;letter-spacing:-.045em}
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--muteL);font-size:13px;line-height:1.6;margin-top:30px}
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,140px) var(--side) clamp(80px,10vh,110px);z-index:1}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 70% at 16% 52%,rgba(4,24,43,.9),rgba(4,24,43,.6) 50%,rgba(4,24,43,0) 80%),linear-gradient(180deg,rgba(4,24,43,.45),rgba(4,24,43,0) 20%,rgba(4,24,43,0) 66%,var(--ink) 100%)}
@@ -394,6 +394,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+/* v15 (client review 3) */
+.mani .mblk{width:fit-content;max-width:100%;margin:0 auto}
+.shead>h2{flex:1 1 15ch}
+.apps{align-items:start}
+.ap{min-height:0;border:0;border-top:1px solid var(--hairD);background:none;padding:22px 0 0;overflow:visible}
+.ap:hover{transform:none;box-shadow:none}
+.ap::after{display:none}
+.ftr{isolation:isolate}
+.ftr .fcv{position:absolute;left:0;right:0;top:0;height:40%;width:100%;z-index:-1;pointer-events:none;opacity:.3;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent);mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent)}
 </style>
 </head>
 <body>
@@ -617,7 +626,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
         }
         var kids=parts[j];if(!kids)continue;
         if(stacked){
-          var se=j===0?1:clamp((t-.02)/T),sx=j===N-1?0:clamp((t-(1-T))/T);
+          var se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
           steps[j].style.visibility=(se>0&&sx<1)?'visible':'hidden';
           for(var k=0;k<kids.length;k++){
             var o2=k*.18,ke=clamp((se*(1+o2*kids.length*.5))-o2),kx=clamp(sx*(1+.15*k));
@@ -721,8 +730,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>The bottleneck</span>'+
-   '<p class="txt" id="mani">Single-cell sequencing changed how we read disease. But today’s barcoding methods stop near a million cells per experiment, and sample preparation varies from operator to operator. Sansimeon is building the platform that <em>scales without compromise.</em></p>'+
+   '<div class="mblk"><span class="lab kick" data-r>The bottleneck</span>'+
+   '<p class="txt" id="mani">Single-cell sequencing changed how we read disease. But today’s barcoding methods stop near a million cells per experiment, and sample preparation varies from operator to operator. Sansimeon is building the platform that <em>scales without compromise.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">100<sup>M</sup></span><span class="lab k">Cells per run with high-speed deterministic encapsulation</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">1<sup>M</sup></span><span class="lab k">Cells per experiment: the ceiling of existing single-cell barcoding methods</span></div>'+
@@ -830,7 +839,7 @@ function vContact(){
 }
 function v404(){return head({k:"Not found",h:'This page is <em>unpaired.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Sansimeon, Inc.<br>Fremont, California</div>'+
    '<div class="c"><span class="lab">Follow</span><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/contact">Contact</a></div>'+
@@ -863,12 +872,12 @@ function sm(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}
 function unmask(st){if(!st)return;(st.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 /* ================= HERO FIELD: an emulsion, every droplet one cell + one barcoded bead ================= */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,Q){
+  var c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
   var GOLD="240,176,0",CY="16,176,224",CYL="98,208,234",NUC="196,143,0";
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
-  function lay(){if(w<861)return {cx:w*.5,cy:h*.3,rx:w*.62,ry:h*.3,s:Math.max(24,Math.min(34,w*.075))};
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);if(Q){var rr=cv.getBoundingClientRect();w=Math.max(1,rr.width);h=Math.max(1,rr.height)}else{w=innerWidth;h=innerHeight}cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
+  function lay(){if(Q)return {cx:w*.5,cy:h*.5,rx:w*.46,ry:h*.5,s:Math.max(24,Math.min(40,h*.16))};if(w<861)return {cx:w*.5,cy:h*.3,rx:w*.62,ry:h*.3,s:Math.max(24,Math.min(34,w*.075))};
     var s=Math.max(30,Math.min(50,Math.min(w,h)*.052));return {cx:w*.72,cy:h*.5,rx:Math.min(w*.32,h*.6),ry:h*.44,s:s}}
   function drop(x,y,s,a,id,j,hl,depth){
     var r=s*.44;c.lineWidth=depth?0.8:1;
@@ -908,24 +917,38 @@ var field=(function(){
   function frame(once){
     var t=(performance.now()-t0)/1000;if(RM)t=20;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    cv.style.opacity=shown?String(.35+.65*dim):"";
+    if(!Q)cv.style.opacity=shown?String(.35+.65*dim):"";
     var L=lay();c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     lattice(L,t*.7,L.s*.62,L.s*.18,.32*IN.v,6,true);
     lattice(L,t,L.s,L.s*.32,1*IN.v,14,false);
-    if(w>=861)feed(L,t,L.s);
+    if(w>=861&&!Q)feed(L,t,L.s);
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  addEventListener("resize",size);size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
-  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+  function onRs(){size()}addEventListener("resize",onRs);size();
+  function onPm(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)}addEventListener("pointermove",onPm,{passive:true});
+  return {resize:size,kill:function(){stop();removeEventListener("resize",onRs);removeEventListener("pointermove",onPm)},start:start,stop:stop,once:function(){frame(true)},finish:function(){},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
-})();
+}
+var field=makeField($("#field"),0);
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
-function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)});footField()}
+/* BT: the hero's living droplet lattice, quieter, behind the footer wordmark; runs only while the footer is on screen */
+var ffld=null,ffIO=null;
+function footField(){
+  if(ffIO)ffIO.disconnect();if(ffld)ffld.kill();ffld=null;ffIO=null;
+  var cv=$(".ftr .fcv");if(!cv)return;
+  function place(){var bw=cv.parentNode.querySelector(".bigw");if(!bw)return;var pad=Math.round(bw.offsetHeight*.2);cv.style.top=Math.max(0,bw.offsetTop-pad)+"px";cv.style.height=(bw.offsetHeight+pad*2)+"px"}
+  place();ffld=makeField(cv,1);
+  var fr=new ResizeObserver(function(){if(!cv.isConnected){fr.disconnect();return}place();ffld.resize()});fr.observe(cv.parentNode);
+  if(RM){ffld.once();return}
+  ffIO=new IntersectionObserver(function(es){var on=es[es.length-1].isIntersecting;on&&!document.hidden?ffld.start():ffld.stop()},{threshold:0});
+  ffIO.observe(cv);
+}
+document.addEventListener("visibilitychange",function(){if(ffld&&document.hidden)ffld.stop()});
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
 

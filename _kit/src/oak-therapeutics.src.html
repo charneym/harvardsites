@@ -124,7 +124,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
 
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 .ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -155,6 +155,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
 
 .mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(27px,3.5vw,58px);line-height:1.18;letter-spacing:-.02em;margin:0;max-width:24ch}
+.mani .kick,.mani .txt{width:min(24ch,100%);margin-left:auto;margin-right:auto}
 .mani .txt .w{opacity:.18}
 .mani .txt em{color:var(--sinD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -266,6 +267,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--sinL)}
 .ftr .c a{color:var(--bone)}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;opacity:.6;pointer-events:none}
+.ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
 .ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(26vw,380px);line-height:.84;letter-spacing:-.045em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.22em;color:var(--bone)}
 .ftr .bigw .ch{display:inline-block}
 .ftr .legal .lab:nth-child(2){justify-self:center;text-align:center}
@@ -326,6 +329,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* people: portraits (Leavitt model) with text-card fallback */
 .pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:52px var(--gap)}
+.pgrid>*:last-child:nth-child(3n+1){grid-column:2}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
 .pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
@@ -415,13 +419,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-media{position:relative;background:var(--bone2);overflow:hidden;border-radius:18px 0 0 18px}
 .ps-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .ps-col{display:flex;flex-direction:column;min-height:0}
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none}
-.ps-head h2{margin:0}
+.ps.noimg .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media,.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
 .ps-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px clamp(20px,2.4vw,28px);border-bottom:1px solid var(--hairD);border-radius:0 18px 0 0}
 .ps-step{display:flex;gap:8px}
 .ps-body{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:clamp(28px,4vw,52px) clamp(28px,4vw,56px) 56px;scrollbar-width:thin;border-radius:0 0 18px 0}
@@ -440,8 +441,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(36vh,280px);border-radius:18px 18px 0 0}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
+  .ps.noimg .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.noimg .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
   .ps-bar{padding:14px 18px;border-radius:0}
   .ps-body{padding:26px 20px 48px;border-radius:0}
 }
@@ -700,7 +701,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Formulators and <em>clinicians.</em></h2></div><p data-r>A pharmaceutical development team in Lawrence, Kansas, with an advisory board drawn from tuberculosis, pediatric HIV, pharmaceutics and thin-film manufacturing.</p></div>'+
-   '<div class="pgrid" data-group>'+[0,1,2,4].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
+   '<div class="pgrid" data-group>'+[0,1,2].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -864,13 +865,40 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'This page isn’t <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><img class="flogo" src="'+LOGO+'" alt="Oak Therapeutics" loading="lazy" onerror="this.remove()"><span class="lab">Research and development</span>2029 Becker<br>Lawrence, KS 66047</div>'+
    '<div class="c"><span class="lab">Offices</span>31416 Agoura Rd, Ste. 105<br>Westlake Village, CA 91361</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:office@oaktherapeutics.com">office@oaktherapeutics.com</a><br><a class="ul" href="tel:+19133460990">+1 (913) 346-0990</a><br><a class="ul" href="https://www.linkedin.com/company/oak-therapeutics/" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/research">Research</a></div>'+
   '</div><span class="bigw" aria-hidden="true" id="bigwm">Oak</span>'+
   '<div class="legal"><span class="lab lg-l">© 2026 Oak Therapeutics, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* BT: the hero's living visual again, quieter, behind the footer wordmark. Paused off-screen. */
+var ftf=null;
+function footerField(cv){
+  if(!cv)return null;var c=null;try{c=cv.getContext("2d")}catch(e){}if(!c)return null;
+  var w=0,h=0,dpr=1,alive=true,vis=false,raf=0,t0=performance.now();
+  function rnd(i,k){var x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)}
+  function size(){var r=cv.getBoundingClientRect();w=Math.max(1,r.width);h=Math.max(1,r.height);dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  function draw(){
+    var t=RM?6:(performance.now()-t0)/1000;
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    var cols=Math.max(22,Math.round(w/24)),rows=Math.max(6,Math.round(h/24)),i,j;
+    for(i=0;i<cols;i++)for(j=0;j<rows;j++){
+      var u=i/(cols-1),v=j/(rows-1),sp=rnd(i*31+j,1);
+      var dis=Math.max(0,(u-.54)/.46);
+      var x=u*w+Math.sin(t*.5+j*.6+i*.2)*(2+dis*30*sp);
+      var y=v*h+Math.cos(t*.42+i*.5)*(1.5+dis*24*sp);
+      var a=(1-dis*.7)*(.55+.45*Math.sin(t*.8+i*.7+j));
+      c.fillStyle="rgba(115,223,255,"+(.1+.26*a).toFixed(3)+")";
+      c.beginPath();c.arc(x,y,1.2+dis*1,0,6.283);c.fill()}
+  }
+  function loop(){if(!alive)return;if(vis)draw();raf=requestAnimationFrame(loop)}
+  function onR(){size();draw()}
+  var io=new IntersectionObserver(function(e){vis=e[0].isIntersecting});io.observe(cv);
+  addEventListener("resize",onR);size();draw();loop();
+  return {kill:function(){alive=false;io.disconnect();removeEventListener("resize",onR);cancelAnimationFrame(raf)}}
 }
 
 /* ============ ROUTER ============ */
@@ -1001,106 +1029,136 @@ function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.
 /* ============ STORY CANVAS: encapsulate, cast, cut, dissolve ============ */
 var story=null;
 function makeStory(cv){
+  /* ONE object, drawn complete in frame 1 and kept on screen (PRINCIPLES BY):
+     the strip itself. Step 1 looks inside it, step 2 shows it cast as one film,
+     step 3 cuts it to the dose, step 4 dissolves it on the tongue. Every stroke
+     is part of the strip, the casting line, the tongue, or a label leader. */
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
   var PAPER="243,247,250",ACC="115,223,255",DIM="156,178,196";
-  var CAM=[[-250,0,224],[46,0,430],[205,0,282],[330,26,382]];
-  var caps=[];for(var i=0;i<22;i++)caps.push({x:-310+R(i,1)*120,y:-70+R(i,2)*140,r:7+R(i,3)*5});
+  var SW=360,SH=120,X0=-SW/2,Y0=-SH/2;          /* the strip, centred on the origin */
+  var CAM=[[0,0,470],[-150,0,900],[0,0,470],[0,52,600]];
+  var caps=[];for(var i=0;i<16;i++)caps.push({x:X0+22+R(i,1)*(SW-44),y:Y0+20+R(i,2)*(SH-40),r:5.2+R(i,3)*3.4});
+  var mat=[];for(i=0;i<150;i++)mat.push({x:X0+6+R(i,5)*(SW-12),y:Y0+6+R(i,6)*(SH-12),r:.7+R(i,9)*.8});
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   function sm(x){return x*x*(3-2*x)}
   function cam(){var s=p*3,i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=sm(Math.max(0,Math.min(1,(fr-.3)/.4)));var A=CAM[i0],B=CAM[i0+1];
     return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f),s:s,i0:i0,f:f}}
   function vis4(C){var w4=[0,0,0,0];w4[C.i0]=1-C.f;w4[C.i0+1]=C.f;return w4}
-  function strip(x,y,ww,hh,alpha,sc,cut){
-    c.strokeStyle="rgba("+PAPER+","+(.5*alpha)+")";c.lineWidth=1.1/sc;
-    c.beginPath();
-    var rr=6;
-    c.moveTo(x+rr,y);c.arcTo(x+ww,y,x+ww,y+hh,rr);c.arcTo(x+ww,y+hh,x,y+hh,rr);c.arcTo(x,y+hh,x,y,rr);c.arcTo(x,y,x+ww,y,rr);c.closePath();c.stroke();
-    c.fillStyle="rgba("+PAPER+","+(.055*alpha)+")";c.fill();
-    if(cut){c.save();c.setLineDash([3/sc,4/sc]);c.strokeStyle="rgba("+ACC+","+(.7*alpha*cut)+")";
-      for(var q=1;q<4;q++){var cx2=x+ww*q/4;c.beginPath();c.moveTo(cx2,y-5);c.lineTo(cx2,y+hh+5);c.stroke()}c.restore()}
-  }
+  function rr(x,y,ww,hh,r){r=Math.min(r,ww/2,hh/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
+  function st(col,a,lw,sc){c.strokeStyle="rgba("+col+","+Math.max(0,a).toFixed(3)+")";c.lineWidth=(lw||1.1)/sc}
+  function fl(col,a){c.fillStyle="rgba("+col+","+Math.max(0,a).toFixed(3)+")"}
   var LABR=[];
   function draw(){
     p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
     var t=RM?10:(performance.now()-t0)/1000;var C=cam();var W4=vis4(C);
     var sc=Math.min(w,h*1.25)/C.span;
+    var zoom=W4[0],cast=W4[1],dose=W4[2],diss=W4[3];
     LABR.length=0;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
     c.lineJoin="round";c.lineCap="round";
 
-    /* step 1: encapsulation — drug crystals wrapped in a shell */
-    var a1=W4[0];
-    if(a1>.01){
-      for(i=0;i<caps.length;i++){var K=caps[i];
-        var wrap=Math.min(1,Math.max(0,(t*.25+R(i,4))%1.6));
-        c.strokeStyle="rgba("+ACC+","+(.75*a1)+")";c.lineWidth=1.1/sc;
-        c.beginPath();c.arc(K.x,K.y,K.r,0,6.283);c.stroke();
-        c.fillStyle="rgba("+ACC+","+(.2*a1)+")";c.fill();
-        c.strokeStyle="rgba("+PAPER+","+(.45*a1)+")";
-        c.beginPath();c.arc(K.x,K.y,K.r+3.4,-1.2,-1.2+5.0*Math.min(1,wrap));c.stroke()}
+    /* the strip tips onto the tongue in the last step: the SAME object, moved */
+    var tilt=diss*.05,drop=diss*96;
+    var er0=diss>.01?sm(Math.max(0,Math.min(1,(diss-.15)/.85)))*.8:0;
+    c.save();c.translate(er0*SW*.45,drop);c.rotate(tilt);
+
+    /* --- the web of film the strip is cut from (step 2) --- */
+    if(cast>.01){
+      var fx=-620;
+      st(PAPER,.34*cast,1.1,sc);
+      c.beginPath();c.moveTo(fx,Y0);c.lineTo(X0,Y0);c.stroke();
+      c.beginPath();c.moveTo(fx,Y0+SH);c.lineTo(X0,Y0+SH);c.stroke();
+      fl(PAPER,.035*cast);c.fillRect(fx,Y0,X0-fx,SH);
+      /* the casting blade laying the film down, and the roll it runs over */
+      st(DIM,.75*cast,1.3,sc);
+      c.beginPath();c.moveTo(-462,Y0-132);c.lineTo(-398,Y0-132);c.lineTo(-422,Y0-7);c.lineTo(-438,Y0-7);c.closePath();c.stroke();
+      fl(DIM,.07*cast);c.fill();
+      c.beginPath();c.arc(-430,Y0+SH+44,44,0,6.283);c.stroke();
+      /* actives already dispersed in the web */
+      for(i=0;i<26;i++){var ux=fx+R(i,7)*(X0-fx),uy=Y0+10+R(i,8)*(SH-20);
+        fl(ACC,.5*cast);c.beginPath();c.arc(ux,uy,3,0,6.283);c.fill()}
     }
-    /* step 2: casting — the film drawn out as a continuous ribbon */
-    var a2=Math.max(W4[1],Math.max(W4[2],W4[3])*.85);
-    if(a2>.01){
-      /* rollers */
-      c.strokeStyle="rgba("+DIM+","+(.6*W4[1])+")";c.lineWidth=1.2/sc;
-      if(W4[1]>.02){c.beginPath();c.arc(-116,-56,24,0,6.283);c.stroke();c.beginPath();c.arc(-116,56,24,0,6.283);c.stroke()}
-      /* ribbon */
-      c.strokeStyle="rgba("+PAPER+","+(.5*a2)+")";c.lineWidth=1.1/sc;
-      c.beginPath();c.moveTo(-84,-30);
-      c.bezierCurveTo(10,-38,160,-32,300,-28);c.stroke();
-      c.beginPath();c.moveTo(-84,30);
-      c.bezierCurveTo(10,26,160,28,300,28);c.stroke();
-      c.fillStyle="rgba("+PAPER+","+(.05*a2)+")";
-      c.beginPath();c.moveTo(-84,-30);c.bezierCurveTo(10,-38,160,-32,300,-28);c.lineTo(300,28);c.bezierCurveTo(160,28,10,26,-84,30);c.closePath();c.fill();
-      /* actives embedded in the ribbon */
-      for(i=0;i<34;i++){var u=(R(i,7));var x2=-76+u*370,y2=(R(i,8)-.5)*46;
-        c.fillStyle="rgba("+ACC+","+(.65*a2)+")";c.beginPath();c.arc(x2,y2,3.1,0,6.283);c.fill()}
+
+    /* --- THE STRIP: always on screen, complete --- */
+    var er=diss>.01?sm(Math.max(0,Math.min(1,(diss-.15)/.85)))*.8:0;   /* dissolved fraction, from the right */
+    var frontX=X0+SW*(1-er);
+    c.save();
+    if(er>0){c.beginPath();c.rect(X0-40,Y0-60,(SW*(1-er))+40,SH+120);c.clip()}
+    fl(PAPER,.05);st(PAPER,.1,1.1,sc);rr(X0,Y0+8,SW,SH,9);c.fill();c.stroke();   /* thickness, seen under the face */
+    fl(PAPER,.07);st(PAPER,.62,1.2,sc);rr(X0,Y0,SW,SH,9);c.fill();c.stroke();    /* the face */
+    /* the polymer matrix the strip is made of */
+    for(i=0;i<mat.length;i++){var M=mat[i];fl(PAPER,.3+.18*Math.sin(t*.6+i));c.beginPath();c.arc(M.x,M.y,M.r,0,6.283);c.fill()}
+    /* the active ingredient, encapsulated, distributed homogeneously */
+    for(i=0;i<caps.length;i++){var K=caps[i];
+      fl(ACC,.5);c.beginPath();c.arc(K.x,K.y,K.r*.52,0,6.283);c.fill();
+      st(ACC,.42+.5*zoom,1.1,sc);c.beginPath();c.arc(K.x,K.y,K.r,0,6.283);c.stroke()}
+    c.restore();
+
+    /* the dissolving edge and what leaves it */
+    if(er>0){
+      st(ACC,.8,1.3,sc);c.beginPath();
+      for(var yq=Y0;yq<=Y0+SH;yq+=6){var wob=Math.sin(yq*.09+t*2.2)*4.5;if(yq===Y0)c.moveTo(frontX+wob,yq);else c.lineTo(frontX+wob,yq)}
+      c.stroke();
+      for(i=0;i<46;i++){var ph=(R(i,11)+t*.17)%1;
+        var px=frontX+R(i,12)*54*ph+4,py=Y0+R(i,13)*SH-ph*92;
+        fl(ACC,.85*(ph<.12?ph*8:(1-ph)));c.beginPath();c.arc(px+Math.sin(ph*7+i)*4,py,2.5,0,6.283);c.fill()}
     }
-    /* step 3: the cut strips */
-    var a3=Math.max(W4[2],W4[3]*.7);
-    if(a3>.01){
-      strip(150,-40,120,80,a3,sc,W4[2]);
-      /* the fractional pieces sliding apart */
-      if(W4[3]>.02){var sp2=W4[3]*14;
-        strip(150-sp2,-40,28,80,W4[3],sc,0);
-        strip(214+sp2,-40,56,80,W4[3],sc,0)}
+
+    /* --- cut to the dose: the same strip, divided (steps 3 and 4) --- */
+    var cut=Math.max(dose,diss);
+    if(cut>.02){
+      c.save();c.setLineDash([4/sc,5/sc]);st(ACC,.8*cut,1.2,sc);
+      for(var q=1;q<5;q++){var cx2=X0+SW*q/5;if(er>0&&cx2>frontX)continue;
+        c.beginPath();c.moveTo(cx2,Y0-14);c.lineTo(cx2,Y0+SH+14);c.stroke()}
+      c.restore();
+      /* the measure across one fractional dose */
+      if(dose>.02){st(ACC,.7*dose,1.1,sc);
+      var mx0=X0,mx1=X0+SW/5,my=Y0+SH+30;
+      c.beginPath();c.moveTo(mx0,my-6);c.lineTo(mx0,my+6);c.moveTo(mx1,my-6);c.lineTo(mx1,my+6);c.moveTo(mx0,my);c.lineTo(mx1,my);c.stroke()}
     }
-    /* step 4: dissolving on the tongue */
-    var a4=W4[3];
-    if(a4>.01){
-      c.strokeStyle="rgba("+DIM+","+(.5*a4)+")";c.lineWidth=1.2/sc;
-      c.beginPath();c.moveTo(250,120);c.bezierCurveTo(300,96,400,96,452,124);c.stroke();
-      for(i=0;i<40;i++){var ph=(R(i,11)+t*.14)%1;
-        var sx=300+R(i,12)*110, sy=100-ph*86;
-        var al=a4*(ph<.1?ph*10:(1-ph));
-        c.fillStyle="rgba("+ACC+","+(.8*al)+")";c.beginPath();c.arc(sx+Math.sin(ph*7+i)*5,sy,2.6,0,6.283);c.fill()}
+    c.restore();   /* tilt + drop */
+
+    /* --- the tongue the strip dissolves on (step 4) --- */
+    if(diss>.01){
+      st(DIM,.62*diss,1.3,sc);
+      c.beginPath();c.moveTo(-236,152);c.bezierCurveTo(-190,116,190,116,236,152);
+      c.bezierCurveTo(190,224,-190,224,-236,152);c.closePath();c.stroke();
+      fl(DIM,.045*diss);c.fill();
+      st(DIM,.3*diss,1,sc);c.beginPath();c.moveTo(0,124);c.lineTo(0,218);c.stroke()
     }
     c.restore();
 
-    function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
-      if(sx<80||sx>w-80||sy<30||sy>h-22)return;
+    /* ---- labels: anchored to the part they name, with a leader line ---- */
+    function lab(txt,wx,wy,lx,ly,a){if(a<.02)return;
+      var ax=(wx-C.x)*sc+w/2,ay=(wy-C.y)*sc+h/2,sx=(lx-C.x)*sc+w/2,sy=(ly-C.y)*sc+h/2;
       c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
-      var tw=c.measureText(txt).width,ax=align||"center";
-      var x0=ax==="left"?sx:ax==="right"?sx-tw:sx-tw/2;
-      /* never let two labels, or a label and the artwork, print over each other */
+      var tw=c.measureText(txt).width;
+      sx=Math.max(tw/2+14,Math.min(w-tw/2-14,sx));sy=Math.max(26,Math.min(h-16,sy));
+      var x0=sx-tw/2;
       for(var g=0;g<8;g++){var hit=false;for(var q=0;q<LABR.length;q++){var r=LABR[q];
         if(x0-6<r.x+r.w+6&&x0+tw+6>r.x-6&&sy-11<r.y+r.h+4&&sy+5>r.y-4){hit=true;break}}
-        if(!hit)break;sy+=17}
-      if(sy>h-22)return;
+        if(!hit)break;sy+=18}
+      if(sy>h-14)return;
       LABR.push({x:x0,y:sy-11,w:tw,h:16});
       c.globalAlpha=Math.min(1,a);
-      c.fillStyle="rgba(8,43,73,.82)";
-      var pad=7,rr=8,bx=x0-pad,by=sy-12,bw=tw+pad*2,bh=19;
-      c.beginPath();c.moveTo(bx+rr,by);c.arcTo(bx+bw,by,bx+bw,by+bh,rr);c.arcTo(bx+bw,by+bh,bx,by+bh,rr);c.arcTo(bx,by+bh,bx,by,rr);c.arcTo(bx,by,bx+bw,by,rr);c.closePath();c.fill();
+      c.strokeStyle="rgba("+DIM+",.55)";c.lineWidth=1;
+      var below=sy>ay;
+      c.beginPath();c.moveTo(ax,ay+(below?5:-5));c.lineTo(sx,below?sy-15:sy+7);c.stroke();
+      fl("8,43,73",.82);
+      var pad=7,rd=8,bx=x0-pad,by=sy-12,bw=tw+pad*2,bh=19;
+      c.beginPath();c.moveTo(bx+rd,by);c.arcTo(bx+bw,by,bx+bw,by+bh,rd);c.arcTo(bx+bw,by+bh,bx,by+bh,rd);c.arcTo(bx,by+bh,bx,by,rd);c.arcTo(bx,by,bx+bw,by,rd);c.closePath();c.fill();
       c.fillStyle="rgb(176,193,209)";c.textAlign="left";c.fillText(txt,x0,sy);c.globalAlpha=1}
-    lab("ACTIVE INGREDIENT, ENCAPSULATED",-250,-82,W4[0]);
-    lab("SUPPORT MATRIX",-116,-98,W4[1]);
-    lab("CONTINUOUS RIBBON",120,-62,W4[1]);
-    lab("ONE STRIP",210,-64,W4[2]);
-    lab("CUT TO THE DOSE",210,76,W4[2]);
-    lab("DISSOLVES · NO WATER",350,166,W4[3]);
+
+    var K0=caps[3];
+    lab("ACTIVE INGREDIENT, ENCAPSULATED",K0.x,K0.y,K0.x+10,Y0-52,zoom);
+    lab("SUPPORT MATRIX · ORAL-DISINTEGRATING POLYMERS",X0+40,Y0+SH-14,X0+60,Y0+SH+66,zoom);
+    lab("CAST AS ONE CONTINUOUS FILM",-430,Y0-20,-430,Y0-168,cast);
+    lab("THE STRIP, CUT FROM THE WEB",X0+SW/2,Y0,X0+SW/2,Y0-84,cast);
+    lab("ONE STRIP",X0+SW/2,Y0+2,X0+SW/2,Y0-46,dose);
+    lab("CUT TO THE DOSE · FRACTIONAL PIECES",X0+SW/10,Y0+SH+30,X0+SW/5,Y0+SH+78,dose);
+    lab("ON THE TONGUE OR INSIDE THE CHEEK",0,196,0,250,diss);
+    lab("DISSOLVES · NO WATER",frontX+20,Y0+drop,frontX+70,Y0+drop-80,diss);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1248,12 +1306,12 @@ function contactInit(view){
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
 var PSn=TEAM.length,psCur=-1,psFocus=null,PSBASE="#/team";
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia");
-function psMode(p){return p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg"}
+function psMode(p){return (p.img&&!(p.imgW&&p.imgW<480))?"":"noimg"}
 function psFill(i){var p=TEAM[i],m=psMode(p);
-  ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
+  ps.classList.toggle("noimg",m==="noimg");
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth||9999;if(psCur===i&&p.imgW<480)psFill(i)};pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
   psMedia.innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM['+i+'].img=null;psFill('+i+')">':"";
-  var hd=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  var hd='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.mail?'<p><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></p>':"")+
@@ -1298,11 +1356,12 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(document.body.classList.contains("menu-open"))closeMenu();
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
-  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  var view=$("#view");if(story){story.kill();story=null}if(ftf){ftf.kill();ftf=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.7);observeField();
+  ftf=footerField($(".fcv",view));
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

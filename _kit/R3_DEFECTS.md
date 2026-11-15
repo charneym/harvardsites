@@ -94,7 +94,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - TEXT JUMP (BS): 9 headings shift up to 13px when the split reverts (e.g. "A signalling deficit, not a mutation."). Apply the exact .ln-mask rule.
 - CENTRE: #/: CENTRE .txt "Familial Parkinson’s has genes to ai": statement block is off-centre by -278px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: label the parts (neuron, AAV vector, PLXDC... protein) from frame 1; remove unexplained floating dots; the final bead-chain arc is unexplained — label it or remove it.
 
 ## haima
 - TEXT JUMP (BS): 14 headings shift up to 63px when the split reverts (e.g. "A factor VIII-derived peptide enables vo"). Apply the exact .ln-mask rule.
@@ -104,7 +104,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 9 sheets show a small circle portrait → large portrait or none (port the component)
 - REDUNDANT SHEETS: Emily Gahagan, Jerrold Levy, MD, FAHA, FCCM, Kristin Aldridge, MS, Lauren Switala, PhD, Philip Spinella, MD, Wolfgang Bergmeier, PhD → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one vessel, platelets, labelled).
 
 ## mucommune
 - TEXT JUMP (BS): 15 headings shift up to 99px when the split reverts (e.g. "A versatile capsule-intravaginal ring pl"). Apply the exact .ln-mask rule.
@@ -116,7 +116,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - LOGOS (BW): FAINT logo "Eunice Kennedy Shriver National Institut" | FAINT logo "One North Carolina Small Business Progra" | FAINT logo "The David and Lucile Packard Foundation" → one legible consistent tone; typeset or replace boxed/white files
 - BIO SHEETS: 10 sheets show a small circle portrait → large portrait or none (port the component)
 - REDUNDANT SHEETS: Jared Cossin, PhD, Matthijs Schoots, MS, Warren Anderson, PhD, Weiyu Li, PhD, Yuyan Wang, PhD → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one mucus mesh; particles labelled). Minor: larger labels.
 
 ## romix
 - TEXT JUMP (BS): 16 headings shift up to 13px when the split reverts (e.g. "A new method to comprehensively profile "). Apply the exact .ln-mask rule.
@@ -124,11 +124,11 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Kawasaki disease is the leading caus": statement block is off-centre by -350px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - REDUNDANT SHEETS: Julius Judd → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (labelled journey: tube → library → signature → PCR plate).
 
 ## bridgesource
 - automated checks: clean
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: DONE.
 
 ## ridgeline
 - TEXT JUMP (BS): 16 headings shift up to 20px when the split reverts (e.g. "Duchenne muscular dystrophy"). Apply the exact .ln-mask rule.
@@ -136,52 +136,52 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Muscle strength starts to fall in ou": statement block is off-centre by -266px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 3 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: REDESIGN (bounded): every step swaps scene (stacked capsules → a blob → a pill → bars). Make ONE muscle-fibre scene present from frame 1 and let each step change one labelled part (NNMT, the drug, stem cells repairing the fibre).
 
 ## truecath
 - TEXT JUMP (BS): 13 headings shift up to 20px when the split reverts (e.g. "A simple core mechanism."). Apply the exact .ln-mask rule.
 - VOID: #/: VOID .tcard "LEADERSHIP Zachary Berwick Chief Sci": content covers only 53% of a 220px card | #/team: VOID .tcard "LEADERSHIP Zachary Berwick Chief Sci": content covers only 53% of a 220px card → size the card to its content; no stranded label; prefer rule + type over a box
 - CENTRE: #/: CENTRE .txt "Venous access is the most commonly p": statement block is off-centre by -194px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one catheter + vein, labelled).
 
 ## origin-endoscopy
 - TEXT JUMP (BS): 15 headings shift up to 99px when the split reverts (e.g. "A drug-device combination."). Apply the exact .ln-mask rule.
 - VOID: #/: VOID .tcard "FOUNDERS Dr. Stephen Hoag Co-invento": content covers only 53% of a 220px card | #/: VOID .tcard "FOUNDERS Dr. Venkata Akshintala Co-i": content covers only 53% of a 220px card | #/: VOID .tcard "LEADERSHIP Jeremy Starkweather Princ": content covers only 53% of a 220px card | #/team: VOID .tcard "FOUNDERS Dr. Stephen Hoag Co-invento": content covers only 53% of a 220px card (+2 more) → size the card to its content; no stranded label; prefer rule + type over a box
 - CENTRE: #/: CENTRE .txt "Bleeding during endoscopic procedure": statement block is off-centre by -179px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: frame 1 is nearly empty/faint — show the complete site from the start; remove the small stray tick at top right.
 
 ## hydrogene
 - TEXT JUMP (BS): 16 headings shift up to 17px when the split reverts (e.g. "A pathologist and an endoscopist."). Apply the exact .ln-mask rule.
 - CENTRE: #/: CENTRE .txt "Viral vectors made liver gene therap": statement block is off-centre by -234px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: remove the stray diagonal strokes in the hepatocyte frames (lines ending in nothing, top right); label the hepatocyte ring and nucleus.
 
 ## theia-imaging
 - TEXT JUMP (BS): 9 headings shift up to 7px when the split reverts (e.g. "Loris T2 handheld OCT granted FDA Breakt"). Apply the exact .ln-mask rule.
 - CENTRE: #/: CENTRE .txt "OCT is the gold standard for diagnos": statement block is off-centre by -116px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one probe and eye, labelled).
 
 ## sansimeon
 - TEXT JUMP (BS): 17 headings shift up to 17px when the split reverts (e.g. "A fully integrated platform for reproduc"). Apply the exact .ln-mask rule.
 - VOID: #/: VOID .ap "CRISPR screening Perform genome-wide": card 312px tall has an empty gap of 82px inside | #/: VOID .ap "Immune profiling Fully characterize ": card 312px tall has an empty gap of 82px inside → size the card to its content; no stranded label; prefer rule + type over a box
 - CENTRE: #/: CENTRE .txt "Single-cell sequencing changed how w": statement block is off-centre by -188px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one channel, clear).
 
 ## reparris
 - REDUNDANT SHEETS: Ruzanna Shkhyan → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one cell-membrane scene, labelled).
 
 ## arkayli
 - automated checks: clean
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (skin, gel, bloodstream; labelled).
 
 ## rheotek
 - OVERLAY: [1440] no person triggers found on #/company (expected [data-bio],[data-person],[href*="#/team/"],[href*="#/people/"],[h | [390] no person triggers found on #/company (expected [data-bio],[data-person],[href*="#/team/"],[href*="#/people/"],[hr
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one device + skin layers, labelled).
 
 ## kinea
 - TEXT JUMP (BS): 17 headings shift up to 24px when the split reverts (e.g. "Big genes,delivered whole."). Apply the exact .ln-mask rule.
@@ -189,17 +189,17 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Gene therapy for muscle has been bui": statement block is off-centre by -284px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 1 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: REDESIGN (bounded): scenes change every step (a bar, hexagons, an empty grid, squiggles, dots) and nothing is labelled. Use ONE muscle-fibre scene from frame 1: two vectors arrive, the two halves are made, inteins join them, the full protein sits at the membrane — each labelled.
 
 ## exavir
 - automated checks: clean
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (reviewed by coordinator).
 
 ## potomac-affinity
 - TEXT JUMP (BS): 12 headings shift up to 15px when the split reverts (e.g. "Biodefence and agriculture"). Apply the exact .ln-mask rule.
 - CENTRE: #/: CENTRE .txt "Recombinant proteins are fused to ta": statement block is off-centre by -179px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: the ring of faint circles is unexplained — label the components (target, antibody/sensor, protease, reporter) from frame 1 so 'bind / trip / amplify / read' each lights a named part.
 
 ## oncosting
 - TEXT JUMP (BS): 8 headings shift up to 8px when the split reverts (e.g. "An award that ends in an IND."). Apply the exact .ln-mask rule.
@@ -207,7 +207,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Intravesical BCG is the only approve": statement block is off-centre by -180px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: frame 1 is sparse; label bladder wall, BCG bacterium and tumour cell from the first frame; label the glow (STING / agonist).
 
 ## anelleo
 - TEXT JUMP (BS): 15 headings shift up to 7px when the split reverts (e.g. "ANLO102Progesterone intravaginal ring (A"). Apply the exact .ln-mask rule.
@@ -215,11 +215,11 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "During IVF, progesterone support mea": statement block is off-centre by -207px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 8 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one ring, clear).
 
 ## pathware
 - automated checks: clean
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK. Minor: labels are tiny; enlarge.
 
 ## ne-hemolytics
 - TEXT JUMP (BS): 14 headings shift up to 22px when the split reverts (e.g. "A two-step sepsis screen."). Apply the exact .ln-mask rule.
@@ -229,7 +229,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 6 sheets show a small circle portrait → large portrait or none (port the component)
 - REDUNDANT SHEETS: Hayden Jeffreys → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: keep the whole cartridge in frame every step (later steps crop it at the top and leave the frame mostly empty); label the chambers; thin the hexagon clutter in 'Liquefy the blood'.
 
 ## limax
 - TEXT JUMP (BS): 20 headings shift up to 24px when the split reverts (e.g. "A Wyss Institute spinout, in Boston."). Apply the exact .ln-mask rule.
@@ -237,11 +237,11 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Surgical sealants fail where they ar": statement block is off-centre by -224px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - LOGOS (BW): FAINT logo "Wyss Institute" → one legible consistent tone; typeset or replace boxed/white files
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: the wavy layers are unreadable — label tissue, the water film and the gel layers from frame 1 and make each layer visually distinct; remove faint unexplained strokes.
 
 ## mitotherapeutix
 - OVERLAY: [1440] person #1: WHEEL DOES NOT SCROLL the overlay (scrollTop 0->0) | [1440] person #2: WHEEL DOES NOT SCROLL the overlay (scrollTop 0->0)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one liver cell, labelled).
 
 ## haystack-medical
 - ORPHAN: #/science: ORPHAN .mfig "(A) A perforation in the round windo" is 727px wide in a 1440px section with nothing  → compose the image beside its text or across the measure
@@ -250,7 +250,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 3 sheets show a small circle portrait → large portrait or none (port the component)
 - REDUNDANT SHEETS: Anthony Curro, MBA → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: the 'Withdraw' frames leave partial outlines and an empty frame; keep the ear/membrane drawing complete while the needle withdraws.
 
 ## objective-bio
 - TEXT JUMP (BS): 10 headings shift up to 13px when the split reverts (e.g. "A fully autonomous Autoinjector, tested "). Apply the exact .ln-mask rule.
@@ -259,7 +259,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
 - REDUNDANT SHEETS: Daniel Pomp → put the bio on the card, make it non-clickable
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (one plate of embryos, clear).
 
 ## neurotherapia
 - TEXT JUMP (BS): 15 headings shift up to 7px when the split reverts (e.g. "Akhil Saklecha, MD, MBA"). Apply the exact .ln-mask rule.
@@ -270,7 +270,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - LOGOS (BW): FAINT logo "Alzheimer’s Association" | FAINT logo "Alzheimer’s Drug Discovery Foundation" | FAINT logo "Brain Trust Accelerator Fund II" | FAINT logo "CRUINT" | FAINT logo "Cleveland Clinic" | FAINT logo "Dolby Family Ventures" | FAINT logo "Foundation For A Better World" | FAINT logo "Ohio Department of Development" | MIXED logo treatments → one legible consistent tone; typeset or replace boxed/white files
 - BIO SHEETS: 4 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: FIX: remove or label the scattered tick/X debris marks around the cell (stray strokes); otherwise clear.
 
 ## cognita-labs
 - TEXT JUMP (BS): 17 headings shift up to 149px when the split reverts (e.g. "A closed loop, not a fixed pattern."). Apply the exact .ln-mask rule.
@@ -279,7 +279,7 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - LOGOS (BW): FAINT logo "STTR" | MIXED logo treatments → one legible consistent tone; typeset or replace boxed/white files
 - BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (lungs, clear).
 
 ## encue
 - TEXT JUMP (BS): 9 headings shift up to 21px when the split reverts (e.g. "A prefrontal cortex alpha/delta switch c"). Apply the exact .ln-mask rule.
@@ -288,4 +288,4 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - CENTRE: #/: CENTRE .txt "Long before memories fade, synapses ": statement block is off-centre by -350px with nothing b → centre the statement block, text left-aligned
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - BIO SHEETS: 8 sheets show a small circle portrait → large portrait or none (port the component)
-- WALK-THROUGH: verdict pending (coordinator)
+- WALK-THROUGH: OK (synapse, labelled). Minor: larger labels.

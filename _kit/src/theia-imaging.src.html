@@ -897,6 +897,13 @@ function makeStory(cv){
     /* the leader stops at the edge of the label nearest its anchor, so it never strikes through the words */
     var x0=(align==="right")?tx-8-tw+18:tx+8,x1=x0+tw-18,ex,ey;
     if(ax>x1+2){ex=x1+6;ey=ty}else if(ax<x0-2){ex=x0-6;ey=ty}else{ex=(x0+x1)/2;ey=(ay<ty)?ty-12:ty+10}
+    /* a soft plate of the section's own background, so no line or shape strikes through the words */
+    c.save();c.globalCompositeOperation="destination-out";
+    c.fillStyle="rgba(0,0,0,"+Math.min(1,al*1.8).toFixed(3)+")";
+    var bx=x0-7,by=ty-10,bw=(x1-x0)+14,bh=20,br=4;
+    c.beginPath();
+    if(c.roundRect)c.roundRect(bx,by,bw,bh,br);else c.rect(bx,by,bw,bh);
+    c.fill();c.restore();
     st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
     c.font="400 11px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
@@ -957,9 +964,9 @@ function makeStory(cv){
       st(INK,.22);c.lineWidth=1;rr(px,pyv,pw,ph,10);c.stroke();
       /* the leader that ties the panel to the arc it came from */
       st(INK,.18);c.setLineDash([3,5]);
-      c.beginPath();c.moveTo(cx,ey+R*.93+6);c.lineTo(cx,pyv-8);c.stroke();c.setLineDash([]);
+      c.beginPath();c.moveTo(cx,ey+R*.93+6);c.lineTo(cx,pyv+1);c.stroke();c.setLineDash([]);
       /* depth scale, inside the frame, with both ends labelled */
-      var ix=px+54*s,iy=pyv+18,ih=ph-36;
+      var ix=px+Math.max(96,96*s),iy=pyv+18,ih=ph-36;
       st(DIM,.3);c.beginPath();c.moveTo(ix-14,iy);c.lineTo(ix-14,iy+ih);c.stroke();
       for(var d=0;d<=3;d++){var dy=iy+ih*d/3;c.beginPath();c.moveTo(ix-18,dy);c.lineTo(ix-10,dy);c.stroke()}
       c.font="400 10.5px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
@@ -998,7 +1005,9 @@ function makeStory(cv){
     }
     /* ---------- labels: one per step, each anchored to its part ---------- */
     var l1=sm(1-seg(P,.22,.34))*Math.max(approach,.15), l2=sweep*(1-seg(P,.62,.74)), l3=wide*(1-seg(P,.86,.96)), l4=flow;
-    tag("LORIS T2 PROBE · UNDER 350 g",cx+30*s*1.25,py-55*s*1.25,cx+R*1.1,py-50*s,l1,DIM,"left");
+    if(approach>.25)tag("LORIS T2 PROBE · UNDER 350 g",cx+30*s*1.25,py-55*s*1.25,cx+R*1.1,py-50*s,Math.max(l1,.34),DIM,"left");
+    /* the object the whole scene is about, named quietly throughout */
+    tag("THE EYE · WE IMAGE THE RETINA",cx-R*.99,ey+R*.22,cx-R*1.3,ey+R*.52,Math.max(l1,.3),DIM,"right");
     /* clear of the dashed drop line, which runs down the centre to the panel */
     if(pa>.4)tag("B-SCAN · DEPTH AND LAYERS",(w-w*.72)/2+10,h*.6,(w-w*.72)/2,h*.555,Math.max(l2,l3,l4),DIM,"left");
     var arcA=Math.PI*.5+half,arcX=cx+Math.cos(arcA)*R*.93,arcY=ey+Math.sin(arcA)*R*.93;
@@ -1162,7 +1171,18 @@ function homeScroll(view){
   if(RM)return;
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp)});
+  /* StoryFX cross-fades the steps; at a step boundary its outgoing line has gone before the
+     arriving one starts, which leaves the column blank. Hand the arriving step in on top of it. */
+  function stepIn(p){
+    var N=steps.length,q=p*N,j=Math.min(N-1,Math.floor(q)),t=q-j,W=.16;
+    if(t>=W)return;
+    var a=.42+.58*(t/W),el=steps[j];el.style.visibility="visible";
+    [].slice.call(el.children).forEach(function(k){
+      var m=/([\d.]+)/.exec(k.style.filter||""),cur=m?parseFloat(m[1]):1;
+      if(cur<a){k.style.filter="opacity("+a.toFixed(3)+")";k.style.translate="0 "+((1-a)*14).toFixed(1)+"px"}
+    });
+  }
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp);stepIn(pp)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
     onRefresh:function(){if(story)story.resize()}});
 }

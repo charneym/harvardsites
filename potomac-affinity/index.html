@@ -1072,7 +1072,7 @@ function makeStory(cv){
      prodomain cap, so a first-time viewer can see what "inactive" and "free" mean. Each step changes one
      labelled part; every line connects two things or points to a label (PRINCIPLES BY). */
   var c=cv.getContext("2d"),dpr=1,alive=true,vis=true,p=0,pT=0,w=0,h=0,t0=performance.now(),PTS=null;
-  var INK="242,236,231",DIM="184,173,166",RD="216,38,28",TL="83,188,194";
+  var INK="242,236,231",DIM="184,173,166",RD="216,38,28",RDL="238,118,104",TL="83,188,194";
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);var r=cv.getBoundingClientRect();w=r.width;h=r.height;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);build()}
   function rnd(i,k){var x=Math.sin(i*73.13+k*31.7)*43758.5453;return x-Math.floor(x)}
   function sm(x){return x<0?0:x>1?1:x*x*(3-2*x)}
@@ -1089,6 +1089,13 @@ function makeStory(cv){
     /* the leader stops at the edge of the label nearest its anchor, so it never strikes through the words */
     var x0=(align==="right")?tx-8-tw+18:tx+8,x1=x0+tw-18,ex,ey;
     if(ax>x1+2){ex=x1+6;ey=ty}else if(ax<x0-2){ex=x0-6;ey=ty}else{ex=(x0+x1)/2;ey=(ay<ty)?ty-12:ty+10}
+    /* a soft plate of the section's own background, so no line or shape strikes through the words */
+    c.save();c.globalCompositeOperation="destination-out";
+    c.fillStyle="rgba(0,0,0,"+Math.min(1,al*1.8).toFixed(3)+")";
+    var bx=x0-7,by=ty-10,bw=(x1-x0)+14,bh=20,br=4;
+    c.beginPath();
+    if(c.roundRect)c.roundRect(bx,by,bw,bh,br);else c.rect(bx,by,bw,bh);
+    c.fill();c.restore();
     st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
     c.font="400 11px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
@@ -1173,6 +1180,8 @@ function makeStory(cv){
       var pw=w*.62,ph=h*.2,px=(w-pw)/2,pyv=h*.76;
       c.save();c.globalAlpha=sm(read);
       st(INK,.22);c.lineWidth=1;rr(px,pyv,pw,ph,10);c.stroke();
+      c.save();c.setLineDash([3,6]);st(DIM,.3);c.lineWidth=1;
+      c.beginPath();c.moveTo(cx,cy+R*1.18);c.lineTo(cx,pyv);c.stroke();c.restore();
       var ox=px+46,oy=pyv+ph-26,ow=pw-86,oh=ph-44;
       st(DIM,.4);c.lineWidth=1;
       c.beginPath();c.moveTo(ox,oy);c.lineTo(ox+ow,oy);c.stroke();
@@ -1185,20 +1194,22 @@ function makeStory(cv){
       c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
       fl(DIM,.85);c.textAlign="right";c.fillText("SIGNAL",ox-10,oy-oh+4);
       c.textAlign="center";c.fillText("TIME",ox+ow*.5,oy+20);
-      c.textAlign="left";fl(TL,.85);c.fillText("EARLIER LIFT-OFF = MORE TARGET",ox+ow*.46,oy-oh*.92);
+      c.textAlign="left";fl(TL,.85);c.fillText("EARLIER LIFT-OFF = MORE TARGET",ox+12,oy-oh*.96);
       c.restore();
     }
     /* ---------- labels: one per step, each anchored ---------- */
     var l1=Math.max(bind*(1-seg(P,.34,.46)),.0),l2=trig*(1-seg(P,.6,.72)),l3=amp*(1-seg(P,.84,.94)),l4=read;
     var A2=1.5*s,ax2=cx,ay2=cy-R*.06;
-    tag("TARGET + IgG",ax2-15*A2,ay2-10*A2,cx-R*1.5,cy-R*.75,Math.max(l1,l2*.6),INK,"right");
-    tag("INITIATING PROTEASE",ax2+38*A2,ay2+24*A2,cx+R*1.1,cy+R*.5,l1,RD,"left");
+    tag("TARGET + IgG",ax2-15*A2,ay2-10*A2,cx-R*1.5,cy-R*.75,Math.max(l1,l2*.6,.34),INK,"right");
+    tag("INITIATING PROTEASE",ax2+38*A2,ay2+24*A2,cx+R*1.1,cy+R*.5,l1,RDL,"left");
     var hq=PTS.list[PTS.list.length-1];
-    tag("PROTEASE HELD BY ITS INHIBITOR",hq.x,hq.y-lift,cx+R*1.05,cy-R*.95,Math.max(l1,l2),DIM,"left");
-    tag("FREE PROTEASE · CUTTING THE NEXT",q0.x,q0.y-lift,cx-R*1.45,cy+R*.6,Math.max(l2,l3),RD,"right");
+    tag("PROTEASE HELD BY ITS INHIBITOR",hq.x,hq.y-lift,cx+R*1.05,cy-R*.95,Math.max(l1,l2,.3),DIM,"left");
+    tag("FREE PROTEASE · CUTTING THE NEXT",q0.x,q0.y-lift,cx-R*1.45,cy+R*.6,Math.max(l2,l3),RDL,"right");
     if(read>.02){
-      var sq=PTS.list[6];
-      tag("SIGNAL PEPTIDE, CLEAVED",sq.x,sq.y-lift,cx+R*1.1,cy+R*.95,l4,TL,"left");
+      var sq=PTS.list[0],sbest=-1e9;                       /* the peptide nearest the label: a short leader */
+      for(var si=0;si<PTS.list.length;si++){var scq=PTS.list[si].x*.7+PTS.list[si].y;if(scq>sbest){sbest=scq;sq=PTS.list[si]}}
+      var sa=sq.ph*6.2832;
+      tag("SIGNAL PEPTIDE, CLEAVED",sq.x+Math.cos(sa)*rr0*2.1,sq.y-lift+Math.sin(sa)*rr0*2.1,cx+R*1.1,cy+R*.95,l4,TL,"left");
     }
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
@@ -1352,7 +1363,18 @@ function homeScroll(view){
   if(RM)return;
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp)});
+  /* StoryFX cross-fades the steps; at a step boundary its outgoing line has gone before the
+     arriving one starts, which leaves the column blank. Hand the arriving step in on top of it. */
+  function stepIn(p){
+    var N=steps.length,q=p*N,j=Math.min(N-1,Math.floor(q)),t=q-j,W=.16;
+    if(t>=W)return;
+    var a=.42+.58*(t/W),el=steps[j];el.style.visibility="visible";
+    [].slice.call(el.children).forEach(function(k){
+      var m=/([\d.]+)/.exec(k.style.filter||""),cur=m?parseFloat(m[1]):1;
+      if(cur<a){k.style.filter="opacity("+a.toFixed(3)+")";k.style.translate="0 "+((1-a)*14).toFixed(1)+"px"}
+    });
+  }
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp);stepIn(pp)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
     onRefresh:function(){if(story)story.resize()}});
 }

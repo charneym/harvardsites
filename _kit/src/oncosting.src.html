@@ -945,6 +945,13 @@ function makeStory(cv){
     /* the leader stops at the edge of the label nearest its anchor, so it never strikes through the words */
     var x0=(align==="right")?tx-8-tw+18:tx+8,x1=x0+tw-18,ex,ey;
     if(ax>x1+2){ex=x1+6;ey=ty}else if(ax<x0-2){ex=x0-6;ey=ty}else{ex=(x0+x1)/2;ey=(ay<ty)?ty-12:ty+10}
+    /* a soft plate of the section's own background, so no line or shape strikes through the words */
+    c.save();c.globalCompositeOperation="destination-out";
+    c.fillStyle="rgba(0,0,0,"+Math.min(1,al*1.8).toFixed(3)+")";
+    var bx=x0-7,by=ty-10,bw=(x1-x0)+14,bh=20,br=4;
+    c.beginPath();
+    if(c.roundRect)c.roundRect(bx,by,bw,bh,br);else c.rect(bx,by,bw,bh);
+    c.fill();c.restore();
     st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
     c.textAlign=align||"left";c.fillText(txt,tx+(align==="right"?-8:8),ty+4);
@@ -979,6 +986,7 @@ function makeStory(cv){
     var N=5,gap=baseR*2.3;
     for(var i=0;i<N;i++){
       var dx=(i-(N-1)/2)*gap,cx=cellX+dx,cy=cellY+Math.sin(i*1.3)*baseR*.1,mid=(i===2);
+      var scx=cellX+(cx-cellX)*zoom;if(scx<0||scx>w)continue;   /* never leave a sliced cell at the edge */
       st(INK,(mid?.5:.22)/Math.sqrt(zoom));c.lineWidth=lw;
       blob(cx,cy,baseR*(mid?1.04:.94),t,i);c.stroke();
       var nx=cx-baseR*.36,ny=cy+baseR*.3,nr=baseR*.3;
@@ -1026,7 +1034,7 @@ function makeStory(cv){
     }
     /* STING on the ER, and the signal to the nucleus */
     var sx2=cellX+baseR*.62,sy2=cellY-baseR*.42;
-    st(INK,.2/Math.sqrt(zoom));c.lineWidth=lw*.8;
+    st(INK,(.2+.3*fire)/Math.sqrt(zoom));c.lineWidth=lw*.8;
     c.beginPath();c.moveTo(cellX+baseR*.1,cellY-baseR*.74);
     c.bezierCurveTo(cellX+baseR*.66,cellY-baseR*.74,cellX+baseR*.4,cellY-baseR*.2,cellX+baseR*.86,cellY-baseR*.1);c.stroke();
     if(fire>.01){
@@ -1051,15 +1059,17 @@ function makeStory(cv){
     if(l1>.02){var lp=S(cellX,cellY-baseR*2.1);
       tag("BCG, INSTILLED IN THE BLADDER",lp[0],lp[1],w*.62,h*.12,l1,DIM,"left")}
     var up=S(cellX,cellY-baseR*1.5);
-    if(lumen>.02){var uq=S(cellX+gap,cellY-baseR*.9);tag("UROTHELIUM · THE BLADDER WALL",uq[0],uq[1],w*.04,h*.3,lumen*.9,DIM,"left");
+    if(lumen>.02){var lq=S(cellX-gap*1.1,cellY-baseR*1.5);tag("BLADDER LUMEN",lq[0],lq[1],w*.04,h*.17,lumen*.9,DIM,"left");
+      var uq=S(cellX+gap,cellY-baseR*.9);tag("UROTHELIUM · THE BLADDER WALL",uq[0],uq[1],w*.04,h*.3,lumen*.9,DIM,"left");
       var tq=S(cellX+baseR*.95,cellY+baseR*.22);tag("TUMOR CELL · WHERE THE DISEASE GROWS",tq[0],tq[1],w*.56,h*.62,lumen*.9,DIM,"left")}
     var bp=S(inx[1][0],inx[1][1]);
     tag("BCG, INSIDE THE CELL",bp[0],bp[1],w*.1,h*.2,Math.max(l2,l3*.8),DIM,"left");
     if(build>.05){var dp=S(inx[0][0]-baseR*.5,inx[0][1]+baseR*.5);
       tag("c-di-AMP, RELEASED CONTINUOUSLY",dp[0],dp[1],w*.06,h*.82,l3,TL,"left")}
+    if(build>.05||fire>.02){var np=S(cellX-baseR*.36,cellY+baseR*.3);
+      tag(fire>.2?"NUCLEUS · IRF3 · NF-κB":"NUCLEUS",np[0],np[1],w*.1,h*.9,Math.max(l4,build*.55),TL,"left")}
     if(fire>.02){
       var sp=S(sx2,sy2);tag("STING, ON THE ER",sp[0],sp[1],w*.78,h*.22,l4,TLL,"left");
-      var np=S(cellX-baseR*.36,cellY+baseR*.3);tag("NUCLEUS · IRF3 · NF-κB",np[0],np[1],w*.1,h*.9,l4,TL,"left");
       var ip=S(cellX+baseR*1.2,cellY+baseR*.5);tag("INTERFERON-I, OUT OF THE CELL",ip[0],ip[1],w*.72,h*.9,l4,TLL,"left");
     }
   }
@@ -1220,7 +1230,18 @@ function homeScroll(view){
   if(RM)return;
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp)});
+  /* StoryFX cross-fades the steps; at a step boundary its outgoing line has gone before the
+     arriving one starts, which leaves the column blank. Hand the arriving step in on top of it. */
+  function stepIn(p){
+    var N=steps.length,q=p*N,j=Math.min(N-1,Math.floor(q)),t=q-j,W=.16;
+    if(t>=W)return;
+    var a=.42+.58*(t/W),el=steps[j];el.style.visibility="visible";
+    [].slice.call(el.children).forEach(function(k){
+      var m=/([\d.]+)/.exec(k.style.filter||""),cur=m?parseFloat(m[1]):1;
+      if(cur<a){k.style.filter="opacity("+a.toFixed(3)+")";k.style.translate="0 "+((1-a)*14).toFixed(1)+"px"}
+    });
+  }
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var pp=tl.progress();story.set(pp);prog.style.transform="scaleX("+pp+")";setStep(Math.min(3,Math.floor(pp*4+1e-6)));fx(pp);stepIn(pp)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
     onRefresh:function(){if(story)story.resize()}});
 }

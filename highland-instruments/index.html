@@ -713,6 +713,21 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .wear2.noimg .wear{display:none}
 @media (max-width:860px){.wear2{grid-template-columns:1fr;gap:34px}}
 
+/* BS: splitting a heading turns each word into an inline-block, so "Ramos-Estebanez,"
+   can no longer break at its hyphen and the name needs a third line -- the text visibly
+   jumps when the split reverts. The six team cards now sit three to a row, which is wide
+   enough for "Ciro Ramos-Estebanez," to fit on one line either way (and six people make
+   two full rows, so there is no short row to centre). */
+@media (min-width:1101px){
+  .pg3{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .pg3>*{grid-column:span 2}
+  .pg3>*:nth-child(5){grid-column:auto/span 2}
+}
+/* BZ: at three-up every name fits one line (the longest, "Ciro Ramos-Estebanez, MD, PhD",
+   needed 334px of the 347px measure), so all six cards are the same height and none is
+   left half empty. One line also means the split cannot change where the name wraps. */
+@media (min-width:1101px){.pg3 .pcard h3{font-size:23px}}
+
 </style>
 </head>
 <body>
@@ -1166,7 +1181,7 @@ function vInd(){
 }
 function vTeam(){
   return head({k:"Team",h:'Engineers, clinicians, <em>operators.</em>',p:'Highland was founded by scientists trained at Harvard Medical School and MIT, and runs its trials with site principal investigators at leading academic centers.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid pg3" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1462,7 +1477,7 @@ function sceneSet(p){
   /* the head is always there, settling in at the start */
   var e3a=cl((p-.76)/.24),FADE=(1-.62*ea(e3a));
   var hd=q("scHead");
-  if(hd){hd.style.filter="opacity("+((.25+.75*ea(cl(p/.1)))*FADE).toFixed(3)+")";hd.style.translate="0 "+((1-ea(cl(p/.12)))*14).toFixed(1)+"px"}
+  if(hd){hd.style.filter="opacity("+FADE.toFixed(3)+")";hd.style.translate="0 0"}
   /* TREAT: the head draws back so the readout has the lower third to itself */
   var SH=(1-.3*ea(e3a)),DY=(-20*ea(e3a));
   var BACK="translate(0px,"+DY.toFixed(1)+"px) scale("+SH.toFixed(3)+")";
@@ -1471,11 +1486,11 @@ function sceneSet(p){
   /* phase 0 (0–.3): electrodes land, current spreads broadly and shallow */
   var e0=cl(p/.22);
   var el0=q("scElec");
-  if(el0){el0.style.translate="0 "+((1-ea(e0))*-30).toFixed(1)+"px";el0.style.filter="opacity("+(ea(cl(p/.1))*FADE).toFixed(3)+")"}
-  qq("#scSpread .g").forEach(function(n,i){draw(n,120,(e0-i*.08)/.6)});
+  if(el0){el0.style.translate="0 0";el0.style.filter="opacity("+FADE.toFixed(3)+")"}
+  qq("#scSpread .g").forEach(function(n){n.style.strokeDasharray="none";n.style.strokeDashoffset="0"});
   var sp=q("scSpread");
   /* the broad spread fades back as the focused field takes over */
-  if(sp)sp.style.filter="opacity("+(ea(cl((p-.08)/.2))*(1-.86*cl((p-.42)/.22))*FADE).toFixed(3)+")";
+  if(sp)sp.style.filter="opacity("+((1-.86*cl((p-.42)/.22))*FADE).toFixed(3)+")";
   /* phase 1 (.26–.56): the two transducers arrive and their arcs draw */
   var e1=cl((p-.26)/.3);
   var tl2=q("scTL"),tr=q("scTR");
@@ -1534,7 +1549,9 @@ function homeScroll(view){
     var q=p*NS;
     for(var j=0;j<NS;j++){
       var s=steps[j];if(!s)continue;
-      var t=q-j,inn=j===0?1:c2((t+.18)/.24),out=j===NS-1?0:c2((t-.82)/.24);
+      /* the outgoing step is gone before the incoming one arrives: a full overlap put two
+         paragraphs of body text on top of each other at the boundary, and neither was readable */
+      var t=q-j,inn=j===0?1:c2((t+.10)/.14),out=j===NS-1?0:c2((t-.78)/.14);
       s.style.visibility=(inn*(1-out))>.002?"visible":"hidden";
       var kids=s.children;
       for(var k=0;k<kids.length;k++){

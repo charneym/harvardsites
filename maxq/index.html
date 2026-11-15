@@ -592,9 +592,34 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* CB round: no boxes where type and a rule do the job; one clear timeline; no broken scroll cue; balanced CTA band */
+.cue{display:none!important}
+.bk{border:0!important;border-top:1px solid var(--hair)!important;min-height:0!important;padding:18px 0 0!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;background:none!important}
+.bk.lead::after{display:none!important}
+.bk b{display:block!important;min-height:0!important}
+.pcard.noimg{border:0!important;border-top:1px solid var(--hairD)!important;padding:20px 0 0!important;background:none!important;box-shadow:none!important}
+.pcard.noimg::before{top:-1px}
+.pcard.noimg .go{margin-top:14px!important;padding-top:0!important}
+.pcard.noimg .grp{margin-bottom:14px!important}
+.pcard.nolink{cursor:default}
+.pcard.nolink:hover{transform:none}
+.pcard.nolink .bio1{font-size:14.5px;line-height:1.55;color:var(--stoneD);margin:12px 0 0;max-width:38ch}
+.tl .ln0,.tl .ln1{display:none!important}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:-30px;top:calc(.5em + 11px);bottom:calc(-.5em + 1px);width:1px;background:currentColor;opacity:.18}
+.bio .in{padding-bottom:64px!important;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent)}
+.qt.c{max-width:36ch;margin-left:auto;margin-right:auto}
+@media (min-width:1025px){
+  .cta .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:clamp(30px,5vw,90px);align-items:end}
+  .cta .kick{grid-column:1/-1}
+  .cta .big{grid-column:1;grid-row:2/4}
+  .cta .sub{grid-column:2;grid-row:2;margin:0!important;align-self:end}
+  .cta .act{grid-column:2;grid-row:3;margin-top:28px!important}
+}
+@media (max-width:560px){.story-r{height:34vh!important;height:34svh!important}.pipe-h .stg span{font-size:9px;letter-spacing:.06em;padding-left:5px}}
+
 /* BT: the hero's living visual bookends the page, quieter, behind the footer wordmark */
 .ftr{isolation:isolate}
-.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.42;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 45%);mask-image:linear-gradient(180deg,transparent 0%,#000 45%)}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.3}
 /* BU: a statement alone in its band is centred as a block, text left-aligned */
 .mst{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 
@@ -931,15 +956,14 @@ var NEWS=[
 ];
 var TEAM=[
  {slug:"amir-tehrani",name:"Amir Tehrani",title:"Chief Executive Officer",grp:"Leadership",
-  bio:["Amir leads MaxQ Medical as CEO. He co-led the company’s $31.5 million Series A with Executive Chairman Amir Abolfathi, closed in August 2026 to grow the team and advance the clinical program.","In announcing the round he described MaxQ’s aim: a single transurethral system with the durability of gold-standard resective therapy and side-effects more comparable to minimally invasive treatments."],
-  q:"Men with prostate disease have had to choose between treatments that don’t do enough and treatments that come with consequential tradeoffs and side-effects.",qs:"On the Series A, August 2026"},
+  bio:["Amir leads MaxQ Medical as CEO. He co-led the company’s $31.5 million Series A with Executive Chairman Amir Abolfathi, closed in August 2026 to grow the team and advance the clinical program.","In announcing the round he described MaxQ’s aim: a single transurethral system with the durability of gold-standard resective therapy and side-effects more comparable to minimally invasive treatments."]},
  {slug:"amir-abolfathi",name:"Amir Abolfathi",title:"Executive Chairman",grp:"Leadership",
-  bio:["Amir is Executive Chairman of MaxQ Medical. He co-led the $31.5 million Series A financing effort with CEO Amir Tehrani."]},
+  card:1,bio:["Co-led the $31.5 million Series A financing with CEO Amir Tehrani."]},
  {slug:"pierre-khuri-yakub",name:"Pierre Khuri-Yakub",title:"Co-founder & CSO, Orchard Ultrasound Innovation",grp:"Origins",
-  bio:["Professor Khuri-Yakub is co-founder and Chief Scientific Officer of Orchard Ultrasound Innovation, the Sunnyvale company that spun out MaxQ Medical, and Professor Emeritus of Electrical Engineering at Stanford University.","He invented the Capacitive Micromachined Ultrasonic Transducer (CMUT). Orchard was founded to commercialize semiconductor ultrasound technology developed at Stanford, and MaxQ is its first spinout."],
-  q:"Our work in semiconductor ultrasound has spanned decades, and this is the first time we’ve taken that foundation and built a complete imaging and therapy system around it.",qs:"On the Series A, August 2026"}
+  bio:["Professor Khuri-Yakub is co-founder and Chief Scientific Officer of Orchard Ultrasound Innovation, the Sunnyvale company that spun out MaxQ Medical, and Professor Emeritus of Electrical Engineering at Stanford University.","He invented the Capacitive Micromachined Ultrasonic Transducer (CMUT). Orchard was founded to commercialize semiconductor ultrasound technology developed at Stanford, and MaxQ is its first spinout."]}
 ];
-function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+var SHEET=TEAM.filter(function(p){return !p.card});
+function pBy(s){for(var i=0;i<SHEET.length;i++)if(SHEET[i].slug===s)return i;return -1}
 var INV=[["Atlantic Blue Ventures","Co-lead",1],["S3 Ventures","Co-lead",1],["Olympus Innovation Ventures","Co-lead",1],["Hillside Capital","Existing investor",0]];
 
 /* ================= VIEW HELPERS ================= */
@@ -948,7 +972,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){return '<a class="pcard noimg" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){if(p.card)return '<div class="pcard noimg nolink"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><p class="bio1">'+esc(p.bio[0])+'</p></div></div>';return '<a class="pcard noimg" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function backers(){return '<div class="backers" data-group>'+INV.map(function(b){return '<div class="bk'+(b[2]?' lead':'')+'"><b>'+b[0]+'</b><span class="lab">'+b[1]+'</span></div>'}).join("")+'</div>'}
 
@@ -957,7 +981,7 @@ var GL='M60 150C60 92 112 58 180 58S300 92 300 150 262 236 180 238 60 208 60 150
 var LOBEL='M98 150C96 112 116 100 140 102S166 120 162 150 140 200 126 196 100 184 98 150Z',LOBER='M262 150C264 112 244 100 220 102S194 120 198 150 220 200 234 196 260 184 262 150Z';
 var FOC=[[120,122],[140,118],[112,146],[132,144],[150,150],[118,172],[138,178],[240,122],[220,118],[248,146],[228,144],[210,150],[242,172],[222,178]];
 function sceneSVG(){
-  var rays='';for(var d=0;d<360;d+=30){var r=d*Math.PI/180,x=180+Math.cos(r)*20,y=138+Math.sin(r)*20,X=180+Math.cos(r)*118,Y=138+Math.sin(r)*96;rays+='<line class="h sc-ray" pathLength="1" x1="'+x.toFixed(1)+'" y1="'+y.toFixed(1)+'" x2="'+X.toFixed(1)+'" y2="'+Y.toFixed(1)+'"/>'}
+  var rays='';
   return '<svg viewBox="0 0 360 300" aria-hidden="true"><defs><clipPath id="glc"><path d="'+GL+'"/></clipPath></defs>'+
    '<path class="gf sc-gl" pathLength="1" d="'+GL+'"/>'+
    '<g clip-path="url(#glc)">'+rays+'<path class="sc-sweep" d="M180 138L320 100A150 150 0 0 1 330 160Z" fill="rgba(159,197,234,.14)"/><line class="s sc-beam" x1="180" y1="138" x2="306" y2="110"/></g>'+
@@ -968,7 +992,7 @@ function sceneSVG(){
    '<circle class="lux sc-mar" cx="180" cy="138" r="13"/><circle class="s sc-marl" cx="180" cy="138" r="13" stroke-dasharray="4 5"/>'+
    '<circle class="lux" cx="180" cy="138" r="13"/><circle class="s sc-ur" pathLength="1" cx="180" cy="138" r="13"/><circle class="sf" cx="180" cy="138" r="3.4"/>'+
    /* permanent labels: the gland and the probe */
-   '<path class="h" d="M70 34H96L104 76"/><text x="14" y="38">PROSTATE</text>'+
+   '<path class="h" d="M80 34H96L104 76"/><text x="14" y="38">PROSTATE</text>'+
    '<path class="h" d="M180 168V262"/><text x="180" y="280" text-anchor="middle">PROBE IN THE URETHRA</text>'+
    /* one label per step, top right, each pointing at the part that step changes */
    '<g class="sc-l1"><path class="h" d="M346 34H300L268 78"/><text x="346" y="28" text-anchor="end">ULTRASOUND SWEEP</text></g>'+
@@ -983,12 +1007,10 @@ function scene(root,tl,sec){
   gsap.fromTo(q(".sc-gl,.sc-ur"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,ease:"flow",stagger:.15,scrollTrigger:{trigger:sec,start:"top 75%"}});
   gsap.fromTo(q(".sf,.lux:not(.sc-mar)"),{opacity:0},{opacity:1,duration:1,delay:.6,scrollTrigger:{trigger:sec,start:"top 75%"}});
   /* 1 · image: rays draw out from the probe while the beam sweeps a full turn */
-  tl.fromTo(q(".sc-ray"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.16,stagger:.006,ease:"none"},0);
   tl.fromTo(q(".sc-beam,.sc-sweep"),{rotation:-40,svgOrigin:"180 138",opacity:1},{rotation:320,svgOrigin:"180 138",duration:.27,ease:"none"},0);
   tl.to(q(".sc-beam,.sc-sweep"),{opacity:0,duration:.04},.25);
   /* 2 · plan: the lobes resolve, the plan traces around them */
   tl.fromTo(q(".sc-lobe"),{opacity:0,scale:.9,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.12,ease:"none"},.26);
-  tl.to(q(".sc-ray"),{opacity:.35,duration:.1},.28);
   tl.fromTo(q(".sc-plan"),{opacity:0,scale:.82,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.14,ease:"none"},.32);
   /* 3 · treat: energy leaves the probe, focal zones light one after another */
   tl.fromTo(q(".sc-hifu"),{strokeDasharray:"1 1",strokeDashoffset:1,opacity:1},{strokeDashoffset:0,duration:.06,ease:"none"},.52);
@@ -1000,8 +1022,8 @@ function scene(root,tl,sec){
   tl.fromTo(q(".sc-mar,.sc-marl"),{attr:{r:13},opacity:0},{attr:{r:36},opacity:1,duration:.14,ease:"none"},.78);
   /* label slot: crosses from step to step with the text */
   gsap.set(q(".sc-l2,.sc-l3,.sc-l4"),{opacity:0});
-  tl.to(q(".sc-l1"),{opacity:0,duration:.04},.23).to(q(".sc-l2"),{opacity:1,duration:.04},.27)
-    .to(q(".sc-l2"),{opacity:0,duration:.04},.48).to(q(".sc-l3"),{opacity:1,duration:.04},.52)
+  tl.to(q(".sc-l1"),{opacity:0,duration:.04},.23).to(q(".sc-l2"),{opacity:1,duration:.04},.4)
+    .to(q(".sc-l2"),{opacity:0,duration:.04},.48).to(q(".sc-l3"),{opacity:1,duration:.04},.58)
     .to(q(".sc-l3"),{opacity:0,duration:.04},.73).to(q(".sc-l4"),{opacity:1,duration:.04},.77);
 }
 
@@ -1129,7 +1151,7 @@ function vTeam(){
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investors</span><h2 class="d2 split">Backed to <em>build.</em></h2></div><p data-r>A $31.5 million Series A, closed in August 2026, with strategic backing from Olympus Innovation Ventures.</p></div>'+
    '<dl class="facts" data-group>'+INV.map(function(b){return '<div><dt class="lab">'+b[1]+'</dt><dd>'+b[0]+'</dd></div>'}).join("")+'</dl>'+
-   '<div class="qt" data-r><p>“There’s a strong need in urology for technology that allows physicians to see and treat the prostate in one setting.”</p><span class="lab">Gabriela Kaynor · Chair, Olympus Innovation Ventures</span></div>'+
+   '<div class="qt c" data-r><p>“There’s a strong need in urology for technology that allows physicians to see and treat the prostate in one setting.”</p><span class="lab">Gabriela Kaynor · Chair, Olympus Innovation Ventures</span></div>'+
   '</div></section>'+cta();
 }
 function vNews(){
@@ -1173,7 +1195,7 @@ function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   if(!p.length)return {k:"home",v:vHome,t:"MaxQ Medical — See better. Treat better.",x:"Home"};
   if(p[0]==="platform")return {k:"platform",v:vPlatform,t:"Platform — "+SITE,x:"Platform"};
-  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:SHEET[pBy(p[1])].name+" — "+SITE,x:"Team"};
   if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
   if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
   if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
@@ -1185,8 +1207,8 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 /* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
 (function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
-/* BT: copy the live hero frame into the footer canvas while the footer is on screen (the field runs only while a [data-field] element is visible) */
-(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||r.width<2)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var s=Math.max(W/src.width,H/src.height),dw=src.width*s,dh=src.height*s;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh)})})();
+/* BT: the live hero visual, cropped to its subject and centred quietly behind the footer wordmark (the field runs only while a [data-field] element is visible) */
+(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f){window.__ftrVis=false;return}var r=f.getBoundingClientRect();var vis=!(r.bottom<0||r.top>innerHeight||r.width<2);window.__ftrVis=vis;if(!vis)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var mob=innerWidth<861,sx=mob?0:src.width*.42,sw=mob?src.width:src.width*.58,sy=0,sh=mob?src.height*.5:src.height;var bw=document.getElementById("bigwm"),br=bw?bw.getBoundingClientRect():r;var cx=(br.left+br.width/2-r.left)*d,cy=(br.top+br.height*.45-r.top)*d,dh=Math.max(br.height,120)*d*2.1,dw=dh*sw/sh;if(dw>W*.95){dw=W*.95;dh=dw*sh/sw}c.globalCompositeOperation="source-over";c.drawImage(src,sx,sy,sw,sh,cx-dw/2,cy-dh/2,dw,dh);c.globalCompositeOperation="destination-in";var g=c.createRadialGradient(cx,cy,0,cx,cy,Math.max(dw,dh)*.52);g.addColorStop(0,"rgba(0,0,0,1)");g.addColorStop(.6,"rgba(0,0,0,.8)");g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(0,0,W,H);c.globalCompositeOperation="source-over"})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -1238,7 +1260,7 @@ var field=(function(){
     ensure();
     var t=(performance.now()-t0)/1000;if(RM)t=7;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    cv.style.opacity=shown?String(.4+.6*dim):"";
+    cv.style.opacity=shown?String(curKey==="home"?.4+.6*dim:0):"";
     var w=cv.width,h=cv.height,R=L.R*dpr,e=IN.v*IN.v*(3-2*IN.v);
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,w,h);
     var ox=L.cx*dpr+m[0]*16*dpr,oy=L.cy*dpr+m[1]*12*dpr,sc=.94+.06*e;
@@ -1263,7 +1285,7 @@ var field=(function(){
     c.strokeStyle="rgba(243,239,233,"+(.16*e)+")";c.lineWidth=1*dpr;c.beginPath();
     for(var i=0;i<120;i++){var a=i/120*6.2832,r1=R*1.36,r2=R*(i%10?1.385:1.42);c.moveTo(Math.cos(a)*r1*1.12,Math.sin(a)*r1*.94);c.lineTo(Math.cos(a)*r2*1.12,Math.sin(a)*r2*.94)}c.stroke();
     /* sub-pages: the ultrasound texture only, no probe/therapy marks behind the page title */
-    if(curKey==='home'){
+    if(true){
     /* planned contour */
     c.save();c.setLineDash([4*dpr,6*dpr]);c.lineDashOffset=-t*6*dpr;c.strokeStyle="rgba(242,154,100,"+(.5*e)+")";c.lineWidth=1.1*dpr;
     for(k=0;k<2;k++){var lb=LOBES[k];c.beginPath();c.ellipse(lb[0]*R,lb[1]*R,lb[2]*R*.93,lb[3]*R*.93,0,0,6.2832);c.stroke()}c.restore();
@@ -1438,18 +1460,18 @@ function contactInit(view){
 
 /* ================= BIO OVERLAY ================= */
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
-function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
+function fillBio(i){var p=SHEET[i],n=SHEET.length,bio=$("#bio");window.__bioCur=i;
   /* BQ: pick the layout from the photo actually available */
-  var big=!!(p.img&&!(p.imgW&&p.imgW<480));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
-  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
+  var big=!!(p.img&&!(p.imgW&&p.imgW<800));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<800)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
   var slim=false;
   $("#bioMed").innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $("#bioPrev").setAttribute("href","#/team/"+SHEET[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+SHEET[(i+1)%n].slug);
   document.title=p.name+" — "+SITE;
 }
-window.TEAM_NOIMG=function(i){TEAM[i].img=null;if(window.__bioCur===i)fillBio(i)};
+window.TEAM_NOIMG=function(i){SHEET[i].img=null;if(window.__bioCur===i)fillBio(i)};
 TEAM.forEach(function(p){if(p.img){var im=new Image();im.onload=function(){p.imgW=im.naturalWidth};im.src=p.img}});
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
   if(bioOpen){$("#bioIn").scrollTop=0;gsap.fromTo(["#bioMed","#bioIn"],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});return}

@@ -529,7 +529,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sfig .af{fill:var(--sinL);stroke:none}
 .sfig .dim{fill:rgba(243,243,241,.08);stroke:none}
 .sfig text{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:#bfc5c0}
-.sfig .sc-n{font-size:10px;fill:#a7a8aa}
+.sfig .sc-row{font-size:10.5px;letter-spacing:.06em}
+@media (max-width:560px){.sfig .sc-row{font-size:11.5px!important}}
 .sfig .tb{font-family:var(--serif);font-size:30px;letter-spacing:-.03em;fill:#f2f3ee;font-weight:300}
 /* program cards */
 .pcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px var(--gap)}
@@ -580,11 +581,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mdi-fig img{width:100%;height:100%;object-fit:contain;padding:6% 10%}
 .mdi.noimg .mdi-fig{display:none}.mdi.noimg{grid-template-columns:1fr}
 .mdi-t .gq{margin:0 0 26px}
-.pfig{margin:clamp(30px,3vw,48px) 0 0;grid-column:1/-1}
-.pf-im{cursor:zoom-in;background:#fff;border:1px solid var(--hairD);border-radius:6px;overflow:hidden;aspect-ratio:21/9;display:flex;align-items:center;justify-content:center}
-.pfig.tall .pf-im{aspect-ratio:21/9}
-@media (max-width:760px){.pf-im,.pfig.tall .pf-im{aspect-ratio:4/3}}
-.pf-im img{width:100%;height:100%;object-fit:contain;padding:4%}
+.pfig{margin:clamp(30px,3vw,48px) auto 0;grid-column:1/-1;max-width:900px;width:100%}
+.pf-im{cursor:zoom-in;background:#fff;border:0;border-radius:6px;overflow:hidden;aspect-ratio:888/540;display:flex;align-items:center;justify-content:center}
+.pfig.tall .pf-im{aspect-ratio:888/540}
+.pf-im img{width:100%;height:100%;object-fit:contain;padding:0}
 .pfig figcaption{margin-top:12px}
 .ftr .bigw{font-size:min(12.6vw,200px)}
 @media (max-width:1024px){.mdi{grid-template-columns:1fr}.mdi-fig{aspect-ratio:16/12;max-height:none}}
@@ -611,9 +611,34 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* CB round: no boxes where type and a rule do the job; one clear timeline; no broken scroll cue; balanced CTA band */
+.cue{display:none!important}
+.bk{border:0!important;border-top:1px solid var(--hair)!important;min-height:0!important;padding:18px 0 0!important;align-items:flex-start!important;justify-content:flex-start!important;text-align:left!important;background:none!important}
+.bk.lead::after{display:none!important}
+.bk b{display:block!important;min-height:0!important}
+.pcard.noimg{border:0!important;border-top:1px solid var(--hairD)!important;padding:20px 0 0!important;background:none!important;box-shadow:none!important}
+.pcard.noimg::before{top:-1px}
+.pcard.noimg .go{margin-top:14px!important;padding-top:0!important}
+.pcard.noimg .grp{margin-bottom:14px!important}
+.pcard.nolink{cursor:default}
+.pcard.nolink:hover{transform:none}
+.pcard.nolink .bio1{font-size:14.5px;line-height:1.55;color:var(--stoneD);margin:12px 0 0;max-width:38ch}
+.tl .ln0,.tl .ln1{display:none!important}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:-30px;top:calc(.5em + 11px);bottom:calc(-.5em + 1px);width:1px;background:currentColor;opacity:.18}
+.bio .in{padding-bottom:64px!important;-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 36px),transparent)}
+.qt.c{max-width:36ch;margin-left:auto;margin-right:auto}
+@media (min-width:1025px){
+  .cta .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:clamp(30px,5vw,90px);align-items:end}
+  .cta .kick{grid-column:1/-1}
+  .cta .big{grid-column:1;grid-row:2/4}
+  .cta .sub{grid-column:2;grid-row:2;margin:0!important;align-self:end}
+  .cta .act{grid-column:2;grid-row:3;margin-top:28px!important}
+}
+@media (max-width:560px){.story-r{height:34vh!important;height:34svh!important}.pipe-h .stg span{font-size:9px;letter-spacing:.06em;padding-left:5px}}
+
 /* BT: the hero's living visual bookends the page, quieter, behind the footer wordmark */
 .ftr{isolation:isolate}
-.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.42;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 45%);mask-image:linear-gradient(180deg,transparent 0%,#000 45%)}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.3}
 /* BU: a statement alone in its band is centred as a block, text left-aligned */
 .mst{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 
@@ -817,27 +842,28 @@ function pCards(){return '<div class="pcards" data-group>'+PROGS.map(function(p)
 function sceneSVG(){
   var arcs='';for(var i=0;i<5;i++){var r=40+i*24;arcs+='<path class="g sc-call" pathLength="1" d="M'+(96+r*Math.cos(-1.05)).toFixed(1)+' '+(190+r*Math.sin(-1.05)).toFixed(1)+'A'+r+' '+r+' 0 0 1 '+(96+r*Math.cos(.1)).toFixed(1)+' '+(190+r*Math.sin(.1)).toFixed(1)+'"/>'}
   var resp='';for(i=0;i<3;i++){var r2=34+i*22;resp+='<path class="a sc-resp" pathLength="1" d="M'+(242+r2*Math.cos(2.25)).toFixed(1)+' '+(118+r2*Math.sin(2.25)).toFixed(1)+'A'+r2+' '+r2+' 0 0 1 '+(242+r2*Math.cos(3.45)).toFixed(1)+' '+(118+r2*Math.sin(3.45)).toFixed(1)+'"/>'}
-  var bars='';for(i=0;i<5;i++)bars+='<text class="sc-n" x="352" y="'+(145+i*20)+'">'+(i+1)+'</text><rect class="sc-bar" x="366" y="'+(136+i*20)+'" width="'+(58-i*5)+'" height="10" rx="5"/>';
+  var MF=["Abbott","Biotronik","Boston Scientific","Medtronic","MicroPort"],bars='';for(i=0;i<5;i++)bars+='<text class="sc-row" x="340" y="'+(146+i*20)+'">'+MF[i]+'</text>';
   return '<svg viewBox="0 0 460 300" aria-hidden="true">'+
    '<path class="h sc-chest" pathLength="1" d="M70 270C60 190 70 90 130 60S250 30 300 70 330 200 320 270Z"/>'+
    '<path class="g sc-heart" transform="translate(32 46)" d="M150 176c-10-12-30-6-28 10 2 14 20 24 28 32 8-8 26-18 28-32 2-16-18-22-28-10Z"/>'+
    '<path class="g sc-lead" pathLength="1" d="M240 80C240 50 200 46 196 76S186 160 182 222"/>'+
    '<rect class="g sc-hdr" x="222" y="80" width="34" height="14" rx="3"/>'+
    '<rect class="gf sc-can" x="210" y="92" width="64" height="52" rx="22"/>'+
-   '<text class="tb sc-q" x="286" y="96">?</text>'+
+   '<text class="tb sc-q" x="284" y="132">?</text>'+
+   '<path class="h" d="M100 70L76 36H72"/><text x="6" y="30" class="sc-pl">PATIENT</text>'+
    '<path class="h" d="M266 96L292 56H298"/><text x="302" y="60">IMPLANTED DEVICE</text>'+
    '<path class="h" d="M212 240H236"/><text x="240" y="244" class="sc-hl">HEART</text>'+
-   '<g class="sc-coil"><circle class="g" cx="96" cy="190" r="26"/><circle class="g" cx="96" cy="190" r="16"/><circle class="g" cx="96" cy="190" r="6"/><path class="g" d="M76 206L40 254a7 7 0 0 0 11 8l36-48Z"/><path class="h" d="M30 270L44 262"/><text x="6" y="286">HANDHELD IDENTIFIER</text></g>'+
+   '<g class="sc-coil"><circle class="g" cx="96" cy="190" r="26"/><circle class="g" cx="96" cy="190" r="16"/><circle class="g" cx="96" cy="190" r="6"/><path class="g" d="M76 206L40 254a7 7 0 0 0 11 8l36-48Z"/><text x="6" y="286">HANDHELD IDENTIFIER</text></g>'+
    arcs+resp+
-   '<g class="sc-panel"><rect class="gf" x="340" y="118" width="104" height="122" rx="12"/><text x="340" y="110">MANUFACTURER</text>'+bars+'</g>'+
-   '<path class="a sc-ok" pathLength="1" d="M424 196l6 6 12-14" stroke-width="2"/>'+
-   '<text class="sc-cap" x="392" y="268" text-anchor="middle">IDENTIFIED</text></svg>';
+   '<g class="sc-panel"><rect class="gf" x="328" y="118" width="128" height="122" rx="12"/><text x="328" y="110">MANUFACTURER</text>'+bars+'</g>'+
+   '<path class="a sc-ok" pathLength="1" d="M420 202l5 5 10-12" stroke-width="2"/>'+
+   '<text class="sc-cap" x="392" y="262" text-anchor="middle">IDENTIFIED</text></svg>';
 }
 function scene(root,tl,sec){
   var q=function(s){return root.querySelectorAll(s)},A="#8fc974",W="rgba(242,243,241,.6)";
   gsap.fromTo(root,{opacity:0},{opacity:1,duration:1,ease:"power2.out",scrollTrigger:{trigger:sec,start:"top 75%"}});
   gsap.fromTo(q(".sc-chest,.sc-lead"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:1.6,ease:"flow",stagger:.2,scrollTrigger:{trigger:sec,start:"top 75%"}});
-  gsap.set(q(".sc-bar"),{fill:"rgba(242,243,241,.14)"});
+  gsap.set(q(".sc-row"),{fill:"rgba(243,243,241,.38)"});
   /* 1 · arrive: an unknown device, nothing to call it */
   tl.fromTo(q(".sc-q"),{opacity:0,y:8},{opacity:1,y:0,duration:.06},.02);
   /* 2 · call: the handheld arrives, five wake-up calls go out one after another, each lighting its row */
@@ -846,15 +872,15 @@ function scene(root,tl,sec){
   q(".sc-call").forEach(function(a,i){var s=.3+i*.04;
     tl.fromTo(a,{strokeDasharray:"1 1",strokeDashoffset:1,opacity:.9},{strokeDashoffset:0,duration:.04,ease:"none"},s);
     tl.to(a,{opacity:i===3?.9:.18,duration:.03},s+.05);
-    tl.to(q(".sc-bar")[i],{fill:"rgba(242,243,241,.5)",duration:.02},s).to(q(".sc-bar")[i],{fill:"rgba(242,243,241,.14)",duration:.03},s+.05)});
+    tl.to(q(".sc-row")[i],{fill:"rgba(243,243,241,.95)",duration:.02},s).to(q(".sc-row")[i],{fill:"rgba(243,243,241,.38)",duration:.03},s+.05)});
   /* 3 · answer: only the matching call gets a reply; the device lights */
   tl.fromTo(q(".sc-resp"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.06,stagger:.025,ease:"none"},.53);
   tl.to(q(".sc-q"),{opacity:0,duration:.04},.53);
   tl.to(q(".sc-can"),{stroke:A,fill:"rgba(106,183,69,.14)",duration:.06},.56);
-  tl.to(q(".sc-call"),{opacity:.12,duration:.06},.6);
+  tl.to(q(".sc-call"),{opacity:0,duration:.06},.6);
   /* 4 · identify: the readout resolves to one manufacturer */
-  tl.to(q(".sc-bar")[3],{fill:A,attr:{width:62},duration:.08},.77);
-  tl.to([q(".sc-bar")[0],q(".sc-bar")[1],q(".sc-bar")[2],q(".sc-bar")[4]],{fill:"rgba(242,243,241,.08)",duration:.08},.77);
+  tl.to(q(".sc-row")[3],{fill:A,duration:.08},.77);
+  tl.to([q(".sc-row")[0],q(".sc-row")[1],q(".sc-row")[2],q(".sc-row")[4]],{fill:"rgba(243,243,241,.2)",duration:.08},.77);
   tl.fromTo(q(".sc-ok"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.06,ease:"none"},.83);
   tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.06},.86);
 }
@@ -930,9 +956,9 @@ function vPrograms(){
    '<div class="pdet"><div><span class="lab kick" data-r>Emergency triage · Diagnostics</span><h3 data-r>SmartRead™ Medical Device Identifier</h3></div><div class="dsc"><p data-r>When a patient with an implanted cardiac device presents to the emergency department, the device manufacturer must be called to interrogate it. The MDI identifies the brand of the implanted device in 10 seconds or less.</p><p class="muted" data-r>Indications for use: to determine the manufacturer of an unknown cardiac implanted electronic device (CIED) manufactured by Abbott Laboratories, Biotronik, Boston Scientific Corporation, Medtronic or MicroPort.</p>'+
     fdl([["Regulatory",'<a href="'+FDA+'" target="_blank" rel="noopener">FDA De Novo DEN260007</a>, granted September 2026'],["Commercial","Licensed to <a href=\"https://www.cardiac-innovation.com/\" target=\"_blank\" rel=\"noopener\">Cardiac Innovation</a>; not yet available for sale"],["Funding","NIA SBIR Phase I and II; "+rl("11409317","NIA SB1 award, 2026")]])+'</div></div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Blood volume · Mechanical cardiac support</span><h3 data-r>Impella Cardiac Output</h3></div><div class="dsc"><p data-r>Real-time hemodynamic measurement, cardiac output, directly from a market-leading mechanical cardiac support device, to support weaning patients from mechanical cardiac support. This is native cardiac output, not pump flow.</p>'+
-    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NHLBI Phase I and II, "+rl("10645215","Native Hemodynamic Measurement as Feedback Control for Mechanical Cardiac Support")]])+'</div>'+fig("1624910856138-RFEAQMWT0UFZSAT8ZNGN/MCS+weaning.png?format=750w","Diagram of the Impella cardiac output setup: Abiomed Impella controller, admittance cardiac output system, data computer and the Impella-CO pump with hand-assembled volume electrodes","Hemodynamic monitoring for weaning from mechanical circulatory support. Diagram: BridgeSource Medical.")+'</div>'+
+    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NHLBI Phase I and II, "+rl("10645215","Native Hemodynamic Measurement as Feedback Control for Mechanical Cardiac Support")]])+'</div>'+'</div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Blood volume · Cardiac critical care</span><h3 data-r>Smart Pericardial Drain</h3></div><div class="dsc"><p data-r>A modified Blake drain that measures hemodynamics in patients recovering from cardiac surgery, to clarify the cause of a drop in blood pressure (hypotension) in the cardiac critical care unit.</p>'+
-    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NIBIB Phase I and II, "+rl("10707900","Post Cardiac Surgery Hemodynamics Diagnostic Device")]])+'</div>'+fig("1624910968575-PEBJUU64PHWAFGUQXQ42/pericardial+drain.png?format=750w","Illustration of a modified pericardial drain placed after cardiac surgery, connected to a hemodynamic analyzer and drainage canister","Modified pericardial drain, placement and hemodynamic analyzer. Illustration: BridgeSource Medical.")+'</div>'+
+    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NIBIB Phase I and II, "+rl("10707900","Post Cardiac Surgery Hemodynamics Diagnostic Device")]])+'</div>'+fig("1624910968575-PEBJUU64PHWAFGUQXQ42/pericardial+drain.png?format=1500w","Illustration of a modified pericardial drain placed after cardiac surgery, connected to a hemodynamic analyzer and drainage canister","Modified pericardial drain, placement and hemodynamic analyzer. Illustration: BridgeSource Medical.")+'</div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Drug delivery · Pulmonary hypertension</span><h3 data-r>Smart Nebulizer</h3></div><div class="dsc"><p data-r>Adaptive nebulization of aerosol drugs, changing particle size in response to inhalation flow during administration. Active mesh nebulization gives fast on/off times, reducing the need for strict inhalation protocols that are challenging for many pulmonary hypertension patients.</p>'+
     fdl([["Funding","NHLBI Phase I and II, "+rl("10912642","Novel Device to Optimize Aerosol Drug Delivery for Pulmonary Hypertension Treatment")]])+'</div></div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Structural heart · New in 2026</span><h3 data-r>Pressure-Volume Right Heart Catheter</h3></div><div class="dsc"><p data-r>Pressure-volume loop analysis is the gold-standard assessment of cardiac function, but has required an extra procedure. Building PV measurement onto a standard right heart catheter could show which patients with tricuspid regurgitation have a right ventricle strong enough to withstand transcatheter repair.</p>'+
@@ -962,7 +988,7 @@ function vScience(){
 function moaSvg(){
   var lanes='',names=["Programmer 1","Programmer 2","Programmer 3","Programmer 4","Programmer 5"];
   for(var i=0;i<5;i++){var y=78+i*58,x0=120+i*62,p='';for(var k=0;k<4;k++){var x=x0+k*(8+i*2);p+='M'+x+' '+(y+10)+'V'+(y-10)}
-    lanes+='<path d="M120 '+y+'H500" fill="none" stroke="#3b3c3e" stroke-width="1"/><path d="'+p+'" fill="none" stroke="'+(i===3?'#8fc974':'#a5aca7')+'" stroke-width="1.6"/><text x="120" y="'+(y-16)+'">'+names[i].toUpperCase()+'</text>'}
+    lanes+='<path d="M120 '+y+'H500" fill="none" stroke="#3b3c3e" stroke-width="1"/><path d="'+p+'" fill="none" stroke="'+(i===3?'#8fc974':'#a5aca7')+'" stroke-width="1.6"/><text x="120" y="'+(y-22)+'">'+names[i].toUpperCase()+'</text>'}
   lanes+='<path d="M'+(120+3*62+60)+' 252q12-30 24 0t24 0t24 0" fill="none" stroke="#8fc974" stroke-width="1.4"/><text class="ac" x="'+(120+3*62+60)+'" y="224">RESPONSE</text>';
   return '<svg viewBox="0 0 520 400" aria-label="Schematic: five manufacturer wake-up calls sent in sequence; only the matching one gets a response">'+lanes+
    '<path d="M120 366H500M480 360l20 6-20 6" fill="none" stroke="#58595b" stroke-width="1"/><text x="120" y="390">TIME →</text><text class="t1" x="4" y="24">One answer identifies the brand</text></svg>';
@@ -1027,8 +1053,8 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 /* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
 (function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
-/* BT: copy the live hero frame into the footer canvas while the footer is on screen (the field runs only while a [data-field] element is visible) */
-(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||r.width<2)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var s=Math.max(W/src.width,H/src.height),dw=src.width*s,dh=src.height*s;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh)})})();
+/* BT: the live hero visual, cropped to its subject and centred quietly behind the footer wordmark (the field runs only while a [data-field] element is visible) */
+(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f){window.__ftrVis=false;return}var r=f.getBoundingClientRect();var vis=!(r.bottom<0||r.top>innerHeight||r.width<2);window.__ftrVis=vis;if(!vis)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var mob=innerWidth<861,sx=mob?0:src.width*.42,sw=mob?src.width:src.width*.58,sy=0,sh=mob?src.height*.5:src.height;var bw=document.getElementById("bigwm"),br=bw?bw.getBoundingClientRect():r;var cx=(br.left+br.width/2-r.left)*d,cy=(br.top+br.height*.45-r.top)*d,dh=Math.max(br.height,120)*d*2.1,dw=dh*sw/sh;if(dw>W*.95){dw=W*.95;dh=dw*sh/sw}c.globalCompositeOperation="source-over";c.drawImage(src,sx,sy,sw,sh,cx-dw/2,cy-dh/2,dw,dh);c.globalCompositeOperation="destination-in";var g=c.createRadialGradient(cx,cy,0,cx,cy,Math.max(dw,dh)*.52);g.addColorStop(0,"rgba(0,0,0,1)");g.addColorStop(.6,"rgba(0,0,0,.8)");g.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=g;c.fillRect(0,0,W,H);c.globalCompositeOperation="source-over"})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -1059,7 +1085,7 @@ var field=(function(){
   function frame(once){
     var t=(performance.now()-t0)/1000;if(RM)t=6.2;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    cv.style.opacity=shown?String(.4+.6*dim):"";
+    cv.style.opacity=shown?String(curKey==="home"?.4+.6*dim:0):"";
     var e=IN.v*IN.v*(3-2*IN.v),W=waves(t),d=dpr,s=L.s;
     c.setTransform(d,0,0,d,0,0);c.clearRect(0,0,innerWidth,innerHeight);
     var C=[L.C[0]+m[0]*14,L.C[1]+m[1]*10],D=[L.D[0]+m[0]*22,L.D[1]+m[1]*16];
@@ -1078,7 +1104,7 @@ var field=(function(){
     for(q=0;q<W.w.length;q++){var wv2=W.w[q],O2=wv2.o?D:C,r2=wv2.age*SP;if(r2<6)continue;
       c.strokeStyle=wv2.o?"rgba(143,201,116,"+(.5*wv2.a*e)+")":"rgba(243,243,241,"+(.22*wv2.a*e)+")";c.lineWidth=wv2.o?1.3:1;
       c.beginPath();c.arc(O2[0],O2[1],r2,0,6.2832);c.stroke()}
-    if(curKey!=='home'){if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});return}
+    if(false){if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});return}
     /* handheld identifier: coil seen face-on */
     c.strokeStyle="rgba(243,243,241,"+(.75*e)+")";c.lineWidth=1.2;
     [30,20,8].forEach(function(r){c.beginPath();c.arc(C[0],C[1],r*s,0,6.2832);c.stroke()});
@@ -1254,8 +1280,8 @@ function contactInit(view){
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
   /* BQ: pick the layout from the photo actually available */
-  var big=!!(p.img&&!(p.imgW&&p.imgW<480));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
-  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
+  var big=!!(p.img&&!(p.imgW&&p.imgW<800));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<800)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
   var slim=false;
   $("#bioMed").innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+

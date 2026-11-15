@@ -29,3 +29,8 @@
 ## Images (PRINCIPLES BJ)
 - USED: device-on-neck photo 20250806_175142.jpg (home, "The approach").
 - UNUSED: hero render of vases (generic AI/stock still life, not their product); About/Contact header images are template art.
+
+## Client review 3 (v15)
+- Walk-through rebuilt as one scene: brain, vagus nerve, liver (HNF4α), muscle and the neck device, all drawn in the first frame. Lit in turn: MUSCLE (wastes), VAGUS NERVE (irregular tone, inflammation), LIVER · HNF4α (depleted), DEVICE (stimulates; nerve, liver and muscle recover).
+- Co-founder: shown as a founder feature on the page grid (name, role, bio, quote, source link). No card, no sheet, no portrait (no high-quality portrait is public).
+- Footer: the hero's nerve field runs behind the wordmark.

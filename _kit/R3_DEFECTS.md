@@ -87,3 +87,205 @@ G1 (all sites with a pinned walk-through): step text must never superimpose at a
 - FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
 - REDUNDANT SHEETS: Brian Craig, Dwight Meglan → put the bio on the card, make it non-clickable
 - WALK-THROUGH: DONE (the reference).
+
+# Remaining sites (automated checks; walk-through verdict appended below each when ready — do the other items first)
+
+## mark-therapeutics
+- TEXT JUMP (BS): 9 headings shift up to 13px when the split reverts (e.g. "A signalling deficit, not a mutation."). Apply the exact .ln-mask rule.
+- CENTRE: #/: CENTRE .txt "Familial Parkinson’s has genes to ai": statement block is off-centre by -278px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## haima
+- TEXT JUMP (BS): 14 headings shift up to 63px when the split reverts (e.g. "A factor VIII-derived peptide enables vo"). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "Jerrold Levy, MD, FAHA, FCCM Scienti": last row has 1/2 items and is off-centre by -93px → centre the short row / size the grid to the item count
+- ORPHAN: #/synthoplate: ORPHAN .fig "THE SYNTHOPLATE SCHEMATIC" is 841px wide in a 1440px section with nothing beside i | #/team: ORPHAN .pc-fig "" is 171px wide in a 390px section with nothing beside it → compose the image beside its text or across the measure
+- CENTRE: #/: CENTRE .txt "Every hemostatic product that works ": statement block is off-centre by -268px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 9 sheets show a small circle portrait → large portrait or none (port the component)
+- REDUNDANT SHEETS: Emily Gahagan, Jerrold Levy, MD, FAHA, FCCM, Kristin Aldridge, MS, Lauren Switala, PhD, Philip Spinella, MD, Wolfgang Bergmeier, PhD → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## mucommune
+- TEXT JUMP (BS): 15 headings shift up to 99px when the split reverts (e.g. "A versatile capsule-intravaginal ring pl"). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "Sam Lai, PhD Founder & Interim CEO P": last row has 3/4 items and is off-centre by -168px → centre the short row / size the grid to the item count
+- ORPHAN: #/: ORPHAN .pc-fig "" is 230px wide in a 390px section with nothing beside it | #/team: ORPHAN .pc-fig "" is 230px wide in a 390px section with nothing beside it → compose the image beside its text or across the measure
+- VOID: #/: VOID .plat "POLYON Polymer immunogenicity A pate": content covers only 55% of a 632px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Mucus already stops most of what lan": statement block is off-centre by -238px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- LOGOS (BW): FAINT logo "Eunice Kennedy Shriver National Institut" | FAINT logo "One North Carolina Small Business Progra" | FAINT logo "The David and Lucile Packard Foundation" → one legible consistent tone; typeset or replace boxed/white files
+- BIO SHEETS: 10 sheets show a small circle portrait → large portrait or none (port the component)
+- REDUNDANT SHEETS: Jared Cossin, PhD, Matthijs Schoots, MS, Warren Anderson, PhD, Weiyu Li, PhD, Yuyan Wang, PhD → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## romix
+- TEXT JUMP (BS): 16 headings shift up to 13px when the split reverts (e.g. "A new method to comprehensively profile "). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .pgm "NHLBI · SBIR (R44) · AUG 2026 Kawasa": content covers only 43% of a 455px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Kawasaki disease is the leading caus": statement block is off-centre by -350px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- REDUNDANT SHEETS: Julius Judd → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## bridgesource
+- automated checks: clean
+- WALK-THROUGH: verdict pending (coordinator)
+
+## ridgeline
+- TEXT JUMP (BS): 16 headings shift up to 20px when the split reverts (e.g. "Duchenne muscular dystrophy"). Apply the exact .ln-mask rule.
+- ORPHAN: #/science: ORPHAN .pathw "" is 727px wide in a 1440px section with nothing beside it → compose the image beside its text or across the measure
+- CENTRE: #/: CENTRE .txt "Muscle strength starts to fall in ou": statement block is off-centre by -266px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 3 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## truecath
+- TEXT JUMP (BS): 13 headings shift up to 20px when the split reverts (e.g. "A simple core mechanism."). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .tcard "LEADERSHIP Zachary Berwick Chief Sci": content covers only 53% of a 220px card | #/team: VOID .tcard "LEADERSHIP Zachary Berwick Chief Sci": content covers only 53% of a 220px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Venous access is the most commonly p": statement block is off-centre by -194px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## origin-endoscopy
+- TEXT JUMP (BS): 15 headings shift up to 99px when the split reverts (e.g. "A drug-device combination."). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .tcard "FOUNDERS Dr. Stephen Hoag Co-invento": content covers only 53% of a 220px card | #/: VOID .tcard "FOUNDERS Dr. Venkata Akshintala Co-i": content covers only 53% of a 220px card | #/: VOID .tcard "LEADERSHIP Jeremy Starkweather Princ": content covers only 53% of a 220px card | #/team: VOID .tcard "FOUNDERS Dr. Stephen Hoag Co-invento": content covers only 53% of a 220px card (+2 more) → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Bleeding during endoscopic procedure": statement block is off-centre by -179px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## hydrogene
+- TEXT JUMP (BS): 16 headings shift up to 17px when the split reverts (e.g. "A pathologist and an endoscopist."). Apply the exact .ln-mask rule.
+- CENTRE: #/: CENTRE .txt "Viral vectors made liver gene therap": statement block is off-centre by -234px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## theia-imaging
+- TEXT JUMP (BS): 9 headings shift up to 7px when the split reverts (e.g. "Loris T2 handheld OCT granted FDA Breakt"). Apply the exact .ln-mask rule.
+- CENTRE: #/: CENTRE .txt "OCT is the gold standard for diagnos": statement block is off-centre by -116px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## sansimeon
+- TEXT JUMP (BS): 17 headings shift up to 17px when the split reverts (e.g. "A fully integrated platform for reproduc"). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .ap "CRISPR screening Perform genome-wide": card 312px tall has an empty gap of 82px inside | #/: VOID .ap "Immune profiling Fully characterize ": card 312px tall has an empty gap of 82px inside → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Single-cell sequencing changed how w": statement block is off-centre by -188px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## reparris
+- REDUNDANT SHEETS: Ruzanna Shkhyan → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## arkayli
+- automated checks: clean
+- WALK-THROUGH: verdict pending (coordinator)
+
+## rheotek
+- OVERLAY: [1440] no person triggers found on #/company (expected [data-bio],[data-person],[href*="#/team/"],[href*="#/people/"],[h | [390] no person triggers found on #/company (expected [data-bio],[data-person],[href*="#/team/"],[href*="#/people/"],[hr
+- WALK-THROUGH: verdict pending (coordinator)
+
+## kinea
+- TEXT JUMP (BS): 17 headings shift up to 24px when the split reverts (e.g. "Big genes,delivered whole."). Apply the exact .ln-mask rule.
+- VOID: #/team: VOID .pcard "Kelly Brazzo Board of Directors List": content covers only 46% of a 330px card | #/team: VOID .pcard "Pat Furlong Board observer Listed as": content covers only 46% of a 330px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Gene therapy for muscle has been bui": statement block is off-centre by -284px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 1 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## exavir
+- automated checks: clean
+- WALK-THROUGH: verdict pending (coordinator)
+
+## potomac-affinity
+- TEXT JUMP (BS): 12 headings shift up to 15px when the split reverts (e.g. "Biodefence and agriculture"). Apply the exact .ln-mask rule.
+- CENTRE: #/: CENTRE .txt "Recombinant proteins are fused to ta": statement block is off-centre by -179px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- WALK-THROUGH: verdict pending (coordinator)
+
+## oncosting
+- TEXT JUMP (BS): 8 headings shift up to 8px when the split reverts (e.g. "An award that ends in an IND."). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .pcard "MANAGEMENT Todd Wallach, MS Chief Ex": content covers only 23% of a 514px card | #/team: VOID .pcard "MANAGEMENT Todd Wallach, MS Chief Ex": content covers only 23% of a 514px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Intravesical BCG is the only approve": statement block is off-centre by -180px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## anelleo
+- TEXT JUMP (BS): 15 headings shift up to 7px when the split reverts (e.g. "ANLO102Progesterone intravaginal ring (A"). Apply the exact .ln-mask rule.
+- ORPHAN: #/team: ORPHAN .pc-fig "" is 171px wide in a 390px section with nothing beside it → compose the image beside its text or across the measure
+- CENTRE: #/: CENTRE .txt "During IVF, progesterone support mea": statement block is off-centre by -207px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 8 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## pathware
+- automated checks: clean
+- WALK-THROUGH: verdict pending (coordinator)
+
+## ne-hemolytics
+- TEXT JUMP (BS): 14 headings shift up to 22px when the split reverts (e.g. "A two-step sepsis screen."). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "Richard Carroll Scientific Advisory ": 2 items leave an empty 336px column on the right → centre the short row / size the grid to the item count
+- VOID: #/team: VOID .pcard "BOARD Hayden Jeffreys Non-Executive ": content covers only 42% of a 487px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Treating sepsis well means knowing t": statement block is off-centre by -175px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 6 sheets show a small circle portrait → large portrait or none (port the component)
+- REDUNDANT SHEETS: Hayden Jeffreys → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## limax
+- TEXT JUMP (BS): 20 headings shift up to 24px when the split reverts (e.g. "A Wyss Institute spinout, in Boston."). Apply the exact .ln-mask rule.
+- VOID: #/team: VOID .pcard "Adam Hacking, PhD Commercial and str": content covers only 45% of a 236px card | #/team: VOID .pcard "Anh Hoang, PhD Commercial and strate": content covers only 45% of a 236px card | #/team: VOID .pcard "Brian Hibler, MD Clinical advisor · ": content covers only 45% of a 236px card | #/team: VOID .pcard "David Wu, DMD Clinical advisor · max": content covers only 45% of a 236px card (+2 more) → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Surgical sealants fail where they ar": statement block is off-centre by -224px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- LOGOS (BW): FAINT logo "Wyss Institute" → one legible consistent tone; typeset or replace boxed/white files
+- WALK-THROUGH: verdict pending (coordinator)
+
+## mitotherapeutix
+- OVERLAY: [1440] person #1: WHEEL DOES NOT SCROLL the overlay (scrollTop 0->0) | [1440] person #2: WHEEL DOES NOT SCROLL the overlay (scrollTop 0->0)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## haystack-medical
+- ORPHAN: #/science: ORPHAN .mfig "(A) A perforation in the round windo" is 727px wide in a 1440px section with nothing  → compose the image beside its text or across the measure
+- VOID: #/: VOID .plate "COLUMBIA UNIVERSITY SPIN-OUT": content covers only 48% of a 200px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "The inner ear is encased in dense bo": statement block is off-centre by -303px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 3 sheets show a small circle portrait → large portrait or none (port the component)
+- REDUNDANT SHEETS: Anthony Curro, MBA → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## objective-bio
+- TEXT JUMP (BS): 10 headings shift up to 13px when the split reverts (e.g. "A fully autonomous Autoinjector, tested "). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "James Grabau Chief Executive Officer": last row has 3/4 items and is off-centre by -168px → centre the short row / size the grid to the item count
+- VOID: #/: VOID .ic "BEHAVIOR Robo-Comm A vision-guided c": content covers only 54% of a 347px card | #/: VOID .ic "DOCKING MagKine Magnetic, kinematic ": content covers only 55% of a 347px card → size the card to its content; no stranded label; prefer rule + type over a box
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
+- REDUNDANT SHEETS: Daniel Pomp → put the bio on the card, make it non-clickable
+- WALK-THROUGH: verdict pending (coordinator)
+
+## neurotherapia
+- TEXT JUMP (BS): 15 headings shift up to 7px when the split reverts (e.g. "Akhil Saklecha, MD, MBA"). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "John Reher Chairman of the Board Bra": last row has 1/2 items and is off-centre by -93px | #/team: ROW .pgrid "John Reher Chairman of the Board Bra": last row has 3/4 items and is off-centre by -168px | #/team: ROW .pgrid "Marwan Sabbagh, M.D., FAAN Chairman,": last row has 1/2 items and is off-centre by -93px | #/team: ROW .pgrid "Tony Giordano, Ph.D. President and C": last row has 1/2 items and is off-centre by -93px → centre the short row / size the grid to the item count
+- ORPHAN: #/team: ORPHAN .pc-fig "" is 171px wide in a 390px section with nothing beside it → compose the image beside its text or across the measure
+- VOID: #/: VOID .bk "FOUNDER · SERIES B LEAD": content covers only 39% of a 195px card | #/: VOID .bk "GRANTS": card 195px tall has an empty gap of 73px inside | #/: VOID .bk "INVESTOR · GRANTS": content covers only 51% of a 195px card | #/: VOID .bk "INVESTOR": content covers only 44% of a 195px card (+12 more) → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Most drug development for CNS diseas": statement block is off-centre by -138px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- LOGOS (BW): FAINT logo "Alzheimer’s Association" | FAINT logo "Alzheimer’s Drug Discovery Foundation" | FAINT logo "Brain Trust Accelerator Fund II" | FAINT logo "CRUINT" | FAINT logo "Cleveland Clinic" | FAINT logo "Dolby Family Ventures" | FAINT logo "Foundation For A Better World" | FAINT logo "Ohio Department of Development" | MIXED logo treatments → one legible consistent tone; typeset or replace boxed/white files
+- BIO SHEETS: 4 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## cognita-labs
+- TEXT JUMP (BS): 17 headings shift up to 149px when the split reverts (e.g. "A closed loop, not a fixed pattern."). Apply the exact .ln-mask rule.
+- VOID: #/: VOID .prod "3× BETTER INHALER USE IN A CLINIC ST": content covers only 38% of a 422px card | #/: VOID .prod "<1 min EFFORT-FREE TEST, FROM AGE 4 ": content covers only 38% of a 422px card | #/: VOID .prod "<1% ERROR RATE, ACCORDING TO COGNITA": content covers only 38% of a 422px card → size the card to its content; no stranded label; prefer rule + type over a box
+- CENTRE: #/: CENTRE .txt "Chronic lung disease is measured too": statement block is off-centre by -287px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- LOGOS (BW): FAINT logo "STTR" | MIXED logo treatments → one legible consistent tone; typeset or replace boxed/white files
+- BIO SHEETS: 2 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)
+
+## encue
+- TEXT JUMP (BS): 9 headings shift up to 21px when the split reverts (e.g. "A prefrontal cortex alpha/delta switch c"). Apply the exact .ln-mask rule.
+- ROW: #/team: ROW .pgrid "Joseph Moskal, PhD Founder and Chair": last row has 1/2 items and is off-centre by -93px | #/team: ROW .pgrid "Ronald Burch, PhD, MD Senior Advisor": 2 items leave an empty 805px column on the right → centre the short row / size the grid to the item count
+- ORPHAN: #/team: ORPHAN .pc-fig "" is 171px wide in a 390px section with nothing beside it → compose the image beside its text or across the measure
+- CENTRE: #/: CENTRE .txt "Long before memories fade, synapses ": statement block is off-centre by -350px with nothing b → centre the statement block, text left-aligned
+- FOOTER: FOOTER footer has no living background (no canvas / animated SVG) → hero living background, quieter, behind the footer wordmark
+- BIO SHEETS: 8 sheets show a small circle portrait → large portrait or none (port the component)
+- WALK-THROUGH: verdict pending (coordinator)

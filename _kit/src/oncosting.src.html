@@ -942,7 +942,10 @@ function makeStory(cv){
     var tw=c.measureText(txt).width+18;
     if(align==="right")tx=Math.max(tx,tw+12);else tx=Math.min(tx,w-tw-12);
     ty=Math.max(ty,18);ty=Math.min(ty,h-12);
-    st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(tx,ty);c.stroke();
+    /* the leader stops at the edge of the label nearest its anchor, so it never strikes through the words */
+    var x0=(align==="right")?tx-8-tw+18:tx+8,x1=x0+tw-18,ex,ey;
+    if(ax>x1+2){ex=x1+6;ey=ty}else if(ax<x0-2){ex=x0-6;ey=ty}else{ex=(x0+x1)/2;ey=(ay<ty)?ty-12:ty+10}
+    st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
     c.textAlign=align||"left";c.fillText(txt,tx+(align==="right"?-8:8),ty+4);
   }
@@ -1048,7 +1051,8 @@ function makeStory(cv){
     if(l1>.02){var lp=S(cellX,cellY-baseR*2.1);
       tag("BCG, INSTILLED IN THE BLADDER",lp[0],lp[1],w*.62,h*.12,l1,DIM,"left")}
     var up=S(cellX,cellY-baseR*1.5);
-    if(lumen>.02){var uq=S(cellX-gap,cellY-baseR*.86);tag("UROTHELIUM · THE CELLS DISEASE GROWS FROM",uq[0],uq[1],w*.06,h*.33,lumen*.9,DIM,"left")}
+    if(lumen>.02){var uq=S(cellX+gap,cellY-baseR*.9);tag("UROTHELIUM · THE BLADDER WALL",uq[0],uq[1],w*.04,h*.3,lumen*.9,DIM,"left");
+      var tq=S(cellX+baseR*.95,cellY+baseR*.22);tag("TUMOR CELL · WHERE THE DISEASE GROWS",tq[0],tq[1],w*.56,h*.62,lumen*.9,DIM,"left")}
     var bp=S(inx[1][0],inx[1][1]);
     tag("BCG, INSIDE THE CELL",bp[0],bp[1],w*.1,h*.2,Math.max(l2,l3*.8),DIM,"left");
     if(build>.05){var dp=S(inx[0][0]-baseR*.5,inx[0][1]+baseR*.5);

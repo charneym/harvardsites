@@ -1077,7 +1077,10 @@ function makeStory(cv){
     var tw=c.measureText(txt).width+18;
     if(align==="right")tx=Math.max(tx,tw+12);else tx=Math.min(tx,w-tw-12);
     ty=Math.max(ty,18);ty=Math.min(ty,h-12);
-    st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(tx,ty);c.stroke();
+    /* the leader stops at the edge of the label nearest its anchor, so it never strikes through the words */
+    var x0=(align==="right")?tx-8-tw+18:tx+8,x1=x0+tw-18,ex,ey;
+    if(ax>x1+2){ex=x1+6;ey=ty}else if(ax<x0-2){ex=x0-6;ey=ty}else{ex=(x0+x1)/2;ey=(ay<ty)?ty-12:ty+10}
+    st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
     c.font="400 11px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
     c.textAlign=align||"left";c.fillText(txt,tx+(align==="right"?-8:8),ty+4);
@@ -1179,7 +1182,8 @@ function makeStory(cv){
     /* ---------- labels: one per step, each anchored to its part ---------- */
     var l1=sm(1-seg(P,.22,.34))*Math.max(approach,.15), l2=sweep*(1-seg(P,.62,.74)), l3=wide*(1-seg(P,.86,.96)), l4=flow;
     tag("LORIS T2 PROBE · UNDER 350 g",cx+30*s*1.25,py-55*s*1.25,cx+R*1.1,py-50*s,l1,DIM,"left");
-    if(pa>.4)tag("B-SCAN · DEPTH AND LAYERS",w*.5,h*.58,w*.5,h*.54,Math.max(l2,l3,l4),DIM,"center");
+    /* clear of the dashed drop line, which runs down the centre to the panel */
+    if(pa>.4)tag("B-SCAN · DEPTH AND LAYERS",(w-w*.72)/2+10,h*.6,(w-w*.72)/2,h*.555,Math.max(l2,l3,l4),DIM,"left");
     var arcA=Math.PI*.5+half,arcX=cx+Math.cos(arcA)*R*.93,arcY=ey+Math.sin(arcA)*R*.93;
     tag(wide>.45?"145° FIELD · TO THE PERIPHERY":"62° FIELD · THE MACULA",arcX,arcY,cx+R*1.5,ey+R*.55,Math.max(l2,l3),CY,"left");
     tag("A-SCAN · 300,000 PER SECOND",cx,ey-R*.72,cx-R*1.35,ey-R*.78,l2,CY,"right");

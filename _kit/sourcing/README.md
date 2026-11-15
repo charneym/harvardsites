@@ -30,3 +30,9 @@ The account has a rolling 5-hour usage cap. 14 concurrent build sessions exhaust
 (status FAILED, result "You've hit your 5-hour limit · resets <time>"). Nothing is lost: the sessions resume when sent a message after the reset.
 Run the most important work first (client fixes before new builds), keep 6–7 sessions at a time, tell sessions to avoid redundant QA re-runs,
 and schedule a check just after each reset to nudge stalled sessions.
+
+## Usage-limit rule (client, round 3): "always continue as soon as possible after hitting your limit"
+- The account's 5-hour cap stops every session at once (14 sessions hit it in ~40 min; even 6 hit it in ~75 min). Waves don't avoid it, so run all sessions.
+- Never depend on the coordinator to notice a reset: on dispatch, give EVERY build session an hourly scheduled task (create_trigger with persistent_session_id, staggered minutes) that says "if your work is unfinished, continue now". After a reset each session resumes within the hour on its own.
+- The coordinator also gets an hourly task that collects reports, reviews sites and nudges stragglers. Delete all of these scheduled tasks when the round is done.
+- Trigger creation is rate-limited (~9 per burst); create the rest ~30s later.

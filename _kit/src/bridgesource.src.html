@@ -137,7 +137,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 .ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
 /* hero */
@@ -529,13 +529,14 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sfig .af{fill:var(--sinL);stroke:none}
 .sfig .dim{fill:rgba(243,243,241,.08);stroke:none}
 .sfig text{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:#bfc5c0}
+.sfig .sc-n{font-size:10px;fill:#a7a8aa}
 .sfig .tb{font-family:var(--serif);font-size:30px;letter-spacing:-.03em;fill:#f2f3ee;font-weight:300}
 /* program cards */
-.pcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
-.pgc{position:relative;display:flex;flex-direction:column;min-height:280px;padding:26px 24px 24px;border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));overflow:visible;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
+.pcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px var(--gap)}
+.pgc{position:relative;display:flex;flex-direction:column;min-height:0;padding:22px 0 6px;border:0;border-top:1px solid var(--hairD);background:none;overflow:visible;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
 .pgc::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
 .pgc::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(44,102,25,.08),rgba(44,102,25,0) 60%);opacity:0;transition:opacity .32s var(--eo);pointer-events:none}
-.pgc:hover,.pgc:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(18,22,21,.45)}
+.pgc:hover,.pgc:focus-visible{transform:none;box-shadow:none}
 .pgc:hover::before,.pgc:focus-visible::before{transform:scaleX(1)}
 .pgc:hover::after,.pgc:focus-visible::after{opacity:1}
 .pgc .lab{color:var(--stoneD)}
@@ -579,9 +580,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mdi-fig img{width:100%;height:100%;object-fit:contain;padding:6% 10%}
 .mdi.noimg .mdi-fig{display:none}.mdi.noimg{grid-template-columns:1fr}
 .mdi-t .gq{margin:0 0 26px}
-.pfig{margin:30px 0 0}
-.pf-im{cursor:zoom-in;background:#fff;border:1px solid var(--hairD);border-radius:6px;overflow:hidden;aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
-.pfig.tall .pf-im{aspect-ratio:16/11}
+.pfig{margin:clamp(30px,3vw,48px) 0 0;grid-column:1/-1}
+.pf-im{cursor:zoom-in;background:#fff;border:1px solid var(--hairD);border-radius:6px;overflow:hidden;aspect-ratio:21/9;display:flex;align-items:center;justify-content:center}
+.pfig.tall .pf-im{aspect-ratio:21/9}
+@media (max-width:760px){.pf-im,.pfig.tall .pf-im{aspect-ratio:4/3}}
 .pf-im img{width:100%;height:100%;object-fit:contain;padding:4%}
 .pfig figcaption{margin-top:12px}
 .ftr .bigw{font-size:min(12.6vw,200px)}
@@ -608,6 +610,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+
+/* BT: the hero's living visual bookends the page, quieter, behind the footer wordmark */
+.ftr{isolation:isolate}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.42;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 45%);mask-image:linear-gradient(180deg,transparent 0%,#000 45%)}
+/* BU: a statement alone in its band is centred as a block, text left-aligned */
+.mst{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 
 /* BQ: the sheet adapts to the photo. Big sharp headshot: two columns. Small one: slim (96px circle by the name). None: one compact column sized to content */
 .bio.noimg .pan,.bio.slim .pan{grid-template-columns:1fr;grid-template-rows:auto;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
@@ -809,16 +817,19 @@ function pCards(){return '<div class="pcards" data-group>'+PROGS.map(function(p)
 function sceneSVG(){
   var arcs='';for(var i=0;i<5;i++){var r=40+i*24;arcs+='<path class="g sc-call" pathLength="1" d="M'+(96+r*Math.cos(-1.05)).toFixed(1)+' '+(190+r*Math.sin(-1.05)).toFixed(1)+'A'+r+' '+r+' 0 0 1 '+(96+r*Math.cos(.1)).toFixed(1)+' '+(190+r*Math.sin(.1)).toFixed(1)+'"/>'}
   var resp='';for(i=0;i<3;i++){var r2=34+i*22;resp+='<path class="a sc-resp" pathLength="1" d="M'+(242+r2*Math.cos(2.25)).toFixed(1)+' '+(118+r2*Math.sin(2.25)).toFixed(1)+'A'+r2+' '+r2+' 0 0 1 '+(242+r2*Math.cos(3.45)).toFixed(1)+' '+(118+r2*Math.sin(3.45)).toFixed(1)+'"/>'}
-  var bars='';for(i=0;i<5;i++)bars+='<rect class="sc-bar" x="354" y="'+(136+i*20)+'" width="'+(70-i*6)+'" height="10" rx="5"/>';
+  var bars='';for(i=0;i<5;i++)bars+='<text class="sc-n" x="352" y="'+(145+i*20)+'">'+(i+1)+'</text><rect class="sc-bar" x="366" y="'+(136+i*20)+'" width="'+(58-i*5)+'" height="10" rx="5"/>';
   return '<svg viewBox="0 0 460 300" aria-hidden="true">'+
-   '<path class="h sc-chest" pathLength="1" d="M70 270C60 190 70 90 130 60S250 30 300 70 330 200 320 270"/>'+
-   '<path class="g sc-lead" pathLength="1" d="M240 80C240 50 200 46 186 70S170 130 150 160"/>'+
+   '<path class="h sc-chest" pathLength="1" d="M70 270C60 190 70 90 130 60S250 30 300 70 330 200 320 270Z"/>'+
+   '<path class="g sc-heart" transform="translate(32 46)" d="M150 176c-10-12-30-6-28 10 2 14 20 24 28 32 8-8 26-18 28-32 2-16-18-22-28-10Z"/>'+
+   '<path class="g sc-lead" pathLength="1" d="M240 80C240 50 200 46 196 76S186 160 182 222"/>'+
    '<rect class="g sc-hdr" x="222" y="80" width="34" height="14" rx="3"/>'+
    '<rect class="gf sc-can" x="210" y="92" width="64" height="52" rx="22"/>'+
    '<text class="tb sc-q" x="286" y="96">?</text>'+
-   '<g class="sc-coil"><circle class="g" cx="96" cy="190" r="26"/><circle class="g" cx="96" cy="190" r="16"/><circle class="g" cx="96" cy="190" r="6"/><path class="g" d="M78 210L42 260"/></g>'+
+   '<path class="h" d="M266 96L292 56H298"/><text x="302" y="60">IMPLANTED DEVICE</text>'+
+   '<path class="h" d="M212 240H236"/><text x="240" y="244" class="sc-hl">HEART</text>'+
+   '<g class="sc-coil"><circle class="g" cx="96" cy="190" r="26"/><circle class="g" cx="96" cy="190" r="16"/><circle class="g" cx="96" cy="190" r="6"/><path class="g" d="M76 206L40 254a7 7 0 0 0 11 8l36-48Z"/><path class="h" d="M30 270L44 262"/><text x="6" y="286">HANDHELD IDENTIFIER</text></g>'+
    arcs+resp+
-   '<g class="sc-panel"><rect class="gf" x="340" y="118" width="104" height="122" rx="12"/><text x="354" y="112">READOUT</text>'+bars+'</g>'+
+   '<g class="sc-panel"><rect class="gf" x="340" y="118" width="104" height="122" rx="12"/><text x="340" y="110">MANUFACTURER</text>'+bars+'</g>'+
    '<path class="a sc-ok" pathLength="1" d="M424 196l6 6 12-14" stroke-width="2"/>'+
    '<text class="sc-cap" x="392" y="268" text-anchor="middle">IDENTIFIED</text></svg>';
 }
@@ -842,7 +853,7 @@ function scene(root,tl,sec){
   tl.to(q(".sc-can"),{stroke:A,fill:"rgba(106,183,69,.14)",duration:.06},.56);
   tl.to(q(".sc-call"),{opacity:.12,duration:.06},.6);
   /* 4 · identify: the readout resolves to one manufacturer */
-  tl.to(q(".sc-bar")[3],{fill:A,attr:{width:76},duration:.08},.77);
+  tl.to(q(".sc-bar")[3],{fill:A,attr:{width:62},duration:.08},.77);
   tl.to([q(".sc-bar")[0],q(".sc-bar")[1],q(".sc-bar")[2],q(".sc-bar")[4]],{fill:"rgba(242,243,241,.08)",duration:.08},.77);
   tl.fromTo(q(".sc-ok"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.06,ease:"none"},.83);
   tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.06},.86);
@@ -861,8 +872,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">When a patient arrives in the emergency department with an unknown pacemaker or defibrillator, identifying it can take from thirty minutes to hours. SmartRead™ is designed to name the manufacturer <em>in ten seconds or less.</em></p>'+
+   '<div class="mst"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">When a patient arrives in the emergency department with an unknown pacemaker or defibrillator, identifying it can take from thirty minutes to hours. SmartRead™ is designed to name the manufacturer <em>in ten seconds or less.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">3M<sup>+</sup></span><span class="lab k"><b>Americans with a CIED</b>Pacemakers and implantable defibrillators</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">≤10<sup>s</sup></span><span class="lab k"><b>To identify the brand</b>Of an implanted cardiac device</span></div>'+
@@ -919,9 +930,9 @@ function vPrograms(){
    '<div class="pdet"><div><span class="lab kick" data-r>Emergency triage · Diagnostics</span><h3 data-r>SmartRead™ Medical Device Identifier</h3></div><div class="dsc"><p data-r>When a patient with an implanted cardiac device presents to the emergency department, the device manufacturer must be called to interrogate it. The MDI identifies the brand of the implanted device in 10 seconds or less.</p><p class="muted" data-r>Indications for use: to determine the manufacturer of an unknown cardiac implanted electronic device (CIED) manufactured by Abbott Laboratories, Biotronik, Boston Scientific Corporation, Medtronic or MicroPort.</p>'+
     fdl([["Regulatory",'<a href="'+FDA+'" target="_blank" rel="noopener">FDA De Novo DEN260007</a>, granted September 2026'],["Commercial","Licensed to <a href=\"https://www.cardiac-innovation.com/\" target=\"_blank\" rel=\"noopener\">Cardiac Innovation</a>; not yet available for sale"],["Funding","NIA SBIR Phase I and II; "+rl("11409317","NIA SB1 award, 2026")]])+'</div></div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Blood volume · Mechanical cardiac support</span><h3 data-r>Impella Cardiac Output</h3></div><div class="dsc"><p data-r>Real-time hemodynamic measurement, cardiac output, directly from a market-leading mechanical cardiac support device, to support weaning patients from mechanical cardiac support. This is native cardiac output, not pump flow.</p>'+
-    fig("1624910856138-RFEAQMWT0UFZSAT8ZNGN/MCS+weaning.png?format=750w","Diagram of the Impella cardiac output setup: Abiomed Impella controller, admittance cardiac output system, data computer and the Impella-CO pump with hand-assembled volume electrodes","Hemodynamic monitoring for weaning from mechanical circulatory support. Diagram: BridgeSource Medical.")+fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NHLBI Phase I and II, "+rl("10645215","Native Hemodynamic Measurement as Feedback Control for Mechanical Cardiac Support")]])+'</div></div>'+
+    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NHLBI Phase I and II, "+rl("10645215","Native Hemodynamic Measurement as Feedback Control for Mechanical Cardiac Support")]])+'</div>'+fig("1624910856138-RFEAQMWT0UFZSAT8ZNGN/MCS+weaning.png?format=750w","Diagram of the Impella cardiac output setup: Abiomed Impella controller, admittance cardiac output system, data computer and the Impella-CO pump with hand-assembled volume electrodes","Hemodynamic monitoring for weaning from mechanical circulatory support. Diagram: BridgeSource Medical.")+'</div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Blood volume · Cardiac critical care</span><h3 data-r>Smart Pericardial Drain</h3></div><div class="dsc"><p data-r>A modified Blake drain that measures hemodynamics in patients recovering from cardiac surgery, to clarify the cause of a drop in blood pressure (hypotension) in the cardiac critical care unit.</p>'+
-    fig("1624910968575-PEBJUU64PHWAFGUQXQ42/pericardial+drain.png?format=750w","Illustration of a modified pericardial drain placed after cardiac surgery, connected to a hemodynamic analyzer and drainage canister","Modified pericardial drain, placement and hemodynamic analyzer. Illustration: BridgeSource Medical.")+fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NIBIB Phase I and II, "+rl("10707900","Post Cardiac Surgery Hemodynamics Diagnostic Device")]])+'</div></div>'+
+    fdl([["Science","Bio-admittance measurement of blood volume"],["Funding","NIBIB Phase I and II, "+rl("10707900","Post Cardiac Surgery Hemodynamics Diagnostic Device")]])+'</div>'+fig("1624910968575-PEBJUU64PHWAFGUQXQ42/pericardial+drain.png?format=750w","Illustration of a modified pericardial drain placed after cardiac surgery, connected to a hemodynamic analyzer and drainage canister","Modified pericardial drain, placement and hemodynamic analyzer. Illustration: BridgeSource Medical.")+'</div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Drug delivery · Pulmonary hypertension</span><h3 data-r>Smart Nebulizer</h3></div><div class="dsc"><p data-r>Adaptive nebulization of aerosol drugs, changing particle size in response to inhalation flow during administration. Active mesh nebulization gives fast on/off times, reducing the need for strict inhalation protocols that are challenging for many pulmonary hypertension patients.</p>'+
     fdl([["Funding","NHLBI Phase I and II, "+rl("10912642","Novel Device to Optimize Aerosol Drug Delivery for Pulmonary Hypertension Treatment")]])+'</div></div>'+
    '<div class="pdet"><div><span class="lab kick" data-r>Structural heart · New in 2026</span><h3 data-r>Pressure-Volume Right Heart Catheter</h3></div><div class="dsc"><p data-r>Pressure-volume loop analysis is the gold-standard assessment of cardiac function, but has required an extra procedure. Building PV measurement onto a standard right heart catheter could show which patients with tricuspid regurgitation have a right ventricle strong enough to withstand transcatheter repair.</p>'+
@@ -989,7 +1000,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'No bridge <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>BridgeSource Medical Corporation<br>3301 Northland Dr., Suite 214<br>Austin, Texas</div>'+
    '<div class="c"><span class="lab">Partner</span><a class="ul" href="#/contact">Start a conversation</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1016,6 +1027,8 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 /* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
 (function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
+/* BT: copy the live hero frame into the footer canvas while the footer is on screen (the field runs only while a [data-field] element is visible) */
+(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||r.width<2)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var s=Math.max(W/src.width,H/src.height),dw=src.width*s,dh=src.height*s;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh)})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -1241,10 +1254,10 @@ function contactInit(view){
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
   /* BQ: pick the layout from the photo actually available */
-  bio.classList.toggle("slim",!!(p.img&&p.imgW&&p.imgW<480));bio.classList.toggle("noimg",!p.img);
+  var big=!!(p.img&&!(p.imgW&&p.imgW<480));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
-  var slim=bio.classList.contains("slim");
-  $("#bioMed").innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
+  var slim=false;
+  $("#bioMed").innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);

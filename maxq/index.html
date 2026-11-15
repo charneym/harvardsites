@@ -141,7 +141,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 .ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
 /* hero */
@@ -574,6 +574,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mkey strong{display:block;font-weight:500;color:var(--bone);font-size:15px;margin-bottom:2px}
 @media (max-width:700px){.mkey{grid-template-columns:1fr}}
 @media (max-width:560px){.eb2{display:none}}
+.story-l .d3.nb{text-wrap:wrap;max-width:none}
 .cmt{font-size:13px;color:var(--stone);margin-top:20px;max-width:60ch}
 .light .cmt{color:var(--stoneD)}
 @media (max-width:1100px){.pgrid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -590,6 +591,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+
+/* BT: the hero's living visual bookends the page, quieter, behind the footer wordmark */
+.ftr{isolation:isolate}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.42;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 45%);mask-image:linear-gradient(180deg,transparent 0%,#000 45%)}
+/* BU: a statement alone in its band is centred as a block, text left-aligned */
+.mst{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 
 /* BQ: the sheet adapts to the photo. Big sharp headshot: two columns. Small one: slim (96px circle by the name). None: one compact column sized to content */
 .bio.noimg .pan,.bio.slim .pan{grid-template-columns:1fr;grid-template-rows:auto;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
@@ -960,7 +967,14 @@ function sceneSVG(){
    FOC.map(function(p){return '<circle class="of sc-foc" cx="'+p[0]+'" cy="'+p[1]+'" r="4.2"/>'}).join("")+
    '<circle class="lux sc-mar" cx="180" cy="138" r="13"/><circle class="s sc-marl" cx="180" cy="138" r="13" stroke-dasharray="4 5"/>'+
    '<circle class="lux" cx="180" cy="138" r="13"/><circle class="s sc-ur" pathLength="1" cx="180" cy="138" r="13"/><circle class="sf" cx="180" cy="138" r="3.4"/>'+
-   '<text class="sc-cap" x="180" y="284" text-anchor="middle">URETHRA PRESERVED</text></svg>';
+   /* permanent labels: the gland and the probe */
+   '<path class="h" d="M70 34H96L104 76"/><text x="14" y="38">PROSTATE</text>'+
+   '<path class="h" d="M180 168V262"/><text x="180" y="280" text-anchor="middle">PROBE IN THE URETHRA</text>'+
+   /* one label per step, top right, each pointing at the part that step changes */
+   '<g class="sc-l1"><path class="h" d="M346 34H300L268 78"/><text x="346" y="28" text-anchor="end">ULTRASOUND SWEEP</text></g>'+
+   '<g class="sc-l2"><path class="h" d="M346 34H300L252 106"/><text x="346" y="28" text-anchor="end">TREATMENT PLAN</text></g>'+
+   '<g class="sc-l3"><path class="h" d="M346 34H300L242 118"/><text x="346" y="28" text-anchor="end">FOCAL ZONES</text></g>'+
+   '<g class="sc-l4"><path class="h" d="M346 34H300L204 112"/><text x="346" y="28" text-anchor="end">PROTECTED MARGIN</text></g></svg>';
 }
 function scene(root,tl,sec){
   var q=function(s){return root.querySelectorAll(s)};
@@ -984,7 +998,11 @@ function scene(root,tl,sec){
   tl.to(q(".sc-foc"),{opacity:.55,duration:.08},.78);
   tl.to(q(".sc-lobe"),{opacity:.45,duration:.08},.78);
   tl.fromTo(q(".sc-mar,.sc-marl"),{attr:{r:13},opacity:0},{attr:{r:36},opacity:1,duration:.14,ease:"none"},.78);
-  tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.08},.86);
+  /* label slot: crosses from step to step with the text */
+  gsap.set(q(".sc-l2,.sc-l3,.sc-l4"),{opacity:0});
+  tl.to(q(".sc-l1"),{opacity:0,duration:.04},.23).to(q(".sc-l2"),{opacity:1,duration:.04},.27)
+    .to(q(".sc-l2"),{opacity:0,duration:.04},.48).to(q(".sc-l3"),{opacity:1,duration:.04},.52)
+    .to(q(".sc-l3"),{opacity:0,duration:.04},.73).to(q(".sc-l4"),{opacity:1,duration:.04},.77);
 }
 
 /* ================= VIEWS ================= */
@@ -1000,8 +1018,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Men with prostate disease have had to choose between treatments that don’t do enough and treatments with consequential tradeoffs. MaxQ is designed for <em>the durability of resective therapy</em> with side-effects closer to minimally invasive care.</p>'+
+   '<div class="mst"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Men with prostate disease have had to choose between treatments that don’t do enough and treatments with consequential tradeoffs. MaxQ is designed for <em>the durability of resective therapy</em> with side-effects closer to minimally invasive care.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>31.5<sup>M</sup></span><span class="lab k"><b>Series A, August 2026</b>Led by Atlantic Blue, S3 and Olympus Innovation Ventures</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">1</span><span class="lab k"><b>Transurethral procedure</b>Imaging and tissue-selective therapy together</span></div>'+
@@ -1009,7 +1027,7 @@ function vHome(){
    '</div></div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Inside the prostate, <em>not around it.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3 nb">Inside the<br>prostate, <em>not</em><br><em>around it.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Image</span><span>Plan</span><span>Treat</span><span>Preserve</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>See the whole gland.</h3><p>A single probe works from within the urethra, giving the urologist full visibility inside the prostate, without the anatomic limits of approaches that work from outside it.</p></article>'+
@@ -1141,7 +1159,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Nothing to see <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>MaxQ Medical, Inc.<br>Sunnyvale, California</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@maxqmedical.com">info@maxqmedical.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1167,6 +1185,8 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 /* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
 (function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
+/* BT: copy the live hero frame into the footer canvas while the footer is on screen (the field runs only while a [data-field] element is visible) */
+(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||r.width<2)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var s=Math.max(W/src.width,H/src.height),dw=src.width*s,dh=src.height*s;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh)})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -1420,10 +1440,10 @@ function contactInit(view){
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
   /* BQ: pick the layout from the photo actually available */
-  bio.classList.toggle("slim",!!(p.img&&p.imgW&&p.imgW<480));bio.classList.toggle("noimg",!p.img);
+  var big=!!(p.img&&!(p.imgW&&p.imgW<480));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
-  var slim=bio.classList.contains("slim");
-  $("#bioMed").innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
+  var slim=false;
+  $("#bioMed").innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);

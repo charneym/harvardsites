@@ -140,7 +140,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 .ln-mask.rel{overflow:visible!important;clip-path:none!important}
 
 /* hero */
@@ -590,6 +590,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .mani .txt .w{opacity:1}
 }
 
+/* BT: the hero's living visual bookends the page, quieter, behind the footer wordmark */
+.ftr{isolation:isolate}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.42;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 45%);mask-image:linear-gradient(180deg,transparent 0%,#000 45%)}
+/* BU: a statement alone in its band is centred as a block, text left-aligned */
+.mst{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
+
 /* BQ: the sheet adapts to the photo. Big sharp headshot: two columns. Small one: slim (96px circle by the name). None: one compact column sized to content */
 .bio.noimg .pan,.bio.slim .pan{grid-template-columns:1fr;grid-template-rows:auto;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
 .bio.noimg .pmed,.bio.slim .pmed{display:none}
@@ -957,11 +963,11 @@ function sceneSVG(){
    '<path class="hd sc-mito" d="M14 150C14 96 60 92 70 92S126 96 126 150 80 208 70 208 14 204 14 150Z"/>'+
    '<text class="sc-mlab" x="70" y="232" text-anchor="middle">PANK2 · MITOCHONDRIA</text>'+
    '<circle class="gf sc-b5" cx="70" cy="66" r="9"/><path class="g sc-in" pathLength="1" d="M70 76V132"/><text x="86" y="70">VITAMIN B5</text>'+
-   '<path class="h sc-rail" pathLength="1" d="M70 150H386"/>'+dots+nodes+
+   '<path class="h sc-rail" pathLength="1" d="M70 150H356M356 150H370V120"/>'+dots+nodes+
    '<circle class="ad sc-on" cx="70" cy="150" r="16"/><circle class="af sc-core" cx="70" cy="150" r="5"/>'+
    '<path class="a sc-x" pathLength="1" d="M60 140l20 20M80 140l-20 20"/>'+
    '<g class="sc-vtac"><path class="a" d="'+hex+'"/><path class="a" d="M-12 -7l-14 -8M12 7l12 8"/></g><text class="sc-vlab" x="12" y="104" text-anchor="end">VTAC</text>'+
-   '<circle class="ad sc-coa" cx="370" cy="96" r="26"/><text class="tn sc-coat" x="370" y="102" text-anchor="middle">CoA</text>'+
+   '<circle class="ad sc-coa" cx="370" cy="96" r="24"/><text class="tn sc-coat" x="370" y="102" text-anchor="middle">CoA</text>'+
    '<text class="sc-cap" x="200" y="284" text-anchor="middle">COENZYME A, RESTORED</text></svg>';
 }
 function scene(root,tl,sec){
@@ -971,15 +977,15 @@ function scene(root,tl,sec){
   gsap.set(q(".sc-vtac"),{x:300,y:40,opacity:0});
   /* 1 · pathway: B5 enters, intermediates run down the line, CoA forms */
   tl.fromTo(q(".sc-dot"),{opacity:0,x:-20},{opacity:.9,x:0,duration:.14,stagger:.006,ease:"none"},0);
-  tl.fromTo(q(".sc-coa"),{attr:{r:8},opacity:.3},{attr:{r:22},opacity:1,duration:.16,ease:"none"},.04);
+  tl.fromTo(q(".sc-coa"),{opacity:.3,fillOpacity:0},{opacity:1,fillOpacity:1,duration:.16,ease:"none"},.04);
   tl.fromTo(q(".sc-coat"),{opacity:0},{opacity:1,duration:.06},.12);
   /* 2 · disease: the mitochondrial PANK2 step breaks, the flow stalls and CoA drains */
   tl.fromTo(q(".sc-mito"),{opacity:0,scale:.88,transformOrigin:"50% 50%"},{opacity:1,scale:1,duration:.1,ease:"none"},.27);
   tl.fromTo(q(".sc-mlab"),{opacity:0},{opacity:1,duration:.06},.31);
   tl.fromTo(q(".sc-x"),{strokeDasharray:"1 1",strokeDashoffset:1},{strokeDashoffset:0,duration:.06,ease:"none"},.33);
   tl.to(q(".sc-dot"),{opacity:.1,x:-10,duration:.1,stagger:-.004,ease:"none"},.27);
-  tl.to(q(".sc-coa"),{attr:{r:10},opacity:.35,duration:.1,ease:"none"},.28);
-  tl.to(q(".sc-coat"),{opacity:0,scale:.5,transformOrigin:"50% 50%",duration:.08},.36);
+  tl.to(q(".sc-coa"),{opacity:.4,fillOpacity:0,duration:.1,ease:"none"},.28);
+  tl.to(q(".sc-coat"),{opacity:.4,duration:.08},.36);
   /* 3 · activate: a VTAC travels in and docks on the first-step node; PANK3 lights */
   tl.to(q(".sc-vtac"),{x:40,y:124,opacity:1,duration:.14,ease:"none"},.5);
   tl.to(q(".sc-x"),{opacity:0,duration:.05},.62);
@@ -990,8 +996,8 @@ function scene(root,tl,sec){
   /* 4 · restore: flow resumes along the whole line and coenzyme A refills */
   tl.to(q(".sc-dot"),{opacity:.95,x:0,duration:.14,stagger:.006,ease:"none"},.76);
   tl.to(q(".sc-node"),{stroke:"#5cc8d7",duration:.1,stagger:.02},.78);
-  tl.to(q(".sc-coa"),{attr:{r:26},opacity:1,duration:.12,ease:"none"},.82);
-  tl.to(q(".sc-coat"),{opacity:1,scale:1,duration:.08},.82);
+  tl.to(q(".sc-coa"),{opacity:1,fillOpacity:1,duration:.12,ease:"none"},.82);
+  tl.to(q(".sc-coat"),{opacity:1,duration:.08},.82);
   tl.fromTo(q(".sc-cap"),{opacity:0,y:8},{opacity:1,y:0,duration:.06},.88);
 }
 
@@ -1008,8 +1014,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">PKAN is caused by mutations in PANK2, the enzyme that begins turning vitamin B5 into coenzyme&nbsp;A. It causes early immobility and often death by early adulthood. Virtus is building <em>a way around the broken step.</em></p>'+
+   '<div class="mst"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">PKAN is caused by mutations in PANK2, the enzyme that begins turning vitamin B5 into coenzyme&nbsp;A. It causes early immobility and often death by early adulthood. Virtus is building <em>a way around the broken step.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">156<sup>K</sup></span><span class="lab k"><b>Compounds screened</b>In the discovery cascade behind the VTACs</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">14</span><span class="lab k"><b>PANK3 activators</b>VTAC1–14, active at nanomolar concentrations</span></div>'+
@@ -1142,7 +1148,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'This page took <em>a detour.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Virtus Therapeutics Corporation<br>93 Shennecossett Rd.<br>Groton, CT 06340</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:virtusadm@virtustherapeutics.com">virtusadm@virtustherapeutics.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1169,6 +1175,8 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 /* BH: a line mask clips only while its line is moving; once the line has settled (identity transform, full opacity) the mask is released for good, so italic tails and descenders are never cut at rest */
 (function(){var n=0;gsap.ticker.add(function(){if((++n%12))return;var ms=document.querySelectorAll(".ln-mask:not(.rel)");for(var i=0;i<ms.length;i++){var m=ms[i],c=m.firstElementChild;if(!c)continue;var s=getComputedStyle(c);if(+s.opacity<.99)continue;var tr=s.transform;if(tr==="none"||tr==="matrix(1, 0, 0, 1, 0, 0)")m.classList.add("rel")}})})();
+/* BT: copy the live hero frame into the footer canvas while the footer is on screen (the field runs only while a [data-field] element is visible) */
+(function(){gsap.ticker.add(function(){var f=document.querySelector(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight||r.width<2)return;var src=document.getElementById("field");if(!src||!src.width)return;var d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(f.width!==W||f.height!==H){f.width=W;f.height=H}var c=f.getContext("2d");c.clearRect(0,0,W,H);var s=Math.max(W/src.width,H/src.height),dw=src.width*s,dh=src.height*s;c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh)})})();
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
 var lenis=null;
@@ -1404,10 +1412,10 @@ function contactInit(view){
 var bio=$("#bio"),bioOpen=false;gsap.set("#bioPan",{opacity:0});
 function fillBio(i){var p=TEAM[i],n=TEAM.length,bio=$("#bio");window.__bioCur=i;
   /* BQ: pick the layout from the photo actually available */
-  bio.classList.toggle("slim",!!(p.img&&p.imgW&&p.imgW<480));bio.classList.toggle("noimg",!p.img);
+  var big=!!(p.img&&!(p.imgW&&p.imgW<480));bio.classList.remove("slim");bio.classList.toggle("noimg",!big);
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(window.__bioCur===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(window.__bioCur===i)fillBio(i)};pr.src=p.img}
-  var slim=bio.classList.contains("slim");
-  $("#bioMed").innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
+  var slim=false;
+  $("#bioMed").innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="TEAM_NOIMG('+i+')">':'';
   $("#bioIn").innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+(slim?'<div class="phead"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="bioName">'+esc(p.name)+'</h2></div>':'<h2 id="bioName">'+esc(p.name)+'</h2>')+'<p class="role">'+esc(p.title)+'</p><div class="bt">'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+'</div>'+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);

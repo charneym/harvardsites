@@ -44,3 +44,8 @@
 ## Images (PRINCIPLES BJ)
 - USED: logo; three team headshots; muscle progenitor cell micrograph 02f678_d3bdb228… (home, under the Sci Rep highlight); NNMT pathway figure PATHWAY.jpg (Science page).
 - UNUSED: 02f678_4cd02fe5… mountain-climber hero (stock; credit "Katie Haugland Bowen"); 02f678_6cdf8702… / 02f678_be0dae52… pill-in-fingers banners (generic stock); nsplsh_9827011d… and Downtown-Houston (Unsplash city stock); 02f678_9cc86a71… laptop (stock); 02f678_e4fffacb… "tmp.png" conference banner (unidentified speaker, low-res strip).
+
+## Client review 3 (v15)
+- Walk-through rebuilt as one scene: a single muscle-fibre bundle with NNMT, the RT-002 tablet and the muscle stem cells, all in the first frame. Lit in turn: MUSCLE FIBRES (thin and break), NNMT (rises, NAD+ falls), RT-002 (binds NNMT), STEM CELLS (activate and fill the breaks; fibres regrow).
+- Science: the pathway figure now sits under its paragraph in the left column, so it no longer hangs alone.
+- Footer: the hero's fibre field runs behind the wordmark.

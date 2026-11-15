@@ -147,7 +147,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -463,15 +463,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
 /* BQ: slim and noimg are one compact column sized to the content (<=820px) */
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.08em}
-@media (max-width:760px){.ps-head{gap:16px}.ps-head img{width:72px;height:72px}}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-col{border-radius:18px}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px}
 .ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
 .ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
@@ -668,6 +664,33 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .solo{grid-template-columns:1fr;gap:36px}
   .rec>div{grid-template-columns:1fr;gap:6px}
 }
+
+/* ---- BT: the hero's living visual, quieter, behind the footer wordmark ---- */
+.ftr{position:relative;isolation:isolate}
+.ffield{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;opacity:0;transition:opacity .9s var(--eo);pointer-events:none}
+.ffield.ready{opacity:1}
+.ftr>.cols,.ftr>.bigw,.ftr>.legal{position:relative;z-index:1}
+
+/* ---- BU: the statement stands alone in its band, so the BLOCK is centred on the page
+   while the text itself stays left-aligned ---- */
+.mani .kick,.mani .txt{margin-left:auto;margin-right:auto}
+.mani .txt{max-width:22ch}
+.mani .kick{display:block;max-width:22ch}
+@media (max-width:860px){.mani .kick,.mani .txt{margin-left:0;margin-right:0;max-width:none}}
+
+/* ---- story scene (PRINCIPLES BY): one object, every stroke connected or labelled ---- */
+.sfig svg .rg{fill:rgba(244,241,234,.05);stroke:rgba(244,241,234,.78);stroke-width:1.3}
+.sfig svg .rg.opt{stroke:var(--sinL);fill:rgba(240,152,55,.14)}
+.sfig svg .bd{stroke:rgba(244,241,234,.7);stroke-width:1.3}
+.sfig svg .rail{stroke:rgba(108,97,196,.85);stroke-width:1.2}
+.sfig svg .rung{stroke:rgba(108,97,196,.6);stroke-width:1.6;transition:stroke .3s var(--eo)}
+.sfig svg .rung.lit{stroke:var(--sinL)}
+.sfig svg .tg{fill:rgba(108,97,196,.12);stroke:rgba(108,97,196,.85);stroke-width:1.2}
+.sfig svg .pocket{fill:none;stroke:rgba(244,241,234,.55);stroke-width:1.1}
+.sfig svg .tie2{stroke:rgba(244,241,234,.34);stroke-width:1}
+.sfig svg .lab2,.sfig svg .lab3{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--stone);stroke:none}
+.sfig svg .lab3{fill:var(--sinL)}
+.sfig svg .val{font-family:var(--mono);font-size:10px;fill:var(--sinL);stroke:none}
 
 </style>
 </head>
@@ -957,7 +980,7 @@ function vContact(){
 }
 function v404(){return head({k:"Not found",h:'This page has <em>no barcode.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" id="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Company</span>Jillion Therapeutics Inc.<br>760 Parkside Ave, Suite 310<br>Brooklyn, NY 11226</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:welcome@jilliontherapeutics.com">welcome@jilliontherapeutics.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/team">Team</a></div>'+
@@ -988,8 +1011,9 @@ var lenis=null;
 if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
 var MOBILE=function(){return innerWidth<861};
 /* ===== HERO FIELD: a DEL selection — barcoded compounds drift past a target protein; binders are captured ===== */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,opt){
+  opt=opt||{};var QD=opt.quiet?.4:1;
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
   var ORG="240,152,55",ORGL="247,180,100",IND="108,97,196",INDL="140,131,216",PAPER="244,241,234";
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
@@ -1047,7 +1071,7 @@ var field=(function(){
     var t=RM?24:(performance.now()-t0)/1000;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
     var e=IN.v*IN.v*(3-2*IN.v),L=lay();
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=QD;
     c.lineCap="round";
     var cx=w*L.tx+m[0]*w*.012,cy=h*L.ty+m[1]*h*.02,r=L.r;
     var A=e*(.5+.5*dim);
@@ -1084,11 +1108,13 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  addEventListener("resize",size);size();
+  function onRz(){size()}addEventListener("resize",onRz);size();
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    destroy:function(){stop();removeEventListener("resize",onRz)},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=makeField($("#field"),{});
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1149,7 +1175,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       gsap.from($$(".moa text",view),{opacity:0,duration:.8,stagger:.03,delay:.6,scrollTrigger:{trigger:".moa",start:"top 78%"}})}
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
-    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    var cvf=$("#ffield",view);if(cvf){if(window._ff&&window._ff.destroy)window._ff.destroy();window._ff=makeField(cvf,{quiet:true});if(window._ffio)window._ffio.disconnect();window._ffio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){window._ff.start();cvf.classList.add("ready")}else{window._ff.stop()}})},{rootMargin:"140px"});window._ffio.observe(cvf)}var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
     rvView(view,E);
   },view);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
@@ -1202,18 +1228,91 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 var story=null;
-/* ===== STORY FIGURES: the DEL cycle, built in by StoryFX as you scroll ===== */
-function sfig(inner,lab){return '<figure class="sfig"><svg viewBox="0 0 420 320" aria-hidden="true">'+inner+'</svg><figcaption class="lab">'+lab+'</figcaption></figure>'}
-var FIGS=[
- /* 1. build: a compound is made in 2-3 steps and tagged with DNA */
- sfig('<circle cx="86" cy="112" r="20"/><circle cx="150" cy="86" r="20"/><circle cx="214" cy="112" r="20"/><path class="a" d="M106 112h24M170 86h24"/><path d="M214 132v38"/><path class="g" d="M120 196h188M120 228h188"/><path class="g" d="M140 196v32M168 196v32M196 196v32M224 196v32M252 196v32M280 196v32"/><circle class="f" cx="214" cy="182" r="7"/>','Compound plus DNA barcode'),
- /* 2. select: the whole library meets the target in one tube */
- sfig('<path d="M150 40h120v36l-30 44v160a26 26 0 01-26 26h-8a26 26 0 01-26-26V120l-30-44z"/><path class="g" d="M160 196h100"/><circle class="f" cx="186" cy="232" r="6"/><circle class="f" cx="214" cy="252" r="6"/><circle class="f" cx="240" cy="226" r="6"/><circle cx="210" cy="244" r="34" class="a"/><circle cx="118" cy="104" r="5"/><circle cx="310" cy="128" r="5"/><circle cx="96" cy="196" r="5"/><circle cx="330" cy="212" r="5"/><path class="a" d="M118 110l44 64M310 134l-70 78M104 196l72 34M322 212l-78 22" stroke-dasharray="3 6"/>','A single binding experiment'),
- /* 3. decode: sequencing reads the barcodes that stuck */
- sfig('<path d="M48 250h324"/><path d="M48 60v190"/><path class="g" d="M48 86h324" stroke-dasharray="4 8"/><rect class="a2" x="80" y="150" width="26" height="100"/><rect class="a2" x="126" y="196" width="26" height="54"/><rect class="a2" x="172" y="96" width="26" height="154"/><rect class="a2" x="218" y="178" width="26" height="72"/><rect class="a2" x="264" y="124" width="26" height="126"/><rect class="a2" x="310" y="206" width="26" height="44"/><circle class="f" cx="185" cy="96" r="6"/><circle class="f" cx="277" cy="124" r="6"/>','Sequencing read counts'),
- /* 4. optimize: a hit series is refined off-DNA */
- sfig('<circle cx="110" cy="104" r="22"/><circle class="a" cx="210" cy="104" r="22"/><circle class="a" cx="310" cy="104" r="22"/><path d="M132 104h56M232 104h56"/><path class="g" d="M110 148v44M210 148v62M310 148v80"/><circle class="f" cx="110" cy="200" r="5"/><circle class="f" cx="210" cy="218" r="5"/><circle class="f" cx="310" cy="236" r="5"/><path d="M70 262h280" stroke-dasharray="4 8"/>','Potency and brain exposure')
-];
+/* ===== ONE SCENE, ELEMENTS STANDARD (PRINCIPLES BY) =====
+   The object is ONE barcoded compound: three linked rings with a DNA barcode attached.
+   It is drawn complete in frame 1 and stays on screen; each step changes one labelled part.
+     BUILD     the compound and its barcode, labelled
+     SELECT    a labelled target protein rises and the compound binds to it
+     DECODE    the barcode is read: its rungs light and a read count appears
+     OPTIMIZE  the barcode is removed and the bound compound is re-made off-DNA
+   Every stroke connects two things or points to a label. Nothing floats, nothing dangles. */
+var RUNG=[268,288,308,328,348,368];
+var SCENE='<figure class="sfig" id="scene"><svg viewBox="94 44 296 256" aria-label="One DNA-barcoded compound: built, bound to its target, decoded and re-made">'+
+  /* --- the compound: three rings joined by two bonds --- */
+  '<g id="jcCmp">'+
+    '<circle class="rg" cx="150" cy="150" r="17"/><circle class="rg" cx="196" cy="126" r="17"/><circle class="rg" cx="242" cy="150" r="17"/>'+
+    '<path class="bd" d="M165 142l16-8M211 134l16 8"/>'+
+    '<text class="lab2" x="150" y="106" text-anchor="middle">Compound</text>'+
+  '</g>'+
+  /* --- the barcode: two rails and six rungs, attached to the third ring --- */
+  '<g id="jcBar">'+
+    '<path class="bd" d="M259 150h9"/>'+
+    '<path class="rail" d="M268 138h104M268 162h104"/>'+
+    RUNG.map(function(x){return '<path class="rung" d="M'+x+' 138v24"/>'}).join('')+
+    '<text class="lab2" x="372" y="128" text-anchor="end">DNA barcode</text>'+
+  '</g>'+
+  /* --- the target protein: one labelled shape the compound binds into --- */
+  '<g id="jcTgt">'+
+    '<path class="tg" d="M150 262c-26 0-40-16-40-34 0-20 18-32 40-32h52c24 0 42 12 42 32 0 18-16 34-40 34z"/>'+
+    '<path class="pocket" d="M182 196c0 14 10 22 24 22s24-8 24-22"/>'+
+    '<text class="lab2" x="110" y="282">Target protein</text>'+
+  '</g>'+
+  /* --- the read count, written against the barcode --- */
+  '<g id="jcRead"><path class="tie2" d="M320 162v30"/>'+
+    '<text class="val" x="320" y="208" text-anchor="middle">Barcode read</text></g>'+
+  /* --- the off-DNA note, written against the compound --- */
+  '<g id="jcOff"><path class="tie2" d="M196 109v-35"/>'+
+    '<text class="lab3" x="196" y="68" text-anchor="middle">Re-made off-DNA</text></g>'+
+  '</svg><figcaption class="lab" id="scCap">One barcoded compound</figcaption></figure>';
+var FIGS=[SCENE];
+
+function slen(q,SC){if(q.__ul==null){try{q.__ul=q.getTotalLength()}catch(e){q.__ul=120}}return q.__ul*SC}
+function sceneSet(p){
+  var el=document.getElementById("scene");if(!el)return;
+  var _svg=el.querySelector("svg"),SC=_svg?(_svg.getBoundingClientRect().width/296)||1:1;
+  var Q=function(s){return el.querySelector(s)},QQ=function(s){return [].slice.call(el.querySelectorAll(s))};
+  var cl=function(v){return v<0?0:v>1?1:v},ea=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+  var op=function(n,v){if(n)n.style.opacity=v.toFixed(3)};
+
+  /* BUILD: the barcoded compound is WHOLE in the first breath of the pin -- rings, bonds,
+     barcode and both labels are all there by p=.08 and stay for the rest of the story. */
+  QQ("#jcCmp .rg").forEach(function(q){q.style.transform="none";q.style.opacity="1"});
+  QQ("#jcCmp .bd").forEach(function(q){q.style.strokeDasharray="none";q.style.strokeDashoffset="0"});
+  op(Q("#jcCmp text"),1);op(Q("#jcBar"),1);
+  QQ("#jcBar .rung").forEach(function(q){op(q,1)});
+
+  /* SELECT (.25-.5): the target rises and the compound settles into its pocket */
+  var sp=cl((p-.25)/.25);
+  var tg=Q("#jcTgt");
+  /* the target protein belongs to the object from frame 1: SELECT is the BINDING,
+     not the target's arrival, so nothing appears out of nowhere mid-story. */
+  if(tg){op(tg,.34+.66*ea(cl(sp/.45)));tg.style.translate="0 0"}
+  var cmp=Q("#jcCmp");
+  if(cmp)cmp.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px";
+  var bar=Q("#jcBar");
+  if(bar)bar.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px";
+
+  /* DECODE (.5-.75): the rungs light one by one and the count is written */
+  var dp=cl((p-.5)/.25);
+  QQ("#jcBar .rung").forEach(function(q,i){
+    q.classList.toggle("lit",dp>(i+1)*.11)});
+  var rd=Q("#jcRead");
+  if(rd){op(rd,ea(cl((dp-.25)/.5))*(1-ea(cl((p-.75)/.12))));
+    rd.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px"}
+
+  /* OPTIMIZE (.75-1): the barcode is removed; the compound stays bound and is relabelled */
+  var mp=cl((p-.75)/.25);
+  if(bar){op(bar,(1-ea(cl(mp/.5))));
+    bar.style.translate="0 "+(ea(cl((sp-.25)/.6))*34+ea(cl(mp/.5))*-16).toFixed(1)+"px"}
+  var off=Q("#jcOff");
+  if(off){op(off,ea(cl((mp-.25)/.5)));
+    off.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px"}
+  QQ("#jcCmp .rg").forEach(function(q,i){q.classList.toggle("opt",mp>.35&&i===1)});
+
+  var cap=Q("#scCap");
+  if(cap){var t2=p<.25?"One barcoded compound":p<.5?"Bound to its target":p<.75?"The barcode, read":"Re-made without the barcode";
+    if(cap.textContent!==t2)cap.textContent=t2}
+}
 
 function homeScroll(view){
   var m=$("#mani",view);
@@ -1253,14 +1352,14 @@ function homeScroll(view){
 
   function setStep(n){if(n===cur)return;cur=n;steps.forEach(function(s,j){s.classList.toggle("on",j===n)});
     rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
-  if(RM){steps.forEach(function(s){s.classList.add("on")});if(prog)prog.style.transform="scaleX(1)";return}
+  if(RM){steps.forEach(function(s){s.classList.add("on")});if(prog)prog.style.transform="scaleX(1)";sceneSet(1);return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:figs});
+  var fx=StoryFX({section:sec});
   tl.eventCallback("onUpdate",function(){if(!prog||!prog.isConnected)return;var p=tl.progress();
     var q=p*NS,j=Math.min(NS-1,Math.floor(q)),fr=q-j,T=.2;
     var hp=Math.min(NS-1,j+(fr>1-T?(fr-(1-T))/T:0));
     prog.style.transform="scaleX("+(NS>1?hp/(NS-1):p)+")";
-    setStep(j);stepFX(p);fx(p)});
+    setStep(j);stepFX(p);sceneSet(p)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:railGeom});
   /* pipeline bars draw in */
   if(!RM)$$(".prow .bar",view).forEach(function(b,i){gsap.from(b,{scaleX:0,transformOrigin:"left center",duration:1.3,ease:"flow",delay:i*.06,scrollTrigger:{trigger:b.closest(".pipe"),start:"top 80%"}})});
@@ -1291,27 +1390,30 @@ function psFill(i){
   /* BQ: the sheet adapts to the photo actually available.
      big sharp headshot (>=480px) -> two columns; small/soft -> slim (96px circle beside the
      name); none -> noimg (one compact column). Nothing repeats the name or the role. */
-  var md=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";
-  ps.classList.toggle("slim",md==="slim");ps.classList.toggle("noimg",md==="noimg");
+  /* BV: a LARGE portrait or none. A headshot under 480px belongs on the card only. */
+  var md=(p.img&&!(p.imgW&&p.imgW<480))?"":"noimg";
+  ps.classList.toggle("noimg",md==="noimg");
   if(p.img&&!p.imgW){var pr=new Image();
-    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};
+    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};/* small photo -> noimg sheet */
     pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
   psMedia.innerHTML=(p.img&&md==="")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  var psHead=(md==="slim")
-    ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-    : '<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psHead='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+psHead+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
     '';
   psBody.scrollTop=0;
-  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
-  $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);
+  var sh=[];for(var z=0;z<TEAM.length;z++)if(!TEAM[z].ns)sh.push(z);
+  var at=sh.indexOf(i);
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[sh[(at-1+sh.length)%sh.length]].slug);
+  $("#psNext").setAttribute("href","#/team/"+TEAM[sh[(at+1)%sh.length]].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){
   var i=pBy(slug);if(i<0)return;
+  /* BV: these people have no sheet; their card carries the whole profile */
+  if(TEAM[i].ns){if(location.hash!==bioBase)history.replaceState(null,"",bioBase);return}
   var was=bioOpen;psCur=i;psFill(i);
   if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,0);return}
   bioOpen=true;psLastFocus=document.activeElement;

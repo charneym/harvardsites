@@ -151,7 +151,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -467,15 +467,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
 /* BQ: slim and noimg are one compact column sized to the content (<=820px) */
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.08em}
-@media (max-width:760px){.ps-head{gap:16px}.ps-head img{width:72px;height:72px}}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-col{border-radius:18px}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px}
 .ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
 .ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
@@ -686,6 +682,36 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 /* their headgear render is a tall studio image: show it whole on its own plate
    rather than cropping into the face */
 .cgrid .addr{align-self:center}
+
+/* ---- BT: the hero's living visual, quieter, behind the footer wordmark ---- */
+.ftr{position:relative;isolation:isolate}
+.ffield{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;opacity:0;transition:opacity .9s var(--eo);pointer-events:none}
+.ffield.ready{opacity:1}
+.ftr>.cols,.ftr>.bigw,.ftr>.legal{position:relative;z-index:1}
+
+/* ---- story scene labels (PRINCIPLES BY) ---- */
+.sfig svg .lab2,.sfig svg .lab3{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--stone);stroke:none}
+.sfig svg .lab3{fill:var(--peach)}
+.sfig svg .tie2{stroke:rgba(242,246,246,.34);stroke-width:1;fill:none}
+
+/* ---- BZ: the card is the size of what is in it ---- */
+.pcard{min-height:0}
+.pcard .go{padding-top:26px}
+/* ---- BU: a short last row is centred under the full ones ---- */
+.pgrid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.pgrid>*{grid-column:span 2}
+.pgrid>*:nth-child(5){grid-column:3/span 2}
+@media (max-width:1100px){.pgrid{grid-template-columns:repeat(6,minmax(0,1fr))}.pgrid>*:nth-child(5){grid-column:auto/span 2}}
+@media (max-width:860px){.pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.pgrid>*:nth-child(5){grid-column:auto/span 2}}
+@media (max-width:560px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* ---- BX: the device photograph sits beside its text, not alone in a band ---- */
+.wear2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:center}
+.wear{align-items:flex-start}
+.wear img{width:100%;max-width:none}
+.wear figcaption{text-align:left;max-width:46ch}
+.wear2.noimg{grid-template-columns:1fr}
+.wear2.noimg .wear{display:none}
+@media (max-width:860px){.wear2{grid-template-columns:1fr;gap:34px}}
 
 </style>
 </head>
@@ -1100,7 +1126,12 @@ function vTech(){
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 44c10-26 42-26 52 0"/><path class="a" d="M18 44c6-15 22-15 28 0"/><path d="M32 8v10"/><circle class="f" cx="32" cy="40" r="4"/></svg><h3>Focality and penetration</h3><p>Highland describes greater focality, penetration, duration and magnitude of effect, and better targeting control than other noninvasive options.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="14" width="48" height="36" rx="5"/><path class="a" d="M16 40l8-14 8 9 8-17 8 22"/><circle class="f" cx="48" cy="40" r="3"/></svg><h3>Measured, not assumed</h3><p>Trials read out on UPDRS Part III, Mini-BESTest, falls diaries, quality of life, EEG, MoCA and kinematics from Highland’s Integrated Motion Analysis Suite.</p></div>'+
    '</div>'+devnote()+'</div></section>'+
-  '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap"><figure class="wear" data-r><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.wear\').remove()"><figcaption class="lab">The headgear in position: two independently controlled fields, applied through the scalp.</figcaption></figure></div></section>'+
+  /* BX: the photograph is composed beside the text that explains it, never alone in a band */
+  '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap"><div class="wear2">'+
+   '<figure class="wear" data-r><img src="'+DEVICE_ON.src+'" alt="'+esc(DEVICE_ON.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.wear2\').classList.add(\'noimg\')"><figcaption class="lab">The headgear in position: two independently controlled fields, applied through the scalp.</figcaption></figure>'+
+   '<div class="wear-tx"><span class="lab kick" data-r>The device</span><h2 class="d3 split">Worn on the head. <em>Nothing implanted.</em></h2>'+
+    '<p class="muted" style="margin-top:24px" data-r>ESStim\u2122 is delivered through headgear rather than through surgery: an electrode sits on the scalp and ultrasound transducers sit either side of it. Because the electromagnetic and ultrasonic fields are controlled independently, they can be made to meet \u2014 and so to focus \u2014 below the surface.</p>'+
+   '</div></div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Beyond the headset</span><h2 class="d3 split">An IP portfolio that reaches <em>past stimulation.</em></h2><p class="muted" style="margin-top:24px" data-r>ESStim™ is protected by issued and pending patents nationally and globally. Highland also owns substantial intellectual property in artificial intelligence, imaging, neuromodulation, wearable sensors and human movement kinematics.</p></div>'+
    '<dl class="facts" data-group>'+
@@ -1151,7 +1182,7 @@ function vContact(){
 }
 function v404(){return head({k:"Not found",h:'This page is <em>out of range.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" id="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Company</span>Highland Instruments, Inc.<br>Cambridge, Massachusetts</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@highlandinstruments.com">info@highlandinstruments.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/indications">Indications</a><br><a class="ul" href="#/team">Team</a></div>'+
@@ -1183,8 +1214,9 @@ if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplie
 var MOBILE=function(){return innerWidth<861};
 /* ===== HERO FIELD: two independently controlled fields — ultrasonic wavefronts and electric current lines —
    crossing at one focal point, the electromechanical coupling at the heart of ESStim ===== */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,opt){
+  opt=opt||{};var QD=opt.quiet?.4:1;
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
   var TEAL="138,210,210",TEALD="87,178,178",PEACH="240,170,117",PAPER="242,246,246";
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
@@ -1199,7 +1231,7 @@ var field=(function(){
     var t=RM?22:(performance.now()-t0)/1000;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
     var e=IN.v*IN.v*(3-2*IN.v),L=lay(),A=e*(.45+.55*dim);
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=QD;
     c.lineCap="round";c.lineJoin="round";
     var fx=w*L.fx+m[0]*w*.016,fy=h*L.fy+m[1]*h*.022,r=L.r;
     /* emitters sit left and right of the focus */
@@ -1275,11 +1307,13 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  addEventListener("resize",size);size();
+  function onRz(){size()}addEventListener("resize",onRz);size();
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    destroy:function(){stop();removeEventListener("resize",onRz)},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=makeField($("#field"),{});
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1340,7 +1374,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       gsap.from($$(".moa text",view),{opacity:0,duration:.8,stagger:.03,delay:.6,scrollTrigger:{trigger:".moa",start:"top 78%"}})}
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
-    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    var cvf=$("#ffield",view);if(cvf){if(window._ff&&window._ff.destroy)window._ff.destroy();window._ff=makeField(cvf,{quiet:true});if(window._ffio)window._ffio.disconnect();window._ffio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){window._ff.start();cvf.classList.add("ready")}else{window._ff.stop()}})},{rootMargin:"140px"});window._ffio.observe(cvf)}var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
     rvView(view,E);
   },view);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
@@ -1399,16 +1433,21 @@ var story=null;
    twelve-week readout draws beneath it. Parts move, draw and actuate along the scrubbed progress. */
 var SCENE='<figure class="sfig" id="scene"><svg viewBox="0 0 460 330" aria-label="One head: electrodes spread current broadly, two independently controlled fields converge, the coupled field focuses at depth, and the response is measured over twelve weeks">'+
   '<g id="scHead"><ellipse cx="230" cy="150" rx="140" ry="112"/>'+
-    '<path class="dot" d="M132 118c24-13 48-13 72 0M256 118c24-13 48-13 72 0"/>'+
-    '<path class="dot" d="M134 252c28 16 64 24 96 24s68-8 96-24"/></g>'+
-  '<g id="scElec"><rect x="196" y="20" width="68" height="16" rx="5"/><path d="M204 36v8M230 36v8M256 36v8"/></g>'+
-  '<g id="scSpread"><path class="g" d="M206 46c-30 28-44 56-46 86M230 46c-4 32-4 62 0 86M254 46c30 28 44 56 46 86"/></g>'+
+    '<text class="lab2" x="230" y="288" text-anchor="middle">Scalp \u00b7 nothing implanted</text></g>'+
+  '<g id="scElec"><rect x="196" y="20" width="68" height="16" rx="5"/><path d="M204 36v8M230 36v8M256 36v8"/>'+
+    '<text class="lab2" x="274" y="32">Electrode</text></g>'+
+  '<g id="scSpread"><path class="g" d="M206 46c-28 34-40 72-16 104 12 16 26 8 40 8M230 46c-4 44-2 82 0 112M254 46c28 34 40 72 16 104-12 16-26 8-40 8"/></g>'+
   '<g id="scTrans"><g id="scTL"><rect x="58" y="128" width="16" height="48" rx="4"/><path class="a" d="M84 126a44 44 0 010 52M104 138a28 28 0 010 28"/></g>'+
-    '<g id="scTR"><rect x="386" y="128" width="16" height="48" rx="4"/><path class="a" d="M376 126a44 44 0 000 52M356 138a28 28 0 000 28"/></g></g>'+
+    '<g id="scTR"><rect x="386" y="128" width="16" height="48" rx="4"/><path class="a" d="M376 126a44 44 0 000 52M356 138a28 28 0 000 28"/></g>'+
+    '<text class="lab2" x="58" y="196">Ultrasound transducer</text>'+
+    '<text class="lab2" x="402" y="196" text-anchor="end">Ultrasound transducer</text></g>'+
   '<g id="scFocus"><circle class="ring" cx="230" cy="158" r="42"/><circle class="ring2" cx="230" cy="158" r="24"/><circle class="f" cx="230" cy="158" r="7"/></g>'+
-  '<g id="scRead"><path d="M66 326h328"/><path class="dot" d="M66 290h328"/>'+
+  '<g id="scFL"><path class="tie2" d="M230 200v22"/><text class="lab3" x="230" y="238" text-anchor="middle">Focal point</text></g>'+
+  '<g id="scRead"><path d="M66 326h328"/>'+
+    '<text class="lab2" x="66" y="268">Response to 12 weeks · schematic</text>'+
     '<path class="a" id="scTrace" d="M78 320l62-10 62 4 62-20 62 6 62-14"/>'+
-    '<circle class="f" cx="140" cy="310" r="4.5"/><circle class="f" cx="264" cy="290" r="4.5"/><circle class="f" cx="388" cy="282" r="4.5"/></g>'+
+    '<circle class="f" cx="388" cy="286" r="4.5"/><path class="tie2" d="M388 281v-18"/>'+
+    '<text class="lab3" x="388" y="258" text-anchor="end">Week 12</text></g>'+
   '</svg><figcaption class="lab" id="scCap">Conventional stimulation</figcaption></figure>';
 var FIGS=[SCENE];
 
@@ -1421,16 +1460,22 @@ function sceneSet(p){
   var draw=function(node,len,e){if(node.__ul==null){try{node.__ul=node.getTotalLength()}catch(x){node.__ul=len}}
     var L=node.__ul*SC;node.style.strokeDasharray=L+" "+L;node.style.strokeDashoffset=(L*(1-out(cl(e)))).toFixed(1)};
   /* the head is always there, settling in at the start */
+  var e3a=cl((p-.76)/.24),FADE=(1-.62*ea(e3a));
   var hd=q("scHead");
-  if(hd){hd.style.filter="opacity("+((.25+.75*ea(cl(p/.1)))*(1-.2*cl((p-.8)/.2))).toFixed(3)+")";hd.style.translate="0 "+((1-ea(cl(p/.12)))*14).toFixed(1)+"px"}
+  if(hd){hd.style.filter="opacity("+((.25+.75*ea(cl(p/.1)))*FADE).toFixed(3)+")";hd.style.translate="0 "+((1-ea(cl(p/.12)))*14).toFixed(1)+"px"}
+  /* TREAT: the head draws back so the readout has the lower third to itself */
+  var SH=(1-.3*ea(e3a)),DY=(-20*ea(e3a));
+  var BACK="translate(0px,"+DY.toFixed(1)+"px) scale("+SH.toFixed(3)+")";
+  ["scHead","scElec","scSpread","scTrans","scFL"].forEach(function(id){var n=q(id);if(!n)return;
+    n.style.transformBox="view-box";n.style.transformOrigin="230px 150px";n.style.transform=BACK});
   /* phase 0 (0–.3): electrodes land, current spreads broadly and shallow */
   var e0=cl(p/.22);
   var el0=q("scElec");
-  if(el0){el0.style.translate="0 "+((1-ea(e0))*-30).toFixed(1)+"px";el0.style.filter="opacity("+ea(cl(p/.1)).toFixed(3)+")"}
+  if(el0){el0.style.translate="0 "+((1-ea(e0))*-30).toFixed(1)+"px";el0.style.filter="opacity("+(ea(cl(p/.1))*FADE).toFixed(3)+")"}
   qq("#scSpread .g").forEach(function(n,i){draw(n,120,(e0-i*.08)/.6)});
   var sp=q("scSpread");
   /* the broad spread fades back as the focused field takes over */
-  if(sp)sp.style.filter="opacity("+(ea(cl((p-.08)/.2))*(1-.86*cl((p-.42)/.22))).toFixed(3)+")";
+  if(sp)sp.style.filter="opacity("+(ea(cl((p-.08)/.2))*(1-.86*cl((p-.42)/.22))*FADE).toFixed(3)+")";
   /* phase 1 (.26–.56): the two transducers arrive and their arcs draw */
   var e1=cl((p-.26)/.3);
   var tl2=q("scTL"),tr=q("scTR");
@@ -1440,15 +1485,17 @@ function sceneSet(p){
   /* phase 2 (.5–.8): coupling — the focus tightens and pulses */
   var e2=cl((p-.5)/.3);
   var fc=q("scFocus");
-  if(fc){fc.style.filter="opacity("+ea(cl((p-.5)/.18)).toFixed(3)+")";
-    fc.style.transformBox="fill-box";fc.style.transformOrigin="50% 50%";
-    fc.style.transform="scale("+(1.5-.5*ea(e2)).toFixed(3)+")"}
+  var fl=q("scFL");
+  if(fl)fl.style.filter="opacity("+(ea(cl((p-.56)/.18))*(1-cl((p-.84)/.12))).toFixed(3)+")";
+  if(fc){fc.style.filter="opacity("+(ea(cl((p-.5)/.18))*FADE).toFixed(3)+")";
+    fc.style.transformBox="view-box";fc.style.transformOrigin="230px 158px";
+    fc.style.transform=BACK+" scale("+(1.5-.5*ea(e2)).toFixed(3)+")"}
   var rg=el.querySelector("#scFocus .ring"),rg2=el.querySelector("#scFocus .ring2");
   if(rg)rg.setAttribute("r",(42-12*ea(e2)).toFixed(1));
   if(rg2)rg2.setAttribute("r",(24-7*ea(e2)).toFixed(1));
   /* the transducer arcs bend inwards as the fields couple */
   var tt=q("scTrans");
-  if(tt)tt.style.translate="0 0",tt.style.filter="opacity("+(ea(cl((p-.26)/.16))*(1-.25*cl((p-.82)/.18))).toFixed(3)+")";
+  if(tt)tt.style.translate="0 0",tt.style.filter="opacity("+(ea(cl((p-.26)/.16))*FADE).toFixed(3)+")";
   /* phase 3 (.76–1): the readout draws under the head */
   var e3=cl((p-.76)/.24);
   var rd=q("scRead");
@@ -1457,8 +1504,6 @@ function sceneSet(p){
   if(tr2)draw(tr2,340,e3/.8);
   qq("#scRead .f").forEach(function(n,i){n.style.filter="opacity("+ea(cl((e3-.35-i*.14)/.4)).toFixed(3)+")"});
   /* the head lifts slightly to make room for the readout, so the scene stays composed */
-  var svg=el.querySelector("svg");
-  if(svg)svg.style.translate="0 "+(-26*ea(e3)).toFixed(1)+"px";
   var cap=document.getElementById("scCap");
   if(cap){var t=p<.26?"Conventional stimulation":p<.5?"Two fields, independently controlled":p<.76?"Coupled, focused, steered":"Measured, week by week";
     if(cap.textContent!==t)cap.textContent=t}
@@ -1539,27 +1584,30 @@ function psFill(i){
   /* BQ: the sheet adapts to the photo actually available.
      big sharp headshot (>=480px) -> two columns; small/soft -> slim (96px circle beside the
      name); none -> noimg (one compact column). Nothing repeats the name or the role. */
-  var md=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";
-  ps.classList.toggle("slim",md==="slim");ps.classList.toggle("noimg",md==="noimg");
+  /* BV: a LARGE portrait or none. A headshot under 480px belongs on the card only. */
+  var md=(p.img&&!(p.imgW&&p.imgW<480))?"":"noimg";
+  ps.classList.toggle("noimg",md==="noimg");
   if(p.img&&!p.imgW){var pr=new Image();
-    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};
+    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};/* small photo -> noimg sheet */
     pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
   psMedia.innerHTML=(p.img&&md==="")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  var psHead=(md==="slim")
-    ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-    : '<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psHead='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+psHead+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
     '';
   psBody.scrollTop=0;
-  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
-  $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);
+  var sh=[];for(var z=0;z<TEAM.length;z++)if(!TEAM[z].ns)sh.push(z);
+  var at=sh.indexOf(i);
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[sh[(at-1+sh.length)%sh.length]].slug);
+  $("#psNext").setAttribute("href","#/team/"+TEAM[sh[(at+1)%sh.length]].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){
   var i=pBy(slug);if(i<0)return;
+  /* BV: these people have no sheet; their card carries the whole profile */
+  if(TEAM[i].ns){if(location.hash!==bioBase)history.replaceState(null,"",bioBase);return}
   var was=bioOpen;psCur=i;psFill(i);
   if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,0);return}
   bioOpen=true;psLastFocus=document.activeElement;

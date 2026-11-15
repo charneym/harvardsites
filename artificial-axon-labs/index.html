@@ -151,7 +151,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -467,15 +467,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-plate .q{font:400 clamp(22px,2vw,30px)/1.25 var(--ps-serif,Georgia);margin-top:14px;padding-bottom:.12em}
 .ps-col{display:flex;flex-direction:column;min-height:0;border-radius:0 18px 18px 0}
 /* BQ: slim and noimg are one compact column sized to the content (<=820px) */
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-col,.ps.noimg .ps-col{border-radius:18px}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.08em}
-@media (max-width:760px){.ps-head{gap:16px}.ps-head img{width:72px;height:72px}}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px))}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-col{border-radius:18px}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px}
 .ps-bar{position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(28px,4vw,56px)}
 .ps-bar::after{content:"";position:absolute;left:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);bottom:0;height:1px;background:var(--ps-line,rgba(0,0,0,.08))}
 .ps-bar .ps-step{display:flex;gap:8px}
@@ -716,6 +712,67 @@ em{font-family:var(--ital);font-style:italic}
 }
 
 .cgrid .addr{align-self:center}
+
+/* ---- story scene (PRINCIPLES BY): one object, every stroke connected or labelled ---- */
+.sfig svg .ax{stroke:var(--sinL);stroke-width:2.4}
+.sfig svg .sub{stroke:rgba(243,239,234,.55);stroke-width:1.4}
+.sfig svg .lt{stroke:rgba(227,132,106,.5);stroke-width:1}
+.sfig svg .cb{fill:rgba(243,239,234,.07);stroke:rgba(243,239,234,.72)}
+.sfig svg .pr{stroke:rgba(243,239,234,.68)}
+.sfig svg .sl{fill:rgba(243,239,234,.16);stroke:rgba(243,239,234,.72);stroke-width:1.1}
+.sfig svg .axis{stroke:rgba(243,239,234,.5)}
+.sfig svg .tie{stroke:rgba(243,239,234,.3)}
+.sfig svg .bar{fill:var(--sinL);stroke:none}
+.sfig svg .lab2,.sfig svg .lab3{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--stone);stroke:none}
+.sfig svg .lab3{fill:var(--sinL)}
+.sfig svg .val{font-family:var(--mono);font-size:9.5px;fill:var(--sinL);stroke:none}
+
+/* ---- BW: partners set in type, one tone, one optical size ---- */
+.pnames{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.pnames li{font-family:var(--sans);font-weight:300;font-size:clamp(17px,1.5vw,22px);line-height:1.25;
+  letter-spacing:-.01em;color:var(--bone);padding:22px 18px 22px 0;border-top:1px solid var(--hair)}
+.light .pnames li{color:var(--ink);border-top-color:var(--hairD)}
+@media (max-width:860px){.pnames{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.pnames{grid-template-columns:1fr}}
+
+/* ---- BX: the readout figure is composed with the text it supports ---- */
+.rband{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,72px);
+  align-items:center;margin-top:clamp(56px,6vw,96px)}
+.rb-im{margin:0;position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:2px;background:var(--bone3)}
+.rb-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.92) contrast(1.02)}
+.rb-tx p{margin:14px 0 0;max-width:46ch;color:var(--stoneD)}
+.dark .rb-tx p,.dark2 .rb-tx p{color:var(--stone)}
+.rband.noimg .rb-im{display:none}
+.rband.noimg{grid-template-columns:1fr}
+@media (max-width:860px){.rband{grid-template-columns:1fr;gap:26px}}
+
+/* ---- BU: a short last row is centred (8 half-columns, cards span 2) ---- */
+.pgrid{grid-template-columns:repeat(8,minmax(0,1fr))}
+.pgrid>*{grid-column:span 2}
+.pgrid>*:nth-child(5){grid-column:2/span 2}
+@media (max-width:1100px){
+  .pgrid{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .pgrid>*:nth-child(5){grid-column:auto/span 2}
+}
+@media (max-width:760px){
+  .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .pgrid>*:nth-child(5){grid-column:auto/span 2}
+}
+@media (max-width:420px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---- BT: the hero's living visual, quieter, behind the footer wordmark ---- */
+.ftr{position:relative;isolation:isolate}
+.ffield{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;opacity:0;transition:opacity .9s var(--eo);pointer-events:none}
+.ffield.ready{opacity:1}
+.ftr>.cols,.ftr>.bigw,.ftr>.legal{position:relative;z-index:1}
+
+/* ---- BV: a card that is the whole profile, not a dead link ---- */
+.pcard.flat{cursor:default}
+.pcard.flat:hover{transform:none}
+.pcard.flat:hover .pc-fig{box-shadow:none}
+.pcard.flat:hover h3{color:inherit}
+.pc-bio{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--stoneD);max-width:34ch}
+.dark .pc-bio,.dark2 .pc-bio{color:var(--stone)}
 
 </style>
 </head>
@@ -1014,9 +1071,9 @@ var TEAM=[
   bio:["Listed by the company as Professor of Mechanical Engineering at MIT, and a scientific co-founder of Artificial Axon Labs. His work underpins the light-based 3D printing behind the artificial axon arrays."]},
  {slug:"alexis-lowe",name:"Alexis Lowe, PhD",title:"Senior Scientist",grp:"Team",img:IMG+"a50b812e-99ae-4ba8-9fe8-900656d287f9/LOWE.jpg?format=500w",
   bio:["Alexis Lowe joined Artificial Axon Labs as a Senior Scientist in May 2025. She holds a BA in Neuroscience from Wellesley College and a PhD in Biomedical Engineering from Johns Hopkins University, with an interest in neural regeneration and regrowth."]},
- {slug:"nicholas-terrett",name:"Nicholas Terrett, PhD",title:"Medicinal Chemistry",grp:"Advisors",img:IMG+"1647619104533-1OR64U10IXM5SG0VHS0N/Nick+Terrett+picture.jpg?format=500w",
+ {ns:1,slug:"nicholas-terrett",name:"Nicholas Terrett, PhD",title:"Medicinal Chemistry",grp:"Advisors",img:IMG+"1647619104533-1OR64U10IXM5SG0VHS0N/Nick+Terrett+picture.jpg?format=500w",
   bio:["Nicholas Terrett advises Artificial Axon Labs on medicinal chemistry."]},
- {slug:"anna-voronova",name:"Anna Voronova, PhD",title:"Strategic Advisor",grp:"Advisors",img:IMG+"1629729329645-WCYZZPUDC3L5OJOXZTGG/AVoronova2_0.jpeg?format=500w",
+ {ns:1,slug:"anna-voronova",name:"Anna Voronova, PhD",title:"Strategic Advisor",grp:"Advisors",img:IMG+"1629729329645-WCYZZPUDC3L5OJOXZTGG/AVoronova2_0.jpeg?format=500w",
   bio:["Anna Voronova is a strategic advisor to Artificial Axon Labs."]}
 ];
 
@@ -1025,6 +1082,10 @@ var SCI=[
  {src:IMG+"1645809425093-HARNPW4DS37RTOJ674FK/Capture.PNG?format=1500w",alt:"Micrograph labeled artificial axon and myelin membrane, with a 10 micrometer scale bar",cap:"One printed axon, one myelin membrane, 10 µm across",k:"Direct 3D readout"},
  {src:IMG+"1645809505764-2EN149GR2Z6349KN3H3Q/HR3DP.jpg?format=1500w",alt:"High-resolution 3D printing optics writing structures with a magenta laser path",cap:"The light-based printer that writes the axons",k:"Sub-micrometer printing"}
 ];
+function readoutBand(){var f=SCI[1];return '<div class="rband" data-r>'+
+  '<figure class="rb-im"><img src="'+f.src+'" alt="'+esc(f.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.rband\').classList.add(\'noimg\')"></figure>'+
+  '<div class="rb-tx"><span class="lab kick">Direct 3D readout</span>'+
+   '<p>Myelin is imaged around each printed axon and quantified in three dimensions. The scale bar is 10 micrometres: one printed fibre, one myelin membrane, measured directly rather than inferred from how many cells differentiated.</p></div></div>'}
 function sciFigs(list){return '<div class="sci" data-group>'+list.map(function(f){return '<figure class="scf"><span class="lab">'+esc(f.k)+'</span><div class="scf-im"><img src="'+f.src+'" alt="'+esc(f.alt)+'" loading="lazy" decoding="async" onerror="this.closest(\'.scf\').classList.add(\'noimg\')"></div><figcaption>'+esc(f.cap)+'</figcaption></figure>'}).join("")+'</div>'}
 var COLLAB=[
  ["Sanofi",IMG+"1629686076898-8Y1PJ5RKMMG27ZCCIX0K/Sanofi_Artificial+Axon+Labs?format=750w"],
@@ -1034,7 +1095,17 @@ var COLLAB=[
  ["The New York Stem Cell Foundation",IMG+"1629685851878-6E9JEZ4VGRDJESTMPPM0/New+York+Stem+Cell+Foundation_Artificial+Axon+Labs?format=750w"],
  ["NIH SEED",IMG+"99af027c-2325-41f2-8efd-47f06f2d3183/NIH+SBIR.JPG?format=750w"]
 ];
+function partnerRow(){return '<ul class="pnames" data-group>'+COLLAB.map(function(x){return '<li>'+esc(x[0])+'</li>'}).join("")+'</ul>'}
 function collabRow(){return '<div class="plates" data-group>'+COLLAB.map(function(c){return '<div class="plate"><img src="'+c[1]+'" alt="'+esc(c[0])+'" loading="lazy" decoding="async" onerror="this.parentNode.innerHTML=\'<span class=&quot;pl-t&quot;>'+esc(c[0])+'</span>\'"></div>'}).join("")+'</div>'}
+function pCard(p){
+  /* BV: when the card already carries everything known about a person, the card IS the
+     profile: the short bio sits on it and it is not a link. */
+  if(p.ns)return '<div class="pcard flat"><figure class="pc-fig"><div class="ph2">'+
+    '<img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)">'+
+    '<img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>'+
+    '<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3>'+
+    '<p class="ttl">'+esc(p.title)+'</p><p class="pc-bio">'+esc(p.bio[0])+'</p></div></div>';
+  return tCard(p)}
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 var PAPERS=[
  ["Artificial axons as a biomimetic 3D myelination platform for the discovery and validation of promyelinating compounds","Scientific Reports, 2023","https://doi.org/10.1038/s41598-023-44675-6"],
@@ -1093,16 +1164,16 @@ function vHome(){
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path class="a" d="M10 10l18 18"/><path d="M6 46h52"/><circle cx="32" cy="36" r="7"/><path d="M20 46v-6M44 46v-9"/></svg><h3>Printed with light</h3><p>Sub-micrometer features in ultra-low-stiffness, biocompatible materials, pushing past the limits of standard 3D printing.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M4 32h56"/><ellipse cx="24" cy="32" rx="10" ry="7"/><ellipse class="a" cx="44" cy="32" rx="7" ry="5"/><circle class="f" cx="24" cy="32" r="2.4"/></svg><h3>Direct 3D readout</h3><p>Myelin wrapping is quantified directly in an axon-like, three-dimensional environment, rather than inferred from differentiation.</p></div>'+
     '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="20" cy="22" r="9"/><circle class="a" cx="42" cy="38" r="12"/><path d="M6 56c6-10 16-14 26-14"/></svg><h3>Human cells</h3><p>Compatible with human cells, so human disease is addressed directly instead of through animal cells that have repeatedly failed to predict clinical effect.</p></div>'+
-   '</div>'+sciFigs([SCI[1]])+'</div></section>'+
+   '</div>'+readoutBand()+'</div></section>'+
 
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Validated with</span><h2 class="d2 split">Built and tested <em>at MIT.</em></h2></div><p data-r>The platform has been validated at MIT with industry and academic collaborators, and the company has published its validation work in peer-reviewed journals.</p></div>'+
-   collabRow()+'<div style="margin-top:clamp(56px,6vw,90px)">'+paperRows()+'</div>'+
+   partnerRow()+'<div style="margin-top:clamp(56px,6vw,90px)">'+paperRows()+'</div>'+
   '</div></section>'+
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Engineers of the <em>artificial axon.</em></h2></div><p data-r>Founded by MIT scientists in biomaterials, neuroscience and 3D printing, with advisors in medicinal chemistry and myelin biology.</p></div>'+
-   '<div class="pgrid" data-group>'+[0,1,2,4].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
+   '<div class="pgrid" data-group>'+[0,1,2,4].map(function(i){return pCard(TEAM[i])}).join("")+'</div>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -1149,7 +1220,7 @@ function vPlatform(){
 }
 function vTeam(){
   return head({k:"Team",h:'The people behind <em>the platform.</em>',p:'Founders from MIT in biomaterials, neuroscience and 3D printing, a senior scientist in neural regeneration, and advisors in medicinal chemistry and myelin biology.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(pCard).join("")+'</div></div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'Awards, papers and <em>milestones.</em>',p:'Every item links to its source: NIH RePORTER records, peer-reviewed papers and award announcements.'})+
@@ -1169,7 +1240,7 @@ function vContact(){
 }
 function v404(){return head({k:"Not found",h:'This page isn’t <em>wrapped.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" id="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Company</span>Artificial Axon Labs Inc.<br>Topsfield, Massachusetts</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:anna.jagielska@artificialaxonlabs.com">Email the team</a><br><a class="ul" href="https://linkedin.com/company/artificial-axon-labs/" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1200,8 +1271,9 @@ var lenis=null;
 if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
 var MOBILE=function(){return innerWidth<861};
 /* ===== HERO FIELD: printed axon mimics, with oligodendrocytes wrapping myelin sheath along them ===== */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,opt){
+  opt=opt||{};var QD=opt.quiet?.4:1;
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
   var NF=7,fibs=[],cells=[];
@@ -1218,7 +1290,7 @@ var field=(function(){
     var t=RM?26:(performance.now()-t0)/1000;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
     var e=IN.v*IN.v*(3-2*IN.v),L=lay();
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=QD;
     c.lineCap="round";c.lineJoin="round";
     var xa0=L.x[0]*w,xb0=L.x[1]*w;
     for(var i=0;i<NF;i++){
@@ -1291,11 +1363,13 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  addEventListener("resize",size);size();
+  function onRz(){size()}addEventListener("resize",onRz);size();
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+    destroy:function(){stop();removeEventListener("resize",onRz)},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=makeField($("#field"),{});
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1356,7 +1430,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       gsap.from($$(".moa text",view),{opacity:0,duration:.8,stagger:.03,delay:.6,scrollTrigger:{trigger:".moa",start:"top 78%"}})}
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
-    var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
+    var cvf=$("#ffield",view);if(cvf){if(window._ff&&window._ff.destroy)window._ff.destroy();window._ff=makeField(cvf,{quiet:true});if(window._ffio)window._ffio.disconnect();window._ffio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){window._ff.start();cvf.classList.add("ready")}else{window._ff.stop()}})},{rootMargin:"140px"});window._ffio.observe(cvf)}var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
     rvView(view,E);
   },view);
   var rt;$$("img",view).forEach(function(im){if(!im.complete)im.addEventListener("load",function(){clearTimeout(rt);rt=setTimeout(function(){ScrollTrigger.refresh()},200)},{once:true})});
@@ -1409,91 +1483,100 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 var story=null;
-/* ===== ONE CONTINUOUS SCENE (PRINCIPLES BL) =====
-   A single stage: the printer writes one axon, cells arrive and wrap myelin along it,
-   the lesion environment pushes back, and the readout measures what is left.
-   Everything is one SVG whose parts move, draw and actuate along the scrubbed progress. */
-var SCENE='<figure class="sfig" id="scene"><svg viewBox="58 -16 376 334" aria-label="One printed axon: written by light, wrapped by human cells, challenged by the lesion environment, then measured">'+
-  /* printer head: descends and writes */
-  '<g id="scPrinter"><rect x="198" y="6" width="64" height="18" rx="5"/><path class="a" d="M230 24L212 150M230 24l18 126"/><path class="bm" d="M230 24v136"/><path class="a" d="M220 62h20M216 92h28M212 122h36"/></g>'+
-  /* the stage line and the printed fiber */
-  '<path id="scStage" d="M70 250h320"/>'+
-  '<path id="scFibre" class="a" d="M70 160h320"/>'+
-  /* myelin sleeves, drawn along the fiber */
-  '<g id="scSleeves">'+
-    '<ellipse class="sl" cx="128" cy="160" rx="33" ry="13"/>'+
-    '<ellipse class="sl" cx="202" cy="160" rx="33" ry="13"/>'+
-    '<ellipse class="sl" cx="276" cy="160" rx="33" ry="13"/>'+
-    '<ellipse class="sl" cx="350" cy="160" rx="33" ry="13"/>'+
+/* ===== ONE SCENE, ELEMENTS STANDARD (PRINCIPLES BY) =====
+   The object is the printed axon array: five fibres standing on a substrate, drawn COMPLETE
+   in frame 1 and kept on screen throughout. Each step changes one labelled part of it:
+     PRINT     the array, built and labelled, with the writing light above it
+     SEED      an oligodendrocyte arrives; every process ENDS on a fibre
+     CHALLENGE the two lesion factors arrive on leader lines that END at the array
+     MEASURE   myelin wraps the fibres and a labelled, numbered readout appears
+   Every stroke either connects two things or points to a label. Nothing floats. */
+var AX=[96,160,224,288,352];          /* the five fibre x positions */
+var COV=[82,74,58,37,21];             /* myelin coverage %, high to low, used by the readout */
+function axPillars(){var o='';AX.forEach(function(x,i){
+  o+='<path class="ax" id="ax'+i+'" d="M'+x+' 232V96"/>';});return o}
+function axSleeves(){var o='';AX.forEach(function(x,i){
+  o+='<g class="slv" id="slv'+i+'">'+
+     '<rect class="sl" x="'+(x-13)+'" y="120" width="26" height="34" rx="12"/>'+
+     '<rect class="sl" x="'+(x-13)+'" y="162" width="26" height="34" rx="12"/></g>';});return o}
+function axTicks(){var o='';AX.forEach(function(x,i){
+  o+='<rect class="bar" id="bar'+i+'" x="'+(x-11)+'" y="298" width="22" height="2"/>'+
+     '<text class="val" id="val'+i+'" x="'+x+'" y="292" text-anchor="middle">'+COV[i]+'%</text>';});return o}
+
+var SCENE='<figure class="sfig" id="scene"><svg viewBox="40 20 400 332" aria-label="A printed axon array: five fibres on a substrate, wrapped by human cells and measured">'+
+  /* --- the writing light, ending exactly on the array --- */
+  '<g id="scLight"><path class="lt" d="M224 44L96 96M224 44l128 52"/><circle class="f" cx="224" cy="44" r="4"/>'+
+    '<text class="lab2" x="238" y="48">Light-based printing</text></g>'+
+  /* --- the object: substrate + five printed fibres, complete from frame 1 --- */
+  '<g id="scArray">'+axPillars()+
+    '<path class="sub" d="M72 232h304"/>'+
+    '<text class="lab2" id="axLab" x="72" y="250">Substrate · 5 fibres</text>'+
   '</g>'+
-  /* the oligodendrocyte: body above, processes down onto the sleeves */
-  '<g id="scCell"><ellipse cx="202" cy="92" rx="21" ry="17"/><circle class="f" cx="196" cy="88" r="5"/>'+
-    '<path class="pr" d="M190 106c-14 12-26 26-60 40M214 106c14 12 26 26 60 40M202 109v38"/></g>'+
-  /* lesion challenge: inflammatory factors arriving, sleeve fragments breaking off */
-  '<g id="scLesion"><circle class="f" cx="96" cy="52" r="5"/><circle class="f" cx="300" cy="44" r="5"/><circle class="f" cx="392" cy="66" r="5"/>'+
-    '<path class="g" d="M100 60l24 84M300 52l-18 92M388 74l-30 72"/>'+
-    '<path class="g" d="M300 206c12-9 26-9 38 0M344 214c12-9 26-9 38 0"/></g>'+
-  /* readout: a coverage bar per sleeve, drawn at the end */
-  '<g id="scRead"><path d="M70 300h320"/><path class="tie" d="M128 184v70M202 184v64M276 184v78M350 184v84"/>'+
-    '<rect class="bar" x="104" y="268" width="48" height="26"/>'+
-    '<rect class="bar" x="178" y="262" width="48" height="32"/>'+
-    '<rect class="bar" x="252" y="276" width="48" height="18"/>'+
-    '<rect class="bar" x="326" y="282" width="48" height="12"/></g>'+
-  '</svg><figcaption class="lab" id="scCap">Light-based 3D printing</figcaption></figure>';
+  /* --- myelin sleeves, grown around the fibres at MEASURE --- */
+  '<g id="scSleeves">'+axSleeves()+'</g>'+
+  /* --- the cell: body + three processes that each END on a fibre --- */
+  '<g id="scCell"><ellipse class="cb" cx="224" cy="68" rx="26" ry="20"/><circle class="f" cx="216" cy="63" r="6"/>'+
+    '<path class="pr" d="M202 82C176 98 162 104 160 118M224 88v30M246 82c26 16 40 22 42 36"/>'+
+    '<text class="lab2" x="256" y="66">Human oligodendrocyte</text></g>'+
+  /* --- lesion factors: two labels, each on a leader that ENDS at a fibre --- */
+  '<g id="scLesion">'+
+    '<path class="g" d="M96 182H72"/><text class="lab3" x="68" y="186" text-anchor="end">IFN-gamma</text>'+
+    '<path class="g" d="M352 182h24"/><text class="lab3" x="380" y="186">Myelin debris</text></g>'+
+  /* --- readout: one tick per fibre, a baseline, a value above each bar --- */
+  '<g id="scRead"><path class="axis" d="M72 300h304"/>'+axTicks()+
+    '<text class="lab2" x="72" y="322">Myelin coverage per axon · schematic</text></g>'+
+  '</svg><figcaption class="lab" id="scCap">Printed axon array</figcaption></figure>';
 var FIGS=[SCENE];
 
-/* progress → scene state. Everything is continuous: nothing is toggled. */
 function slen(q,SC){if(q.__ul==null){try{q.__ul=q.getTotalLength()}catch(e){q.__ul=120}}return q.__ul*SC}
 function sceneSet(p){
   var el=document.getElementById("scene");if(!el)return;
-  var _svg=el.querySelector("svg"),SC=_svg?(_svg.getBoundingClientRect().width/376)||1:1;
-  var $$$=function(s){return [].slice.call(el.querySelectorAll(s))};
+  var _svg=el.querySelector("svg"),SC=_svg?(_svg.getBoundingClientRect().width/400)||1:1;
+  var Q=function(s){return el.querySelector(s)},QQ=function(s){return [].slice.call(el.querySelectorAll(s))};
   var cl=function(v){return v<0?0:v>1?1:v},ea=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
-  /* phase 0: print (0 – .3) */
-  var pr=cl(p/.25);
-  var head=document.getElementById("scPrinter");
-  if(head){head.style.translate=(70+ea(pr)*320-230).toFixed(1)+"px "+(-18+ea(cl(p/.12))*18).toFixed(1)+"px";
-    head.style.filter="opacity("+(cl(p/.06)*(1-cl((p-.3)/.12))).toFixed(3)+")"}
-  var fib=document.getElementById("scFibre");
-  if(fib){var L=slen(fib,SC);fib.style.strokeDasharray=L+" "+L;fib.style.strokeDashoffset=(L*(1-ea(pr))).toFixed(1)}
-  var st=document.getElementById("scStage");
-  if(st){st.style.filter="opacity("+((.3+.7*cl(p/.1))*(1-.75*cl((p-.78)/.18))).toFixed(3)+")"}
-  /* phase 1: the cell arrives and wraps (.28 – .58) */
-  var cp=cl((p-.23)/.29);
-  var cell=document.getElementById("scCell");
-  if(cell){cell.style.translate="0 "+((1-ea(cp))*-42).toFixed(1)+"px";
-    cell.style.filter="opacity("+(ea(cl((p-.26)/.14))*(1-.45*cl((p-.72)/.2))).toFixed(3)+")"}
-  $$$("#scCell .pr").forEach(function(q,i){var e=cl((cp-.25-i*.12)/.4),Ln=slen(q,SC);
-    q.style.strokeDasharray=Ln+" "+Ln;q.style.strokeDashoffset=(Ln*(1-ea(e))).toFixed(1)});
-  $$$("#scSleeves .sl").forEach(function(q,i){
-    var grow=cl((cp-.18-i*.14)/.45);
-    /* phase 2 shrinks the outer sleeves back: the lesion blocks repair (.6 – .82) */
-    var lose=cl((p-.6-i*.05)/.26)*(i===0||i===3?.78:.3);
-    var k=ea(grow)*(1-lose);
-    q.style.transformBox="fill-box";q.style.transformOrigin="50% 50%";
-    q.style.transform="scale("+(.12+.88*k).toFixed(3)+","+(.3+.7*k).toFixed(3)+")";
-    q.style.opacity=(.1+.9*k).toFixed(3);
-  });
-  /* phase 2: the lesion environment (.56 – .84) */
-  var lp=cl((p-.5)/.26);
-  var les=document.getElementById("scLesion");
-  if(les){les.style.filter="opacity("+(ea(lp)*(1-.5*cl((p-.86)/.14))).toFixed(3)+")";
-    les.style.translate="0 "+((1-ea(lp))*-14).toFixed(1)+"px"}
-  $$$("#scLesion .g").forEach(function(q,i){var e=cl((lp-i*.08)/.5),Ln=slen(q,SC);
-    q.style.strokeDasharray=Ln+" "+Ln;q.style.strokeDashoffset=(Ln*(1-ea(e))).toFixed(1)});
-  /* phase 3: the readout measures what is left (.78 – 1) */
-  var rp=cl((p-.74)/.24);
-  var rd=document.getElementById("scRead");
-  if(rd)rd.style.filter="opacity("+ea(rp).toFixed(3)+")";
-  $$$("#scRead .bar").forEach(function(q,i){var e=ea(cl((rp-i*.1)/.55));
-    q.style.transformBox="fill-box";q.style.transformOrigin="50% 100%";
-    q.style.transform="scaleY("+Math.max(.02,e).toFixed(3)+")"});
-  /* the whole stage lifts a little as the readout appears, so the scene stays composed */
-  var svg=el.querySelector("svg");
-  if(svg)svg.style.translate="0 "+(-10*ea(rp)).toFixed(1)+"px";
-  var cap=document.getElementById("scCap");
-  if(cap){var t=p<.25?"Printer head · axon mimic":p<.5?"Oligodendrocyte · myelin sleeves":p<.75?"Interferon gamma · myelin debris":"Myelin coverage, per axon";
-    if(cap.textContent!==t)cap.textContent=t}
+  var op=function(n,v){if(n)n.style.opacity=v.toFixed(3)};
+
+  /* STEP 1 PRINT: the array is COMPLETE in the first breath of the pin -- by p=.07 all five
+     fibres stand on the substrate and stay there for the rest of the story. The writing light
+     is on them from the start and withdraws as the cells arrive. */
+  QQ("#scArray .ax").forEach(function(q){q.style.strokeDasharray="none";q.style.strokeDashoffset="0"});
+  op(Q("#scArray .sub"),1);op(Q("#axLab"),1-cl((p-.76)/.1));
+  /* the only thing that moves in PRINT is the light itself, drawn onto the array it wrote */
+  QQ("#scLight .lt").forEach(function(q){var L=slen(q,SC),k=ea(cl(p/.14));
+    q.style.strokeDasharray=L+" "+L;q.style.strokeDashoffset=(L*(1-k)).toFixed(1)});
+  op(Q("#scLight"),(1-cl((p-.2)/.14)));
+
+  /* STEP 2 SEED (.25-.5): the cell lowers in and each process draws down to a fibre */
+  var cp=cl((p-.23)/.3);
+  var cell=Q("#scCell");
+  if(cell){cell.style.translate="0 "+((1-ea(cp))*-34).toFixed(1)+"px";op(cell,ea(cl((p-.23)/.14)))}
+  QQ("#scCell .pr").forEach(function(q,i){var L=slen(q,SC),k=ea(cl((cp-.22-i*.1)/.5));
+    q.style.strokeDasharray=L+" "+L;q.style.strokeDashoffset=(L*(1-k)).toFixed(1)});
+
+  /* STEP 3 CHALLENGE (.5-.75): the two factors arrive on leaders that end at the array */
+  var lp=cl((p-.5)/.24);
+  op(Q("#scLesion"),ea(lp));
+  QQ("#scLesion .g").forEach(function(q,i){var L=slen(q,SC),k=ea(cl((lp-i*.12)/.6));
+    q.style.strokeDasharray=L+" "+L;q.style.strokeDashoffset=(L*(1-k)).toFixed(1)});
+
+  /* STEP 4 MEASURE (.75-1): myelin wraps each fibre, then the readout fills with values.
+     Sleeve height and bar length both come from COV, so the picture and the number agree. */
+  var mp=cl((p-.74)/.26);
+  QQ("#scSleeves .slv").forEach(function(g,i){
+    var k=ea(cl((mp-i*.05)/.55))*(COV[i]/82);
+    g.style.opacity=k.toFixed(3);
+    g.style.transformBox="fill-box";g.style.transformOrigin="50% 50%";
+    g.style.transform="scaleX("+(.45+.55*k).toFixed(3)+")"});
+  op(Q("#scRead"),ea(cl(mp/.4)));
+  AX.forEach(function(x,i){
+    var k=ea(cl((mp-.15-i*.06)/.5));
+    var hgt=2+k*(COV[i]*.44);
+    var b=Q("#bar"+i);if(b){b.setAttribute("height",hgt.toFixed(1));b.setAttribute("y",(300-hgt).toFixed(1))}
+    var v=Q("#val"+i);if(v){op(v,k);v.setAttribute("y",(294-hgt).toFixed(1))}});
+
+  var cap=Q("#scCap");
+  if(cap){var t2=p<.25?"Printed axon array":p<.5?"Human cells reach the fibres":p<.75?"The lesion environment":"Myelin coverage, measured";
+    if(cap.textContent!==t2)cap.textContent=t2}
 }
 
 function homeScroll(view){
@@ -1572,27 +1655,30 @@ function psFill(i){
   /* BQ: the sheet adapts to the photo actually available.
      big sharp headshot (>=480px) -> two columns; small/soft -> slim (96px circle beside the
      name); none -> noimg (one compact column). Nothing repeats the name or the role. */
-  var md=p.img?((p.imgW&&p.imgW<480)?"slim":""):"noimg";
-  ps.classList.toggle("slim",md==="slim");ps.classList.toggle("noimg",md==="noimg");
+  /* BV: a LARGE portrait or none. A headshot under 480px belongs on the card only. */
+  var md=(p.img&&!(p.imgW&&p.imgW<480))?"":"noimg";
+  ps.classList.toggle("noimg",md==="noimg");
   if(p.img&&!p.imgW){var pr=new Image();
-    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};
+    pr.onload=function(){p.imgW=pr.naturalWidth;if(psCur===i&&p.imgW<480)psFill(i)};/* small photo -> noimg sheet */
     pr.onerror=function(){p.img=null;if(psCur===i)psFill(i)};pr.src=p.img}
   psMedia.innerHTML=(p.img&&md==="")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove();this.parentNode&&this.parentNode.insertAdjacentHTML(\'beforeend\',window.__psPlate)">':psPlate(p);
-  var psHead=(md==="slim")
-    ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-    : '<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psHead='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+psHead+'<p class="role">'+esc(p.title)+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
     (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+
     (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'')+
     '';
   psBody.scrollTop=0;
-  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+TEAM.length)%TEAM.length].slug);
-  $("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%TEAM.length].slug);
+  var sh=[];for(var z=0;z<TEAM.length;z++)if(!TEAM[z].ns)sh.push(z);
+  var at=sh.indexOf(i);
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[sh[(at-1+sh.length)%sh.length]].slug);
+  $("#psNext").setAttribute("href","#/team/"+TEAM[sh[(at+1)%sh.length]].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){
   var i=pBy(slug);if(i<0)return;
+  /* BV: these people have no sheet; their card carries the whole profile */
+  if(TEAM[i].ns){if(location.hash!==bioBase)history.replaceState(null,"",bioBase);return}
   var was=bioOpen;psCur=i;psFill(i);
   if(was){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.35,ease:"power1.out"});rvPlay(psBody,0);return}
   bioOpen=true;psLastFocus=document.activeElement;

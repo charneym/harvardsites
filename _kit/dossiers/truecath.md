@@ -43,3 +43,7 @@
 - USED: device photo fe0212_d156e4aaae8d4e0ead7c935f0eed124d (home, "The device").
 - USED as data, redrawn natively: performance chart fe0212_38a5096d… (values +122%, ~+75% repeat/overall, >+250% novice also stated in the NIH abstract / LSI '23 talk).
 - UNUSED: failure-mode pie fe0212_a052e0d0… and slow-indication diagram fe0212_ee900379… (off-brand slide graphics; the pie's slice-to-category mapping can't be verified, so it is not redrawn); solution 1, features, importance, how it works 2 (text-only slide graphics whose content is set as live type); "How it Works" video poster fe0212_73fdeeb4… (low-res duplicate of the device photo).
+
+## Client review 3 (v15)
+- Walk-through: one scene (skin, vein, device) with four labelled parts lit in turn: BUTTON, SKIN, VEIN, CATHETER. The camera starts pulled back so the whole device is in the first frame.
+- Footer: the hero's catheter field runs behind the wordmark at low opacity, only while the footer is on screen.

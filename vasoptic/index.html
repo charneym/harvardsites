@@ -141,7 +141,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -274,7 +274,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 /* rows (news) */
 .rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
 .light .rows{border-top-color:var(--hairD)}
-.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative;overflow:hidden}
+.row-a{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:22px 0 20px;border-bottom:1px solid var(--hair);position:relative}
 .light .row-a{border-bottom-color:var(--hairD)}
 .row-a::before{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--sinL);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--eo)}
 .light .row-a::before{background:var(--sinD)}
@@ -473,6 +473,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .light .lab.kick{color:var(--sinD)}
 .mani{background:var(--bone)}
 .mani .txt{color:var(--ink)}
+.mani .mb{width:fit-content;max-width:100%;margin:0 auto}
 .mani .txt em{color:var(--sinD)}
 .mani .stat::before{background:var(--hairD)}
 .mani .stat .ln2{background:var(--sinD)}
@@ -505,7 +506,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pf.noimg img{display:none}
 .pf .alt{display:none;font-family:var(--serif);font-size:30px;color:var(--stoneD)}
 .pf.noimg .alt{display:block}
-.plat.txt .pm{padding:clamp(26px,2.4vw,38px);min-height:300px}
+.plat.txt{border:0;border-top:1px solid var(--hairD);background:none}
+.plat.txt:hover,.plat.txt:focus-visible{box-shadow:none}
+.plat.txt .pm{padding:26px 0 0}
+.plat.txt .go{padding-top:20px}
 .plat.txt h3{font-size:clamp(34px,3vw,50px);margin-top:18px}
 .pm{padding:22px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1}
 .pm h3{font-family:var(--serif);font-weight:400;font-size:clamp(28px,2.4vw,40px);line-height:1.02;margin:4px 0 2px;transition:color .3s}
@@ -624,6 +628,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta{background:var(--bone2)}
 .cta .big em{color:var(--sinD)}
 .ftr .bigw em{color:var(--indL)}
+.ftr .fcv{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+.ftr>*:not(.fcv){position:relative;z-index:1}
+.ftr{background:radial-gradient(80% 90% at 50% 70%,#0b2440,#04121f 70%)}
 .xc{background:var(--ink3)}
 .xt .t{font-style:italic}
 .thanks svg circle{stroke:var(--ind)}
@@ -1074,8 +1081,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Fundus photos, OCT and angiography show where the vessels are. Vasoptic shows how the blood inside them <em>moves,</em> rising and falling with each heartbeat, with nothing injected.</p>'+
+   '<div class="mb"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Fundus photos, OCT and angiography show where the vessels are. Vasoptic shows how the blood inside them <em>moves,</em> rising and falling with each heartbeat, with nothing injected.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">2012</span><span class="lab k">Founded, from Johns Hopkins biomedical engineering</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">510<small>(k)</small></span><span class="lab k">FDA clearance for the XyCAM RI retinal imager</span></div>'+
@@ -1225,7 +1232,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'No flow <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Vasoptic Medical, Inc.<br>6751 Columbia Gateway Drive, Suite 300<br>Columbia, MD 21046</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@vasoptic.com">info@vasoptic.com</a><br><a class="ul" href="tel:+14109212120">+1 410 921 2120</a><br><a class="ul" href="https://www.linkedin.com/company/vasoptic-medical-inc-" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/platforms">Platforms</a><br><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1326,6 +1333,7 @@ var field=(function(){
   try{gl=cv.getContext("webgl",{alpha:false,antialias:false,premultipliedAlpha:false})}catch(e){}
   function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){console.warn(gl.getShaderInfoLog(o));return null}return o}
   try{FM=buildFlowMap(2048)}catch(e){FM=null}
+  window._FM=FM;
   if(gl&&FM){var v=sh(gl.VERTEX_SHADER,FVS),f=sh(gl.FRAGMENT_SHADER,FFS);
     if(v&&f){var p=gl.createProgram();gl.attachShader(p,v);gl.attachShader(p,f);gl.linkProgram(p);
       if(gl.getProgramParameter(p,gl.LINK_STATUS)){ok=true;gl.useProgram(p);var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
@@ -1367,6 +1375,18 @@ function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.62)*(1-p*.5))}
 var story=null;
+var footFx=null;
+function makeFootField(cv){
+  var FM=window._FM;if(!FM||!cv)return null;var c=cv.getContext("2d"),w=0,h=0,dpr=1,vis=false,alive=true,t0=performance.now();
+  var T=document.createElement("canvas");T.width=T.height=1024;var tc=T.getContext("2d");tc.drawImage(FM.core,0,0,1024,1024);tc.globalCompositeOperation="source-in";tc.fillStyle="#aeb2f2";tc.fillRect(0,0,1024,1024);
+  function size(){var b=cv.getBoundingClientRect();w=b.width;h=b.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  function beat(x){x=x-Math.floor(x);return Math.exp(-Math.pow((x-.14)/.07,2))+.36*Math.exp(-Math.pow((x-.42)/.08,2))}
+  function draw(){var t=RM?10:(performance.now()-t0)/1000;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    var s=Math.max(w*.9,h*1.6),x=w/2,y=h*.62;c.save();c.translate(x,y);c.rotate(Math.sin(t*.05)*.04);c.globalAlpha=.16+.08*beat(t*.6);c.drawImage(T,-s/2,-s/2,s,s);c.restore()}
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);addEventListener("resize",size);
+  return {kill:function(){alive=false;io.disconnect();removeEventListener("resize",size)}}
+}
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcardX");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
 /* ================= HEADER THEME ================= */
 var hdr=$("#hdr"),lastSY=0;
@@ -1549,8 +1569,8 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(document.body.classList.contains("menu-open"))closeMenu();
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
-  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
-  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  var view=$("#view");if(story){story.kill();story=null}if(footFx){footFx.kill();footFx=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;footFx=makeFootField($(".ftr .fcv",view));
   $$(".nav .nl, .nav a.btn").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.7);observeField();

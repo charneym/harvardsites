@@ -145,7 +145,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (BH): generous padding, and unclipped once a reveal completes */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,140px) var(--side) clamp(76px,10vh,110px);z-index:1;background:var(--paper);overflow:hidden}
@@ -180,7 +180,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sec.first{padding-top:clamp(72px,9vh,120px)}
 
 /* manifesto */
-.mani .txt{font-family:var(--sans);font-weight:300;font-size:clamp(30px,3.9vw,72px);line-height:1.14;letter-spacing:-.025em;margin:0;max-width:32ch}
+.mani .blk{max-width:min(100%,1080px);margin:0 auto}
+.mani .txt{font-family:var(--sans);font-weight:300;font-size:clamp(30px,3.9vw,64px);line-height:1.14;letter-spacing:-.025em;margin:0}
 .mani .txt .w{opacity:.2}
 .mani .txt em{color:var(--redL)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -254,8 +255,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .gfacts dd{margin:0;font-size:16px;text-align:right}
 
 /* portraits (Leavitt model) with text-card fallback */
-.pgrid{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:52px var(--gap)}
-.pgrid[style*="--n:3"],.pgrid[style*="--n:2"]{max-width:calc(var(--n) * 25%)}
+.pgrid{--n:4;display:flex;flex-wrap:wrap;justify-content:center;gap:52px var(--gap)}
+.pgrid>.pcard{width:calc((100% - (var(--n) - 1) * var(--gap)) / var(--n))}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
 .pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:1/1;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
@@ -287,14 +288,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .tgroup>.lab{display:block;margin-bottom:26px;color:var(--redD)}
 
 /* backers */
-.backers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
-.bk{border:1px solid var(--hairD);background:#fff;aspect-ratio:16/10;min-height:132px;display:flex;align-items:center;justify-content:center;padding:0 16px 30px;position:relative;transition:box-shadow .3s var(--eo),transform .3s var(--eo)}
-.bk:hover{transform:translateY(-3px);box-shadow:0 22px 40px -28px rgba(20,29,51,.45)}
-.bk img{max-width:60%;max-height:56px;width:auto;height:auto;object-fit:contain;transition:transform .35s var(--eo)}
-
-.bk b{display:none;font-family:var(--sans);font-weight:400;font-size:18px;line-height:1.2;text-align:center;color:var(--ink)}
+.backers{display:flex;flex-wrap:wrap;justify-content:center;column-gap:var(--gap);row-gap:44px}
+.bk{width:calc((100% - 3 * var(--gap)) / 4);display:flex;flex-direction:column;align-items:center;gap:16px;padding-top:26px;border-top:1px solid var(--hairD);text-align:center}
+.bk .lg{height:64px;width:100%;display:flex;align-items:center;justify-content:center}
+.bk img{max-height:46px;max-width:84%;width:auto;height:auto;filter:url(#inkify);mix-blend-mode:multiply}
+.bk b{display:none;font-family:var(--sans);font-weight:400;font-size:clamp(19px,1.5vw,23px);line-height:1.2;letter-spacing:-.005em;color:var(--ink);max-width:16ch;text-wrap:balance}
 .bk.noimg img{display:none}.bk.noimg b{display:block}
-.bk .cap{position:absolute;left:14px;right:14px;bottom:12px;text-align:center;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.bk .cap{display:block;color:var(--grey)}
+@media (max-width:1024px){.bk{width:calc((100% - 2 * var(--gap)) / 3)}}
+@media (max-width:560px){.bk{width:calc((100% - var(--gap)) / 2)}.bk img{max-width:92%;max-height:40px}}
 
 /* rows (news) */
 .rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
@@ -323,6 +325,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
 /* footer */
+.ftr .fmg{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block}
+.ftr>*:not(.fmg){position:relative;z-index:1}
 .ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14.5px;line-height:1.7;color:var(--greyL)}
@@ -371,9 +375,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .figkey li{padding:8px 0;border-top:1px solid var(--hairD)}
 @media (max-width:700px){.figkey{display:block}}
 .dom{border-top:1px solid var(--hair)}
-.dom-r{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:var(--gap);padding:22px 0;border-bottom:1px solid var(--hair);align-items:baseline}
-.dom-r h3{font-family:var(--sans);font-weight:400;font-size:clamp(22px,1.9vw,30px);line-height:1.1;margin:0;display:flex;align-items:center;gap:14px}
-.dom-r h3 i{width:9px;height:9px;border-radius:50%;background:var(--redL);flex:none}
+.dom-r{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:var(--gap);padding:22px 0;border-bottom:1px solid var(--hair);align-items:start}
+.dom-r h3{font-family:var(--sans);font-weight:400;font-size:clamp(22px,1.9vw,30px);line-height:1.1;margin:0;position:relative;padding-left:23px}
+.dom-r h3::before{content:"";position:absolute;left:0;top:.4em;width:9px;height:9px;border-radius:50%;background:var(--redL)}
 .dom-r p{margin:0;color:#d5d8e2;font-size:17px;max-width:62ch}
 .tl{position:relative;list-style:none;margin:0;padding:0 0 0 34px}
 .tl .ln0{position:absolute;left:4px;top:8px;bottom:8px;width:1px;background:var(--hairD)}
@@ -427,7 +431,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .nf{min-height:70vh}
 
 @media (max-width:1100px){
-  .pgrid.pv{--n:2!important;max-width:none}
+  .pgrid.pv{--n:2!important}
+  .pgrid{--n:4!important}
   .hero-key{display:none}
 }
 @media (max-width:1024px){
@@ -452,7 +457,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .hero::before{background:linear-gradient(180deg,rgba(244,241,236,0) 0%,rgba(244,241,236,.15) 28%,rgba(244,241,236,.92) 41%,rgba(244,241,236,.97) 70%,var(--paper) 100%)}
   .hero-h{font-size:clamp(42px,11.4vw,92px)}
   .hero-foot .s{font-size:16.5px}
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px;max-width:none!important}
+  .pgrid{--n:2!important;gap:36px var(--gap)}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .pipe-h{display:none}
   .prow{grid-template-columns:1fr;row-gap:10px}
@@ -479,6 +484,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .facts>div{grid-template-columns:1fr;gap:4px}
   .fld input,.fld textarea{font-size:21px}
   .pc-meta h3{font-size:19px}
+  .pgrid{--n:1!important;gap:0}
+  .pgrid>.pcard{flex-direction:row;align-items:center;gap:16px;padding:14px 0;border-top:1px solid var(--hairD)}
+  .pgrid>.pcard:hover,.pgrid>.pcard:focus-visible{transform:none}
+  .pc-fig{width:92px;flex:none}
+  .pc-meta{padding-top:0;flex:1}
 }
 
 
@@ -536,6 +546,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 <script>try{if(sessionStorage.getItem("nt-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>
 <a class="skip" href="#main">Skip to content</a>
 <div class="grain" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="inkify" color-interpolation-filters="sRGB"><feMorphology operator="erode" radius=".6"/><feColorMatrix type="matrix" values=".2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  0 0 0 1 0"/><feComponentTransfer><feFuncR type="table" tableValues=".078 .078 .078 .078 .078 .078 .078 .078 .078 .078 .078 1"/><feFuncG type="table" tableValues=".114 .114 .114 .114 .114 .114 .114 .114 .114 .114 .114 1"/><feFuncB type="table" tableValues=".2 .2 .2 .2 .2 .2 .2 .2 .2 .2 .2 1"/></feComponentTransfer></filter></svg>
 
 <div id="pre" aria-hidden="true">
   <div class="pc">
@@ -653,7 +664,8 @@ function head(o){
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="ntNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+(p.aff?'<p class="aff">'+esc(p.aff)+'</p>':'')+'<span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.ntNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-function backers(list){return '<div class="backers" data-group>'+list.map(function(b){return '<div class="bk"><img src="'+b.i+'" alt="'+esc(b.n)+'" loading="lazy" onerror="this.parentNode.classList.add(\'noimg\')"><b>'+esc(b.n)+'</b><span class="lab cap">'+esc(b.r)+'</span></div>'}).join("")+'</div>'}
+/* BW: their logo files are low-res Wix crops that turn to ink blobs at tile size, so every backer is set in type, one consistent style */
+function backers(list){return '<div class="backers" data-group>'+list.map(function(b){return '<div class="bk noimg"><span class="lg"><b>'+esc(b.n)+'</b></span><span class="lab cap">'+esc(b.r)+'</span></div>'}).join("")+'</div>'}
 /* small line-drawn microglia for page heads and icons (same language as the hero) */
 function cellG(seed,cx,cy,r,col,react){var s=seed,rnd=function(){s=(s*9301+49297)%233280;return s/233280};var out='',maxD=react?1:3,len0=react?r*.95:r*1.9;
   function br(x,y,a,len,d){if(d>maxD||len<5)return;var x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len,mx=(x+x2)/2+Math.cos(a+1.57)*len*.12,my=(y+y2)/2+Math.sin(a+1.57)*len*.12;
@@ -687,8 +699,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
-   '<span class="lab kick" data-r>A different approach</span>'+
-   '<p class="txt" id="mani">Most drug development for CNS diseases has focused on removing the proteins that accumulate as disease progresses. NeuroTherapia targets the <em>neuroinflammation</em> driven by microglia, with an oral small molecule that could work alongside approved antibody therapies.</p>'+
+   '<div class="blk"><span class="lab kick" data-r>A different approach</span>'+
+   '<p class="txt" id="mani">Most drug development for CNS diseases has focused on removing the proteins that accumulate as disease progresses. NeuroTherapia targets the <em>neuroinflammation</em> driven by microglia, with an oral small molecule that could work alongside approved antibody therapies.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">3</span><span class="lab k">Clinical studies completed: Phase 1a, 1b and 2a</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">48</span><span class="lab k">Participants in the Phase 2a, randomized 1:1</span></div>'+
@@ -725,7 +737,7 @@ function vHome(){
    '</ul><div style="margin-top:34px" data-r><a class="btn" href="#/clinical">Read the clinical data '+ARR+'</a></div></div>'+
   '</div></div></section>'+
 
-  '<section class="sec light2" data-theme="light"><div class="wrap"><div class="grant">'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="grant">'+
    '<div><span class="lab kick" data-r>NIA · SBIR Phase II · September 2026</span><p class="gq" data-r>$1.2M from the National Institute on Aging for the <em>GLP toxicology</em> that precedes a US Phase 2.</p></div>'+
    '<dl class="gfacts" data-group>'+
     '<div><dt class="lab">Award</dt><dd>1R44AG102269-01</dd></div>'+
@@ -734,13 +746,13 @@ function vHome(){
     '<div><dt class="lab">Goal</dt><dd>A US 3‑month, multiple ascending dose Phase 2</dd></div>'+
    '</dl></div></div></section>'+
 
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
+  '<section class="sec light2" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Led by <em>drug developers.</em></h2></div><p data-r>A Cleveland Clinic spin-out led by President and CEO Tony Giordano, Ph.D., with co-founder and Chief Medical Officer Joseph Foss, M.D.</p></div>'+
    '<div class="pgrid pv" data-group>'+[0,1,2,3].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
    '<div style="margin-top:48px" data-r><a class="btn" href="#/team">Full team and advisors '+ARR+'</a></div>'+
   '</div></section>'+
 
-  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Backers</span><h2 class="d2 split">Backed by <em>Cleveland Clinic</em> and Alzheimer’s funders.</h2></div><p data-r>Venture investors, foundations and public grants have funded NTRX-07 from preclinical work through Phase 2a.</p></div>'+
    backers(BACKERS)+
    '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,3))+'</div>'+
@@ -830,7 +842,7 @@ function vClinical(){
     '<li><span>Potential compassionate-care trials in other indications.</span></li>'+
    '</ul></div></div></section>'+cta();
 }
-function dom(h,p){return '<div class="dom-r"><h3><i></i>'+h+'</h3><p>'+p+'</p></div>'}
+function dom(h,p){return '<div class="dom-r"><h3>'+h+'</h3><p>'+p+'</p></div>'}
 function vCompany(){
   return head({k:"Company",h:'A Cleveland Clinic <em>spin-out.</em>',art:cellSvg("company"),p:'NeuroTherapia, Inc., a Delaware corporation, was founded in 2015 by the Cleveland Clinic and two of its physician scientists to develop new drugs for diseases related to neuroinflammation, starting with Alzheimer’s disease.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="two">'+
@@ -851,7 +863,7 @@ function vCompany(){
     '<div class="fd"><span class="lab">Series B · first close, Aug 2024</span><b>$12.3M</b><p>Led by Cleveland Clinic, with all previous investors and new investments from Foundation For A Better World and CRUINT.</p></div>'+
     '<div class="fd"><span class="lab">Grants</span><b>Non-dilutive</b><p>The Alzheimer’s Association (including Part the Cloud), the State of Ohio’s Technology Venture Accelerator Fund, the ADDF, and the National Institute on Aging.</p></div>'+
    '</div></div></section>'+
-  '<section class="sec light2" data-theme="light"><div class="wrap">'+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investors and funders</span><h2 class="d3 split">In good <em>company.</em></h2></div></div>'+
    backers(BACKERS)+
   '</div></section>'+cta();
@@ -859,7 +871,7 @@ function vCompany(){
 function vTeam(){
   var groups=["Management","Board of Directors","Clinical & Scientific Advisors","Business Advisors"];
   return head({k:"Team",h:'The people behind <em>NTRX-07.</em>',art:cellSvg("team"),p:'Management, directors and advisors spanning drug development, neurology, biomarkers, venture investment and clinical operations.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap">'+groups.map(function(g){var L=TEAM.filter(function(p){return p.grp===g}),n={3:3,7:4,5:5,2:2}[L.length]||4;return '<div class="tgroup"><span class="lab" data-r>'+g+'</span><div class="pgrid" style="--n:'+n+'" data-group>'+L.map(tCard).join("")+'</div></div>'}).join("")+'</div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+groups.map(function(g){var L=TEAM.filter(function(p){return p.grp===g}),n=5;return '<div class="tgroup"><span class="lab" data-r>'+g+'</span><div class="pgrid" style="--n:'+n+'" data-group>'+L.map(tCard).join("")+'</div></div>'}).join("")+'</div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'News and <em>releases.</em>',art:cellSvg("news"),p:'Announcements from NeuroTherapia, each linked to its source.'})+
@@ -886,7 +898,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'This page is <em>missing.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fmg" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Office</span>NeuroTherapia, Inc.<br>PO Box 351, 1500 Chagrin River Rd.<br>Gates Mills, OH 44040</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@neurotherapia.com">info@neurotherapia.com</a><br><a class="ul" href="tel:+14402284089">440-228-4089</a><br><a class="ul" href="https://www.linkedin.com/company/neurotherapia/" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/clinical">Clinical</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/contact">Contact</a></div>'+
@@ -939,7 +951,7 @@ function mgTree(seed,D,K,L0){var r=prng(seed*7919+13),segs=[];
   return {segs:segs,D:D,blob:blob,seed:seed}}
 /* compute + draw one cell. o: {x,y,S,R,t,alpha,grow,lw,bx,by,bend} */
 var _P=[];
-function mgDraw(c,T,o){var segs=T.segs,D=T.D,R=o.R,S=o.S,t=o.t,col=mgCol(R),al=o.alpha;if(al<.01)return;
+function mgDraw(c,T,o){var segs=T.segs,D=T.D,R=o.R,S=o.S,t=o.t,col=mgCol(R),al=o.alpha;if(al<.01)return;if(o.light)col=col.map(function(v,k){return v+([244,241,236][k]-v)*.55});
   var somaR=(1.22-.34*R),thick=1+(1-R)*.9,lw=o.lw||1;
   var paths=[];for(var d=0;d<D;d++)paths.push([]);
   var X=_P;
@@ -970,11 +982,14 @@ function mgDraw(c,T,o){var segs=T.segs,D=T.D,R=o.R,S=o.S,t=o.t,col=mgCol(R),al=o
 }
 
 /* ================= HERO: a calm field of microglia; reactive cells slowly return to surveillance ================= */
-var hero=null;
-function makeHero(cv){
-  var c=cv.getContext("2d"),w=0,h=0,dpr=1,cells=[],alive=true,vis=true,t0=performance.now(),IN={v:0},mx=-9999,my=-9999,tx=-9999,ty=-9999,shown=false,run=false;
+var hero=null,fhero=null;
+function makeHero(cv,FT){
+  var FA=FT?.3:1;var c=cv.getContext("2d"),w=0,h=0,dpr=1,cells=[],alive=true,vis=true,t0=performance.now(),IN={v:0},mx=-9999,my=-9999,tx=-9999,ty=-9999,shown=false,run=false;
   function layout(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-side*2,mob=w<861,S=mob?Math.max(6.5,w/56):Math.max(8.5,Math.min(12.5,cw/104));
+    if(FT){var Sf=mob?6.5:Math.max(8,Math.min(11,cw/120)),spf=Sf*(mob?19:21),cf=Math.max(2,Math.round(w/spf)),rf=Math.max(2,Math.round(h/spf)),r3=prng(7);cells=[];
+      for(var jj=0;jj<rf;jj++)for(var ii=0;ii<cf;ii++){var fx2=(ii+.5+(r3()-.5)*.5+(jj%2?.25:-.25))*w/cf,fy2=(jj+.5+(r3()-.5)*.4)*h/rf,re=r3()<.22;cells.push({x:fx2,y:fy2,T:mgTree(cells.length*17+3,4,5+(r3()*2|0),2.2),react:re,base:re?.2:.76+r3()*.18,ph:r3()*6.283,sp:.05+r3()*.03,S:Sf*(.85+r3()*.3),fe:1})}
+      return}
     var tR=0,hh=document.querySelector(".hero-h");if(hh&&!mob){var rg=document.createRange();rg.selectNodeContents(hh);[].forEach.call(rg.getClientRects(),function(q){tR=Math.max(tR,q.right-r.left)})}
     var rx0=mob?side*.5:Math.min(side+cw*.66,Math.max(side+cw*.44,tR+S*7)),rx1=mob?w-side*.5:side+cw-S*3,ry0=mob?h*.08:h*.13,ry1=mob?h*.38:h*.9;var eb=document.querySelector(".hero .eyebrow");if(mob&&eb){ry1=Math.min(ry1,eb.getBoundingClientRect().top-r.top-S*7)}
     var sp=S*14.5;
@@ -994,10 +1009,10 @@ function makeHero(cv){
     for(var i=0;i<cells.length;i++){var cl=cells[i];var R;
       if(cl.react){var s=Math.sin(t*cl.sp+cl.ph);s=Math.max(0,Math.min(1,(s+.2)/1.1));R=cl.base+s*s*(3-2*s)*.74}else R=cl.base+Math.sin(t*.12+cl.ph)*.06;
       var dx=mx-cl.x,dy=my-cl.y,pr=Math.exp(-(dx*dx+dy*dy)/(2*170*170));R=Math.min(1,R+pr*.22);
-      var gx=cl.x+Math.sin(t*.09+cl.ph)*3,gy=cl.y+Math.cos(t*.08+cl.ph)*3-sy*40;
-      mgDraw(c,cl.T,{x:gx,y:gy,S:cl.S,R:R,t:t+cl.ph*3,alpha:cl.fe*(1-sy*.5),grow:IN.v,bend:pr*.9,bx:mx,by:my});
-      /* inflammatory signals around reactive cells */
-      if(R<.62&&IN.v>.5){var k=(.62-R)/.42;for(var q=0;q<7;q++){var ph=(t*.16+q/7+cl.ph)%1,a=q*2.4+cl.ph,rr=cl.S*(1.6+ph*5.2);c.beginPath();c.arc(gx+Math.cos(a)*rr,gy+Math.sin(a)*rr,1.6,0,6.283);c.fillStyle="rgba(216,40,40,"+(k*(1-ph)*.8*cl.fe)+")";c.fill()}}
+      var gx=cl.x+Math.sin(t*.09+cl.ph)*3,gy=cl.y+Math.cos(t*.08+cl.ph)*3-(FT?0:sy*40);
+      mgDraw(c,cl.T,{x:gx,y:gy,S:cl.S,R:R,t:t+cl.ph*3,alpha:FT?FA:cl.fe*(1-sy*.5),light:!!FT,grow:IN.v,bend:pr*.9,bx:mx,by:my});
+      /* inflammation: a soft halo around reactive cells */
+      if(R<.62&&IN.v>.5){var k=(.62-R)/.42*cl.fe*FA,gr=c.createRadialGradient(gx,gy,cl.S,gx,gy,cl.S*4.2);gr.addColorStop(0,"rgba(216,40,40,"+(.16*k)+")");gr.addColorStop(1,"rgba(216,40,40,0)");c.fillStyle=gr;c.beginPath();c.arc(gx,gy,cl.S*4.2,0,6.283);c.fill()}
     }
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
   }
@@ -1008,61 +1023,71 @@ function makeHero(cv){
     kill:function(){alive=false;io.disconnect();removeEventListener("pointermove",onMove)}};
 }
 
-/* ================= STORY: ONE cell, one continuous scene (BL), scrubbed =================
-   reactive M1 (red, amoeboid, cytokines, amyloid nearby) -> CB2 receptors induced on the membrane ->
-   NTRX-07 molecules arrive and dock -> the same cell ramifies, turns navy, cytokines fade, amyloid is cleared. */
+/* ================= STORY (BY): ONE microglial cell and ONE amyloid plaque, drawn once, fixed in place =================
+   The first frame is complete and labelled. Each step changes one labelled part:
+   0 reactive cell + inflammation halo + plaque -> 1 CB2 receptors appear on the membrane -> 2 NTRX-07 docks on them ->
+   3 the same cell returns to the homeostatic (surveillant) shape and colour, the halo fades, the plaque shrinks. */
 var story=null;
 function makeStory(cv){
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
-  var T=mgTree(2026,5,7,2.25),rr=prng(77);
-  var REC=[];for(var j=0;j<10;j++)REC.push({a:j*6.283/10+.31,y0:(rr()-.5)*9});
-  var PLQ=[[5.4,-3.6],[-5.9,2.6],[3.8,6.1]].map(function(q){var f=[];for(var i=0;i<18;i++){var a=rr()*6.283,d=Math.sqrt(rr())*1.2;f.push({x:q[0]+Math.cos(a)*d,y:q[1]+Math.sin(a)*d,o:rr()*3.14,l:.35+rr()*.5})}return {c:q,f:f}});
-  var CAM=[[.6,.6,15.5],[0,0,8.4],[-1.4,0,11.5],[0,.9,19]];
+  var T=mgTree(2026,5,7,1.95),rr=prng(77);
+  var NREC=8,REC=[];for(var j=0;j<NREC;j++)REC.push({a:j*6.283/NREC+.39});
+  var PQ={x:4.7,y:-1.5,r:1.05},FIB=[];for(var i=0;i<22;i++){var a=i*6.283/22+(rr()-.5)*.18;FIB.push({a:a,r0:.36+rr()*.08,r1:.7+rr()*.2})}
+  var CAM=[[1.3,.2,15.5],[.5,0,12],[.5,0,12.5],[1,.6,19]];
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   function sm(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
-  function cam(){var s=p*3,i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=sm((fr-.28)/.44);var A=CAM[i0],B=CAM[i0+1];
+  var CAMM=[[1.4,.2,15],[1.5,0,14.2],[1.5,0,14.2],[1,.6,19]];
+  function cam(){var s=p*3,i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=sm((fr-.28)/.44);var K=w<560?CAMM:CAM,A=K[i0],B=K[i0+1];
     return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f),tr:i0+f}}
   function hex(x,y,r){c.beginPath();for(var k=0;k<6;k++){var a=k*1.0472+.5236;k?c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r):c.moveTo(x+Math.cos(a)*r,y+Math.sin(a)*r)}c.closePath()}
+  function rrp(x,y,ww,hh,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
   function draw(){
     p+=(pT-p)*.09;if(Math.abs(pT-p)<.0004)p=pT;
-    var t=RM?10:(performance.now()-t0)/1000,C=cam(),tr=C.tr;
+    var t=RM?10:(performance.now()-t0)/1000,C=cam(),tr=C.tr,mob=w<560;
     var f01=sm(tr),f12=sm(tr-1),f23=sm(tr-2);
-    var S=Math.min(w,h*1.1)/C.span,ox=w/2-C.x*S,oy=h/2-C.y*S;
+    var S=Math.min(w,h*1.08)/(C.span*(mob?.86:1)),ox=w/2-C.x*S,oy=h/2-C.y*S;
     function X(u){return ox+u*S}function Y(v){return oy+v*S}
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
-    var R=.2+.8*f23;
-    /* amyloid-beta plaques (logo grey); cleared in the last state */
-    for(var q=0;q<PLQ.length;q++){var P=PLQ[q];for(var i=0;i<P.f.length;i++){var fb=P.f[i],k=sm(f23*1.25-i*.02);
-      var fx=fb.x+(-P.c[0]*.45)*k,fy=fb.y+(-P.c[1]*.45)*k,a=(1-k*.92)*.85;if(a<.02)continue;var L=fb.l*S*(1-k*.6);
-      c.strokeStyle="rgba(109,110,114,"+a+")";c.lineWidth=Math.max(1,S*.07);c.beginPath();c.moveTo(X(fx)-Math.cos(fb.o+t*.05)*L/2,Y(fy)-Math.sin(fb.o+t*.05)*L/2);c.lineTo(X(fx)+Math.cos(fb.o+t*.05)*L/2,Y(fy)+Math.sin(fb.o+t*.05)*L/2);c.stroke()}}
-    /* inflammatory signals */
-    var cyt=(1-sm(f23*1.6))*(1-.35*f12);
-    if(cyt>.02)for(i=0;i<40;i++){var ph=(t*.13+i*.618)%1,a2=i*2.39996,r2=1.4+ph*6;c.beginPath();c.arc(X(Math.cos(a2)*r2),Y(Math.sin(a2)*r2),Math.max(1.4,S*.09),0,6.283);c.fillStyle="rgba(216,40,40,"+(cyt*(1-ph)*.85)+")";c.fill()}
-    /* the cell */
-    var somaR=mgDraw(c,T,{x:X(0),y:Y(0),S:S,R:R,t:t,alpha:1,lw:Math.max(.9,Math.min(1.6,S/34))});
-    /* CB2 receptors on the membrane */
-    var recA=f01*(1-.45*f23);
-    for(j=0;j<REC.length;j++){var rc=REC[j],rp=sm(f01*1.7-j*.07);if(rp<=0)continue;var ang=rc.a,br=somaR*1.02,bx=Math.cos(ang)*br,by=Math.sin(ang)*br,st=.5*rp,ux=Math.cos(ang),uy=Math.sin(ang);
-      /* CB2 is a GPCR: a small serpentine loop embedded in the membrane, not a Y */
-      var tnx=-uy,tny=ux,nl=5,amp=.09*rp;c.strokeStyle="rgba(27,52,104,"+(recA*rp)+")";c.lineWidth=Math.max(1.2,S*.055);c.beginPath();
-      for(var q2=0;q2<=nl*4;q2++){var u2=q2/(nl*4),off=(u2-.5)*.34*rp,wv=Math.sin(u2*nl*Math.PI)*amp;var px2=bx+tnx*off+ux*wv,py2=by+tny*off+uy*wv;q2?c.lineTo(X(px2),Y(py2)):c.moveTo(X(px2),Y(py2))}c.stroke();
-      var tx2=bx+ux*.1,ty2=by+uy*.1;
-      /* NTRX-07 molecule travelling in and docking */
-      var m=sm(f12*1.6-j*.06);if(m>0){var sx=-C.span*.75+C.x,sy2=rc.y0,ex=tx2+ux*.26,ey=ty2+uy*.26,cx2=(sx+ex)/2,cy2=sy2*.4+ey*.6-2;
-        var u=m,mxp=(1-u)*(1-u)*sx+2*(1-u)*u*cx2+u*u*ex,myp=(1-u)*(1-u)*sy2+2*(1-u)*u*cy2+u*u*ey,ma=Math.min(1,m*4)*(1-.5*f23);
-        hex(X(mxp),Y(myp),Math.max(3,S*.2));c.strokeStyle="rgba(27,52,104,"+ma+")";c.lineWidth=Math.max(1.1,S*.05);c.stroke();c.fillStyle="rgba(244,241,236,"+ma*.9+")";c.fill();
-        c.beginPath();c.arc(X(mxp),Y(myp),Math.max(1,S*.06),0,6.283);c.fillStyle="rgba(27,52,104,"+ma+")";c.fill()}}
-    /* labels */
-    var mob=w<560;
-    function lab(txt,wx,wy,a,al){if(a<.03)return;if(mob&&al)return;c.font="500 "+(mob?9.5:10.5)+"px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
-      var tw=c.measureText(txt).width,sx=X(wx),sy=Y(wy),x0=al?sx:sx-tw/2;x0=Math.max(24,Math.min(w-24-tw,x0));
-      c.globalAlpha=Math.min(1,a);c.fillStyle="rgba(233,229,222,.94)";rrp(x0-9,sy-13,tw+18,20,10);c.fill();c.fillStyle="rgb(92,93,98)";c.textAlign="left";c.fillText(txt,x0,sy+1);c.globalAlpha=1}
-    function rrp(x,y,ww,hh,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
+    var R=.2+.8*f23,calm=sm(f23*1.35);
+    /* inflammation: a soft halo around the reactive cell (no floating dots) */
+    var hA=(1-calm)*(.85+.15*Math.sin(t*1.6));
+    if(hA>.01){var g=c.createRadialGradient(X(0),Y(0),S*1.1,X(0),Y(0),S*3.5);g.addColorStop(0,"rgba(216,40,40,"+(.2*hA)+")");g.addColorStop(.7,"rgba(216,40,40,"+(.07*hA)+")");g.addColorStop(1,"rgba(216,40,40,0)");c.fillStyle=g;c.beginPath();c.arc(X(0),Y(0),S*3.5,0,6.283);c.fill()}
+    /* the amyloid-beta plaque: one outlined object, fibrils kept inside it; it shrinks in the last step */
+    var pr=PQ.r*(1-.62*calm),pA=1-.45*calm;
+    c.save();c.beginPath();c.arc(X(PQ.x),Y(PQ.y),pr*S,0,6.283);c.fillStyle="rgba(109,110,114,"+(.12*pA)+")";c.fill();c.lineWidth=1.3;c.strokeStyle="rgba(109,110,114,"+(.9*pA)+")";c.stroke();c.clip();
+    c.strokeStyle="rgba(92,93,98,"+(.75*pA)+")";c.lineWidth=Math.max(1,S*.05);c.lineCap="round";
+    /* a fibrillar plaque: dense core with fibrils radiating to the outline */
+    for(i=0;i<FIB.length;i++){var fb=FIB[i],ca=Math.cos(fb.a),sa2=Math.sin(fb.a);c.beginPath();c.moveTo(X(PQ.x+ca*fb.r0*pr),Y(PQ.y+sa2*fb.r0*pr));c.lineTo(X(PQ.x+ca*fb.r1*pr),Y(PQ.y+sa2*fb.r1*pr));c.stroke()}
+    c.beginPath();c.arc(X(PQ.x),Y(PQ.y),pr*.3*S,0,6.283);c.fillStyle="rgba(92,93,98,"+(.55*pA)+")";c.fill();
+    c.restore();
+    /* the cell (drawn once; its shape and colour change with R) */
+    var somaR=mgDraw(c,T,{x:X(0),y:Y(0),S:S,R:R,t:t,alpha:1,lw:Math.max(.9,Math.min(1.5,S/40))});
+    /* CB2 receptors: small serpentine (7-transmembrane) loops sitting on the membrane */
+    var recA=f01,tips=[];
+    for(j=0;j<NREC;j++){var rc=REC[j],rp=sm(f01*1.8-j*.08),ang=rc.a,ux=Math.cos(ang),uy=Math.sin(ang),br=somaR*1.0,bx=ux*br,by=uy*br;tips.push([bx+ux*.12,by+uy*.12,ux,uy]);if(rp<=0)continue;
+      var tnx=-uy,tny=ux,nl=5,amp=.11*rp;c.strokeStyle="rgba(27,52,104,"+(recA*rp)+")";c.lineWidth=Math.max(1.3,S*.055);c.lineJoin="round";c.beginPath();
+      for(var q2=0;q2<=nl*4;q2++){var u2=q2/(nl*4),off=(u2-.5)*.4*rp,wv=Math.sin(u2*nl*Math.PI)*amp;var px2=bx+tnx*off+ux*wv,py2=by+tny*off+uy*wv;q2?c.lineTo(X(px2),Y(py2)):c.moveTo(X(px2),Y(py2))}c.stroke()}
+    /* NTRX-07: each molecule appears just outside its receptor and moves in to dock; it stays bound */
+    var docked=[];
+    for(j=0;j<NREC;j++){var m=sm(f12*1.7-j*.08);if(m<=0)continue;var tp=tips[j],d0=1.4*(1-m)+.22,mxp=tp[0]+tp[2]*d0,myp=tp[1]+tp[3]*d0,ma=Math.min(1,m*3);
+      hex(X(mxp),Y(myp),Math.max(3.2,S*.17));c.fillStyle="rgba(244,241,236,"+ma+")";c.fill();c.strokeStyle="rgba(27,52,104,"+ma+")";c.lineWidth=Math.max(1.2,S*.05);c.stroke();
+      c.beginPath();c.arc(X(mxp),Y(myp),Math.max(1.1,S*.05),0,6.283);c.fillStyle="rgba(216,40,40,"+ma*(1-calm)+")";c.fill();if(m>.98)docked.push([mxp,myp])}
+    /* labels: each sits on a pill and is joined to the part it names by a hairline */
+    function lab(txt,lx,ly,ax,ay,a){if(a<.03)return;c.font="500 "+(mob?9.5:10.5)+"px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.3px";
+      var tw=c.measureText(txt).width,cx=X(lx),cy=Y(ly),mx0=Math.max(12,w*.1),my0=Math.max(10,h*.1),x0=Math.max(mx0,Math.min(w-mx0-tw-18,cx-tw/2-9)),y0=Math.max(my0,Math.min(h-my0-20,cy-10));
+      var bx2=X(ax),by2=Y(ay),px=Math.max(x0,Math.min(x0+tw+18,bx2)),py=by2<y0?y0:by2>y0+20?y0+20:by2;
+      c.globalAlpha=Math.min(1,a);c.strokeStyle="rgba(92,93,98,.7)";c.lineWidth=1;c.beginPath();c.moveTo(px,py);c.lineTo(bx2,by2);c.stroke();
+      c.fillStyle="rgb(92,93,98)";c.beginPath();c.arc(bx2,by2,2.2,0,6.283);c.fill();
+      c.fillStyle="rgba(233,229,222,.96)";rrp(x0,y0,tw+18,20,10);c.fill();c.strokeStyle="rgba(20,29,51,.16)";c.stroke();
+      c.fillStyle="rgb(70,72,78)";c.textAlign="left";c.fillText(txt,x0+9,y0+14);c.globalAlpha=1}
     function wk(k){return sm((.5-Math.abs(tr-k))/.25)}
-    lab("REACTIVE · PRO-INFLAMMATORY",0,4.1,wk(0));lab("AMYLOID-β",PLQ[0].c[0],PLQ[0].c[1]-1.9,wk(0));
-    lab("CB2 RECEPTORS INDUCED",0,3.3,wk(1));
-    lab("NTRX-07 · ORAL, CB2-SELECTIVE",C.x-C.span*.36,-4.2,wk(2),"left");
-    lab("HOMEOSTATIC (SURVEILLANT) · AMYLOID-β CLEARED",0,7.9,wk(3));
+    var sa=-2.35,sp2=[Math.cos(sa)*somaR*1.05,Math.sin(sa)*somaR*1.05];
+    lab(mob?"REACTIVE MICROGLIA":"REACTIVE MICROGLIA · PRO-INFLAMMATORY",-3.2,-4.3,sp2[0],sp2[1],wk(0));
+    lab("INFLAMMATION",-3.4,3.8,Math.cos(2.3)*3.1,Math.sin(2.3)*3.1,wk(0));
+    lab(calm>.5?"AMYLOID-β REDUCED":"AMYLOID-β PLAQUE",PQ.x,PQ.y-PQ.r-1.15,PQ.x,PQ.y-pr,Math.max(wk(0),wk(3)));
+    var r1=tips[7];lab("CB2 RECEPTORS INDUCED",2.4,-3.6,r1[0],r1[1],wk(1));
+    var r2=tips[3];lab(mob?"NTRX-07":"NTRX-07 · ORAL, CB2-SELECTIVE",-3.4,3.4,r2[0]+r2[2]*.22,r2[1]+r2[3]*.22,wk(2));
+    var sb=1.95;lab("HOMEOSTATIC (SURVEILLANT)",-1.6,7.6,Math.cos(sb)*somaR*1.05,Math.sin(sb)*somaR*1.05,wk(3));
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1120,6 +1145,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     if(!RM)$$(".prow .bar",view).forEach(function(b){gsap.from(b,{scaleX:0,duration:1.5,ease:"flow",scrollTrigger:{trigger:b.closest(".prow"),start:"top 88%"}})});
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
+    var fcv=$(".ftr .fmg",view);if(fcv){fhero=makeHero(fcv,true);fhero.intro(0);fhero.start()}
     var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:40,opacity:0,duration:1.3,ease:"silk",stagger:.045,scrollTrigger:{trigger:big,start:"top 96%"}});
       gsap.from($$(".ftr .fdots i"),{scale:0,opacity:0,duration:.9,ease:"back.out(1.6)",stagger:.05,scrollTrigger:{trigger:".ftr .fdots",start:"top 98%"}})}
     rvView(view,E);
@@ -1202,11 +1228,10 @@ function contactInit(view){
 /* ================= PERSON SHEET (BI): centred, wheel-scrollable ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioCur=-1,bioFromClick=false,bioBase=null,psLast=null;
 function fillBio(i){var p=TEAM[i];bioCur=i;
-  /* BQ: big sharp headshot -> two columns; small source -> slim (96px circle by the name); none -> compact column */
-  var m=p.big?"":(p.img?"slim":"noimg");ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
+  /* BQ/BV: a large sharp headshot -> two columns; otherwise a compact column with no portrait (the small headshot stays on the card) */
+  var m=p.big?"":"noimg";ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
   psMedia.innerHTML=p.big?'<img src="'+p.big+'" alt="Portrait of '+esc(p.name)+'" onerror="ntSheetNoImg()">':'';
   var head='<h2 id="psName">'+esc(p.name)+'</h2>';
-  if(m==="slim")head='<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+(p.aff?' · '+esc(p.aff):'')+'</p>'+
     p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("");
   psBody.scrollTop=0;document.title=p.name+" — "+SITE}
@@ -1240,7 +1265,7 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(document.body.classList.contains("menu-open"))closeMenu();
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
-  var view=$("#view");if(story){story.kill();story=null}if(hero){hero.kill();hero=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  var view=$("#view");if(story){story.kill();story=null}if(hero){hero.kill();hero=null}if(fhero){fhero.kill();fhero=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
@@ -1325,7 +1350,7 @@ function preload(){
 }
 (function(){var done=false;function go2(){if(done)return;done=true;preload()}
   if(document.fonts&&document.fonts.load){Promise.all(['300 1em "Jost"','400 1em "Jost"','italic 400 1em "Instrument Serif"','400 1em "IBM Plex Mono"'].map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
-var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;if(hero)hero.resize();ScrollTrigger.refresh()},250)});
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;if(hero)hero.resize();if(fhero)fhero.resize();ScrollTrigger.refresh()},250)});
 })();
 </script>
 </body>

@@ -135,8 +135,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX / BH): padded on all sides; unclipped once the reveal completes */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
-.ln-mask.open{overflow:visible!important;clip-path:none!important}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -299,9 +298,11 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 .row-a:hover .arr{transform:translateX(5px) rotate(-30deg)}
 
 /* people (Leavitt model, AC) */
-.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:48px var(--gap)}
+.pgrid>*{width:calc((100% - 3 * var(--gap)) / 4)}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pcard:not(.static):hover,.pcard:focus-visible{transform:translateY(-6px)}
+.pcard.static .ph2 .ph-c{clip-path:circle(150% at 50% 50%)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
 .pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(13,11,18,.5)}
 .ph2{position:absolute;inset:0}
@@ -334,6 +335,8 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
 /* footer */
+.fcv{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
+.ftr>*:not(.fcv){position:relative;z-index:1}
 .ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
@@ -451,10 +454,10 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body blockquote{margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-weight:300;font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.35;letter-spacing:-.015em}
 .ps-body blockquote cite{display:block;margin-top:14px;font-style:normal}
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
 .ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
 .ps-head h2{margin:0!important}
 .ps-body:focus,.ps-body:focus-visible{outline:none}
@@ -466,15 +469,13 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 /* BR: instruments as typography and the site's own line drawings, not product renders */
 .icgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
 .icgrid.four{grid-template-columns:repeat(4,minmax(0,1fr));margin-top:clamp(64px,7vw,110px)}
-.ic{position:relative;display:flex;flex-direction:column;gap:10px;padding:clamp(24px,2.4vw,36px);border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0));transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
-.dark .ic,.dark2 .ic{border-color:var(--hair);background:linear-gradient(180deg,rgba(244,243,247,.035),rgba(244,243,247,0))}
-.ic::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--vioD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
+.ic{position:relative;display:flex;flex-direction:column;gap:10px;padding:28px 0 0;border-top:1px solid var(--hairD);transition:transform .32s var(--eo)}
+.dark .ic,.dark2 .ic{border-top-color:var(--hair)}
+.ic::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--vioD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
 .dark .ic::before,.dark2 .ic::before{background:var(--vioL)}
-.ic::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(144,48,240,.07),rgba(144,48,240,0) 60%);opacity:0;transition:opacity .32s;pointer-events:none}
-.ic:hover,.ic:focus-visible{transform:translateY(-4px);box-shadow:0 26px 46px -30px rgba(13,11,18,.45)}
 .ic:hover::before,.ic:focus-visible::before{transform:scaleX(1)}
-.ic:hover::after,.ic:focus-visible::after{opacity:1}
-.ico{width:64px;height:64px;margin-bottom:18px;overflow:visible}
+.icgrid{align-items:start}
+.ico{width:56px;height:56px;margin-bottom:12px;overflow:visible}
 .ico *{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round;stroke-linejoin:round}
 .ico .a{stroke:var(--vioD)}
 .ico .f{fill:var(--vio);stroke:none}
@@ -494,7 +495,7 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 .ics>div{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--hairD);align-items:baseline}
 .dark .ics>div{border-bottom-color:var(--hair)}
 .ics dd{margin:0;font-size:16px;text-align:right}
-.ic .go{display:flex;align-items:center;gap:10px;margin-top:auto;padding-top:18px;color:var(--vioD)!important}
+.ic .go{display:flex;align-items:center;gap:10px;padding-top:10px;color:var(--vioD)!important}
 .dark .ic .go,.dark2 .ic .go{color:var(--vioL)!important}
 .ic .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
 .ic:hover .go svg{opacity:1;transform:none}
@@ -522,14 +523,15 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 .nf{min-height:70vh}
 
 @media (max-width:1100px){
-  .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pgrid>*{width:calc((100% - 2 * var(--gap)) / 3)}
   .hero-key{display:none}
   .ngrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}
   .spgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media (max-width:1024px){
   .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
-  .story-r{grid-row:1;height:40vh;height:40svh}
+  .story-r{grid-row:1;height:36vh;height:36svh;margin-bottom:44px}
+  .scap{bottom:-44px;width:max-content;max-width:100%}
   .story-l .d3{display:none}
   .story-l .kick{display:none}
   .two,.two.r,.cgrid,.neu,.prow,.mani-g{grid-template-columns:1fr}
@@ -547,7 +549,8 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
   .hero::before{background:linear-gradient(180deg,rgba(8,7,11,.1) 0%,rgba(8,7,11,.25) 30%,rgba(8,7,11,.84) 50%,rgba(8,7,11,.94) 74%,#0d0b12 100%)}
   .hero-h{font-size:clamp(52px,16vw,110px)}
   .hero-foot .s{font-size:16px}
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .pgrid{gap:36px 16px}
+  .pgrid>*{width:calc((100% - 16px) / 2)}
   .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
   .row-a .tt{grid-column:1/12}
   .row-a .c4{grid-column:12/13}
@@ -573,8 +576,8 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
   .ps-media{height:min(36vh,300px);border-radius:18px 18px 0 0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
+  .ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
 }
 @media (max-width:560px){
   .hm{display:none}
@@ -591,7 +594,7 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
   .gal2 figure:last-child{aspect-ratio:4/3}
   .jobs li{flex-direction:column;align-items:flex-start;gap:4px}
 }
-@media (max-width:420px){.pgrid{grid-template-columns:1fr}}
+@media (max-width:420px){.pgrid>*{width:100%}}
 @media (max-width:560px),(hover:none){.ph2 .ph-c{clip-path:none!important}}
 @media (prefers-reduced-motion:reduce){
   .grain,.cue i{animation:none}
@@ -899,10 +902,11 @@ var TEAM=[
   bio:["Amey leads R&D engineering at Objective Biotechnology. He is co-first author of the 2024 GENETICS paper on the machine-vision guided embryonic microinjection robot and of the 2021 IEEE EMBC paper on multiscale, multi-perspective imaging assisted robotic microinjection.","He is a named inventor on US patent 12,094,161 B2."]},
  {slug:"daniel-surinach",imgW:1060,name:"Daniel Surinach",title:"VP, Neural Engineering",grp:"Leadership",img:"https://i.imgur.com/tzhddwR.jpeg",
   bio:["Daniel leads neural engineering at Objective Biotechnology. He is the contact principal investigator of the 2026 NINDS STTR award for the Bionic Imaging Platform and a principal investigator on the mini-mScope STTR.","He is co-first author of the 2021 Nature Methods paper introducing the miniaturized head-mounted microscope for whole-cortex mesoscale imaging in freely behaving mice."]},
- {slug:"daniel-pomp",imgW:640,name:"Daniel Pomp",title:"Board of Directors",grp:"Board",img:"https://i.imgur.com/AJcf0Sxl.jpg",
+ {slug:"daniel-pomp",card:1,imgW:640,name:"Daniel Pomp",title:"Board of Directors",grp:"Board",img:"https://i.imgur.com/AJcf0Sxl.jpg",
   bio:["Daniel serves on Objective Biotechnology’s Board of Directors."]}
 ];
-function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s&&!TEAM[i].card)return i;return -1}
+function nextP(i,d){var n=TEAM.length;do{i=(i+d+n)%n}while(TEAM[i].card);return i}
 
 /* ================= VIEW HELPERS ================= */
 function head(o){
@@ -912,7 +916,7 @@ function head(o){
 }
 function im(src,alt,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="obNoImg(this)">'}
 window.obNoImg=function(i){var f=i.parentNode;if(f){f.classList.add("noimgf");f.setAttribute("data-alt",i.alt||"")}};
-function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){if(p.card)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.obNoPh=function(i){var c=i.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm">'+(n.d?'<time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time>':'')+'<span class="lab">'+esc(n.s)+'</span></span><span class="tt">'+(n.img?'<span class="th">'+im(n.img,"")+'</span>':'')+'<h3>'+esc(n.t)+'</h3></span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function specs(list){return '<dl class="specs" data-group>'+list.map(function(s){return '<div class="srow"><dt class="lab">'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl>'}
@@ -920,9 +924,9 @@ function ticks(list){return '<ul class="ticks">'+list.map(function(s){return '<l
 
 
 var IC={
- auto:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M8 62h56"/><path d="M14 62V20h44v42"/><path d="M14 26h44"/><rect x="40" y="26" width="10" height="9" rx="1.5"/><path d="M45 35v8"/><path class="a" d="M45 43l-9 9"/><ellipse cx="34" cy="55" rx="14" ry="3.2"/><circle class="f" cx="35" cy="53" r="1.6"/></svg>',
- inj:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M62 12L22 52"/><path d="M58 8l6 6"/><path d="M60 10L18 52l-6 8 8-6 42-42"/><path class="a" d="M14 58l-4 4"/><circle class="f" cx="9" cy="63" r="1.8"/></svg>',
- mini:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M10 58c6-16 46-16 52 0"/><rect x="26" y="34" width="20" height="10" rx="2"/><rect x="28" y="16" width="16" height="18" rx="2"/><path d="M36 10v6"/><path class="a" d="M24 50h24" stroke-dasharray="2 3"/></svg>',
+ auto:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M8 62h56"/><path d="M14 62V20h44v42"/><path d="M14 26h44"/><rect x="40" y="26" width="10" height="9" rx="1.5"/><path d="M45 35v8"/><path class="a" d="M45 43l-9 10"/><ellipse cx="36" cy="55" rx="14" ry="3.2"/><circle class="f" cx="36" cy="53" r="1.6"/></svg>',
+ inj:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M57 7l8 8L24 56l-8 2 2-8z"/><path class="a" d="M17 55l-7 7"/></svg>',
+ mini:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M10 58c6-16 46-16 52 0"/><rect x="26" y="34" width="20" height="10" rx="2"/><rect x="28" y="16" width="16" height="18" rx="2"/><path d="M36 10v6"/><path class="a" d="M36 44v6"/></svg>',
  shell:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M36 8c16 0 24 12 24 26 0 16-10 30-24 30S12 50 12 34C12 20 20 8 36 8z"/><rect class="a" x="24" y="22" width="24" height="28" rx="6" stroke-dasharray="3 3"/></svg>',
  plate:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><path d="M36 10c10 0 18 8 18 18 0 9-8 15-14 18v18h-8V46c-6-3-14-9-14-18 0-10 8-18 18-18z"/><path d="M36 18c6 0 10 4 10 10s-5 10-10 12c-5-2-10-6-10-12s4-10 10-10z"/><circle class="f" cx="36" cy="58" r="1.6"/></svg>',
  mag:'<svg class="ico" viewBox="0 0 72 72" aria-hidden="true"><rect x="12" y="40" width="48" height="14" rx="2"/><rect x="22" y="18" width="28" height="14" rx="2"/><path class="a" d="M30 32l6 8 6-8"/><circle class="f" cx="28" cy="47" r="2"/><circle class="f" cx="44" cy="47" r="2"/></svg>',
@@ -957,7 +961,7 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">How the Autoinjector works</span><h2 class="d3">One plate. <em>No hands.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Detect</span><span>Target</span><span>Inject</span><span>Recover</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h3>See every embryo.</h3><p>A camera looks down on the agar plate and machine-learning models trained on embryo images find each one, including embryos that sit clustered together.</p></article>'+
+     '<article class="step on"><h3>See every embryo.</h3><p>A camera looks down on the agar plate and machine-learning models trained on embryo images find each embryo, one box at a time.</p></article>'+
      '<article class="step"><h3>Choose the spot.</h3><p>For every detected embryo the software sets an injection site, so the needle reaches the same location in each one, then plans its route across the plate.</p></article>'+
      '<article class="step"><h3>Inject, embryo after embryo.</h3><p>The robot guides the micropipette into each target in turn: hundreds of embryos an hour, no uninjected embryos left behind, run by people with no prior microinjection experience.</p></article>'+
      '<article class="step"><h3>Keep going on its own.</h3><p>The Phase II program adds automatic pipette changes when a clog is detected and multi-dish runs, so several constructs can be injected in one session without a human in the loop.</p><span class="tagp">NIH SBIR Phase II · in development</span></article>'+
@@ -1118,7 +1122,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Out of <em>focus.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fcv" id="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Objective Biotechnology, Inc.<br>225 Thomas Avenue North, Suite 50<br>Minneapolis, MN 55405</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a><br><a class="ul" href="https://www.linkedin.com/company/objective-biotechnology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/Objective_Bio" target="_blank" rel="noopener">X</a> · <a class="ul" href="https://bsky.app/profile/objectivebio.bsky.social" target="_blank" rel="noopener">Bluesky</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/microinjection">Microinjection</a><br><a class="ul" href="#/neuroscience">Neuroscience</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1197,7 +1201,7 @@ var field=(function(){
   /* needle point on screen (BM: the action sits on the right columns, the text on the header's left edge) */
   function NP(){if(W<861)return [W*.62,H*.27];if(W<1100)return [W*.7,H*.42];return [W*(W>1700?.69:.7),H*.47]}
   var AX=[Math.cos(-.62),Math.sin(-.62)];/* needle axis, tip to back, up-right */
-  var UI=true,tNow=0,S={x:1300,y:1300},cyc=-1,cur=null,prev=null,CT=2.9;
+  var UI=true,QUIET=false,tNow=0,S={x:1300,y:1300},cyc=-1,cur=null,prev=null,CT=2.9;
   function post(e){return {x:e.x-Math.cos(e.a)*e.L*29*.92,y:e.y-Math.sin(e.a)*e.L*29*.92}}
   function wrapd(d){return d-Math.round(d/WORLD)*WORLD}
   function pick(from){/* next embryo: nearest posterior pole ahead of the stage, roughly along a gentle diagonal path */
@@ -1232,14 +1236,14 @@ var field=(function(){
       /* detections: faint corner ticks on embryos in the field of view of the camera model */
       if(i===cur)act={px:px,py:py,e:e};
     }
-    if(act&&focus<.6&&UI){var bx=sm((ph-.12)/.3);var grow=1+(1-bx)*.45;var al2=bx*(1-focus);var Lb=act.e.L*58*sc;
+    if(act&&focus<.6&&UI&&!QUIET){var bx=sm((ph-.12)/.3);var grow=1+(1-bx)*.45;var al2=bx*(1-focus);var Lb=act.e.L*58*sc;
       ticksAt(act.px,act.py,act.e.a,Lb*1.22*grow,Lb*.5*grow,al2*.95,10,true);
       var lab=ph<.6?"EMBRYO":"INJECTED";c.globalAlpha=al2;c.font="500 10px 'JetBrains Mono',monospace";c.fillStyle="rgb(191,149,249)";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";c.textAlign="left";
       c.fillText(lab,act.px-Lb*.6,act.py-Lb*.66-8);c.globalAlpha=1}
     /* the glass micropipette: tip at the needle point, advances into the embryo, retracts */
     var adv=ph<.5?0:ph<.62?sm((ph-.5)/.12):ph<.78?1:1-sm((ph-.78)/.16);
     var tipx=wx+AX[0]*(16-22*adv)*sc+m[0]*6,tipy=wy+AX[1]*(16-22*adv)*sc+m[1]*6;
-    needle(c,tipx,tipy,AX,Math.max(W,H)*1.4,sc,1-focus*.6,"rgba(144,48,240,.55)");
+    if(!QUIET)needle(c,tipx,tipy,AX,Math.max(W,H)*1.4,sc,1-focus*.6,"rgba(144,48,240,.55)");
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1248,7 +1252,7 @@ var field=(function(){
   addEventListener("resize",size);size();
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setUI:function(v){UI=v},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setUI:function(v){UI=v},setQuiet:function(v){QUIET=v},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
   /* hoisted helpers bound to this canvas */
   function ticksAt(x,y,a,w,h,al,len,full){if(al<.02)return;c.save();c.translate(x,y);c.rotate(a);c.globalAlpha=al;c.strokeStyle="rgb(191,149,249)";c.lineWidth=1;
     var X=w/2,Y=h/2;c.strokeRect(-X,-Y,w,h);c.beginPath();var px=-w/2*.72;c.moveTo(px-7,0);c.lineTo(px-2.5,0);c.moveTo(px+2.5,0);c.lineTo(px+7,0);c.moveTo(px,-7);c.lineTo(px,-2.5);c.moveTo(px,2.5);c.lineTo(px,7);c.stroke();
@@ -1269,81 +1273,87 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));var top=document.querySelector("#view .hero, #view .ph-head");var topVis=!!top&&top.getBoundingClientRect().bottom>0;
+  field.setQuiet(!topVis);field.setDim(topVis?(curKey==="home"?1:.75)*(1-p*.5):.42)}
 
 /* ================= STORY: ONE continuous scene (BL). The camera moves; the plate, needle and second dish are the same objects throughout ================= */
+/* BT: the hero's embryo plate, quieter, behind the footer wordmark; paused when off-screen */
+var ffield=null;
+function makeFooterField(cv){
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,alive=true,vis=false,t0=performance.now(),SPR=[];
+  function R(i,k){var x=Math.sin(i*127.1+k*311.7)*43758.5453;return x-Math.floor(x)}
+  var EM=[],CW=110,WW=2200,WH=880;
+  for(var gy=0;gy<WH/CW;gy++)for(var gx=0;gx<WW/CW;gx++){var id=gy*57+gx;if(R(id,1)<.35)continue;EM.push({x:CW*(gx+.5)+(R(id,2)-.5)*CW*.4,y:CW*(gy+.5)+(R(id,3)-.5)*CW*.4,a:R(id,4)*6.283,L:.85+R(id,5)*.25,b:R(id,6)})}
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);SPR=[makeSprite(58,0,dpr,.55),makeSprite(58,2.4,dpr,.45)]}
+  function draw(){var t=RM?20:(performance.now()-t0)/1000;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
+    var ox=(t*6)%WW;
+    for(var i=0;i<EM.length;i++){var e=EM[i];var x=((e.x-ox)%WW+WW)%WW-60,y=e.y*(h/WH);if(x>w+60)continue;var s=SPR[e.b<.4?1:0];
+      c.save();c.translate(x,y);c.rotate(e.a+Math.sin(t*.2+i)*.03);c.scale(e.L,e.L);c.drawImage(s.cv,-s.w/2,-s.h/2,s.w,s.h);c.restore()}}
+  function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
+  size();draw();loop();
+  var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
+  addEventListener("resize",function(){if(alive)size()});
+  return {kill:function(){alive=false;io.disconnect()}};
+}
 var story=null;
 function makeStory(cv){
-  var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now(),SP=null,curSc=1,capEl=document.getElementById("scap"),capTxt="",mob=false;
-  function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
-  var PAPER="244,243,247",VL="191,149,249",VIO="144,48,240",VB="214,190,252";
-  var D1={x:0,y:0,r:300},D2={x:760,y:0,r:300};
-  /* non-overlapping embryos; two parallel side-by-side pairs show the clustered case without overlap */
-  function seedDish(D,n,seed){var out=[];
-    [[-120,-60,.4],[110,120,1.4]].forEach(function(q){var a=q[2],px=-Math.sin(a)*14,py=Math.cos(a)*14;out.push({x:q[0]+px,y:q[1]+py,a:a,L:.96,pair:1},{x:q[0]-px,y:q[1]-py,a:a,L:.98,pair:1})});
-    var tries=0;while(out.length<n&&tries<8000){tries++;var a=R(tries,seed)*6.283,rr=Math.sqrt(R(tries,seed+1))*(D.r-44);var x=Math.cos(a)*rr,y=Math.sin(a)*rr;
-      var ok=true;for(var j=0;j<out.length;j++){if(Math.hypot(out[j].x-x,out[j].y-y)<(out[j].pair?78:68)){ok=false;break}}if(!ok)continue;out.push({x:x,y:y,a:R(tries,seed+2)*6.283,L:.9+R(tries,seed+3)*.14})}
-    out.sort(function(a,b){var ra=Math.floor((a.y+D.r)/90),rb=Math.floor((b.y+D.r)/90);if(ra!==rb)return ra-rb;return (ra%2?-1:1)*(a.x-b.x)});
-    out.forEach(function(e){e.px=e.x-Math.cos(e.a)*e.L*29*.9;e.py=e.y-Math.sin(e.a)*e.L*29*.9});return out}
-  var E1=seedDish(D1,28,10),E2=seedDish(D2,28,30);
-  /* camera keys: x, y, span across the short side of the (circular) viewport */
-  var CAM=[[0,0,700],[-60,-30,470],[0,0,660],[380,10,1500]];
-  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;mob=w<560;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);SP=makeSprite(58,0,dpr*2.4,.8)}
+  /* ONE plate, drawn once (BY). First frame is complete: plate, twelve embryos and the parked pipette.
+     Each step changes one labelled thing: Detect = a box per embryo; Target = a crosshair per embryo;
+     Inject = the pipette visits each crosshair and the embryo turns violet; Recover = clog at the tip, pipette replaced. */
+  var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,SP=null,curSc=1,capEl=document.getElementById("scap"),capTxt="";
+  var VL="191,149,249",VIO="144,48,240",VB="214,190,252",PAPER="244,243,247";
+  var D={x:0,y:0,r:300};
+  /* hand-placed, well spaced, varied angles (no overlaps, no clusters to untangle) */
+  var E=[[-160,-150,.5],[-40,-190,-.3],[90,-160,.9],[-210,-30,1.7],[-80,-50,.1],[50,-40,-.8],[180,-50,.35],[-150,90,-.5],[-20,80,1.1],[110,90,.2],[-60,195,-.15],[80,205,.7]].map(function(q){var e={x:q[0],y:q[1],a:q[2],L:1.18};e.px=e.x-Math.cos(e.a)*e.L*29*.88;e.py=e.y-Math.sin(e.a)*e.L*29*.88;return e});
+  var P=E.map(function(e){return [e.px,e.py]});
+  var AXS=[Math.cos(-.75),Math.sin(-.75)];
+  var PARK=[150,-205];
+  /* camera: whole plate; a little closer for targets; toward the pipette for the clog */
+  var CAM=[[0,0,720],[0,0,660],[0,0,700],[40,-50,640]];
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);SP=makeSprite(58*1.18,0,dpr*2.2,.85)}
   function sm(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
   function cl(x){return Math.max(0,Math.min(1,x))}
   function cam(s){var i0=Math.min(2,Math.floor(s)),fr=s-i0;var f=sm((fr-.3)/.4);var A=CAM[i0],B=CAM[i0+1];
     return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f)}}
-  function dish(D,al){c.globalAlpha=al;var g=c.createRadialGradient(D.x-60,D.y-80,20,D.x,D.y,D.r);g.addColorStop(0,"rgba(58,48,74,.75)");g.addColorStop(1,"rgba(34,28,44,.75)");c.fillStyle=g;c.beginPath();c.arc(D.x,D.y,D.r,0,6.283);c.fill();
-    c.lineWidth=1/curSc;c.strokeStyle="rgba("+PAPER+",.16)";c.stroke();c.globalAlpha=1}
-  /* detection: a thin full rectangle with a margin, never corner ticks (they read as legs) */
-  function box(e,x,y,al){if(al<.02)return;c.save();c.translate(x,y);c.rotate(e.a);c.globalAlpha=al;c.strokeStyle="rgb("+VL+")";c.lineWidth=1.3/curSc;var X=29*e.L+10,Y=11*e.L+8;c.strokeRect(-X,-Y,X*2,Y*2);c.restore();c.globalAlpha=1}
-  function cross(x,y,r,al){if(al<.02)return;c.globalAlpha=al;c.lineWidth=1.5/curSc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.moveTo(x-r,y);c.lineTo(x-r*.35,y);c.moveTo(x+r*.35,y);c.lineTo(x+r,y);c.moveTo(x,y-r);c.lineTo(x,y-r*.35);c.moveTo(x,y+r*.35);c.lineTo(x,y+r);c.stroke();c.globalAlpha=1}
-  /* an embryo with its dye bloom clipped to the egg, at the posterior pole */
-  function egg(e,x,y,al,bl,col){c.save();c.translate(x,y);c.rotate(e.a);c.scale(e.L,e.L);c.globalAlpha=al;c.drawImage(SP.cv,-SP.w/2,-SP.h/2,SP.w,SP.h);
-    if(bl>.02){c.beginPath();c.ellipse(0,0,29,11,0,0,6.283);c.clip();var gx=-26,r=10+10*bl;var g=c.createRadialGradient(gx,0,0,gx,0,r);g.addColorStop(0,"rgba("+col+","+(.95*bl)+")");g.addColorStop(1,"rgba("+col+",0)");c.fillStyle=g;c.fillRect(gx-r,-r,r*2,r*2)}
-    c.restore();c.globalAlpha=1}
-  function pathPts(E,ox,oy){return E.map(function(e){return [ox+e.px,oy+e.py]})}
-  /* needle position along a route with a dwell at each injection site; returns the index currently being injected and its progress */
-  function route(P,u){var n=P.length,v=u*(n-1+.5),i0=Math.min(n-1,Math.floor(v)),f=v-i0;var A=P[i0],B=P[Math.min(n-1,i0+1)];var mv=sm((f-.55)/.45);return {p:[A[0]+(B[0]-A[0])*mv,A[1]+(B[1]-A[1])*mv],i:i0,f:f}}
-  function injAmt(r,i){return i<r.i?1:i===r.i?sm((r.f-.12)/.3):0}
-  var P1=pathPts(E1,D1.x,D1.y),P2=pathPts(E2,D2.x,D2.y);
-  var AXS=[Math.cos(-.75),Math.sin(-.75)];
+  function plate(){var g=c.createRadialGradient(-60,-80,20,0,0,D.r);g.addColorStop(0,"rgba(58,48,74,.8)");g.addColorStop(1,"rgba(34,28,44,.8)");c.fillStyle=g;c.beginPath();c.arc(0,0,D.r,0,6.283);c.fill();c.lineWidth=1.2/curSc;c.strokeStyle="rgba("+PAPER+",.22)";c.stroke()}
+  function egg(e,bl,col){c.save();c.translate(e.x,e.y);c.rotate(e.a);c.drawImage(SP.cv,-SP.w/2,-SP.h/2,SP.w,SP.h);
+    if(bl>.02){c.beginPath();c.ellipse(0,0,29*e.L,11*e.L,0,0,6.283);c.clip();var gx=-26*e.L,r=(12+12*bl)*e.L;var g=c.createRadialGradient(gx,0,0,gx,0,r);g.addColorStop(0,"rgba("+col+","+(.95*bl)+")");g.addColorStop(1,"rgba("+col+",0)");c.fillStyle=g;c.fillRect(gx-r,-r,r*2,r*2)}
+    c.restore()}
+  function box(e,al){if(al<.02)return;c.save();c.translate(e.x,e.y);c.rotate(e.a);c.globalAlpha=al;c.strokeStyle="rgb("+VL+")";c.lineWidth=1.4/curSc;var X=29*e.L+9,Y=11*e.L+8;c.strokeRect(-X,-Y,X*2,Y*2);c.restore();c.globalAlpha=1}
+  function cross(x,y,al){if(al<.02)return;var r=17;c.globalAlpha=al;c.beginPath();c.moveTo(x-r,y);c.lineTo(x-5,y);c.moveTo(x+5,y);c.lineTo(x+r,y);c.moveTo(x,y-r);c.lineTo(x,y-5);c.moveTo(x,y+5);c.lineTo(x,y+r);c.lineCap="round";c.lineWidth=4.2/curSc;c.strokeStyle="rgba(13,11,18,.75)";c.stroke();c.lineWidth=1.8/curSc;c.strokeStyle="rgb("+VL+")";c.stroke();c.fillStyle="rgb("+VIO+")";c.beginPath();c.arc(x,y,2.6/curSc,0,6.283);c.fill();c.globalAlpha=1}
+  /* pipette route: dwell at each site (inject), then travel to the next */
+  function route(u){var n=P.length,v=u*n,i0=Math.min(n-1,Math.floor(v)),f=Math.min(1,v-i0);var A=i0===0?PARK:P[i0-1],B=P[i0];var mv=sm(f/.45);return {p:[A[0]+(B[0]-A[0])*mv,A[1]+(B[1]-A[1])*mv],i:i0,f:f}}
+  function injAmt(r,i){return i<r.i?1:i===r.i?sm((r.f-.5)/.35):0}
   function setCap(t,a){if(!capEl)return;if(t!==capTxt){capTxt=t;capEl.textContent=t}capEl.style.opacity=String(Math.max(0,Math.min(1,a)))}
   function draw(){
     p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
-    var t=RM?10:(performance.now()-t0)/1000;var s=p*3;var C=cam(s);
-    var sc=Math.min(w,h)*.94/C.span;curSc=sc;
+    var s=p*3,C=cam(s),sc=Math.min(w,h)*.94/C.span;curSc=sc;
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
-    var scan=cl(s/.62),tgt=cl((s-.78)/.7),inj=cl((s-1.5)/1.02),rec=cl((s-2.55)/.33),loop=s>2.9?((t*.06)%1):0;
-    var d2x=D2.x+(1-sm(rec/.7))*560,d2a=sm(rec*2);
-    dish(D1,1);if(d2a>.01)dish({x:d2x,y:D2.y,r:D2.r},d2a);
-    /* detect: a soft band sweeps fully across and off the plate */
-    var sx=-D1.r-90+scan*(D1.r*2+180);
-    if(scan>0&&scan<1){c.save();c.beginPath();c.arc(D1.x,D1.y,D1.r,0,6.283);c.clip();var g=c.createLinearGradient(sx-70,0,sx+30,0);g.addColorStop(0,"rgba("+VIO+",0)");g.addColorStop(.7,"rgba("+VIO+",.16)");g.addColorStop(1,"rgba("+VIO+",0)");c.fillStyle=g;c.fillRect(sx-70,-D1.r,100,D1.r*2);c.restore()}
-    if(tgt>0){c.save();c.setLineDash([4/sc,5/sc]);c.lineWidth=1/sc;c.strokeStyle="rgba("+VL+",.45)";var nn=tgt*(P1.length-1),k=Math.floor(nn);c.beginPath();c.moveTo(P1[0][0],P1[0][1]);for(var i=1;i<=k&&i<P1.length;i++)c.lineTo(P1[i][0],P1[i][1]);if(k+1<P1.length){var f=nn-k;c.lineTo(P1[k][0]+(P1[k+1][0]-P1[k][0])*f,P1[k][1]+(P1[k+1][1]-P1[k][1])*f)}c.stroke();c.restore()}
-    var r1=route(P1,inj);
-    E1.forEach(function(e,i){var x=D1.x+e.x,y=D1.y+e.y;var b=inj>0?injAmt(r1,i):0;egg(e,x,y,1,b,VIO);
-      var det=sm((sx-e.x)/50);box(e,x,y,det*(inj>0?(1-b)*.4:(tgt>0?.85-.4*tgt:.85))*(1-rec));
-      var ti=sm((tgt*(P1.length-1)-i+1)/1.2);cross(D1.x+e.px,D1.y+e.py,11,ti*(1-b)*(1-rec))});
-    var r2=route(P2.map(function(q){return [q[0]+(d2x-D2.x),q[1]]}),loop);
-    if(d2a>.01)E2.forEach(function(e,i){var x=d2x+e.x,y=D2.y+e.y;var b=s>2.9?injAmt(r2,i):0;egg(e,x,y,d2a,b*d2a,VB);box(e,x,y,d2a*.5*(1-b))});
-    /* needle: parked off the plate, then travelling the route (stage logic), then clog -> swap -> dish 2 */
-    var park=[D1.x+D1.r*.95,D1.y-D1.r*.9],tip,nal=sm((s-1.2)/.3),fluid="rgba("+VIO+",.6)",clog=0;
-    if(inj<=0||rec<=0){var k0=sm(inj/.05),q=r1.p;tip=[park[0]+(q[0]-park[0])*k0,park[1]+(q[1]-park[1])*k0]}
-    else{var last=P1[P1.length-1];clog=sm(rec/.22)*(1-sm((rec-.32)/.12));var swap=sm((rec-.3)/.3);
-      var out=sm((rec-.28)/.18)*(1-sm((rec-.46)/.18));var dest=s>2.9?r2.p:[d2x+P2[0][0]-D2.x,P2[0][1]];
-      var mv=sm((rec-.5)/.45);tip=[last[0]+(dest[0]-last[0])*mv+AXS[0]*out*900,last[1]+(dest[1]-last[1])*mv+AXS[1]*out*900];if(swap>.5)fluid="rgba("+VB+",.6)"}
-    needle(c,tip[0],tip[1],AXS,2600,.62,nal,fluid);
-    if(clog>.02){c.globalAlpha=clog;c.fillStyle="rgb(20,16,26)";c.beginPath();c.arc(tip[0]+AXS[0]*14,tip[1]+AXS[1]*14,4.5,0,6.283);c.fill();c.lineWidth=1.3/sc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.arc(tip[0]+AXS[0]*14,tip[1]+AXS[1]*14,13,0,6.283);c.stroke();c.globalAlpha=1}
+    var det=cl((s-.05)/.6),tgt=cl((s-.85)/.55),inj=cl((s-1.58)/.84),rec=cl((s-2.48)/.47);
+    plate();
+    var r=inj>0?route(Math.min(.9999,inj)):{i:-1,f:0,p:PARK};
+    E.forEach(function(e,i){var b=inj>0?injAmt(r,i):0;if(rec>0)b=1;egg(e,b,VIO);
+      var bx=sm(det*E.length-i);box(e,bx*(1-.65*tgt)*(1-b));
+      var cx=sm(tgt*E.length-i);cross(e.px,e.py,cx*(1-b))});
+    /* the pipette: parked from the first frame; visits each site; then clog, retract, fresh pipette */
+    var tip=r.p,fluid="rgba("+VIO+",.6)",clog=0,al=1;
+    if(rec>0){var back=sm((rec-.3)/.25),fresh=sm((rec-.62)/.3);clog=sm(rec/.18)*(1-back);
+      var last=P[P.length-1],up=sm(Math.min(1,inj));tip=[PARK[0],PARK[1]];
+      if(fresh>0){fluid="rgba("+VB+",.6)";tip=[PARK[0]+AXS[0]*900*(1-fresh),PARK[1]+AXS[1]*900*(1-fresh)]}
+      else tip=[PARK[0]+AXS[0]*900*back,PARK[1]+AXS[1]*900*back]}
+    else if(inj>=.9999){tip=PARK}
+    else if(inj>.92){var k=sm((inj-.92)/.08),L=P[P.length-1];tip=[L[0]+(PARK[0]-L[0])*k,L[1]+(PARK[1]-L[1])*k]}
+    needle(c,tip[0],tip[1],AXS,2400,.62,al,fluid);
+    if(clog>.02){var cx2=tip[0]+AXS[0]*15,cy2=tip[1]+AXS[1]*15;c.globalAlpha=clog;c.fillStyle="rgb(20,16,26)";c.beginPath();c.arc(cx2,cy2,6,0,6.283);c.fill();c.lineWidth=1.6/sc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.arc(cx2,cy2,18,0,6.283);c.stroke();c.globalAlpha=1}
     c.restore();
-    /* dish captions share one baseline, inside the circular viewport */
-    var w3=sm((s-2.55)/.2);
-    function lab(txt,wx,wy,a){if(a<.02)return;var x=(wx-C.x)*sc+w/2,y=(wy-C.y)*sc+h/2;c.globalAlpha=Math.min(1,a);c.font="500 "+(mob?9:10.5)+"px 'JetBrains Mono',monospace";c.fillStyle="rgb(196,190,210)";c.textAlign="center";if(c.letterSpacing!==undefined)c.letterSpacing=(mob?"1px":"1.5px");c.fillText(txt,x,y);c.globalAlpha=1}
-    var ly=D1.y+D1.r+60;lab(mob?"DISH 1 · A":"DISH 1 · CONSTRUCT A",D1.x,ly,w3);lab(mob?"DISH 2 · B":"DISH 2 · CONSTRUCT B",d2x,ly,w3*d2a);
-    var w0=1-sm((s-.45)/.25),w1=sm((s-.65)/.25)*(1-sm((s-1.4)/.2)),w2=sm((s-1.5)/.2)*(1-sm((s-2.45)/.15));
-    if(w0>.02)setCap("Embryos detected on the agar plate",w0);else if(w1>.02)setCap("Injection site · same location in each",w1);else if(w2>.02)setCap("Needle follows the planned route",w2);
-    else if(rec>0&&rec<.45)setCap("Clog detected",sm(rec/.15)*(1-sm((rec-.35)/.1)));else if(rec>=.45)setCap("Pipette changed · dish 2 loaded",sm((rec-.45)/.15));else setCap(capTxt,0);
+    var a0=1-sm((s-.6)/.2),a1=sm((s-.7)/.2)*(1-sm((s-1.45)/.15)),a2=sm((s-1.55)/.15)*(1-sm((s-2.4)/.08));
+    if(s<.12)setCap("Twelve embryos on an agar plate",1);else if(s<.7)setCap("Machine vision finds each embryo",1);
+    else if(a1>.02)setCap("Injection site · the same spot in each embryo",a1);
+    else if(a2>.02)setCap("Pipette visits each site · injected embryos turn violet",a2);
+    else if(rec>0&&rec<.5)setCap("Clog detected at the pipette tip",sm(rec/.12));
+    else if(rec>=.5)setCap("Pipette replaced automatically · ready for the next dish",sm((rec-.5)/.12));
+    else setCap(capTxt,Math.max(a0,0));
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1369,7 +1379,7 @@ hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=wi
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,HERO_TL=[];
 /* BH: a line mask clips only while its reveal moves; afterwards it opens */
-function unmask(st){if(!st)return;var ms=st.masks&&st.masks.length?st.masks:[];if(!ms.length&&st.lines)st.lines.forEach(function(l){if(l.parentNode&&/ln-mask/.test(l.parentNode.className))ms.push(l.parentNode)});ms.forEach(function(m){m.classList.add("open")})}
+function unmask(st){if(!st)return;var ms=st.masks&&st.masks.length?st.masks:[];if(!ms.length&&st.lines)st.lines.forEach(function(l){if(l.parentNode&&/ln-mask/.test(l.parentNode.className))ms.push(l.parentNode)});ms.forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
@@ -1395,6 +1405,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    var fc=$("#fcv",view);if(fc){ffield=makeFooterField(fc);if(!RM)gsap.from(fc,{opacity:0,duration:1.6,ease:"power2.out",scrollTrigger:{trigger:".ftr",start:"top 90%"}})}
     if(k==="home")homeScroll(view);
     if(k==="contact")contactInit(view);
     var big=$("#bigwm");if(big&&!RM){var s3=SplitText.create(big,{type:"chars",charsClass:"ch"});gsap.from(s3.chars,{yPercent:50,opacity:0,duration:1.3,ease:"silk",stagger:.05,scrollTrigger:{trigger:big,start:"top 96%"}})}
@@ -1442,7 +1453,7 @@ function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=e
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}});
-  $$("#pageTitle .ln-mask").forEach(function(m){m.classList.add("open")})},2500)}
+  $$("#pageTitle .ln-mask").forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})},2500)}
 
 function homeScroll(view){
   var m=$("#mani",view);
@@ -1474,24 +1485,23 @@ function contactInit(view){
       ScrollTrigger.refresh()}})});
   if(!RM){$$(".map .mp",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:2,ease:"flow",scrollTrigger:{trigger:".map",start:"top 85%"}})});
     gsap.from($$(".map .pin",view),{opacity:0,duration:1,ease:"silk",delay:.6,scrollTrigger:{trigger:".map",start:"top 85%"}});
-    $$(".map .pr",view).forEach(function(c){gsap.to(c,{attr:{r:56},opacity:0,duration:2.4,repeat:-1,ease:"power1.out"})})}
+    }
 }
 
 /* ================= PERSON SHEET (BI) ================= */
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,lastFocus=null;
 /* BQ: the sheet adapts to the photo: big sharp headshot -> two columns; small -> .slim (96px circle by the name); none -> .noimg */
-function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+function psMode(m){ps.classList.toggle("noimg",m==="noimg")}
 window.obPsNo=function(){var i=+psMedia.getAttribute("data-i");TEAM[i].img=null;fillBio(i)};
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  var m=p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg";psMode(m);
+  var m=p.img&&!(p.imgW&&p.imgW<480)?"":"noimg";psMode(m);
   psMedia.setAttribute("data-i",i);
   psMedia.innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="obPsNo()">':'';
   var hd='<h2 id="psName">'+esc(p.name)+'</h2>';
-  if(m==="slim")hd='<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="obPsNo()"><h2 id="psName">'+esc(p.name)+'</h2></div>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   psBody.scrollTop=0;
-  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[nextP(i,-1)].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[nextP(i,1)].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
@@ -1524,7 +1534,7 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(document.body.classList.contains("menu-open"))closeMenu();
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
-  var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  var view=$("#view");if(story){story.kill();story=null}if(ffield){ffield.kill();ffield=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);

@@ -48,3 +48,11 @@ UNUSED, with reasons: anti-toxin protease graphic.jpg — 200×180, too small to
 
 ## Round 2 image audit (PRINCIPLES BR, Nov 2026)
 Every image now appears exactly once: the prodomain–subtilisin complex structure and the RAS target-sequence figure on the home page, the antibody–protein A–protease figure and the Pro-CR assay photograph on the Pro-CR page. The duplicate copies of the structure and of the assay photograph were removed. All four are the company's own figures and photographs — real structural and experimental material that the drawn hero and story cannot substitute for.
+
+## Round 3 (PRINCIPLES v15, BS–CB), Nov 2026
+- **BS** — `.ln-mask` margins fixed as above; split-audit OK on every route.
+- **BT** — the hero's lattice of protease complexes is drawn again behind the footer wordmark at half opacity, one slow activation wave every 22 s, on every route.
+- **BU** — the standalone manifesto line is centred as a block.
+- **BV** — slim sheet mode removed; a portrait is large or absent.
+- **BZ** — lens cards and the photo-less person cards are a rule plus typography, no box, no fixed minimum height, nothing stranded at the card floor.
+- **BY** — the walk-through was rebuilt as **one scene**: a single well held on screen while the camera stays put and the chemistry changes. Steps: antibody and target bind at the centre (TARGET + IgG) → the initiating protease is released (INITIATING PROTEASE; PROTEASE HELD BY ITS INHIBITOR) → each freed protease cuts the prodomain off the next (FREE PROTEASE · CUTTING THE NEXT) → signal rises on a framed SIGNAL/TIME plot (SIGNAL PEPTIDE, CLEAVED). Labels are anchored with leader lines and clamped inside the canvas.

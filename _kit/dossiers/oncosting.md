@@ -46,3 +46,11 @@ UNUSED, with reasons: Oncosting_landing.jpg, Technology.jpg and Team.jpg — wid
 ## Round 2 image audit (PRINCIPLES BR, Nov 2026)
 Removed: Technology_02.jpg, the company's own mechanism schematic — the pinned story already shows the same two-pronged mechanism as one continuous scene, so the figure's only job on the page was to be a picture.
 Kept: the four leadership headshots. Todd Wallach's portrait is only 141×187 even at the largest Squarespace size, so he is shown as a refined text card in the team grid and as a 96px circle in his bio sheet (PRINCIPLES BQ slim mode) rather than upscaled; Bivalacqua (1500px), Bishai (501px) and Bellete (975px) are large enough for the two-column sheet.
+
+## Round 3 (PRINCIPLES v15, BS–CB), Nov 2026
+- **BS** — `.ln-mask` margins fixed as above; split-audit OK on every route.
+- **BT** — the hero's cell (membrane, agonist, diffusing c-di-AMP) is drawn again behind the footer wordmark at half opacity and a slower drift, on every route.
+- **BU** — the standalone manifesto line is centred as a block.
+- **BV** — the slim sheet mode is gone. The CEO's source headshot is only 141 px wide, so it is marked `imgW:141`: it stays as a small portrait on his team card, where it is shown at its true size, and his sheet opens in the portrait-free compact column rather than upscaling it.
+- **BZ** — lens cards are a rule plus typography, no box.
+- **BY** — the walk-through was rebuilt as **one scene**: one continuous camera push from the bladder wall into a single cell. Steps: BCG, INSTILLED IN THE BLADDER → UROTHELIUM · THE CELLS DISEASE GROWS FROM → BCG, INSIDE THE CELL → c-di-AMP, RELEASED CONTINUOUSLY → STING, ON THE ER → NUCLEUS · IRF3 · NF-κB → INTERFERON-I, OUT OF THE CELL. Labels are anchored with leader lines and clamped inside the canvas.

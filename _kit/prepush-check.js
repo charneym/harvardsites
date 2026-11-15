@@ -23,7 +23,11 @@ for (const f of files) {
   let out = '';
   try { out = execSync(`node navtest.js "${path.join(root, f)}"`, { cwd: path.join(root, '_kit'), timeout: 300000 }).toString().trim().split('\n').pop(); }
   catch (e) { out = (e.stdout || '').toString().trim().split('\n').pop() || 'navtest crashed'; }
-  if (/^OK/.test(out)) console.log('OK   ' + f); else { console.log('FAIL ' + f + ': ' + out); fail = 1; }
+  if (!/^OK/.test(out)) { console.log('FAIL ' + f + ': ' + out); fail = 1; continue; }
+  let sm = '';
+  try { sm = execSync(`node smoke.js "${path.join(root, f)}"`, { cwd: path.join(root, '_kit'), timeout: 300000 }).toString().trim().split('\n').pop(); }
+  catch (e) { sm = (e.stdout || '').toString().trim().split('\n').slice(0, 3).join(' | ') || 'smoke crashed'; }
+  if (/^OK/.test(sm)) console.log('OK   ' + f); else { console.log('FAIL ' + f + ': smoke: ' + sm); fail = 1; }
 }
 if (!files.length) console.log('no concept pages changed');
 process.exit(fail);

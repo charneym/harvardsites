@@ -124,7 +124,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm li a{display:block;padding:12px 0 .3em;font-family:var(--disp);font-weight:300;font-size:clamp(38px,10vw,64px);line-height:1.12;letter-spacing:-.045em}
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--muteL);font-size:13px;line-height:1.6;margin-top:30px}
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 .hero{position:relative;height:100vh;height:100svh;min-height:660px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,140px) var(--side) clamp(80px,10vh,110px);z-index:1}
 .hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(52% 70% at 16% 52%,rgba(4,24,43,.9),rgba(4,24,43,.6) 50%,rgba(4,24,43,0) 80%),linear-gradient(180deg,rgba(4,24,43,.45),rgba(4,24,43,0) 20%,rgba(4,24,43,0) 66%,var(--ink) 100%)}
@@ -465,6 +465,18 @@ b,strong{font-weight:500}
 .ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1)}
 @media (max-width:760px){.ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
 
+/* v15 (client review 3) */
+.pcard.noimg.flat{border:0;border-top:1px solid var(--hairD);background:none;padding:20px 0 0;min-height:0;align-self:start;grid-column:span 3}
+.pcard.flat:hover{transform:none}
+.pcard.flat .pc-meta{height:auto}
+.pcard.flat .ex{margin:10px 0 0;max-width:62ch;color:var(--mute);font-size:15px;line-height:1.6}
+.pcard.flat .ex+.ex{margin-top:8px}
+.pcard.flat .lk{align-self:flex-start;margin-top:14px;font-size:14.5px}
+@media (max-width:1100px){.pcard.noimg.flat{grid-column:span 2}}
+@media (max-width:860px){.pcard.noimg.flat{grid-column:auto}}
+.mani .mblk{width:fit-content;max-width:100%;margin:0 auto}
+.ftr{isolation:isolate}
+.ftr .fcv{position:absolute;left:0;right:0;top:0;height:40%;width:100%;z-index:-1;pointer-events:none;opacity:.5;-webkit-mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent);mask-image:linear-gradient(180deg,transparent,#000 28%,#000 72%,transparent)}
 </style>
 </head>
 <body>
@@ -748,11 +760,13 @@ var TEAM=[
   bio:["Russ Pribanic brings 50 years of expertise in plastics, mechanical design, manufacturing, process development and prototyping.","He is an inventor on over 100 patents and has developed FDA-regulated products at Covidien and Medtronic."]},
  {slug:"richard-carroll",name:"Richard Carroll",title:"Scientific Advisory Board",grp:"Advisors",img:WF+"646973192baad06f4f886652_Dick.jpg",
   bio:["Dick Carroll brings more than 40 years of FDA diagnostic assay and instrument development experience.","He has been involved in the clinical testing and FDA clearance of seven diagnostic products, including the first FDA-cleared gene sequencing assay."]},
- {slug:"hayden-jeffreys",name:"Hayden Jeffreys",title:"Non-Executive Director",grp:"Board",img:null,
+ {slug:"hayden-jeffreys",name:"Hayden Jeffreys",title:"Non-Executive Director",grp:"Board",img:null,card:1,
   bio:["Hayden Jeffreys joined the board as a Non-Executive Director in June 2023.","He has held a variety of C-suite roles, most recently as COO of AIM-listed Yourgene and President of Yourgene Inc, and earlier as CEO of NYSE-listed Erba Diagnostics and Vice President of Corporate Development for Erba Mannheim."],
   links:[["Appointment announcement","https://www.newenglandhemolytics.com/news/neh-news-06122023"]]}
 ];
-function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
+function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s&&!TEAM[i].card)return i;return -1}
+/* BV: a person whose card already carries everything known gets no sheet; Prev/Next skip them */
+function sheetNb(i,d){var n=TEAM.length,j=i;do{j=(j+d+n)%n}while(TEAM[j].card&&j!==i);return j}
 var SPECS=[
  ["Input","4–7 mL whole blood in an EDTA Vacutainer-type tube"],
  ["Output","50–100 µL of DNA in water, ready for PCR or sequencing"],
@@ -786,6 +800,7 @@ function head(o){
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
 function tCard(p){
+  if(p.card)return '<div class="pcard noimg flat"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p class="ex">'+esc(b)+'</p>'}).join("")+(p.links?p.links.map(function(l){return '<a class="ul lk" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a>'}).join(""):'')+'</div></div>';
   if(!p.img)return '<a class="pcard noimg" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><p class="ex">'+esc(p.bio[1]||p.bio[0])+'</p><span class="lab go">Profile '+ARR+'</span></div></a>';
   return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="ssNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.ssNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
@@ -804,8 +819,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>The problem</span>'+
-   '<p class="txt" id="mani">Treating sepsis well means knowing the pathogen. Today that answer comes from blood culture, a technology more than a century old that takes 12 hours to 7 days, while the danger grows with every hour the right drug is delayed. <em>New England Hemolytics takes the culture out of the loop.</em></p>'+
+   '<div class="mblk"><span class="lab kick" data-r>The problem</span>'+
+   '<p class="txt" id="mani">Treating sepsis well means knowing the pathogen. Today that answer comes from blood culture, a technology more than a century old that takes 12 hours to 7 days, while the danger grows with every hour the right drug is delayed. <em>New England Hemolytics takes the culture out of the loop.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">7<sup>%</sup></span><span class="lab k">Rise in sepsis morbidity for every hour correct treatment is delayed</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">1.7<sup>M</sup></span><span class="lab k">People in the U.S. affected by sepsis every year</span></div>'+
@@ -919,7 +934,7 @@ function vContact(){
 }
 function v404(){return head({k:"Not found",h:'Nothing <em>captured here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>11 Sycamore Way<br>Branford, CT 06405</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/contact">Contact</a></div>'+
@@ -952,27 +967,28 @@ function sm(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}
 function unmask(st){if(!st)return;(st.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 /* ================= HERO FIELD: a mosaic of blood cells (drawn like the logo) liquefies in a slow wave, leaving the pathogens behind ================= */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,Q){
+  var c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
   var B="48,120,168",BD="27,79,128",PAP="245,247,249";
   var cells=[],bugs=[],L=null;
-  function lay(){if(w<861)return {x0:-w*.05,x1:w*1.05,y0:h*.06,y1:h*.36,s:Math.max(22,Math.min(30,w*.07)),mob:1};
+  function lay(){if(Q)return {x0:0,x1:w,y0:0,y1:h,s:Math.max(22,Math.min(36,h*.15)),mob:0,q:1};if(w<861)return {x0:-w*.05,x1:w*1.05,y0:h*.06,y1:h*.36,s:Math.max(22,Math.min(30,w*.07)),mob:1};
     return {x0:w*.56,x1:w*.99,y0:-h*.02,y1:h*1.02,s:Math.max(30,Math.min(46,h*.052)),mob:0}}
   function build(){L=lay();cells=[];bugs=[];var s=L.s,rh=s*.87,j=0;
     for(var y=L.y0;y<L.y1+s;y+=rh,j++)for(var x=L.x0+(j&1?s/2:0);x<L.x1+s;x+=s){var k=cells.length;
       var n=R(k,1)>.45?6:5,rot=R(k,2)*6.283,pts=[];for(var q=0;q<n;q++){var a=rot+q*6.283/n,rr=.43*s*(.88+.2*R(k,10+q));pts.push([Math.cos(a)*rr,Math.sin(a)*rr])}
       cells.push({x:x+(R(k,3)-.5)*s*.22,y:y+(R(k,4)-.5)*s*.22,pts:pts,al:.34+.5*R(k,5)})}
-    var nb=L.mob?18:34;for(var i=0;i<nb;i++)bugs.push({x:L.x0+(.08+.9*R(i,20))*(L.x1-L.x0),y:L.y0+(.06+.88*R(i,21))*(L.y1-L.y0),rod:R(i,22)>.45,a:R(i,23)*6.283,ph:R(i,24)*6.283})}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);build();if(!running)frame(true)}
+    var nb=L.q?Math.round(w/60):L.mob?18:34;for(var i=0;i<nb;i++)bugs.push({x:L.x0+(.08+.9*R(i,20))*(L.x1-L.x0),y:L.y0+(.06+.88*R(i,21))*(L.y1-L.y0),rod:R(i,22)>.45,a:R(i,23)*6.283,ph:R(i,24)*6.283})}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);if(Q){var rr=cv.getBoundingClientRect();w=Math.max(1,rr.width);h=Math.max(1,rr.height)}else{w=innerWidth;h=innerHeight}cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);build();if(!running)frame(true)}
   function env(x,y){var nx=(x-L.x0)/(L.x1-L.x0),ny=(y-L.y0)/(L.y1-L.y0);
+    if(L.q)return {e:sm(0,.14,nx)*sm(0,.14,1-nx)*sm(0,.25,ny)*sm(0,.25,1-ny),nx:nx};
     var e=L.mob?sm(0,.18,ny)*sm(0,.22,1-ny):sm(0,.3,nx)*sm(0,.1,1-nx)*sm(.09,.26,ny)*sm(0,.1,1-ny);return {e:e,nx:nx}}
   function state(nx,cy){var d=cy-nx;return sm(0,.1,d)*(1-sm(.2,.42,d))}
   function poly(p,x,y,sc){c.beginPath();var n=p.length;for(var i=0;i<=n;i++){var a=p[i%n],b=p[(i+1)%n],mx=x+(a[0]+b[0])/2*sc,my=y+(a[1]+b[1])/2*sc;if(i===0)c.moveTo(mx,my);else c.quadraticCurveTo(x+a[0]*sc,y+a[1]*sc,mx,my)}c.closePath()}
   function frame(once){
     var t=(performance.now()-t0)/1000;if(RM)t=12;
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    cv.style.opacity=shown?String(.4+.6*dim):"";
+    if(!Q)cv.style.opacity=shown?String(.4+.6*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     var cy=((t*.05)%1.7)-.35,ox=m[0]*14,oy=m[1]*10;
     for(var i=0;i<cells.length;i++){var C=cells[i],E=env(C.x,C.y);if(E.e<.02)continue;var k=state(E.nx,cy);
@@ -991,18 +1007,32 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  addEventListener("resize",size);size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
-  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+  function onRs(){size()}addEventListener("resize",onRs);size();
+  function onPm(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)}addEventListener("pointermove",onPm,{passive:true});
+  return {resize:size,kill:function(){stop();removeEventListener("resize",onRs);removeEventListener("pointermove",onPm)},start:start,stop:stop,once:function(){frame(true)},finish:function(){},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
-})();
+}
+var field=makeField($("#field"),0);
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
-function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
+function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)});footField()}
+/* BT: the hero's liquefying blood field, quieter, behind the footer wordmark; runs only while the footer is on screen */
+var ffld=null,ffIO=null;
+function footField(){
+  if(ffIO)ffIO.disconnect();if(ffld)ffld.kill();ffld=null;ffIO=null;
+  var cv=$(".ftr .fcv");if(!cv)return;
+  function place(){var bw=cv.parentNode.querySelector(".bigw");if(!bw)return;var pad=Math.round(bw.offsetHeight*.2);cv.style.top=Math.max(0,bw.offsetTop-pad)+"px";cv.style.height=(bw.offsetHeight+pad*2)+"px"}
+  place();ffld=makeField(cv,1);
+  var fr=new ResizeObserver(function(){if(!cv.isConnected){fr.disconnect();return}place();ffld.resize()});fr.observe(cv.parentNode);
+  if(RM){ffld.once();return}
+  ffIO=new IntersectionObserver(function(es){var on=es[es.length-1].isIntersecting;on&&!document.hidden?ffld.start():ffld.stop()},{threshold:0});
+  ffIO.observe(cv);
+}
+document.addEventListener("visibilitychange",function(){if(ffld&&document.hidden)ffld.stop()});
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.7)*(1-p*.5))}
 
-/* ================= STORY CANVAS: one cartridge, the camera travels down it ================= */
+/* ================= STORY CANVAS: one cartridge, always whole in frame; each step lights its labelled chamber ================= */
 var story=null;
 function makeStory(cv){
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
@@ -1023,27 +1053,31 @@ function makeStory(cv){
   function draw(){
     p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
     var t=RM?10:(performance.now()-t0)/1000,C=cam();var W=[0,0,0,0];W[C.i0]=1-C.f;W[C.i0+1]=C.f;
-    var sc=Math.min(w,h*1.3)/(C.span*(w<620?1.3:1));
+    var mx=w<620?110:170,sc=Math.min((w-2*mx)/400,(h-36)/1150);C={x:-5,y:128};
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
-    c.lineWidth=1.1/sc;c.lineJoin="round";c.lineCap="round";c.strokeStyle="rgba("+PAPER+",.45)";
-    rr(-100,-400,200,250,26);c.stroke();
+    c.lineWidth=1.1/sc;c.lineJoin="round";c.lineCap="round";
+    /* the active chamber is drawn brighter and in the accent; the rest of the cartridge stays visible, dimmer */
+    function ch(k){var a=W[k];c.strokeStyle="rgba("+(a>.5?BL:PAPER)+","+(.34+.6*a).toFixed(3)+")";c.lineWidth=(1.1+1.1*a)/sc}
+    ch(0);rr(-100,-400,200,250,26);c.stroke();
+    c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=1.1/sc;
     ln([[-10,-150],[-10,-70]]);ln([[10,-150],[10,-70]]);
-    rr(-100,-70,200,140,18);c.stroke();ln([[100,-12],[180,-12]]);ln([[100,12],[180,12]]);
+    ch(1);rr(-100,-70,200,140,18);c.stroke();ln([[100,-12],[180,-12]]);ln([[100,12],[180,12]]);
+    c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=1.1/sc;
     ln([[-10,70],[-10,140]]);ln([[10,70],[10,140]]);
-    rr(-110,140,220,190,18);c.stroke();
+    ch(2);rr(-110,140,220,190,18);c.stroke();c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=1.1/sc;
     c.save();c.setLineDash([5/sc*2,4/sc*2]);c.strokeStyle="rgba("+BL+",.9)";ln([[-110,232],[110,232]]);c.restore();
     ln([[-90,330],[-90,372],[-190,372]]);ln([[-66,330],[-66,396],[-190,396]]);
     ln([[-8,330],[-8,520]]);ln([[8,330],[8,520]]);
-    rr(-44,520,88,130,16);c.stroke();
+    ch(3);rr(-44,520,88,130,16);c.stroke();c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=1.1/sc;
     var lv=.25+.7*((t*.04)%1);c.fillStyle="rgba("+BL+",.16)";c.fillRect(-42,648-120*lv,84,120*lv);
-    rr(-170,206,26,52,5);c.stroke();
+    ch(3);rr(-170,206,26,52,5);c.stroke();
     for(var a=0;a<5;a++){var ph=((t*.6+a/5)%1),R0=24+ph*110;c.strokeStyle="rgba("+BL+","+(.5*(1-ph))+")";c.beginPath();c.arc(-144,232,R0,-.55,.55);c.stroke()}
     /* blood cells liquefy as they descend */
-    for(var i=0;i<46;i++){var s=(R(i,1)+t*.06)%1,y=-385+s*230,x=(R(i,2)-.5)*170,d=sm(.3,.8,s);if(d<.99)cellShape(x,y,9*(1-.45*d),R(i,3)*3+t*.2,(1-d)*sm(0,.06,s),sc)}
+    for(var i=0;i<16;i++){var s=(R(i,1)+t*.06)%1,y=-385+s*230,x=(R(i,2)-.5)*160,d=sm(.3,.8,s);if(d<.99)cellShape(x,y,7.5*(1-.45*d),R(i,3)*3+t*.2,.8*(1-d)*sm(0,.06,s),sc)}
     /* human DNA released and diverted out */
     for(i=0;i<16;i++){var s2=(R(i,4)+t*.05)%1,x2,y2,a2;
-      if(s2<.5){var v=s2/.5;x2=(R(i,5)-.5)*120*(1-sm(.5,.9,v));y2=-250+v*250;a2=sm(0,.15,v)}else{var v2=(s2-.5)/.5;x2=v2*200;y2=(R(i,6)-.5)*18;a2=1-sm(.7,1,v2)}
+      if(s2<.5){var v=s2/.5;x2=(R(i,5)-.5)*120*(1-sm(.5,.9,v));y2=-250+v*250;a2=sm(0,.15,v)}else{var v2=(s2-.5)/.5;x2=v2*172;y2=(R(i,6)-.5)*18;a2=1-sm(.7,1,v2)}
       squig(x2,y2,18,.75*a2,DIM,sc,R(i,7)*6+t)}
     /* wash flow through the membrane */
     for(i=0;i<26;i++){var s3=(R(i,8)+t*.09)%1,P3=[[(R(i,9)-.5)*190,150],[(R(i,9)-.5)*150,320],[-78,360],[-190,384]],q3=along(P3,s3);dot(q3[0],q3[1],1.5,DIM,.6*sm(0,.08,s3)*(1-sm(.9,1,s3)))}
@@ -1055,11 +1089,18 @@ function makeStory(cv){
       else if(s4<.86){var b=(s4-.8)/.06;c.strokeStyle="rgba("+BL+","+(1-b)+")";c.lineWidth=1/sc;c.beginPath();c.arc(xp,228,4+b*14,0,6.283);c.stroke();bug(xp,228,rod,an,1-b,sc)}
       else{var v4=(s4-.86)/.14;for(var k=0;k<3;k++){var qq=along([[xp+(k-1)*5,236],[(k-1)*3,330],[(k-1)*3,600]],Math.min(1,v4*1.05+k*.03));squig(qq[0],qq[1],7,.95*(1-sm(.9,1,v4)),BL,sc,k+t*3)}}}
     c.restore();
-    function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-200||sx>w+200||sy<-40||sy>h+40)return;c.globalAlpha=Math.min(1,a);c.font="400 10.5px 'DM Mono',monospace";c.fillStyle="rgb(200,216,230)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";c.fillText(txt,sx,sy);c.globalAlpha=1}
-    lab("WHOLE BLOOD · 4–7 mL",0,-414,W[0]);lab("pH SHOCK",152,-292,W[0]);lab("LIQUEFIED",152,-196,W[0]);
-    lab("HUMAN DNA OUT · 99.9%",140,-30,W[1]);lab("PATHOGENS CONTINUE",0,92,W[1]);
-    lab("FILTER · >0.4 µm",172,222,W[2]);lab("WASH OUT",-150,420,W[2]);
-    lab("ULTRASOUND",-172,190,W[3]);lab("PCR-READY DNA · 50–100 µL",0,674,W[3]);
+    function X(wx){return (wx-C.x)*sc+w/2}function Y(wy){return (wy-C.y)*sc+h/2}
+    function lab(txt,wx,wy,a,align,col){if(a<.02)return;c.globalAlpha=Math.min(1,a);c.font="400 "+(w<620?9.5:10.5)+"px 'DM Mono',monospace";c.fillStyle=col||"rgb(200,216,230)";c.textAlign=align||"center";c.textBaseline="middle";if(c.letterSpacing!==undefined)c.letterSpacing=w<620?"1px":"1.4px";c.fillText(txt,X(wx),Y(wy));c.globalAlpha=1;c.textBaseline="alphabetic"}
+    function chLab(k,txt,x0,y0,x1){var a=W[k],on=a>.5;c.strokeStyle="rgba("+(on?BL:PAPER)+","+(.35+.5*a).toFixed(3)+")";c.lineWidth=1;c.beginPath();c.moveTo(X(x0),Y(y0));c.lineTo(X(x1)-6,Y(y0));c.stroke();
+      lab(txt,x1,y0,.62+.38*a,"left",on?"rgb(143,185,223)":"rgb(200,216,230)")}
+    chLab(0,"1 · LYSIS CHAMBER",100,-330,128);
+    chLab(1,"2 · DNA REMOVAL",100,-48,128);
+    chLab(2,"3 · FILTER CHAMBER",110,180,128);
+    chLab(3,"4 · ELUTION TUBE",44,585,72);
+    lab("WHOLE BLOOD · 4–7 mL",0,-420,.5+.5*W[0]);lab("pH SHOCK · LIQUEFIED",128,-304,w<620?0:W[0],"left");
+    lab(w<620?"DNA OUT · 99.9%":"HUMAN DNA OUT · 99.9%",w<620?208:210,0,W[1],"left");
+    lab("FILTER · >0.4 µm",124,236,W[2],"left");lab("WASH OUT",-198,396,W[2],"right");
+    lab("ULTRASOUND",-178,232,W[3],"right");lab("PCR-READY DNA · 50–100 µL",0,676,.5+.5*W[3]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1186,8 +1227,8 @@ var ps=$("#ps"),psBody=$("#psBody"),psMedia=$("#psMedia"),psSheet=$("#psSheet"),
 function plate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp)+'</span><span class="q">'+esc(p.title)+'</span></div>'}
 window.ssPlate=function(im){var m=im.parentNode;im.remove();if(m)m.insertAdjacentHTML("beforeend",m.getAttribute("data-plate")||"")};
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  /* BQ: every NEH headshot is a small source (156-243px) -> slim mode (96px circle beside the name); no photo -> compact noimg */
-  var m=p.img?"slim":"noimg";
+  /* BV: every NEH headshot is a small source (156-243px), so the sheet carries no portrait (the card shows the headshot) */
+  var m="noimg";
   ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
   psMedia.innerHTML="";
   var head=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
@@ -1195,7 +1236,7 @@ function fillBio(i){var p=TEAM[i],n=TEAM.length;
    (p.links?'<ul>'+p.links.map(function(l){return '<li><a class="ul" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0])+' ↗</a></li>'}).join("")+'</ul>':'')+
    '<p class="lab src">Profile drawn from newenglandhemolytics.com, company releases and NSF award records.</p>';
   psBody.scrollTop=0;
-  $("#psPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  $("#psPrev").setAttribute("href","#/team/"+TEAM[sheetNb(i,-1)].slug);$("#psNext").setAttribute("href","#/team/"+TEAM[sheetNb(i,1)].slug);
   document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

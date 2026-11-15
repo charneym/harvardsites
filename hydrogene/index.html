@@ -68,6 +68,7 @@ h1,h2,h3{text-wrap:balance}
 .shead p{max-width:46ch;margin:0;color:var(--stone)}
 .light .shead p{color:var(--stoneD)}
 .kick{display:block;margin-bottom:22px;color:var(--accL)}
+.mani .kick{max-width:29ch;margin-inline:auto}
 .light .kick{color:var(--accD)}
 
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
@@ -133,7 +134,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
 
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:650px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,150px) var(--side) clamp(76px,10vh,116px);z-index:1}
@@ -165,7 +166,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta{background:var(--paper2)}
 
 /* manifesto + stats */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch}
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch;margin-inline:auto}
 .mani .txt .w{opacity:.17}
 .mani .txt em{color:var(--accD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -229,6 +230,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pcard:hover,.pcard:focus-visible{transform:translateY(-5px);box-shadow:0 28px 48px -32px rgba(8,28,52,.5)}
 .pcard:hover::before,.pcard:focus-visible::before{transform:scaleX(1)}
 .pcard:hover::after,.pcard:focus-visible::after{opacity:1}
+
+/* BV/BZ: a person whose card already carries everything known is terminal — type on a rule, no box, no profile link */
+.pcard.flat{border:0;background:none;padding:22px 0 0;min-height:0;cursor:default;border-top:1px solid var(--hairD)}
+.dark .pcard.flat,.dark2 .pcard.flat{border-top-color:var(--hair)}
+.pcard.flat::before,.pcard.flat::after{display:none}
+.pcard.flat:hover{transform:none;box-shadow:none}
+.pcard.flat h3{margin:0 0 8px;transform:none}
+.pcard.flat .ttl{max-width:30ch}
+.pcard.flat .ex{margin-top:10px}
 .pcard .grp{color:var(--stoneD)}
 .dark .pcard .grp,.dark2 .pcard .grp{color:var(--stone)}
 .pcard h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,1.85vw,29px);line-height:1.12;letter-spacing:-.015em;margin:26px 0 8px;transition:transform .32s var(--eo),color .25s var(--eo)}
@@ -273,7 +283,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
-.ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr{position:relative}
+#ftrCv{position:absolute;left:0;right:0;bottom:0;width:100%;height:68%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.1s ease-out;-webkit-mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent)}
+#ftrCv.ready{opacity:1}
+.ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
+.ftr{z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--accL)}
@@ -388,9 +402,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pipe-h{display:none}
   .prow{grid-template-columns:1fr;row-gap:8px}
   .prow .note{grid-column:1/2}
-  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
-  .row-a .c4{grid-column:12/13}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px;padding-right:34px}
+  .row-a h3{grid-column:1/13}
+  .row-a .c4{position:absolute;right:0;top:20px;grid-column:auto}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
   .fld.w,.subr{grid-column:1/2}
@@ -427,22 +441,19 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--accD)}
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.1em}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(34vh,260px);border-radius:18px 18px 0 0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
-  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+  .ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
+  .ps.noimg .ps-bar{border-radius:18px 18px 0 0}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -960,8 +971,31 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@hydrogenetx.com">info@hydrogenetx.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Funding</span>NIDDK SBIR Phase II · 2026<br>NHLBI SBIR Phase II · 2026<br>NIDDK STTR Fast-Track · 2024</div>'+
-  '</div><span class="bigw" aria-hidden="true" id="bigwm">HydroGene</span>'+
+  '</div><canvas id="ftrCv" aria-hidden="true"></canvas><span class="bigw" aria-hidden="true" id="bigwm">HydroGene</span>'+
   '<div class="legal"><span class="lab">© 2026 HydroGene Therapeutics, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ============ BT: the hero's living visual, quieter, behind the footer wordmark ============ */
+var ftrFX=null;
+function footerFX(){
+  var cv=$("#ftrCv");if(!cv||!field.scene)return null;
+  var c=cv.getContext("2d"),raf=0,vis=false,alive=true,t0=performance.now(),dpr=1,W=0,H=0,shown=false;
+  function size(){var r=cv.getBoundingClientRect();if(!r.width||!r.height)return;W=r.width;H=r.height;
+    dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);draw()}
+  function draw(){
+    if(!W||!H)return;
+    var t=RM?9:(performance.now()-t0)/1000;
+    var bb=field.bb,S=Math.min(W*.82/bb.w,H*.84/bb.h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    field.scene(c,S,W/2,H*.5,0,t,.5);
+    if(!shown){shown=true;requestAnimationFrame(function(){cv.classList.add("ready")})}
+  }
+  function loop(){if(!alive)return;if(vis)draw();raf=requestAnimationFrame(loop)}
+  var io=new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis&&!W)size()});io.observe(cv);
+  function onResize(){size()}
+  addEventListener("resize",onResize);
+  requestAnimationFrame(size);loop();
+  return {kill:function(){alive=false;cancelAnimationFrame(raf);io.disconnect();removeEventListener("resize",onResize)}};
 }
 
 /* ============ ROUTER ============ */
@@ -1038,18 +1072,10 @@ var field=(function(){
   function cl(x){return x<0?0:x>1?1:x}
   function smoothPath(P){c.beginPath();var n=P.length;c.moveTo((P[0][0]+P[n-1][0])/2,(P[0][1]+P[n-1][1])/2);
     for(var i=0;i<n;i++){var a=P[i],b=P[(i+1)%n];c.quadraticCurveTo(a[0],a[1],(a[0]+b[0])/2,(a[1]+b[1])/2)}c.closePath()}
-  function frame(once){
-    var t=RM?14:(performance.now()-t0)/1000;
-    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
-    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
-    c.save();
-    c.translate(cxp+m[0]*22,H*L.cy+m[1]*15);
-    c.rotate(m[0]*.03);c.scale(S,S);c.translate(-BB.x,-BB.y);
+  function scene(c,S,ox,oy,rot,t,al){
+    c.save();c.translate(ox,oy);if(rot)c.rotate(rot);c.scale(S,S);c.translate(-BB.x,-BB.y);
     c.lineJoin="round";c.lineCap="round";
     var px=function(n){return n/S};
-    var e=IN.v*IN.v*(3-2*IN.v),al=dim*e;
     /* the dose cycle: a wave climbs the tree, the lobules express, then a new dose follows */
     var CYC=11,ph=(t%CYC)/CYC;
     var front=cl(ph/.46)*TMAX*1.1;
@@ -1095,6 +1121,15 @@ var field=(function(){
       c.beginPath();c.moveTo(-72,116);c.quadraticCurveTo(-18,92,26,44);c.stroke()}
     c.fillStyle="rgba(111,208,245,"+(.9*al).toFixed(3)+")";c.beginPath();c.arc(26,44,px(4.5),0,6.283);c.fill();
     c.restore();
+  }
+  function frame(once){
+    var t=RM?14:(performance.now()-t0)/1000;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
+    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
+    var e=IN.v*IN.v*(3-2*IN.v);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    scene(c,S,cxp+m[0]*22,H*L.cy+m[1]*15,m[0]*.03,t,dim*e);
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1104,7 +1139,7 @@ var field=(function(){
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
-   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},scene:scene,bb:BB};
 })();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1151,7 +1186,7 @@ function makeStory(cv){
       LOBS.push({x:x,y:y,r:15,d:near.d1,ph:R(gx*7+gy,5)});
     }
   })();
-  var CAM=[[214,152,470],[404,44,350],[LC[0],LC[1],140],[FC.x,FC.y,74],[520,10,660]];
+  var CAM=[[388,52,740],[404,44,350],[LC[0],LC[1],140],[FC.x,FC.y,74],[520,10,660]];
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   function sm(x){return x*x*(3-2*x)}
   function cl(x){return x<0?0:x>1?1:x}
@@ -1192,30 +1227,45 @@ function makeStory(cv){
         c.fillStyle="rgba("+GENE+","+(.95*expressed*wide*gw).toFixed(3)+")";
         c.beginPath();c.arc(L.x,L.y,4.2,0,6.283);c.fill()}
     }
-    /* --- duodenum --- */
+    /* --- duodenum: one closed lumen the duct opens into at the papilla --- */
     c.lineWidth=px(1.4);c.strokeStyle="rgba("+PAPER+",.3)";
-    curve([[14,306],[40,250],[48,200],[84,168],[134,174]]);
-    curve([[42,326],[74,268],[84,214],[116,196],[150,200]]);
+    smoothPath([[14,306],[40,250],[48,200],[84,168],[134,174],[150,202],[116,198],[86,216],[74,268],[44,328]],true);
+    c.fillStyle="rgba(16,56,94,.5)";c.fill();c.stroke();
+    /* the papilla itself: where the catheter crosses the wall */
+    c.lineWidth=px(1.6);c.strokeStyle="rgba("+PAPER+",.5)";
+    c.beginPath();c.arc(DUCT[0][0]+4,DUCT[0][1]-2,7,0,6.283);c.stroke();
     /* --- endoscope: advances to the papilla in step 1 --- */
     var adv=seg01(p,0,.16);
     var tip=ptAt(DUCT,Math.min(1,.04+adv*.26));
     c.strokeStyle="rgba("+PAPER+",.62)";c.lineWidth=px(7);
-    c.beginPath();c.moveTo(4,342);c.quadraticCurveTo(38,272,tip[0],tip[1]);c.stroke();
+    c.beginPath();c.moveTo(29,317);c.quadraticCurveTo(48,266,tip[0],tip[1]);c.stroke();
     c.strokeStyle="rgba("+ACC+",.5)";c.lineWidth=px(2.2);
-    c.beginPath();c.moveTo(4,342);c.quadraticCurveTo(38,272,tip[0],tip[1]);c.stroke();
+    c.beginPath();c.moveTo(29,317);c.quadraticCurveTo(48,266,tip[0],tip[1]);c.stroke();
     /* --- bile duct, dilating under pressure --- */
     var press=seg01(p,.14,.26)*(1-seg01(p,.44,.6));
     c.strokeStyle="rgba("+PAPER+",.5)";c.lineWidth=px(5+press*5);curve(DUCT);
     /* --- the tree, filling --- */
+    var farA=cl((C.span-120)/160),nearA=cl((C.span-55)/50);
     for(i=0;i<TREE.length;i++){
       var b=TREE[i];
-      c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=px(b.w);
+      var treeA=Math.hypot(b.x1-LC[0],b.y1-LC[1])<64?Math.max(farA,nearA):farA;
+      if(treeA<.02)continue;
+      c.strokeStyle="rgba("+PAPER+","+(.34*treeA).toFixed(3)+")";c.lineWidth=px(b.w);
       c.beginPath();c.moveTo(b.x0,b.y0);c.lineTo(b.x1,b.y1);c.stroke();
       var f=cl((front-b.d0)/(b.d1-b.d0));
       if(f>.002){
         var near=cl(1-Math.abs(front-(b.d0+(b.d1-b.d0)*f))/26);
-        c.strokeStyle="rgba("+ACC+","+(.5+.45*near).toFixed(3)+")";c.lineWidth=px(b.w*(1+press*.5)+near*1.6);
+        c.strokeStyle="rgba("+ACC+","+((.5+.45*near)*treeA).toFixed(3)+")";c.lineWidth=px(b.w*(1+press*.5)+near*1.6);
         c.beginPath();c.moveTo(b.x0,b.y0);c.lineTo(b.x0+(b.x1-b.x0)*f,b.y0+(b.y1-b.y0)*f);c.stroke()}
+    }
+    /* every duct tip ends on a lobule, so no branch stops in mid-air */
+    for(i=0;i<TIPS.length;i++){var tp=TIPS[i];
+      var tA=Math.hypot(tp.x1-LC[0],tp.y1-LC[1])<64?Math.max(farA,nearA):farA;
+      if(tA<.02)continue;
+      var tl=cl((front-tp.d1)/14);
+      c.lineWidth=px(1.1);c.strokeStyle="rgba("+DIM+","+((.34+.3*tl)*tA).toFixed(3)+")";
+      c.beginPath();c.arc(tp.x1,tp.y1,5.2,0,6.283);c.stroke();
+      if(tl>.02){c.fillStyle="rgba(39,174,228,"+(.3*tl*tA).toFixed(3)+")";c.fill()}
     }
     /* --- plasmid packets riding the duct while the dose is flowing --- */
     var flow=seg01(p,.12,.2)*(1-seg01(p,.46,.6));
@@ -1224,10 +1274,17 @@ function makeStory(cv){
     /* --- the lobule rosette, always present, detailed as we approach --- */
     var lobA=seg01(p,.3,.46);
     c.lineWidth=px(1.4);
-    c.strokeStyle="rgba("+PAPER+","+(.2+.42*lobA).toFixed(3)+")";
+    var rosA=(.2+.42*lobA)*(1-.86*wide);
+    c.strokeStyle="rgba("+PAPER+","+rosA.toFixed(3)+")";
     for(i=0;i<CELLS.length;i++){var cl2=CELLS[i];
-      c.beginPath();c.ellipse(cl2.x,cl2.y,cl2.r,cl2.r*.86,0,0,6.283);c.stroke()}
-    c.strokeStyle="rgba("+DIM+","+(.3+.3*lobA).toFixed(3)+")";
+      var isF=cl2.i===FC.i;
+      c.lineWidth=px(isF?1.4+1.8*lobA:1.4);
+      c.strokeStyle="rgba("+PAPER+","+(isF?rosA+.38*lobA:rosA).toFixed(3)+")";
+      c.beginPath();c.ellipse(cl2.x,cl2.y,cl2.r,cl2.r*.86,0,0,6.283);
+      if(isF&&lobA>.02){c.fillStyle="rgba(39,174,228,"+(.12*lobA).toFixed(3)+")";c.fill()}
+      c.stroke()}
+    c.lineWidth=px(1.4);
+    c.strokeStyle="rgba("+DIM+","+((.3+.3*lobA)*(1-.86*wide)).toFixed(3)+")";
     c.beginPath();c.arc(LC[0],LC[1],6,0,6.283);c.stroke();
     /* --- the focus hepatocyte: pores, plasmid, nucleus, protein --- */
     var CX=FC.x,CY=FC.y,CR=FC.r;
@@ -1261,19 +1318,21 @@ function makeStory(cv){
       c.beginPath();c.arc(q2[0],q2[1],px(9),0,6.283);c.stroke()}
     c.restore();
     /* --- labels in screen space --- */
-    function lab(txt,wx,wy,a,align){if(a<.03)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
+    function lab(txt,wx,wy,a,align){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
       c.font="400 10.5px 'IBM Plex Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r=l+tw;
       if(l<w*.08+6||r>w*.92-6||sy<h*.08||sy>h*.93)return;
       c.globalAlpha=Math.min(1,a);
       c.shadowColor="rgba(5,15,30,.95)";c.shadowBlur=7;c.fillStyle="rgb(188,204,220)";
       c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
-    lab("DUODENUM · PAPILLA",96,268,W[0]);
-    lab("ERCP CATHETER",208,214,W[0]+W[1]*.6);
-    lab("BILE DUCT",316,146,W[0]+W[1]);
+    lab("LIVER",552,-146,W[0]);
+    lab("DUODENUM · PAPILLA",170,300,W[0],"left");
+    lab("ERCP CATHETER",214,236,W[0]+W[1]*.6);
+    lab("BILE DUCT",300,132,W[0]+W[1]);
     lab("PRESSURE WAVE",470,-134,W[1]);
-    lab("HEPATIC LOBULE",LC[0],LC[1]+LR+26,W[2]);
-    lab("HEPATOCYTE",FC.x,FC.y-CR-12,W[3]);
+    lab("HEPATIC LOBULE",LC[0],LC[1]+LR+15,W[2]);
+    lab("CENTRAL VEIN",LC[0],LC[1]+15,W[2]);
+    lab("HEPATOCYTE",FC.x,FC.y-CR-5,W[3]);
     lab("PLASMID DNA",FC.x+CR+14,FC.y+2,W[3],"left");
     lab("EVERY LOBE · REDOSABLE",520,180,W[4]);
   }
@@ -1416,18 +1475,16 @@ function contactInit(view){
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia"),cur=-1,lastFocus=null,base="#/team";
-  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+  function mode(m){ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    /* BQ: the sheet adapts to the photo — big and sharp: two columns; small: a 96px circle; none: one compact column */
-    mode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+    /* BV: the sheet carries a LARGE portrait or none at all — a small headshot belongs on the card only */
+    var big=!!(p.img&&p.imgW>=480);
+    mode(big?"":"noimg");
     if(p.img&&!p.imgW){var probe=new Image();
-      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i&&p.imgW<480)fill(i)};
+      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i)fill(i)};
       probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=p.img}
-    var slim=ps.classList.contains("slim");
-    media.innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
-    var head=slim
-      ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-      : '<h2 id="psName">'+esc(p.name)+'</h2>';
+    media.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
+    var head='<h2 id="psName">'+esc(p.name)+'</h2>';
     body.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
       (p.q?'<blockquote style="margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34">“'+esc(p.q)+'”<cite class="lab" style="display:block;margin-top:14px;font-style:normal">'+esc(p.qs)+'</cite></blockquote>':'')+
@@ -1482,7 +1539,9 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
   var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  if(ftrFX){ftrFX.kill();ftrFX=null}
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  ftrFX=footerFX();
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.82);observeField();

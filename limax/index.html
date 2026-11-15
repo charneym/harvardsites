@@ -68,6 +68,7 @@ h1,h2,h3{text-wrap:balance}
 .shead p{max-width:46ch;margin:0;color:var(--stone)}
 .light .shead p{color:var(--stoneD)}
 .kick{display:block;margin-bottom:22px;color:var(--accL)}
+.mani .kick{max-width:29ch;margin-inline:auto}
 .light .kick{color:var(--accD)}
 
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
@@ -135,7 +136,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
 
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:650px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,150px) var(--side) clamp(76px,10vh,116px);z-index:1}
@@ -167,7 +168,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta{background:var(--paper2)}
 
 /* manifesto + stats */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch}
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch;margin-inline:auto}
 .mani .txt .w{opacity:.17}
 .mani .txt em{color:var(--accD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -269,6 +270,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pcard:hover,.pcard:focus-visible{transform:translateY(-5px);box-shadow:0 28px 48px -32px rgba(24,51,79,.5)}
 .pcard:hover::before,.pcard:focus-visible::before{transform:scaleX(1)}
 .pcard:hover::after,.pcard:focus-visible::after{opacity:1}
+
+/* BV/BZ: a person whose card already carries everything known is terminal — type on a rule, no box, no profile link */
+.pcard.flat{border:0;background:none;padding:22px 0 0;min-height:0;cursor:default;border-top:1px solid var(--hairD)}
+.dark .pcard.flat,.dark2 .pcard.flat{border-top-color:var(--hair)}
+.pcard.flat::before,.pcard.flat::after{display:none}
+.pcard.flat:hover{transform:none;box-shadow:none}
+.pcard.flat h3{margin:0 0 8px;transform:none}
+.pcard.flat .ttl{max-width:30ch}
+.pcard.flat .ex{margin-top:10px}
 .pcard .grp{color:var(--stoneD)}
 .dark .pcard .grp,.dark2 .pcard .grp{color:var(--stone)}
 .pcard h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,1.85vw,29px);line-height:1.12;letter-spacing:-.015em;margin:26px 0 8px;transition:transform .32s var(--eo),color .25s var(--eo)}
@@ -313,7 +323,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
-.ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr{position:relative}
+#ftrCv{position:absolute;left:0;right:0;bottom:0;width:100%;height:68%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.1s ease-out;-webkit-mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent)}
+#ftrCv.ready{opacity:1}
+.ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
+.ftr{z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--accL)}
@@ -429,9 +443,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pipe-h{display:none}
   .prow{grid-template-columns:1fr;row-gap:8px}
   .prow .note{grid-column:1/2}
-  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
-  .row-a .c4{grid-column:12/13}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px;padding-right:34px}
+  .row-a h3{grid-column:1/13}
+  .row-a .c4{position:absolute;right:0;top:20px;grid-column:auto}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
   .fld.w,.subr{grid-column:1/2}
@@ -471,22 +485,19 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--accD)}
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.1em}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(34vh,260px);border-radius:18px 18px 0 0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
-  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+  .ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
+  .ps.noimg .ps-bar{border-radius:18px 18px 0 0}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -762,8 +773,6 @@ var P_LIVER=WIX+"d1609a_2a00c989d0f74aaea85abf40bd375945~mv2.jpg/v1/crop/x_11,y_
 var P_TEAM1=WIX+"d1609a_a9a9681ab4d24029afadc9fbfe41d90c~mv2.png/v1/fill/w_994,h_522,al_c,q_90/d1609a_a9a9681ab4d24029afadc9fbfe41d90c~mv2.png";
 var P_TEAM2=WIX+"d1609a_18a36642bb394281be7fd3d01ebfbe1d~mv2.jpg/v1/crop/x_188,y_139,w_2622,h_1354/fill/w_972,h_504,al_c,q_85/IMG_6195_JPG.jpg";
 var P_AWARD=WIX+"d1609a_7796b39281d047debf6b4e49719ccdb8~mv2.jpg/v1/fill/w_560,h_550,al_c,q_85/images_edited.jpg";
-var L_GATES=WIX+"d1609a_ba157a6de4c948779a235d61bb3ee6f3~mv2.png/v1/fill/w_576,h_288,al_c,q_85/d1609a_ba157a6de4c948779a235d61bb3ee6f3~mv2.png";
-var L_WYSS=WIX+"d1609a_3f6d75b2a0fe4f57a7b49521e5175d63~mv2.jpg/v1/fill/w_524,h_178,al_c,q_85/wyss_logo.jpg";
 var NEWS=[
  {d:"2026-09-09",s:"NIH RePORTER",t:"NHLBI awards a Phase II SBIR for an advanced hemostatic adhesive hydrogel system for postpartum hemorrhage control",u:"https://reporter.nih.gov/search/?projects=1R44HL184761-01"},
  {d:"2026-04-08",s:"Nature Communications",t:"Hemostatic Tough Adhesives seal tissue and control hemorrhage",u:"https://pubmed.ncbi.nlm.nih.gov/41951623/"},
@@ -789,43 +798,42 @@ var TEAM=[
        "He is an author on the body of work the company cites as its foundation, including the 2026 Nature Communications paper on Hemostatic Tough Adhesives, the 2024 Science Translational Medicine paper on sutureless dural sealing, the 2024 PNAS paper on instant adhesion with dry chitosan films, and the 2021 Nature Biomedical Engineering paper on a dual-function adhesive and gliding hydrogel for tendon repair."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>, the MTEC member listing and NIH RePORTER.'},
  {slug:"david-mooney",name:"David Mooney, PhD",title:"Co-founder",grp:"Team",img:WIX+"d1609a_0a54192b1ecc4876a2830f093e9491ee~mv2.png/v1/crop/x_126,y_110,w_896,h_963/fill/w_537,h_582,al_c,q_85/image-6_edited.png",
-  ex:"Co-founder. Limax is a spinout of the Wyss Institute at Harvard University, where the tough adhesive chemistry was developed.",
+  ex:"Co-founder. The adhesive chemistry Limax commercializes came out of his Harvard laboratory.",
   bio:["David Mooney is a co-founder of Limax Biosciences, listed on the company’s leadership team and on its MTEC member page.",
-       "Limax describes itself as a spinout of the Wyss Institute at Harvard University, where the dual-network tough adhesive technology the company commercializes was developed.",
-       "Limax publishes no further biography for its co-founders, so none is given here."],
+       "Limax describes itself as a spinout of the Wyss Institute at Harvard University, where the dual-network tough adhesive technology the company commercializes was developed. Beyond that the company publishes no biography for its co-founders, so none is given here."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a> and the MTEC member listing.'},
  {slug:"phoebe-kwon",name:"Phoebe Kwon",title:"Research Scientist",grp:"Team",img:WIX+"d1609a_b2984e863fa74436b7f51871791954f9~mv2.png/v1/crop/x_121,y_65,w_1016,h_980/fill/w_549,h_525,al_c,q_85/phoebe_edited.png",
   ex:"Research scientist, and principal investigator on the 2025 NHLBI Phase I award for tough adhesive sealants in vascular surgery.",
   bio:["Phoebe Kwon is a research scientist at Limax Biosciences.",
        "She led the company’s 2025 NHLBI Phase I SBIR award as principal investigator, “Tough Adhesive Sealants for Vascular Surgery”, which covers sterilization validation, bench performance and a pilot large animal trial toward an investigational device exemption."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a> and NIH RePORTER.'},
- {slug:"hamza-ijaz",name:"Hamza Ijaz",title:"Research Scientist",grp:"Team",img:WIX+"d1609a_7ed1e40ea63b4cbcba3b41e1b93999e4~mv2.png/v1/crop/x_18,y_0,w_1218,h_1254/fill/w_507,h_525,al_c,q_85/hamza%20image_edited.png",
+ {flat:1,slug:"hamza-ijaz",name:"Hamza Ijaz",title:"Research Scientist",grp:"Team",img:WIX+"d1609a_7ed1e40ea63b4cbcba3b41e1b93999e4~mv2.png/v1/crop/x_18,y_0,w_1218,h_1254/fill/w_507,h_525,al_c,q_85/hamza%20image_edited.png",
   ex:"Research scientist at Limax Biosciences.",
   bio:["Hamza Ijaz is a research scientist at Limax Biosciences, which publishes no further biography for him."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"adam-hacking",name:"Adam Hacking, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
+ {flat:1,slug:"adam-hacking",name:"Adam Hacking, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
   bio:["Adam Hacking is listed on Limax’s team page as a commercial and strategic advisor. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"anh-hoang",name:"Anh Hoang, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
+ {flat:1,slug:"anh-hoang",name:"Anh Hoang, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
   bio:["Anh Hoang is listed on Limax’s team page as a commercial and strategic advisor. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"neal-muni",name:"Neal Muni, MD, MSPH",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
+ {flat:1,slug:"neal-muni",name:"Neal Muni, MD, MSPH",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
   bio:["Neal Muni is listed on Limax’s team page as a commercial and strategic advisor. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"zhigang-suo",name:"Zhigang Suo, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
+ {flat:1,slug:"zhigang-suo",name:"Zhigang Suo, PhD",title:"Commercial and strategic advisor",grp:"Advisors",img:null,ex:"Commercial and strategic advisor to Limax Biosciences.",
   bio:["Zhigang Suo is listed on Limax’s team page as a commercial and strategic advisor. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"david-wu",name:"David Wu, DMD",title:"Clinical advisor · maxillofacial surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for maxillofacial surgery.",
+ {flat:1,slug:"david-wu",name:"David Wu, DMD",title:"Clinical advisor · maxillofacial surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for maxillofacial surgery.",
   bio:["David Wu is listed on Limax’s team page as a clinical advisor in maxillofacial surgery.",
        "Limax’s publications page credits a Wu & Freedman paper in Science Translational Medicine (2024) on sutureless dural sealing and a Wu & Freedman paper in the Journal of Dental Research (2023) on DenTAl, an intraoral tough adhesive for drug delivery."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"francis-mcgovern",name:"Francis McGovern, MD",title:"Clinical advisor · urologic surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for urologic surgery.",
+ {flat:1,slug:"francis-mcgovern",name:"Francis McGovern, MD",title:"Clinical advisor · urologic surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for urologic surgery.",
   bio:["Francis McGovern is listed on Limax’s team page as a clinical advisor in urologic surgery. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"brian-hibler",name:"Brian Hibler, MD",title:"Clinical advisor · dermatology",grp:"Clinical advisors",img:null,ex:"Clinical advisor for dermatology.",
+ {flat:1,slug:"brian-hibler",name:"Brian Hibler, MD",title:"Clinical advisor · dermatology",grp:"Clinical advisors",img:null,ex:"Clinical advisor for dermatology.",
   bio:["Brian Hibler is listed on Limax’s team page as a clinical advisor in dermatology. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'},
- {slug:"rishi-kundi",name:"Rishi Kundi, MD",title:"Clinical advisor · vascular surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for vascular surgery.",
+ {flat:1,slug:"rishi-kundi",name:"Rishi Kundi, MD",title:"Clinical advisor · vascular surgery",grp:"Clinical advisors",img:null,ex:"Clinical advisor for vascular surgery.",
   bio:["Rishi Kundi is listed on Limax’s team page as a clinical advisor in vascular surgery. Limax publishes no further biography."],
   src:'<a class="ul" href="https://www.limaxbiosciences.com/our-team" target="_blank" rel="noopener">limaxbiosciences.com/our-team</a>.'}
 ];
@@ -841,9 +849,11 @@ function head(o){
 }
 function pCard(p,big){
   var fig=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="lxNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
+  var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>';
+  /* BV: a sheet opens only when it adds something the card does not already say */
+  if(p.flat)return '<div class="pcard flat'+(p.img?'':' noimg')+'">'+fig+meta+(p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'</div>';
   return '<a class="pcard'+(p.img?'':' noimg')+(big?' big':'')+'" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+
-   '<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+
-   (big&&p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'<span class="lab go">Profile '+ARR+'</span></div></a>';
+   meta+(big&&p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'<span class="lab go">Profile '+ARR+'</span></div></a>';
 }
 window.lxNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},140)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+(/-01-01$/.test(n.d)?n.d.slice(0,4):fd(n.d))+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
@@ -915,8 +925,8 @@ function vHome(){
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Support</span><h2 class="d2 split">Backed by the people who fund <em>hard materials.</em></h2></div><p data-r>Grants from the Bill &amp; Melinda Gates Foundation, NSF, NIH, MTEC, the Massachusetts Life Sciences Center and BluePrint, and a JLABS QuickFire Challenge award.</p></div>'+
-   '<div class="plates" data-group><div class="plate"><img src="'+L_GATES+'" alt="Bill &amp; Melinda Gates Foundation" loading="lazy" onerror="this.parentNode.innerHTML=\'<b>Gates Foundation</b>\'"></div>'+
-    '<div class="plate"><img src="'+L_WYSS+'" alt="Wyss Institute" loading="lazy" onerror="this.parentNode.innerHTML=\'<b>Wyss Institute</b>\'"></div>'+
+   '<div class="plates" data-group><div class="plate"><b>Bill &amp; Melinda Gates Foundation</b></div>'+
+    '<div class="plate"><b>Wyss Institute at Harvard</b></div>'+
     '<div class="plate"><b>NIH · NSF · MTEC</b></div><div class="plate"><b>MLSC · BluePrint · JLABS</b></div></div>'+
    '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,3))+'</div>'+
   '</div></section>'+
@@ -1048,8 +1058,31 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@limaxbiosciences.com">info@limaxbiosciences.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Funding</span>NHLBI SBIR Phase II · 2026<br>NHLBI SBIR Phase I · 2025<br>Gates Foundation · NSF · MTEC</div>'+
-  '</div><span class="bigw" aria-hidden="true" id="bigwm">LIMAX</span>'+
+  '</div><canvas id="ftrCv" aria-hidden="true"></canvas><span class="bigw" aria-hidden="true" id="bigwm">LIMAX</span>'+
   '<div class="legal"><span class="lab">© 2026 Limax Biosciences, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ============ BT: the hero's living visual, quieter, behind the footer wordmark ============ */
+var ftrFX=null;
+function footerFX(){
+  var cv=$("#ftrCv");if(!cv||!field.scene)return null;
+  var c=cv.getContext("2d"),raf=0,vis=false,alive=true,t0=performance.now(),dpr=1,W=0,H=0,shown=false;
+  function size(){var r=cv.getBoundingClientRect();if(!r.width||!r.height)return;W=r.width;H=r.height;
+    dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);draw()}
+  function draw(){
+    if(!W||!H)return;
+    var t=RM?9:(performance.now()-t0)/1000;
+    var bb=field.bb,S=Math.min(W*.82/bb.w,H*.84/bb.h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    field.scene(c,S,W/2,H*.5,0,t,.5);
+    if(!shown){shown=true;requestAnimationFrame(function(){cv.classList.add("ready")})}
+  }
+  function loop(){if(!alive)return;if(vis)draw();raf=requestAnimationFrame(loop)}
+  var io=new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis&&!W)size()});io.observe(cv);
+  function onResize(){size()}
+  addEventListener("resize",onResize);
+  requestAnimationFrame(size);loop();
+  return {kill:function(){alive=false;cancelAnimationFrame(raf);io.disconnect();removeEventListener("resize",onResize)}};
 }
 
 /* ============ ROUTER ============ */
@@ -1112,18 +1145,10 @@ var field=(function(){
     return {cx:0,cy:.5,tw:cont*.40/W,th:.58,right:right-6};
   }
   function cl(x){return x<0?0:x>1?1:x}
-  function frame(once){
-    var t=RM?16:(performance.now()-t0)/1000;
-    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
-    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
-    c.save();
-    c.translate(cxp+m[0]*20,H*L.cy+m[1]*14);
-    c.scale(S,S);c.translate(-BB.x,-BB.y);
+  function scene(c,S,ox,oy,rot,t,al){
+    c.save();c.translate(ox,oy);if(rot)c.rotate(rot);c.scale(S,S);c.translate(-BB.x,-BB.y);
     c.lineJoin="round";c.lineCap="round";
     var px=function(n){return n/S};
-    var e=IN.v*IN.v*(3-2*IN.v),al=dim*e;
     /* the bond sweeps along the interface, then the joint takes load and holds */
     var CYC=12,ph=(t%CYC)/CYC;
     var front=X0-60+cl(ph/.42)*(X1-X0+120);
@@ -1177,6 +1202,15 @@ var field=(function(){
       c.beginPath();c.moveTo(front,YG+4);c.lineTo(front,YB+4);c.stroke();
     }
     c.restore();
+  }
+  function frame(once){
+    var t=RM?16:(performance.now()-t0)/1000;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
+    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
+    var e=IN.v*IN.v*(3-2*IN.v);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    scene(c,S,cxp+m[0]*20,H*L.cy+m[1]*14,0,t,dim*e);
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1186,7 +1220,7 @@ var field=(function(){
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
-   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},scene:scene,bb:BB};
 })();
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
@@ -1207,7 +1241,7 @@ function makeStory(cv){
   var WX=480,WW=90;                           /* the wound */
   var GEL={y0:20,y1:218};                      /* the gel patch above the surface */
   var ZX=300;                                  /* where the camera dives into the interface */
-  var CAM=[[250,150,430],[320,206,330],[ZX,228,150],[470,158,410],[480,186,560]];
+  var CAM=[[480,210,900],[380,214,420],[420,236,340],[470,170,430],[480,200,900]];
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   function sm(x){return x*x*(3-2*x)}
   function cl(x){return x<0?0:x>1?1:x}
@@ -1259,7 +1293,7 @@ function makeStory(cv){
       c.stroke();
     }
     /* ---------- the gel patch: two interpenetrating networks ---------- */
-    var gelA=1;
+    var gelA=cl((C.span-190)/210);
     if(gelA>.01){
       c.globalAlpha=gelA;
       var lift=(1-bridge)*40;
@@ -1287,7 +1321,7 @@ function makeStory(cv){
     }
     /* ---------- the tissue's own polymer network, visible close up ---------- */
     if(tangle>.02){
-      c.lineWidth=px(1.2);c.strokeStyle="rgba("+DIM+","+(.5*tangle).toFixed(3)+")";
+      c.lineWidth=px(1.6);c.strokeStyle="rgba("+DIM+","+(.78*tangle).toFixed(3)+")";
       for(k=0;k<110;k++){
         var tx=X0+k*(X1-X0)/109,ty=surfY(tx)+6+R(k,21)*16;
         c.beginPath();
@@ -1301,9 +1335,9 @@ function makeStory(cv){
     if(bridge>.01){
       for(k=0;k<52;k++){
         var ix=X0+12+k*(X1-X0-24)/51;
-        var top=GEL.y1-(1-bridge)*26,bot=surfY(ix)+tangle*16;
-        c.lineWidth=px(1.6);
-        c.strokeStyle="rgba("+ACC+","+((.35+.55*tangle)*bridge).toFixed(3)+")";
+        var top=GEL.y1-(1-bridge)*26-(1-gelA)*230,bot=surfY(ix)+tangle*16;
+        c.lineWidth=px(1.6+1*(1-gelA));
+        c.strokeStyle="rgba("+ACC+","+((.4+.5*tangle)*bridge).toFixed(3)+")";
         c.beginPath();
         for(var s3=0;s3<=10;s3++){
           var u3=s3/10,yy2=top+(bot-top)*u3;
@@ -1311,8 +1345,8 @@ function makeStory(cv){
           s3?c.lineTo(xx,yy2):c.moveTo(xx,yy2);
         }
         c.stroke();
-        if(tangle>.2){c.fillStyle="rgba("+ACC+","+(.9*tangle).toFixed(3)+")";
-          c.beginPath();c.arc(ix,bot,px(2.6),0,6.283);c.fill()}
+        if(tangle>.2){c.fillStyle="rgba("+ACC+","+(.95*tangle).toFixed(3)+")";
+          c.beginPath();c.arc(ix,bot,px(2.6+1.4*(1-gelA)),0,6.283);c.fill()}
       }
     }
     /* ---------- the sealed patch over the wound ---------- */
@@ -1326,7 +1360,7 @@ function makeStory(cv){
     }
     c.restore();
     /* ---------- labels ---------- */
-    function lab(txt,wx,wy,a,align){if(a<.03)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
+    function lab(txt,wx,wy,a,align){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
       c.font="400 10.5px 'DM Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r2=l+tw;
       if(l<w*.08+6||r2>w*.92-6||sy<h*.08||sy>h*.93)return;
@@ -1335,11 +1369,11 @@ function makeStory(cv){
       c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
     lab("WET TISSUE",X1-150,SURF+168,W[0]+W[1]);
     lab("FLUID FILM",250,SURF-34,W[0]*film);
-    lab("TOUGH ADHESIVE HYDROGEL",480,GEL.y0-30,(W[0]+W[1])*(1-tangle));
-    lab("CHITOSAN CHAINS",ZX+86,GEL.y1-14,W[1],"left");
-    lab("TOPOLOGICAL ENTANGLEMENT",ZX,SURF+46,W[2]);
-    lab("SACRIFICIAL NETWORK BREAKS",480,GEL.y0-30,W[3]*(1-sealed));
-    lab("STRETCHY NETWORK HOLDS",480,GEL.y1+52,W[3]*(1-sealed));
+    lab("TOUGH ADHESIVE HYDROGEL",480,GEL.y0-56,(W[0]+W[1])*(1-tangle));
+    lab("CHITOSAN CHAINS",ZX+96,GEL.y1+6,W[1]*bridge,"left");
+    lab("TOPOLOGICAL ENTANGLEMENT",420,SURF+42,W[2]);
+    lab("SACRIFICIAL NETWORK BREAKS",470,GEL.y0+10,W[3]*(1-sealed));
+    lab("STRETCHY NETWORK HOLDS",470,GEL.y1+4,W[3]*(1-sealed));
     lab("SEALED · HEMOSTASIS",WX,SURF+168,W[4]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
@@ -1481,18 +1515,16 @@ function contactInit(view){
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia"),cur=-1,lastFocus=null,base="#/team";
-  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+  function mode(m){ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    /* BQ: the sheet adapts to the photo — big and sharp: two columns; small: a 96px circle; none: one compact column */
-    mode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+    /* BV: the sheet carries a LARGE portrait or none at all — a small headshot belongs on the card only */
+    var big=!!(p.img&&p.imgW>=480);
+    mode(big?"":"noimg");
     if(p.img&&!p.imgW){var probe=new Image();
-      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i&&p.imgW<480)fill(i)};
+      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i)fill(i)};
       probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=p.img}
-    var slim=ps.classList.contains("slim");
-    media.innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
-    var head=slim
-      ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-      : '<h2 id="psName">'+esc(p.name)+'</h2>';
+    media.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
+    var head='<h2 id="psName">'+esc(p.name)+'</h2>';
     body.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
       (p.q?'<blockquote style="margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34">“'+esc(p.q)+'”<cite class="lab" style="display:block;margin-top:14px;font-style:normal">'+esc(p.qs)+'</cite></blockquote>':'')+
@@ -1547,7 +1579,9 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
   var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  if(ftrFX){ftrFX.kill();ftrFX=null}
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  ftrFX=footerFX();
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.4);observeField();

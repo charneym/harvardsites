@@ -68,6 +68,7 @@ h1,h2,h3{text-wrap:balance}
 .shead p{max-width:46ch;margin:0;color:var(--stone)}
 .light .shead p{color:var(--stoneD)}
 .kick{display:block;margin-bottom:22px;color:var(--accL)}
+.mani .kick{max-width:29ch;margin-inline:auto}
 .light .kick{color:var(--accD)}
 
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
@@ -135,7 +136,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
 
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:650px;display:flex;flex-direction:column;justify-content:center;padding:clamp(100px,12vh,150px) var(--side) clamp(76px,10vh,116px);z-index:1}
@@ -167,7 +168,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta{background:var(--paper2)}
 
 /* manifesto + stats */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch}
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(28px,3.6vw,62px);line-height:1.14;letter-spacing:-.02em;margin:0;max-width:29ch;margin-inline:auto}
 .mani .txt .w{opacity:.17}
 .mani .txt em{color:var(--accD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -256,6 +257,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pcard:hover,.pcard:focus-visible{transform:translateY(-5px);box-shadow:0 28px 48px -32px rgba(0,37,62,.5)}
 .pcard:hover::before,.pcard:focus-visible::before{transform:scaleX(1)}
 .pcard:hover::after,.pcard:focus-visible::after{opacity:1}
+
+/* BV/BZ: a person whose card already carries everything known is terminal — type on a rule, no box, no profile link */
+.pcard.flat{border:0;background:none;padding:22px 0 0;min-height:0;cursor:default;border-top:1px solid var(--hairD)}
+.dark .pcard.flat,.dark2 .pcard.flat{border-top-color:var(--hair)}
+.pcard.flat::before,.pcard.flat::after{display:none}
+.pcard.flat:hover{transform:none;box-shadow:none}
+.pcard.flat h3{margin:0 0 8px;transform:none}
+.pcard.flat .ttl{max-width:30ch}
+.pcard.flat .ex{margin-top:10px}
 .pcard .grp{color:var(--stoneD)}
 .dark .pcard .grp,.dark2 .pcard .grp{color:var(--stone)}
 .pcard h3{font-family:var(--serif);font-weight:400;font-size:clamp(23px,1.85vw,29px);line-height:1.12;letter-spacing:-.015em;margin:26px 0 8px;transition:transform .32s var(--eo),color .25s var(--eo)}
@@ -300,7 +310,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta .sub{font-size:clamp(18px,1.5vw,22px);line-height:1.5;max-width:56ch;color:var(--stoneD);margin:clamp(26px,3vw,40px) 0 0}
 .cta .act{margin-top:clamp(32px,4vw,56px);display:flex;gap:12px;flex-wrap:wrap}
 
-.ftr{position:relative;z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
+.ftr{position:relative}
+#ftrCv{position:absolute;left:0;right:0;bottom:0;width:100%;height:68%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.1s ease-out;-webkit-mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent)}
+#ftrCv.ready{opacity:1}
+.ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
+.ftr{z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--accL)}
@@ -416,9 +430,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pipe-h{display:none}
   .prow{grid-template-columns:1fr;row-gap:8px}
   .prow .note{grid-column:1/2}
-  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
-  .row-a .c4{grid-column:12/13}
+  .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px;padding-right:34px}
+  .row-a h3{grid-column:1/13}
+  .row-a .c4{position:absolute;right:0;top:20px;grid-column:auto}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
   .fld.w,.subr{grid-column:1/2}
@@ -455,22 +469,19 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-body p{font-size:17px;line-height:1.7;margin:0 0 1.1em;max-width:62ch}
 .ps-body .src{margin-top:28px;font-size:14px;color:var(--stoneD)}
 .ps-body .src a{color:var(--accD)}
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:0 0 6px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.04)}
-.ps-head h2{margin:0;padding-bottom:.1em}
+.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:min(34vh,260px);border-radius:18px 18px 0 0}
   .ps-bar{padding:14px 18px}
   .ps-body{padding:26px 20px 48px}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
-  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+  .ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
+  .ps.noimg .ps-bar{border-radius:18px 18px 0 0}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -826,12 +837,12 @@ var TEAM=[
        "Early in her career she developed an RNA interference approach for facioscapulohumeral muscular dystrophy and myotonic dystrophy. Faced with limited FSHD mouse models, she created the AAV-DUX4 mouse to probe the disease mechanism and to test therapeutic RNAi, and initiated myotonic dystrophy AAV-RNAi proof-of-concept testing in the HSALR mouse model, producing DMPK RNAi expression cassettes with Audentes Therapeutics for testing in patient-derived iPSCs and mouse models.",
        "Her laboratory, part of the Institute for Stem Cell and Regenerative Medicine at the University of Washington, has identified candidate FSHD blood biomarkers for clinical use and works toward AAV-RNAi gene therapy for myotonic dystrophy, FSHD and other dominant muscular dystrophies."],
   src:'<a class="ul" href="https://kineabio.com/joel-chamberlain" target="_blank" rel="noopener">kineabio.com/joel-chamberlain</a>.'},
- {slug:"kelly-brazzo",name:"Kelly Brazzo",title:"Board of Directors",grp:"Board",img:null,
+ {flat:1,slug:"kelly-brazzo",name:"Kelly Brazzo",title:"Board of Directors",grp:"Board",img:null,
   ex:"Listed as a member of Kinea Bio’s board of directors.",
   bio:["Kelly Brazzo is listed on Kinea Bio’s team page as a member of the company’s board of directors.",
        "Kinea publishes no further biography, so none is given here."],
   src:'<a class="ul" href="https://kineabio.com/team" target="_blank" rel="noopener">kineabio.com/team</a>.'},
- {slug:"pat-furlong",name:"Pat Furlong",title:"Board observer",grp:"Board",img:null,
+ {flat:1,slug:"pat-furlong",name:"Pat Furlong",title:"Board observer",grp:"Board",img:null,
   ex:"Listed as an observer on Kinea Bio’s board of directors.",
   bio:["Pat Furlong is listed on Kinea Bio’s team page as an observer on the company’s board of directors.",
        "Kinea publishes no further biography, so none is given here."],
@@ -849,9 +860,11 @@ function head(o){
 }
 function pCard(p,big){
   var fig=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="kbNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
+  var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>';
+  /* BV: a sheet opens only when it adds something the card does not already say */
+  if(p.flat)return '<div class="pcard flat'+(p.img?'':' noimg')+'">'+fig+meta+(p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'</div>';
   return '<a class="pcard'+(p.img?'':' noimg')+(big?' big':'')+'" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+
-   '<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+
-   (big&&p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'<span class="lab go">Profile '+ARR+'</span></div></a>';
+   meta+(big&&p.ex?'<p class="ex">'+esc(p.ex)+'</p>':'')+'<span class="lab go">Profile '+ARR+'</span></div></a>';
 }
 window.kbNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},140)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
@@ -1061,8 +1074,31 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:contact@kineabio.com">contact@kineabio.com</a><br><a class="ul" href="mailto:IR@kineabio.com">IR@kineabio.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Funding</span>NHLBI SBIR Phase II · 2026<br>NIAMS SBIR Phase II · 2026<br>Jain Foundation · 2025</div>'+
-  '</div><span class="bigw" aria-hidden="true" id="bigwm">KINEA BIO</span>'+
+  '</div><canvas id="ftrCv" aria-hidden="true"></canvas><span class="bigw" aria-hidden="true" id="bigwm">KINEA BIO</span>'+
   '<div class="legal"><span class="lab">© 2026 Kinea Bio, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ============ BT: the hero's living visual, quieter, behind the footer wordmark ============ */
+var ftrFX=null;
+function footerFX(){
+  var cv=$("#ftrCv");if(!cv||!field.scene)return null;
+  var c=cv.getContext("2d"),raf=0,vis=false,alive=true,t0=performance.now(),dpr=1,W=0,H=0,shown=false;
+  function size(){var r=cv.getBoundingClientRect();if(!r.width||!r.height)return;W=r.width;H=r.height;
+    dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);draw()}
+  function draw(){
+    if(!W||!H)return;
+    var t=RM?9:(performance.now()-t0)/1000;
+    var bb=field.bb,S=Math.min(W*.82/bb.w,H*.84/bb.h);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    field.scene(c,S,W/2,H*.5,0,t,.5);
+    if(!shown){shown=true;requestAnimationFrame(function(){cv.classList.add("ready")})}
+  }
+  function loop(){if(!alive)return;if(vis)draw();raf=requestAnimationFrame(loop)}
+  var io=new IntersectionObserver(function(e){vis=e[0].isIntersecting;if(vis&&!W)size()});io.observe(cv);
+  function onResize(){size()}
+  addEventListener("resize",onResize);
+  requestAnimationFrame(size);loop();
+  return {kill:function(){alive=false;cancelAnimationFrame(raf);io.disconnect();removeEventListener("resize",onResize)}};
 }
 
 /* ============ ROUTER ============ */
@@ -1124,18 +1160,10 @@ var field=(function(){
   function cl(x){return x<0?0:x>1?1:x}
   function path(p){c.beginPath();c.moveTo(p[0][0],p[0][1]);for(var i=1;i<p.length;i++)c.lineTo(p[i][0],p[i][1]);c.closePath()}
   function inset(p,cx,cy,k){var o=[];for(var i=0;i<p.length;i++)o.push([cx+(p[i][0]-cx)*k,cy+(p[i][1]-cy)*k]);return o}
-  function frame(once){
-    var t=RM?15:(performance.now()-t0)/1000;
-    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
-    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
-    c.save();
-    c.translate(cxp+m[0]*22,H*L.cy+m[1]*15);
-    c.rotate(m[0]*.025);c.scale(S,S);c.translate(-BB.x,-BB.y);
+  function scene(c,S,ox,oy,rot,t,al){
+    c.save();c.translate(ox,oy);if(rot)c.rotate(rot);c.scale(S,S);c.translate(-BB.x,-BB.y);
     c.lineJoin="round";c.lineCap="round";
     var px=function(n){return n/S};
-    var e=IN.v*IN.v*(3-2*IN.v),al=dim*e;
     /* one dose sweeps across the field; the membranes it reaches hold their restored rim */
     var CYC=13,ph=(t%CYC)/CYC;
     var span=DMAX-DMIN;
@@ -1169,6 +1197,15 @@ var field=(function(){
       c.beginPath();c.arc(f.x+Math.cos(f.ph*6.283)*f.r*.6,f.y+Math.sin(f.ph*6.283)*f.r*.52,px(2.4),0,6.283);c.fill();
     }
     c.restore();
+  }
+  function frame(once){
+    var t=RM?15:(performance.now()-t0)/1000;
+    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
+    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
+    var e=IN.v*IN.v*(3-2*IN.v);
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
+    scene(c,S,cxp+m[0]*22,H*L.cy+m[1]*15,m[0]*.025,t,dim*e);
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1178,7 +1215,7 @@ var field=(function(){
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
-   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d}};
+   setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},scene:scene,bb:BB};
 })();
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
@@ -1187,185 +1224,149 @@ function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.82)*(1-p*.55))}
 
-/* ============ STORY CANVAS: ONE scene, one moving camera (PRINCIPLES BL) ============ */
+/* ============ STORY CANVAS: ONE muscle fiber, drawn once; each step changes one labelled part (PRINCIPLES BY) ============ */
 var story=null;
 function makeStory(cv){
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
-  function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
   var PAPER="244,246,245",ACC="110,208,196",DEEP="49,150,144",DIM="159,180,181";
-  /* ONE world, read left to right:
-     the coding sequence -> two capsids -> the muscle fiber -> the cytoplasm -> the membrane */
-  var GENE={x0:40,x1:420,y:-154,h:22};      /* the full coding sequence */
-  var CAP=430;                               /* where AAV capacity would stop */
-  var SPL=(GENE.x0+GENE.x1)/2;               /* the split point */
-  var V1={x:150,y:-54,r:24},V2={x:330,y:-54,r:24};
-  var FIB={x0:470,x1:960,y0:30,y1:210};      /* one muscle fiber, longitudinal */
-  var CYT={x:712,y:120};                      /* where ligation happens */
-  var CAM=[[228,-134,390],[236,-70,400],[714,118,520],[712,96,160],[714,118,560]];
-  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
-  function sm(x){return x*x*(3-2*x)}
+  /* THE object: one muscle fiber in longitudinal section, complete in the first frame and
+     present in every frame after it. The coding sequence sits above it; the vectors carry
+     the two halves down into it. Nothing is drawn that the step's text does not name. */
+  var FIB={x0:110,x1:810,y0:470,y1:730};
+  var NUC={x:232,y:522,rx:34,ry:15};
+  var GENE={x0:160,x1:700,y:250,h:26};
+  var CAPR=46,CAP1={x:250,y:372},CAP2={x:640,y:372};
+  var DOCK1={x:300,y:FIB.y0},DOCK2={x:620,y:FIB.y0};
+  var JOIN={x:460,y:600};
+  var CAM=[[460,480,790],[460,480,780],[460,472,800],[460,600,480],[460,548,800]];
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.max(1,Math.round(w*dpr));cv.height=Math.max(1,Math.round(h*dpr))}
+  function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function cl(x){return x<0?0:x>1?1:x}
   function seg(v,a,b){return cl((v-a)/(b-a))}
-  function cam(){var s=p*4,i0=Math.min(3,Math.floor(s)),fr=s-i0;var f=sm(cl((fr-.24)/.48));var A=CAM[i0],B=CAM[i0+1];
-    return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f),i0:i0,f:f}}
+  function L(a,b,f){return a+(b-a)*f}
+  function cam(){var s=p*4,i0=Math.min(3,Math.floor(s)),fr=s-i0;var f=sm((fr-.18)/.56);var A=CAM[i0],B=CAM[i0+1];
+    return {x:L(A[0],B[0],f),y:L(A[1],B[1],f),span:Math.exp(L(Math.log(A[2]),Math.log(B[2]),f)),i0:i0,f:f}}
   function w5(C){var o=[0,0,0,0,0];o[C.i0]=1-C.f;o[C.i0+1]=C.f;return o}
-  function rr(x,y,ww,hh,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
-  function capsid(x,y,r,a){c.beginPath();for(var k=0;k<6;k++){var ang=Math.PI/180*(60*k-30)+a;var px=x+Math.cos(ang)*r,py=y+Math.sin(ang)*r;k?c.lineTo(px,py):c.moveTo(px,py)}c.closePath()}
+  function st(col,a){c.strokeStyle="rgba("+col+","+Math.max(0,a).toFixed(3)+")"}
+  function fl(col,a){c.fillStyle="rgba("+col+","+Math.max(0,a).toFixed(3)+")"}
+  function rr(x,y,ww,hh,r){r=Math.min(r,ww/2,hh/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
+  function capsid(x,y,r,a){c.beginPath();for(var k=0;k<6;k++){var ang=Math.PI/180*(60*k-30)+a,qx=x+Math.cos(ang)*r,qy=y+Math.sin(ang)*r;k?c.lineTo(qx,qy):c.moveTo(qx,qy)}c.closePath()}
+  function chain(x0,y0,x1,y1,amp,ph,px){
+    var n=16,pts=[];
+    for(var k=0;k<=n;k++){var u=k/n;pts.push([L(x0,x1,u),L(y0,y1,u)+Math.sin(u*6.283+ph)*amp])}
+    c.beginPath();for(k=0;k<pts.length;k++)k?c.lineTo(pts[k][0],pts[k][1]):c.moveTo(pts[k][0],pts[k][1]);c.stroke();
+    for(k=0;k<pts.length;k+=4){c.beginPath();c.arc(pts[k][0],pts[k][1],px(3.4),0,6.283);c.fill()}
+  }
   function draw(){
     p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
-    var t=RM?10:(performance.now()-t0)/1000;var C=cam(),W=w5(C);
-    var sc=Math.min(w,h*1.25)/C.span;
+    var t=RM?9:(performance.now()-t0)/1000;var C=cam(),W=w5(C);
+    var sc=Math.min(w/C.span,h/(C.span*.62))*.94;
     var px=function(n){return n/sc};
+    var split=seg(p,.18,.36),pack=seg(p,.3,.42),travel=seg(p,.42,.6),
+        lig=seg(p,.58,.76),done=seg(p,.74,.92);
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
     c.lineJoin="round";c.lineCap="round";
-    var split=seg(p,.16,.34);        /* the sequence divides */
-    var pack=seg(p,.26,.42);          /* halves enter their capsids */
-    var travel=seg(p,.38,.58);        /* capsids reach the fiber */
-    var lig=seg(p,.56,.76);           /* inteins splice */
-    var done=seg(p,.74,.9);           /* protein at the membrane */
-    /* ---------- the coding sequence, dividing in place ---------- */
-    var geneA=1-seg(p,.4,.52);
+    /* ---------- the fiber: complete from the first frame, never leaves ---------- */
+    rr(FIB.x0,FIB.y0,FIB.x1-FIB.x0,FIB.y1-FIB.y0,34);
+    fl("0,61,86",.5);c.fill();
+    c.lineWidth=px(2.2);st(PAPER,.6);c.stroke();
+    c.lineWidth=px(1);st(PAPER,.2);
+    rr(FIB.x0+6,FIB.y0+6,FIB.x1-FIB.x0-12,FIB.y1-FIB.y0-12,28);c.stroke();
+    var tight=1-done*.08;
+    c.lineWidth=px(.9);st(DIM,.13);
+    for(var mi=1;mi<4;mi++){var my=FIB.y0+mi*(FIB.y1-FIB.y0)/4;
+      c.beginPath();c.moveTo(FIB.x0+20,my);c.lineTo(FIB.x1-20,my);c.stroke()}
+    c.lineWidth=px(1.2);st(DIM,.38+.34*done);
+    for(var si=0;si<40;si++){var sx=FIB.x0+34+si*27*tight;if(sx>FIB.x1-26)break;
+      c.beginPath();c.moveTo(sx,FIB.y0+14);c.lineTo(sx,FIB.y1-14);c.stroke()}
+    c.lineWidth=px(1.3);st(DIM,.55);
+    c.beginPath();c.ellipse(NUC.x,NUC.y,NUC.rx,NUC.ry,0,0,6.283);c.stroke();
+    /* ---------- the coding sequence: one bar that divides in place ---------- */
+    var geneA=1-seg(p,.36,.48);
     if(geneA>.01){
       c.globalAlpha=geneA;
-      var gap=split*26;
-      c.lineWidth=px(1.3);
-      c.strokeStyle="rgba("+PAPER+",.6)";
-      rr(GENE.x0,GENE.y,SPL-gap-GENE.x0,GENE.h,3);c.stroke();
-      c.fillStyle="rgba("+DEEP+",.3)";c.fill();
-      rr(SPL+gap,GENE.y,GENE.x1-(SPL+gap),GENE.h,3);c.stroke();
-      c.fillStyle="rgba("+DEEP+",.3)";c.fill();
-      c.lineWidth=px(.9);c.strokeStyle="rgba("+PAPER+",.3)";
-      for(var ti=1;ti<24;ti++){var tx=GENE.x0+ti*(GENE.x1-GENE.x0)/24;
-        if(Math.abs(tx-SPL)<gap+4)continue;
-        c.beginPath();c.moveTo(tx,GENE.y+3);c.lineTo(tx,GENE.y+GENE.h-3);c.stroke()}
-      /* the intein tags that appear at the cut */
-      if(split>.05){
-        c.fillStyle="rgba("+ACC+","+(.95*split).toFixed(3)+")";
-        c.fillRect(SPL-gap-5,GENE.y+2,5,GENE.h-4);
-        c.fillRect(SPL+gap,GENE.y+2,5,GENE.h-4);
-      }
-      /* the AAV capacity bracket: it stops short of the full sequence */
-      c.setLineDash([px(4),px(5)]);c.strokeStyle="rgba("+DIM+",.75)";c.lineWidth=px(1.1);
-      c.beginPath();c.moveTo(GENE.x0,GENE.y-16);c.lineTo(GENE.x0+(CAP-GENE.x0)*.76,GENE.y-16);c.stroke();
-      c.setLineDash([]);
-      c.beginPath();c.moveTo(GENE.x0,GENE.y-21);c.lineTo(GENE.x0,GENE.y-11);
-      c.moveTo(GENE.x0+(CAP-GENE.x0)*.76,GENE.y-21);c.lineTo(GENE.x0+(CAP-GENE.x0)*.76,GENE.y-11);c.stroke();
+      var gap=split*34,mid=(GENE.x0+GENE.x1)/2;
+      c.lineWidth=px(1.4);st(PAPER,.72);
+      rr(GENE.x0,GENE.y,(mid-gap)-GENE.x0,GENE.h,4);fl(DEEP,.3);c.fill();c.stroke();
+      rr(mid+gap,GENE.y,GENE.x1-(mid+gap),GENE.h,4);fl(DEEP,.3);c.fill();c.stroke();
+      c.lineWidth=px(.9);st(PAPER,.3);
+      for(var ti=1;ti<26;ti++){var tx=GENE.x0+ti*(GENE.x1-GENE.x0)/26;
+        if(Math.abs(tx-mid)<gap+6)continue;
+        c.beginPath();c.moveTo(tx,GENE.y+4);c.lineTo(tx,GENE.y+GENE.h-4);c.stroke()}
+      if(split>.04){fl(ACC,.95*split);
+        c.fillRect(mid-gap-7,GENE.y+3,7,GENE.h-6);c.fillRect(mid+gap,GENE.y+3,7,GENE.h-6)}
+      /* what one AAV can carry: a measured bracket under the bar, both ends capped */
+      var capW=(GENE.x1-GENE.x0)*.76,by=GENE.y+GENE.h+16;
+      c.lineWidth=px(1.1);st(DIM,.85*(1-split));
+      c.beginPath();c.moveTo(GENE.x0,by);c.lineTo(GENE.x0+capW,by);
+      c.moveTo(GENE.x0,by-6);c.lineTo(GENE.x0,by+6);
+      c.moveTo(GENE.x0+capW,by-6);c.lineTo(GENE.x0+capW,by+6);c.stroke();
       c.globalAlpha=1;
     }
-    /* ---------- two capsids, loaded then travelling ---------- */
-    var cap1={x:V1.x+(FIB.x0+70-V1.x)*sm(travel),y:V1.y+(FIB.y0+54-V1.y)*sm(travel)};
-    var cap2={x:V2.x+(FIB.x0+70-V2.x)*sm(travel),y:V2.y+(FIB.y1-54-V2.y)*sm(travel)};
-    var capA=Math.min(1,pack*1.6)*(1-seg(p,.42,.52));
+    /* ---------- the vectors: each carries one half down to the membrane ---------- */
+    var capA=Math.min(1,pack*1.6)*(1-seg(p,.52,.6));
     if(capA>.01){
       c.globalAlpha=capA;
-      [[cap1,0],[cap2,.5]].forEach(function(q,qi){
-        c.lineWidth=px(1.4);c.strokeStyle="rgba("+PAPER+",.75)";
-        capsid(q[0].x,q[0].y,V1.r,q[1]);c.stroke();
-        c.fillStyle="rgba("+DEEP+",.22)";c.fill();
-        /* the half-sequence curled inside */
-        c.lineWidth=px(1.6);c.strokeStyle="rgba("+ACC+",.95)";
-        c.beginPath();
-        for(var k=0;k<=22;k++){var a=k/22*5.4+qi*2,rr2=V1.r*.52*(1-k/70);
-          var xx=q[0].x+Math.cos(a)*rr2,yy=q[0].y+Math.sin(a)*rr2*.8;k?c.lineTo(xx,yy):c.moveTo(xx,yy)}
+      var f=sm(travel);
+      [[CAP1,DOCK1,0],[CAP2,DOCK2,.5]].forEach(function(q,qi){
+        var cx=L(q[0].x,q[1].x,f),cy=L(q[0].y,q[1].y,f);
+        if(f>.02&&f<.98){c.save();c.setLineDash([px(3),px(7)]);c.lineWidth=px(1);st(ACC,.4);
+          c.beginPath();c.moveTo(cx,cy+CAPR);c.lineTo(q[1].x,q[1].y);c.stroke();c.restore()}
+        c.lineWidth=px(1.5);st(PAPER,.82);capsid(cx,cy,CAPR,q[2]);fl(DEEP,.22);c.fill();c.stroke();
+        c.lineWidth=px(1.8);st(ACC,.95);c.beginPath();
+        for(var k=0;k<=34;k++){var a=k/34*9.4+qi*2,rad=CAPR*.6*(1-k/46),
+          xx=cx+Math.cos(a)*rad,yy=cy+Math.sin(a)*rad*.82;k?c.lineTo(xx,yy):c.moveTo(xx,yy)}
         c.stroke();
-        c.globalAlpha=capA;
       });
       c.globalAlpha=1;
     }
-    /* ---------- the muscle fiber ---------- */
-    var fibA=seg(p,.34,.48);
-    if(fibA>.01){
-      c.globalAlpha=fibA;
-      rr(FIB.x0,FIB.y0,FIB.x1-FIB.x0,FIB.y1-FIB.y0,26);
-      c.fillStyle="rgba(0,61,86,.5)";c.fill();
-      c.lineWidth=px(2);c.strokeStyle="rgba("+PAPER+",.55)";c.stroke();
-      c.lineWidth=px(1);c.strokeStyle="rgba("+PAPER+",.22)";
-      rr(FIB.x0+5,FIB.y0+5,FIB.x1-FIB.x0-10,FIB.y1-FIB.y0-10,22);c.stroke();
-      /* myofibrils running the length of the fiber */
-      c.lineWidth=px(.9);c.strokeStyle="rgba("+DIM+",.26)";
-      for(var mi=1;mi<7;mi++){var my=FIB.y0+mi*(FIB.y1-FIB.y0)/7;
-        c.beginPath();c.moveTo(FIB.x0+16,my);c.lineTo(FIB.x1-16,my);c.stroke()}
-      /* striations, which tighten as function returns */
-      var k2=1-done*.1;
-      c.lineWidth=px(1.2);
-      for(var i=0;i<34;i++){
-        var sx=FIB.x0+26+i*17*k2;if(sx>FIB.x1-18)break;
-        c.strokeStyle="rgba("+DIM+","+(.42+.25*done).toFixed(3)+")";
-        c.beginPath();c.moveTo(sx,FIB.y0+12);c.lineTo(sx,FIB.y1-12);c.stroke();
-      }
-      /* a nucleus or two at the rim */
-      c.strokeStyle="rgba("+DIM+",.5)";c.lineWidth=px(1.2);
-      c.beginPath();c.ellipse(FIB.x0+120,FIB.y0+22,11,6,0,0,6.283);c.stroke();
-      c.beginPath();c.ellipse(FIB.x1-150,FIB.y1-22,11,6,0,0,6.283);c.stroke();
+    /* ---------- inside the fiber: the inteins splice the two halves ---------- */
+    var inA=seg(p,.54,.66)*(1-seg(p,.74,.84));
+    if(inA>.01){
+      c.globalAlpha=inA;
+      var close=sm(seg(p,.56,.78)),g2=78*(1-close),wav=6*(1-lig*.7);
+      c.lineWidth=px(3.2);st(ACC,.95);fl(PAPER,.9);
+      chain(JOIN.x-g2-132,JOIN.y-8,JOIN.x-g2,JOIN.y,wav,t*.5,px);
+      chain(JOIN.x+g2,JOIN.y,JOIN.x+g2+132,JOIN.y-8,wav,t*.5+2,px);
+      var ia=1-lig;
+      if(ia>.02){
+        [[JOIN.x-g2-5,-1],[JOIN.x+g2+5,1]].forEach(function(q){
+          var ty=JOIN.y-(1-ia)*52,r=9;
+          c.lineWidth=px(1.6);st(PAPER,.95*ia);fl(PAPER,.3*ia);
+          c.beginPath();c.moveTo(q[0],ty-r);c.lineTo(q[0]+r,ty);c.lineTo(q[0],ty+r);c.lineTo(q[0]-r,ty);c.closePath();
+          c.fill();c.stroke();
+        })}
+      if(lig>.02){c.lineWidth=px(3.2);st(ACC,lig);
+        c.beginPath();c.moveTo(JOIN.x-g2,JOIN.y);c.lineTo(JOIN.x+g2,JOIN.y);c.stroke()}
       c.globalAlpha=1;
     }
-    /* ---------- inside the cytoplasm: the two halves ligate ---------- */
-    var cytA=seg(p,.5,.6);
-    if(cytA>.01){
-      c.globalAlpha=cytA;
-      var approach=sm(seg(p,.52,.68));
-      var gap2=26*(1-approach);
-      /* each half drawn as a chain of beads, meeting at CYT */
-      function half(dir){
-        var pts=[];
-        for(var k=0;k<=18;k++){
-          var u=k/18;
-          pts.push([CYT.x+dir*(gap2+10+u*44),CYT.y+Math.sin(u*6+dir*1.2+t*.5)*5.5*(1-lig*.55)]);
-        }
-        c.lineWidth=px(3);c.strokeStyle="rgba("+ACC+",.95)";
-        c.beginPath();pts.forEach(function(q,qi){qi?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])});c.stroke();
-        c.fillStyle="rgba("+PAPER+",.85)";
-        for(var b2=0;b2<pts.length;b2+=3){c.beginPath();c.arc(pts[b2][0],pts[b2][1],px(2.6),0,6.283);c.fill()}
-        /* the intein, which excises once the join is made */
-        var ia=1-lig;
-        if(ia>.01){
-          c.fillStyle="rgba("+PAPER+","+(.9*ia).toFixed(3)+")";
-          var ix=CYT.x+dir*(gap2+5),iy=CYT.y-(1-ia)*26;
-          c.beginPath();c.arc(ix,iy,3.2,0,6.283);c.fill();
-        }
-      }
-      half(-1);half(1);
-      /* the scarless join */
-      if(lig>.02){
-        c.lineWidth=px(2.2);c.strokeStyle="rgba("+ACC+","+(lig).toFixed(3)+")";
-        c.beginPath();c.moveTo(CYT.x-gap2-10,CYT.y);c.lineTo(CYT.x+gap2+10,CYT.y);c.stroke();
-        c.fillStyle="rgba("+PAPER+","+(.9*lig).toFixed(3)+")";
-        c.beginPath();c.arc(CYT.x,CYT.y,px(3.4),0,6.283);c.fill();
-      }
-      c.globalAlpha=1;
-    }
-    /* ---------- the finished protein, laid along the membrane ---------- */
+    /* ---------- the finished protein takes its place along the membrane ---------- */
     if(done>.01){
       c.globalAlpha=done;
-      c.lineWidth=px(3);c.strokeStyle="rgba("+ACC+",.95)";
-      c.beginPath();
-      var x0=FIB.x0+40,x1=FIB.x1-40,n=Math.round((x1-x0)/8);
-      for(var k3=0;k3<=n;k3++){var u=k3/n;var x=x0+(x1-x0)*u;
-        var y=FIB.y0+8+Math.sin(u*34)*2.4;
-        k3?c.lineTo(x,y):c.moveTo(x,y)}
+      c.lineWidth=px(3.2);st(ACC,.95);c.beginPath();
+      var ax=FIB.x0+34,bx=FIB.x1-34,nn=Math.round((bx-ax)/9);
+      for(var kk=0;kk<=nn;kk++){var u2=kk/nn,x2=L(ax,bx,u2),y2=FIB.y0+11+Math.sin(u2*30)*2.6;
+        kk?c.lineTo(x2,y2):c.moveTo(x2,y2)}
       c.stroke();
-      c.lineWidth=px(1.2);c.strokeStyle="rgba("+PAPER+",.55)";
-      c.beginPath();c.moveTo(x0,FIB.y0+14);c.lineTo(x1,FIB.y0+14);c.stroke();
       c.globalAlpha=1;
     }
     c.restore();
-    /* ---------- labels ---------- */
-    function lab(txt,wx,wy,a,align){if(a<.03)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
+    /* ---------- one label per part the step changes ---------- */
+    function lab(txt,wx,wy,a,align){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
       c.font="400 10.5px 'Geist Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
-      var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r=l+tw;
-      if(l<w*.08+6||r>w*.92-6||sy<h*.08||sy>h*.93)return;
+      var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r2=l+tw;
+      if(l<w*.06+4||r2>w*.94-4||sy<h*.07||sy>h*.94)return;
       c.globalAlpha=Math.min(1,a);
-      c.shadowColor="rgba(0,18,30,.98)";c.shadowBlur=8;c.fillStyle="rgb(206,226,222)";
+      c.shadowColor="rgba(0,18,30,.98)";c.shadowBlur=8;fl("206,226,222",1);
       c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
-    lab("FULL CODING SEQUENCE",230,GENE.y-30,W[0]);
-    lab("AAV CAPACITY",150,GENE.y+40,W[0]);
-    lab("SPLIT INTEIN TAGS",SPL,GENE.y+40,W[1]);
-    lab("TWO MYOTROPIC VECTORS",240,V1.y+54,W[1]);
-    lab("MUSCLE FIBER",FIB.x0+150,FIB.y1+34,W[2]);
-    lab("TRANS-SPLICING",CYT.x,CYT.y-52,W[3]*(1-done));
-    lab("INTEINS EXCISED",CYT.x,CYT.y+54,W[3]*(1-done));
-    lab("FULL-LENGTH PROTEIN AT THE MEMBRANE",714,FIB.y0-30,W[4]);
+    lab("MUSCLE FIBER",FIB.x0+140,FIB.y1+30,Math.max(W[0],W[1],W[2],W[4]));
+    lab("FULL CODING SEQUENCE",(GENE.x0+GENE.x1)/2,GENE.y-24,W[0]+W[1]);
+    lab("AAV CAPACITY",GENE.x0,GENE.y+GENE.h+46,W[0],"left");
+    lab("SPLIT INTEIN TAGS",(GENE.x0+GENE.x1)/2,GENE.y+GENE.h+46,W[1]);
+    lab("TWO MYOTROPIC VECTORS",(CAP1.x+CAP2.x)/2,CAP1.y+4,W[2]);
+    lab("TRANS-SPLICING",JOIN.x,JOIN.y-64,W[3]);
+    lab("FULL-LENGTH PROTEIN",(FIB.x0+FIB.x1)/2,FIB.y0-28,W[4]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1506,18 +1507,16 @@ function contactInit(view){
 /* ============ PERSON SHEET (PRINCIPLES BI) ============ */
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia"),cur=-1,lastFocus=null,base="#/team";
-  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+  function mode(m){ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    /* BQ: the sheet adapts to the photo — big and sharp: two columns; small: a 96px circle; none: one compact column */
-    mode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+    /* BV: the sheet carries a LARGE portrait or none at all — a small headshot belongs on the card only */
+    var big=!!(p.img&&p.imgW>=480);
+    mode(big?"":"noimg");
     if(p.img&&!p.imgW){var probe=new Image();
-      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i&&p.imgW<480)fill(i)};
+      probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i)fill(i)};
       probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=p.img}
-    var slim=ps.classList.contains("slim");
-    media.innerHTML=(p.img&&!slim)?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
-    var head=slim
-      ? '<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-      : '<h2 id="psName">'+esc(p.name)+'</h2>';
+    media.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="window.__psDrop('+i+')">':"";
+    var head='<h2 id="psName">'+esc(p.name)+'</h2>';
     body.innerHTML='<span class="lab">'+esc(p.grp||"")+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
       (p.q?'<blockquote style="margin:30px 0 0;padding:24px 0 0;border-top:1px solid var(--hairD);font-family:var(--serif);font-style:italic;font-size:clamp(21px,1.9vw,27px);line-height:1.34">“'+esc(p.q)+'”<cite class="lab" style="display:block;margin-top:14px;font-style:normal">'+esc(p.qs)+'</cite></blockquote>':'')+
@@ -1572,7 +1571,9 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
   var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
+  if(ftrFX){ftrFX.kill();ftrFX=null}
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  ftrFX=footerFX();
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.82);observeField();

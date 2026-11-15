@@ -114,6 +114,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .btn::before{content:"";position:absolute;inset:0;background:var(--ac,var(--accD));border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--ease);z-index:-1}
 .btn:hover{color:var(--onac,var(--d0));border-color:var(--ac,var(--accD))}
 .btn:hover::before{transform:none}
+@media (hover:none){.btn:hover::before{transform:translateY(101%)}.btn:hover{color:inherit;border-color:currentColor}.btn.solid:hover{color:var(--bgc,var(--d0))}}
 .btn.solid{background:var(--fg,var(--paper));color:var(--bgc,var(--d0));border-color:var(--fg,var(--paper))}
 .hdr .btn{--ac:var(--accD);--onac:var(--d0)}
 .hdr.ink .btn{--ac:var(--accL);--onac:var(--l0)}
@@ -135,7 +136,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD/AU/AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -163,8 +164,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ph-head .eyebrow{display:block;margin-bottom:clamp(20px,2.4vw,34px);color:var(--ac)}
 .ph-head .intro{margin-top:clamp(24px,2.8vw,42px);max-width:56ch}
 .sec.first{padding-top:clamp(72px,9vh,120px)}
+.story+.sec{padding-top:clamp(64px,8vh,110px)}
+.ftr .legal>:last-child{justify-self:end}
 
 /* manifesto + stats */
+.mblock{font-family:var(--serif);font-size:clamp(30px,3.9vw,66px);max-width:24ch;margin:0 auto}
+.mblock .kick{font-size:12px}
 .mani .txt{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(30px,3.9vw,66px);line-height:1.12;letter-spacing:-.018em;margin:0;max-width:24ch}
 .mani .txt .w{opacity:.16}
 .mani .txt em{color:var(--ac)}
@@ -175,7 +180,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .stat .v{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(52px,5.6vw,104px);line-height:1;letter-spacing:-.03em;display:block;white-space:nowrap}
 .stat .v sup,.stat .v small{font-size:.36em;vertical-align:top;position:relative;top:.18em;margin-left:.06em;color:var(--ac);letter-spacing:0}
 .stat .v .pre{font-size:.55em;vertical-align:top;position:relative;top:.12em;margin-right:.02em;color:var(--ac)}
-.stat .k{display:block;margin-top:14px;max-width:28ch}
+.stat .k{display:block;margin-top:14px;max-width:34ch;text-wrap:balance}
 
 /* pinned story */
 .story{padding:0;overflow:hidden}
@@ -201,8 +206,13 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (max-width:1024px){.fig text{font-size:19px;letter-spacing:.06em}}
 
 /* text cards / portraits (AC + AN) */
-.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+.pgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:48px var(--gap)}
+.pgrid>*{flex:0 1 calc((100% - 3 * var(--gap)) / 4);min-width:0}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
+.pcard.nos{cursor:default}
+.pcard.nos:hover{transform:none}
+.pcard.nos:hover h3{color:inherit}
+.pcard.nos:hover h3 span{background-size:0 1px}
 .pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--hr);transition:box-shadow .32s ease-out}
 .pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(0,0,0,.55)}
@@ -239,7 +249,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .row-a:hover::before{transform:scaleX(1)}
 .row-a:hover::after{opacity:1}
 .row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px;padding-left:2px}
-.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a .rt{grid-column:4/12;display:flex;flex-direction:column;gap:6px;min-width:0}
+.row-a .rm{font-size:14px;line-height:1.5;color:var(--mu)}
+.row-a h3{text-wrap:balance;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
 .row-a h3 small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
 .row-a:hover h3{color:var(--ac);transform:translateX(6px)}
 .row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center;padding-right:4px}
@@ -258,7 +270,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
 @media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
 .aims{list-style:none;margin:0;padding:0}
-.aims li{display:grid;grid-template-columns:44px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hr);font-size:17px;line-height:1.55}
+.aims li{display:grid;grid-template-columns:20px 1fr;gap:12px;padding:22px 0;border-top:1px solid var(--hr);font-size:17px;line-height:1.55}
 .aims li:last-child{border-bottom:1px solid var(--hr)}
 .aims li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--acf,var(--ac));margin-top:.6em}
 .facts{margin:0}
@@ -283,6 +295,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* footer */
 .ftr{position:relative;z-index:1;background:var(--d0);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hairD);--fg:var(--paper);--mu:var(--mutD);--ac:var(--accD);--hr:var(--hairD)}
+.ftr .ffield{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+.ftr>*:not(.ffield){position:relative;z-index:1}
 .ftr .cols{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:36px var(--gap);padding-bottom:clamp(50px,6vw,90px)}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--mutD)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--accD)}
@@ -290,7 +304,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .bigw{font-family:var(--wmfont,var(--serif));font-weight:var(--wmw,400);font-size:min(var(--bigws,21vw),340px);line-height:.8;letter-spacing:var(--wmls,-.04em);margin:0 auto;text-align:center;white-space:nowrap;display:block;padding:.06em 0 .22em;color:var(--paper)}
 .ftr .bigw em{color:var(--accD);font-style:normal;font-family:inherit}
 .ftr .bigw .ch{display:inline-block}
-.ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hairD)}
+.ftr .legal{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hairD)}
 
 /* contact */
 .cgrid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
@@ -362,10 +376,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-body{padding:26px 20px 48px}
 }
 
-@media (max-width:1100px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-key{display:none}.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1100px){.pgrid>*{flex-basis:calc((100% - 2 * var(--gap)) / 3)}.hero-key{display:none}.fgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:1024px){
   .story-pin{grid-template-columns:1fr;grid-template-rows:auto 1fr;align-items:start;padding-top:92px;row-gap:18px}
   .story-r{grid-row:1;height:38vh;height:38svh}
+  .story-r:has(.scene){height:auto;aspect-ratio:640/380}
   .story-l .d3,.story-l .kick{display:none}
   .two,.cgrid,.grant{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}
@@ -375,13 +390,14 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .burger{display:inline-flex}
   .hdr{padding-top:14px;padding-bottom:14px}
   .hero{justify-content:flex-end;padding-bottom:clamp(64px,9vh,96px)}
+  .ph-head{min-height:52vh;min-height:52svh;padding-top:120px}
   .hero::before{background:var(--hero-scrim-m)}
   .hero-h{font-size:clamp(40px,11vw,92px)}
   .hero-foot .s{font-size:16px}
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .pgrid{gap:36px 16px}.pgrid>*{flex-basis:calc((100% - 16px) / 2)}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
+  .row-a .rt{grid-column:1/12}
   .row-a .c4{grid-column:12/13}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
@@ -391,7 +407,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pgrid{grid-template-columns:1fr 1fr}
   .fgrid{grid-template-columns:1fr}
   .ftr .cols{grid-template-columns:1fr}
-  .ftr .legal{flex-direction:column;gap:8px}
+  .ftr .legal{grid-template-columns:1fr;justify-items:start;gap:8px}
+  .ftr .legal>:last-child{justify-self:start}
   .step p{font-size:15px}
   .facts>div{grid-template-columns:1fr;gap:4px}
   .fld input,.fld textarea{font-size:21px}
@@ -426,10 +443,31 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fig text.ta{fill:var(--accD)}
 .flogo{display:block;width:min(980px,100%);margin:0 auto;padding:clamp(10px,2vw,30px) 0 clamp(20px,3vw,40px)}
 .flogo img{width:100%;height:auto}
+.scene svg{width:100%;height:100%;overflow:visible}
+.scene .pt{transition:none}
+.scene .o{fill:none;stroke:var(--fg);stroke-opacity:.7;stroke-width:1.3}
+.scene .o2{fill:none;stroke:var(--fg);stroke-opacity:.3;stroke-width:1}
+.scene .f{fill:none;stroke:var(--navyL);stroke-width:1.6;stroke-linecap:round}
+.scene .fr{fill:none;stroke:var(--accD);stroke-width:1.6;stroke-linecap:round}
+.scene .bn{fill:var(--navyL);opacity:.75}
+.scene .br{fill:var(--accD)}
+.scene .w{fill:var(--fg);fill-opacity:.12}
+.scene .w.lit{fill:var(--accD);fill-opacity:1}
+.scene .arr{fill:none;stroke:var(--accD);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 1;stroke-dashoffset:1}
+.scene .arh{fill:none;stroke:var(--accD);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.scene .pt.on .o{stroke:var(--accD);stroke-opacity:1}
+.scene text{font-family:var(--mono);letter-spacing:.12em}
+.scene .pl{font-size:12px;fill:var(--fg)}
+.scene .sl{font-size:10.5px;fill:var(--mu)}
+.scene .ax{font-size:10px;fill:var(--mu)}
+@media (max-width:1024px){.scene .pl{font-size:17px}.scene .sl{display:none}.scene .ax{font-size:15px}}
+.tline{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:28px var(--gap)}
+.tline li{flex:0 1 calc((100% - 3 * var(--gap)) / 4);border-top:1px solid var(--hr);padding-top:20px;display:flex;flex-direction:column;gap:10px}
+.tline b{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2vw,32px);line-height:1.1}
+@media (max-width:860px){.tline li{flex-basis:calc((100% - var(--gap)) / 2)}}
 .pgms{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
-.pgm{border:1px solid var(--hr);padding:clamp(24px,2.6vw,40px);display:flex;flex-direction:column;gap:14px;position:relative;transition:transform .32s ease-out,box-shadow .32s ease-out}
+.pgm{border-top:1px solid var(--hr);padding:28px 0 0;display:flex;flex-direction:column;gap:14px;position:relative}
 .pgm::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--ac);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
-.pgm:hover{transform:translateY(-4px);box-shadow:0 30px 50px -34px rgba(15,30,56,.4)}
 .pgm:hover::before{transform:scaleX(1)}
 .pgm h3{font-family:var(--serif);font-weight:400;font-size:clamp(30px,2.8vw,46px);line-height:1.04;margin:4px 0 2px}
 .pgm p{color:var(--mu);margin:0;font-size:16px}
@@ -438,12 +476,13 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pgm li b.dot{min-width:0;width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--ac);align-self:center}
 .pgm li b{font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.12em;color:var(--ac);min-width:38px}
 .pgm .tagp{align-self:flex-start;display:inline-flex;align-items:center;line-height:1;padding:7px 12px 6px;border:1px solid currentColor;border-radius:99px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ac)}
-.sites{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:var(--gap)}
+.sites{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:36px var(--gap)}
+.sites>li{flex:0 1 calc((100% - 4 * var(--gap)) / 5);min-width:0}
 .sites li{border-top:1px solid var(--hr);padding-top:20px;font-family:var(--serif);font-size:clamp(21px,1.7vw,27px);line-height:1.15;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
 .sites li span{display:block}
-@media (max-width:1100px){.sites{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:36px}}
+@media (max-width:1100px){.sites>li{flex-basis:calc((100% - 2 * var(--gap)) / 3)}}
 @media (max-width:1024px){.pgms{grid-template-columns:1fr}}
-@media (max-width:560px){.sites{grid-template-columns:1fr}}
+@media (max-width:560px){.sites>li{flex-basis:100%}}
 </style>
 </head>
 <body>
@@ -528,12 +567,12 @@ TEAM=[
  {slug:"conor-loy",name:"Conor Loy",title:"CEO & Co-Founder",grp:"Founders",img:TI+"conor-loy.jpg",
   bio:["Conor co-founded Romix Biosciences and leads the company as CEO. He is principal investigator on Romix’s NHLBI award to develop a cell-free RNA diagnostic test for Kawasaki disease, and on its NHGRI award for a method that profiles short and long cell-free RNA together.","He is first author of published studies on plasma cell-free RNA signatures of inflammatory syndromes in children and of Kawasaki disease subgroups, carried out at the Meinig School of Biomedical Engineering at Cornell University."],
   link:{t:"Plasma cell-free RNA signatures of inflammatory syndromes in children (PNAS, 2024)",u:"https://doi.org/10.1073/pnas.2403897121"}},
- {slug:"david-mckellar",name:"David McKellar",title:"CTO & Co-Founder",grp:"Founders",img:TI+"david-mckellar.jpg",
+ {nosheet:1,slug:"david-mckellar",name:"David McKellar",title:"CTO & Co-Founder",grp:"Founders",img:TI+"david-mckellar.jpg",
   bio:["David co-founded Romix Biosciences and leads its technology as Chief Technology Officer."]},
  {slug:"iwijn-de-vlaminck",name:"Iwijn De Vlaminck",title:"Advisor & Co-Founder",grp:"Founders",img:TI+"iwijn-de-vlaminck.jpg",
   bio:["Iwijn is a co-founder of and advisor to Romix Biosciences.","He is senior author of the founders’ cell-free RNA studies from the Meinig School of Biomedical Engineering at Cornell University, including work on Kawasaki disease, tuberculosis and inflammatory syndromes in children."],
   link:{t:"Liquid biopsy based on cell-free DNA and RNA (Annu Rev Biomed Eng, 2024)",u:"https://doi.org/10.1146/annurev-bioeng-110222-111259"}},
- {slug:"julius-judd",name:"Julius Judd",title:"Director of NGS",grp:"Team",img:TI+"julius-judd.png",
+ {nosheet:1,slug:"julius-judd",name:"Julius Judd",title:"Director of NGS",grp:"Team",img:TI+"julius-judd.png",
   bio:["Julius leads next-generation sequencing at Romix Biosciences as Director of NGS."]}
 ];
 var PUBS=[
@@ -580,8 +619,37 @@ function figCard(){var s='<svg viewBox="0 0 600 520"><rect class="s" x="40" y="9
   for(var k=0;k<4;k++){var x0=380+k*34,d="M350 420";for(var x=350;x<=560;x+=6){var y=420-260/(1+Math.exp(-(x-x0-60)/12));d+="L"+x+" "+y.toFixed(1)}s+='<path class="'+(k===0?"a":"n")+'" d="'+d+'"/>'}
   return s+'<text x="175" y="70" text-anchor="middle">TAQMAN ARRAY CARD</text><text x="455" y="470" text-anchor="middle">qPCR AMPLIFICATION</text></svg>'}
 
+
+/* ---- story scene (BY): ONE liquid-biopsy diagram, complete from the first frame; each step lights one labelled stage ---- */
+function sceneSvg(){
+  var fr='',cl='',lib='',bars='',wells='';
+  for(var i=0;i<6;i++){var x=63+(i%2)*9,y=108+i*9,L=i%2?20:14,d='M'+x+' '+y;for(var k=1;k<=4;k++)d+='L'+(x+L*k/4).toFixed(1)+' '+(y+(k%2?-2:2));fr+='<path class="'+(i===3?'fr':'f')+'" d="'+d+'"/>'}
+  for(i=0;i<6;i++)cl+='<ellipse class="o2" cx="'+(68+(i%2)*22+(i%3)*2)+'" cy="'+(192+i*15)+'" rx="9" ry="5"/>';
+  var LL=[[16,0],[62,1],[14,0],[18,0],[70,1],[12,0],[56,1],[16,0],[66,1],[14,0]];for(i=0;i<10;i++){var lx=200+(i%2)*8,ly=112+i*18,ln=LL[i][0],dd='M'+lx+' '+ly;for(var z=1;z<=Math.max(3,Math.round(ln/6));z++)dd+='L'+(lx+ln*z/Math.max(3,Math.round(ln/6))).toFixed(1)+' '+(ly+(z%2?-2.4:2.4));lib+='<path class="'+(LL[i][1]?'fr':'f')+'" d="'+dd+'"/>'}
+  var BH=[70,120,150,60,95,140,50];for(i=0;i<7;i++)bars+='<rect class="'+(i===2||i===5?'br hl':'bn')+'" x="'+(362+i*13)+'" y="'+(292-BH[i])+'" width="7" height="'+BH[i]+'"/>';
+  for(var r=0;r<6;r++)for(var c=0;c<3;c++)wells+='<circle class="w" data-n="'+(r*3+c)+'" cx="'+(530+c*30)+'" cy="'+(117+r*30)+'" r="8"/>';
+  function lab(x,a,b){return '<text class="pl" x="'+x+'" y="336" text-anchor="middle">'+a+'</text><text class="sl" x="'+x+'" y="356" text-anchor="middle">'+b+'</text>'}
+  return '<svg viewBox="0 0 640 380">'+
+   '<g class="pt" data-k="0"><rect class="o hl" x="50" y="70" width="60" height="22" rx="5"/><rect class="o hl" x="56" y="92" width="48" height="200" rx="22"/><path class="o2" d="M57 172H103"/>'+fr+cl+lab(80,'BLOOD DRAW','PLASMA cfRNA')+'</g>'+
+   '<path class="arr" data-k="1" pathLength="1" d="M110 190H178"/><path class="arh" data-k="1" d="M171 184l7 6-7 6"/>'+
+   '<g class="pt" data-k="1"><rect class="o hl" x="185" y="92" width="110" height="200" rx="10"/>'+lib+lab(240,'LIBRARY','SHORT + LONG RNA')+'</g>'+
+   '<path class="arr" data-k="2" pathLength="1" d="M300 190H340"/><path class="arh" data-k="2" d="M333 184l7 6-7 6"/>'+
+   '<g class="pt" data-k="2"><path class="o hl" d="M352 92V292H452"/>'+bars+'<text class="ax" x="356" y="86">LEVEL</text><text class="ax" x="452" y="308" text-anchor="end">GENES</text>'+lab(400,'SIGNATURE','KD vs OTHER FEVERS')+'</g>'+
+   '<path class="arr" data-k="3" pathLength="1" d="M460 190H498"/><path class="arh" data-k="3" d="M491 184l7 6-7 6"/>'+
+   '<g class="pt" data-k="3"><rect class="o hl" x="505" y="92" width="110" height="200" rx="10"/>'+wells+lab(560,'PCR PANEL','TAQMAN CARD')+'</g>'+
+  '</svg>';
+}
+SITE.scene=function(el,p){
+  var q=p*4,sm=function(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)};
+  [].forEach.call(el.querySelectorAll(".pt"),function(g){var k=+g.getAttribute("data-k"),r=k===0?1:sm((q-k+.15)/.3),l=sm((q-k-1+.15)/.3);
+    g.style.opacity=(.32+.68*r-.3*l).toFixed(3);g.classList.toggle("on",r>.5&&l<.5)});
+  [].forEach.call(el.querySelectorAll(".arr"),function(a){var k=+a.getAttribute("data-k");a.style.strokeDashoffset=(1-sm((q-k+.2)/.4)).toFixed(3)});
+  [].forEach.call(el.querySelectorAll(".arh"),function(a){var k=+a.getAttribute("data-k");a.style.opacity=sm((q-k+.02)/.1).toFixed(3)});
+  var u3=Math.max(0,Math.min(1,(q-3)/.8)),n=Math.round(u3*18),lit=[0,2,4,5,7,9,10,13,14,16];
+  [].forEach.call(el.querySelectorAll(".w"),function(w){var i=+w.getAttribute("data-n");w.classList.toggle("lit",lit.indexOf(i)>=0&&i<n)});
+};
 /* ---- hero: plasma RNA fragments flow in, captured and read into a signature ---- */
-function makeHero(cv){
+function makeHero(cv,mode){var F=mode==="foot";
   var c=cv.getContext("2d"),W=1,H=1,D=1,S=[],NS=260,BARS=[];
   for(var i=0;i<NS;i++){var lg=rnd(i,1)>.58;S.push({lane:rnd(i,2),p:rnd(i,3),v:.018+rnd(i,4)*.03,len:lg?46+rnd(i,5)*90:9+rnd(i,6)*16,lg:lg,ph:rnd(i,7)*6.28,red:rnd(i,8)>.93,dp:.35+rnd(i,9)*.65})}
   for(i=0;i<26;i++)BARS.push({b:.25+rnd(i,11)*.75,hi:[3,8,9,15,21].indexOf(i)>=0})
@@ -589,14 +657,14 @@ function makeHero(cv){
   return {resize:function(w,h,d){W=w;H=h;D=d},draw:function(t,IN,m,dim){
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);
     var wc=W/D,mob=wc<861,G=Math.max(Math.min(72,Math.max(16,.042*wc)),(wc-1320)/2)*D,cw=W-2*G,x0=mob?-W*.05:G+cw*.34,x1=mob?W*1.05:G+cw*.76,yT=mob?H*.1:H*.17,yB=mob?H*.46:H*.84,ox=m[0]*14*D,oy=m[1]*10*D;
+    if(F){x0=-W*.05;x1=W*1.05;yT=H*.08;yB=H*.92;ox=oy=0}
     c.lineCap="round";c.lineJoin="round";
-    for(var i=0;i<NS;i++){var s=S[i],u=(s.p+t*s.v)%1,len=s.len*D,x=x0+(x1-x0+len)*u-len+ox*s.dp,y=yT+(yB-yT)*s.lane+Math.sin(u*5+s.ph)*10*D+oy*s.dp*(s.lane-.5)*2;
+    for(var i=0;i<NS;i+=(F?2:1)){var s=S[i],u=(s.p+t*s.v)%1,len=s.len*D,x=x0+(x1-x0+len)*u-len+ox*s.dp,y=yT+(yB-yT)*s.lane+Math.sin(u*5+s.ph)*10*D+oy*s.dp*(s.lane-.5)*2;
       var a=sm(x0,x0+(x1-x0)*.16,x)*(1-sm(x1-(x1-x0)*.1,x1,x+len))*IN*(.25+.6*s.dp);if(a<.01)continue;
-      c.strokeStyle=s.red?"rgba(192,48,48,"+(a*.95).toFixed(3)+")":"rgba(24,72,120,"+(a*(s.lg?.8:.6)).toFixed(3)+")";
+      c.strokeStyle=F?(s.red?"rgba(239,127,127,"+(a*.42).toFixed(3)+")":"rgba(147,179,227,"+(a*(s.lg?.34:.26)).toFixed(3)+")"):s.red?"rgba(192,48,48,"+(a*.95).toFixed(3)+")":"rgba(24,72,120,"+(a*(s.lg?.8:.6)).toFixed(3)+")";
       c.lineWidth=(s.lg?1.5:1.2)*D*(.8+.4*s.dp);c.beginPath();var n=Math.max(3,Math.round(s.len/6));
       for(var k=0;k<=n;k++){var xx=x+len*k/n,yy=y+Math.sin(k*1.1+t*1.6+s.ph)*2.4*D;k?c.lineTo(xx,yy):c.moveTo(xx,yy)}c.stroke()}
-    if(!mob){var gx=x1+ox*.4;var g=c.createLinearGradient(0,yT,0,yB);g.addColorStop(0,"rgba(24,72,120,0)");g.addColorStop(.5,"rgba(24,72,120,.35)");g.addColorStop(1,"rgba(24,72,120,0)");
-      c.fillStyle=g;c.fillRect(gx,yT-20*D,1*D,yB-yT+40*D);
+    if(!mob&&!F){var gx=x1+ox*.4;var g=c.createLinearGradient(0,yT,0,yB);g.addColorStop(0,"rgba(24,72,120,0)");g.addColorStop(.5,"rgba(24,72,120,.35)");g.addColorStop(1,"rgba(24,72,120,0)");
       var bx=G+cw*.835+ox*.3,bw=cw*.15,bh=(yB-yT)/BARS.length;
       for(var j=0;j<BARS.length;j++){var B=BARS[j],L=bw*B.b*(.86+.14*Math.sin(t*.55+j*1.7))*IN;
         c.fillStyle=B.hi?"rgba(192,48,48,.85)":"rgba(24,72,120,.42)";c.fillRect(bx,yT+j*bh+bh*.32,L,Math.max(2*D,bh*.36))}
@@ -611,11 +679,11 @@ SITE.views.home=function(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Revolutionizing</span><span class="l">liquid <em>biopsy.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Romix Biosciences reads cell-free RNA in blood for deeper insight into disease biology and therapeutic activity, starting with the first diagnostic test for Kawasaki disease.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/science">See the science '+ARR+'</a><a class="btn" href="#/team">Meet the team</a></div></div>'+
-   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>RNA fragments in plasma</span><span><i class="s"></i>Disease signature</span></div>'+
+   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>RNA fragments in plasma</span><span><i class="s"></i>Disease signature · gene levels</span></div>'+
    '<div class="cue" aria-hidden="true"><i></i></div></section>'+
   '<section class="sec mani" data-tone="light2"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Kawasaki disease is the leading cause of acquired heart disease in children, and there is <em>no diagnostic test</em> for it. Romix is building one from a routine blood draw.</p>'+
+   '<div class="mblock"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Kawasaki disease is the leading cause of acquired heart disease in children, and there is <em>no diagnostic test</em> for it. Romix is building one from a routine blood draw.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">25<sup>%</sup></span><span class="lab k">Risk of heart disease without timely treatment</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">3<sup>%</sup></span><span class="lab k">Risk with timely IVIG treatment</span></div>'+
@@ -627,7 +695,7 @@ SITE.views.home=function(){
    {r:"Capture",h:"Capture short and long RNA together.",p:"Existing library methods favour either short or long RNA. Romix is developing one unbiased method, using high-performance enzymes with helicase activity, to capture both and preserve integrity."},
    {r:"Read",h:"Discover the disease signature.",p:"Large-scale sequencing of pre-treatment plasma from children with Kawasaki disease and from febrile controls is used to find cfRNA signatures that separate Kawasaki disease from other childhood fevers."},
    {r:"Test",h:"Translate it to PCR.",p:"Signatures move to the Thermo Fisher TaqMan Array Card, a qPCR format run on nearly ubiquitous equipment, and are validated on patient samples collected prospectively across the United States."}],
-   figs:[figTube(),figCapture(),figRead(),figCard()]})+
+   scene:sceneSvg()})+
   '<section class="sec" data-tone="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">Two NIH programs, <em>one platform.</em></h2></div><p data-r>A first diagnostic for Kawasaki disease, and a library preparation method that profiles the full range of cell-free RNA.</p></div>'+
    '<div class="pgms">'+
@@ -640,7 +708,7 @@ SITE.views.home=function(){
   '</div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">The people reading <em>the signal.</em></h2></div><p data-r>Founders whose published research established plasma cell-free RNA as a window on children’s inflammatory disease.</p></div>'+
-   '<div class="pgrid">'+TEAM.map(tCard).join("")+'</div>'+
+   '<ul class="tline">'+TEAM.map(function(p){return '<li><b>'+esc(p.name)+'</b><span class="lab">'+esc(p.title)+'</span></li>'}).join("")+'</ul>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div></div></section>'+
   '<section class="sec" data-tone="dark"><div class="wrap">'+
    '<div class="grant" data-r><div><span class="lab kick">NHLBI · SBIR (R44) · Aug 2026</span><p class="gq">Turning a clinical diagnosis into a <em>molecular one,</em> from a routine blood draw.</p></div>'+
@@ -694,7 +762,7 @@ SITE.views.contact=function(){
 };
 SITE.views.nf=function(){return head({k:"Not found",h:'No signal <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})};
 function footer(){
-  return '<footer class="ftr" data-tone="dark"><div class="cols">'+
+  return '<footer class="ftr" data-tone="dark"><canvas class="ffield" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Headquarters</span>Romix Biosciences Inc.<br>Waltham, Massachusetts</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/publications">Publications</a><br><a class="ul" href="#/contact">Contact</a></div>'+
    '<div class="c"><span class="lab">Programs</span>Kawasaki disease diagnostic<br>Unified cfRNA library prep</div>'+
@@ -709,10 +777,11 @@ function head(o){
   return '<section class="ph-head" data-field data-tone="'+(SITE.phTone||"dark")+'"><span class="lab eyebrow">'+o.k+'</span>'+
   '<h1 class="d1" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+(o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){var im=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
+function tCard(p){if(p.nosheet)return '<div class="pcard nos">'+(p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'')+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';
+  var im=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
   return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><span class="rt"><h3>'+esc(n.t)+'</h3>'+(n.m?'<span class="rm">'+esc(n.m)+'</span>':'')+'</span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function formHtml(note){return '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="fsub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
@@ -722,7 +791,7 @@ function storyHtml(o){
    '<div class="story-l"><span class="lab kick">'+o.k+'</span><h2 class="d3">'+o.h+'</h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i>'+o.steps.map(function(s,i){return '<span'+(i?'':' class="on"')+'>'+s.r+'</span>'}).join("")+'</div>'+
     '<div class="steps">'+o.steps.map(function(s){return '<article class="step"><h3>'+s.h+'</h3><p>'+s.p+'</p></article>'}).join("")+'</div></div>'+
-   '<div class="story-r" aria-hidden="true">'+o.figs.map(function(f){return '<div class="fig">'+f+'</div>'}).join("")+'</div>'+
+   '<div class="story-r" aria-hidden="true">'+(o.scene?'<div class="fig scene">'+o.scene+'</div>':o.figs.map(function(f){return '<div class="fig">'+f+'</div>'}).join(""))+'</div>'+
   '</div></section>';
 }
 
@@ -749,6 +818,14 @@ document.addEventListener("visibilitychange",function(){if(document.hidden)field
 function fieldScroll(){var p=Math.max(0,Math.min(1,window.scrollY/innerHeight));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
 
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
+
+/* ================= BT: the hero's living visual, quieter, behind the footer wordmark (paused off-screen) ================= */
+var foot={h:null,cv:null,run:false,raf:0,io:null,t0:performance.now()};
+function footSize(){if(!foot.cv||!foot.h)return;var bw=$(".ftr .bigw, .ftr .flogo");if(bw){var bh=bw.offsetHeight;foot.cv.style.top=Math.round(bw.offsetTop-bh*.55)+"px";foot.cv.style.height=Math.round(bh*2.1)+"px";foot.cv.style.bottom="auto"}var r=foot.cv.getBoundingClientRect(),d=Math.min(window.devicePixelRatio||1,2);foot.cv.width=Math.max(1,Math.round(r.width*d));foot.cv.height=Math.max(1,Math.round(r.height*d));foot.h.resize(foot.cv.width,foot.cv.height,d);foot.h.draw(RM?30:(performance.now()-foot.t0)/1000,1,[0,0],1)}
+function footKill(){if(foot.io)foot.io.disconnect();foot.run=false;cancelAnimationFrame(foot.raf);foot.h=null;foot.cv=null;foot.io=null}
+function footInit(){var cv=$(".ftr .ffield");if(!cv)return;foot.cv=cv;foot.h=makeHero(cv,"foot");footSize();
+  function loop(){if(!foot.run||!foot.h)return;foot.h.draw((performance.now()-foot.t0)/1000,1,[0,0],1);foot.raf=requestAnimationFrame(loop)}
+  if(RM)return;foot.io=new IntersectionObserver(function(es){var v=es[0].isIntersecting&&!document.hidden;if(v&&!foot.run){foot.run=true;foot.raf=requestAnimationFrame(loop)}else if(!v){foot.run=false;cancelAnimationFrame(foot.raf)}});foot.io.observe(cv)}
 
 /* ================= HEADER THEME (A) ================= */
 var hdr=$("#hdr"),lastSY=0;
@@ -855,17 +932,20 @@ function homeScroll(view){
 }
 function storyInit(view){
   var sec=$("#story",view);if(!sec)return;
-  var steps=$$(".step",sec),figs=$$(".fig",sec),rail=$$(".rail span",sec),prog=$("#rprog",sec),cur=0,N=steps.length;
+  var steps=$$(".step",sec),figs=$$(".fig:not(.scene)",sec),scene=$(".scene",sec),rail=$$(".rail span",sec),prog=$("#rprog",sec),cur=0,N=steps.length;
+  /* BY: one object drawn once; each step lights one labelled part (scrubbed) */
+  function sc(p){if(scene&&SITE.scene&&scene.isConnected)SITE.scene(scene,p)}
+  sc(0);
   function setStep(n){if(n===cur)return;cur=n;rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)})}
   if(RM){steps.forEach(function(s,i){s.style.visibility=i?"hidden":"visible"});return}
   var tl=gsap.timeline();tl.to({},{duration:1});
   /* on a reload restore, StoryFX is created only once the page sits at the restored position, so the first figure is built there */
   var fx=null;function mkFx(){if(!sec.isConnected)return;fx=StoryFX({section:sec,figs:figs,steps:steps});fx(tl.progress())}
-  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.999)));if(fx)fx(p)});
+  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.999)));sc(p);if(fx)fx(p)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
   if(window.__restoring)window.__afterRestore=mkFx;else mkFx();
   /* the story heading + rail enter as the section arrives */
-  var sl=$(".story-l",sec);gsap.from($$(".kick, .d3, .rail",sl).concat([].slice.call(steps[0].children)),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,scrollTrigger:{trigger:sec,start:"top 80%"}});
+  var sl=$(".story-l",sec);gsap.from($$(".kick, .d3, .rail",sl).concat([].slice.call(steps[0].children)).concat(scene?[scene]:[]),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,scrollTrigger:{trigger:sec,start:"top 80%"}});
 }
 function contactInit(view){
   var f=$("#cform",view);if(!f)return;
@@ -884,15 +964,16 @@ function psMode(m){bio.classList.toggle("slim",m==="slim");bio.classList.toggle(
 window.xPsNoImg=function(im){var i=pBy((location.hash.split("/")[2])||"");if(i>=0)TEAM[i].img=null;psMode("noimg");im.remove()};
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
   /* big sharp headshot -> two columns; small or soft -> slim; none -> noimg (BQ) */
-  var m=p.img?(p.small||(p.imgW&&p.imgW<480)?"slim":""):"noimg";psMode(m);
-  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(p.imgW<480&&$("#psName")&&$("#psName").textContent===p.name&&!bio.classList.contains("slim"))fillBio(i)};pr.onerror=function(){p.img=null;if($("#psName")&&$("#psName").textContent===p.name)fillBio(i)};pr.src=p.img}
+  var m=p.img&&!p.small&&!(p.imgW&&p.imgW<480)?"":"noimg";psMode(m);
+  if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(p.imgW<480&&$("#psName")&&$("#psName").textContent===p.name&&!bio.classList.contains("noimg"))fillBio(i)};pr.onerror=function(){p.img=null;if($("#psName")&&$("#psName").textContent===p.name)fillBio(i)};pr.src=p.img}
   $("#psMedia").innerHTML=m===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="xPsNoImg(this)">':"";
-  var hd=m==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  var hd='<h2 id="psName">'+esc(p.name)+'</h2>';
   var b=$("#psBody");
   b.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(x){return '<p>'+esc(x)+'</p>'}).join("")+
    (p.link?'<p><a class="ul" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' \u2197</a></p>':'');
   b.scrollTop=0;
-  $("#bioPrev").setAttribute("href","#/team/"+TEAM[(i-1+n)%n].slug);$("#bioNext").setAttribute("href","#/team/"+TEAM[(i+1)%n].slug);
+  var S=TEAM.filter(function(q){return !q.nosheet}),k=S.indexOf(p),m2=S.length;
+  $("#bioPrev").setAttribute("href","#/team/"+S[(k-1+m2)%m2].slug);$("#bioNext").setAttribute("href","#/team/"+S[(k+1)%m2].slug);
   document.title=p.name+" — "+SITE.name;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
@@ -922,7 +1003,7 @@ var bioFromClick=false,bioBase=null;
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   if(!p.length)return {k:"home",v:SITE.views.home,t:SITE.homeTitle,x:"Home"};
-  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:SITE.views.team,t:TEAM[pBy(p[1])].name+" — "+SITE.name,x:"Team"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0&&!TEAM[pBy(p[1])].nosheet)return {k:"team",bio:p[1],v:SITE.views.team,t:TEAM[pBy(p[1])].name+" — "+SITE.name,x:"Team"};
   var r=SITE.routes[p[0]];if(r&&!p[1])return {k:p[0],v:SITE.views[p[0]],t:r+" — "+SITE.name,x:r};
   return {k:"404",v:SITE.views.nf,t:"Not found — "+SITE.name,x:"Not found"};
 }
@@ -937,7 +1018,7 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
 function paint(r){
   var view=$("#view");if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
-  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  footKill();view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;footInit();
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.75);observeField();
@@ -1022,7 +1103,7 @@ function preload(){
 }
 (function(){var done=false;function go2(){if(done)return;done=true;preload()}
   if(document.fonts&&document.fonts.load){Promise.all(SITE.fonts.map(function(f){return document.fonts.load(f)})).then(function(){return document.fonts.ready}).then(go2,go2);setTimeout(go2,2500)}else go2()})();
-var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
+var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){footSize();if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
 })();
 </script>
 </body>

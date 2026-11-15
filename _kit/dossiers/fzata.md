@@ -118,3 +118,35 @@ Not used, with reasons:
 - Three further "Fzata Scientist" frames (182×229, 194×274, 327×243) — too small to present at the site's scale, and the same subject as the lab photograph already used
 
 **Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 21 pages crawled, 17 meaningful images, 12 used in the concept, 0 flagged as stock; the 5 unused are the ones listed above. Logo palette re-sampled: `#a80078` 31%, `#a81878` 15%, `#900060` 8%, `#900078` 7%, `#006018` 3%, `#307830` 2% — unchanged against the mapping above.
+
+## Round 3 (client review): what changed and why
+- **Text jump (BS).** The `.ln-mask` rule is the kit's exact one. SplitText splits on spaces, so a
+  title that relied on a hyphen break re-wrapped when it was split; hyphenated words inside row,
+  award and contract titles now carry a non-breaking hyphen (U+2011), which looks identical and
+  makes the browser's line breaking and SplitText's word model agree. Gate: split-audit OK.
+- **Footer (BT).** The hero's living background returns behind the footer wordmark: the same
+  drifting arc of soft dots as the field's own 2D draw, at a fraction of the density and opacity,
+  running only while the footer is on screen.
+- **Centring (BU).** The scroll-coloured "Why it matters" statement is centred as a block with its
+  text still left-aligned; person grids are a centred flex layout, so a short last row no longer
+  leaves a dead column.
+- **Bio sheets (BV).** The 96px circle mode is gone: a sheet has a large portrait or none. Elizabeth
+  Smith's profile only repeated her card, so her bio is on the card and the card is not a link.
+  A group of one is a composed feature rather than a quarter-width scrap.
+- **Award marks (BW).** Two of the three were supplied PNGs in dark ink that read as a faint smudge
+  on the dark validation band. All three now name the awarding body in type, one treatment.
+  This leaves two further images unused:
+  - `44ad90_d63845796ac44ad09967333f7ec33f6a~mv2.png` (Mid-Atlantic Innovation Celebration badge)
+  - `44ad90_437118ccb81840338e17a234f10bd2ff~mv2.png` (Global Health Innovation Challenge logo)
+  Both failed logo-audit FAINT on the dark plate and had no legible light-ground version.
+- **Hanging image (BX).** The second photograph in the "Inside Fzata" band had been removed in round
+  two, leaving its two-column wrapper holding one picture at half the measure on a phone. The
+  wrapper is gone.
+- **Empty cards (BZ).** A person with no portrait, and an award, are now a rule and type sized to
+  their content, not a 230px bordered box with a label stranded at its foot.
+- **Walk-through.** The camera opens wide enough to hold both gut walls, so the first frame is
+  already the whole picture: a labelled capsule of live lyophilized yeast inside a labelled small
+  intestine. Populations thinned (yeast 54 → 26, secreted marks 150 → 44, flora 90 → 40) and the
+  villi spaced further apart. The opened capsule stays in the gut through SECRETE, so the switch
+  from capsule to gut reads as one place. The last scene holds a 500-unit span instead of 980 and
+  its two labels no longer collide.

@@ -90,3 +90,24 @@ Not used, with reasons:
 - `2bb9e75bc3224cf4b3314fa0e01af8a7.jpg` ("Pipetting Samples"), `11062b_33787989082a4459a2e59e197ae8948f~mv2.jpeg` ("Science Lab"), `5c3f1e5a1ebf435bbc152173d50d7ea9.jpg` ("Embryonic Stem Cells"), `11062b_6856964059a0487cad651bbcff22dafb~mv2_d_5700_3800_s_4_2.jpg` ("Chemistry Class"), `11062b_a4cbb996d3ef4eb6a733d07c0d97640b~mv2.jpg` ("Science Student"), `11062b_2cad0157f39942f5aaf6ecc288fea0f4~mv2.jpg` ("Medicine") — Wix stock photography, still carrying the stock library's titles
 
 **Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 8 pages crawled, 16 meaningful images, 9 used in the concept; the 7 unused are the ones listed above (six Wix stock photographs still carrying the stock library’s titles, and the low-resolution duplicate). Logo palette re-sampled: `#009090` 27%, `#004848` 21%, `#003030` 5%, `#007878` 5%, `#007890` 5%, `#001830` 4% — unchanged against the mapping above.
+
+## Round 3 (client review): what changed and why
+- **Text jump (BS).** The kit's exact `.ln-mask` rule, plus non-breaking hyphens (U+2011) inside
+  row and award titles so SplitText's word model and the browser's line breaking agree. The failing
+  case was "Macrophage-targeting inhaled tigecycline dry powder…", which went from three lines to
+  four when it was split. Gate: split-audit OK.
+- **Footer (BT).** The hero's living background, quieter, behind the footer wordmark; it runs only
+  while the footer is on screen.
+- **Centring (BU).** The scroll-coloured statement is centred as a block, text still left-aligned.
+  Person grids centre a short last row.
+- **Hanging image (BX).** OPERATIONS is a group of one; it was a 323px card alone in a 1440px band,
+  and at 390 an odd member of a two-up group sat at half the measure. A group of one is now a
+  composed feature (portrait beside the name, role and link), and below 560px every person grid is
+  a single column.
+- **Walk-through.** Only two of the four skin layers were named in the opening frame, because the
+  other two sat outside the canvas. The opening camera now holds the whole cross-section, so
+  stratum corneum, epidermis, dermis and systemic circulation are all named from frame 1, as a
+  left-aligned column clear of the particles. Labels go from 11px to 13px. Populations thinned
+  (surface 46 → 24 and drawn larger, screen 9/6 → 6/4 per column, lesion 72 → 32). The epidermis
+  and dermis stay named in the DELIVER scene, where the claim is about depth. The last scene holds
+  a 1060-unit span instead of 1200 and the PHASE 1 label clears the canvas edge.

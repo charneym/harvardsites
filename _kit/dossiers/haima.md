@@ -111,3 +111,22 @@ The logo file is a purple wordmark on an opaque white box, which cannot be dropp
 Not used, with reasons: none of the company's meaningful images were left out; the only other files on the site are the Squarespace social icons and the logo variants.
 
 **Closing re-run of `photo-inventory.js` against the built page (PRINCIPLES BJ):** 24 pages crawled; the crawler still reaches only the logo on this Squarespace site, because every other image is served from a lazy gallery that does not resolve to an `<img>` at crawl time, so the image list above remains the one taken directly from the pages with Playwright. Nothing meaningful was left out. Logo palette re-sampled: `#781860` 71%, `#c01818` 12%, `#a81818` 8%, `#c03030` 4%, `#901818` 3%, `#601860` 2% — unchanged against the mapping above.
+
+## Round 3 (client review): what changed and why
+- **Text jump (BS).** The kit's exact `.ln-mask` rule, plus non-breaking hyphens (U+2011) inside row
+  and paper titles. Gate: split-audit OK.
+- **Footer (BT).** The hero's living background, quieter, behind the footer wordmark; it runs only
+  while the footer is on screen.
+- **Centring (BU).** The scroll-coloured statement is centred as a block, text still left-aligned.
+  Person grids centre a short last row, and below 560px every person grid is a single column, which
+  is what left an odd member at half the measure on a phone.
+- **Bio sheets (BV).** The 96px circle portrait is gone from the component: a sheet has a large
+  portrait or none. A headshot whose source is under 480px wide stays on the card and its sheet
+  uses the compact no-portrait mode, so nothing is blown up. Eleven people whose whole profile was one short
+  line — including the six the review named — now carry that line on the card, and those cards are
+  not links. Gate: overlay-audit OK.
+- **Hanging image (BX).** The SynthoPlate schematic sat in a two-column wrapper on its own, 841px of
+  a 1440px band; it now takes the full measure.
+- **Empty cards (BZ).** A person with no portrait is a rule and type sized to its content.
+- **Walk-through.** Reviewed as OK (one vessel, platelets, labelled) and left as it is. Verified that
+  no two step paragraphs are ever visible at once across the pin (G1).

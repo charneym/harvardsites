@@ -133,9 +133,7 @@ i.sp{font-style:italic}
 .mm li a{display:block;padding:12px 0 .3em;font-family:var(--serif);font-weight:400;font-size:clamp(38px,10vw,64px);line-height:1.05;letter-spacing:-.03em}
 .mm .mmf{display:grid;grid-template-columns:1fr 1fr;gap:18px;color:var(--stone);font-size:13px;line-height:1.6}
 
-.ln{overflow:visible!important}
-.ln-mask{padding:.16em .16em .26em!important;margin:-.16em -.16em -.26em!important;overflow:clip;overflow-clip-margin:0}
-.ln-mask.rel{overflow:visible!important;clip-path:none!important}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-template-rows:auto auto auto;column-gap:var(--gap);align-content:center;padding:calc(clamp(96px,12vh,140px) + clamp(52px,6vh,86px)) var(--side) clamp(96px,12vh,140px);z-index:1}
 .hero>.eyebrow,.hero>.hero-h,.hero>.hero-foot{grid-column:1/9}
@@ -172,7 +170,10 @@ i.sp{font-style:italic}
 @media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
 
 /* manifesto + stats */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,64px);line-height:1.12;letter-spacing:-.02em;margin:0;max-width:25ch}
+/* BU: the scroll-coloured statement is a block on the page centre line; the words stay
+   left-aligned, so the ragged right edge still reads as set type, not as a centred poem. */
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,64px);line-height:1.12;letter-spacing:-.02em;margin:0 auto;max-width:25ch;width:100%}
+.mani .kick{display:block;max-width:25ch;width:100%;margin-left:auto;margin-right:auto}
 .mani .txt .w{opacity:.18}
 .mani .txt em{color:var(--sinD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -223,13 +224,26 @@ i.sp{font-style:italic}
 .tagp{display:inline-flex;align-items:center;line-height:1;padding:6px 10px 5px;border:1px solid currentColor;border-radius:99px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px;color:var(--sinD)}
 
 /* cards / team */
-.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
+/* BU: a short last row is centred rather than left with a dead column, and the track
+   count still follows the item count. Flex (not grid) so the orphan can centre. */
+.pgrid{display:flex;flex-wrap:wrap;justify-content:center;align-items:stretch;gap:48px var(--gap);--pn:4;--pgap:var(--gap)}
+.pgrid>*{flex:0 0 calc((100% - (var(--pn) - 1) * var(--pgap)) / var(--pn));max-width:calc((100% - (var(--pn) - 1) * var(--pgap)) / var(--pn))}
 .tgroup .pcard .grp{display:none}
-.pgrid.n3{grid-template-columns:repeat(3,minmax(0,1fr));max-width:calc((100% - 3 * var(--gap)) * .75 + 2 * var(--gap))}
-.pgrid.n5{grid-template-columns:repeat(5,minmax(0,1fr));gap:40px calc(var(--gap) * .82)}
-.pgrid.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
-.pgrid.n2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:calc((100% - 3 * var(--gap)) * .5 + var(--gap))}
-.pgrid.n1{grid-template-columns:1fr;max-width:calc((100% - 3 * var(--gap)) * .25)}
+.pgrid.n3{--pn:3;max-width:calc((100% - 3 * var(--gap)) * .75 + 2 * var(--gap))}
+.pgrid.n5{--pn:5;--pgap:calc(var(--gap) * .82);gap:40px calc(var(--gap) * .82)}
+.pgrid.n6{--pn:3}
+.pgrid.n2{--pn:2;max-width:calc((100% - 3 * var(--gap)) * .5 + var(--gap))}
+.pgrid.n1{--pn:1;max-width:calc((100% - 3 * var(--gap)) * .25)}
+/* BX: a group of one is a composition, not a quarter-width card in an empty band. */
+.pgrid.n1.feat{max-width:none}
+.pgrid.n1.feat>.pcard{flex:1 1 100%;max-width:none;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(28px,4vw,72px);align-items:center}
+.pgrid.n1.feat>.pcard.noimg{grid-template-columns:minmax(0,1fr)}
+.pgrid.n1.feat .pc-fig{margin:0}
+.pgrid.n1.feat .pc-meta{padding-top:0;justify-content:center}
+.pgrid.n1.feat .pc-meta h3{font-size:clamp(32px,3.2vw,50px)}
+.pgrid.n1.feat .pc-meta .ttl{font-size:17px;max-width:40ch}
+.pgrid.n1.feat .pc-bio{font-size:16.5px;max-width:52ch}
+@media (max-width:760px){.pgrid.n1.feat>.pcard{grid-template-columns:1fr;gap:22px}}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
 @media (hover:hover){.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
@@ -243,7 +257,7 @@ i.sp{font-style:italic}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px;flex:1 1 auto}
 .pc-meta .grp{display:none}
 .pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(25px,1.9vw,30px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
-.pc-meta h3 span{display:inline-block;padding-bottom:.16em;background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta h3 span{text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .38s var(--eo)}
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--stone)}
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:auto;padding-top:10px}
@@ -251,19 +265,26 @@ i.sp{font-style:italic}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
 @media (hover:hover){.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}}
 .dark .pcard:hover h3,.dark2 .pcard:hover h3{color:var(--sinL)}
-@media (hover:hover){.pcard:hover h3 span,.pcard:focus-visible h3 span{background-size:100% 1px}}
+@media (hover:hover){.pcard:hover h3 span,.pcard:focus-visible h3 span{text-decoration-color:currentColor}}
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
-.pcard.noimg{border:1px solid var(--hairD);padding:26px 24px 24px;min-height:230px;background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0))}
-.dark .pcard.noimg,.dark2 .pcard.noimg{border-color:var(--hair);background:linear-gradient(180deg,rgba(246,241,243,.04),rgba(246,241,243,0))}
+/* BZ: type and a rule do this job. The bordered plate was a 230px box holding four short
+   lines, with the PROFILE label stranded at its foot. */
+.pcard.noimg{border:0;border-top:1px solid var(--hairD);padding:18px 0 0;min-height:0;background:none;align-self:start}
+.dark .pcard.noimg,.dark2 .pcard.noimg{border-top-color:var(--hair);background:none}
 .pcard.noimg .pc-fig{display:none}
-.pcard.noimg .pc-meta{padding-top:0;height:100%}
-.pcard.noimg .grp{display:block;margin-bottom:22px;color:var(--stoneD)}
+.pcard.noimg .pc-meta{padding-top:0;height:auto}
+.pcard.noimg .grp{display:block;margin-bottom:14px;color:var(--stoneD)}
+.tgroup .pcard.noimg .grp{display:none}
 .dark .pcard.noimg .grp,.dark2 .pcard.noimg .grp{color:var(--stone)}
-.pcard.noimg .go{margin-top:auto;padding-top:20px}
+.pcard.noimg .go{margin-top:12px;padding-top:0}
+.pcard.noimg .pc-bio{margin:10px 0 0;font-size:15px;line-height:1.6;color:var(--stoneD);max-width:46ch}
+.dark .pcard.noimg .pc-bio,.dark2 .pcard.noimg .pc-bio{color:var(--stone)}
+.pcard.flat{cursor:default}
+.pcard.flat:hover{transform:none;box-shadow:none}
 .pcard.noimg::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sinD);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
 .dark .pcard.noimg::before,.dark2 .pcard.noimg::before{background:var(--sinL)}
-.pcard.noimg::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(168,24,120,.1),rgba(168,24,120,0) 60%);opacity:0;transition:opacity .32s;pointer-events:none}
-.pcard.noimg:hover{box-shadow:0 26px 46px -30px rgba(25,12,21,.4)}
+.pcard.noimg::after{display:none}
+.pcard.noimg:hover{box-shadow:none}
 .pcard.noimg:hover::before,.pcard.noimg:focus-visible::before{transform:scaleX(1)}
 .pcard.noimg:hover::after,.pcard.noimg:focus-visible::after{opacity:1}
 .pcard.noimg:hover h3,.pcard.noimg:focus-visible h3{transform:translateX(5px)}
@@ -342,6 +363,7 @@ i.sp{font-style:italic}
 .rows.plain li{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:center;padding:20px 0;border-bottom:1px solid var(--hair)}
 .light .rows.plain li{border-bottom-color:var(--hairD)}
 .rows.plain .nm{grid-column:1/4;display:flex;flex-direction:column;gap:3px}
+.rows.plain .meta{grid-column:4/13;margin:8px 0 0;color:var(--stoneD)}
 .rows.plain h3{grid-column:4/13;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,26px);line-height:1.22;margin:0}
 
 /* cta + footer */
@@ -354,6 +376,9 @@ i.sp{font-style:italic}
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--sinL)}
 .ftr .c a{color:var(--bone)}
+.ftr-fx{position:absolute;left:0;right:0;bottom:0;width:100%;height:clamp(300px,46vw,680px);z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.2s ease-out}
+.ftr-fx.on{opacity:1}
+.ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
 .ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(27vw,400px);line-height:.82;letter-spacing:-.045em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.2em;color:var(--bone)}
 .ftr .bigw em{color:var(--sinL)}
 .ftr .bigw .ch{display:inline-block}
@@ -445,7 +470,7 @@ i.sp{font-style:italic}
 .nf{min-height:70vh}
 
 @media (max-width:1100px){
-  .pgrid,.pgrid.n5,.pgrid.n6{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pgrid,.pgrid.n5,.pgrid.n6{--pn:3}
   .hero-key{display:none}
   .hero>.eyebrow,.hero>.hero-h,.hero>.hero-foot{grid-column:1/10}
   .hero .hrule{display:none}
@@ -470,10 +495,10 @@ i.sp{font-style:italic}
   .hero::before{background:linear-gradient(180deg,rgba(18,8,18,.1) 0%,rgba(18,8,18,.3) 22%,rgba(18,8,18,.82) 40%,rgba(18,8,18,.92) 70%,#190c15 100%)}
   .hero-h{font-size:clamp(40px,11vw,92px)}
   .hero-foot .s{font-size:16px}
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .pgrid{--pn:2;--pgap:16px;gap:36px 16px}
   .pgrid.n1,.pgrid.n2,.pgrid.n3{max-width:none}
-  .pgrid.n2,.pgrid.n3,.pgrid.n5,.pgrid.n6{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pgrid.n1{grid-template-columns:1fr}
+  .pgrid.n2,.pgrid.n3,.pgrid.n5,.pgrid.n6{--pn:2;--pgap:16px}
+  .pgrid.n1{--pn:1}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .pipe-h{display:grid;grid-template-columns:1fr;padding:0 0 9px}
   .pipe-h>span:not(.stg){display:none}
@@ -490,7 +515,7 @@ i.sp{font-style:italic}
   .fld.w,.subr{grid-column:1/2}
 }
 @media (max-width:560px){
-  .pgrid,.pgrid.n5,.pgrid.n6{grid-template-columns:1fr}
+  .pgrid,.pgrid.n2,.pgrid.n3,.pgrid.n5,.pgrid.n6{--pn:1}
   .pgrid.n1,.pgrid.n2,.pgrid.n3{max-width:none}
   .moa{grid-template-columns:1fr;gap:30px}
   .moa svg{max-width:230px}
@@ -515,13 +540,13 @@ i.sp{font-style:italic}
 .shots .fig.a .ph{aspect-ratio:3/2}
 .sec.first>.wrap>div>.fig.a .ph{aspect-ratio:3/2}
 .shots .fig.b .ph{aspect-ratio:4/5}
-.awards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(44px,5vw,76px)}
-.aw{border:1px solid var(--hair);display:flex;flex-direction:column;gap:16px;align-items:flex-start;justify-content:space-between;padding:22px;min-height:168px;transition:border-color .3s var(--eo),background-color .3s var(--eo)}
-.light .aw{border-color:var(--hairD)}
-.aw:hover{border-color:var(--sinL);background:rgba(230,145,205,.05)}
-.light .aw:hover{border-color:var(--sinD);background:rgba(168,24,120,.04)}
+.awards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(44px,5vw,76px);align-items:start}
+.aw{border-top:1px solid var(--hair);display:flex;flex-direction:column;gap:14px;align-items:flex-start;padding:18px 0 0;transition:border-color .3s var(--eo)}
+.light .aw{border-top-color:var(--hairD)}
+a.aw:hover{border-top-color:var(--sinL)}
+.light a.aw:hover{border-top-color:var(--sinD)}
 .aw .plate2{height:62px;display:flex;align-items:center}
-.aw>span:last-child{margin-top:auto}
+.aw>span:last-child{margin-top:0}
 a.aw:hover b{color:var(--sinL)}
 .aw .plate2 img{height:100%;width:170px;object-fit:contain;object-position:left center}
 .aw b{font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.5vw,23px);line-height:1.2;display:block}
@@ -879,13 +904,24 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
+/* BV: a profile that only repeats the card is not worth opening. A person whose whole
+   bio is one short paragraph carries it on the card, and that card is not a link. */
+function psThin(p){if(!p.bio||!p.bio.length)return false;
+  var W=function(t){return String(t).toLowerCase().match(/[a-z0-9'\u2019-]{3,}/g)||[]},i;
+  var cw={},a=W([p.grp,p.name,p.title,"Profile"].join(" "));for(i=0;i<a.length;i++)cw[a[i]]=1;
+  var sw=W([p.title].concat(p.bio).join(" ")),extra=0;
+  for(i=0;i<sw.length;i++)if(!cw[sw[i]])extra++;
+  return extra<14||(sw.length?1-extra/sw.length:1)>.56}
 function tCard(p){
   var fig=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="fzNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
-  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+
-  '<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+  var thin=psThin(p);
+  var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+
+   (thin?'<p class="pc-bio">'+esc(p.bio[0])+'</p>':'<span class="lab go">Profile '+ARR+'</span>')+'</div>';
+  if(thin)return '<div class="pcard'+(p.img?'':' noimg')+' flat">'+fig+meta+'</div>';
+  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+meta+'</a>'}
 window.fzNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-function awardRows(list){return '<ul class="rows plain">'+list.map(function(a){return '<li><span class="nm"><time class="lab" datetime="'+a.d+'">'+fd(a.d)+'</time><span class="lab">'+esc(a.ic)+' · '+esc(a.a)+'</span></span><h3>'+esc(a.t)+'<br><span class="lab" style="display:block;margin-top:8px">'+esc(a.n)+' · '+esc(a.p)+'</span></h3></li>'}).join("")+'</ul>'}
+function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+nbh(esc(n.t))+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function awardRows(list){return '<ul class="rows plain">'+list.map(function(a){return '<li><span class="nm"><time class="lab" datetime="'+a.d+'">'+fd(a.d)+'</time><span class="lab">'+esc(a.ic)+' · '+esc(a.a)+'</span></span><h3>'+nbh(esc(a.t))+'</h3><p class="lab meta">'+esc(a.n)+' · '+esc(a.p)+'</p></li>'}).join("")+'</ul>'}
 function pipeTable(){
   return '<div class="pipe"><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Discovery</span><span>Preclinical</span><span>IND-enabling</span></span></div>'+
   PIPE.map(function(p){return '<div class="prow"><div><h3>'+esc(p.n)+'</h3><span class="tagp">'+esc(p.tag)+'</span></div><p class="ind">'+esc(p.ind)+'</p>'+
@@ -939,7 +975,7 @@ function vHome(){
    '<div class="shead"><div><span class="lab kick" data-r>Inside Fzata</span><h2 class="d2 split">A small team in <em>Halethorpe.</em></h2></div><p data-r>Fzata works out of the bwtech@UMBC research park in Halethorpe, Maryland, where its strains are engineered, characterized and manufactured.</p></div>'+
    '<div class="shots">'+
     fig({src:PIC.lab1,alt:"A Fzata scientist at a laboratory instrument",cls:"a",cap:"In the lab"})+
-    '<div class="s2">'+fig({src:PIC.flask,alt:"Aurora Dennison, IBD advocate, holding a flask at Fzata",cls:"b",cap:"From Fzata\u2019s World IBD Day post, May 2025"})+'</div>'+
+    fig({src:PIC.flask,alt:"Aurora Dennison, IBD advocate, holding a flask at Fzata",cls:"b",cap:"From Fzata\u2019s World IBD Day post, May 2025"})+
    '</div>'+
   '</div></section>'+
 
@@ -956,8 +992,8 @@ function vHome(){
    '<div class="shead"><div><span class="lab kick" data-r>Validation</span><h2 class="d2 split">Built on <em>federal</em> science funding.</h2></div><p data-r>Fzata’s platform was built with non-dilutive NIH support. Three new awards landed in September 2026 across NIAID, NIDDK and NINDS; the amounts shown are the first-year award amounts recorded in NIH RePORTER.</p></div>'+
    awardRows(AWARDS.slice(0,3))+
    '<div class="awards" data-group>'+
-    '<div class="aw"><span class="plate2">'+'<img src="'+PIC.aw1+'" alt="Mid-Atlantic Innovation Celebration 2022 biotechnology winner" loading="lazy" onerror="this.remove()">'+'</span><span><span class="lab">2022</span><b>Mid-Atlantic Innovation Celebration, biotechnology winner</b></span></div>'+
-    '<div class="aw"><span class="plate2">'+'<img src="'+PIC.aw2+'" alt="Global Health Innovation Challenge" loading="lazy" onerror="this.remove()">'+'</span><span><span class="lab">2024</span><b>Winner, Global Health Innovation Challenge II</b></span></div>'+
+    '<div class="aw"><span class="lab">Mid-Atlantic Innovation Celebration</span><span><span class="lab">2022</span><b>Biotechnology winner</b></span></div>'+
+    '<div class="aw"><span class="lab">Center for Advancing Innovation</span><span><span class="lab">2024</span><b>Winner, Global Health Innovation Challenge II</b></span></div>'+
     '<a class="aw" href="https://mdtechcouncil.com/maryland-tech-council-announces-finalists-for-2026-icon-awards/" target="_blank" rel="noopener"><span class="lab">Maryland Tech Council</span><span><span class="lab">2026</span><b>Finalist, Maryland ICON Award for Life Sciences Emerging Company of the Year</b></span></a>'+
    '</div>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/pipeline">All awards '+ARR+'</a></div>'+
@@ -1024,7 +1060,7 @@ function vTeam(){
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
    '<div style="margin-bottom:clamp(56px,6vw,96px)">'+fig({src:PIC.team,alt:"The Fzata team photographed together outdoors",cls:"a",cap:"Published by Fzata, April 2026"})+'</div>'+
    groups.map(function(g){var m=TEAM.filter(function(p){return p.grp===g});if(!m.length)return "";
-     return '<div class="tgroup"><span class="lab">'+esc(g)+'</span><div class="pgrid'+(m.length<7?' n'+m.length:'')+'" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
+     return '<div class="tgroup"><span class="lab">'+esc(g)+'</span><div class="pgrid'+(m.length<7?' n'+m.length:'')+(m.length===1?' feat':'')+'" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
   '</div></section>'+cta();
 }
 function vNews(){
@@ -1052,7 +1088,7 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span>443-543-5040<br><a class="ul" href="mailto:info@fzata.com">info@fzata.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/contact">Contact</a></div>'+
    '<div class="c"><span class="lab">What we build</span><a href="#/platform">BioPYM™ oral biologics</a><br><a href="#/platform">Tetrabody antibody engineering</a></div>'+
-  '</div><span class="bigw" aria-hidden="true" id="bigwm">Fzata</span>'+
+  '</div><canvas class="ftr-fx" aria-hidden="true"></canvas><span class="bigw" aria-hidden="true" id="bigwm">Fzata</span>'+
   '<div class="legal"><span class="lab">© 2026 Fzata, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
@@ -1070,7 +1106,12 @@ function route(h){
 }
 
 /* ============ ENV ============ */
+/* BS: SplitText splits on spaces, so it cannot break inside a hyphenated word the way
+   the browser can. A title that relied on a hyphen break re-wrapped to an extra line
+   when it was split. Hold hyphenated words together so both agree. */
+function nbh(t){return String(t).replace(/(\w)-(\w)/g,'$1\u2011$2')}
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var FXDOT="rgba(214,200,208,";
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
@@ -1183,6 +1224,43 @@ var field=(function(){
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){if(gl){try{gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(4))}catch(e){}}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
 })();
+/* BT: the hero's living background bookends the page. Same motif as the field's own 2D
+   draw - a slow drifting arc of soft dots - at a fraction of the density and opacity, sitting
+   behind the footer wordmark. It runs only while the footer is on screen. */
+var ftrFX=(function(){
+  var cv=null,c=null,raf=0,run=false,io=null,dpr=1,t0=performance.now(),DOTS=280;
+  function rnd(i){var x=Math.sin(i*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+  function size(){if(!cv)return;dpr=Math.min(window.devicePixelRatio||1,2);
+    var r=cv.getBoundingClientRect();if(r.width<2)return;
+    cv.width=Math.round(r.width*dpr);cv.height=Math.round(r.height*dpr);draw(true)}
+  function draw(once){
+    if(!cv||!c)return;
+    var t=RM?30:(performance.now()-t0)/1000,w=cv.width,h=cv.height;
+    c.clearRect(0,0,w,h);
+    var cx=w*.5,cy=h*.36,R=Math.max(w*.46,h*.78);
+    for(var i=0;i<DOTS;i++){
+      var q=(i+.5)/DOTS,x=(q-.5)*2.5,
+          y=Math.sin(x*1.45+t*.055)*.17+(rnd(i)-.5)*.34,
+          a=(.16+.22*(1-Math.min(1,Math.abs(x)/1.25)))*(1-Math.min(1,Math.abs(y)/.42)*.55);
+      c.fillStyle=FXDOT+a.toFixed(3)+")";
+      c.beginPath();c.ellipse(cx+x*R,cy+y*R,3.3*dpr,2.7*dpr,0,0,6.283);c.fill()}
+    if(!once&&run)raf=requestAnimationFrame(function(){draw(false)})}
+  function onScreen(){if(!cv)return false;var r=cv.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight}
+  function start(){if(run||RM||document.hidden||!cv)return;run=true;raf=requestAnimationFrame(function(){draw(false)})}
+  function stop(){run=false;cancelAnimationFrame(raf)}
+  addEventListener("resize",size,{passive:true});
+  document.addEventListener("visibilitychange",function(){if(document.hidden)stop();else if(onScreen())start()});
+  return {mount:function(){
+    stop();cv=$(".ftr-fx");if(!cv)return;
+    try{c=cv.getContext("2d")}catch(e){c=null}
+    if(!c){cv=null;return}
+    size();draw(true);
+    requestAnimationFrame(function(){if(cv)cv.classList.add("on")});
+    if(io)io.disconnect();
+    io=new IntersectionObserver(function(e){e[0]&&e[0].isIntersecting?start():stop()},{threshold:0});
+    io.observe(cv);
+    if(onScreen())start()},stop:stop};
+})();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
@@ -1196,10 +1274,10 @@ function makeStory(cv){
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
   var PAPER="246,241,243",PINK="230,145,205",GREEN="123,196,123",DIM="180,164,173";
   /* world: stomach (x~90) -> capsule opening (x~330) -> mucosa (x~640) -> exit (x~940) */
-  var CAM=[[306,-6,205],[344,0,300],[662,10,320],[700,0,980]];
+  var CAM=[[306,-6,300],[344,0,330],[662,10,330],[840,0,500]];
   /* one capsule: body, and a cap that lifts off it */
   var CAP_X=285,CAP_W=46,CAP_R=21,CAP_BY=-10,CAP_BH=82,CAP_TY=-42,CAP_TH=60;
-  var cells=[];for(var i=0;i<54;i++)cells.push({s:.7+R(i,2)*.6,b:R(i,3)>.4,o:R(i,4)*6.283,ph:R(i,5),lane:R(i,6)-.5});
+  var cells=[];for(var i=0;i<26;i++)cells.push({s:.7+R(i,2)*.6,b:R(i,3)>.4,o:R(i,4)*6.283,ph:R(i,5),lane:R(i,6)-.5});
   function lumen(x,t){return Math.sin(x*.012+t*.1)*22}
   function wall(x,t){return 92+Math.sin(x*.02+1.1)*14}
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
@@ -1214,7 +1292,7 @@ function makeStory(cv){
   function drawY(x,y,r,ang,alpha,sc,col){c.save();c.translate(x,y);c.rotate(ang);c.strokeStyle="rgba("+col+","+alpha+")";c.lineWidth=1.25/sc;c.lineCap="round";
     c.beginPath();c.moveTo(0,r);c.lineTo(0,0);c.moveTo(0,0);c.lineTo(-r*.8,-r*.9);c.moveTo(0,0);c.lineTo(r*.8,-r*.9);c.stroke();c.restore()}
   function villi(x0,x1,t,alpha,sc){c.strokeStyle="rgba("+PAPER+","+(.34*alpha)+")";c.lineWidth=1.1/sc;
-    for(var x=x0;x<x1;x+=19){var wy=wall(x,t);
+    for(var x=x0;x<x1;x+=27){var wy=wall(x,t);
       for(var sgn=-1;sgn<=1;sgn+=2){var hgt=22+Math.sin(x*.07)*6;
         c.beginPath();c.moveTo(x,sgn*wy);c.quadraticCurveTo(x+6,sgn*(wy-hgt*.6),x+2,sgn*(wy-hgt));c.quadraticCurveTo(x-4,sgn*(wy-hgt*.6),x-5,sgn*wy);c.stroke()}}}
   function draw(){
@@ -1228,10 +1306,10 @@ function makeStory(cv){
     c.strokeStyle="rgba("+PAPER+",.40)";
     for(var sgn=-1;sgn<=1;sgn+=2){c.beginPath();
       for(var x=-40;x<=1060;x+=10){var y=lumen(x,t)+sgn*wall(x,t);if(x===-40)c.moveTo(x,y);else c.lineTo(x,y)}c.stroke()}
-    villi(40,1040,t,.6+.4*(W[2]+W[3]),sc);
+    villi(40,1040,t,.82+.18*(W[2]+W[3]),sc);
     /* capsule, opening with step 2 */
     var open=Math.min(1,Math.max(0,(C.s-.55)/.9));
-    c.save();c.globalAlpha=Math.max(0,1-Math.max(0,(C.s-1.75))*1.1);
+    c.save();c.globalAlpha=Math.max(0,1-Math.max(0,(C.s-2.2))/.6);
     c.strokeStyle="rgba("+PINK+",.95)";c.lineWidth=1.5/sc;
     /* body first, then an opaque cap over it: one silhouette, never two outlines */
     c.save();c.translate(0,open*7);
@@ -1257,7 +1335,7 @@ function makeStory(cv){
     /* secreted biologic: Y marks leaving cells toward the mucosa */
     var secA=Math.max(W[2],Math.min(1,Math.max(0,(C.s-1.6)))*1)*1;
     if(secA>.01){c.globalAlpha=Math.min(1,secA);
-      for(i=0;i<150;i++){var ph=(R(i,21)+t*(.06+.03*R(i,22)))%1;var cl2=cells[i%cells.length];
+      for(i=0;i<44;i++){var ph=(R(i,21)+t*(.06+.03*R(i,22)))%1;var cl2=cells[i%cells.length];
         var sx0=330+((cl2.ph+t*.045)%1)*660,sy0=lumen(sx0,t)+cl2.lane*(wall(sx0,t)*1.25);
         var dir=cl2.lane>0?1:-1;var tgt=lumen(sx0,t)+dir*wall(sx0,t)*.96;
         var x3=sx0+(R(i,23)-.5)*26*ph,y3=sy0+(tgt-sy0)*ph;
@@ -1267,7 +1345,7 @@ function makeStory(cv){
     /* resident flora kept intact (green dots along the wall) */
     var flA=Math.max(W[2],W[3]);
     if(flA>.01){c.globalAlpha=flA;
-      for(i=0;i<90;i++){var fx2=60+R(i,31)*960,sgn2=R(i,32)>.5?1:-1;
+      for(i=0;i<40;i++){var fx2=60+R(i,31)*960,sgn2=R(i,32)>.5?1:-1;
         var fy2=lumen(fx2,t)+sgn2*(wall(fx2,t)-10-R(i,33)*10);
         c.fillStyle="rgba("+GREEN+",.85)";c.beginPath();c.arc(fx2,fy2+Math.sin(t*.6+i)*1.2,1.9,0,6.283);c.fill()}
       c.globalAlpha=1}
@@ -1289,13 +1367,15 @@ function makeStory(cv){
       /* BH, canvas included: a label fades out before any glyph can be cut by the canvas edge, never clipped mid-word */
       var al=align||"center",tw=c.measureText(txt).width,L=al==="left"?sx:al==="right"?sx-tw:sx-tw/2,P=16,F=34,sl=Math.min(L-P,(w-P)-(L+tw),(sy-9)-P,(h-P)-(sy+4)),k=sl>=F?1:sl/F;if(k<=0)return;
       c.globalAlpha=Math.min(1,a)*k;c.fillStyle="rgb(200,180,194)";c.textAlign=al;c.save();c.shadowColor='#190c15';c.shadowBlur=9;c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.restore();c.fillText(txt,sx,sy);c.globalAlpha=1}
-    lab("BIOPYM CAPSULE · LIVE LYOPHILIZED YEAST",308,-96,W[0]+W[1]*.6);
-    lab("SMALL INTESTINE",308,112,W[1]);
-    lab("S. BOULARDII",560,-104,W[1]*.8+W[2],"center",1);
+    lab("BIOPYM CAPSULE",306,-78,W[0]+W[1]*.6);
+    lab("LIVE LYOPHILIZED YEAST",306,-56,W[0]*.95);
+    lab("SMALL INTESTINE",320,98,W[0]*.9+W[1]);
+    lab("S. BOULARDII",560,-100,W[1]*.8+W[2],"center",1);
     lab("SECRETED BIOLOGIC",660,116,W[2]);
-    lab("MUCOSA",820,-108,W[2]);
-    lab("RESIDENT FLORA INTACT",420,150,W[2]*.7+W[3]);
-    lab("NO COLONIZATION · CLEARED",1010,-30,W[3],"right");
+    lab("MUCOSA",742,-100,W[2]);
+    lab("RESIDENT FLORA INTACT",780,150,W[3]);
+    lab("NO COLONIZATION",880,-60,W[3]);
+    lab("CLEARED",1010,40,W[3]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1442,13 +1522,15 @@ var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),
 window.__psDrop=function(){if(psIdx<0)return;TEAM[psIdx].img=null;fillBio(psIdx)};
 /* BQ: a sheet with no photo must not be a wide two-column panel with a plate echoing
    the name; and a 300px headshot must not be blown up to fill a 410px column. */
-function psMode(p){if(!p.img)return "noimg";if(p.imgW&&p.imgW<480)return "slim";return ""}
-function psSetMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
+/* BV (round 3): the 96px circle beside a huge name read as unprofessional. A sheet now has
+   a LARGE portrait or none at all; a headshot under 480px wide stays on the card. */
+function psMode(p){return (p.img&&!(p.imgW&&p.imgW<480))?"":"noimg"}
+function psSetMode(m){ps.classList.remove("slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i];psIdx=i;
   psSetMode(psMode(p));
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(psIdx===i)fillBio(i)};pr.onerror=function(){p.img=null;if(psIdx===i)fillBio(i)};pr.src=p.img}
   psMedia.innerHTML=p.img&&psMode(p)===""?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="var t=this;t.remove();window.__psDrop&&window.__psDrop()">':"";
-  var psHead=psMode(p)==="slim"?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  var psHead='<h2 id="psName">'+esc(p.name)+'</h2>';
   var psRole=(p.title||'').toLowerCase()===(p.grp||'').toLowerCase()?'':'<p class="role">'+esc(p.title)+'</p>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+psHead+psRole+
    p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
@@ -1519,7 +1601,7 @@ function spItalics(root){
     t.parentNode.replaceChild(f,t)})}
 function paint(r){
   var view=$("#view");if(story){story.kill();story=null}if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
-  view.innerHTML=r.v()+footer();spItalics(view);
+  view.innerHTML=r.v()+footer();spItalics(view);ftrFX.mount();
   /* a lazy image that lands later makes the page taller than the triggers were
      measured against, which fires a reveal while its element is still below the fold */
   (function(){var rt;function bump(){clearTimeout(rt);rt=setTimeout(function(){try{ScrollTrigger.refresh()}catch(e){}},140)}

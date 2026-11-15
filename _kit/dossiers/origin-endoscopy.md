@@ -35,3 +35,7 @@
 ## Images (PRINCIPLES BJ)
 - USED: full-colour logo (header), white logo (dark header), white "O" mark (transition cover, footer).
 - UNUSED: nsplsh_506f99a9… ("Image by National Cancer Institute", Unsplash stock lab glassware); 09e77b_d98ff679… (father carrying children in a field, stock lifestyle photo, off-topic).
+
+## Client review 3 (v15)
+- Walk-through: the endoscope is a complete object from the first frame (it replaces the stub that was there before). Labelled parts lit in turn: BLEEDING VESSEL, NEEDLE, HYDROGEL, EPINEPHRINE.
+- Footer: the hero's field runs behind the logo lockup.

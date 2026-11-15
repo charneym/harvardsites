@@ -139,7 +139,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD/AU/AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -172,6 +172,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mani .txt{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(30px,3.9vw,66px);line-height:1.12;letter-spacing:-.018em;margin:0;max-width:24ch}
 .mani .txt .w{opacity:.16}
 .mani .txt em{color:var(--ac)}
+.mani-in{width:fit-content;max-width:100%;margin:0 auto}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
 .stat{position:relative;padding-top:24px}
 .stat::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--hr)}
@@ -242,8 +243,10 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .row-a:hover::before{transform:scaleX(1)}
 .row-a:hover::after{opacity:1}
 .row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px;padding-left:2px}
-.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
-.row-a h3 small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
+.row-a .rt{grid-column:4/12;display:block}
+@media (max-width:560px){.row-a .rt h3{font-size:18px}}
+.row-a h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a .rt small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
 .row-a:hover h3{color:var(--ac);transform:translateX(6px)}
 .row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center;padding-right:4px}
 .row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
@@ -293,6 +296,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .bigw{font-family:var(--wmfont,var(--serif));font-weight:var(--wmw,400);font-size:min(var(--bigws,21vw),340px);line-height:.8;letter-spacing:var(--wmls,-.04em);margin:0 auto;text-align:center;white-space:nowrap;display:block;padding:.06em 0 .22em;color:var(--paper)}
 .ftr .bigw em{color:var(--accD);font-style:normal;font-family:inherit}
 .ftr .bigw .ch{display:inline-block}
+.ftr #ftrCv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.ftr>*:not(canvas){position:relative;z-index:1}
 .ftr .legal{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hairD)}
 
 /* contact */
@@ -344,7 +349,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
+  .row-a .rt{grid-column:1/12}
   .row-a .c4{grid-column:12/13}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
@@ -402,12 +407,13 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps-cap .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accL)}
 .ps-cap .q{font-family:var(--serif);font-weight:300;font-size:20px;line-height:1.3;color:var(--ink)}
 @media (max-width:560px){.pgrid.ctr .pcard{flex:0 0 calc(50% - 8px)}}
+@media (max-width:560px){.pgrid.ctr .pcard:last-child:nth-child(odd){flex:0 0 100%;display:grid;grid-template-columns:calc(50% - 8px) 1fr;column-gap:16px;align-items:end}.pgrid.ctr .pcard:last-child:nth-child(odd) .pc-meta{padding-top:0}.pgrid.ctr .pcard:last-child:nth-child(odd) .pc-meta h3{min-height:0}}
 .micro b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.5vw,22px);line-height:1.2;margin-top:14px}
 /* pipeline table */
 .pipe{list-style:none;margin:0;padding:0;border-top:1px solid var(--hr)}
 .pipe li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr);gap:var(--gap);align-items:center;padding:28px 0;border-bottom:1px solid var(--hr)}
 .pipe h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,2vw,30px);line-height:1.15;letter-spacing:-.015em;margin:0}
-.pipe h3 small{display:block;font-family:var(--sans);font-size:14.5px;letter-spacing:0;color:var(--mu);margin-top:6px;line-height:1.45}
+.pipe .pn small{display:block;font-family:var(--sans);font-size:14.5px;letter-spacing:0;color:var(--mu);margin-top:6px;line-height:1.45}
 .pipe .ind{font-size:16px;line-height:1.5;margin:0}
 .bar5{position:relative;height:28px;display:flex;align-items:center}
 .bar5 .tr{position:absolute;left:0;right:0;top:50%;height:1px;background:var(--hr)}
@@ -935,8 +941,8 @@ SITE.views.home=function(){
    '<div class="act" data-r><a class="btn solid" href="#/technology">The technology '+ARR+'</a><a class="btn" href="#/pipeline">Pipeline</a></div></div>'+
    '<div class="cue" aria-hidden="true"><i></i></div></section>'+
   '<section class="sec mani" data-tone="light2"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">During IVF, progesterone support means gels or inserts two to three times a day, or daily intramuscular injections, for eight to ten weeks. AnelleO is designing <em>one ring a month</em> instead.</p>'+
+   '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">During IVF, progesterone support means gels or inserts two to three times a day, or daily intramuscular injections, for eight to ten weeks. AnelleO is designing <em>one ring a month</em> instead.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">~28<small>days</small></span><span class="lab k">Of progesterone from each ANLO102 ring, by design</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">2–3</span><span class="lab k">Rings to cover the 8–10-week ART treatment period</span></div>'+
@@ -972,7 +978,7 @@ function pipeHtml(){
   var P=[{h:"ANLO102",s:"Progesterone intravaginal ring (AnelleO-PRO)",i:"Progesterone supplementation in assisted reproductive technology (infertility)",w:.62,st:"IND-enabling"},
          {h:"Lidocaine film",s:"5% lidocaine mucoadhesive, biodissolvable film",i:"Vestibulodynia, the most common cause of sexual pain",w:.42,st:"Pre-IND"},
          {h:"Extended-duration rings",s:"Hormone replacement · infectious disease · gynecologic oncology",i:"Low-dose hormones after menopause; infections including sexually transmitted ones; gynecologic cancers",w:.16,st:"Research"}];
-  return '<ul class="pipe">'+P.map(function(x){return '<li><h3>'+x.h+'<small>'+x.s+'</small></h3><p class="ind">'+x.i+'</p><div class="bar5" aria-label="Stage: '+x.st+'"><i class="tr"></i><i class="fl" style="width:'+(x.w*100)+'%"></i><span class="st">'+x.st+'</span></div></li>'}).join("")+'</ul>';
+  return '<ul class="pipe">'+P.map(function(x){return '<li><div class="pn"><h3>'+x.h+'</h3><small>'+x.s+'</small></div><p class="ind">'+x.i+'</p><div class="bar5" aria-label="Stage: '+x.st+'"><i class="tr"></i><i class="fl" style="width:'+(x.w*100)+'%"></i><span class="st">'+x.st+'</span></div></li>'}).join("")+'</ul>';
 }
 function cta(){
   return '<section class="sec cta" data-tone="light"><div class="wrap">'+
@@ -1044,7 +1050,7 @@ SITE.views.contact=function(){
 };
 SITE.views.nf=function(){return head({k:"Not found",h:'Nothing <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})};
 function footer(){
-  return '<footer class="ftr" data-tone="dark"><div class="cols">'+
+  return '<footer class="ftr" data-tone="dark"><canvas id="ftrCv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Company</span>AnelleO, Inc.<br>Chapel Hill, North Carolina</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@anelleo.com">info@anelleo.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1062,7 +1068,7 @@ function head(o){
 function tCard(p){var im=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
   return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><span class="rt"><h3>'+esc(n.t)+'</h3>'+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function formHtml(note){return '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="fsub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
@@ -1094,6 +1100,20 @@ var field=(function(){
 })();
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
+/* BT: the hero's living ring, quieter, behind the footer wordmark; paused off-screen */
+var FT={raf:0,io:null,on:false};
+function footRing(){var cv=document.getElementById("ftrCv");if(FT.io)FT.io.disconnect();cancelAnimationFrame(FT.raf);FT.on=false;if(!cv)return;
+  var c=cv.getContext("2d"),t0=performance.now(),D=1,W=2,H=2;
+  function size(){var r=cv.getBoundingClientRect();D=Math.min(window.devicePixelRatio||1,2);W=cv.width=Math.max(2,Math.round(r.width*D));H=cv.height=Math.max(2,Math.round(r.height*D))}
+  function draw(){if(!cv.isConnected){FT.on=false;return}
+    var t=RM?30:(performance.now()-t0)/1000,cr=cv.getBoundingClientRect(),bw=document.getElementById("bigwm"),x=W*.5,y=H*.72,S=Math.min(W*.16,H*.3);
+    if(bw){var b=bw.getBoundingClientRect();x=(b.left+b.width/2-cr.left)*D;y=(b.top+b.height*.55-cr.top)*D;S=Math.min(b.height*.95*D,W*.2)}
+    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);
+    RING.draw(c,{x:x,y:y,S:S,tilt:1.1+Math.sin(t*.21)*.03,spin:t*.04+.6,build:1,ghost:1,load:0,cad:0,D:D,a:.32,col:COL_DARK,zoomK:1});
+    if(FT.on)FT.raf=requestAnimationFrame(draw)}
+  size();draw();FT.size=function(){if(cv.isConnected){size();draw()}};
+  FT.io=new IntersectionObserver(function(e){if(e[0].isIntersecting&&!RM&&!document.hidden){if(!FT.on){FT.on=true;FT.raf=requestAnimationFrame(draw)}}else{FT.on=false;cancelAnimationFrame(FT.raf)}},{threshold:0});FT.io.observe(cv)}
+addEventListener("resize",function(){FT.size&&FT.size()});
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var p=Math.max(0,Math.min(1,window.scrollY/innerHeight));field.setDim((curKey==="home"?1:.75)*(1-p*.5))}
@@ -1242,11 +1262,11 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),psScr=$(".ps-scrim",ps),bioOpen=false,bioCur=-1,bioLastFocus=null;
 function psPlate(p){return '<div class="ps-plate"><span class="k">'+esc(p.grp||"Team")+'</span><span class="q">'+esc(p.title)+'</span></div>'}
 function fillBio(i){var p=TEAM[i];bioCur=i;
-  /* BQ: every AnelleO headshot is under 480px wide, so never upscale: slim mode (96px circle beside the name); none -> noimg */
-  psMedia.innerHTML="";ps.classList.toggle("slim",!!p.img);ps.classList.toggle("noimg",!p.img);
-  var hd=p.img?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  /* BV: every AnelleO headshot is under 480px wide, so the sheet carries no portrait (portrait on the card only) */
+  psMedia.innerHTML="";ps.classList.remove("slim");ps.classList.add("noimg");
+  var hd='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span>'+hd+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
-   (p.link?'<p><a class="ul" style="color:var(--accL)" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'')+'<p class="src">'+esc(SITE.bioSrc)+'</p>';
+   (p.link?'<p><a class="ul" style="color:var(--accL)" href="'+p.link.u+'" target="_blank" rel="noopener">'+esc(p.link.t)+' ↗</a></p>':'');
   psBody.scrollTop=0;document.title=p.name+" — "+SITE.name}
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);
   if(bioOpen){if(!RM)gsap.fromTo([psMedia,psBody],{opacity:0},{opacity:1,duration:.4,ease:"power1.out"});return}
@@ -1293,7 +1313,7 @@ function paint(r){
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.75);observeField();
+  field.snapDim(r.k==="home"?1:.75);observeField();footRing();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

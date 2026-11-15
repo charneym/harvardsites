@@ -136,7 +136,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD/AU/AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -239,8 +239,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .row-a:hover::before{transform:scaleX(1)}
 .row-a:hover::after{opacity:1}
 .row-a .nm{grid-column:1/4;display:flex;flex-direction:column;gap:2px;padding-left:2px}
-.row-a h3{grid-column:4/12;font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
-.row-a h3 small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
+.row-a .rt{grid-column:4/12;display:block}
+.row-a h3{font-family:var(--serif);font-weight:var(--dw,400);font-size:clamp(19px,1.6vw,26px);line-height:1.22;letter-spacing:-.01em;margin:0;transition:color .25s ease-out,transform .3s ease-out}
+.row-a .rt small{display:block;font-family:var(--sans);font-size:14px;line-height:1.5;letter-spacing:0;color:var(--mu);margin-top:6px}
 .row-a:hover h3{color:var(--ac);transform:translateX(6px)}
 .row-a .c4{grid-column:12/13;justify-self:end;display:flex;align-items:center;padding-right:4px}
 .row-a .arr{width:18px;height:12px;transition:transform .3s var(--eo)}
@@ -341,7 +342,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
-  .row-a h3{grid-column:1/12}
+  .row-a .rt{grid-column:1/12}
   .row-a .c4{grid-column:12/13}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
@@ -509,21 +510,38 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cfig{background:#eef0f5;padding:clamp(18px,2.4vw,34px)}
 .cfig img{background:#fff;border-radius:2px}
 .cfig-cap .lab{color:var(--ac)}
-@media (max-width:1024px){.fig text{display:none}}
 
-/* BQ slim / noimg: one compact column sized to its content */
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:14px 0 6px}
-.ps-head h2{margin:0!important}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 25%;flex:none;filter:grayscale(1) contrast(1.1)}
-@media (max-width:760px){
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}
-  .ps-head{gap:16px}.ps-head img{width:72px;height:72px}
-}
+/* BV: no portrait in the sheet (headshots are small); one compact column sized to its content */
+.ps.noimg .ps-sheet{width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps.noimg .ps-media{display:none}
+.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
+.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 190px)}
+@media (max-width:760px){.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.noimg .ps-body{max-height:calc(100dvh - 120px);border-radius:0}}
+/* BT: footer living visual */
+.ftr #ftrCv{position:absolute;inset:0;width:100%;height:100%;opacity:.42;pointer-events:none;z-index:0}
+.ftr>*:not(canvas){position:relative;z-index:1}
+/* BU: centred rows and statement */
+.pgrid.five,.pgrid.two2{display:flex;flex-wrap:wrap;justify-content:center}
+.pgrid.five>.pcard,.pgrid.two2>.pcard{flex:0 0 calc((100% - 4 * var(--gap)) / 5);column-gap:var(--gap)}
+.pgrid.five,.pgrid.two2{column-gap:var(--gap)}
+@media (max-width:1100px){.pgrid.five>.pcard,.pgrid.two2>.pcard{flex-basis:calc((100% - 2 * var(--gap)) / 3)}}
+@media (max-width:860px){.pgrid.five,.pgrid.two2{column-gap:16px}.pgrid.five>.pcard,.pgrid.two2>.pcard{flex-basis:calc((100% - 16px) / 2)}}
+@media (max-width:860px){.pgrid.five>.pcard:last-child:nth-child(odd){flex-basis:100%;display:grid;grid-template-columns:calc((100% - 16px) / 2) 1fr;column-gap:16px;align-items:end}.pgrid.five>.pcard:last-child:nth-child(odd) .pc-meta{padding-top:0}}
+.mani-in{width:fit-content;max-width:100%;margin:0 auto}
+/* BZ: type and a rule, not boxes */
+.tcard{border:0;border-top:1px solid var(--hr);padding:24px 0 0;overflow:visible}
+.tcard:hover{transform:none;box-shadow:none}
+.feats.mech{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1024px){.feats.mech{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.feats.mech{grid-template-columns:1fr}}
+/* pipeline: stage named under each bar where the column header is hidden */
+.pp-r .stg{display:none;font-style:normal;margin-top:6px;color:var(--mu)}
+@media (max-width:860px){.pp-r .stg{display:block}}
+/* BY: synapse labels always legible; the changing part is lit */
+.fig #syn text{fill:var(--mu);font-size:14.5px}
+.fig #syn text.on{fill:var(--accD)}
+.fig #syn text.tg.on{fill:var(--greenD)}
+@media (max-width:1024px){.fig #syn text{font-size:19px;letter-spacing:.05em}}
 </style>
 </head>
 <body>
@@ -666,27 +684,27 @@ function storyScene(){
   /* dendrite shaft */
   s+='<rect class="bf" x="10" y="456" width="580" height="66"/><path class="s dr" d="M10 456H252"/><path class="s dr" d="M348 456H590"/><path class="s dr" d="M10 522H590"/>';
   /* tau tangle inside the shaft (fades with treatment) */
-  s+='<g id="tau"><path class="s" d="M70 489C86 474 102 504 118 489S150 474 166 489S198 504 214 489" style="stroke-width:1.6"/><path class="s" d="M70 489C86 504 102 474 118 489S150 504 166 489S198 474 214 489" style="stroke-width:1.6"/><text x="70" y="552">P-TAU</text></g>';
+  s+='<g id="tau"><path class="s" d="M70 489C86 474 102 504 118 489S150 474 166 489S198 504 214 489" style="stroke-width:1.6"/><path class="s" d="M70 489C86 504 102 474 118 489S150 504 166 489S198 474 214 489" style="stroke-width:1.6"/><text x="70" y="552" id="lbTau">P-TAU</text></g>';
   /* amyloid plaques (persist) */
-  s+='<g id="abeta"><path class="pq" d="M58 300C40 280 60 254 86 262C110 246 134 268 126 292C142 314 118 340 94 330C70 346 44 326 58 300Z"/><path class="pq" d="M512 352C500 336 516 316 536 322C556 312 574 330 566 348C576 366 556 382 538 374C518 386 500 370 512 352Z"/><text x="40" y="236">AMYLOID-β</text></g>';
+  s+='<g id="abeta"><path class="pq" d="M58 300C40 280 60 254 86 262C110 246 134 268 126 292C142 314 118 340 94 330C70 346 44 326 58 300Z"/><path class="pq" d="M512 352C500 336 516 316 536 322C556 312 574 330 566 348C576 366 556 382 538 374C518 386 500 370 512 352Z"/><text x="40" y="236" id="lbAb">AMYLOID-β</text></g>';
   /* the spine: neck (path rewritten each frame) + scalable head group */
   s+='<path id="neck" class="s" d="M282 380C282 410 270 430 270 456M318 380C318 410 330 430 330 456"/>';
   s+='<g id="head"><ellipse class="bf" cx="300" cy="296" rx="118" ry="84"/><ellipse class="s" cx="300" cy="296" rx="118" ry="84"/>';
   for(var a=0;a<8;a++){var x=246+a*15.5,yy=296-84*Math.sqrt(1-Math.pow((x-300)/118,2));s+='<g class="ampa" data-x="'+x+'" data-y="'+(yy+2).toFixed(1)+'"><rect class="tf" x="-5" y="-8" width="4" height="16" rx="1.5"/><rect class="tf" x="1" y="-8" width="4" height="16" rx="1.5"/></g>'}
   /* IGF2R on the spine membrane */
   [[194,250,-128],[406,250,128]].forEach(function(r,i){s+='<g class="igf" transform="translate('+r[0]+' '+r[1]+') rotate('+r[2]+')"><path class="g" d="M0 0V-18M0 -18L-8 -30M0 -18L8 -30"/><circle class="gf halo" cx="0" cy="-30" r="12" style="fill-opacity:.0"/></g>'});
-  s+='<text class="tg" x="96" y="200" id="lbIgf">IGF2R</text>';
   s+='</g>';
+  s+='<text class="tg" x="96" y="200" id="lbIgf">IGF2R</text>';
   /* NQ-13 molecules */
   for(var m=0;m<2;m++)s+='<g class="nq"><path class="tf" d="M0 -9L7.8 -4.5V4.5L0 9L-7.8 4.5V-4.5Z"/></g>';
   s+='<text class="ta" x="40" y="420" id="lbNq">NQ-13</text>';
   /* signalling cascade dots */
   for(var c=0;c<8;c++)s+='<circle class="tf casc" r="3.4" cx="300" cy="300"/>';
   s+='<text class="ta" x="436" y="420" id="lbMek">MEK → ERK</text>';
-  s+='<text x="40" y="160" id="lbPre">PRESYNAPTIC</text><text x="452" y="300" id="lbSp">SPINE</text><text x="430" y="196" id="lbAmpa" class="ta">AMPA RECEPTORS</text>';
+  s+='<text x="10" y="22" id="lbPre">PRESYNAPTIC TERMINAL</text><text x="440" y="552" id="lbDen">DENDRITE</text><text x="452" y="300" id="lbSp">SPINE</text><text x="430" y="196" id="lbAmpa" class="ta">AMPA RECEPTORS</text>';
   /* QEEG alpha trace */
   var d="M40 596";for(var k=1;k<=104;k++){var xx=40+k*5,env=.25+.75*k/104;d+="L"+xx+" "+(596-Math.sin(k*.62)*16*env-Math.sin(k*1.9+1)*3).toFixed(1)}
-  s+='<path class="s2" d="M40 596H560"/><path id="eeg" class="t" d="'+d+'"/><text class="ta" x="40" y="636" id="lbEeg">FRONTAL QEEG ALPHA · SCHEMATIC</text>';
+  s+='<path class="s2" id="eegAx" d="M40 596H560"/><path id="eeg" class="t" d="'+d+'"/><text class="ta" x="40" y="636" id="lbEeg">FRONTAL QEEG ALPHA · SCHEMATIC</text>';
   return s+'</svg>';
 }
 function sceneDriver(svg){
@@ -696,7 +714,7 @@ function sceneDriver(svg){
   var stat=$$s(".bf");
   var head=$s("#head"),neck=$s("#neck"),tau=$s("#tau"),ab=$s("#abeta"),ampa=$$s(".ampa"),nq=$$s(".nq"),halo=$$s(".halo"),casc=$$s(".casc"),eeg=$s("#eeg");
   eeg.setAttribute("pathLength","1");eeg.style.strokeDasharray="1 1";
-  var L={pre:$s("#lbPre"),sp:$s("#lbSp"),igf:$s("#lbIgf"),nq:$s("#lbNq"),mek:$s("#lbMek"),ampa:$s("#lbAmpa"),eeg:$s("#lbEeg")};
+  var L={pre:$s("#lbPre"),den:$s("#lbDen"),sp:$s("#lbSp"),igf:$s("#lbIgf"),nq:$s("#lbNq"),mek:$s("#lbMek"),ampa:$s("#lbAmpa"),eeg:$s("#lbEeg"),ab:$s("#lbAb"),tau:$s("#lbTau")},eax=$s("#eegAx");
   var REC=[[194,250,-128],[406,250,128]];
   var last="";
   return function(p,pre){
@@ -733,19 +751,19 @@ function sceneDriver(svg){
       c.setAttribute("cx",x.toFixed(1));c.setAttribute("cy",y.toFixed(1));c.style.opacity=(Math.sin(Math.min(1,u)*Math.PI)*(u>0?1:0)).toFixed(3)});
     /* QEEG read-out */
     eeg.style.strokeDashoffset=(1-sm(.76,.96,p)).toFixed(4);
-    /* labels */
-    L.pre.style.opacity=pre.toFixed(3);L.sp.style.opacity=pre.toFixed(3);
-    L.ampa.style.opacity=(pre*(1-sm(.12,.2,p)+sm(.6,.68,p))*(1-sm(.74,.8,p))).toFixed(3);
-    L.igf.style.opacity=(sm(.22,.3,p)*(1-sm(.74,.8,p))).toFixed(3);
-    L.nq.style.opacity=(sm(.25,.32,p)*(1-sm(.46,.5,p))).toFixed(3);
-    L.mek.style.opacity=(sm(.5,.56,p)*(1-sm(.74,.8,p))).toFixed(3);
-    L.eeg.style.opacity=sm(.76,.82,p).toFixed(3);
-    $s("#abeta text").style.opacity=(1-sm(.3,.36,p)).toFixed(3);
+    /* labels: the first frame is already a complete labelled picture; each step brightens the ONE part it changes */
+    var st=p<.25?0:p<.5?1:p<.75?2:3,lit=function(el,on,vis){el.style.opacity=(vis*(on?1:.55)).toFixed(3);el.classList.toggle("on",!!on)};
+    lit(L.pre,0,pre);lit(L.den,0,pre);lit(L.sp,st===2,pre);
+    lit(L.ampa,st===2,pre);lit(L.igf,st===1,pre);
+    lit(L.ab,st===0,sm(.03,.12,p));lit(L.tau,st===0,sm(.06,.15,p)*(1-.85*sm(.56,.74,p)));
+    lit(L.nq,st===1,sm(.25,.32,p));lit(L.mek,st===2,sm(.5,.56,p)*(1-sm(.74,.8,p)));
+    lit(L.eeg,st===3,pre);eax.style.opacity=pre.toFixed(3);
   };
 }
 
 /* ---- hero: one fine-ink dendrite; spines sprout, swell and make contact (structural plasticity) ---- */
-function makeHero(cv){
+function makeHero(cv,O){
+  O=O||{};var K=O.dark?{ink:"190,201,255",paper:"10,18,54",acc:"169,184,255",grn:"134,212,134"}:{ink:"11,20,51",paper:"246,247,250",acc:"15,48,196",grn:"1,128,1"};
   var c=cv.getContext("2d"),W=1,H=1,D=1,S=1,mob=false,CUR=[],SP=[],bg=null;
   function sm(a,b,x){var t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)}
   function bz(P,t){var u=1-t;return [u*u*u*P[0][0]+3*u*u*t*P[1][0]+3*u*t*t*P[2][0]+t*t*t*P[3][0],u*u*u*P[0][1]+3*u*u*t*P[1][1]+3*u*t*t*P[2][1]+t*t*t*P[3][1]]}
@@ -772,24 +790,24 @@ function makeHero(cv){
     var paths=mob?[[[.0*W,.2*H],[.4*W,.32*H],[.6*W,.1*H],[1*W,.16*H]],[[.2*W,.7*H],[.5*W,.5*H],[.8*W,.6*H],[1.1*W,.45*H]]]:
       [[[.62*W,-.1*H],[.7*W,.3*H],[.86*W,.4*H],[1.1*W,.3*H]],[[.36*W,.98*H],[.6*W,.88*H],[.86*W,.92*H],[1.1*W,.72*H]],[[.8*W,1.1*H],[.82*W,.7*H],[.9*W,.5*H],[1.1*W,.5*H]]];
     b.filter="blur("+Math.round(9*S)+"px)";
-    paths.forEach(function(Q,i){b.strokeStyle=i%2?"rgba(15,48,196,.07)":"rgba(11,20,51,.05)";b.lineWidth=(i%2?16:22)*S;b.beginPath();b.moveTo(Q[0][0],Q[0][1]);b.bezierCurveTo(Q[1][0],Q[1][1],Q[2][0],Q[2][1],Q[3][0],Q[3][1]);b.stroke()});
+    paths.forEach(function(Q,i){b.strokeStyle=i%2?"rgba("+K.acc+",.07)":"rgba("+K.ink+",.05)";b.lineWidth=(i%2?16:22)*S;b.beginPath();b.moveTo(Q[0][0],Q[0][1]);b.bezierCurveTo(Q[1][0],Q[1][1],Q[2][0],Q[2][1],Q[3][0],Q[3][1]);b.stroke()});
     b.filter="none";
   }
   function shaft(cv2){var p=cv2.pts,i;
     c.beginPath();for(i=0;i<p.length;i++){var a=p[i];c[i?"lineTo":"moveTo"](a.x+a.nx*a.w/2,a.y+a.ny*a.w/2)}
     for(i=p.length-1;i>=0;i--){a=p[i];c.lineTo(a.x-a.nx*a.w/2,a.y-a.ny*a.w/2)}c.closePath();
-    c.fillStyle="rgba(244,245,249,.92)";c.fill();c.fillStyle="rgba(11,20,51,.045)";c.fill();
-    c.lineWidth=1.15*D;c.strokeStyle="rgba(11,20,51,.6)";
+    c.fillStyle="rgba("+K.paper+",.92)";c.fill();c.fillStyle="rgba("+K.ink+",.045)";c.fill();
+    c.lineWidth=1.15*D;c.strokeStyle="rgba("+K.ink+",.6)";
     [1,-1].forEach(function(sd){c.beginPath();for(var j=0;j<p.length;j++){var q=p[j];c[j?"lineTo":"moveTo"](q.x+sd*q.nx*q.w/2,q.y+sd*q.ny*q.w/2)}c.stroke()});
-    c.lineWidth=.8*D;c.strokeStyle="rgba(11,20,51,.12)";
+    c.lineWidth=.8*D;c.strokeStyle="rgba("+K.ink+",.12)";
     [.2,-.16].forEach(function(f){c.beginPath();for(var j=0;j<p.length;j+=2){var q=p[j];c[j?"lineTo":"moveTo"](q.x+f*q.nx*q.w,q.y+f*q.ny*q.w)}c.stroke()});
   }
   return {resize:function(w,h,d){W=w;H=h;D=d;mob=W/D<861;S=mob?(W/D/390)*D*.95:Math.min(W,H*1.6)/1440*1.0;if(!mob)S=Math.max(S,.8*D);build()},
    draw:function(t,IN,m,dim){
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,H);
     if(bg)c.drawImage(bg,-m[0]*14*D,-m[1]*10*D);
-    var ox=m[0]*10*D,oy=m[1]*7*D;if(window._fieldSub&&!mob){/* sub-page heads: the art sits clear of the headline column */ox+=W*.24;oy+=H*.3}c.translate(ox,oy);
-    var px=(m[0]+.5)*W-ox,py=(m[1]+.5)*H-oy,sc=Math.min(1,(window.scrollY||0)/innerHeight),R=170*S;
+    var ox=m[0]*10*D,oy=m[1]*7*D;if(!O.foot&&window._fieldSub&&!mob){/* sub-page heads: the art sits clear of the headline column */ox+=W*.24;oy+=H*.3}c.translate(ox,oy);
+    var px=(m[0]+.5)*W-ox,py=(m[1]+.5)*H-oy,sc=O.foot?.45:Math.min(1,(window.scrollY||0)/innerHeight),R=170*S;
     /* spines behind the shaft edge are drawn first, then the shaft over their roots */
     c.lineCap="round";
     for(var i=0;i<SP.length;i++){var s=SP[i],pt=s.pt;
@@ -800,28 +818,37 @@ function makeHero(cv){
       var ca=Math.cos(s.ang),sa=Math.sin(s.ang),dx=(pt.nx*ca-pt.ny*sa)*s.side,dy=(pt.nx*sa+pt.ny*ca)*s.side;
       var bx=pt.x+pt.nx*s.side*pt.w*.42,by=pt.y+pt.ny*s.side*pt.w*.42,L=s.len*s.g*(s.kind===2?(.9+.18*sw):1);
       var ex=bx+dx*L,ey=by+dy*L,cx=bx+dx*L*.5+pt.tx*s.bend*L*.35,cy=by+dy*L*.5+pt.ty*s.bend*L*.35;
-      c.strokeStyle="rgba(11,20,51,"+(.5*s.g).toFixed(3)+")";c.lineWidth=(s.kind===1?2.2:1.05)*D;
+      c.strokeStyle="rgba("+K.ink+","+(.5*s.g).toFixed(3)+")";c.lineWidth=(s.kind===1?2.2:1.05)*D;
       c.beginPath();c.moveTo(bx,by);c.quadraticCurveTo(cx,cy,ex,ey);c.stroke();
       if(s.kind===0)continue;
       var rr=s.r*s.g*(s.kind===2?(.62+.62*sw):(.8+.3*sw)),hx2=ex+dx*rr*.8,hy2=ey+dy*rr*.8,an=Math.atan2(dy,dx);
       c.beginPath();c.ellipse(hx2,hy2,rr*1.08,rr*.86,an,0,6.283);
-      c.fillStyle="rgba(246,247,250,.96)";c.fill();
-      c.fillStyle="rgba(15,48,196,"+((.1+.36*sw)*s.g).toFixed(3)+")";c.fill();
-      c.lineWidth=1.05*D;c.strokeStyle="rgba(11,20,51,"+(.55*s.g).toFixed(3)+")";c.stroke();
+      c.fillStyle="rgba("+K.paper+",.96)";c.fill();
+      c.fillStyle="rgba("+K.acc+","+((.1+.36*sw)*s.g).toFixed(3)+")";c.fill();
+      c.lineWidth=1.05*D;c.strokeStyle="rgba("+K.ink+","+(.55*s.g).toFixed(3)+")";c.stroke();
       if(s.syn){var on=sm(.55,.82,sw)*s.g;if(on>0.01){
         var tx=hx2+dx*(rr*1.08+3.2*S),ty=hy2+dy*(rr*1.08+3.2*S),bw=rr*1.25;
         /* presynaptic bouton cap + its axon thread */
-        c.strokeStyle="rgba(11,20,51,"+(.42*on).toFixed(3)+")";c.lineWidth=1*D;
+        c.strokeStyle="rgba("+K.ink+","+(.42*on).toFixed(3)+")";c.lineWidth=1*D;
         c.beginPath();c.ellipse(tx+dx*bw*.55,ty+dy*bw*.55,bw,bw*.62,an+Math.PI/2,0,6.283);c.stroke();
         c.beginPath();c.moveTo(tx+dx*bw*1.15,ty+dy*bw*1.15);c.quadraticCurveTo(tx+dx*bw*2.6-dy*20*S,ty+dy*bw*2.6+dx*20*S,tx+dx*bw*3.4-dy*44*S,ty+dy*bw*3.4+dx*44*S);
-        c.strokeStyle="rgba(11,20,51,"+(.2*on).toFixed(3)+")";c.stroke();
-        c.fillStyle="rgba(1,128,1,"+(.9*on).toFixed(3)+")";c.beginPath();c.arc(tx,ty,1.9*S*(.8+.4*Math.sin(t*1.6+s.ph)*.5+.2),0,6.283);c.fill()}}
+        c.strokeStyle="rgba("+K.ink+","+(.2*on).toFixed(3)+")";c.stroke();
+        c.fillStyle="rgba("+K.grn+","+(.9*on).toFixed(3)+")";c.beginPath();c.arc(tx,ty,1.9*S*(.8+.4*Math.sin(t*1.6+s.ph)*.5+.2),0,6.283);c.fill()}}
     }
     CUR.forEach(shaft);
     c.setTransform(1,0,0,1,0,0);
   }};
 }
 
+/* BT: the living dendrite bookends every route, quieter, behind the footer wordmark; paused off-screen */
+var FT={h:null,cv:null,on:false,raf:0,t0:performance.now(),io:null};
+function ftSize(){if(!FT.cv||!FT.cv.isConnected)return;var d=Math.min(window.devicePixelRatio||1,2),r=FT.cv.getBoundingClientRect();FT.cv.width=Math.max(1,Math.round(r.width*d));FT.cv.height=Math.max(1,Math.round(r.height*d));FT.h.resize(FT.cv.width,FT.cv.height,d);ftDraw()}
+function ftDraw(){if(!FT.cv||!FT.cv.isConnected){FT.on=false;return}FT.h.draw(RM?30:(performance.now()-FT.t0)/1000,1,[0,0],1)}
+function ftLoop(){if(!FT.on)return;ftDraw();FT.raf=requestAnimationFrame(ftLoop)}
+function footField(){var cv=document.getElementById("ftrCv");if(FT.io)FT.io.disconnect();cancelAnimationFrame(FT.raf);FT.on=false;if(!cv)return;
+  FT.cv=cv;FT.h=makeHero(cv,{dark:1,foot:1});ftSize();
+  FT.io=new IntersectionObserver(function(en){var v=en[0].isIntersecting&&!document.hidden;if(v&&!FT.on&&!RM){FT.on=true;ftLoop()}else if(!v){FT.on=false;cancelAnimationFrame(FT.raf)}},{threshold:0});FT.io.observe(cv)}
+addEventListener("resize",function(){clearTimeout(FT._r);FT._r=setTimeout(ftSize,200)});
 /* ---- views ---- */
 SITE.views.home=function(){
   return '<section class="hero" id="hero" data-field data-tone="light">'+
@@ -831,9 +858,9 @@ SITE.views.home=function(){
    '<div class="act" data-r><a class="btn solid" href="#/science">The science '+ARR+'</a><a class="btn" href="#/pipeline">Pipeline</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i class="s"></i>Dendritic spine</span><span><i class="g"></i>Synaptic contact</span></div>'+
    '<div class="cue" aria-hidden="true"><i></i></div></section>'+
-  '<section class="sec mani" data-tone="light2"><div class="wrap">'+
+  '<section class="sec mani" data-tone="light2"><div class="wrap"><div class="mani-in">'+
    '<span class="lab kick" data-r>Why synapses</span>'+
-   '<p class="txt" id="mani">Long before memories fade, synapses lose their ability to strengthen. ENCUE is building medicines that <em>restore synaptic health</em> at the earliest stages of cognitive decline.</p>'+
+   '<p class="txt" id="mani">Long before memories fade, synapses lose their ability to strengthen. ENCUE is building medicines that <em>restore synaptic health</em> at the earliest stages of cognitive decline.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">$</span>1.45<sup>M</sup></span><span class="lab k">First-year NIA SBIR Phase II award, September 2026</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v"><span class="pre">≥</span>1,000<sup>×</sup></span><span class="lab k">Preclinical: GLP no-adverse-effect level over the in vivo EC50 dose, in rats</span></div>'+
@@ -886,9 +913,15 @@ SITE.views.science=function(){
     '<div><dt class="lab">Delivery</dt><dd>Oral, with good bioavailability in rats; able to cross the blood-brain barrier</dd></div>'+
     '<div><dt class="lab">Novelty</dt><dd>The first demonstration of IGFBP mimetics as potential therapeutics for Alzheimer’s disease</dd></div>'+
    '</dl></div></div></section>'+
-  '<section class="sec" data-tone="dark"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>Mechanism</span><h2 class="d3 split">Mimic the protein, <em>rebuild the spine.</em></h2><p class="muted" style="margin-top:24px" data-r>Phase I studies of ENCUE’s platform molecule JB2 described a growth-factor-like, feed-forward mechanism: signalling through IGF2R raises its own surface expression, amplifying synaptic plasticity.</p></div>'+
-   '<ul class="aims"><li><span>Binds IGF2R-containing dendritic spines in cortical neurons, synaptoneurosomes and recombinant IGF2R.</span></li><li><span>Raises intracellular calcium in IGF2R-expressing cells at concentrations reached in cerebrospinal fluid after therapeutic dosing.</span></li><li><span>Strengthens synapses through MEK/ERK signalling, in a way that depends on new transcription and translation.</span></li><li><span>Blocked by an IGF2R-specific antibody, and independent of IGF1R activation.</span></li><li><span>Induces long-term potentiation with increased NMDA and AMPA receptor activity.</span></li></ul>'+'</div></div></section>'+
+  '<section class="sec" data-tone="dark"><div class="wrap"><div class="shead">'+
+   '<div><span class="lab kick" data-r>Mechanism</span><h2 class="d2 split">Mimic the protein, <em>rebuild the spine.</em></h2></div><p data-r>Phase I studies of ENCUE’s platform molecule JB2 described a growth-factor-like, feed-forward mechanism: signalling through IGF2R raises its own surface expression, amplifying synaptic plasticity.</p>'+
+   '</div><div class="feats mech" style="margin-top:clamp(48px,6vw,88px)">'+
+    '<div class="ft"><b>Binds</b><p>IGF2R-containing dendritic spines in cortical neurons, synaptoneurosomes and recombinant IGF2R.</p></div>'+
+    '<div class="ft"><b>Signals</b><p>Raises intracellular calcium in IGF2R-expressing cells at concentrations reached in cerebrospinal fluid.</p></div>'+
+    '<div class="ft"><b>Strengthens</b><p>Builds synaptic strength through MEK/ERK, dependent on new transcription and translation.</p></div>'+
+    '<div class="ft"><b>Specific</b><p>Blocked by an IGF2R-specific antibody and independent of IGF1R activation.</p></div>'+
+    '<div class="ft"><b>Potentiates</b><p>Induces long-term potentiation with increased NMDA and AMPA receptor activity.</p></div>'+
+    '<div class="ft"><b>Amplifies</b><p>Raises IGF2R surface expression, a feed-forward loop that sustains plasticity.</p></div>'+'</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Phase I results</span><h2 class="d3 split">What the data <em>showed.</em></h2><p class="muted" style="margin-top:24px" data-r>Findings from ENCUE’s NIA-funded SBIR Phase I programme, as summarised in its Phase II award.</p></div>'+
    '<ul class="aims"><li><span>Oral dosing in rats produced cerebrospinal-fluid levels above the concentration needed to bind and fully activate IGF2R.</span></li><li><span>NQ-13 showed good oral bioavailability.</span></li><li><span>At the optimal oral dose, working and long-term memory improved robustly in mouse models of Alzheimer’s disease and in aging mice.</span></li><li><span>Therapeutic-like effects came with reduced phospho-tau, with minimal effects on Aβ42.</span></li><li><span>NQ-13 produced a long-lasting increase in frontal-cortex QEEG alpha power in freely behaving rats.</span></li><li><span>In a 28-day GLP study in rats, the no-observed-adverse-effect level was at least 1,000-fold higher than the in vivo EC50 dose.</span></li></ul>'+
@@ -915,7 +948,7 @@ SITE.views.science=function(){
 };
 SITE.views.pipeline=function(){
   var hd='<div class="pp-h"><span class="lab">Programme</span><span class="lab">Indication</span><div class="st lab"><span>Discovery</span><span><b class="lf">IND-enabling</b><b class="sf">IND</b></span><span>Phase I</span><span>Phase II</span><span>Phase III</span></div></div>';
-  var rows=PIPE.map(function(r){return '<div class="pp-r"><span class="pg">'+esc(r.g)+'</span><span class="ind">'+esc(r.i)+(r.b?'<small class="lab">'+esc(r.b)+'</small>':'')+'</span><div class="trk" aria-label="'+esc(r.i)+' development stage"><i></i><i></i><i></i><i></i><i></i><span class="bar" style="--w:'+(r.w/5*100).toFixed(1)+'%"></span></div></div>'}).join("");
+  var rows=PIPE.map(function(r){return '<div class="pp-r"><span class="pg">'+esc(r.g)+'</span><span class="ind">'+esc(r.i)+(r.b?'<small class="lab">'+esc(r.b)+'</small>':'')+'<em class="stg lab">'+(r.w<1?"Discovery":"IND-enabling")+'</em></span><div class="trk" aria-label="'+esc(r.i)+' development stage"><i></i><i></i><i></i><i></i><i></i><span class="bar" style="--w:'+(r.w/5*100).toFixed(1)+'%"></span></div></div>'}).join("");
   return head({k:"Pipeline",h:'Three shots <em>on goal.</em>',p:'One synaptic mechanism, three ways to make the molecule, and a pipeline that spans neurodevelopmental, neurodegenerative and psychiatric disorders.'})+
   '<section class="sec first" data-tone="light"><div class="wrap">'+
    '<div class="pipe">'+hd+rows+'</div>'+
@@ -965,11 +998,12 @@ SITE.views.contact=function(){
 };
 SITE.views.nf=function(){return head({k:"Not found",h:'This connection <em>is missing.</em>',p:'<a class="ul" href="#/">Return home →</a>'})};
 SITE.viewInit=function(k,view,RM){
+  footField();
   if(RM)return;
   $$(".pp-r .bar",view).forEach(function(b,i){gsap.from(b,{scaleX:0,duration:1.4,ease:"flow",delay:.15+i*.05,scrollTrigger:{trigger:b.closest(".pp-r"),start:"top 90%"}})});
 };
 function footer(){
-  return '<footer class="ftr" data-tone="dark"><div class="cols">'+
+  return '<footer class="ftr" data-tone="dark"><canvas id="ftrCv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Company</span>ENCUE Inc.<br>Evanston, Illinois<br>Northwestern University spinout</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Lead programme</span>NQ-13, an oral IGFBP2 mimetic<br>Alzheimer’s disease<br>Rett syndrome</div>'+
@@ -988,7 +1022,7 @@ function head(o){
 function tCard(p){var im=p.img?'<figure class="pc-fig"><div class="ph2" style="--s:'+(p.fs||1)+';--o:'+(p.fo||"50% 30%")+'"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
   return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><span class="rt"><h3>'+esc(n.t)+'</h3>'+(n.m?'<small>'+esc(n.m)+'</small>':'')+'</span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function formHtml(note){return '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="fsub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
@@ -1168,10 +1202,9 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioCur=-1,psLastFocus=null;
 function fillBio(i){var p=TEAM[i];bioCur=i;
   /* BQ: mode follows the photo. >=480px wide sharp source -> two columns; smaller -> slim (96px circle beside the name); none -> noimg. Never upscale. */
-  var m=p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg";ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
+  var m=p.img&&!(p.imgW&&p.imgW<480)?"":"noimg"; /* BQ/BV: large portrait or none; small headshots stay on the card */ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg");
   psMedia.innerHTML=m===""?'<figure><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.remove()"></figure>':"";
   var head='<h2 id="psName">'+esc(p.name)+'</h2>';
-  if(m==="slim")head='<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp||"Team")+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("");
   psBody.scrollTop=0;document.title=p.name+" — "+SITE.name;
 }

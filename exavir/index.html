@@ -674,6 +674,9 @@ em{font-style:normal;font-family:inherit}
 .lede+.muted,.lede+p,.lede+.aims{margin-top:28px}
 .cmp .ml{display:none;font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sinL);margin-bottom:4px}
 @media (max-width:860px){.cmp .ml{display:block}}
+.prow .phl{display:none}
+@media (max-width:860px){.prow .track{margin-bottom:22px}.prow .phl{display:grid;grid-template-columns:repeat(3,1fr);position:absolute;left:0;right:0;top:100%;margin-top:4px}.prow .phl b{font-weight:400;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--stoneD);padding-left:6px}}
+@media (max-width:860px){.ftr .ffield{bottom:auto;top:auto;height:34%;bottom:150px;-webkit-mask-image:linear-gradient(180deg,transparent,#000 25%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent,#000 25%,#000 70%,transparent)}}
 
 </style>
 </head>
@@ -994,10 +997,10 @@ function pipeTable(){
   return '<div class="pipe">'+
    '<div class="pipe-h lab" data-r><span>Program</span><span>Indication</span><span class="stg"><span>Preclinical</span><span>Phase 1</span><span>Phase 2–3</span></span></div>'+
    '<ul class="pipeL">'+PIPE.map(function(o){return '<li class="prow"><div><h3>'+o.n+'</h3><span class="lab">'+o.was+'</span></div><div><span class="ind">'+o.ind+'</span><br><span class="tagp">'+o.tag+'</span>'+
-     (o.partner?'<span class="ptn"><span class="chip vl" role="img" aria-label="ViiV Healthcare logo" style="background-image:url(\''+VIIV+'\')"></span><span class="lab">Licensed to ViiV</span></span>':'')+
-     '</div><div class="track" role="img" aria-label="'+o.n+' stage: '+(o.stg>1?'Phase 1':'Preclinical')+'"><i></i><i></i><i></i><span class="bar" style="width:'+(o.stg/3*100).toFixed(1)+'%"><b></b></span></div><p class="note">'+o.note+'</p></li>'}).join("")+'</ul></div>'}
+     
+     '</div><div class="track" role="img" aria-label="'+o.n+' stage: '+(o.stg>1?'Phase 1':'Preclinical')+'"><i></i><i></i><i></i><span class="phl"><b>Preclinical</b><b>Phase 1</b><b>Phase 2–3</b></span><span class="bar" style="width:'+(o.stg/3*100).toFixed(1)+'%"><b></b></span></div><p class="note">'+o.note+'</p></li>'}).join("")+'</ul></div>'}
 function awards(){return '<div class="awds" data-group>'+
-  '<a class="awd" href="'+RPQ+'" target="_blank" rel="noopener"><span class="lab">NIAID · SBIR Direct-to-Phase II · Aug 2026</span><h3>A self-administered, dolutegravir-based regimen.</h3><p>Optimize the formulation, scale up manufacturing and add in vivo proof of concept for aqueous dolutegravir and tenofovir prodrugs, to reach readiness for GMP manufacturing and IND-enabling GLP toxicology.</p><div class="amt"><b>$998,034</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
+  '<a class="awd" href="'+RPQ+'" target="_blank" rel="noopener"><span class="lab">NIAID SBIR · Aug 2026</span><h3>A self-administered, dolutegravir-based regimen.</h3><p>Optimize the formulation, scale up manufacturing and add in vivo proof of concept for aqueous dolutegravir and tenofovir prodrugs, to reach readiness for GMP manufacturing and IND-enabling GLP toxicology.</p><div class="amt"><b>$998,034</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
   '<a class="awd" href="'+BW24+'" target="_blank" rel="noopener"><span class="lab">License agreement · May 2024</span><h3>Ultra-long-acting compounds licensed to ViiV Healthcare.</h3><p>ViiV Healthcare, a GSK subsidiary, develops VH-310 (previously XV-110). Exavir receives upfront and milestone payments and tiered royalties in the low-to-mid single digits on future sales.</p><div class="amt"><b>VH-310</b><span class="lab">Phase 1 study '+ARRX+'</span></div></a>'+
  '</div>'}
 
@@ -1194,8 +1197,8 @@ function route(h){
 
 window.siteInit=function(k,view){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden";footField(view)};
 
-/* keep drug codes and compound terms whole (no break at the hyphen) */
-function NB(h){return h.replace(/>([^<]+)</g,function(m,t){return '>'+t.replace(/\b((?:XVIR|XV|VH|HIV|NIAID|Q6M|Q4M|co|non|long|ultra|self)-[A-Za-z0-9]+(?:-[A-Za-z0-9]+)?)/g,'<span class="nw">$1</span>')+'<'})}
+/* keep hyphenated codes and compounds whole with invisible word joiners (no wrapper boxes) */
+function NB(h){return h.replace(/>([^<]+)</g,function(m,t){return '>'+t.replace(/([A-Za-z0-9])-(?=[A-Za-z0-9])/g,'$1\u2060-\u2060')+'<'})}
 var _route0=route;route=function(h){var r=_route0(h),f=r.v;r.v=function(){return NB(f())};return r};
 
 /* ================= ENV ================= */
@@ -1417,9 +1420,9 @@ function sceneInit(view){
     var dn=sm01(0,.55,q),up=sm01(.95,1.45,q);
     dev.setAttribute("transform","translate(0 "+(-95*(1-dn)-140*up).toFixed(1)+")");dev.style.opacity=(1-sm01(1,1.3,q)).toFixed(3);dev.style.visibility=q>1.31?"hidden":"";
     /* 2 depot: crystals form, then dissolve a little at a time across the remaining steps */
-    var form=sm01(.4,.95,q),diss=sm01(1.05,4,q);
+    var form=sm01(.4,.95,q),diss=.55*sm01(1.05,4,q);
     XO.forEach(function(x){var a=sm01(x.o*.5,x.o*.5+.5,form)*(1-sm01(x.o*.85,x.o*.85+.1,diss));x.el.style.opacity=a.toFixed(3);x.el.style.scale=((.4+.6*a)*(1-.4*diss)).toFixed(3)});
-    dl.style.opacity=(sm01(.7,1.05,q)*(1-sm01(3.4,3.95,q))).toFixed(3);
+    dl.style.opacity=sm01(.7,1.05,q).toFixed(3);
     /* 3 convert: released prodrug (outlined) reaches the bloodstream and becomes active drug (filled) */
     for(var j=0;j<mol.length;j++){var s0=1.05+j/mol.length*2.8,u=q-s0,el=mol[j];
       if(u<=0||u>1.9){el.style.opacity="0";continue}

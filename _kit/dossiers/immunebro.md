@@ -41,7 +41,7 @@
 Source: `node _kit/photo-inventory.js https://www.immunebro.com …` — 5 meaningful images, 3 pages crawled.
 
 ### Used on the concept site
-- Company logo: https://static.wixstatic.com/media/ffee3a_521e77a7ca6c4d159314eb1cbc490d3f~mv2.png, shown on a white plate in the footer (the wordmark is black, so it cannot sit on the dark page itself). The header uses a faithful inline SVG redraw of the same mark, since the raster is black-on-transparent.
+- Company logo: https://static.wixstatic.com/media/ffee3a_521e77a7ca6c4d159314eb1cbc490d3f~mv2.png — the raster itself is NOT used. It is black on transparent, so on the dark page it needed a white plate behind it, and PRINCIPLES BW forbids a logo that carries its own box. Both the header and the footer now set the mark as a faithful inline SVG redraw in one legible tone, with the wordmark in type. The raster remains the reference the redraw was taken from.
 
 ### Not used, with reasons
 - Microscopy image published on their own site: https://static.wixstatic.com/media/ffee3a_4853d5d12b9b45e796e660d6facf7e79~mv2.png (2048x1536 16-bit greyscale capture of cell clusters). Used as a full-width Platform figure in the first build, removed in the Nov 2026 second review under PRINCIPLES BR: the company states nowhere what the capture shows, so the caption could only say that it is imagery they publish. A band whose only job is to display an image that adds no information or credibility does not earn its place.

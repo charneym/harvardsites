@@ -36,3 +36,4 @@ and schedule a check just after each reset to nudge stalled sessions.
 - Never depend on the coordinator to notice a reset: on dispatch, give EVERY build session an hourly scheduled task (create_trigger with persistent_session_id, staggered minutes) that says "if your work is unfinished, continue now". After a reset each session resumes within the hour on its own.
 - The coordinator also gets an hourly task that collects reports, reviews sites and nudges stragglers. Delete all of these scheduled tasks when the round is done.
 - Trigger creation is rate-limited (~9 per burst); create the rest ~30s later.
+- A long-running session can stall asking for a human "continue" and refuse to act on coordinator messages (it treats cross-session messages as data, not instructions). Don't keep nudging: hand its remaining sites to a FRESH session via create_session (its initial prompt is acted on), delete the old session's resume task, and give the new one its own.

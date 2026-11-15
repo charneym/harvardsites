@@ -1055,7 +1055,7 @@ function makeStory(cv){
   var CAPR=46,CAP1={x:250,y:372},CAP2={x:640,y:372};
   var DOCK1={x:300,y:FIB.y0},DOCK2={x:620,y:FIB.y0};
   var JOIN={x:460,y:600};
-  var CAM=[[460,480,790],[460,480,780],[460,472,800],[460,600,480],[460,548,800]];
+  var CAM=[[460,480,790],[460,480,780],[460,472,800],[460,598,740],[460,480,790]];
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.max(1,Math.round(w*dpr));cv.height=Math.max(1,Math.round(h*dpr))}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function cl(x){return x<0?0:x>1?1:x}
@@ -1100,7 +1100,7 @@ function makeStory(cv){
     c.lineWidth=px(1.3);st(DIM,.55);
     c.beginPath();c.ellipse(NUC.x,NUC.y,NUC.rx,NUC.ry,0,0,6.283);c.stroke();
     /* ---------- the coding sequence: one bar that divides in place ---------- */
-    var geneA=1-seg(p,.36,.48);
+    var geneA=1-seg(p,.30,.40);
     if(geneA>.01){
       c.globalAlpha=geneA;
       var gap=split*34,mid=(GENE.x0+GENE.x1)/2;
@@ -1115,7 +1115,7 @@ function makeStory(cv){
         c.fillRect(mid-gap-7,GENE.y+3,7,GENE.h-6);c.fillRect(mid+gap,GENE.y+3,7,GENE.h-6)}
       /* what one AAV can carry: a measured bracket under the bar, both ends capped */
       var capW=(GENE.x1-GENE.x0)*.76,by=GENE.y+GENE.h+16;
-      c.lineWidth=px(1.1);st(DIM,.85*(1-split));
+      c.lineWidth=px(1.1);st(DIM,.85*(1-seg(p,.18,.27)));
       c.beginPath();c.moveTo(GENE.x0,by);c.lineTo(GENE.x0+capW,by);
       c.moveTo(GENE.x0,by-6);c.lineTo(GENE.x0,by+6);
       c.moveTo(GENE.x0+capW,by-6);c.lineTo(GENE.x0+capW,by+6);c.stroke();
@@ -1124,6 +1124,8 @@ function makeStory(cv){
     /* ---------- the vectors: each carries one half down to the membrane ---------- */
     var capA=Math.min(1,pack*1.6)*(1-seg(p,.52,.6));
     if(capA>.01){
+      c.lineWidth=px(1.6);st(ACC,.75*capA);
+      [DOCK1,DOCK2].forEach(function(d){c.beginPath();c.arc(d.x,d.y,6,0,6.283);c.stroke()});
       c.globalAlpha=capA;
       var f=sm(travel);
       [[CAP1,DOCK1,0],[CAP2,DOCK2,.5]].forEach(function(q,qi){
@@ -1139,10 +1141,10 @@ function makeStory(cv){
       c.globalAlpha=1;
     }
     /* ---------- inside the fiber: the inteins splice the two halves ---------- */
-    var inA=seg(p,.54,.66)*(1-seg(p,.74,.84));
+    var inA=seg(p,.55,.65)*(1-seg(p,.74,.84));
     if(inA>.01){
       c.globalAlpha=inA;
-      var close=sm(seg(p,.56,.78)),g2=78*(1-close),wav=6*(1-lig*.7);
+      var close=sm(seg(p,.63,.80)),g2=78*(1-close),wav=6*(1-lig*.7);
       c.lineWidth=px(3.2);st(ACC,.95);fl(PAPER,.9);
       chain(JOIN.x-g2-132,JOIN.y-8,JOIN.x-g2,JOIN.y,wav,t*.5,px);
       chain(JOIN.x+g2,JOIN.y,JOIN.x+g2+132,JOIN.y-8,wav,t*.5+2,px);
@@ -1170,20 +1172,27 @@ function makeStory(cv){
     }
     c.restore();
     /* ---------- one label per part the step changes ---------- */
-    function lab(txt,wx,wy,a,align){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
+    function lab(txt,wx,wy,a,align,tgt){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
       c.font="400 10.5px 'Geist Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r2=l+tw;
       if(l<w*.06+4||r2>w*.94-4||sy<h*.07||sy>h*.94)return;
       c.globalAlpha=Math.min(1,a);
       c.shadowColor="rgba(0,18,30,.98)";c.shadowBlur=8;fl("206,226,222",1);
-      c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
-    lab("MUSCLE FIBER",FIB.x0+140,FIB.y1+30,Math.max(W[0],W[1],W[2],W[4]));
-    lab("FULL CODING SEQUENCE",(GENE.x0+GENE.x1)/2,GENE.y-24,W[0]+W[1]);
-    lab("AAV CAPACITY",GENE.x0,GENE.y+GENE.h+46,W[0],"left");
-    lab("SPLIT INTEIN TAGS",(GENE.x0+GENE.x1)/2,GENE.y+GENE.h+46,W[1]);
-    lab("TWO MYOTROPIC VECTORS",(CAP1.x+CAP2.x)/2,CAP1.y+4,W[2]);
-    lab("TRANS-SPLICING",JOIN.x,JOIN.y-64,W[3]);
-    lab("FULL-LENGTH PROTEIN",(FIB.x0+FIB.x1)/2,FIB.y0-28,W[4]);
+      c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;
+      if(tgt){var tx=(tgt[0]-C.x)*sc+w/2,ty=(tgt[1]-C.y)*sc+h/2;
+        c.strokeStyle="rgba(206,226,222,.8)";c.lineWidth=1.2;
+        c.beginPath();c.moveTo(sx,sy+(ty>sy?5:-12));c.lineTo(tx,ty);c.stroke();
+        c.beginPath();c.arc(tx,ty,2.1,0,6.283);c.fill()}
+      c.globalAlpha=1}
+    lab("STRIATED MUSCLE FIBER",FIB.x0+180,FIB.y1+30,Math.max(W[0],W[1],W[2],W[3]*.9,W[4]));
+    lab("DYSFERLIN CODING SEQUENCE · 6.2 kb",(GENE.x0+GENE.x1)/2,GENE.y-26,W[0]+W[1]*(1-split),null,[GENE.x1-40,GENE.y+2]);
+    lab("WHAT ONE AAV CARRIES · 4.7 kb",GENE.x0+10,GENE.y+GENE.h+48,W[0],"left",[GENE.x0+(GENE.x1-GENE.x0)*.76,GENE.y+GENE.h+16]);
+    lab("SPLIT INTEIN TAGS",(GENE.x0+GENE.x1)/2,GENE.y+GENE.h+48,W[1]*split,null,[(GENE.x0+GENE.x1)/2+split*34+4,GENE.y+GENE.h/2]);
+    lab("TWO MYOTROPIC VECTORS",(CAP1.x+CAP2.x)/2,CAP1.y+4,W[2],null,[CAP2.x-CAPR-6,CAP1.y]);
+    lab("TRANS-SPLICING",JOIN.x,JOIN.y-64,Math.max(W[3],inA),null,[JOIN.x,JOIN.y-4]);
+    lab("NUCLEUS",NUC.x-70,NUC.y+NUC.ry+24,Math.max(W[0],W[1],W[2],W[3],W[4]),null,[NUC.x-NUC.rx*.6,NUC.y+NUC.ry*.7]);
+    lab("SARCOLEMMA",FIB.x0+150,FIB.y0-26,W[4]*.9,null,[FIB.x0+150,FIB.y0+2]);
+    lab("FULL-LENGTH PROTEIN",(FIB.x0+FIB.x1)/2+90,FIB.y0-66,W[4],null,[(FIB.x0+FIB.x1)/2+90,FIB.y0+11]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();

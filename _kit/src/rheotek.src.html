@@ -137,7 +137,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -692,6 +692,14 @@ body{background:var(--bone)}
 .pgrid.two .pcd h3{min-height:2.24em}
 .metrics{display:flex;flex-wrap:wrap;gap:10px}
 .metrics span{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;border:1px solid var(--hairD);border-radius:99px;font-family:var(--serif);font-size:20px}
+.ftr .ffield{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0}
+.ftr .ffield.ready{opacity:.34}
+.ftr>*:not(.ffield){position:relative;z-index:1}
+.ftr .ffield{filter:invert(1) hue-rotate(180deg)}
+.ftr .ffield.ready{opacity:.28}
+.mblk{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
+.pcd.static{cursor:default}.pcd.static:hover{transform:none}.pcd .bio{font-size:15px;line-height:1.55;color:var(--stoneD);margin:4px 0 0;max-width:36ch}
+.awds{align-items:start}.awd .amt{margin-top:18px}
 
 </style>
 </head>
@@ -809,7 +817,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function pCard(p){return '<a class="pcd" href="#/company/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph" data-alt="'+esc(p.name)+'"><img class="g" src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\');this.style.display=\'none\'"><img class="c" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\'"></span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
+function pCard(p){return '<div class="pcd static"><span class="ph" data-alt="'+esc(p.name)+'"><img class="g" src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\');this.style.display=\'none\'"><img class="c" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\'"></span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><p class="bio">'+p.bio.map(esc).join(' ')+'</p></div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function prodFig(){return '<figure class="prodimg" id="pfig"><img src="'+PROD+'" alt="RheoTek image: two injector tips releasing blue and pink dispersions that meet in the middle" loading="lazy" onerror="document.getElementById(\'pfig\').classList.add(\'noimg\')"></figure>'}
 function award(){return '<div class="awds" data-group>'+
@@ -821,17 +829,16 @@ function award(){return '<div class="awds" data-group>'+
 function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
 var LAYERS=[[150,"EPIDERMIS"],[176,"DERMIS"],[262,"FAT"],[352,"MUSCLE"]];
 function sceneSvg(){
-  var lay=LAYERS.map(function(l,i){var y=l[0];return '<path class="'+(i?'ly2':'ly')+'" d="M20 '+y+'C120 '+(y-3)+' 260 '+(y+3)+' 380 '+y+'"/><text x="24" y="'+(y+(i?20:-8))+'">'+l[1]+'</text>'}).join("");
-  var ticks='';for(var m=0;m<=8;m++){var y=150+m*25;ticks+='<path class="tick" d="M402 '+y+'h'+(m%2?6:12)+'"/>'+(m%2?'':'<text x="420" y="'+(y+4)+'">'+(m/2)+'</text>')}
-  return '<svg viewBox="0 0 600 480" aria-hidden="true"><defs><radialGradient id="rtBloom"><stop offset="0" stop-color="#8dbbea" stop-opacity=".85"/><stop offset=".55" stop-color="#b07cc0" stop-opacity=".45"/><stop offset="1" stop-color="#b07cc0" stop-opacity="0"/></radialGradient></defs>'+
-   '<rect class="hl" id="rtHl" x="20" y="176" width="360" height="86"/>'+lay+
-   '<ellipse id="rtBloom1" class="bloom" cx="200" cy="214" rx="0" ry="0"/>'+
-   '<g id="rtDev"><path class="vac" id="rtVac" d="M168 146C176 128 224 128 232 146"/><rect class="dev" x="170" y="-20" width="60" height="150" rx="10"/><rect class="dev" x="184" y="128" width="32" height="18" rx="4"/><path class="ndl" id="rtNdl" d="M200 146V146"/></g>'+
-   '<path class="ly2" d="M402 150V350"/>'+ticks.replace('<text x="420" y="154">0</text>','')+'<text x="400" y="132">DEPTH, MM</text>'+
-   '<circle id="rtDot" class="acf" cx="402" cy="150" r="4" style="fill:#8dbbea"/>'+
-   '<text class="tt" x="470" y="200">Depth</text><text id="rtD" x="470" y="222">SET 1.6 MM</text>'+
-   '<text class="tt" x="470" y="268">Dose</text><rect class="bar0" x="470" y="282" width="110" height="8" rx="4"/><rect id="rtV" class="barF" x="470" y="282" width="0" height="8" rx="4"/>'+
-   '<text class="tt" x="470" y="330">Plane</text><text id="rtP" x="470" y="352">STABILIZED</text></svg>'}
+  /* ONE object: the SoftTouch tip on a cross-section of skin, with its depth scale; each step changes one labelled part */
+  var lay=LAYERS.map(function(l,i){var y=l[0];return '<path class="'+(i?'ly2':'ly')+'" d="M60 '+y+'C180 '+(y-3)+' 320 '+(y+3)+' 440 '+y+'"/><text x="64" y="'+(y+(i?20:-8))+'">'+l[1]+'</text>'}).join("");
+  var ticks='';for(var m=0;m<=8;m++){var y=150+m*25;ticks+='<path class="tick" d="M462 '+y+'h'+(m%2?6:12)+'"/>'+(m%2||!m?'':'<text x="480" y="'+(y+4)+'">'+(m/2)+' MM</text>')}
+  return '<svg viewBox="0 0 600 420" aria-hidden="true"><defs><radialGradient id="rtBloom"><stop offset="0" stop-color="#8dbbea" stop-opacity=".9"/><stop offset=".55" stop-color="#b07cc0" stop-opacity=".5"/><stop offset="1" stop-color="#b07cc0" stop-opacity="0"/></radialGradient></defs>'+
+   '<rect class="hl" id="rtHl" x="60" y="176" width="380" height="86"/>'+lay+
+   '<ellipse id="rtBloom1" class="bloom" cx="250" cy="232" rx="0" ry="0"/><text id="rtDoseL" class="dyn" x="310" y="246">MEASURED DOSE</text>'+
+   '<g id="rtDev"><path class="vac" id="rtVac" d="M218 146C226 128 274 128 282 146"/><rect class="dev" x="220" y="-20" width="60" height="150" rx="10"/><rect class="dev" x="234" y="128" width="32" height="18" rx="4"/><path class="ndl" id="rtNdl" d="M250 146V146"/><text x="292" y="40">SOFTTOUCH</text><text id="rtVacL" class="dyn" x="292" y="118">VACUUM SEAL</text></g>'+
+   '<path class="ly2" d="M462 150V350"/>'+ticks+'<text x="462" y="132">DEPTH</text>'+
+   '<path id="rtLead" class="vac" d="M256 150H462" style="stroke-dasharray:none;opacity:0"/><circle id="rtDot" class="acf" cx="462" cy="150" r="4" style="fill:#8dbbea"/>'+
+   '<text id="rtHold" class="dyn" x="250" y="392" text-anchor="middle">DEPTH HELD AS THE SKIN MOVES</text></svg>'}
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -846,8 +853,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>The problem</span>'+
-   '<p class="txt" id="mani">By hand, a needle cannot reliably hit a target a fraction of a millimeter thick. Drugs meant for the dermis end up in the fat below, and expensive therapies are <em>wasted.</em></p>'+
+   '<div class="mblk">'+'<span class="lab kick" data-r>The problem</span>'+
+   '<p class="txt" id="mani">By hand, a needle cannot reliably hit a target a fraction of a millimeter thick. Drugs meant for the dermis end up in the fat below, and expensive therapies are <em>wasted.</em></p>'+'</div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">5M<small>+</small></span><span class="lab k">Keratinocyte carcinomas diagnosed in the US each year</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">0.5–4<small>mm</small></span><span class="lab k">Programmable injection depth, a design target</span></div>'+
@@ -955,7 +962,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Nothing <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>RheoTek Medical Inc.<br>New York, New York</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@rheotekmedical.com">info@rheotekmedical.com</a><br><a class="ul" href="'+IG+'" target="_blank" rel="noopener">Instagram</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/softtouch">SoftTouch</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -979,7 +986,7 @@ function route(h){
 }
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcd");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".ph");var r=f.getBoundingClientRect();f.style.setProperty("--mx",((e.clientX-r.left)/r.width*100).toFixed(1)+"%");f.style.setProperty("--my",((e.clientY-r.top)/r.height*100).toFixed(1)+"%")});
 
-window.siteInit=function(k){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden"};
+window.siteInit=function(k,view){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden";footField(view)};
 
 /* ================= ENV ================= */
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -994,21 +1001,22 @@ var MOBILE=function(){return innerWidth<861};
    A macro cross-section of skin (epidermis, dermis, fat, muscle). The needle travels to a set depth, which the pointer
    chooses (or an idle program cycles), settles, and releases a dispersion bloom in the brand's blue-to-violet.
    Canvas 2D at native devicePixelRatio (cap 2). Layer thicknesses are illustrative. */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false,last=0;
+function mkField(cv,FOOT){
+  var c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false,last=0;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,dpr=1,W=0,H=0,L=null,FAT=[],FIB=[];
   var D=1.2,DV=0,tgt=1.2,ptrT=-99,ptrD=1.2,settle=0,bloom=0,bx=0,by=0,prog=[1.2,.6,2.6,1.6,3.7,.9],pi=0,nextT=3;
   var MAXD=4.4,BND=[[0,.15,"EPIDERMIS"],[.15,2,"DERMIS"],[2,3.4,"FAT"],[3.4,4.4,"MUSCLE"]];
-  function lay(){var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
+  function lay(){if(FOOT)return FOOTL();var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
     if(W<861)return {x0:16,x1:W-74,y0:H*.17,y1:H*.32,cx:W*.5};
     if(W<1100)return {x0:W*.5,x1:W-side-86,y0:H*.3,y1:H*.82,cx:W*.5+(W*.5-side-86)*.45};
     var x0=side+(W-2*side)*.6,x1=W-side-96;return {x0:x0,x1:x1,y0:H*.3,y1:H*.84,cx:x0+(x1-x0)*.42}}
+  function FOOTL(){return {x0:W*.18,x1:W*.82-96,y0:H*.3,y1:H*.97,cx:W*.18+(W*.64-96)*.45}}
   function yD(d){return L.y0+d/MAXD*(L.y1-L.y0)}
   function build(){L=lay();FAT=[];FIB=[];var w=L.x1-L.x0,f0=yD(2),f1=yD(3.4);
     for(var i=0;i<400&&FAT.length<90;i++){var r=(10+R(i,81)*14)*(L.y1-L.y0)/520,x=L.x0+r+R(i,82)*(w-2*r),y=f0+r+R(i,83)*(f1-f0-2*r),ok=true;
       for(var j=0;j<FAT.length;j++){var q=FAT[j];if(Math.hypot(q.x-x,q.y-y)<q.r+r+2){ok=false;break}}if(ok)FAT.push({x:x,y:y,r:r})}
     for(var k=0;k<26;k++)FIB.push({y:yD(.2+R(k,84)*1.75),a:R(k,85)*6.28,f:.004+R(k,86)*.008,amp:2+R(k,87)*4})}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);if(FOOT&&!cv.isConnected)return;W=FOOT?(cv.clientWidth||innerWidth):innerWidth;H=FOOT?(cv.clientHeight||400):innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();if(!running)frame(true)}
   function blob(x,y,r,T,a){c.beginPath();for(var i=0;i<=48;i++){var t=i/48*6.283,rr=r*(1+.16*Math.sin(t*3+T*.7)+.1*Math.sin(t*5-T*.5)+.06*Math.sin(t*8+T));var px=x+Math.cos(t)*rr*1.35,py=y+Math.sin(t)*rr*.85;i?c.lineTo(px,py):c.moveTo(px,py)}c.closePath();
     var g=c.createRadialGradient(x,y,0,x,y,r*1.4);g.addColorStop(0,"rgba(141,187,234,"+(.9*a).toFixed(3)+")");g.addColorStop(.5,"rgba(74,134,200,"+(.5*a).toFixed(3)+")");g.addColorStop(1,"rgba(176,124,192,"+(.12*a).toFixed(3)+")");c.fillStyle=g;c.fill()}
   function frame(once){
@@ -1058,10 +1066,17 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   addEventListener("resize",size);size();
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5);
-    if(L&&e.pointerType!=="touch"&&e.clientX>L.x0-40&&e.clientX<L.x1+120&&e.clientY>L.y0-20&&e.clientY<L.y1+20&&window.scrollY<innerHeight*.5){ptrT=(performance.now()-t0)/1000;ptrD=Math.max(.5,Math.min(4,(e.clientY-L.y0)/(L.y1-L.y0)*MAXD))}},{passive:true});
+    if(!FOOT&&L&&e.pointerType!=="touch"&&e.clientX>L.x0-40&&e.clientX<L.x1+120&&e.clientY>L.y0-20&&e.clientY<L.y1+20&&window.scrollY<innerHeight*.5){ptrT=(performance.now()-t0)/1000;ptrD=Math.max(.5,Math.min(4,(e.clientY-L.y0)/(L.y1-L.y0)*MAXD))}},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=mkField($("#field"),false);
+
+/* BT: the hero's living visual, quieter, behind the footer wordmark; paused off-screen */
+var ffield=null,ffIO=null;
+function footField(view){if(ffield){ffield.stop();ffield=null}if(ffIO){ffIO.disconnect();ffIO=null}
+  var cv=$(".ffield",view);if(!cv||RM)return;ffield=mkField(cv,true);var f=ffield;
+  ffIO=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?f.start():f.stop()})});ffIO.observe(cv);}
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1185,25 +1200,25 @@ function homeScroll(view){
 /* ---------- pinned story: ONE device on ONE patch of skin; the needle advances, doses and holds (BL) ---------- */
 function sm01(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
 function sceneInit(view){
-  var dev=$("#rtDev",view),vac=$("#rtVac",view),ndl=$("#rtNdl",view),bl=$("#rtBloom1",view),dot=$("#rtDot",view),dv=$("#rtV",view),dp=$("#rtP",view),dd=$("#rtD",view),hl=$("#rtHl",view);
-  var lays=$$("#scene .ly,#scene .ly2",view).filter(function(p){return !p.getAttribute("d").startsWith("M402")});
+  var dev=$("#rtDev",view),vac=$("#rtVac",view),vl=$("#rtVacL",view),ndl=$("#rtNdl",view),bl=$("#rtBloom1",view),bll=$("#rtDoseL",view),dot=$("#rtDot",view),lead=$("#rtLead",view),hl=$("#rtHl",view),hold=$("#rtHold",view);
+  var lays=$$("#scene .ly,#scene .ly2",view).filter(function(p){return !/^M462/.test(p.getAttribute("d"))});
   var last=-1;
   return function(p){if(!dev||!dev.isConnected)return;if(Math.abs(p-last)<.0004)return;last=p;var q=p*4;
-    /* 1 settle: device lowers onto the skin; vacuum couples it */
+    /* 1 settle: the tip lowers onto the skin and the vacuum seal couples it */
     var down=sm01(0,.6,q),v=sm01(.45,.9,q);
-    /* 4 hold: the skin shifts with the patient, the device and needle follow, then withdraw */
-    var sh=Math.sin(sm01(3.05,3.85,q)*Math.PI*2)*7*sm01(3,3.2,q),out=sm01(3.85,4,q);
+    /* 4 hold: the skin shifts, the tip follows, the depth stays the same */
+    var sh=Math.sin(sm01(3.05,3.85,q)*Math.PI*2)*8*sm01(3,3.2,q);
     dev.setAttribute("transform","translate("+sh.toFixed(1)+" "+(-110*(1-down)).toFixed(1)+")");
     lays.forEach(function(l){l.setAttribute("transform","translate("+sh.toFixed(1)+" 0)")});
-    vac.style.opacity=(v*(1-out)).toFixed(3);vac.setAttribute("d",v>0?"M"+(168)+" 146C176 "+(146-18*v).toFixed(1)+" 224 "+(146-18*v).toFixed(1)+" 232 146":"M168 146");
-    /* 2 depth: the needle drives to 1.6 mm (y 230) */
-    var dpt=sm01(1,1.7,q)*(1-out),tip=146+84*dpt;ndl.setAttribute("d","M200 146V"+tip.toFixed(1));
-    dot.setAttribute("cy",(150+80*dpt).toFixed(1));hl.style.opacity=(.4+.6*sm01(1.3,1.8,q)).toFixed(3);
-    dd.textContent=dpt>.97?"1.6 MM · DERMIS":"SET 1.6 MM";
-    /* 3 dose: a measured bloom disperses in the dermis */
-    var dose=sm01(2,2.85,q);bl.setAttribute("cx",(200+sh).toFixed(1));bl.setAttribute("cy","232");bl.setAttribute("rx",(46*dose).toFixed(1));bl.setAttribute("ry",(26*dose).toFixed(1));bl.style.opacity=(1-.5*out).toFixed(3);
-    dv.setAttribute("width",(110*dose).toFixed(1));
-    dp.textContent=q<.6?"APPROACH":q<3?"STABILIZED":q<3.85?"HOLDING THE PLANE":"WITHDRAWN";
+    vac.style.opacity=v.toFixed(3);vac.setAttribute("d","M218 146C226 "+(146-18*v).toFixed(1)+" 274 "+(146-18*v).toFixed(1)+" 282 146");vl.style.opacity=(v*(1-sm01(1.2,1.5,q))).toFixed(3);
+    /* 2 depth: the needle drives to 1.6 mm, read on the scale */
+    var dpt=sm01(1,1.7,q),tip=146+84*dpt;ndl.setAttribute("d","M250 146V"+tip.toFixed(1));
+    dot.setAttribute("cy",(150+80*dpt).toFixed(1));lead.setAttribute("d","M"+(256+sh).toFixed(1)+" "+tip.toFixed(1)+"H462");lead.style.opacity=(dpt>.05?.8:0).toFixed(2);
+    hl.style.opacity=(.4+.6*sm01(1.3,1.8,q)).toFixed(3);
+    /* 3 dose: a measured volume disperses in the dermis */
+    var dose=sm01(2,2.85,q);bl.setAttribute("cx",(250+sh).toFixed(1));bl.setAttribute("rx",(48*dose).toFixed(1));bl.setAttribute("ry",(26*dose).toFixed(1));
+    bll.style.opacity=(sm01(2.3,2.7,q)*(1-sm01(3,3.2,q))).toFixed(3);
+    hold.style.opacity=sm01(3.05,3.35,q).toFixed(3);
   }}
 function homeStory(view){
   var sec=$("#story",view);if(!sec)return;
@@ -1213,7 +1228,7 @@ function homeStory(view){
   if(RM){S(.7);return}
   S(0);
   $$("#scene .ly,#scene .ly2,#scene .tick",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.6,ease:"flow",scrollTrigger:{trigger:sec,start:"top 75%"},onComplete:function(){p.style.strokeDasharray="none"}})});
-  gsap.from($$("#scene text,#scene .bar0,#rtHl",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
+  gsap.from($$("#scene text:not(.dyn)",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});story={kill:function(){story=null}};
   tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4)));fx(p);S(p)});
@@ -1238,11 +1253,11 @@ var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),
 gsap.set([psSheet,psScrim],{opacity:0});
 function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  psMode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+  psMode(p.img&&!(p.imgW&&p.imgW<480)?"":"noimg");
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(bioOpen&&pBy(location.hash.split("/")[2])===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(bioOpen)fillBio(i)};pr.src=p.img}
   var slim=ps.classList.contains("slim");
-  psMedia.innerHTML=p.img&&!slim?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
-  var head=slim?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psMedia.innerHTML=p.img&&!ps.classList.contains("noimg")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
+  var head='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   psBody.scrollTop=0;

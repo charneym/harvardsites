@@ -137,7 +137,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -668,6 +668,13 @@ body{background:var(--bone)}
 @media (max-width:1024px){.scene text{font-size:14px}.scene .minor{display:none}}
 .row-a{overflow:visible}
 .newsimg.noimg{grid-template-columns:1fr}.newsimg.noimg>div{max-width:760px}
+.ftr .ffield{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0}
+.ftr .ffield.ready{opacity:.34}
+.ftr>*:not(.ffield){position:relative;z-index:1}
+.ftr .ffield{filter:invert(1) hue-rotate(180deg)}
+.ftr .ffield.ready{opacity:.28}
+.mblk{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
+@media (max-width:560px){.pgrid,.pgrid.g3{grid-template-columns:1fr}.pgrid .ph{aspect-ratio:1/1}}
 
 </style>
 </head>
@@ -811,23 +818,22 @@ function awards(){return '<div class="awds" data-group>'+
 /* ---------- story: ONE skin cross-section whose parts move with the scroll (BL) ---------- */
 function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
 function sceneSvg(){
+  /* ONE object: a cross-section of infant skin with a hemangioma, drawn once; each step changes one labelled part */
   var cap='',mol='',rbc='';
-  for(var i=0;i<16;i++){var a=R(i,1)*6.283,r=Math.sqrt(R(i,2))*52,x=230+Math.cos(a)*r*1.3,y=272+Math.sin(a)*r*.7,rx=7+R(i,3)*9,ry=4+R(i,4)*6;
+  for(var i=0;i<16;i++){var a=R(i,1)*6.283,r=Math.sqrt(R(i,2))*58,x=300+Math.cos(a)*r*1.4,y=272+Math.sin(a)*r*.65,rx=7+R(i,3)*9,ry=4+R(i,4)*6;
     cap+='<ellipse class="cap" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" rx="'+rx.toFixed(1)+'" ry="'+ry.toFixed(1)+'" transform="rotate('+(R(i,5)*180).toFixed(0)+' '+x.toFixed(1)+' '+y.toFixed(1)+')"/>'}
-  for(var j=0;j<34;j++)mol+='<circle class="mol" r="2.6" cx="230" cy="140" data-k="'+j+'"/>';
-  for(var k=0;k<9;k++)rbc+='<ellipse class="rbc" rx="7" ry="3.2" cx="0" cy="402" data-k="'+k+'"/>';
-  return '<svg viewBox="0 0 600 480" aria-hidden="true">'+
-   '<path id="akGel" class="gel" d="M120 150C150 150 300 150 340 150Z"/><text id="akGelL" x="230" y="112" text-anchor="middle">ARK001 GEL</text>'+
-   '<text x="20" y="140">SKIN</text><path class="ly" d="M20 150C120 146 240 154 360 150"/>'+
-   '<path class="ly2" d="M20 176C120 172 240 180 360 176"/><text x="20" y="200">DERMIS</text>'+
-   '<g id="akCap">'+cap+'</g><text id="akIH" x="20" y="300">HEMANGIOMA</text><text x="20" y="316" id="akIH2" class="minor">PROLIFERATING</text><text x="20" y="332" class="minor">VESSELS</text>'+
-   '<path class="vs" d="M20 384C120 378 240 390 360 384V420C240 426 120 414 20 420Z"/><g id="akRbc">'+rbc+'</g><text x="20" y="450">BLOODSTREAM</text><text id="akMet" x="170" y="450">CLEARED BY RED CELLS</text>'+
-   '<g id="akMol">'+mol+'</g>'+
-   '<text class="tt" x="414" y="140">Exposure</text><text x="414" y="160" class="minor">ILLUSTRATIVE</text>'+
-   '<text x="414" y="198">AT THE LESION</text><rect class="bar0" x="414" y="208" width="160" height="10" rx="5"/><rect id="akB1" class="barF" x="414" y="208" width="0" height="10" rx="5"/>'+
-   '<text x="414" y="250">IN CIRCULATION</text><rect class="bar0" x="414" y="260" width="160" height="10" rx="5"/><rect id="akB2" class="barF" x="414" y="260" width="0" height="10" rx="5"/>'+
-   '<circle class="arc0" cx="470" cy="352" r="38"/><circle id="akArc" class="arc1" cx="470" cy="352" r="38" transform="rotate(-90 470 352)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"/>'+
-   '<text x="470" y="357" text-anchor="middle" id="akHr">24 H</text><text x="414" y="412" class="minor">ON THE SKIN, THEN</text><text x="414" y="428" class="minor">WASHES OFF</text></svg>'}
+  for(var j=0;j<34;j++)mol+='<circle class="mol" r="2.8" cx="300" cy="140" data-k="'+j+'"/>';
+  for(var k=0;k<11;k++)rbc+='<ellipse class="rbc" rx="7" ry="3.2" cx="0" cy="402" data-k="'+k+'"/>';
+  return '<svg viewBox="0 0 600 470" aria-hidden="true">'+
+   '<path id="akGel" class="gel" d="M200 150C230 150 370 150 400 150Z"/><text id="akGelL" class="dyn" x="300" y="112" text-anchor="middle">ARK001 GEL</text>'+
+   '<text id="akWash" class="dyn" x="300" y="112" text-anchor="middle">WASHES OFF AFTER 24 H</text>'+
+   '<text x="40" y="140">SKIN</text><path class="ly" d="M40 150C200 146 400 154 560 150"/>'+
+   '<path class="ly2" d="M40 176C200 172 400 180 560 176"/><text x="40" y="200">DERMIS</text>'+
+   '<g id="akCap">'+cap+'</g><text id="akIH" x="440" y="276">HEMANGIOMA</text>'+
+   '<text id="akEsm" class="dyn" x="440" y="232">ESMOLOL</text>'+
+   '<path class="vs" d="M40 384C200 378 400 390 560 384V420C400 426 200 414 40 420Z"/><g id="akRbc">'+rbc+'</g>'+
+   '<text x="40" y="450">BLOODSTREAM · RED BLOOD CELLS</text><text id="akMet" class="dyn" x="560" y="450" text-anchor="end">ESMOLOL CLEARED</text>'+
+   '<g id="akMol">'+mol+'</g></svg>'}
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -842,8 +848,8 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Why it matters</span>'+
-   '<p class="txt" id="mani">Infantile hemangioma is the most common tumor of infancy. It grows fastest in the first weeks of life, yet today’s standard of care is an oral beta blocker that reaches the <em>whole body.</em></p>'+
+   '<div class="mblk">'+'<span class="lab kick" data-r>Why it matters</span>'+
+   '<p class="txt" id="mani">Infantile hemangioma is the most common tumor of infancy. It grows fastest in the first weeks of life, yet today’s standard of care is an oral beta blocker that reaches the <em>whole body.</em></p>'+'</div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">170<small>K</small></span><span class="lab k">Infants born with IH in the US each year</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">55<small>%</small></span><span class="lab k">With significant to severe permanent sequelae in a large study of untreated IH</span></div>'+
@@ -967,7 +973,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Nothing <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas class="ffield" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Arkayli Biopharma, Inc.<br>Madison, WI 53726</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@arkayli.com">info@arkayli.com</a><br><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/ark001">ARK001</a><br><a class="ul" href="#/hemangioma">Infantile hemangioma</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -992,7 +998,7 @@ function route(h){
 /* AC hover: colour blooms from the pointer */
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcd");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".ph");var r=f.getBoundingClientRect();f.style.setProperty("--mx",((e.clientX-r.left)/r.width*100).toFixed(1)+"%");f.style.setProperty("--my",((e.clientY-r.top)/r.height*100).toFixed(1)+"%")});
 
-window.siteInit=function(k){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden"};
+window.siteInit=function(k,view){var f=$("#field");if(f)f.style.visibility=k==="home"?"":"hidden";footField(view)};
 
 /* ================= ENV ================= */
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1005,13 +1011,14 @@ var MOBILE=function(){return innerWidth<861};
 
 /* ================= HERO FIELD: a gel lens on infant skin; esmolol diffuses into a hemangioma, and anything that reaches a vessel is cleared =================
    Canvas 2D at native devicePixelRatio (cap 2). Fine navy linework, logo-blue molecules. Illustrative. */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false,last=0;
+function mkField(cv,FOOT){
+  var c=cv.getContext("2d"),running=false,raf=0,t0=performance.now(),shown=false,last=0;
   var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,dpr=1,W=0,H=0,G=null,V=[],P=[],mask=null,MW=0,MH=0;
-  function layout(){var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
+  function layout(){if(FOOT)return FOOTL();var side=Math.max(Math.min(72,Math.max(16,W*.042)),(W-1320)/2);
     if(W<861)return {cx:W*.56,sy:H*.15,w:W*.92,h:H*.24,s:Math.min(W,H*.6)/600};
     if(W<1100)return {cx:W*.72,sy:H*.36,w:W*.52,h:H*.42,s:Math.min(W*.5,H*.62)/600};
     var ww=(W-2*side)*.44;return {cx:W-side-ww*.62,sy:H*.34,w:ww,h:H*.5,s:Math.min(ww*1.1,H*.72)/600}}
+  function FOOTL(){return {cx:W*.5,sy:H*.3,w:W*.72,h:H*.62,s:Math.min(W*.55,H*1.1)/600}}
   function surf(x,L){return L.sy+Math.sin((x-L.cx)/L.w*3.1)*L.h*.025}
   function build(){
     var L=G=layout();V=[];
@@ -1031,7 +1038,7 @@ var field=(function(){
   function spawn(p,k,init){var L=G;p.x=L.cx+(Math.random()-.5)*L.w*.4;p.y=surf(p.x,L)-L.s*(2+Math.random()*16);p.vx=0;p.vy=0;p.die=0;p.age=init?Math.random()*14:0;p.life=10+Math.random()*10;p.k=k;
     if(init){p.y+=Math.random()*L.h*.55;}return p}
   function hit(x,y){var i=(x/4)|0,j=(y/4)|0;return i>=0&&j>=0&&i<MW&&j<MH&&mask[j*MW+i]}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);if(FOOT&&!cv.isConnected)return;W=FOOT?(cv.clientWidth||innerWidth):innerWidth;H=FOOT?(cv.clientHeight||400):innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();if(!running)frame(true)}
   function frame(once){
     var now=performance.now(),T=(now-t0)/1000,dt=Math.min(.05,(now-(last||now))/1000);last=now;if(RM){T=20;dt=0}
     m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
@@ -1065,7 +1072,7 @@ var field=(function(){
         if(p.y>sy+2&&hit(p.x,p.y))p.die=.001;
         if(p.age>p.life||p.y>L.sy+L.h*1.05||Math.abs(p.x-L.cx)>L.w*.6){spawn(p,p.k,false);continue}
         var fa=Math.min(1,p.age*2)*on*dim;c.beginPath();c.arc(p.x,p.y,L.s*2.1+.6,0,6.283);c.fillStyle="rgba(0,120,255,"+(.85*fa).toFixed(3)+")";c.fill()}}
-    if(W>=861){c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-out";var fg=c.createLinearGradient(x0-10,0,x0+L.w*.35,0);fg.addColorStop(0,"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg;c.fillRect(0,0,x0+L.w*.35,H);c.globalCompositeOperation="source-over"}
+    if(W>=861&&!FOOT){c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-out";var fg=c.createLinearGradient(x0-10,0,x0+L.w*.35,0);fg.addColorStop(0,"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg;c.fillRect(0,0,x0+L.w*.35,H);c.globalCompositeOperation="source-over"}
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1075,7 +1082,14 @@ var field=(function(){
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=mkField($("#field"),false);
+
+/* BT: the hero's living visual, quieter, behind the footer wordmark; paused off-screen */
+var ffield=null,ffIO=null;
+function footField(view){if(ffield){ffield.stop();ffield=null}if(ffIO){ffIO.disconnect();ffIO=null}
+  var cv=$(".ffield",view);if(!cv||RM)return;ffield=mkField(cv,true);var f=ffield;
+  ffIO=new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?f.start():f.stop()})});ffIO.observe(cv);}
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
@@ -1199,27 +1213,25 @@ function homeScroll(view){
 /* ---------- pinned story: one skin cross-section, parts move with the scrubbed timeline (BL) ---------- */
 function sm01(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
 function sceneInit(view){
-  var gel=$("#akGel",view),gl=$("#akGelL",view),mol=$$("#akMol circle",view),rbc=$$("#akRbc ellipse",view),b1=$("#akB1",view),b2=$("#akB2",view),arc=$("#akArc",view),met=$("#akMet",view),cap=$$("#akCap ellipse",view);
+  var gel=$("#akGel",view),gl=$("#akGelL",view),wl=$("#akWash",view),es=$("#akEsm",view),mol=$$("#akMol circle",view),rbc=$$("#akRbc ellipse",view),met=$("#akMet",view),cap=$$("#akCap ellipse",view);
   var last=-1;
   return function(p){if(!gel||!gel.isConnected)return;if(Math.abs(p-last)<.0004)return;last=p;var q=p*4;
-    /* 1 apply: the gel spreads over the lesion; 4: it washes off */
-    var spread=sm01(.05,.8,q),wash=sm01(3.45,3.95,q),th=22*spread*(1-wash),half=110*(.35+.65*spread);
-    gel.setAttribute("d","M"+(230-half).toFixed(1)+" 150C"+(230-half*.6).toFixed(1)+" "+(150-th).toFixed(1)+" "+(230+half*.6).toFixed(1)+" "+(150-th).toFixed(1)+" "+(230+half).toFixed(1)+" 150Z");
-    gel.style.opacity=(sm01(0,.3,q)*(1-wash)).toFixed(3);gl.style.opacity=(sm01(.3,.7,q)*(1-wash)).toFixed(3);
-    /* 2 absorb: molecules travel from the gel into the hemangioma; 3 clear: those continuing to the bloodstream vanish */
+    /* 1 apply: the gel spreads over the lesion; 4: after 24 h it washes off */
+    var spread=sm01(.05,.8,q),wash=sm01(3.3,3.9,q),th=22*spread*(1-wash),half=110*(.35+.65*spread);
+    gel.setAttribute("d","M"+(300-half).toFixed(1)+" 150C"+(300-half*.6).toFixed(1)+" "+(150-th).toFixed(1)+" "+(300+half*.6).toFixed(1)+" "+(150-th).toFixed(1)+" "+(300+half).toFixed(1)+" 150Z");
+    gel.style.opacity=(sm01(0,.3,q)*(1-wash)).toFixed(3);gl.style.opacity=(sm01(.3,.7,q)*(1-sm01(3,3.3,q))).toFixed(3);wl.style.opacity=sm01(3.35,3.7,q).toFixed(3);
+    /* 2 absorb: esmolol moves from the gel into the hemangioma; 3 clear: what reaches the blood is cleared */
     for(var j=0;j<mol.length;j++){var el=mol[j],s0=.9+j/mol.length*2.3,u=q-s0;
       if(u<=0||wash>.98){el.style.opacity="0";continue}
-      var tx=230+(R(j,51)-.5)*150,ty=258+(R(j,52)-.5)*50,deep=R(j,53)>.55,x,y,o=1;
-      if(u<.6){var k=sm01(0,1,u/.6);x=230+(R(j,54)-.5)*120*(1-k)+tx*k-230*k;y=144+(ty-144)*k}
+      var tx=300+(R(j,51)-.5)*170,ty=264+(R(j,52)-.5)*56,deep=R(j,53)>.55,x,y,o=1;
+      if(u<.6){var k=sm01(0,1,u/.6);x=300+(R(j,54)-.5)*140*(1-k)+(tx-300)*k;y=144+(ty-144)*k}
       else if(!deep||q<2){x=tx+Math.sin(u*3+j)*4;y=ty+Math.cos(u*2.4+j)*3}
       else{var k2=sm01(0,1,(u-.6)/.7);x=tx+(R(j,55)-.5)*30*k2;y=ty+(400-ty)*k2;o=1-sm01(.85,1,k2)}
       el.setAttribute("cx",x.toFixed(1));el.setAttribute("cy",y.toFixed(1));el.style.opacity=(Math.min(1,u*5)*o*(1-wash)).toFixed(3)}
+    es.style.opacity=(sm01(1,1.35,q)*(1-wash)).toFixed(3);
     cap.forEach(function(e,i){e.style.opacity=(.55+.45*sm01(1,1.8,q)*(.6+.4*Math.sin(i+q*3))).toFixed(3)});
-    for(var r=0;r<rbc.length;r++){var xx=20+((r/rbc.length+q*.18)%1)*340;rbc[r].setAttribute("cx",xx.toFixed(1));rbc[r].setAttribute("cy",(402+Math.sin(xx*.05+r)*3).toFixed(1))}
+    for(var r=0;r<rbc.length;r++){var xx=40+((r/rbc.length+q*.18)%1)*520;rbc[r].setAttribute("cx",xx.toFixed(1));rbc[r].setAttribute("cy",(402+Math.sin(xx*.05+r)*3).toFixed(1))}
     met.style.opacity=sm01(2,2.35,q).toFixed(3);
-    b1.setAttribute("width",(150*sm01(1,1.9,q)*(1-.85*wash)).toFixed(1));
-    b2.setAttribute("width",(5*sm01(2,2.3,q)*(1-sm01(2.6,3,q))+2*sm01(1.2,1.6,q)).toFixed(1));
-    arc.style.strokeDashoffset=(1-sm01(3,3.9,q)).toFixed(4);
   }}
 function homeStory(view){
   var sec=$("#story",view);if(!sec)return;
@@ -1229,7 +1241,7 @@ function homeStory(view){
   if(RM){S(.7);return}
   S(0);
   $$("#scene .ly,#scene .ly2,#scene .vs,#scene .cap",view).forEach(function(p){var L=p.getTotalLength?p.getTotalLength():0;if(!L)return;gsap.fromTo(p,{strokeDasharray:L,strokeDashoffset:L},{strokeDashoffset:0,duration:1.6,ease:"flow",scrollTrigger:{trigger:sec,start:"top 75%"},onComplete:function(){p.style.strokeDasharray="none"}})});
-  gsap.from($$("#scene text:not(#akGelL):not(#akMet),#scene .bar0,#scene .arc0",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
+  gsap.from($$("#scene text:not(.dyn)",view),{opacity:0,duration:.9,ease:"silk",stagger:.03,scrollTrigger:{trigger:sec,start:"top 75%"}});
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});story={kill:function(){story=null}};
   tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(3,Math.floor(p*4)));fx(p);S(p)});
@@ -1254,11 +1266,11 @@ var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),
 gsap.set([psSheet,psScrim],{opacity:0});
 function psMode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
 function fillBio(i){var p=TEAM[i],n=TEAM.length;
-  psMode(p.img?(p.imgW&&p.imgW<480?"slim":""):"noimg");
+  psMode(p.img&&!(p.imgW&&p.imgW<480)?"":"noimg");
   if(p.img&&!p.imgW){var pr=new Image();pr.onload=function(){p.imgW=pr.naturalWidth;if(bioOpen&&pBy(location.hash.split("/")[2])===i&&p.imgW<480)fillBio(i)};pr.onerror=function(){p.img=null;if(bioOpen)fillBio(i)};pr.src=p.img}
   var slim=ps.classList.contains("slim");
-  psMedia.innerHTML=p.img&&!slim?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
-  var head=slim?'<div class="ps-head"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>':'<h2 id="psName">'+esc(p.name)+'</h2>';
+  psMedia.innerHTML=p.img&&!ps.classList.contains("noimg")?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()">':'';
+  var head='<h2 id="psName">'+esc(p.name)+'</h2>';
   psBody.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
    (p.q?'<blockquote>“'+esc(p.q)+'”<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
   psBody.scrollTop=0;

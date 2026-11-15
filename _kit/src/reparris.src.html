@@ -332,6 +332,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .bigsvg text{font-family:"Figtree",system-ui,sans-serif;font-weight:500;font-size:20px;fill:currentColor}
 .ftr .c{text-wrap:pretty}
 .ftr .legal{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+@media (max-width:640px){.ftr .legal{grid-template-columns:1fr;gap:8px}}
 
 /* inner blocks */
 .two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(30px,5vw,90px);align-items:start}
@@ -584,7 +585,7 @@ var TEAM=[
  {slug:"rex-parris",static:1,name:"R. Rex Parris, JD",title:"Co-founder · Mayor of Lancaster, California",grp:"Founder",q:"Mayor of Lancaster, California",
   bio:["Mr. Parris co-founded Reparris. He is the Mayor of Lancaster, California, and a longtime advocate for disruptive healthcare models.","At the company’s launch he argued that medical innovation must outpace regulatory change, and that therapies for age-related disease should have access to expedited pathways."],
   src:'Reparris launch release, <a href="'+PRN+'" target="_blank" rel="noopener">PR Newswire, March 2025</a>.'},
- {slug:"ruzanna-shkhyan",name:"Ruzanna Shkhyan",title:"Contact principal investigator, NIAMS Fast-Track SBIR",grp:"Research",q:"Lead investigator on the SRC inhibitor program",
+ {slug:"ruzanna-shkhyan",static:1,name:"Ruzanna Shkhyan",title:"Contact principal investigator, NIAMS Fast-Track SBIR",grp:"Research",q:"Lead investigator on the SRC inhibitor program",
   bio:["Ruzanna Shkhyan is the contact principal investigator on Reparris’s 2026 Fast-Track SBIR from the National Institute of Arthritis and Musculoskeletal and Skin Diseases, which takes the company’s SRC recruitment inhibitors toward an IND for osteoarthritis.","She is first author of the 2023 Science Translational Medicine study, from USC’s Department of Orthopaedic Surgery, showing that a signaling site in gp130 acts as a cellular stress sensor in osteoarthritis."],
   src:'<a href="'+AWARD+'" target="_blank" rel="noopener">NIH RePORTER</a>; <a href="'+STM+'" target="_blank" rel="noopener">PubMed</a>.'},
  {slug:"nicole-ehrhart",static:1,name:"Nicole P. Ehrhart",title:"Principal investigator, NIAMS Fast-Track SBIR",grp:"Research",q:"Principal investigator on the 2026 NIAMS award",
@@ -761,8 +762,8 @@ function vPipeline(){
 function vTeam(){
   return head({k:"Team",h:'The people <em>behind the science.</em>',p:'Scientific leadership from USC professors and industry advisors, with founders from medicine and public life.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+
-   '<span class="lab kick" data-r>Founders</span><div class="founders">'+TEAM.filter(function(p){return p.grp==="Founder"}).map(function(p){return '<article class="fnd"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><p>'+esc(p.bio[0])+'</p>'+(p.static?'':'<a class="ul more" href="#/team/'+p.slug+'" data-person>Full profile →</a>')+'</article>'}).join("")+'</div>'+
-   '<span class="lab kick" data-r style="margin-top:clamp(64px,7vw,110px)">Research</span><div class="founders">'+TEAM.filter(function(p){return p.grp!=="Founder"}).map(function(p){return '<article class="fnd"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><p>'+esc(p.bio[0])+'</p>'+(p.static?'':'<a class="ul more" href="#/team/'+p.slug+'" data-person>Full profile →</a>')+'</article>'}).join("")+'</div>'+
+   '<span class="lab kick" data-r>Founders</span><div class="founders">'+TEAM.filter(function(p){return p.grp==="Founder"}).map(function(p){return '<article class="fnd"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p>'+(p.static?p.bio:[p.bio[0]]).map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+(p.static?'':'<a class="ul more" href="#/team/'+p.slug+'" data-person>Full profile →</a>')+'</article>'}).join("")+'</div>'+
+   '<span class="lab kick" data-r style="margin-top:clamp(64px,7vw,110px)">Research</span><div class="founders">'+TEAM.filter(function(p){return p.grp!=="Founder"}).map(function(p){return '<article class="fnd"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p>'+(p.static?p.bio:[p.bio[0]]).map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+(p.static?'':'<a class="ul more" href="#/team/'+p.slug+'" data-person>Full profile →</a>')+'</article>'}).join("")+'</div>'+
   '</div></section>'+cta();
 }
 function vNews(){

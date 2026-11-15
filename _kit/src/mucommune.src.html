@@ -53,7 +53,7 @@ em{font-style:italic;font-family:var(--serif)}
 .d1,.d2,.d3,.stat .v,.lede{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .lede{font-family:var(--serif);font-weight:400;font-size:clamp(21px,1.9vw,30px);line-height:1.34;letter-spacing:-.005em;margin:0}
 p{margin:0 0 1.1em;text-wrap:pretty}
-h1,h2,h3{text-wrap:balance}
+h1,h2,h3{text-wrap:pretty}
 .muted{color:var(--stone)}
 .light .muted{color:var(--stoneD)}
 .light{background:var(--bone);color:var(--ink)}
@@ -137,8 +137,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 /* masks (AD / AU / AX) */
 .ln{overflow:visible!important}
-.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}
-.ln-mask.free,.free .ln-mask{overflow:visible!important;clip-path:none!important}
+.ln-mask{padding:.16em .14em .26em;margin:0 -.14em -.42em;position:relative;top:-.16em}
+.ln-mask.free,.free .ln-mask{overflow:visible;clip-path:none}
 
 /* hero */
 .hero{position:relative;height:100vh;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center;padding:clamp(96px,12vh,140px) var(--side) clamp(72px,10vh,110px);z-index:1}
@@ -299,6 +299,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .c{font-size:14px;line-height:1.7;color:var(--stone)}
 .ftr .c .lab{display:block;margin-bottom:14px;color:var(--sinL)}
 .ftr .c a{color:var(--bone)}
+.ftr{position:relative;isolation:isolate}
+.ftr-cv{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.75}
+.ftr>*:not(.ftr-cv){position:relative;z-index:1}
 .ftr .bigw{font-family:var(--serif);font-weight:400;font-size:min(23vw,360px);line-height:.8;letter-spacing:-.05em;margin:0 auto;text-align:center;white-space:nowrap;display:block;padding-bottom:.22em;color:var(--bone)}
 .ftr .bigw em{color:var(--sinL)}
 .ftr .bigw .ch{display:inline-block}
@@ -476,7 +479,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero-key i.t{background:var(--orgL)}
 /* manifesto + stats */
 .mani{background:var(--bone)}
-.mani .txt{color:var(--ink);max-width:30ch}
+.mani .wrap{display:flex;flex-direction:column;align-items:center}
+.mani .kick,.mani .txt,.mani .stats{width:100%;max-width:min(100%,1040px)}
+.mani .txt{color:var(--ink);max-width:min(100%,1040px)}
 .mani .txt em{color:var(--sin)}
 .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 .stat::before{background:var(--hairD)}
@@ -504,11 +509,14 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .figs .arm{stroke:#9aa0f5;fill:none;stroke-width:1.4}
 .figs .fab{fill:#9aa0f5}
 .figs .cg{fill:var(--orgL);opacity:.92}
-.figs .sl{font-family:var(--mono);font-size:12px;letter-spacing:.1em;fill:#c3c9e4;opacity:0}
+.figs .sl{font-family:var(--mono);font-size:14px;letter-spacing:.1em;fill:#c3c9e4;opacity:0}
+@media (max-width:1024px){.figs .sl{font-size:19px}}
+@media (max-width:620px){.figs .sl{font-size:24px}}
 .figs .slb{fill:rgba(23,27,53,.86);opacity:0}
+@media (max-width:1024px){.figs .slb{height:46px;width:520px}}
 .figs{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 100%);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 100%)}
 /* platform cards */
-.plats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.plats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);align-items:start}
 .plat{position:relative;display:flex;flex-direction:column;padding:clamp(24px,2.4vw,34px);border:1px solid var(--hairD);background:linear-gradient(180deg,rgba(255,255,255,.6),rgba(255,255,255,0));overflow:hidden;transition:transform .32s var(--eo),box-shadow .32s var(--eo)}
 .dark .plat,.dark2 .plat{border-color:var(--hair);background:linear-gradient(180deg,rgba(243,245,251,.04),rgba(243,245,251,0))}
 .plat::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--sin);transform:scaleX(0);transform-origin:left;transition:transform .38s var(--eo)}
@@ -573,7 +581,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pgroup>.lab{display:block;margin-bottom:10px;color:var(--orgD)}
 .pgroup h3.gh{font-family:var(--serif);font-weight:400;font-size:clamp(24px,2vw,32px);margin:0 0 22px;letter-spacing:-.015em}
 /* portraits */
-.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:52px var(--gap)}
+.pgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:52px var(--gap)}
+.pgrid .pcard{flex:0 1 calc((100% - 3*var(--gap))/4);max-width:300px}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
 .pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0 auto;aspect-ratio:1/1;width:100%;max-width:230px;overflow:hidden;border-radius:50%;background:var(--bone3);transition:box-shadow .32s ease-out}
@@ -592,6 +601,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--stone)}
 .pc-meta .go{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--sin);margin-top:8px}
+.pcard.flat{cursor:default}
+.pcard.flat .pc-meta h3 span{background:none}
 .dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--sinL)}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
 .pcard:hover h3,.pcard:focus-visible h3{color:var(--sin)}
@@ -635,21 +646,16 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps .btn::before{background:var(--sin)}
 .ps .btn:hover{color:#fff;border-color:var(--sin)}
 .ps-x{height:44px;min-height:44px;padding:0 18px}
-/* BQ: the sheet adapts to the photo. 187px headshots are slim; nobody gets a plate that repeats the name. */
-.ps.slim .ps-sheet,.ps.noimg .ps-sheet{grid-template-columns:1fr;width:min(700px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
-.ps.slim .ps-media,.ps.noimg .ps-media{display:none}
-.ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-.ps.slim .ps-body,.ps.noimg .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 186px)}
-.ps-head{display:flex;align-items:center;gap:22px;margin:12px 0 10px}
-.ps-head img{width:96px;height:96px;border-radius:50%;object-fit:cover;object-position:50% 26%;flex:none;filter:grayscale(1) contrast(1.06);background:var(--bone3)}
-.ps-head h2{margin:0;font-size:clamp(28px,2.6vw,38px)}
+/* BV: a sheet has a large portrait or none. These headshots are 187px, so no sheet carries one. */
+.ps .ps-sheet{grid-template-columns:1fr;width:min(720px,calc(100vw - 48px));height:auto;max-height:calc(100vh - 96px)}
+.ps .ps-media{display:none}
+.ps .ps-bar{border-radius:18px 18px 0 0}
+.ps .ps-body{border-radius:0 0 18px 18px;max-height:calc(100vh - 186px)}
 @media (max-width:760px){
   .ps{place-items:end stretch}
-  .ps.slim .ps-sheet,.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
-  .ps.slim .ps-body,.ps.noimg .ps-body{max-height:calc(100dvh - 128px);border-radius:0}
-  .ps.slim .ps-bar,.ps.noimg .ps-bar{border-radius:18px 18px 0 0}
-  .ps-head{gap:16px}
-  .ps-head img{width:76px;height:76px}
+  .ps .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}
+  .ps .ps-body{max-height:calc(100dvh - 128px);border-radius:0}
+  .ps .ps-bar{border-radius:18px 18px 0 0}
   .ps-sheet{grid-template-columns:1fr;grid-template-rows:auto 1fr;width:100%;height:calc(100vh - 40px);height:calc(100dvh - 40px);border-radius:18px 18px 0 0}
   .ps-media{height:auto;padding:26px;border-radius:18px 18px 0 0}
   .ps-media img{width:min(60%,176px)}
@@ -660,15 +666,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 }
 @media (prefers-reduced-motion:reduce){.ps-scrim{backdrop-filter:none}}
 /* funder logos */
-.logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
-.lg{display:flex;align-items:center;justify-content:center;min-height:150px;padding:26px 30px;background:#fff;border:1px solid var(--hairD);transition:box-shadow .32s var(--eo),transform .32s var(--eo)}
-.lg img{max-width:100%;max-height:74px;width:auto;height:auto;object-fit:contain;filter:grayscale(1);opacity:.78;transition:filter .35s var(--eo),opacity .35s var(--eo)}
-.lg:hover{transform:translateY(-3px);box-shadow:0 26px 44px -32px rgba(17,20,40,.5)}
-.lg:hover img{filter:none;opacity:1}
-.lg .alt{display:none;font-family:var(--serif);font-size:20px;color:var(--stoneD);text-align:center}
-.lg.noimg img{display:none}
-.lg.noimg .alt{display:block}
-@media (max-width:860px){.logos{grid-template-columns:1fr}}
+.fund{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);border-top:1px solid var(--hairD)}
+.fund div{padding:30px 0 0}
+.fund b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(23px,1.9vw,30px);line-height:1.14;letter-spacing:-.012em;color:var(--ink);max-width:22ch}
+.fund span{display:block;margin-top:12px;color:var(--stoneD)}
+@media (max-width:860px){.fund{grid-template-columns:1fr;row-gap:6px}}
 /* facts / aims */
 .aims li::before{background:var(--sin)}
 .dark .aims li::before,.dark2 .aims li::before{background:var(--sinL)}
@@ -704,6 +706,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .light .row-a::after{background:linear-gradient(0deg,rgba(43,25,221,.05),rgba(43,25,221,0) 70%)}
 .cta{background:var(--bone2);padding-bottom:clamp(78px,9vh,132px)}
 .cta .big em{color:var(--sin)}
+.ftr{position:relative;isolation:isolate}
+.ftr-cv{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.75}
+.ftr>*:not(.ftr-cv){position:relative;z-index:1}
 .ftr .bigw{font-family:var(--sans);font-weight:600;letter-spacing:.01em;font-size:min(13.6vw,196px);padding-bottom:.16em;max-width:100%}
 .ftr .bigw em{font-style:normal;color:var(--sinL)}
 .ftr .c .lab{color:var(--sinL)}
@@ -715,7 +720,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .map{background:var(--bone2)}
 .tcard h3{font-family:var(--serif)}
 .evi blockquote em{color:var(--sinL)}
-@media (max-width:1100px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.featgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1100px){.pgrid .pcard{flex-basis:calc((100% - 2*var(--gap))/3)}.featgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:1024px){
   .story-pin{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;row-gap:12px;padding-top:86px}
   .story-mh{display:block;grid-row:1}
@@ -732,12 +737,20 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (max-width:860px){
   .cue{display:none}
   .hero::before{background:linear-gradient(180deg,rgba(17,20,40,.12) 0%,rgba(17,20,40,.3) 24%,rgba(17,20,40,.86) 44%,rgba(17,20,40,.95) 72%,#111428 100%)}
-  .pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:36px 16px}
+  .pgrid{gap:36px 16px}.pgrid .pcard{flex-basis:calc((100% - 16px)/2)}
   .prow .track{display:none}
   .brand .nm{font-size:15px}
 }
 @media (max-width:640px){.hero-foot .act{flex-direction:column;align-items:stretch;width:100%}.hero-foot .act .btn{width:100%}.featgrid{grid-template-columns:1fr}.awd .amt{flex-direction:column;align-items:flex-start;gap:10px}}
-@media (max-width:420px){.pgrid{grid-template-columns:1fr}.stat .v{font-size:56px}}
+@media (max-width:480px){
+  .pgrid{gap:26px 0}
+  .pgrid .pcard{flex-basis:100%;flex-direction:row;align-items:center;gap:20px;text-align:left}
+  .pgrid .pc-fig{width:104px;max-width:104px;flex:none;margin:0}
+  .pgrid .pc-meta{padding-top:0;text-align:left;align-items:flex-start;flex:1}
+  .pgrid .pc-meta h3{min-height:0;justify-content:flex-start}
+  .pgrid .pc-meta .go{justify-content:flex-start}
+}
+@media (max-width:420px){.stat .v{font-size:56px}}
 @media (prefers-reduced-motion:reduce){
   .grain,.cue i{animation:none}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
@@ -867,19 +880,19 @@ var TEAM=[
  {slug:"keiichiro-kushiro",name:"Keiichiro Kushiro, PhD",title:"Executive Director of Research",grp:"Leadership",img:IMG.kushiro,
   bio:["Keiichiro Kushiro leads research at Mucommune and is the contact principal investigator on the 2026 NICHD award for IND-enabling development of MM012, as well as on awards covering the fast-dissolving antibody tablet and the lactic-acid intravaginal ring.","He is first author on the 2026 capsule-intravaginal ring paper and the 2025 fast-dissolving antibody tablet paper, both in the Journal of Controlled Release."]},
  {slug:"matthijs-schoots",name:"Matthijs Schoots, MS",title:"VP, Operations",grp:"Leadership",img:IMG.schoots,
-  bio:["Matthijs Schoots was appointed Vice President, Operations in September 2026."]},
+  flat:1,bio:["Matthijs Schoots was appointed Vice President, Operations in September 2026."]},
  {slug:"morgan-mcsweeney",name:"Morgan McSweeney, PhD",title:"Assistant Director of Development",grp:"Research",img:IMG.mcsweeney,
   bio:["Morgan McSweeney is Assistant Director of Development and is first author of the 2024 Advanced Science paper on an inhaled muco-trapping monoclonal antibody for respiratory syncytial virus."]},
  {slug:"alison-schaefer",name:"Alison Schaefer, PhD",title:"Assistant Director of Research",grp:"Research",img:IMG.schaefer,
   bio:["Alison Schaefer is Assistant Director of Research and first author of the 2025 Advanced Science paper on decavalent, sperm-binding laminin–IgG hybrid antibodies, and of work on antibodies trapping HIV-1 and Ebola virus-like particles in cervicovaginal mucus."]},
- {slug:"warren-anderson",name:"Warren Anderson, PhD",title:"Senior Scientist",grp:"Research",img:IMG.anderson,bio:["Warren Anderson is a Senior Scientist at Mucommune."]},
- {slug:"weiyu-li",name:"Weiyu Li, PhD",title:"Senior Scientist",grp:"Research",img:IMG.li,bio:["Weiyu Li is a Senior Scientist at Mucommune."]},
- {slug:"yuyan-wang",name:"Yuyan Wang, PhD",title:"Senior Scientist",grp:"Research",img:IMG.wang,bio:["Yuyan Wang is a Senior Scientist at Mucommune."]},
- {slug:"jared-cossin",name:"Jared Cossin, PhD",title:"Scientist",grp:"Research",img:IMG.cossin,bio:["Jared Cossin is a Scientist at Mucommune."]},
- {slug:"jack-england",name:"Jack England, BS",title:"Scientist",grp:"Research",img:IMG.england,bio:["Jack England is a Scientist at Mucommune."]},
+ {slug:"warren-anderson",name:"Warren Anderson, PhD",title:"Senior Scientist",grp:"Research",img:IMG.anderson,flat:1,bio:["Warren Anderson is a Senior Scientist at Mucommune."]},
+ {slug:"weiyu-li",name:"Weiyu Li, PhD",title:"Senior Scientist",grp:"Research",img:IMG.li,flat:1,bio:["Weiyu Li is a Senior Scientist at Mucommune."]},
+ {slug:"yuyan-wang",name:"Yuyan Wang, PhD",title:"Senior Scientist",grp:"Research",img:IMG.wang,flat:1,bio:["Yuyan Wang is a Senior Scientist at Mucommune."]},
+ {slug:"jared-cossin",name:"Jared Cossin, PhD",title:"Scientist",grp:"Research",img:IMG.cossin,flat:1,bio:["Jared Cossin is a Scientist at Mucommune."]},
+ {slug:"jack-england",name:"Jack England, BS",title:"Scientist",grp:"Research",img:IMG.england,flat:1,bio:["Jack England is a Scientist at Mucommune."]},
  {slug:"katherine-gibb",name:"Katherine Gibb, BS",title:"Laboratory Manager",grp:"Operations",img:IMG.gibb,
   bio:["Katherine Gibb is Mucommune’s Laboratory Manager and the study coordinator and point of contact for the company’s ongoing IRB research study.","She is a co-author on the 2026 capsule-intravaginal ring paper in the Journal of Controlled Release."]},
- {slug:"melissa-samo",name:"Melissa Samo, MS",title:"Project Manager",grp:"Operations",img:IMG.samo,bio:["Melissa Samo is a Project Manager at Mucommune."]}
+ {slug:"melissa-samo",name:"Melissa Samo, MS",title:"Project Manager",grp:"Operations",img:IMG.samo,flat:1,bio:["Melissa Samo is a Project Manager at Mucommune."]}
 ];
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 
@@ -889,7 +902,12 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function pCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+wix(p.img,374,374)+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mcNoImg(this)"><img class="ph-c" src="'+wix(p.img,374,374)+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function pCard(p){
+  var fig='<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+wix(p.img,374,374)+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mcNoImg(this)"><img class="ph-c" src="'+wix(p.img,374,374)+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>';
+  var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>';
+  /* BV: no profile where the sheet would only repeat the card */
+  if(p.flat)return '<div class="pcard flat">'+fig+meta+'</div></div>';
+  return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+meta+'<span class="lab go">Profile '+ARR+'</span></div></a>'}
 window.mcNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab"'+(n.d.length>4?' datetime="'+n.d+'"':'')+'>'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 var PLATS=[
@@ -926,7 +944,7 @@ function pipeRows(){
      '<p class="note">'+r.note+'</p></a>'}).join("")+'</div></div>'}).join("");
 }
 function awards(){return '<div class="awds" data-group>'+
-  '<a class="awd" href="'+RP+'11315445" target="_blank" rel="noopener"><span class="lab">NICHD · SBIR · Sep 2026</span><h3>IND-enabling development of MM012, an antibody-based contraceptive ring.</h3><p>LamH10 carries ten Fab domains against a validated sperm epitope and reaches picomolar agglutinating potency at body temperature. The award funds GLP toxicology, extractables and leachables testing, and GMP manufacture of ring material for the clinic.</p><div class="amt"><b>$1,163,587</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
+  '<a class="awd" href="'+RP+'11315445" target="_blank" rel="noopener"><span class="lab">NICHD · SBIR · Sep 2026</span><h3>Taking MM012, the antibody contraceptive ring, toward the clinic.</h3><p>LamH10 carries ten Fab domains against a validated sperm epitope and reaches picomolar agglutinating potency at body temperature. The award funds GLP toxicology, extractables and leachables testing, and GMP manufacture of ring material for the clinic.</p><div class="amt"><b>$1,163,587</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
   '<a class="awd" href="'+RP+'11316654" target="_blank" rel="noopener"><span class="lab">NIAID · SBIR · Sep 2026</span><h3>Engineering dual CD19/CD138 CAR-T cells inside the body for lupus.</h3><p>CAR-T therapy has produced encouraging results in refractory systemic lupus erythematosus, but ex vivo manufacture is slow and costly. This program engineers dual-target CAR-T cells in vivo, with a kill switch, to deplete both B cells and plasma cells.</p><div class="amt"><b>$1,006,467</b><span class="lab">First-year award '+ARRX+'</span></div></a>'+
  '</div>'}
 
@@ -950,12 +968,12 @@ function meshPaths(seed,w,h,n,pad){
 
 /* funder logos: their own block, the only non-people images on the site (PRINCIPLES BJ/BR) */
 var FUND=[
- {n:"Eunice Kennedy Shriver National Institute of Child Health and Human Development",img:"a11892_3854012add3d4ba3ab1c9c78b985f1b4~mv2.png",w:575,h:75},
- {n:"The David and Lucile Packard Foundation",img:"a11892_3b528d8f60d449b98a9efe336da360db~mv2.jpg",w:494,h:192},
- {n:"One North Carolina Small Business Program",img:"a11892_107f601227f14b96a1842a82d13f362d~mv2.png",w:508,h:264}
+ {n:"Eunice Kennedy Shriver National Institute of Child Health and Human Development",k:"NIH \u00b7 NICHD"},
+ {n:"The David and Lucile Packard Foundation",k:"Foundation"},
+ {n:"One North Carolina Small Business Program",k:"State of North Carolina"}
 ];
-function logos(){return '<div class="logos" data-group>'+FUND.map(function(f){
-  return '<div class="lg"><img src="'+WX+f.img+'/v1/fit/w_'+f.w+',h_'+f.h+',q_90/'+f.img+'" alt="'+esc(f.n)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noimg\')"><span class="alt">'+esc(f.n)+'</span></div>'}).join("")+'</div>'}
+function logos(){return '<div class="fund" data-group>'+FUND.map(function(f){
+  return '<div><b>'+esc(f.n)+'</b><span class="lab">'+esc(f.k)+'</span></div>'}).join("")+'</div>'}
 /* ---------- ONE continuous scene for the pinned story (PRINCIPLES BL) ----------
    A single mucin mesh. Particles fall into it, three slip through the pores, antibodies appear and
    tether them to the strands, and the camera then pushes in on one antibody as it opens into the
@@ -971,7 +989,11 @@ var SCENE_P=[
 ];
 var SCENE_AB=[[206,214],[318,286],[402,182],[492,306],[132,330],[548,196]];
 function storyScene(){
-  var mesh=meshPaths(7,620,418,42).map(function(d,i){return '<path class="mu" d="'+d+'" style="opacity:'+(.55+R(i,8)*.45).toFixed(2)+'"/>'}).join("");
+  var mpaths=meshPaths(7,620,418,42);
+  var mesh=mpaths.map(function(d,i){return '<path class="mu" d="'+d+'" style="opacity:'+(.55+R(i,8)*.45).toFixed(2)+'"/>'}).join("");
+  var PTS=[];for(var q=0;q<mpaths.length;q++){mpaths[q].replace("M","").split("L").forEach(function(v){var n=v.trim().split(" ").map(Number);if(n.length===2&&!isNaN(n[0]))PTS.push(n)})}
+  function nearest(x,y){var bd=1e9,bp=[x,y];for(var q=0;q<PTS.length;q++){var dx=PTS[q][0]-x,dy=PTS[q][1]-y,dd=dx*dx+dy*dy;if(dd<bd&&dd>900){bd=dd;bp=PTS[q]}}return bp}
+  for(var q3=0;q3<SCENE_P.length;q3++)SCENE_AB[q3]=nearest(SCENE_P[q3].x2,SCENE_P[q3].y2);
   var parts='',tether='',abs='';
   for(var i=0;i<SCENE_P.length;i++){var P=SCENE_P[i];
     parts+='<g class="pt" id="sp'+i+'" transform="translate('+P.x0+' '+P.y0+')"><circle class="glow" r="13"/><circle class="core" r="'+(6.2+(i%2)*1.1).toFixed(1)+'"/></g>';
@@ -1153,7 +1175,7 @@ function mapSvg(){
 }
 function v404(){return head({k:"Not found",h:'Nothing <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
-  return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
+  return '<footer class="ftr" data-theme="dark"><canvas id="ftrCv" class="ftr-cv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Office</span>Mucommune, LLC<br>Suite 220, Discovery 2<br>5151 McCrimmon Parkway<br>Morrisville, NC 27560</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:careers@mucommune.com">careers@mucommune.com</a><br><a class="ul" href="mailto:study@mucommune.com">study@mucommune.com</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/platforms">Platforms</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
@@ -1169,7 +1191,7 @@ function route(h){
   if(p[0]==="science")return {k:"science",v:vScience,t:"Science — "+SITE,x:"Science"};
   if(p[0]==="platforms")return {k:"platforms",v:vPlatforms,t:"Platforms — "+SITE,x:"Platforms"};
   if(p[0]==="pipeline")return {k:"pipeline",v:vPipeline,t:"Pipeline — "+SITE,x:"Pipeline"};
-  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
+  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0&&!TEAM[pBy(p[1])].flat)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
   if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
   if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
   if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
@@ -1187,11 +1209,13 @@ var MOBILE=function(){return innerWidth<861};
 
 /* ===== HERO FIELD: a mucin mesh, particles diffusing through it, antibodies tethering them =====
    Static mesh is rendered once into an offscreen canvas at device resolution; only particles redraw. */
-var field=(function(){
-  var cv=$("#field"),c=cv.getContext("2d"),off=null,running=false,raf=0,t0=performance.now(),shown=false;
+function makeField(cv,opt){
+  opt=opt||{};var c=cv.getContext("2d"),off=null,running=false,raf=0,t0=performance.now(),shown=false;
   var dpr=1,W=0,H=0,IN={v:1},dim=1,dimT=1,m=[0,0],mT=[0,0];
   var FIB=[],P=[],lay=null;
-  function layout(){var w=innerWidth,h=innerHeight;
+  function VW(){return cv.clientWidth||innerWidth}
+  function VH(){return cv.clientHeight||innerHeight}
+  function layout(){var w=VW(),h=VH();
     if(w<861)return {cx:w*.58,cy:h*.27,r:Math.min(w*.5,h*.25)};
     if(w<1100)return {cx:w*.7,cy:h*.48,r:Math.min(h*.4,w*.32)};
     return {cx:w*.72,cy:h*.54,r:Math.min(h*.44,w*.29)}}
@@ -1209,7 +1233,7 @@ var field=(function(){
       var edge=1-Math.min(1,rr0/(lay.r*1.12));
       FIB.push({pts:pts,w:.6+rnd(i,5)*1.15,a:(.3+rnd(i,6)*.42)*(.3+.7*edge)});
     }
-    var NP=Math.round(38+lay.r/18);
+    var NP=Math.round((opt.quiet?16:38)+lay.r/(opt.quiet?34:18));
     for(i=0;i<NP;i++){
       var a2=rnd(i,11)*6.283,rr=Math.sqrt(rnd(i,12))*lay.r*1.0;
       var pre=rnd(i,18)>.62;
@@ -1225,7 +1249,7 @@ var field=(function(){
     var o=off.getContext("2d");o.setTransform(dpr,0,0,dpr,0,0);o.lineCap="round";
     var halo=o.createRadialGradient(lay.cx,lay.cy,0,lay.cx,lay.cy,lay.r*1.5);
     halo.addColorStop(0,"rgba(96,104,186,.2)");halo.addColorStop(.55,"rgba(66,72,140,.08)");halo.addColorStop(1,"rgba(66,72,140,0)");
-    o.fillStyle=halo;o.fillRect(0,0,innerWidth,innerHeight);
+    o.fillStyle=halo;o.fillRect(0,0,VW(),VH());
     for(var i=0;i<FIB.length;i++){var f=FIB[i],L=f.pts.length;
       var grd=o.createLinearGradient(f.pts[0][0],f.pts[0][1],f.pts[L-1][0],f.pts[L-1][1]);
       grd.addColorStop(0,"rgba(150,158,212,0)");grd.addColorStop(.42,"rgba(176,184,236,"+f.a.toFixed(3)+")");grd.addColorStop(1,"rgba(150,158,212,0)");
@@ -1246,9 +1270,9 @@ var field=(function(){
     o.save();o.globalCompositeOperation="destination-in";
     var vg2=o.createRadialGradient(lay.cx,lay.cy,lay.r*.35,lay.cx,lay.cy,lay.r*1.16);
     vg2.addColorStop(0,"rgba(0,0,0,1)");vg2.addColorStop(.72,"rgba(0,0,0,.72)");vg2.addColorStop(1,"rgba(0,0,0,0)");
-    o.fillStyle=vg2;o.fillRect(0,0,innerWidth,innerHeight);o.restore();
+    o.fillStyle=vg2;o.fillRect(0,0,VW(),VH());o.restore();
   }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();drawMesh();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=VW();H=VH();if(!W||!H)return;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);build();drawMesh();if(!running)frame(true)}
   function nearFib(p){/* distance to the closest fibre sample */
     var best=1e9,bx=0,by=0;
     for(var i=0;i<FIB.length;i+=1){var f=FIB[i];
@@ -1260,10 +1284,10 @@ var field=(function(){
     m[0]+=(mT[0]-m[0])*.045;m[1]+=(mT[1]-m[1])*.045;dim+=(dimT-dim)*.08;
     var px=m[0]*-26,py=m[1]*-16;
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);
-    c.globalAlpha=Math.min(1,IN.v)*dim;
+    c.globalAlpha=Math.min(1,IN.v)*dim*(opt.quiet?.5:1);
     c.setTransform(dpr,0,0,dpr,px*dpr,py*dpr);
     var sc=.92+.08*IN.v;
-    if(off){c.save();c.translate(lay.cx,lay.cy);c.scale(sc,sc);c.translate(-lay.cx,-lay.cy);c.globalAlpha=.9*Math.min(1,IN.v)*dim;c.setTransform(1,0,0,1,0,0);c.drawImage(off,px*dpr,py*dpr);c.restore()}
+    if(off){c.save();c.translate(lay.cx,lay.cy);c.scale(sc,sc);c.translate(-lay.cx,-lay.cy);c.globalAlpha=(opt.quiet?.42:.9)*Math.min(1,IN.v)*dim;c.setTransform(1,0,0,1,0,0);c.drawImage(off,px*dpr,py*dpr);c.restore()}
     c.setTransform(dpr,0,0,dpr,px*dpr,py*dpr);
     for(var i=0;i<P.length;i++){
       var p=P[i];
@@ -1309,11 +1333,17 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   addEventListener("resize",size);size();
+  var io2=null;if(opt.observe){io2=new IntersectionObserver(function(es){es[0].isIntersecting?start():stop()},{threshold:0});io2.observe(cv)}
   addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
-  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
+  return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},resize:size,
+    kill:function(){stop();if(io2)io2.disconnect()},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
     setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running}};
-})();
+}
+var field=makeField($("#field"),{});
+/* BT: the same living mesh, quieter, behind the footer wordmark on every route */
+var ftrField=null;
+function mountFooterField(){if(ftrField){ftrField.kill();ftrField=null}var fc=$("#ftrCv");if(!fc)return;ftrField=makeField(fc,{quiet:1,observe:1});ftrField.snapDim(1);ftrField.intro(.01)}
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
@@ -1501,18 +1531,10 @@ function contactInit(view){
 var PS=(function(){
   var ps=$("#ps"),sheet=$("#psSheet"),body=$("#psBody"),media=$("#psMedia");
   var cur=-1,lastFocus=null,BASE="#/team";
-  function mode(m){ps.classList.toggle("slim",m==="slim");ps.classList.toggle("noimg",m==="noimg")}
   function fill(i){var p=TEAM[i];
-    /* BQ: the layout follows the photo that actually exists. Their headshots are 187px, so they are slim. */
-    mode(p.img?((p.imgW&&p.imgW>=480)?"":"slim"):"noimg");
-    if(p.img&&!p.imgW){var probe=new Image();probe.onload=function(){p.imgW=probe.naturalWidth;if(cur===i)fill(i)};
-      probe.onerror=function(){p.img=null;if(cur===i)fill(i)};probe.src=wix(p.img,374,374)}
-    var slim=ps.classList.contains("slim");
-    media.innerHTML=(p.img&&!slim)?'<img src="'+wix(p.img,760,950)+'" alt="Portrait of '+esc(p.name)+'">':"";
-    var head=slim
-      ? '<div class="ps-head"><img src="'+wix(p.img,374,374)+'" alt="Portrait of '+esc(p.name)+'" onerror="this.remove()"><h2 id="psName">'+esc(p.name)+'</h2></div>'
-      : '<h2 id="psName">'+esc(p.name)+'</h2>';
-    body.innerHTML='<span class="lab">'+esc(p.grp)+'</span>'+head+'<p class="role">'+esc(p.title)+'</p>'+
+    /* BV: no portrait in the sheet (their headshots are 187px); the card carries the photo. */
+    media.innerHTML="";
+    body.innerHTML='<span class="lab">'+esc(p.grp)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+
       p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join("")+
       (p.q?'<blockquote>\u201c'+esc(p.q)+'\u201d<cite class="lab">'+esc(p.qs)+'</cite></blockquote>':'');
     body.scrollTop=0;
@@ -1570,7 +1592,7 @@ function paint(r){
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.66);observeField();
+  field.snapDim(r.k==="home"?1:.66);observeField();mountFooterField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}

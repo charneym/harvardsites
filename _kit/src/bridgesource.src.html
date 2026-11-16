@@ -529,8 +529,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sfig .af{fill:var(--sinL);stroke:none}
 .sfig .dim{fill:rgba(243,243,241,.08);stroke:none}
 .sfig text{font-family:var(--mono);font-size:11px;letter-spacing:.14em;fill:#bfc5c0}
-.sfig .sc-row{font-size:10.5px;letter-spacing:.06em}
-@media (max-width:560px){.sfig .sc-row{font-size:11.5px!important}}
+.sfig .sc-row{font-size:9.5px;letter-spacing:.02em}
+@media (max-width:560px){.sfig .sc-row{font-size:10.5px!important;letter-spacing:0!important}}
 .sfig .tb{font-family:var(--serif);font-size:30px;letter-spacing:-.03em;fill:#f2f3ee;font-weight:300}
 /* program cards */
 .pcards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px var(--gap)}
@@ -708,6 +708,20 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .bio .bar0{padding:12px 16px}
   .bio .in{padding:24px 20px 48px}
 }
+
+/* CI/CG (v16): portrait grid; portrait warms from greyscale to colour and a small arrow appears, 0.3s, nothing else moves */
+.pcard,.pcard:hover,.pcard:focus-visible{transform:none!important}
+.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:none!important}
+.pcard .ph2>*,.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:none!important}
+.ph2 .ph-c{clip-path:none!important;opacity:0;transition:opacity .3s var(--eo)!important}
+.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{opacity:1}
+.pc-meta{padding-top:18px;gap:4px}
+.pc-meta h3{font-size:clamp(20px,1.6vw,24px)!important;line-height:1.2;display:flex;align-items:baseline;gap:10px;transition:color .3s var(--eo)!important}
+.pc-meta h3 span{background:none!important;transition:color .3s var(--eo)!important}
+.pc-meta h3 .pa{display:inline-flex;color:var(--sinD);opacity:0;transform:translateX(-6px);transition:opacity .3s var(--eo),transform .3s var(--eo)}
+.pc-meta h3 .pa svg{width:15px;height:10px}
+.pcard:hover h3 .pa,.pcard:focus-visible h3 .pa{opacity:1;transform:none}
+.pc-meta .ttl{font-size:14.5px}
 </style>
 </head>
 <body>
@@ -832,7 +846,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read biography"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span><i class="pa">'+ARR+'</i></h3><p class="ttl">'+esc(p.title)+'</p></div></a>'}
 window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pCards(){return '<div class="pcards" data-group>'+PROGS.map(function(p){return '<a class="pgc" href="#/programs"><span class="lab">'+p.a+'</span><h3>'+p.n+'</h3><p>'+p.d+'</p><span class="tagp">'+p.s+'</span><span class="lab go">Program '+ARR+'</span></a>'}).join("")+
@@ -842,9 +856,9 @@ function pCards(){return '<div class="pcards" data-group>'+PROGS.map(function(p)
 function sceneSVG(){
   var arcs='';for(var i=0;i<5;i++){var r=40+i*24;arcs+='<path class="g sc-call" pathLength="1" d="M'+(96+r*Math.cos(-1.05)).toFixed(1)+' '+(190+r*Math.sin(-1.05)).toFixed(1)+'A'+r+' '+r+' 0 0 1 '+(96+r*Math.cos(.1)).toFixed(1)+' '+(190+r*Math.sin(.1)).toFixed(1)+'"/>'}
   var resp='';for(i=0;i<3;i++){var r2=34+i*22;resp+='<path class="a sc-resp" pathLength="1" d="M'+(242+r2*Math.cos(2.25)).toFixed(1)+' '+(118+r2*Math.sin(2.25)).toFixed(1)+'A'+r2+' '+r2+' 0 0 1 '+(242+r2*Math.cos(3.45)).toFixed(1)+' '+(118+r2*Math.sin(3.45)).toFixed(1)+'"/>'}
-  var MF=["Abbott","Biotronik","Boston Scientific","Medtronic","MicroPort"],bars='';for(i=0;i<5;i++)bars+='<text class="sc-row" x="340" y="'+(146+i*20)+'">'+MF[i]+'</text>';
+  var MF=["Abbott","Biotronik","Boston Scientific","Medtronic","MicroPort"],bars='';for(i=0;i<5;i++)bars+='<text class="sc-row" x="343" y="'+(146+i*20)+'">'+MF[i]+'</text>';
   return '<svg viewBox="0 0 460 300" aria-hidden="true">'+
-   '<path class="h sc-chest" pathLength="1" d="M70 270C60 190 70 90 130 60S250 30 300 70 330 200 320 270Z"/>'+
+   '<path class="h sc-chest" pathLength="1" d="M70 270C60 190 70 90 130 60S250 30 296 70 316 200 310 270Z"/>'+
    '<path class="g sc-heart" transform="translate(32 46)" d="M150 176c-10-12-30-6-28 10 2 14 20 24 28 32 8-8 26-18 28-32 2-16-18-22-28-10Z"/>'+
    '<path class="g sc-lead" pathLength="1" d="M240 80C240 50 200 46 196 76S186 160 182 222"/>'+
    '<rect class="g sc-hdr" x="222" y="80" width="34" height="14" rx="3"/>'+
@@ -855,9 +869,9 @@ function sceneSVG(){
    '<path class="h" d="M212 240H236"/><text x="240" y="244" class="sc-hl">HEART</text>'+
    '<g class="sc-coil"><circle class="g" cx="96" cy="190" r="26"/><circle class="g" cx="96" cy="190" r="16"/><circle class="g" cx="96" cy="190" r="6"/><path class="g" d="M76 206L40 254a7 7 0 0 0 11 8l36-48Z"/><text x="6" y="286">HANDHELD IDENTIFIER</text></g>'+
    arcs+resp+
-   '<g class="sc-panel"><rect class="gf" x="328" y="118" width="128" height="122" rx="12"/><text x="328" y="110">MANUFACTURER</text>'+bars+'</g>'+
+   '<g class="sc-panel"><rect class="gf" x="332" y="118" width="126" height="122" rx="12"/><text x="332" y="110">MANUFACTURER</text>'+bars+'</g>'+
    '<path class="a sc-ok" pathLength="1" d="M420 202l5 5 10-12" stroke-width="2"/>'+
-   '<text class="sc-cap" x="392" y="262" text-anchor="middle">IDENTIFIED</text></svg>';
+   '<text class="sc-cap" x="395" y="262" text-anchor="middle">IDENTIFIED</text></svg>';
 }
 function scene(root,tl,sec){
   var q=function(s){return root.querySelectorAll(s)},A="#8fc974",W="rgba(242,243,241,.6)";
@@ -911,7 +925,7 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Arrive</span><span>Call</span><span>Answer</span><span>Identify</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>An unknown device.</h3><p>Every pacemaker or defibrillator can only be interrogated by its own manufacturer’s programmer. About half the time, patients arrive without the card that says which one they have.</p></article>'+
-     '<article class="step"><h3>Five wake-up calls.</h3><p>The handheld identifier mimics the “wake-up call” communication of the five major CIED programmers, one after another, in the ED or in transit to it.</p></article>'+
+     '<article class="step"><h3>Five wake-up calls.</h3><p>The handheld identifier mimics the “wake-up call” communication of the five major pacemaker and defibrillator programmers, one after another, in the emergency department or on the way there.</p></article>'+
      '<article class="step"><h3>The device answers.</h3><p>Only the matching call gets a reply. SmartRead™ analyzes the implanted device’s response, with no x-ray and no database search.</p></article>'+
      '<article class="step"><h3>The right call, fast.</h3><p>The manufacturer is identified in ten seconds or less, so the team can reach the right programmer and avoid wasted triage time in the most expensive department in the hospital.</p></article>'+
     '</div></div>'+
@@ -1244,7 +1258,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"center 62%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

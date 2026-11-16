@@ -1342,13 +1342,15 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
-      htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
-         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
+      /* CP: the letters rise nearly together (total stagger capped), so a line still travelling never sits over a landed one; the copy below follows once the title has landed */
+      var hEach=Math.min(mob?.006:.024,.32/Math.max(1,s.chars.length));
+      htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:hEach}},0)
+         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},s.chars.length*hEach+(mob?.55:1.1));
       htl.eventCallback("onComplete",function(){relMask(s.lines);relAll($("#view"))});if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
-    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});var tEach=Math.min(.018,.3/Math.max(1,s2.chars.length));window._tLand=s2.chars.length*tEach+.6;HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:tEach},delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
+    if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.05+(window._tLand||.3)}));window._tLand=0}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */

@@ -501,19 +501,30 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pc-meta h3 .go svg{display:block;width:100%;height:auto}
 .pcard:hover h3 .go,.pcard:focus-visible h3 .go{opacity:1;transform:none}
 .pcard.nos .go{display:none}
-/* v16 CI: founders as a masthead list (small headshots kept; rows are not links, so no hover) */
-.frows{grid-template-columns:1fr;gap:0;border-top:1px solid var(--hr)}
-.frow{position:relative;display:grid;grid-template-columns:88px minmax(0,6fr) minmax(0,6fr);gap:var(--gap);align-items:center;padding:clamp(22px,2.4vw,32px) 0;border-top:0;border-bottom:1px solid var(--hr)}
-.frow::before{display:none}
-.frow .fr-ph{width:88px;height:88px}
-.frow .fr-ph img,.frow:hover .fr-ph img{filter:grayscale(1);transform:none}
-.frow h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.1;margin:0;color:inherit}
-.frow:hover h3,.frow:focus-visible h3{color:inherit}
-.frow:hover h3 span{background-size:0 1px}
-@media (min-width:861px){.frow .ttl{text-align:right}}
-.frow .ttl{color:var(--mu);font-size:15px}
-.frow .fx{color:var(--mu);font-size:15px;line-height:1.5}
-@media (max-width:860px){.frow{grid-template-columns:64px minmax(0,1fr);row-gap:6px;align-items:start}.frow .fr-ph{width:64px;height:64px;grid-row:span 2}.frow .ttl,.frow .fx{grid-column:2}}
+/* v17 CL: the shared masthead component (_kit/components/masthead.html), re-skinned with tokens only */
+.mh{--mh-ink:var(--fg);--mh-mute:var(--mu);--mh-line:var(--hr);--mh-accent:var(--ac);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono);display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  div.mh-row{grid-template-columns:1fr 20px}
+  .mh-sum{-webkit-line-clamp:3}
+}
+
 /* v16 CH: statement sized to the measure */
 .mani .mblk,.mani .mblock{width:72%;max-width:none;margin-left:auto;margin-right:auto}
 .mani .mblk .txt,.mani .mblock .txt{max-width:none}
@@ -596,9 +607,9 @@ function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;retur
 var LOGOGRAD=["#4494b0","#57a9b0","#70c096","#71c269","#9aa65a","#a8322a","#c0402e","#cf6b43","#e89a2c","#fbe608"];
 var GI="https://storage.googleapis.com/wzukusers/user-34765005/images/";
 TEAM=[
- {fact:"Principal investigator of CellectGen’s NIDCR-funded SBIR program to develop a salivary assay for measuring periodontal disease activity, funded through Phase I in 2023 and Phase II in 2026.",nosheet:1,small:1,slug:"robert-gellibolian",name:"Robert Gellibolian, PhD",title:"Founder & CEO",grp:"Founders",img:GI+"5c9016e862cc0dVtW5bI/Robert_d200.png",
+ {fact:"Principal investigator of CellectGen’s NIDCR-funded SBIR program to develop a salivary assay for measuring periodontal disease activity, funded through Phase I in 2023 and Phase II in 2026.",nosheet:1,small:1,slug:"robert-gellibolian",line:"Principal investigator of CellectGen’s NIDCR-funded SBIR program for a saliva test of periodontal disease activity.",name:"Robert Gellibolian, PhD",title:"Founder & CEO",grp:"Founders",img:GI+"5c9016e862cc0dVtW5bI/Robert_d200.png",
   bio:["Robert founded CellectGen and leads the company as CEO.","He is principal investigator of CellectGen’s NIDCR-funded SBIR program to develop a salivary assay for measuring periodontal disease activity, funded through Phase I in 2023 and Phase II in 2026."]},
- {nosheet:1,small:1,slug:"adam-markaryan",name:"Adam Markaryan, PhD",title:"Co-founder, VP of R&D",grp:"Founders",img:GI+"5c9016e69eb5ehFeaX67/Adam_d200.png",
+ {nosheet:1,small:1,slug:"adam-markaryan",line:"Leads CellectGen’s research and development.",name:"Adam Markaryan, PhD",title:"Co-founder, VP of R&D",grp:"Founders",img:GI+"5c9016e69eb5ehFeaX67/Adam_d200.png",
   bio:["Adam co-founded CellectGen and leads its research and development as Vice President of R&D."]}
 ];
 var AWARDS=[
@@ -735,8 +746,8 @@ SITE.views.home=function(){
     '<div class="ft"><b>No refrigeration</b><p>Testing is done at room temperature.</p></div>'+
    '</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded by <em>scientists.</em></h2></div><p data-r>From CellectGen’s laboratories in Pasadena, California. Founder and CEO Robert Gellibolian is principal investigator of the NIDCR-funded SBIR program.</p></div>'+
-   '<div class="frows">'+TEAM.map(fCard).join("")+'</div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded by <em>scientists.</em></h2></div><p data-r>From CellectGen’s laboratories in Pasadena, California.</p></div>'+
+   founders()+
    '</div></section>'+
   '<section class="sec" data-tone="dark"><div class="wrap">'+
    '<div class="grant" data-r><div><span class="lab kick">NIDCR · SBIR Phase II · Sep 2026</span><p class="gq">$936K in first-year funding to take the saliva test to <em>design lock.</em></p></div>'+
@@ -778,10 +789,11 @@ SITE.views.technology=function(){
   '</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap"><span class="lab kick" data-r>NIH awards</span>'+rowsHtml(AWARDS)+'</div></section>'+cta("technology");
 };
-function fCard(p){return '<div class="frow"><span class="fr-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'none\');this.remove()"></span><h3>'+esc(p.name)+'</h3><span class="ttl">'+esc(p.title)+'</span></div>'}
+function fCard(p){return '<li><div class="mh-row"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span>'+(p.line?'<span class="mh-sum">'+esc(p.line)+'</span>':'')+'</div></li>'}
+function founders(){return '<div class="mh"><div class="mh-group"><p class="mh-label">Founders</p><ul class="mh-list">'+TEAM.map(fCard).join("")+'</ul></div></div>'}
 SITE.views.team=function(){
   return head({k:"Team",h:'Meet the <em>team.</em>',p:'CellectGen is led by its founders from its laboratories in Pasadena, California.'})+
-  '<section class="sec first" data-tone="light"><div class="wrap"><div class="frows">'+TEAM.map(function(p){return fCard(p,1)}).join("")+'</div></div></section>'+cta();
+  '<section class="sec first" data-tone="light"><div class="wrap">'+founders()+'</div></section>'+cta();
 };
 SITE.views.contact=function(){
   return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Dental practices, clinical partners, distributors, investors or press: send a note and the team will be in touch.'})+
@@ -879,7 +891,9 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
-  gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){st.revert()}});
+  /* CM: the heading box fades with its lines, so the whole block reads as entering */
+  if(!fs)gsap.set(el,{opacity:0});
+  gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onStart:function(){gsap.to(el,{opacity:1,duration:.45,ease:"none"})},onComplete:function(){st.revert()}});
 }
 function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   var view=$("#view");
@@ -896,7 +910,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){s2.revert()}}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});gsap.set(t,{opacity:0});HERO_TL.push(gsap.from(s2.chars,{onStart:function(){gsap.to(t,{opacity:1,duration:.45,ease:"none"})},yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){s2.revert()}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){splitReveal(el,E)});
     if(k==="home")homeScroll(view);
@@ -918,34 +932,38 @@ function rvMarks(root){var A=new Set(),K=new Set();
   $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
       for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
   return {A:A,K:K}}
+function rvTxt(c){if(/^(SVG|G|TEXT|TSPAN|svg|g|text|tspan)$/.test(c.tagName))return false;for(var t=c.firstChild;t;t=t.nextSibling)if(t.nodeType===3&&t.nodeValue.trim().length>1)return true;return false}
 function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
   if(M.A.has(c)||c.matches(RV_SKIP))continue;
   var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
-  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+  /* CM: an element that holds its own text (a <b>, a <div> with a bare text node) is a unit too, or it would stay put while its neighbours rise */
+  var own=rvTxt(c);
+  if((c.matches(RV_SEL)||own)&&(c.matches(RV_UNIT)||own||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.45,ease:"none",delay:dl});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
-  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
-  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  /* CM: everything already on the first screen reveals together with the page entrance (one small stagger); everything below enters on scroll, so no block ever appears without moving */
+  var fh=items.filter(function(el){return el.getBoundingClientRect().top<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)rvGo(fh,base(),Math.min(.06,.45/fh.length));
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 82%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}if(el._rvS&&!gsap.isTweening(el)&&+getComputedStyle(el).opacity<.99)gsap.set(el,{opacity:1})})}
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive())&&t.paused&&t.paused())t.play()});if((window._fsN=(window._fsN||0)+1)<6&&HERO_TL.some(function(t){return t&&t.progress()<1})){failsafe();return}
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 

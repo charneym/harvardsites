@@ -230,23 +230,27 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .evi .meta ul{list-style:none;margin:18px 0 0;padding:0}
 .evi .meta li{padding:12px 0;border-top:1px solid var(--hair);font-size:15px;display:flex;justify-content:space-between;gap:16px;align-items:center}
 
-/* founders masthead list (CI) */
-.tm-rows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD);width:100%}
-.tm{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);align-items:start;padding:clamp(28px,2.6vw,40px) 0;border-bottom:1px solid var(--hairD);color:inherit;text-decoration:none}
-.tm,.tm *{transition:color .3s var(--eo),transform .3s var(--eo)}
-.tm .nm{grid-column:1/span 4;font-family:var(--serif);font-weight:400;font-size:clamp(28px,2.3vw,34px);line-height:1.1;letter-spacing:-.015em;margin:0}
-.tm .rl,.tm .sm{padding-top:.5em}
-.tm .rl{grid-column:5/span 3;font-size:15px;line-height:1.5;color:var(--stoneD);margin:0}
-.tm .sm{grid-column:8/span 4;font-size:15.5px;line-height:1.55;margin:0}
-.tm .ar{grid-column:12;justify-self:end;padding-top:.75em;color:var(--sinD);display:flex;transform:translateX(-6px)}
-.tm .ar svg{width:18px;height:12px}
-.tm:hover .nm,.tm:focus-visible .nm{color:var(--sinD)}
-.tm:hover .ar,.tm:focus-visible .ar{transform:none}
-@media (max-width:860px){
-  .tm{grid-template-columns:minmax(0,1fr) auto;row-gap:8px}
-  .tm .nm{grid-column:1;grid-row:1}
-  .tm .ar{grid-column:2;grid-row:1;align-self:center;padding-top:0}
-  .tm .rl,.tm .sm{grid-column:1/-1;padding-top:0}
+/* masthead list (CL: _kit/components/masthead.html, tokens only) */
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono);display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{justify-self:start;font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
 }
 /* text cards (team, no portraits) */
 .tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -850,7 +854,7 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){return '<li><a class="tm" href="#/company/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read more"><h3 class="nm">'+esc(p.name)+'</h3><p class="rl">'+esc(p.title)+'</p><p class="sm">'+esc(p.sum)+'</p><span class="ar" aria-hidden="true">'+ARR+'</span></a></li>'}
+function tCard(p){return '<li><a class="mh-row" href="#/company/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read more"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span><span class="mh-arrow" aria-hidden="true">→</span></a></li>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab"'+(n.d.length>4?' datetime="'+n.d+'"':'')+'>'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function platCard(o){return '<a class="plat txt" href="#/platforms"><div class="pm"><span class="lab">'+o.k+'</span><h3>'+o.name+'</h3><p>'+o.p+'</p><span class="lab go">Platform details '+ARR+'</span></div></a>'}
 function progRows(list){return '<ul class="prg">'+list.map(function(o){return '<li><a class="row-p" href="'+o.u+'" target="_blank" rel="noopener"><div><h3>'+o.n+'</h3><span class="ind">'+o.pl+'</span></div><div class="tg"><span class="tagp">'+o.tag+'</span><span class="lab">RePORTER ↗</span></div><p>'+o.p+'</p></a></li>'}).join("")+'</ul>'}
@@ -948,7 +952,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Founders</span><h2 class="d2 split">Built on a decade of <em>speckle imaging.</em></h2></div><p data-r>Vasoptic was founded in 2012 to put advanced blood flow data in front of clinicians at the point of care.</p></div>'+
-   '<ul class="tm-rows" data-group>'+TEAM.map(tCard).join("")+'</ul>'+
+   '<div class="mh" data-group><div class="mh-group"><ul class="mh-list">'+TEAM.map(tCard).join("")+'</ul></div></div>'+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/company">About the company '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -1030,7 +1034,7 @@ function vCompany(){
   '</div></div></section>'+
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Founders</span><h2 class="d2 split">The people <em>behind it.</em></h2></div><p data-r>A tightly knit team of problem solvers, advised by experts in healthcare, academia and industry.</p></div>'+
-   '<ul class="tm-rows" data-group>'+TEAM.map(tCard).join("")+'</ul></div></section>'+
+   '<div class="mh" data-group><div class="mh-group"><ul class="mh-list">'+TEAM.map(tCard).join("")+'</ul></div></div></div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
    '<div><span class="lab kick" data-r>Milestones</span><h2 class="d3 split">Fourteen years of <em>flow.</em></h2></div>'+
    '<ol class="tl" id="tl"><i class="ln0"></i><i class="ln1"></i>'+tl.map(function(t){return '<li><span class="lab yr">'+t[0]+'</span><h3>'+t[1]+'</h3><p>'+t[2]+'</p></li>'}).join("")+'</ol>'+
@@ -1238,7 +1242,7 @@ hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=wi
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,HERO_TL=[];
 /* BH: a mask clips only while its reveal moves; afterwards the split is undone so italic tails and descenders are never cut */
-function unmask(st){try{st.revert()}catch(e){}}
+function unmask(st){if(!st)return;var ms=(st.masks&&st.masks.length)?st.masks.slice():[];if(!ms.length&&st.lines)ms=st.lines.map(function(l){return l.parentNode}).filter(function(m){return m&&/mask/.test(m.className)});ms.forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
@@ -1253,16 +1257,16 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     var t=$("#pageTitle",view);
     if(k==="home"&&!RM){
       var mob=MOBILE();
-      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",charsClass:"ch"});
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(s)}});
-      htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+      htl.from(s.chars,{yPercent:100,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0).from(s.chars,{opacity:0,duration:(mob?.7:1.25)*.8,ease:"power3.in",stagger:{each:mob?.006:.024}},0)
          .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",charsClass:"ch",specialChars:/\d+/g});HERO_TL.push(gsap.timeline({delay:E+.05,onComplete:function(){unmask(s2)}}).from(s2.chars,{yPercent:100,duration:1.1,ease:"silk",stagger:{each:.018}},0).from(s2.chars,{opacity:0,duration:.88,ease:"power3.in",stagger:{each:.018}},0))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1295,8 +1299,9 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}/* a figure with ambient motion inside still fades in as one piece */
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     /* BB: a unit taller than ~35% of the screen reveals piecewise, so its lower part never appears before it is scrolled into view */
-    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.height>Math.min(innerHeight*.35,180)&&!c.matches("figure,picture,svg,canvas,img,video")&&c.children.length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
+  if(!c.querySelector(RV_SEL)&&c.textContent.trim()){var r2=c.getBoundingClientRect();if(r2.width>1&&r2.height>1)out.push(c);continue}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){

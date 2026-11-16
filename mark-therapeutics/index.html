@@ -149,10 +149,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
 .hero-foot .s{max-width:48ch;margin:0;font-size:17px;line-height:1.62;color:rgba(242,246,250,.86)}
 .hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
-.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:visible;background:rgba(242,246,250,.18);z-index:2}
-.cue::after{content:"";position:absolute;left:-3.5px;bottom:-1px;width:8px;height:8px;border-left:1px solid rgba(242,246,250,.5);border-bottom:1px solid rgba(242,246,250,.5);transform:rotate(-45deg)}
-.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--sinL);animation:cue 2.2s var(--ease) infinite}
-@keyframes cue{to{top:110%}}
 .hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1}
 .hero-key span{display:flex;align-items:center;gap:10px}
 .hero-key i{width:8px;height:8px;border-radius:50%;background:var(--bone);display:block;opacity:.8}
@@ -170,8 +166,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
 
 /* manifesto */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.9vw,66px);line-height:1.12;letter-spacing:-.02em;margin:0;max-width:24ch}
-.mani .kick,.mani .txt{width:min(24ch,100%);margin-left:auto;margin-right:auto}
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.9vw,66px);line-height:1.12;letter-spacing:-.02em;margin:0;max-width:none}
+.mani .kick,.mani .txt{display:block;width:72%;margin-left:auto;margin-right:auto}
+@media (max-width:760px){.mani .kick,.mani .txt{width:100%}}
 .mani .txt .w{opacity:.18}
 .mani .txt em{color:var(--sinD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
@@ -201,7 +198,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .step h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.3vw,38px);line-height:1.14;letter-spacing:-.016em;margin:0 0 16px}
 .step p{color:rgba(242,246,250,.82);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(74vh,720px);align-self:center}
-#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 92%,transparent);mask-composite:intersect}
+#storyCv{position:absolute;inset:0;width:100%;height:100%;display:block}
 
 /* pipeline table */
 .pipe{border-top:1px solid var(--hairD)}
@@ -295,8 +292,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ftr .bigw .ch{display:inline-block}
 .ftr .legal .lab:nth-child(2){justify-self:center;text-align:center}
 .ftr .legal .lab:last-child{justify-self:end}
-@media (max-width:700px){.ftr .legal{grid-template-columns:1fr;justify-items:start;row-gap:8px}.ftr .legal .lab:nth-child(2),.ftr .legal .lab:last-child{justify-self:start}}
 .ftr .legal{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;margin-top:clamp(22px,2.6vw,40px);padding-top:16px;border-top:1px solid var(--hair)}
+@media (max-width:700px){.ftr .legal{grid-template-columns:1fr;justify-items:start;row-gap:8px}.ftr .legal .lab:nth-child(2),.ftr .legal .lab:last-child{justify-self:start}}
 
 /* inner page blocks */
 .pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -543,7 +540,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (max-width:420px){.stats{grid-template-columns:1fr}.stat .v{font-size:62px}}
 
 @media (prefers-reduced-motion:reduce){
-  .grain,.cue i{animation:none}
+  .grain{animation:none}
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
@@ -859,7 +856,6 @@ function vHome(){
    '<div class="hero-foot"><p class="s" data-r>Mark Therapeutics is developing a first-in-class disease-modifying AAV gene therapy for idiopathic Parkinson’s disease — the roughly 80% of cases with no family history and no causative mutation.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/science">See the mechanism '+ARR+'</a><a class="btn" href="#/program">The Mark202 program</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Dopaminergic neurons, substantia nigra</span><span><i class="s"></i>Restored PLA2g6L signaling</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div>'+
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
@@ -877,7 +873,7 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Deficit</span><span>Deliver</span><span>Restore</span><span>Retain</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>A signaling deficit, not a mutation.</h3><p>Cells from idiopathic Parkinson’s patients show a significant deficiency in store-operated, PLA2g6-dependent calcium signaling. Impairing that signaling is a trigger for autophagic dysfunction and the progressive loss of dopaminergic neurons in the substantia nigra pars compacta.</p></article>'+
-     '<article class="step"><h3>Deliver the missing protein, once.</h3><p>Mark’s therapy uses an Adeno-Associated Viral vector tailored to that deficit. It compensates for the pathogenic loss of expression of the PLA2g6L protein in the neurons that are being lost, rather than treating symptoms downstream.</p></article>'+
+     '<article class="step"><h3>Deliver the missing gene, once.</h3><p>Mark’s therapy uses an Adeno-Associated Viral vector tailored to that deficit. It compensates for the pathogenic loss of expression of the PLA2g6L protein in the neurons that are being lost, rather than treating symptoms downstream.</p></article>'+
      '<article class="step"><h3>Restore the cellular function.</h3><p>Expressing functional PLA2g6L restores critical cellular functions in dopaminergic neurons. In the preclinical idPD-like aging mouse model, one-time AAV-driven expression stopped the pathological loss of those neurons in the substantia nigra.</p></article>'+
      '<article class="step"><h3>Keep the neurons, slow the decline.</h3><p>In that model, the same one-time treatment significantly slowed the progression of motor dysfunction. Mark202, the lead candidate, is now in Phase II preclinical validation in aging and PFF-enhanced hybrid mouse models, and in a non-human primate model of PD.</p></article>'+
     '</div></div>'+
@@ -917,7 +913,7 @@ function pipeTable(){
 }
 function ctaAlt(){
   var k=(location.hash||"").replace(/^#\/?/,"").split("/")[0];
-  var o=[("science", "Read the science"), ("program", "The program"), ("team", "The team"), ("news", "The record")];
+  var o=[["science","Read the science"],["program","The program"],["team","The team"],["news","The record"]];
   for(var i=0;i<o.length;i++){if(o[i][0]!==k)return '<a class="btn" href="#/'+o[i][0]+'">'+o[i][1]+'</a>'}
   return ""}
 function cta(){
@@ -1294,11 +1290,11 @@ function makeStory(cv){
       var al=(.3+.6*inFlow)*(ph<.08?ph*12:1);
       c.fillStyle="rgba("+ACC+","+(al*.85)+")";c.beginPath();c.arc(jx,jy,1.7,0,6.283);c.fill()}
     /* AAV vectors approaching in step 2 */
-    if(deliver>.01||W4[2]>.01){
-      var dA=Math.max(deliver,W4[2]*.5);
+    if(deliver>.01){
+      var dA=deliver;
       for(i=0;i<9;i++){
         var q=(R(i,31)+t*.09)%1;
-        var sx=-330+ q*320 + i*4, sy=-150+R(i,32)*240 - q*q*60;
+        var sx=-250+ q*240 + i*4, sy=-150+R(i,32)*240 - q*q*60;
         c.save();c.globalAlpha=dA*(q<.1?q*10:(q>.9?(1-q)*10:1));
         c.strokeStyle="rgba("+ACC+",.9)";c.lineWidth=1.1/sc;
         c.beginPath();
@@ -1306,6 +1302,9 @@ function makeStory(cv){
         c.closePath();c.stroke();
         c.fillStyle="rgba("+ACC+",.3)";c.fill();
         c.restore()}
+      c.save();c.globalAlpha=dA;c.strokeStyle="rgba("+ACC+",.9)";c.lineWidth=1.1/sc;c.beginPath();
+      for(var s3=0;s3<6;s3++){var sb=s3/6*6.283;if(!s3)c.moveTo(-150+Math.cos(sb)*7,-120+Math.sin(sb)*7);else c.lineTo(-150+Math.cos(sb)*7,-120+Math.sin(sb)*7)}
+      c.closePath();c.stroke();c.fillStyle="rgba("+ACC+",.3)";c.fill();c.restore()
     }
     /* autophagic vesicles: crowded when impaired, clearing once restored */
     for(i=0;i<vesicles.length;i++){var V=vesicles[i];
@@ -1324,8 +1323,7 @@ function makeStory(cv){
         c.strokeStyle="rgba("+PAPER+","+(.3+.42*keep)+")";c.lineWidth=1.1/sc;
         c.beginPath();c.ellipse(nn.x,nn.y,8*nn.s,6.4*nn.s,nn.th,0,6.283);c.stroke();
         c.fillStyle="rgba("+(nn.vul?ACC:PAPER)+","+(.1+.26*keep)+")";c.fill();
-        c.beginPath();c.moveTo(nn.x+Math.cos(nn.th)*9,nn.y+Math.sin(nn.th)*7);
-        c.lineTo(nn.x+Math.cos(nn.th)*26,nn.y+Math.sin(nn.th)*20);c.strokeStyle="rgba("+PAPER+",.24)";c.stroke()}
+      }
       c.globalAlpha=1}
     c.restore();
 
@@ -1360,16 +1358,17 @@ function makeStory(cv){
         c.fillStyle="rgb(176,193,209)";c.textAlign="left";c.fillText(L.t,L.x0,L.sy)}
       c.globalAlpha=1;LABQ.length=0}
     var onCell=W4[0]+W4[1]+W4[2];
-    lab("DOPAMINERGIC NEURON",0,74,0,150,onCell);
+    lab("DOPAMINE-MAKING NEURON",0,74,0,150,onCell);
     lab("AXON TERMINAL",210,15,250,74,W4[0]+W4[1]*.6);
     lab("DENDRITES",-196,-70,-224,-128,W4[0]);
-    lab("PLA2g6L \u00b7 MISSING",22,-18,96,-112,W4[0]);
-    lab("STORE-OPERATED CHANNELS",-36,-70,-60,-136,W4[1]+W4[0]*.6);
-    lab("AAV \u00b7 PLA2g6L",-150,-120,-196,-168,W4[1]);
-    lab("Ca\u00b2\u207a ENTRY RESTORED",-40,46,-104,126,W4[2]);
-    lab("AUTOPHAGY CLEARS",44,-30,120,-104,W4[2]);
-    lab("SUBSTANTIA NIGRA PARS COMPACTA",120,330,120,452,W4[3]);
-    lab("NEURONS RETAINED",90,150,60,250,W4[3]);
+    lab("MISSING PROTEIN \u00b7 PLA2g6L",22,-18,96,-112,W4[0]);
+    lab("CALCIUM CHANNELS \u00b7 STORE-OPERATED",-36,-70,-60,-136,W4[0]);
+    lab("HARMLESS VIRUS CARRYING THE GENE \u00b7 AAV",-150,-120,-196,-168,W4[1]);
+    lab("CALCIUM FLOWS IN AGAIN",-78,-38,-150,126,W4[2]);
+    lab("CELL WASTE CLEARED \u00b7 AUTOPHAGY",44,-30,120,-104,W4[2]);
+    var nL=neurons[neurons.length-1],nM=neurons[Math.floor(neurons.length/2)];
+    lab("MOVEMENT-CONTROL REGION \u00b7 SUBSTANTIA NIGRA",nL.x,nL.y+8,nL.x,nL.y+110,W4[3]);
+    lab("NEURONS RETAINED",nM.x-10,nM.y,nM.x-120,nM.y,W4[3]);
     labFlush();
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
@@ -1393,7 +1392,9 @@ var _umf=0;
 function unmaskSettled(){var m=$$(".ln-mask");for(var i=0;i<m.length;i++){var w=m[i];if(w.classList.contains("rel"))continue;
   var k=w.firstElementChild;if(!k)continue;
   if(gsap.isTweening(k)||gsap.isTweening(w))continue;
-  var kids=k.children,busy=false;for(var j=0;j<kids.length;j++){if(gsap.isTweening(kids[j])){busy=true;break}}
+  var kids=k.querySelectorAll("*"),busy=false;for(var j=0;j<kids.length;j++){var kj=kids[j];if(gsap.isTweening(kj)){busy=true;break}
+    var tm=kj.style&&kj.style.transform&&kj.style.transform.match(/translate(?:3d)?\(([^)]*)\)/);if(tm&&tm[1].split(",").some(function(v){return Math.abs(parseFloat(v))>.5})){busy=true;break}
+    if(kj.style&&kj.style.opacity!==""&&+kj.style.opacity<.99){busy=true;break}}
   if(busy)continue;
   var cs=getComputedStyle(k);if(+cs.opacity<.99)continue;
   var tr=cs.transform;if(tr&&tr!=="none"){var mm=new DOMMatrix(tr);if(Math.abs(mm.m42)>.5||Math.abs(mm.m41)>.5)continue}
@@ -1409,7 +1410,7 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
-  gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
+  gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
 }
 var ENTRY=0;
 function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
@@ -1422,12 +1423,12 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
-      htl.from(s.chars,{yPercent:140,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+      htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
          .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:140,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     var tl=$(".tl",view);if(tl&&!RM){gsap.to($(".ln1",tl),{scaleY:1,ease:"none",scrollTrigger:{trigger:tl,start:"top 70%",end:"bottom 60%",scrub:true}})}
@@ -1461,7 +1462,7 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
@@ -1484,8 +1485,8 @@ function failsafe(){setTimeout(function(){rvFail();unmaskSettled();HERO_TL.forEa
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
-  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 88%",end:"center 62%",scrub:true}})}
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
@@ -1592,7 +1593,7 @@ function go(first,ready){
   var D=RM?.01:1;
   var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var h=$("#pageTitle");if(h)h.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
   tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.7*D,ease:"power3.inOut"},0);
-  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:140,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
+  if(sp){tl.set(xt,{visibility:"visible"},.45*D).fromTo(sp.chars,{yPercent:100,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.48*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.55*D)}
   tl.call(function(){paint(r)},null,.74*D)
     .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)psOpen(r.bio)},null,.8*D);
   if(sp){tl.to(sp.chars,{yPercent:-70,opacity:0,duration:.3,ease:"power2.in",stagger:.01},1.12*D).to("#xlab",{opacity:0,duration:.25},1.12*D)}

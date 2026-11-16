@@ -561,7 +561,6 @@ em{font-style:normal;font-family:inherit}
 .awd:hover::after,.awd:focus-visible::after{opacity:1}
 .awd .lab{color:var(--sinL)}
 .awd h3{font-family:var(--serif);font-size:clamp(24px,2.1vw,34px);line-height:1.14;letter-spacing:-.025em;margin:0;max-width:24ch;transition:transform .32s var(--eo)}
-.awd:hover h3{transform:translateX(5px)}
 .awd p{color:var(--stone);margin:0;font-size:15.5px;max-width:52ch}
 .awd .amt{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:auto;padding-top:18px;border-top:1px solid var(--hair)}
 .awd .amt b{font-family:var(--serif);font-weight:300;font-size:clamp(28px,2.4vw,40px);line-height:1.1;letter-spacing:-.03em}
@@ -611,10 +610,10 @@ em{font-style:normal;font-family:inherit}
 .mrow .nm{display:block;font-family:var(--serif);font-weight:300;font-size:clamp(28px,2.3vw,34px);line-height:1.1;letter-spacing:-.025em;margin:0;color:var(--ink);transition:color .3s var(--eo)}
 .mrow .rl{font-size:15px;line-height:1.45;color:var(--ink)}
 .mrow .sm{font-size:15px;line-height:1.5;color:var(--stoneD)}
-.mrow .ar{justify-self:end;color:var(--sinD);transition:transform .3s var(--eo)}
+.mrow .ar{justify-self:end;color:var(--sinD);transform:translateX(-6px);transition:transform .3s var(--eo)}
 .mrow .ar svg{width:18px;height:11px;display:block}
 .mrow:hover .nm,.mrow:focus-visible .nm{color:var(--sinD)}
-.mrow:hover .ar,.mrow:focus-visible .ar{transform:translateX(6px)}
+.mrow:hover .ar,.mrow:focus-visible .ar{transform:none}
 @media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:8px}.mrow .nm,.mrow .rl,.mrow .sm{grid-column:1}.mrow .ar{grid-column:2;grid-row:1}}
 .tgrid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .tcard{min-height:250px}
@@ -1027,17 +1026,16 @@ function sceneSvg(){
     var a0=R(i,4)*1.57,pts=[0,1,2,3].map(function(k){var aa=a0+k*1.5708;return (x+Math.cos(aa)*s*1.35).toFixed(1)+","+(y+Math.sin(aa)*s*1.35).toFixed(1)}).join(" ");
     xt+='<polygon class="xtal" points="'+pts+'" data-o="'+R(i,5).toFixed(3)+'"/>'}
   for(var j=0;j<22;j++)mol+='<circle class="mol" r="3.6" cx="300" cy="262" data-k="'+j+'"/>';
-  for(var m=0;m<=6;m++){var x2=120+m*60;mo+='<path class="ly" d="M'+x2+' 452v8"/><text x="'+x2+'" y="476" text-anchor="middle">'+(m?m:'DOSE')+'</text>'}
+  for(var m=0;m<=6;m++){var x2=120+m*60;mo+='<path class="ly" d="M'+x2+' 452v8"/><text x="'+x2+'" y="476" text-anchor="middle">'+(m?(m<6?m:'6 MO'):'DOSE')+'</text>'}
   return '<svg viewBox="0 0 600 490" aria-hidden="true">'+
    '<text x="40" y="100">SKIN</text><path class="ly" d="M40 110C140 104 240 116 340 110S480 104 560 110"/>'+
    '<path class="ly2" d="M40 150C140 146 240 156 340 150S480 146 560 150"/><text x="40" y="190">FAT</text>'+
    '<path class="ly2" d="M40 214C140 220 240 208 340 214S480 220 560 214"/><text x="40" y="236">MUSCLE</text>'+
    '<path class="vs" d="M40 372C200 362 380 384 560 372V412C380 424 200 402 40 412Z"/><text x="40" y="432">BLOODSTREAM</text>'+
-   '<g id="scDev"><rect class="dev" x="282" y="-6" width="36" height="78" rx="8"/><path class="ndl" d="M300 72V250"/><text class="dyn" x="330" y="30">AUTO-INJECTOR</text></g>'+
+   '<g id="scDev"><path id="scNdl" class="ndl" d="M300 108V108"/><rect class="dev" x="282" y="30" width="36" height="78" rx="8"/><text class="dyn" x="330" y="66">AUTO-INJECTOR</text></g>'+
    '<g id="scDepot">'+xt+'</g><text id="scDepL" class="dyn" x="346" y="266">PRODRUG DEPOT</text>'+
    '<g id="scMol">'+mol+'</g><text id="scActL" class="dyn" x="560" y="352" text-anchor="end">ACTIVE DRUG IN BLOOD</text>'+
-   '<path class="ly2" d="M120 456H480"/><path id="scMo" class="pk" d="M120 456H120"/><circle id="scDot" class="acf" r="5" cx="120" cy="456"/>'+mo+
-   '<text x="40" y="460">MONTHS</text></svg>'}
+   '<path class="ly2" d="M120 456H480"/><path id="scMo" class="pk" d="M120 456H120"/><circle id="scDot" class="acf" r="5" cx="120" cy="456"/>'+mo+'</svg>'}
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -1424,18 +1422,19 @@ function homeScroll(view){
 /* ---------- pinned story: one scene, parts move with the scrubbed timeline (BL) ---------- */
 function sm01(a,b,x){x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)}
 function sceneInit(view){
-  var dev=$("#scDev",view),xt=$$("#scDepot polygon",view),mol=$$("#scMol circle",view),dl=$("#scDepL",view),al=$("#scActL",view),mo=$("#scMo",view),dot=$("#scDot",view);
+  var dev=$("#scDev",view),ndl=$("#scNdl",view),xt=$$("#scDepot polygon",view),mol=$$("#scMol circle",view),dl=$("#scDepL",view),al=$("#scActL",view),mo=$("#scMo",view),dot=$("#scDot",view);
   var XO=xt.map(function(r){return {el:r,o:+r.getAttribute("data-o")}});
   XO.forEach(function(x){x.el.style.transformBox="fill-box";x.el.style.transformOrigin="50% 50%"});
   var last=-1;
   return function(p){if(!dev||!dev.isConnected)return;if(Math.abs(p-last)<.0004)return;last=p;var q=p*4;
     /* 1 inject: the auto-injector comes down and the needle reaches the depot site, then lifts away */
-    var dn=sm01(0,.55,q),up=sm01(.95,1.45,q);
-    dev.setAttribute("transform","translate(0 "+(-95*(1-dn)-140*up).toFixed(1)+")");dev.style.opacity=(1-sm01(1,1.3,q)).toFixed(3);dev.style.visibility=q>1.31?"hidden":"";
+    /* the needle stays inside the injector until its base presses on the skin, then extends to the depot site and retracts before the device lifts */
+    var dn=sm01(0,.45,q),ext=sm01(.5,.85,q)*(1-sm01(.95,1.12,q)),up=sm01(1.15,1.45,q);
+    dev.setAttribute("transform","translate(0 "+(-40*(1-dn)-150*up).toFixed(1)+")");if(ndl)ndl.setAttribute("d","M300 108V"+(108+142*ext).toFixed(1));dev.style.opacity=(1-sm01(1.2,1.45,q)).toFixed(3);dev.style.visibility=q>1.46?"hidden":"";
     /* 2 depot: crystals form, then dissolve a little at a time across the remaining steps */
-    var form=sm01(.4,.95,q),diss=.55*sm01(1.05,4,q);
+    var form=sm01(.7,1.05,q),diss=.55*sm01(1.05,4,q);
     XO.forEach(function(x){var a=sm01(x.o*.5,x.o*.5+.5,form)*(1-sm01(x.o*.85,x.o*.85+.1,diss));x.el.style.opacity=a.toFixed(3);x.el.style.scale=((.4+.6*a)*(1-.4*diss)).toFixed(3)});
-    dl.style.opacity=sm01(.7,1.05,q).toFixed(3);
+    dl.style.opacity=sm01(.85,1.1,q).toFixed(3);
     /* 3 convert: released prodrug (outlined) reaches the bloodstream and becomes active drug (filled) */
     for(var j=0;j<mol.length;j++){var s0=1.05+j/mol.length*2.8,u=q-s0,el=mol[j];
       if(u<=0||u>1.9){el.style.opacity="0";continue}

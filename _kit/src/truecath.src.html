@@ -206,8 +206,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .story-r .ax{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;border-top:1px solid var(--hair);padding-top:10px}
 
 /* pipeline table */
-.pipe{border-top:1px solid var(--hairD)}
-.dark .pipe,.dark2 .pipe{border-top-color:var(--hair)}
+.pipe-h{border-top:1px solid var(--hairD)}
+.dark .pipe-h,.dark2 .pipe-h{border-top-color:var(--hair)}
 .pipe-h,.prow{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,3fr) minmax(0,6fr);column-gap:var(--gap);align-items:center}
 .pipe-h{padding:14px 0;border-bottom:1px solid var(--hairD)}
 .pipe-h .stg{display:grid;grid-template-columns:repeat(3,1fr)}
@@ -443,6 +443,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pillars{grid-template-columns:1fr;row-gap:48px}
   .pipe-h{display:none}
+  .pipe-h+.prow{border-top:1px solid var(--hairD)}
   .prow{grid-template-columns:1fr;row-gap:8px}
   .prow .note{grid-column:1/2}
   .row-a .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
@@ -600,16 +601,18 @@ em{font-weight:300}
 /* v13 round 2 */
 .hdr.solid{background:rgba(18,19,22,.82)}
 .perf{margin:clamp(48px,5vw,80px) 0 0;padding:clamp(18px,2.4vw,36px);background:#fff;border:1px solid var(--hairD);border-radius:4px}
-.perf svg{width:100%;height:auto;display:block;overflow:visible}
-.perf .pr:first-child{margin-top:calc(34/900*100%)}
-.perf .pl{font-family:var(--sans);font-size:17px;fill:var(--ink)}
-.perf .pv{font-family:var(--mono);font-size:15px;letter-spacing:.06em;fill:var(--sinD)}
-.perf .pt{fill:var(--bone2)}
-.perf .pb{fill:var(--sin)}
+.perf .pr{display:grid;grid-template-columns:minmax(0,250fr) minmax(0,650fr);align-items:center;padding:clamp(10px,1.5vw,22px) 0}
+.perf .pr:first-child{padding-top:clamp(12px,2.2vw,32px)}
+.perf .pl{font-family:var(--sans);font-size:clamp(15px,1.6vw,23px);line-height:1.25;color:var(--ink)}
+.perf .pt{display:block;padding-right:clamp(70px,9vw,120px)}
+.perf .ptr{position:relative;display:block;height:clamp(16px,2.5vw,36px);border-radius:99px;background:var(--bone2)}
+.perf .ptr i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--sin)}
+.perf .ptr b{position:absolute;top:50%;transform:translateY(-50%);margin-left:clamp(8px,1vw,16px);font:400 clamp(12px,1.35vw,20px)/1 var(--mono);letter-spacing:.06em;color:var(--sinD);white-space:nowrap}
+@media (max-width:700px){.perf .pr{grid-template-columns:1fr;row-gap:8px;padding:10px 0}.perf .pl{font-size:14px}.perf .pt{padding-right:64px}.perf .ptr{height:14px}.perf .ptr b{font-size:12.5px}}
 .perf .cap{margin:18px 0 0;color:var(--stoneD)}
 .scCap{color:#d3d6dd}
 .ftr .bigw{text-indent:.06em}
-@media (max-width:700px){.moa{overflow-x:auto;overscroll-behavior-x:contain}.moa svg{min-width:680px}.perf .pl{font-size:22px}.perf .pv{font-size:20px}}
+@media (max-width:700px){.moa{overflow-x:auto;overscroll-behavior-x:contain}.moa svg{min-width:680px}}
 
 /* v15 BY: labelled parts, one lit per step */
 .sfig .lbl text{font-family:var(--mono);font-size:15px;letter-spacing:.14em;fill:#d3d6dd}
@@ -808,6 +811,7 @@ var ARRX='<svg class="arr" viewBox="0 0 18 12" aria-hidden="true"><path d="M0 6h
 var SITE="TrueCath";
 var story=null;
 /* BM: the hero visual is anchored to the same content grid as the header and the copy */
+var _hcr={w:-1,r:0};function heroCopyR(){if(_hcr.w!==innerWidth){var r=0;$$("#hero p, #hero .btns, #hero .cta-row").forEach(function(e){if(e.closest("canvas"))return;var b=e.getBoundingClientRect();if(b.width>0&&b.width<innerWidth*.8)r=Math.max(r,b.right)});if(r>0)_hcr={w:innerWidth,r:r};return r}return _hcr.r}
 function heroGrid(){var w=innerWidth,g=Math.max(16,Math.min(72,w*.042)),c=Math.min(w-2*g,1320),l=(w-c)/2;return {g:g,c:c,l:l,r:l+c}}
 
 
@@ -816,12 +820,12 @@ var RP="https://reporter.nih.gov/project-details/";
 var LSI="https://lifesciencemarketresearch.com/videos/zach-berwick-presents-true-cath-at-lsi-usa-23";
 var NEWS=[
  {d:"2026-09-17",s:"NIH RePORTER · NICHD",t:"SBIR Phase II awarded for the Pediatric Autocatheter for Intravenous Access",u:RP+"11256662"},
- {d:"2023-05-07",s:"LSI USA ’23",t:"Zach Berwick presents TrueCath’s automated IV catheter at LSI USA ’23",u:LSI},
+ {d:"2023-05-07",s:"LSI USA ’23",t:"Zachary Berwick presents TrueCath’s automated IV catheter at LSI USA ’23",u:LSI},
  {d:"2019-07-30",s:"NIH RePORTER · NICHD",t:"SBIR Phase I: a pediatric autocatheter for intravenous access",u:RP+"9847051"},
  {d:"2018-09-21",s:"NIH RePORTER · NHLBI",t:"SBIR Phase I: an autocatheter for intravenous access",u:RP+"9621233"}
 ];
 var TEAM=[
- {slug:"zachary-berwick",nos:1,name:"Zachary Berwick",title:"Chief Scientific Officer",grp:"Leadership",sum:"Lead investigator on all three NIH SBIR awards, 2018–2026.",
+ {slug:"zachary-berwick",nos:1,name:"Zachary Berwick",title:"Chief Scientific Officer",grp:"Leadership",sum:"Lead investigator on all three NIH SBIR awards, 2018\u2060–\u20602026.",
   bio:["Zach Berwick is TrueCath’s Chief Scientific Officer and the contact principal investigator on each of the company’s NIH SBIR awards: the 2018 NHLBI Phase I for the adult autocatheter, and the 2019 NICHD Phase I and 2026 NICHD Phase II for the pediatric autocatheter.","He presented TrueCath at LSI USA ’23, describing the company’s mission to create a safe and reliable venous access device that simplifies IV insertion, reduces complications and improves patient satisfaction."],
   link:{t:"Watch the LSI USA ’23 presentation",u:LSI},q:"We’re making good nurses even better.",qs:"LSI USA ’23"},
  {slug:"boris-ratiner",nos:1,name:"Boris Ratiner",title:"Principal investigator, NICHD SBIR Phase II",grp:"Investigators",sum:"Phase II funds design verification, GLP safety studies and human factors work toward a 510(k).",
@@ -840,10 +844,10 @@ function head(o){
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
 function mRow(p){return '<li><div class="mh-row"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span></div></li>'}
-function team(){var g=[];TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});return '<section class="mh">'+g.map(function(k){return '<div class="mh-group"><p class="mh-label">'+esc(k)+'</p><ul class="mh-list">'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join("")+'</ul></div>'}).join("")+'</section>'}
+function team(){var g=[];TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});return '<section class="mh">'+g.map(function(k){return '<div class="mh-group" data-rvu><p class="mh-label">'+esc(k)+'</p><ul class="mh-list">'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join("")+'</ul></div>'}).join("")+'</section>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-var STAGES='<div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Feasibility</span><span>Verification · GLP</span><span>510(k)</span></span></div>';
-function prow(o){return '<div class="prow"><div><h3>'+o.n+'</h3><span class="tagp">'+o.tag+'</span></div><p class="ind">'+o.ind+'</p><div class="track"><i></i><i></i><i></i><span class="bar'+(o.p?' p':'')+'" style="width:'+o.w+'%"><b></b></span></div><p class="note">'+o.note+'</p></div>'}
+var STAGES='<div class="pipe-h lab" data-rvu><span>Program</span><span>Indication</span><span class="stg"><span>Feasibility</span><span>Verification · GLP</span><span>510(k)</span></span></div>';
+function prow(o){return '<div class="prow" data-rvu><div><h3>'+o.n+'</h3><span class="tagp">'+o.tag+'</span></div><p class="ind">'+o.ind+'</p><div class="track"><i></i><i></i><i></i><span class="bar'+(o.p?' p':'')+'" style="width:'+o.w+'%"><b></b></span></div><p class="note">'+o.note+'</p></div>'}
 var PIPE=[
  {n:"Pediatric autocatheter",tag:"NICHD · SBIR Phase II",ind:"Peripheral IV access in children and infants",w:40,note:"Phase I feasibility complete. Phase II (2026–2028) covers design-control verification, GLP safety studies and human factors assessment to support a 510(k) submission."},
  {n:"Adult autocatheter",tag:"NHLBI · SBIR Phase I",ind:"Peripheral IV access in adults",w:30,p:1,note:"Bench and in vivo studies of the adult variant reported a 98% first-attempt success rate in vivo. Phase I refined the safety feature and added a hemostasis valve in the hub."}
@@ -917,10 +921,10 @@ function makeScene(svg){
 }
 
 function perfSvg(){
-  var R=[["First-attempt success",122,"+122%"],["Repeat-attempt success",75,"≈ +75%"],["Overall success",75,"≈ +75%"],["Novice operators",250,"> +250%"]];
-  /* CM: one small svg per bar so each row rises as it is scrolled in, like the rows around it */
+  var R=[["First-attempt success",122,"+122%"],["Repeat-attempt success",75,"≈ +75%"],["Overall success",75,"≈ +75%"],["Novice operators",250,">+250%"]];
+  /* CM: one row per bar (HTML, so it rises with the rows around it and stays readable on phones) */
   var o='';
-  R.forEach(function(r,i){var wd=r[1]/250*560;o+='<svg class="pr" viewBox="0 0 900 66" role="presentation" focusable="false"><text x="0" y="22" class="pl">'+r[0]+'</text><rect class="pt" x="250" y="4" width="560" height="26" rx="13"/><rect class="pb" x="250" y="4" width="'+wd.toFixed(1)+'" height="26" rx="13"/><text x="'+(262+wd).toFixed(1)+'" y="23" class="pv">'+r[2]+'</text></svg>'});
+  R.forEach(function(r){var w=(r[1]/250*100).toFixed(2);o+='<div class="pr" data-rvu><span class="pl">'+r[0]+'</span><span class="pt"><span class="ptr"><i style="width:'+w+'%"></i><b style="left:'+w+'%">'+r[2]+'</b></span></span></div>'});
   return o}
 function anatomyV(){
   return '<svg viewBox="0 0 360 830" role="img" aria-label="Diagram of the TrueCath autocatheter: button, vacuum chamber, spring, catheter hub, soft gel catheter and needle"><g transform="translate(330 -40) rotate(90)">'+
@@ -1046,7 +1050,7 @@ function vTech(){
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Evidence</span><h2 class="d2 split">Faster than <em>a hand.</em></h2></div><p data-r>Bench and in vivo results reported in TrueCath’s NIH SBIR project abstracts.</p></div>'+
    '<ul class="cmp" data-group><li class="cmp-r cmp-h lab"><span>Measure</span><span>Result</span><span>Reported in</span></li>'+
-    [["Response time to deploy (bench)",'<span class="hi">0.23 s</span> vs 1.44 s for market predicates',"NICHD Phase II, 2026"],["Overall first-attempt success rate (in vivo)",'<span class="hi">+122%</span>',"NICHD Phase II, 2026"],["Success rate of novice operators (in vivo)",'<span class="hi">&gt;250%</span> improvement',"NICHD Phase II, 2026"],["First-attempt success, adult variant (in vivo)",'<span class="hi">98%</span>',"NHLBI Phase I, 2018"]].map(function(r){return '<li class="cmp-r"><span class="lab">'+r[0]+'</span><span>'+r[1]+'</span><span class="lab">'+r[2]+'</span></li>'}).join("")+'</ul>'+
+    [["Response time to deploy\u00a0(bench)",'<span class="hi">0.23 s</span> vs 1.44 s for market predicates',"NICHD Phase II, 2026"],["Overall first-attempt success rate\u00a0(in\u00a0vivo)",'<span class="hi">+122%</span>',"NICHD Phase II, 2026"],["Success rate of novice operators\u00a0(in\u00a0vivo)",'<span class="hi">&gt;+250%</span>',"NICHD Phase II, 2026"],["First-attempt success, adult variant\u00a0(in\u00a0vivo)",'<span class="hi">98%</span>',"NHLBI Phase I, 2018"]].map(function(r){return '<li class="cmp-r"><span class="lab">'+r[0]+'</span><span>'+r[1]+'</span><span class="lab">'+r[2]+'</span></li>'}).join("")+'</ul>'+
    '<div class="perf" role="figure" aria-label="Bar chart of TrueCath preclinical improvement: first-attempt success plus 122 percent, repeat-attempt and overall success about plus 75 percent, novice operators more than plus 250 percent">'+perfSvg()+'<p class="lab cap">In vivo improvement vs market-leading devices · as presented by TrueCath (NIH SBIR abstract; LSI USA ’23)</p></div>'+
    '<p class="note-s" data-r>Preclinical data. The autocatheter is investigational and has not been cleared by the FDA.</p>'+
   '</div></section>'+cta();
@@ -1080,7 +1084,7 @@ function vContact(){
   return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Partnering, clinical collaboration or investment: send a note and the team will route it to the right person.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Headquarters</span><h3>Camarillo, California</h3><p>708 Via Alondra<br>Camarillo, CA 93012</p>'+
-    '<div class="map">'+mapSvg()+'</div></div>'+
+    '<div class="map" data-rvu>'+mapSvg()+'</div></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","How can we help?","ta",1,1)+
     '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:#6a2c99;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. In the live site this form would reach the TrueCath team directly.</p></div></div>'+
@@ -1214,10 +1218,10 @@ function makeField(cv,Q){
     txt("CATHETER DEPLOYED · 0.23 S",T[0]+DX*ext+30,VY+VR+36+30/sc,al*sm((u-4.0)/.5),sc,vc);
     c.restore();
     /* the scene dissolves toward the copy (desktop: left; mobile: bottom) so text always sits on calm paper */
-    if(Q){c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-in";var fq=c.createLinearGradient(0,0,w,0);fq.addColorStop(0,"rgba(0,0,0,0)");fq.addColorStop(.22,"rgba(0,0,0,1)");fq.addColorStop(.78,"rgba(0,0,0,1)");fq.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fq;c.fillRect(0,0,w,h);c.globalCompositeOperation="source-over"}
+    if(Q){c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-in";var fq=c.createLinearGradient(0,0,w,0),qa=0,qb=.22;if(w>860){var qr=heroCopyR();if(qr>0){qa=Math.min(.5,(qr+16)/w);qb=Math.max(qb,Math.min(.6,qa+140/w))}}fq.addColorStop(0,"rgba(0,0,0,0)");if(qa>0)fq.addColorStop(qa,"rgba(0,0,0,0)");fq.addColorStop(qb,"rgba(0,0,0,1)");fq.addColorStop(.78,"rgba(0,0,0,1)");fq.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fq;c.fillRect(0,0,w,h);c.globalCompositeOperation="source-over"}
     if(!Q){c.globalCompositeOperation="destination-out";var fg2;
     if(w<861){fg2=c.createLinearGradient(0,h*.36,0,h*.56);fg2.addColorStop(0,"rgba(0,0,0,0)");fg2.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fg2;c.fillRect(0,h*.36,w,h*.64)}
-    else{var G=heroGrid(),f0=w<1100?.42:.34,f1=w<1100?.66:.6;fg2=c.createLinearGradient(G.l+G.c*f0,0,G.l+G.c*f1,0);fg2.addColorStop(0,"rgba(0,0,0,1)");fg2.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg2;c.fillRect(0,0,G.l+G.c*f1,h);
+    else{var G=heroGrid(),f0=w<1100?.42:.34,f1=w<1100?.66:.6,x0=G.l+G.c*f0,x1=G.l+G.c*f1,tr=heroCopyR();/* the drawing stays clear of the copy: fully erased up to the paragraph's line ends, then a soft fade */if(tr+16>x0){x1=Math.max(x1,tr+16+(x1-x0));x0=tr+16}fg2=c.createLinearGradient(x0,0,x1,0);fg2.addColorStop(0,"rgba(0,0,0,1)");fg2.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fg2;c.fillRect(0,0,x1,h);
       if(true){var rx=G.r-30,re=Math.min(w,G.r+50);var fr=c.createLinearGradient(rx,0,re,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fr;c.fillRect(rx,0,w-rx,h)}}
     }c.globalCompositeOperation="source-over";
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
@@ -1312,7 +1316,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
     }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",charsClass:"ch",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){s2.revert()}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
-    $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
+    /* CM: section headings join the global reveal (rvView), so each section enters in one ordered stagger */
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1339,6 +1343,7 @@ function rvMarks(root){var A=new Set(),K=new Set();
   return {A:A,K:K}}
 function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
   if(M.A.has(c)||c.matches(RV_SKIP))continue;
+  if(c.matches("[data-rvu]")){var cu=getComputedStyle(c);if(cu.display!=="none"&&cu.visibility!=="hidden"){var ru=c.getBoundingClientRect();if(ru.width>1&&ru.height>1)out.push(c)}continue}/* CM: a block whose rules, tracks or frame belong to its text reveals as one piece */
   var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}/* a figure with ambient motion inside still fades in as one piece */
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
@@ -1355,6 +1360,8 @@ function rvHide(el){
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
   if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.35,ease:"power1.out",delay:dl,overwrite:true,clearProps:"opacity"});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
+/* CM: within one entering batch the section heading leads, then the rest in reading order */
+function rvOrd(b){var h=b.filter(function(el){return !!el._rvS}),o=b.filter(function(el){return !el._rvS});return h.concat(o)}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 /* scroll-driven: everything in the view that nothing else animates */
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
@@ -1362,9 +1369,9 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */
   /* CM: what is on the first screen reveals with the page entrance (one small stagger); everything below waits hidden and rises as it is scrolled in, so no block is ever seen arriving already in place */
-  var fh=items.filter(function(el){return el.getBoundingClientRect().top<innerHeight*.9}),rest=items.filter(function(el){return fh.indexOf(el)<0});
-  if(fh.length)rvGo(fh,base(),Math.min(.06,.45/fh.length));
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  var fh=items.filter(function(el){return el.getBoundingClientRect().top<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)rvGo(rvOrd(fh),base(),Math.min(.06,.45/fh.length));
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 98%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(rvOrd(b),base())}})}
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */

@@ -1194,9 +1194,9 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.getTweensOf(t[0]).some(function(w){return !w.paused()&&w.progress()<1})&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 function failsafe(){setTimeout(function(){rvFail();$$("#view .ln-mask").forEach(function(m){var k=m.firstElementChild||m;if(!gsap.isTweening(k)&&+getComputedStyle(k).opacity>.98){m.style.overflow="visible";m.style.clipPath="none"}});var heroBusy=false;HERO_TL.forEach(function(t){if(!t||t.progress()>=1)return;if(t.isActive&&t.isActive()){heroBusy=true;return}if(t.paused&&t.paused()){t.play();heroBusy=true;return}t.progress(1)});if(heroBusy){failsafe();return}
-  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.getTweensOf(el).some(function(w){return !w.paused()&&w.progress()<1})&&!(el.parentElement&&gsap.getTweensOf(el.parentElement).some(function(w){return !w.paused()&&w.progress()<1}))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 var storyAlive=false,story=null;
 /* ================= STORY CANVAS: one scope, four states. Cables retract, a drive appears, the handle becomes haptic, the module separates ================= */

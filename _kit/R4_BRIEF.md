@@ -10,7 +10,7 @@ The client looked at a few sites and found more defects, and expects the same pr
    - CK walk-through: physically right, no edge-fade over labels, no ambiguous duplicate outlines, plain-language labels.
    - CC footer wordmark fits.
 3. Do not change anything else: no redesigns beyond these standards. The sites are otherwise approved.
-4. Gates, ONE AT A TIME, on the routes you changed: polish-audit, navtest, smoke, split-audit, balance-audit, logo-audit, overlay-audit, clip-audit at 1440 and 390 (--bios on the people route). prepush-check before every push. Same folders; URLs never change.
+4. Gates, ONE AT A TIME, on the routes you changed: loader-audit (preloader text must not overlap at 390/1440), polish-audit, navtest, smoke, split-audit, balance-audit, logo-audit, overlay-audit, clip-audit at 1440 and 390 (--bios on the people route). prepush-check before every push. Same folders; URLs never change.
 5. ONE fresh-critic pass per site (a subagent that has not seen the code), given full-size screenshots of: the hero during and after load (several frames in the first 3s), the "Why it matters" block centred, every walk-through step at full size, the team section plus a hovered card, partner/funder section, footer, all at 1440 and 390, plus the v13–v16 critique list. Fix what it finds, then stop; no second loop unless it found a v16 violation.
 6. Report to session_014388NFYUsdqRg21Sq5nZUz per site: "R4 DONE: <slug>" + commit + one line per item. If you hit a usage limit, resume as soon as it resets. No outreach.
 

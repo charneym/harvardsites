@@ -122,4 +122,4 @@ Not used, with reasons:
 - Funding rows: grant meta lines use the readable muted colour on dark and align under the title on mobile. The loader counter no longer runs backwards (the intro count is stopped before the exit count).
 - Via walk-through labels: OUTER SKIN BARRIER, HUNDREDS OF FORMULATIONS TESTED ON HUMAN SKIN, BEST FORMULATION, SKIN-CANCER LESION, MANUFACTURING / ANIMAL STUDIES / SAFETY STUDIES / PHASE 1 TRIAL. Rail step "File" renamed "Clinic". The duplicate DERMIS label in the Deliver step was dropped (it collided with "VT103 held in the dermis"). On narrow screens the milestone labels sit in two rows.
 - Via team: Operations (one person) joins the leadership row as "Leadership and operations", so there is no stranded single tile.
-- Via home: "Five new awards in 2026" now lists all five 2026 awards (it listed four). "OINDP" buttons now read "inhaled & nasal".
+- Via home: "Five new awards in 2026" now lists all five 2026 awards (it listed four). The "OINDP" buttons now read "Inhaled & nasal services", short enough not to clip at 390.

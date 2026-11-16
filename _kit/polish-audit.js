@@ -21,11 +21,14 @@ const { chromium } = require('playwright'); const path = require('path');
         let hit = 0; glyphs.forEach(g => { const r = g.getBoundingClientRect(); if (others.some(o => r.bottom > o.top + 3 && r.top < o.bottom - 3 && r.right > o.left && r.left < o.right)) hit++; });
         f.heads.push({ hi, hit, txt: h.textContent.trim().slice(0, 30), op: [...h.querySelectorAll('*')].filter(e => !e.children.length && e.textContent.trim()).map(e => { let o = 1, a = e; while (a && a !== h.parentElement) { o *= +getComputedStyle(a).opacity; a = a.parentElement; } const m = new DOMMatrixReadOnly(getComputedStyle(e).transform); const r = e.getBoundingClientRect(); return [Math.round(o * 100), Math.round(r.top), e.textContent.trim().slice(0, 4)]; }) });
         h.querySelectorAll('.ln-mask, [class*=mask]').forEach(m => { if (!/hidden|clip/.test(getComputedStyle(m).overflowX) && getComputedStyle(m).clipPath === 'none') return; const mr = m.getBoundingClientRect(); const rg = document.createRange(); rg.selectNodeContents(m); const cr = [...rg.getClientRects()].filter(x => x.width > 1); if (cr.length && Math.max(...cr.map(x => x.right)) > mr.right + 2) f.masks.push(h.textContent.trim().slice(0, 30)); }); });
-      window.__frames.push(f); } if (performance.now() < 7000) requestAnimationFrame(tick); }; requestAnimationFrame(tick); });
-    await p.goto(url); await p.waitForTimeout(7000);
+      window.__frames.push(f); } if (performance.now() < 9000) requestAnimationFrame(tick); }; requestAnimationFrame(tick); });
+    // emulate a slower device (4x CPU) so timer races (failsafes firing mid-entrance) show up as they do on real laptops
+    const cdp = await ctx.newCDPSession(p); await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+    await p.goto(url); await p.waitForTimeout(9000);
     const fr = await p.evaluate(() => window.__frames);
+    await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
     const pop = new Set();
-    for (let i = 1; i < fr.length; i++) { const dt = fr[i].t - fr[i - 1].t; if (dt > 80) continue; fr[i].heads.forEach((h, hi) => { const prev = fr[i - 1].heads[hi]; if (!prev || !prev.op || prev.op.length !== h.op.length) return; h.op.forEach((g, gi) => { const q = prev.op[gi]; if (q[0] < 35 && g[0] > 90) pop.add(`"${g[2]}" in "${h.txt}"`); if (Math.abs(q[1] - g[1]) > 40 && g[0] > 50) pop.add(`"${g[2]}" (jumps ${Math.abs(q[1] - g[1])}px) in "${h.txt}"`); }); }); }
+    for (let i = 1; i < fr.length; i++) { const dt = fr[i].t - fr[i - 1].t; if (dt > 160) continue; fr[i].heads.forEach((h, hi) => { const prev = fr[i - 1].heads[hi]; if (!prev || !prev.op || prev.op.length !== h.op.length) return; h.op.forEach((g, gi) => { const q = prev.op[gi]; if (q[0] < 35 && g[0] > 90) pop.add(`"${g[2]}" in "${h.txt}"`); if (Math.abs(q[1] - g[1]) > 40 && g[0] > 50) pop.add(`"${g[2]}" (jumps ${Math.abs(q[1] - g[1])}px) in "${h.txt}"`); }); }); }
     pop.forEach(t => out.push(`[${w}] POPIN: ${t} snaps into view in one frame instead of animating (often a failsafe timer firing before the entrance has finished)`));
     const und = new Set(), mc = new Set(); fr.forEach(f => { f.heads.forEach(h => { if (h.hit) und.add(h.txt); }); f.masks.forEach(m => mc.add(m)); });
     und.forEach(t => out.push(`[${w}] UNDERLAP: entrance glyphs of "${t}" overlap the text below/around it while animating`));

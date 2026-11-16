@@ -52,7 +52,7 @@ const { chromium } = require('playwright'); const path = require('path');
       const singles = [...new Set(links.filter(l => l.t.length === 1 && /[A-Za-z0-9]/.test(l.t)).map(l => `"${l.t}" → ${l.h}`))];
       singles.forEach(s => out.push(`[1440] LINK: single-character link ${s}; remove it or make it a real labelled link`));
       const internal = [...new Set(links.map(l => l.h).filter(h => /^#\//.test(h)))];
-      for (const h of internal) { await p.evaluate(h => { location.hash = h; }, h); await p.waitForTimeout(900); const nf = await p.evaluate(() => /not found|404|page doesn.t exist|no such page/i.test((document.querySelector('#view') || document.body).innerText.slice(0, 600))); if (nf) out.push(`[1440] LINK: ${h} leads to a not-found page`); }
+      for (const h of internal) { await p.evaluate(h => { location.hash = h; }, h); await p.waitForTimeout(900); const nf = await p.evaluate(() => /not found|page (doesn.t|does not) exist|no such page|^\s*404\s*$/im.test((document.querySelector('#view') || document.body).innerText.slice(0, 600))); if (nf) out.push(`[1440] LINK: ${h} leads to a not-found page`); }
       await p.keyboard.press('Escape').catch(() => {});
     }
     await ctx.close();

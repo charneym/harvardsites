@@ -1,7 +1,32 @@
 # Design and QA principles: HARD rules for every site
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
-# v15 (latest; HARD rules from the client's third review: "there are simply errors that shouldn't be happening here or ever again")
+
+# v16 (latest; client review round 4: "these are likely general problems ... I just need you to be better and fix them")
+Gate for the measurable ones: `node _kit/polish-audit.js <file> "<people route>"` must print OK (OVERFLOW, MASKCLIP, UNDERLAP, POPIN, HOVER, LINK, SCRUB, CUE). The rest are design standards a reviewer checks on screenshots.
+
+**CC. Nothing runs off the page.** The footer wordmark (or any display type) fits inside the side margins on one line at every width: size it to fit (measure and scale, e.g. font-size from the container width), never let it bleed off-screen. Client: "why is their name off the footer". Gate: OVERFLOW.
+
+**CD. Entrances never break the layout.** (1) A heading's reveal mask must be at least as wide as the heading's real text, or glyphs are clipped during the entrance and pop in when the mask is released (AAL's "repair it." lost "r it."); set the heading's measure so its longest line fits. (2) While glyphs rise in, they must never pass over another element (Oak's title "underlapped" its paragraph: the descender room under each masked line overlapped the paragraph). Keep the travel inside the line's own box (start at yPercent ≤ 100 with opacity 0 and a mask that does not extend into the next element), or give the heading enough margin. (3) No snapping: a failsafe may only complete animations that have stalled, never ones still running (fixed centrally in all sites: the failsafe now skips elements that are tweening). Gates: MASKCLIP, UNDERLAP, POPIN.
+
+**CE. No scroll cues.** Remove hero scroll cues (moving lines, arrows, "scroll" labels). Client on ImmuneBro: "why is there a line moving up/down AND an arrow, and the line not staying on the arrow". Gate: CUE.
+
+**CF. Every link works and says what it is.** No link to a route that doesn't exist, no single-letter links (ImmuneBro's footer "E" → page not found). Gate: LINK.
+
+**CG. Hover is immediate and smooth.** Any hover change (colour, image filter, background, underline) starts at once and eases over 0.2–0.4s; no transition-delay, no snap. Prefer colour/underline/arrow motion over filled backgrounds; if a hover fills a background, it has the element's full padding (Elements' Phase II aim cards: "the spacing when hovered is just so weird/tight"). Gate: HOVER.
+
+**CH. Scroll-coloured statements finish colouring by mid-screen.** When the "Why it matters" block sits in the middle of the screen every word is fully coloured (Oak: "some text is literally faded out even though I'm fully on the section"). Also size the block to the page: a large statement that fills the content measure (about 65–75% of the container, centred, text left-aligned), not a narrow column floating in empty space. Gate: SCRUB.
+
+**CI. Team sections look like a premier design studio made them.** Client on Elements and Virtus: "why is the formatting of the people on the team just so poor and unprofessional — you really think a world-class, premier design team would make that?" One standard, two forms:
+- With good portraits: a uniform portrait grid (same aspect ratio and crop for everyone, e.g. 4:5), name 20–24px, role 14–15px muted directly beneath, no boxes, no "Profile" label; the whole tile is the link; hover = the portrait warms from duotone/greyscale to colour and a small arrow appears, over 0.3s.
+- Without portraits: a masthead list, full content width. Each person is one row: name in display type (28–34px) | role | one-line summary, aligned to a shared column grid, hairline rules between rows, generous row height. Group headings (Leadership, Board, Advisors) as small eyebrow labels. Hover = name colour shift + arrow nudge, no filled background.
+- Never: bordered or filled boxes, tight hover fills, stranded "Profile" labels, cards of unequal height, a lone card, mixed formats in one group.
+
+**CJ. Partner and funder names are a clean credit line.** When partners are set in type (BW), show them as one consistent credit line: same size and weight, evenly spaced, wrapping centred, under a small "Validated with" style label. Never a table-like grid with rules that looks like the list beside it (AAL "Built and tested at MIT": "the different line formats are just confusing ... the section [is] simply unclear"). Each section uses ONE format.
+
+**CK. Walk-through drawings obey physics and read cleanly.** Objects behave like the real thing: orientation, contact and gravity are right (Oak's strip "dissolves sideways but is placed down on the tongue": a strip lies flat on the tongue and dissolves from the face that touches it). No canvas edge-fade over labels or key shapes (Oak's "edges of words initially are faded"). No ambiguous duplicate outlines (a drop-shadow or thickness rectangle offset from the object reads as "two boxes, one off-centre"). Every label names something a first-time viewer recognises; if a term is jargon (e.g. "support matrix"), say what it is in plain words.
+
+# v15 ( HARD rules from the client's third review: "there are simply errors that shouldn't be happening here or ever again")
 Root cause of this round: every automated gate passed while the sites still looked unfinished. Gates prove things work; they do not prove things look right. So v15 adds gates for each measurable defect AND a mandatory visual sign-off (CB). A site is not done until both pass.
 
 **BS. Text never jumps.** A split-text reveal must not change layout. Client: "No pills. No needles. No surgery." animates in, "then it stops and just jumps together." Cause: `.ln-mask{padding:.16em .14em .26em;margin:-.16em -.14em -.26em}`. Stacked masks' negative bottom/top margins COLLAPSE instead of adding, so every split line gains ~.16em, and when the split is reverted the lines snap together. Use exactly:

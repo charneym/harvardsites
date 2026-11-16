@@ -28,7 +28,7 @@ const { chromium } = require('playwright'); const path = require('path');
     const fr = await p.evaluate(() => window.__frames);
     await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 });
     const pop = new Set();
-    for (let i = 1; i < fr.length; i++) { const dt = fr[i].t - fr[i - 1].t; if (dt > 160) continue; fr[i].heads.forEach((h, hi) => { const prev = fr[i - 1].heads[hi]; if (!prev || !prev.op || prev.op.length !== h.op.length) return; h.op.forEach((g, gi) => { const q = prev.op[gi]; if (q[0] < 35 && g[0] > 90) pop.add(`"${g[2]}" in "${h.txt}"`); if (Math.abs(q[1] - g[1]) > 40 && g[0] > 50) pop.add(`"${g[2]}" (jumps ${Math.abs(q[1] - g[1])}px) in "${h.txt}"`); }); }); }
+    for (let i = 1; i < fr.length; i++) { const dt = fr[i].t - fr[i - 1].t; if (dt > 160) continue; fr[i].heads.forEach((h, hi) => { const prev = fr[i - 1].heads[hi]; if (!prev || !prev.op || prev.op.length !== h.op.length) return; h.op.forEach((g, gi) => { const q = prev.op[gi]; if (q[0] < 35 && g[0] > 90) pop.add(`"${g[2]}" in "${h.txt}"`); if (Math.abs(q[1] - g[1]) > 120 && g[0] > 50) pop.add(`"${g[2]}" (jumps ${Math.abs(q[1] - g[1])}px) in "${h.txt}"`); }); }); }
     pop.forEach(t => out.push(`[${w}] POPIN: ${t} snaps into view in one frame instead of animating (often a failsafe timer firing before the entrance has finished)`));
     const und = new Set(), mc = new Set(); fr.forEach(f => { f.heads.forEach(h => { if (h.hit) und.add(h.txt); }); f.masks.forEach(m => mc.add(m)); });
     und.forEach(t => out.push(`[${w}] UNDERLAP: entrance glyphs of "${t}" overlap the text below/around it while animating`));

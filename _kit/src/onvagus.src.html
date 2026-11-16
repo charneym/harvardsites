@@ -1249,8 +1249,8 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ================= AZ: GLOBAL REVEAL (everything enters; one helper for every route, overlay and step) ================= */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.fg";
-var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.fg";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.fg,.pipe-h,.prow";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.fg,.pipe-h,.prow";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
 function rvMarks(root){var A=new Set(),K=new Set();
@@ -1263,7 +1263,7 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}/* a figure with ambient motion inside still fades in as one piece */
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     /* BB: a unit taller than ~35% of the screen reveals piecewise, so its lower part never appears before it is scrolled into view */
-    if(r.height>innerHeight*.35&&!c.matches("picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.height>innerHeight*.35&&!c.matches("picture,.prow,.pipe-h")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
   rvWalk(c,out,M)}}
 function rvHide(el){
@@ -1272,7 +1272,7 @@ function rvHide(el){
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
-function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
+function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;if(el._rvLead&&!el._rvLead._rvDone)rvGo([el._rvLead],dl);
   if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
@@ -1282,12 +1282,14 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  /* CM: an eyebrow label enters with the heading beneath it, never alone above the fold */
+  rest.forEach(function(el){var n=el.nextElementSibling;if(n&&el.matches(".kick,.eyebrow")&&rest.indexOf(n)>=0){n._rvLead=el;el._rvFollow=1}else if(n&&el.matches(".kick,.eyebrow")&&n.matches(".split")){el._rvFollow=1;ScrollTrigger.create({trigger:n,start:"top 90%",once:true,onEnter:function(){rvGo([el],base())}})}});rest=rest.filter(function(el){return !el._rvFollow});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
   if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
-function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;if(el._rvFollow&&!el._rvDone&&el.nextElementSibling&&el.nextElementSibling.getBoundingClientRect().top>innerHeight*.9)return;
   if(!el._rvDone){rvGo([el],0);return}
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */

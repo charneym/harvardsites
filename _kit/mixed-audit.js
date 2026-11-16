@@ -31,7 +31,7 @@ const { chromium } = require('playwright'); const path = require('path');
     await p.evaluate(() => window.scrollTo(0, 0)); for (let k = 0; k < 6; k++) { await p.evaluate(() => window.__mxTick()); await p.waitForTimeout(100); }
     for (let k = 0; k < 120; k++) { await p.evaluate(() => window.__mxTick()); const d = await p.evaluate(() => scrollY + innerHeight >= document.documentElement.scrollHeight - 4); if (d) break; await p.mouse.wheel(0, 220); await p.waitForTimeout(110); }
     for (let k = 0; k < 10; k++) { await p.evaluate(() => window.__mxTick()); await p.waitForTimeout(150); }
-    const res = await p.evaluate(() => { const bySec = new Map(); window.__mx.forEach(rec => { if (!rec.sec.isConnected) return; const anim = rec.kid || rec.op0 < 0.55 || (!rec.st && Math.abs((rec.y0 || 0) - (rec.y1 || 0)) > 10); // sticky columns move with scroll, not an entrance const k = rec.sec; if (!bySec.has(k)) bySec.set(k, { a: [], s: [] }); (anim ? bySec.get(k).a : bySec.get(k).s).push(rec.txt); });
+    const res = await p.evaluate(() => { const bySec = new Map(); window.__mx.forEach(rec => { if (!rec.sec.isConnected) return; const anim = rec.kid || rec.op0 < 0.55 || (!rec.st && Math.abs((rec.y0 || 0) - (rec.y1 || 0)) > 10); const k = rec.sec; if (!bySec.has(k)) bySec.set(k, { a: [], s: [] }); (anim ? bySec.get(k).a : bySec.get(k).s).push(rec.txt); });
       const o = []; bySec.forEach((v, sec) => { if (v.a.length >= 2 && v.s.length >= 2) o.push(`section "${(sec.querySelector('h2,h3') || sec).innerText.trim().split('\n')[0].slice(0, 30)}": ${v.a.length} blocks animate, ${v.s.length} don't (e.g. ${v.s.slice(0, 3).map(x => '"' + x + '"').join(', ')})`); }); return o; });
     res.forEach(x => out.push(`${r} MIXED: ${x}`));
   }

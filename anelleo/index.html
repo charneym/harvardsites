@@ -486,6 +486,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .mh-role,.mh-sum{grid-column:1 / -1}
   .mh-sum{-webkit-line-clamp:3}
 }
+@media (max-width:760px){div.mh-row{grid-template-columns:1fr 20px}}
 .mh{--mh-ink:var(--fg);--mh-mute:var(--mu);--mh-line:var(--hr);--mh-accent:var(--ac);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono)}
 .quiet{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 var(--gap)}
 .quiet li{border-top:1px solid var(--hr);padding:18px 0 22px}
@@ -1159,6 +1160,13 @@ hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=wi
 /* ================= VIEW ANIMATIONS ================= */
 var ctx=null,HERO_TL=[],ENTRY=0;
 function unmask(st){try{(st.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}catch(e){}}
+/* CP: splitting into chars drops kerning/word-spacing, so a title that just fits can wrap onto an extra line
+   during its entrance (stray tail glyphs, a second line rising through the subtext). Split at the natural line count. */
+function nLines(el){var r=document.createRange();r.selectNodeContents(el);var t=[];[].forEach.call(r.getClientRects(),function(b){if(b.width<1)return;if(!t.some(function(y){return Math.abs(y-b.top)<b.height*.5}))t.push(b.top)});return t.length}
+function fitSplit(el,o){var n=nLines(el),w0=el.getBoundingClientRect().width,s=SplitText.create(el,o),k=0;
+  while(s.lines.length>n&&k<5){s.revert();k++;el.style.maxWidth="none";el.style.width=Math.ceil(w0*(1+.035*k))+"px";s=SplitText.create(el,o)}
+  return s}
+function fitDone(el){el.style.width="";el.style.maxWidth=""}
 function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
@@ -1187,7 +1195,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];window._hg=null;reques
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2)}}))}
+    }else if(t&&!RM){var s2=fitSplit(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){unmask(s2);fitDone(t)}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){splitReveal(el,E)});
     if(k==="home")homeScroll(view);

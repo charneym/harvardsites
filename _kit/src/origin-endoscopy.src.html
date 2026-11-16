@@ -831,7 +831,7 @@ var NEWS=[
  {d:"2023-05-05",s:"MTEC",t:"Company profile: an early-stage med-tech company focused on more effective solutions to control GI bleeding",u:"https://mtec-sc.org/life-sciences/origin-endoscopy"}
 ];
 var TEAM=[
- {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",sum:"Leads the 2026 NIDDK Direct-to-Phase II SBIR award developing EpiMAX for long-lasting control of GI bleeding.",
+ {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",sum:"Leads the 2026 NIDDK SBIR award to develop EpiMAX for GI bleeding.",
   bio:["Jeremy Starkweather is the contact principal investigator on Origin Endoscopy’s 2026 NIDDK Direct-to-Phase II SBIR award to develop EpiMAX, an injectable hemostatic agent for long-acting hemostasis of gastrointestinal bleeding."]},
  {slug:"venkata-akshintala",name:"Dr. Venkata Akshintala",title:"Co-inventor · Acting Chief Medical Officer",grp:"Founders",sum:"Co-developed the core technology; won the ASGE Shark Tank trophy for it.",
   bio:["Dr. Venkata Akshintala co-developed Origin Endoscopy’s primary technology and serves as the company’s acting Chief Medical Officer.","Representing ASGE, he won the Shark Tank trophy for a product designed to address bleeding after GI procedures."],
@@ -1160,7 +1160,7 @@ function makeField(cv,Q){
     var lc="rgba("+INK+",.62)",vc="rgb(156,37,96)";if(w<861)e=0;
     txt("GUT LINING",250,SURF+36,e*.9,sc,lc);
     txt("TISSUE BENEATH",250,40,e*.9,sc,lc);
-    txt("MUSCLE LAYER",250,222,e*.9,sc,lc);
+    txt("MUSCLE LAYER",250,200,e*.9,sc,lc);
     c.restore();
     if(Q){c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-in";var fq=c.createLinearGradient(0,0,w,0);fq.addColorStop(0,"rgba(0,0,0,0)");fq.addColorStop(.22,"rgba(0,0,0,1)");fq.addColorStop(.78,"rgba(0,0,0,1)");fq.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=fq;c.fillRect(0,0,w,h);c.globalCompositeOperation="source-over"}
     if(!Q){c.globalCompositeOperation="destination-out";var fg2;
@@ -1261,7 +1261,10 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){keepT(t,s2)}}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});/* CP (R5): lines rise in order; each line starts only when the one above has nearly landed, so a wrapped title's lines never cross each other mid-entrance */
+      var ttl=gsap.timeline({delay:E+.05,onComplete:function(){keepT(t,s2)}}),at=0;
+      s2.lines.forEach(function(ln){var cs=s2.chars.filter(function(c){return ln.contains(c)});if(!cs.length)return;ttl.from(cs,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018}},at);at+=cs.length*.018+.42});
+      HERO_TL.push(ttl)}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1280,8 +1283,8 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ================= AZ: GLOBAL REVEAL (everything enters; one helper for every route, overlay and step) ================= */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.fg,.bk,.cmp-r,.ind";
-var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.fg,.bk,.cmp-r,.ind";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.fg,.bk,.cmp-r,.ind,.cols>.c";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.fg,.bk,.cmp-r,.ind,.cols>.c";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
 function rvMarks(root){var A=new Set(),K=new Set();
@@ -1308,7 +1311,7 @@ function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._r
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 /* scroll-driven: everything in the view that nothing else animates */
-function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
+function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.55;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */

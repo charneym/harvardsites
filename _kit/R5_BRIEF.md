@@ -1,0 +1,9 @@
+# Round 5 brief (client review 5)
+Read the v17 section at the top of _kit/PRINCIPLES.md (CL–CQ). First `git pull --rebase` and confirm the log contains "All sites: footer wordmark as one piece" (central fixes); if it is not there yet, wait 10 minutes and pull again. For EACH of your sites:
+1. CL: every horizontal person list (home and team) uses `_kit/components/masthead.html` exactly. Copy its <style> block, map tokens to the site's palette and fonts, and render your people with its markup. Make all rows in a list consistent (all open a sheet, or none). Portrait grids stay as they are, but check their hover per CO.
+2. CM: `node _kit/mixed-audit.js <slug>/index.html` must print OK. Bring every static block in a mixed section into the reveal (same motion, small uniform stagger).
+3. CN: look at every section for small content floating in large empty space (pull quotes, lone lines, lone cards), and tighten or remove it.
+4. Gates, one at a time: mixed-audit, masthead-audit (people route and #/), polish-audit, loader-audit, navtest, smoke, split, balance, clip 1440/390 (--bios on the people route); prepush-check before every push.
+5. One fresh-critic pass on screenshots of the people section (rest and hover), every section that changed, and the page-title entrance on each route at 1440, 1100 and 390. Fix v17 findings.
+Report "R5 DONE: <slug>" per site to session_014388NFYUsdqRg21Sq5nZUz. If you hit a usage limit, resume as soon as it resets. No outreach.
+Client's specific notes: maxq team quote floats in too much white space (CN), and its team title "The people / behind MaxQ." passed over the subtext (CP, fixed centrally: verify). virtus funders ("NIH · NINDS", Blavatnik, PITCH, BioCT) and pipeline rows ("PKAN · late lead", "backups to VTAC-2", "Distinguishing PKAN cells") don't animate while their neighbours do (CM). onvagus has the same (CM). maxq's team hover is too subtle (CO, via the masthead component).

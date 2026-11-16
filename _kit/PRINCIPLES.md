@@ -2,7 +2,15 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
-# v16 (latest; client review round 4: "these are likely general problems ... I just need you to be better and fix them")
+# v17 (latest; client review round 5)
+**CL. One people-list format everywhere.** Horizontal person lists use `_kit/components/masthead.html` exactly (markup, metrics, hover), re-skinned with tokens only. Client: "why is there soooo much vertical spacing ... maybe it all, including the text, just needs to be smaller ... figure out one format and apply it to all ... think about what a professional agency would do." Name 21px, role 13.5px, summary 14.5px, row padding 18px, groups 56px apart. Within one list every row behaves the same (all open a sheet, or none). Gate: `node _kit/masthead-audit.js <file> "<route>"`.
+**CM. A section animates as a whole.** If anything in a section reveals on scroll, every block in it does (headings, labels, rows, rules, captions), with the same motion and a small uniform stagger. Client: "why on some sites do some things in the same section animate up but not others!!! shouldn't everything?" (Virtus funders and pipeline rows; OnVagus). Usual cause: rows rendered by a helper outside the reveal collector, or excluded by RV_SKIP. Gate: `node _kit/mixed-audit.js <file>` must print OK.
+**CN. Space is proportional to content.** No small element (a pull quote, a single line, a lone card) floating in a band of empty space. Client on MaxQ's team quote: "it looks out of place because there's just so much white space". A pull quote sits in the flow at the section's normal padding, sized to the measure, or it goes.
+**CO. Hover is visibly alive.** A clickable person row/tile must do more than change text colour: the masthead draws an underline and slides its arrow 8px; portrait tiles warm the portrait and show the arrow. Gate: polish-audit HOVER ("only changes text colour").
+**CP. Page titles never pass over their subtext** on any route, at any width where they wrap (MaxQ "The people / behind MaxQ."). Fixed centrally: title and heading entrances now travel one line (yPercent 100). Gate: polish-audit UNDERLAP now also checks every sub-route's title.
+**CQ. Shared animations, fixed centrally (do not undo):** the footer wordmark fades and rises as one piece (no per-letter split, which flashed); the page-transition layer, logo included, fades out with the page name; failsafes never snap running or queued entrances.
+
+# v16 ( client review round 4: "these are likely general problems ... I just need you to be better and fix them")
 Gate for the measurable ones: `node _kit/polish-audit.js <file> "<people route>"` must print OK (OVERFLOW, MASKCLIP, UNDERLAP, POPIN, HOVER, LINK, SCRUB, CUE). The rest are design standards a reviewer checks on screenshots.
 
 **CC. Nothing runs off the page.** The footer wordmark (or any display type) fits inside the side margins on one line at every width: size it to fit (measure and scale, e.g. font-size from the container width), never let it bleed off-screen. Client: "why is their name off the footer". Gate: OVERFLOW.
@@ -19,7 +27,7 @@ Gate for the measurable ones: `node _kit/polish-audit.js <file> "<people route>"
 
 **CI. Team sections look like a premier design studio made them.** Client on Elements and Virtus: "why is the formatting of the people on the team just so poor and unprofessional — you really think a world-class, premier design team would make that?" One standard, two forms:
 - With good portraits: a uniform portrait grid (same aspect ratio and crop for everyone, e.g. 4:5), name 20–24px, role 14–15px muted directly beneath, no boxes, no "Profile" label; the whole tile is the link; hover = the portrait warms from duotone/greyscale to colour and a small arrow appears, over 0.3s.
-- Without portraits: a masthead list, full content width. Each person is one row: name in display type (28–34px) | role | one-line summary, aligned to a shared column grid, hairline rules between rows, generous row height. Group headings (Leadership, Board, Advisors) as small eyebrow labels. Hover = name colour shift + arrow nudge, no filled background.
+- Without portraits: the masthead list from `_kit/components/masthead.html` (v17 CL supersedes the old 28–34px, generous-row wording). Group headings (Leadership, Board, Advisors) as small eyebrow labels. Hover = name colour shift + arrow nudge, no filled background.
 - Never: bordered or filled boxes, tight hover fills, stranded "Profile" labels, cards of unequal height, a lone card, mixed formats in one group.
 
 **CJ. Partner and funder names are a clean credit line.** When partners are set in type (BW), show them as one consistent credit line: same size and weight, evenly spaced, wrapping centred, under a small "Validated with" style label. Never a table-like grid with rules that looks like the list beside it (AAL "Built and tested at MIT": "the different line formats are just confusing ... the section [is] simply unclear"). Each section uses ONE format.

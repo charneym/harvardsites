@@ -1,0 +1,50 @@
+<!--
+  MASTHEAD LIST — the ONE format for people without portraits (PRINCIPLES CI, client review round 5).
+  Client: "for the people in team sections whose things are horizontal why is there soooo much vertical spacing ...
+  maybe it all, including the text, just needs to be smaller ... figure out one format and apply it to all ... think about
+  what a professional agency would do." So every site uses exactly this markup and these metrics; re-skin with tokens only.
+
+  Metrics (desktop): name 21px, role 13.5px, summary 14.5px; row padding 18px top/bottom; groups 56px apart; label 12px
+  above the first rule. Rows align on the name's baseline. Summary is one sentence (max 2 lines). Mobile stacks.
+  Tokens: --mh-ink, --mh-mute, --mh-line, --mh-accent, --mh-display (name font), --mh-sans (role/summary font),
+          --mh-mono (group label font).
+  Hover (links only): the name draws an underline from the left and takes the accent colour, the arrow slides 8px, the
+  summary brightens, all over .25-.35s. Within ONE list every row behaves the same: either every row opens a sheet or none
+  does (a mix reads as broken hover). If only some people have more to say, show their one-sentence summary and make the
+  whole list static.
+  Gate: node _kit/masthead-audit.js <file> "<route>" must print OK.
+
+  Markup (rows that open a person sheet are <a class="mh-row" href="#/team/slug" data-person ...>; rows without a sheet
+  are <div class="mh-row">, no arrow):
+  <section class="mh">
+    <div class="mh-group">
+      <p class="mh-label">Leadership</p>
+      <ul class="mh-list">
+        <li><a class="mh-row" href="#/team/jane-doe"><span class="mh-name">Jane Doe, PhD</span><span class="mh-role">Chief Executive Officer</span><span class="mh-sum">One-sentence summary from the bio.</span><span class="mh-arrow" aria-hidden="true">→</span></a></li>
+      </ul>
+    </div>
+  </section>
+-->
+<style>
+.mh{--mh-ink:#14161a;--mh-mute:#5b6068;--mh-line:rgba(20,22,26,.14);--mh-accent:#2b6;display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+</style>

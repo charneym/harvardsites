@@ -32,6 +32,14 @@ const { chromium } = require('playwright'); const path = require('path');
     pop.forEach(t => out.push(`[${w}] POPIN: ${t} snaps into view in one frame instead of animating (often a failsafe timer firing before the entrance has finished)`));
     const und = new Set(), mc = new Set(); fr.forEach(f => { f.heads.forEach(h => { if (h.hit) und.add(h.txt); }); f.masks.forEach(m => mc.add(m)); });
     und.forEach(t => out.push(`[${w}] UNDERLAP: entrance glyphs of "${t}" overlap the text below/around it while animating`));
+    // sub-route page heads: navigate (4x throttle) and watch the title entrance
+    { const rts = await p.evaluate(() => [...new Set([...document.querySelectorAll('a[href^="#/"]')].map(a => a.getAttribute('href')).filter(h => h.split('/').filter(Boolean).length === 1))]);
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+      for (const rt of rts.slice(0, 6)) { await p.evaluate(() => window.scrollTo(0, 0)); await p.evaluate(r => { window.__frames = []; const t0 = performance.now(); const tick = () => { const v = document.querySelector('#view'); const h = v && v.querySelector('h1'); if (h) { const others = [...v.querySelectorAll('p,h2,h3,a,button')].filter(o => !h.contains(o)).map(o => { const r = o.getBoundingClientRect(); const s = getComputedStyle(o); return (r.width > 4 && r.height > 4 && +s.opacity > .2 && r.top < innerHeight) ? r : null; }).filter(Boolean);
+            const g = [...h.querySelectorAll('.ln > *, .ch, .c, .w, .ln')].filter(x => +getComputedStyle(x).opacity > .15); let hit = 0; g.forEach(x => { const r = x.getBoundingClientRect(); if (others.some(o => r.bottom > o.top + 3 && r.top < o.bottom - 3 && r.right > o.left && r.left < o.right)) hit++; }); window.__frames.push(hit); }
+            if (performance.now() - t0 < 4500) requestAnimationFrame(tick); }; location.hash = r; requestAnimationFrame(tick); }, rt);
+        await p.waitForTimeout(4800); const hits = await p.evaluate(() => Math.max(0, ...window.__frames)); if (hits) out.push(`[${w}] ${rt} UNDERLAP: the page title's entrance glyphs overlap the text beneath it while animating`); }
+      await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 }); await p.evaluate(() => { location.hash = '#/'; }); await p.waitForTimeout(2500); }
     mc.forEach(t => out.push(`[${w}] MASKCLIP: "${t}" is wider than its reveal mask, so glyphs are clipped during the entrance and pop in afterwards`));
     // OVERFLOW on every top-level route
     const routes = await p.evaluate(() => ['#/', ...new Set([...document.querySelectorAll('a[href^="#/"]')].map(a => a.getAttribute('href')).filter(h => h.split('/').filter(Boolean).length <= 2 && h !== '#/'))]);
@@ -68,8 +76,12 @@ const { chromium } = require('playwright'); const path = require('path');
     for (let i = 0; i < n; i++) {
       await p.evaluate(i => document.querySelector(`[data-ph="${i}"]`).scrollIntoView({ block: 'center' }), i); await p.mouse.move(5, 5); await p.waitForTimeout(500);
       const snap = () => p.evaluate(i => { const c = document.querySelector(`[data-ph="${i}"]`); return [c, ...c.querySelectorAll('*')].slice(0, 60).map(e => { const s = getComputedStyle(e); return [s.color, s.backgroundColor, s.filter, s.opacity, s.borderColor, s.transitionProperty, s.transitionDuration, s.transitionDelay].join('|'); }); }, i);
+      const snapTf = () => p.evaluate(i => { const c = document.querySelector(`[data-ph="${i}"]`); return [c, ...c.querySelectorAll('*')].slice(0, 60).map(e => { const s = getComputedStyle(e); return s.transform + '|' + s.clipPath + '|' + s.filter + '|' + s.opacity + '|' + s.backgroundColor; }).join(';'); }, i);
+      const tf0 = await snapTf();
       const before = await snap(); const box = await p.evaluate(i => { const r = document.querySelector(`[data-ph="${i}"]`).getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; }, i);
-      await p.mouse.move(box.x, box.y); await p.waitForTimeout(900); const after = await snap();
+      await p.mouse.move(box.x, box.y); await p.waitForTimeout(900); const after = await snap(); const tf1 = await snapTf();
+      const isLink = await p.evaluate(i => { const c = document.querySelector(`[data-ph="${i}"]`); return !!(c.closest('a') || c.querySelector('a') || c.matches('[data-bio],[data-person]')); }, i);
+      if (isLink && tf0 === tf1 && before.join() !== after.join()) issues.add('only changes text colour (no arrow, portrait or underline motion): add the specified hover');
       before.forEach((bv, j) => { if (!after[j] || bv === after[j]) return; const [c0, bg0, f0, o0, bc0] = bv.split('|'), [c1, bg1, f1, o1, bc1, tp, td, tdl] = after[j].split('|'); const changed = []; if (c0 !== c1) changed.push('color'); if (bg0 !== bg1) changed.push('background'); if (f0 !== f1) changed.push('filter'); if (o0 !== o1) changed.push('opacity'); if (!changed.length) return;
         const props = tp.split(',').map(s => s.trim()), durs = td.split(',').map(parseFloat), dels = tdl.split(',').map(parseFloat);
         changed.forEach(cp => { const idx = props.findIndex(x => x === 'all' || x === cp || (cp === 'background' && x.startsWith('background'))); if (idx < 0 || !(durs[idx % durs.length] >= .12)) issues.add(`${cp} snaps with no transition`); else if (dels[idx % dels.length] > .1) issues.add(`${cp} starts after a ${dels[idx % dels.length]}s delay`); }); });

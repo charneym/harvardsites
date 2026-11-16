@@ -327,6 +327,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 .ftr{position:relative}
 #ftrCv{position:absolute;left:0;right:0;bottom:0;width:100%;height:68%;z-index:0;display:block;pointer-events:none;opacity:0;transition:opacity 1.1s ease-out;-webkit-mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent);mask-image:linear-gradient(180deg,transparent,#000 26%,#000 88%,transparent)}
+@media (max-width:760px){#ftrCv{height:250px}}
 #ftrCv.ready{opacity:1}
 .ftr .cols,.ftr .bigw,.ftr .legal{position:relative;z-index:1}
 .ftr{z-index:1;background:var(--deep);color:var(--paper);padding:calc(var(--sec) * .8) var(--side) 26px;overflow:hidden;border-top:1px solid var(--hair)}
@@ -530,7 +531,13 @@ a.pt:hover .nm svg,a.pt:focus-visible .nm svg{opacity:1;transform:none}
 .mhl>li{border-bottom:1px solid var(--hairD)}
 .dark .mhl>li,.dark2 .mhl>li{border-bottom-color:var(--hair)}
 .mhr{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,5fr) 28px;gap:var(--gap);align-items:start;padding:clamp(26px,2.6vw,38px) 0;color:inherit;text-decoration:none}
-.mhr.nos{grid-template-columns:minmax(0,5fr) minmax(0,8fr) 28px}
+.mhr.nos{grid-template-columns:minmax(0,1fr) 28px;gap:6px var(--gap)}
+.mhr.nos .rl{grid-column:1;padding-top:0}
+.mhr.nos .go{grid-column:2;grid-row:1}
+.mhl.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,4vw,72px);row-gap:0;border-top:0}
+.mhl.two>li:nth-child(-n+2){border-top:1px solid var(--hairD)}
+.dark .mhl.two>li:nth-child(-n+2),.dark2 .mhl.two>li:nth-child(-n+2){border-top-color:var(--hair)}
+@media (max-width:760px){.mhl.two{grid-template-columns:1fr}.mhl.two>li:nth-child(2){border-top:0}}
 .mhr .nm{font-family:var(--serif);font-weight:400;font-size:clamp(28px,2.4vw,34px);line-height:1.12;letter-spacing:-.015em;margin:0;transition:color .3s ease-out}
 .mhr .rl{font-size:15px;line-height:1.45;color:var(--stoneD);margin:0}
 .mhr .sm{font-size:15.5px;line-height:1.55;color:var(--stoneD);margin:0;max-width:52ch}
@@ -895,11 +902,11 @@ function head(o){
 /* v16 CI: portrait grid when every person in the set has a portrait, otherwise a masthead list */
 function pAttrs(p){return p.flat?'':' href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"'}
 function pTile(p){var tg=p.flat?'div':'a';
-  return '<'+tg+' class="pt"'+pAttrs(p)+'><figure class="pt-fig"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></figure><h3 class="nm"><span>'+esc(p.name)+'</span>'+(p.flat?'':ARR)+'</h3><p class="rl">'+esc(p.title)+'</p></'+tg+'>'}
+  return '<'+tg+' class="pt"'+pAttrs(p)+'><figure class="pt-fig"><img'+(p.fx?' style="'+p.fx+'"':'')+' src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></figure><h3 class="nm"><span>'+esc(p.name)+'</span>'+(p.flat?'':ARR)+'</h3><p class="rl">'+esc(p.title)+'</p></'+tg+'>'}
 function pRow(p,sum){var tg=p.flat?'div':'a',sm=sum&&p.ex;
   return '<li><'+tg+' class="mhr'+(sm?'':' nos')+'"'+pAttrs(p)+'><h3 class="nm">'+esc(p.name)+'</h3><p class="rl">'+esc(p.title)+'</p>'+(sm?'<p class="sm">'+esc(p.ex)+'</p>':'')+'<span class="go">'+(p.flat?'':ARR)+'</span></'+tg+'></li>'}
 function pSet(ppl,cols,sum){if(ppl.every(function(p){return p.img}))return '<div class="pgrid'+(cols||'')+'" data-group>'+ppl.map(pTile).join('')+'</div>';
-  return '<ul class="mhl" data-group>'+ppl.map(function(p){return pRow(p,sum)}).join('')+'</ul>'}
+  var two=!ppl.some(function(p){return sum&&p.ex});return '<ul class="mhl'+(two?' two':'')+'" data-group>'+ppl.map(function(p){return pRow(p,sum)}).join('')+'</ul>'}
 function pCard(p,big){
   var fig=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="lxNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
   var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>';

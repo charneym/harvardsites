@@ -143,8 +143,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
 .hero-foot .s{max-width:44ch;margin:0;font-size:17.5px;line-height:1.6;color:rgba(244,243,247,.86)}
 .hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
-.cue{position:absolute;left:50%;bottom:clamp(14px,2.4vh,26px);transform:translateX(-50%);width:1px;height:42px;overflow:hidden;background:rgba(244,243,247,.18);z-index:2}
-.cue i{position:absolute;left:0;top:-50%;width:1px;height:50%;background:var(--vioL);animation:cue 2.2s var(--ease) infinite}
 @keyframes cue{to{top:110%}}
 .hero-key{position:absolute;right:var(--side);bottom:clamp(30px,5vh,56px);display:flex;flex-direction:column;gap:10px;align-items:flex-start;z-index:1;color:var(--stone)}
 .hero-key span{display:flex;align-items:center;gap:10px}
@@ -296,26 +294,24 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
 /* people (Leavitt model, AC) */
 .pgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:48px var(--gap)}
 .pgrid>*{width:calc((100% - 3 * var(--gap)) / 4)}
-.pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:not(.static):hover,.pcard:focus-visible{transform:translateY(-6px)}
-.pcard.static .ph2 .ph-c{clip-path:circle(150% at 50% 50%)}
+.pcard{display:flex;flex-direction:column;position:relative}
+.pcard.static .ph2 .ph-c{display:none}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
-.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(13,11,18,.5)}
 .ph2{position:absolute;inset:0}
-.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .45s ease-out,clip-path .45s ease-out}
-.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .35s ease-out,clip-path .35s ease-out}
+.pcard:not(.static):hover .ph2>*,.pcard:not(.static):focus-visible .ph2>*{transform:scale(1.045)}
 .ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
 .ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
 .pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .pc-meta .grp{display:none}
 .pc-meta h3{font-weight:400;font-size:clamp(22px,1.75vw,28px);letter-spacing:-.025em;line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
-.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo)}
+.pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:color .3s ease-out,background-size .32s var(--eo)}
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--vioD);margin-top:6px}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
-.pcard:hover h3,.pcard:focus-visible h3{color:var(--vioD)}
-.pcard:hover h3 span{background-size:100% 1px}
+.pcard:not(.static):hover h3,.pcard:not(.static):focus-visible h3{color:var(--vioD)}
+.pcard:not(.static):hover h3 span{background-size:100% 1px}
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
 .pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));overflow:hidden}
 .pcard.noimg .pc-fig{display:none}
@@ -733,7 +729,7 @@ function head(o){
 }
 function im(src,alt,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+src+'" alt="'+esc(alt)+'" loading="lazy" decoding="async" onerror="obNoImg(this)">'}
 window.obNoImg=function(i){var f=i.parentNode;if(f){f.classList.add("noimgf");f.setAttribute("data-alt",i.alt||"")}};
-function tCard(p){if(p.card)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){if(p.card)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="obNoPh(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="go" aria-hidden="true">'+ARR+'</span></div></a>'}
 window.obNoPh=function(i){var c=i.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm">'+(n.d?'<time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time>':'')+'<span class="lab">'+esc(n.s)+'</span></span><span class="tt">'+(n.img?'<span class="th">'+im(n.img,"")+'</span>':'')+'<h3>'+esc(n.t)+'</h3></span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function specs(list){return '<dl class="specs" data-group>'+list.map(function(s){return '<div class="srow"><dt class="lab">'+s[0]+'</dt><dd>'+s[1]+'</dd></div>'}).join("")+'</dl>'}
@@ -760,7 +756,6 @@ function vHome(){
    '<div class="hero-foot"><p class="s" data-r>A University of Minnesota spin-out building robots that microinject embryos at scale, and imaging tools that record activity across the cortex of freely behaving mice.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/microinjection">Meet the Autoinjector '+ARR+'</a><a class="btn" href="#/neuroscience">Neuroscience tools</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Embryo detected</span><span><i class="s"></i>Injected at the posterior pole</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div>'+
   '</section>'+
 
   '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
@@ -941,7 +936,7 @@ function v404(){return head({k:"Not found",h:'Out of <em>focus.</em>',p:'<a clas
 function footer(){
   return '<footer class="ftr" data-theme="dark"><canvas class="fcv" id="fcv" aria-hidden="true"></canvas><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Headquarters</span>Objective Biotechnology, Inc.<br>225 Thomas Avenue North, Suite 50<br>Minneapolis, MN 55405</div>'+
-   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a><br><a class="ul" href="https://www.linkedin.com/company/objective-biotechnology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/Objective_Bio" target="_blank" rel="noopener">X</a> · <a class="ul" href="https://bsky.app/profile/objectivebio.bsky.social" target="_blank" rel="noopener">Bluesky</a></div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:info@objectivebiotechnology.com">info@objectivebiotechnology.com</a><br><a class="ul" href="https://www.linkedin.com/company/objective-biotechnology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/Objective_Bio" target="_blank" rel="noopener">X (Twitter)</a> · <a class="ul" href="https://bsky.app/profile/objectivebio.bsky.social" target="_blank" rel="noopener">Bluesky</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/microinjection">Microinjection</a><br><a class="ul" href="#/neuroscience">Neuroscience</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Instruments</span>Autoinjector · Injecta<br>mini-mScope · SeeShell<br>MagKine · Robo-Comm</div>'+
   '</div><span class="bigw" aria-hidden="true" id="bigwm">Objective<em>.</em></span>'+
@@ -1274,7 +1269,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

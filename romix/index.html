@@ -489,6 +489,21 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (max-width:1100px){.sites>li{flex-basis:calc((100% - 2 * var(--gap)) / 3)}}
 @media (max-width:1024px){.pgms{grid-template-columns:1fr}}
 @media (max-width:560px){.sites>li{flex-basis:100%}}
+/* v16 CI/CG: portrait grid. no lift, no shadow, no Profile label; portrait warms to colour and a small arrow appears, 0.3s */
+.pcard,.pcard:hover,.pcard:focus-visible{transform:none}
+.pcard .pc-fig,.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:none}
+.pcard .ph2>*{transition:transform .3s ease-out,clip-path .3s ease-out}
+.pc-meta h3,.pc-meta h3 span,.pc-meta .ttl{transition:color .3s ease-out}
+.pc-meta h3 .go{display:inline-block;width:.62em;margin-left:.32em;vertical-align:.08em;color:inherit;opacity:0;transform:translateX(-6px);transition:opacity .3s ease-out,transform .3s ease-out,color .3s ease-out}
+.pc-meta h3 .go svg{opacity:1;transform:none;transition:color .3s ease-out}
+.pc-meta h3 .go path,.pc-meta .grp{transition:color .3s ease-out}
+.pc-meta h3 .go svg{display:block;width:100%;height:auto}
+.pcard:hover h3 .go,.pcard:focus-visible h3 .go{opacity:1;transform:none}
+.pcard.nos .go{display:none}
+/* v16 CH: statement sized to the measure */
+.mani .mblk,.mani .mblock{width:72%;max-width:none;margin-left:auto;margin-right:auto}
+.mani .mblk .txt,.mani .mblock .txt{max-width:none}
+@media (max-width:900px){.mani .mblk,.mani .mblock{width:100%}}
 </style>
 </head>
 <body>
@@ -815,13 +830,13 @@ function sceneSvg(){
   for(var r=0;r<6;r++)for(var c=0;c<3;c++)wells+='<circle class="w" data-n="'+(r*3+c)+'" cx="'+(530+c*30)+'" cy="'+(117+r*30)+'" r="8"/>';
   function lab(x,a,b){return '<text class="pl" x="'+x+'" y="336" text-anchor="middle">'+a+'</text><text class="sl" x="'+x+'" y="356" text-anchor="middle">'+b+'</text>'}
   return '<svg viewBox="0 0 640 380">'+
-   '<g class="pt" data-k="0"><rect class="o hl" x="50" y="70" width="60" height="22" rx="5"/><rect class="o hl" x="56" y="92" width="48" height="200" rx="22"/><path class="o2" d="M57 172H103"/>'+fr+cl+lab(80,'BLOOD DRAW','PLASMA cfRNA')+'</g>'+
+   '<g class="pt" data-k="0"><rect class="o hl" x="50" y="70" width="60" height="22" rx="5"/><rect class="o hl" x="56" y="92" width="48" height="200" rx="22"/><path class="o2" d="M57 172H103"/>'+fr+cl+lab(80,'BLOOD DRAW','RNA IN PLASMA')+'</g>'+
    '<path class="arr" data-k="1" pathLength="1" d="M110 190H178"/><path class="arh" data-k="1" d="M171 184l7 6-7 6"/>'+
-   '<g class="pt" data-k="1"><rect class="o hl" x="185" y="92" width="110" height="200" rx="10"/>'+lib+lab(240,'LIBRARY','SHORT + LONG RNA')+'</g>'+
+   '<g class="pt" data-k="1"><rect class="o hl" x="185" y="92" width="110" height="200" rx="10"/>'+lib+lab(240,'RNA CAPTURE','SHORT + LONG RNA')+'</g>'+
    '<path class="arr" data-k="2" pathLength="1" d="M300 190H340"/><path class="arh" data-k="2" d="M333 184l7 6-7 6"/>'+
-   '<g class="pt" data-k="2"><path class="o hl" d="M352 92V292H452"/>'+bars+'<text class="ax" x="356" y="86">LEVEL</text><text class="ax" x="452" y="312" text-anchor="end">GENES</text>'+lab(400,'SIGNATURE','KD vs OTHER FEVERS')+'</g>'+
+   '<g class="pt" data-k="2"><path class="o hl" d="M352 92V292H452"/>'+bars+'<text class="ax" x="356" y="86">LEVEL</text><text class="ax" x="452" y="312" text-anchor="end">GENES</text>'+lab(400,'SIGNATURE','KAWASAKI PATTERN')+'</g>'+
    '<path class="arr" data-k="3" pathLength="1" d="M460 190H498"/><path class="arh" data-k="3" d="M491 184l7 6-7 6"/>'+
-   '<g class="pt" data-k="3"><rect class="o hl" x="505" y="92" width="110" height="200" rx="10"/>'+wells+lab(560,'PCR PANEL','TAQMAN CARD')+'</g>'+
+   '<g class="pt" data-k="3"><rect class="o hl" x="505" y="92" width="110" height="200" rx="10"/>'+wells+lab(560,'PCR TEST','RUNS ON LAB PCR')+'</g>'+
   '</svg>';
 }
 SITE.scene=function(el,p){
@@ -865,7 +880,7 @@ SITE.views.home=function(){
    '<div class="hero-foot"><p class="s" data-r>Romix Biosciences reads cell-free RNA in blood for deeper insight into disease biology and therapeutic activity, starting with the first diagnostic test for Kawasaki disease.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/science">See the science '+ARR+'</a><a class="btn" href="#/team">Meet the team</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>RNA fragments in plasma</span><span><i class="s"></i>Disease signature · gene levels</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div></section>'+
+   '</section>'+
   '<section class="sec mani" data-tone="light2"><div class="wrap">'+
    '<div class="mblock"><span class="lab kick" data-r>Why it matters</span>'+
    '<p class="txt" id="mani">Kawasaki disease is the leading cause of acquired heart disease in children, and there is <em>no diagnostic test</em> for it. Romix is building one from a routine blood draw.</p></div>'+
@@ -964,7 +979,7 @@ function head(o){
 }
 function tCard(p){if(p.nosheet)return '<div class="pcard nos">'+(p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'')+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';
   var im=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
-  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span><i class="go" aria-hidden="true">'+ARR+'</i></h3><p class="ttl">'+esc(p.title)+'</p></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><span class="rt"><h3>'+esc(n.t)+'</h3>'+(n.m?'<span class="rm">'+esc(n.m)+'</span>':'')+'</span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
@@ -1106,7 +1121,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 86%",end:"center 58%",scrub:true}})}
   /* BA: stats rise in at final value; captions after the numbers */
   if(!RM){var sts=$$(".stat",view);sts.forEach(function(st0,i){var v=$(".v",st0),k=$(".k",st0),l=$(".ln2",st0);var tr={trigger:st0.closest(".stats"),start:"top 85%"};
     var sp=SplitText.create(v,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(sp.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:tr,onComplete:function(){sp.revert()}});

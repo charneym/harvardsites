@@ -1056,9 +1056,9 @@ function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return ou
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
-  /* CM: a section that starts on the first screen reveals as a whole, with one short uniform stagger */
-  var S0=new Set();items.forEach(function(el){if(el.getBoundingClientRect().top+scrollY<innerHeight){var s=el.closest("section");if(s)S0.add(s)}});
-  var now=items.filter(function(el){var s=el.closest("section");return s&&S0.has(s)});items=items.filter(function(el){return now.indexOf(el)<0});
+  /* CM: blocks inside the first viewport reveal together on load (one short uniform stagger, starting with the headings);
+     everything below the fold, in the same section or not, reveals on scroll so it is never already static when reached */
+  var now=items.filter(function(el){return el.getBoundingClientRect().top+scrollY<innerHeight*.92});items=items.filter(function(el){return now.indexOf(el)<0});
   if(now.length)rvGo(now,base()+.45,Math.min(.06,.5/now.length));
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});

@@ -462,7 +462,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .quiet li{border-top:1px solid var(--hr);padding:18px 0 22px}
 .quiet b{display:block;font-family:var(--serif);font-weight:400;font-size:20px;line-height:1.25}
 .quiet span{display:block;font-size:14.5px;color:var(--mu);margin-top:4px}
-.credits{list-style:none;margin:0;padding:clamp(28px,3vw,40px) 0 0;border-top:1px solid var(--hr);display:flex;flex-wrap:wrap;justify-content:center;gap:22px clamp(40px,5vw,88px);text-align:center}
+.credits{list-style:none;margin:0;padding:clamp(20px,2vw,28px) 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:22px clamp(40px,5vw,88px);text-align:center}
 .credits b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.7vw,24px);line-height:1.25}
 .credits span{display:block;font-size:14.5px;color:var(--mu);margin-top:4px}
 @media (max-width:1100px){.plist,.quiet{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-foot .s{max-width:34ch}}
@@ -663,10 +663,10 @@ var RING=(function(){
       for(var n=0;n<NODES.length;n++){var N=NODES[n];var ff=nz(o,N[3],N[4],N[5]);if(ff<-.1)continue;var ph=sm(rnd(n,7)*.6,rnd(n,7)*.6+.4,o.load);if(ph<.02)continue;proj(o,N[0],N[1],N[2],p1);c.moveTo(p1[0]+lw*2.3*D*ph,p1[1]);c.arc(p1[0],p1[1],lw*2.3*D*ph,0,6.2832)}c.fill()}
     /* CAD: one unit cell, highlighted and dimensioned */
     if(o.cad>.01){var cell=front(o);if(cell){c.beginPath();for(var v=0;v<=6;v++){var V=cell.vs[v%6],Q=P(V[0],V[1]);proj(o,Q[0],Q[1],Q[2],p1);v?c.lineTo(p1[0],p1[1]):c.moveTo(p1[0],p1[1])}
-      c.strokeStyle=rgba(o.col.l,.95*o.cad*A);c.lineWidth=lw*2.6*D;c.stroke();
+      c.fillStyle="rgba(34,42,43,"+(.96*o.cad*A).toFixed(3)+")";c.fill();c.strokeStyle="rgba(34,42,43,"+(.96*o.cad*A).toFixed(3)+")";c.lineWidth=lw*9*D;c.stroke();c.strokeStyle=rgba(o.col.l,.95*o.cad*A);c.lineWidth=lw*2.6*D;c.stroke();
       var C=P(cell.u,cell.v);proj(o,C[0],C[1],C[2],p2);var V0=P(cell.vs[0][0],cell.vs[0][1]),V3=P(cell.vs[3][0],cell.vs[3][1]);proj(o,V0[0],V0[1],V0[2],p1);var ax=p1[0],ay=p1[1];proj(o,V3[0],V3[1],V3[2],p1);
       var dy=Math.max(ay,p1[1])+28*D*o.zoomK;c.strokeStyle=rgba(o.col.f,.7*o.cad*A);c.lineWidth=D;c.beginPath();c.moveTo(p1[0],dy);c.lineTo(ax,dy);c.moveTo(p1[0],dy-6*D);c.lineTo(p1[0],dy+6*D);c.moveTo(ax,dy-6*D);c.lineTo(ax,dy+6*D);c.stroke();
-      c.fillStyle=rgba(o.col.f,.9*o.cad*A);c.font=(11*D)+"px 'DM Mono',monospace";c.textAlign="center";c.fillText("UNIT CELL",(p1[0]+ax)/2,dy+22*D);c.textAlign="left"}}
+      c.font=(11*D)+"px 'DM Mono',monospace";var uw=c.measureText("ONE UNIT CELL").width;c.fillStyle="rgba(34,42,43,"+(.96*o.cad*A).toFixed(3)+")";c.fillRect((p1[0]+ax)/2-uw/2-8*D,dy+10*D,uw+16*D,17*D);c.fillStyle=rgba(o.col.f,.9*o.cad*A);c.textAlign="center";c.fillText("ONE UNIT CELL",(p1[0]+ax)/2,dy+22*D);c.textAlign="left"}}
   }
   function front(o){var tu=((Math.PI/2-o.spin)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)/(Math.PI*2)*PU,tv=((Math.PI/2-o.tilt)/(Math.PI*2)*PV+PV)%PV,best=null,bd=1e9;
     for(var i=0;i<CELLS.length;i++){var du=Math.abs(CELLS[i].u-tu);du=Math.min(du,PU-du);var dv=Math.abs(CELLS[i].v-tv);dv=Math.min(dv,PV-dv);var d=du*du+dv*dv;if(d<bd){bd=d;best=CELLS[i]}}return best}
@@ -710,13 +710,13 @@ function storyScene(cv){
     var spin=1.1+t*.03+q*.35,tilt=1.04-.12*zoom;
     var o={lwK:1.35,tilt:tilt,spin:spin,build:sm(1.05,1.95,q),ghost:1,load:sm(2.05,2.75,q),cad:1-sm(.75,1.35,q),D:D,a:1,col:COL_DARK,zoomK:1+1.6*zoom};
     var S=S0*(1+2.2*zoom*zoom),fx=RING.frontXY(o);
-    var slotY=H*(mob?.62:.6),tl0=W*(mob?.16:.12),tl1=W*(mob?.8:.86),slotX=function(k){return tl0+(tl1-tl0)*(k*4+2)/10};
+    var slotY=H*(mob?.62:.6),tl0=W*(mob?.16:.12),tl1=W*(mob?.8:.86),slotX=function(k){return tl0+(tl1-tl0)*(k===2?9:k*4+2)/10};
     var rx=cx-fx[0]*S*zoom,ry=cy-fx[1]*S*zoom-lift*H*.15;
     var sd=S*(1-.78*dock);rx=rx+(slotX(0)-rx)*dock;ry=ry+(slotY-ry)*dock;
     o.x=rx;o.y=ry;o.S=sd;
     /* step 4: steady release, drawn as a schematic curve */
     var rel=sm(2.95,3.55,q)*(1-sm(3.9,4.35,q));
-    if(rel>.01){var gx0=W*.14,gx1=W*.86,gy=H*.9,gh=H*.2,pr=sm(3.0,3.75,q);
+    if(rel>.01){var gx0=W*.14,gx1=W*.86,gy=H*.9,gh=H*.2,pr=sm(2.95,3.45,q);
       c.strokeStyle="rgba(174,188,190,"+(.5*rel).toFixed(3)+")";c.lineWidth=D;c.beginPath();c.moveTo(gx0,gy-gh-6*D);c.lineTo(gx0,gy);c.lineTo(gx1,gy);c.stroke();
       c.beginPath();for(var k=0;k<=60*pr;k++){var u=k/60,xx=gx0+(gx1-gx0)*u,yy=gy-gh*(.9*Math.pow(u,.92));k?c.lineTo(xx,yy):c.moveTo(xx,yy)}
       c.strokeStyle="rgba(185,167,214,"+(.95*rel).toFixed(3)+")";c.lineWidth=2.2*D;c.stroke();
@@ -727,11 +727,11 @@ function storyScene(cv){
     /* step 5: two to three rings across the 8–10-week ART period */
     if(dock>.01){var al=dock;c.strokeStyle="rgba(174,188,190,"+(.45*al).toFixed(3)+")";c.lineWidth=D;c.beginPath();c.moveTo(tl0,slotY+sd*1.35);c.lineTo(tl1,slotY+sd*1.35);c.stroke();
       for(var wk=0;wk<=10;wk+=2){var wx=tl0+(tl1-tl0)*wk/10;c.beginPath();c.moveTo(wx,slotY+sd*1.35-4*D);c.lineTo(wx,slotY+sd*1.35+4*D);c.stroke();lab("WK "+wk,wx,slotY+sd*1.35+20*D,.75*al,[174,188,190],"center")}
-      var bw=sm(4.35,4.85,q);c.fillStyle="rgba(185,167,214,"+(.22*bw).toFixed(3)+")";c.fillRect(tl0+(tl1-tl0)*.8,slotY+sd*1.35-3*D,(tl1-tl0)*.2*bw,6*D);
-      lab(mob?"8–10 WEEKS OF SUPPORT":"8–10-WEEK PROGESTERONE SUPPORT IN ART",tl0,slotY-sd*1.6,.9*al,[201,227,231]);
-      for(var rk=1;rk<3;rk++){var ra=sm(4.1+rk*.18,4.5+rk*.18,q);if(ra<.01)continue;
-        RING.draw(c,{x:slotX(rk),y:slotY,S:sd,tilt:tilt,spin:spin+rk*.7,build:ra,ghost:ra*.6,load:ra,cad:0,D:D,a:rk===2?.55*ra:ra,col:COL_DARK,zoomK:1})}
-      lab("RING 1",slotX(0),slotY+sd*1.35+44*D,.85*al,[201,227,231],"center");lab("RING 2",slotX(1),slotY+sd*1.35+44*D,.85*sm(4.3,4.6,q),[201,227,231],"center");lab("RING 3",slotX(2),slotY+sd*1.35+44*D,.85*sm(4.5,4.8,q),[201,227,231],"center");lab("IF NEEDED",slotX(2),slotY+sd*1.35+60*D,.6*sm(4.5,4.8,q),[174,188,190],"center")}
+      var bw=sm(4.3,4.55,q);c.fillStyle="rgba(185,167,214,"+(.22*bw).toFixed(3)+")";c.fillRect(tl0+(tl1-tl0)*.8,slotY+sd*1.35-3*D,(tl1-tl0)*.2*bw,6*D);
+      lab(mob?"8–10 WEEKS OF SUPPORT":"8–10 WEEKS OF PROGESTERONE SUPPORT DURING IVF",tl0,slotY-sd*1.6,.9*al,[201,227,231]);
+      for(var rk=1;rk<3;rk++){var ra=sm(4.0+rk*.12,4.3+rk*.12,q);if(ra<.01)continue;
+        RING.draw(c,{x:slotX(rk),y:slotY,S:sd,tilt:tilt,spin:spin+rk*.7,build:ra,ghost:ra*.6,load:ra,cad:0,D:D,a:rk===2?.75*ra:ra,col:COL_DARK,zoomK:1})}
+      lab("RING 1",slotX(0),slotY+sd*1.35+44*D,.85*al,[201,227,231],"center");lab("RING 2",slotX(1),slotY+sd*1.35+44*D,.85*sm(4.15,4.4,q),[201,227,231],"center");lab("RING 3",slotX(2),slotY+sd*1.35+44*D,.85*sm(4.3,4.55,q),[201,227,231],"center");lab("IF NEEDED",slotX(2),slotY+sd*1.35+60*D,.75*sm(4.3,4.55,q),[174,188,190],"center")}
     RING.draw(c,o);
     if(o.cad>.02)lab("COMPUTER-DESIGNED HEXAGONAL CELLS",W*.06,H*.08,.85*o.cad,[174,188,190]);
     if(o.build>.02&&o.build<.98)lab("PRINTED WITH LIGHT FROM LIQUID RESIN",W*.06,H*.08,.9*Math.min(1,o.build*6,(1-o.build)*6),[185,167,214]);

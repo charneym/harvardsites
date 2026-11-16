@@ -674,9 +674,11 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 /* ---- BU: the statement stands alone in its band, so the BLOCK is centred on the page
    while the text itself stays left-aligned ---- */
 .mani .kick,.mani .txt{margin-left:auto;margin-right:auto}
-.mani .txt{max-width:22ch}
-.mani .kick{display:block;max-width:22ch}
-@media (max-width:860px){.mani .kick,.mani .txt{margin-left:0;margin-right:0;max-width:none}}
+/* CH: the statement fills the content measure (about 72% of the container), centred as a block, text left-aligned */
+.mani .txt,.mani .kick{width:72%;max-width:none;text-align:left}
+.mani .kick{display:block}
+.mani.light .txt em{color:var(--sinD)}
+@media (max-width:860px){.mani .kick,.mani .txt{margin-left:0;margin-right:0;max-width:none;width:auto}}
 
 /* ---- story scene (PRINCIPLES BY): one object, every stroke connected or labelled ---- */
 .sfig svg .rg{fill:rgba(244,241,234,.05);stroke:rgba(244,241,234,.78);stroke-width:1.3}
@@ -838,7 +840,6 @@ function vHome(){
    '<div class="hero-foot"><p class="s" data-r>Jillion Therapeutics builds its own DNA-encoded libraries and screens them against the brain proteins that conventional screening cannot reach — starting with pathological tau in Alzheimer’s disease.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/platform">How the screen works '+ARR+'</a><a class="btn" href="#/programs">Programs</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>DNA barcode</span><span><i class="y"></i>Compound</span><span><i class="t"></i>Target protein</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div>'+
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
@@ -1240,29 +1241,28 @@ var RUNG=[268,288,308,328,348,368];
 var SCENE='<figure class="sfig" id="scene"><svg viewBox="94 44 296 256" aria-label="One DNA-barcoded compound: built, bound to its target, decoded and re-made">'+
   /* --- the compound: three rings joined by two bonds --- */
   '<g id="jcCmp">'+
-    '<circle class="rg" cx="150" cy="150" r="17"/><circle class="rg" cx="196" cy="126" r="17"/><circle class="rg" cx="242" cy="150" r="17"/>'+
-    '<path class="bd" d="M165 142l16-8M211 134l16 8"/>'+
-    '<text class="lab2" x="150" y="106" text-anchor="middle">Compound</text>'+
+    '<circle class="rg" cx="150" cy="126" r="17"/><circle class="rg" cx="196" cy="150" r="17"/><circle class="rg" cx="242" cy="126" r="17"/>'+
+    '<path class="bd" d="M165 134l16 8M211 142l16-8"/>'+
+    '<text class="lab2" x="150" y="100" text-anchor="middle">Compound</text>'+
   '</g>'+
   /* --- the barcode: two rails and six rungs, attached to the third ring --- */
   '<g id="jcBar">'+
-    '<path class="bd" d="M259 150h9"/>'+
-    '<path class="rail" d="M268 138h104M268 162h104"/>'+
-    RUNG.map(function(x){return '<path class="rung" d="M'+x+' 138v24"/>'}).join('')+
-    '<text class="lab2" x="372" y="128" text-anchor="end">DNA barcode</text>'+
+    '<path class="bd" d="M259 126h9"/>'+
+    '<path class="rail" d="M268 114h100M268 138h100"/>'+
+    RUNG.map(function(x){return '<path class="rung" d="M'+x+' 114v24"/>'}).join('')+
+    '<text class="lab2" x="368" y="104" text-anchor="end">DNA barcode</text>'+
   '</g>'+
   /* --- the target protein: one labelled shape the compound binds into --- */
   '<g id="jcTgt">'+
-    '<path class="tg" d="M150 262c-26 0-40-16-40-34 0-20 18-32 40-32h52c24 0 42 12 42 32 0 18-16 34-40 34z"/>'+
-    '<path class="pocket" d="M182 196c0 14 10 22 24 22s24-8 24-22"/>'+
+    '<path class="tg" d="M150 262c-26 0-40-16-40-34 0-20 18-32 40-32h26a20 20 0 0 0 40 0h4c24 0 42 12 42 32 0 18-16 34-40 34z"/>'+
     '<text class="lab2" x="110" y="282">Target protein</text>'+
   '</g>'+
   /* --- the read count, written against the barcode --- */
-  '<g id="jcRead"><path class="tie2" d="M320 162v30"/>'+
-    '<text class="val" x="320" y="208" text-anchor="middle">Barcode read</text></g>'+
+  '<g id="jcRead"><path class="tie2" d="M320 138v30"/>'+
+    '<text class="lab3" x="320" y="182" text-anchor="middle">Barcode read</text></g>'+
   /* --- the off-DNA note, written against the compound --- */
-  '<g id="jcOff"><path class="tie2" d="M196 109v-35"/>'+
-    '<text class="lab3" x="196" y="68" text-anchor="middle">Re-made off-DNA</text></g>'+
+  '<g id="jcOff"><path class="tie2" d="M196 131v-57"/>'+
+    '<text class="lab3" x="196" y="68" text-anchor="middle">Re-made without barcode</text></g>'+
   '</svg><figcaption class="lab" id="scCap">One barcoded compound</figcaption></figure>';
 var FIGS=[SCENE];
 
@@ -1288,9 +1288,9 @@ function sceneSet(p){
      not the target's arrival, so nothing appears out of nowhere mid-story. */
   if(tg){op(tg,.34+.66*ea(cl(sp/.45)));tg.style.translate="0 0"}
   var cmp=Q("#jcCmp");
-  if(cmp)cmp.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px";
+  if(cmp)cmp.style.translate="0 "+(ea(cl((sp-.25)/.6))*48).toFixed(1)+"px";
   var bar=Q("#jcBar");
-  if(bar)bar.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px";
+  if(bar)bar.style.translate="0 "+(ea(cl((sp-.25)/.6))*48).toFixed(1)+"px";
 
   /* DECODE (.5-.75): the rungs light one by one and the count is written */
   var dp=cl((p-.5)/.25);
@@ -1298,7 +1298,7 @@ function sceneSet(p){
     q.classList.toggle("lit",dp>(i+1)*.11)});
   var rd=Q("#jcRead");
   if(rd){op(rd,ea(cl((dp-.25)/.5))*(1-ea(cl((p-.75)/.12))));
-    rd.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px"}
+    rd.style.translate="0 "+(ea(cl((sp-.25)/.6))*48).toFixed(1)+"px"}
 
   /* OPTIMIZE (.75-1): the barcode is removed; the compound stays bound and is relabelled */
   var mp=cl((p-.75)/.25);
@@ -1306,7 +1306,7 @@ function sceneSet(p){
     bar.style.translate="0 "+(ea(cl((sp-.25)/.6))*34+ea(cl(mp/.5))*-16).toFixed(1)+"px"}
   var off=Q("#jcOff");
   if(off){op(off,ea(cl((mp-.25)/.5)));
-    off.style.translate="0 "+(ea(cl((sp-.25)/.6))*34).toFixed(1)+"px"}
+    off.style.translate="0 "+(ea(cl((sp-.25)/.6))*48).toFixed(1)+"px"}
   QQ("#jcCmp .rg").forEach(function(q,i){q.classList.toggle("opt",mp>.35&&i===1)});
 
   var cap=Q("#scCap");
@@ -1316,7 +1316,7 @@ function sceneSet(p){
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
   /* BA: stats reveal at their final value, never counted up */
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

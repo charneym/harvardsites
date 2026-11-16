@@ -587,17 +587,17 @@ body{background:var(--bone)}
 .pcd .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:transform .45s var(--eo)}
 .pcd .ph .g{filter:grayscale(1) contrast(1.02)}
 .pcd .ph .c{clip-path:circle(0% at var(--mx,50%) var(--my,50%));transition:clip-path .45s var(--eo),transform .45s var(--eo)}
-.pcd:hover,.pcd:focus-visible{transform:translateY(-6px)}
-.pcd:hover .ph,.pcd:focus-visible .ph{box-shadow:0 26px 50px -30px rgba(21,21,21,.55)}
-.pcd:hover .ph img,.pcd:focus-visible .ph img{transform:scale(1.045)}
-.pcd:hover .ph .c,.pcd:focus-visible .ph .c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
+.pcd:not(.static):hover,.pcd:not(.static):focus-visible{transform:translateY(-6px)}
+.pcd:not(.static):hover .ph,.pcd:not(.static):focus-visible .ph{box-shadow:0 26px 50px -30px rgba(21,21,21,.55)}
+.pcd:not(.static):hover .ph img,.pcd:not(.static):focus-visible .ph img{transform:scale(1.045)}
+.pcd:not(.static):hover .ph .c,.pcd:not(.static):focus-visible .ph .c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
 .pcd .ph.noimg::after{content:attr(data-alt);position:absolute;inset:auto 18px 18px 18px;font-family:var(--serif);font-size:22px;line-height:1.15;color:var(--stoneD)}
 .pcd h3{font-family:var(--serif);font-size:clamp(22px,1.7vw,27px);line-height:1.12;letter-spacing:-.015em;margin:0;transition:color .3s var(--eo)}
-.pcd:hover h3,.pcd:focus-visible h3{color:var(--sinD)}
+.pcd:not(.static):hover h3,.pcd:not(.static):focus-visible h3{color:var(--sinD)}
 .pcd .ttl{font-size:14.5px;line-height:1.45;color:var(--stoneD);margin:0}
 .pcd .go{display:flex;align-items:center;gap:10px;color:var(--sinD)}
 .pcd .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s var(--eo),transform .32s var(--eo)}
-.pcd:hover .go svg,.pcd:focus-visible .go svg{opacity:1;transform:none}
+.pcd:not(.static):hover .go svg,.pcd:not(.static):focus-visible .go svg{opacity:1;transform:none}
 .tgroup{margin-top:clamp(70px,8vw,120px)}
 .tgroup:first-child{margin-top:0}
 .tgroup>.lab{display:block;margin-bottom:26px}
@@ -690,6 +690,7 @@ body{background:var(--bone)}
 .u{font-family:var(--sans);font-size:.5em;letter-spacing:0;margin-left:.08em}
 .stat .v small{font-family:var(--sans);font-size:.36em;letter-spacing:0}
 .pgrid.two .pcd h3{min-height:2.24em}
+@media (max-width:560px){.pgrid.two .pcd h3{min-height:3.36em}}
 .metrics{display:flex;flex-wrap:wrap;gap:10px}
 .metrics span{display:inline-flex;align-items:center;min-height:48px;padding:0 20px;border:1px solid var(--hairD);border-radius:99px;font-family:var(--serif);font-size:20px}
 .ftr .ffield{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.2s ease-out;pointer-events:none;z-index:0}
@@ -699,9 +700,10 @@ body{background:var(--bone)}
 .ftr .ffield.ready{opacity:.28}
 .mblk{width:fit-content;max-width:100%;margin-left:auto;margin-right:auto}
 .pcd.static{cursor:default}.pcd.static:hover{transform:none}.pcd .bio{font-size:15px;line-height:1.55;color:var(--stoneD);margin:4px 0 0;max-width:36ch}
-.awds{align-items:start}.awd .amt{margin-top:18px}
+.awds{align-items:stretch}.awd .amt{margin-top:auto}
 /* R3 critic: footer canvas stays in the wordmark band; no sticky half-empty columns; lede spacing */
 .ftr .ffield{bottom:auto;height:calc(100% - 64px);-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+@media (min-width:861px){.ftr .ffield{-webkit-mask-image:linear-gradient(180deg,transparent 40%,#000 60%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,transparent 40%,#000 60%),linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-composite:intersect}}
 @media (max-width:860px){.ftr .ffield{top:auto;bottom:64px;height:42%}}
 @media (min-width:1025px){.two>div:first-child{position:static}}
 .lede+.muted,.lede+p,.lede+.aims{margin-top:28px}
@@ -843,8 +845,8 @@ function sceneSvg(){
    '<ellipse id="rtBloom1" class="bloom" cx="250" cy="232" rx="0" ry="0"/><text id="rtDoseL" class="dyn" x="310" y="246">MEASURED DOSE</text>'+
    '<g id="rtDev"><path class="vac" id="rtVac" d="M218 146C226 128 274 128 282 146"/><rect class="dev" x="220" y="-20" width="60" height="150" rx="10"/><rect class="dev" x="234" y="128" width="32" height="18" rx="4"/><path class="ndl" id="rtNdl" d="M250 146V146"/><text x="292" y="40">SOFTTOUCH</text><text id="rtVacL" class="dyn" x="292" y="118">VACUUM SEAL</text></g>'+
    '<path class="ly2" d="M462 150V350"/>'+ticks+'<text x="462" y="132">DEPTH</text>'+
-   '<path id="rtLead" class="vac" d="M256 150H462" style="stroke-dasharray:none;opacity:0"/><circle id="rtDot" class="acf" cx="462" cy="150" r="4" style="fill:#8dbbea"/>'+
-   '<text id="rtHold" class="dyn" x="250" y="392" text-anchor="middle">DEPTH HELD AS THE SKIN MOVES</text></svg>'}
+   '<path id="rtLead" class="vac" d="M250 150H462" style="stroke-dasharray:none;opacity:0"/><circle id="rtDot" class="acf" cx="462" cy="150" r="4" style="fill:#8dbbea"/>'+
+   '<text id="rtHold" class="dyn" x="250" y="410" text-anchor="middle">DEPTH HELD AS THE SKIN MOVES</text></svg>'}
 
 /* ================= VIEWS ================= */
 function vHome(){
@@ -874,7 +876,7 @@ function vHome(){
      '<article class="step on"><h3>Settle on the skin.</h3><p>The handheld device couples to the skin with gentle vacuum, around 10 kPa, so the tissue stays put under the needle.</p></article>'+
      '<article class="step"><h3>Drive to a set depth.</h3><p>A miniaturized voice coil actuator places the needle tip at the chosen depth, from 0.5 to 4 mm, with ±0.1 mm positional accuracy.</p></article>'+
      '<article class="step"><h3>Deliver an exact dose.</h3><p>A compact rotary lead screw meters microvolumes to ±5 µL at adjustable speeds of 10–200 µL/s, for agents of many viscosities.</p></article>'+
-     '<article class="step"><h3>Hold the plane.</h3><p>Feedback from vacuum stabilization and optical sensing keeps the needle in the right tissue plane, despite patient movement or hand tremor.</p></article>'+
+     '<article class="step"><h3>Hold the depth.</h3><p>Feedback from vacuum stabilization and optical sensing keeps the needle at the right depth in the skin, despite patient movement or hand tremor.</p></article>'+
     '</div></div>'+
    '<div class="story-r figs" id="figs"><div class="scene" id="scene">'+sceneSvg()+'</div></div>'+
   '</div></section>'+
@@ -1218,7 +1220,7 @@ function sceneInit(view){
     vac.style.opacity=v.toFixed(3);vac.setAttribute("d","M218 146C226 "+(146-18*v).toFixed(1)+" 274 "+(146-18*v).toFixed(1)+" 282 146");vl.style.opacity=(v*(1-sm01(1.2,1.5,q))).toFixed(3);
     /* 2 depth: the needle drives to 1.6 mm, read on the scale */
     var dpt=sm01(1,1.7,q),tip=146+84*dpt;ndl.setAttribute("d","M250 146V"+tip.toFixed(1));
-    dot.setAttribute("cy",(150+80*dpt).toFixed(1));lead.setAttribute("d","M"+(256+sh).toFixed(1)+" "+tip.toFixed(1)+"H462");lead.style.opacity=(dpt>.05?.8:0).toFixed(2);
+    dot.setAttribute("cy",(150+80*dpt).toFixed(1));lead.setAttribute("d","M"+(250+sh).toFixed(1)+" "+tip.toFixed(1)+"H462");lead.style.opacity=(dpt>.05?.8:0).toFixed(2);
     hl.style.opacity=(.4+.6*sm01(1.3,1.8,q)).toFixed(3);
     /* 3 dose: a measured volume disperses in the dermis */
     var dose=sm01(2,2.85,q);bl.setAttribute("cx",(250+sh).toFixed(1));bl.setAttribute("rx",(48*dose).toFixed(1));bl.setAttribute("ry",(26*dose).toFixed(1));

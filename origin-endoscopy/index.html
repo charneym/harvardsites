@@ -712,6 +712,24 @@ em{font-weight:300}
 /* CB round 3: the mechanism keeps its heading on phones */
 @media (max-width:1024px){.story-l .kick{display:block;margin-bottom:8px}.story-l .d3{display:block;font-size:26px;margin-bottom:14px}}
 
+
+/* R4 / CI: masthead team list (no portraits) */
+.mast{width:100%}
+.mast .mrow:last-child{border-bottom:1px solid var(--hairD)}
+.mrow+.mg{margin-top:clamp(56px,6vw,88px)}
+.mast .mg{display:block;margin:clamp(48px,5vw,72px) 0 14px}
+.mast .mg:first-child{margin-top:0}
+.mrow{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr) minmax(0,1.35fr) 28px;column-gap:clamp(24px,3vw,48px);align-items:start;padding:clamp(26px,2.6vw,38px) 0;border-top:1px solid var(--hairD);color:inherit;text-decoration:none}
+.mrow .mn{font-family:var(--sans);font-weight:300;font-size:clamp(28px,2.3vw,34px);line-height:1.12;letter-spacing:-.03em;margin:0;transition:color .3s var(--eo)}
+.mrow .mr{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
+.mrow .ms{margin:0;font-size:15px;line-height:1.55;color:var(--ink)}
+.mrow .ma{align-self:center;justify-self:end;color:var(--sinD)}
+.mrow .ma svg{width:18px;height:10px;display:block;transition:transform .3s var(--eo)}
+a.mrow:hover .mn,a.mrow:focus-visible .mn{color:var(--sinD)}
+a.mrow:hover .ma svg,a.mrow:focus-visible .ma svg{transform:translateX(6px)}
+@media (min-width:861px){.mrow .mr,.mrow .ms{padding-top:.62em}.mrow .ma{align-self:start;padding-top:1.05em}}
+@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:8px}.mrow .mn{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .mr,.mrow .ms{grid-column:1/-1}}
+@media (max-width:560px){.cmp-r{grid-template-columns:minmax(0,1fr)}.cmp-r .lab{grid-column:auto}.cmp-h{display:none}}
 </style>
 </head>
 <body>
@@ -986,12 +1004,12 @@ var NEWS=[
  {d:"2023-05-05",s:"MTEC",t:"Company profile: an early-stage med-tech company focused on more effective solutions to control GI bleeding",u:"https://mtec-sc.org/life-sciences/origin-endoscopy"}
 ];
 var TEAM=[
- {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",
+ {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",sum:"Contact principal investigator on the 2026 NIDDK Direct-to-Phase II SBIR award developing EpiMAX for long-acting hemostasis of GI bleeding.",
   bio:["Jeremy Starkweather is the contact principal investigator on Origin Endoscopy’s 2026 NIDDK Direct-to-Phase II SBIR award to develop EpiMAX, an injectable hemostatic agent for long-acting hemostasis of gastrointestinal bleeding."]},
- {slug:"venkata-akshintala",name:"Dr. Venkata Akshintala",title:"Co-inventor · Acting Chief Medical Officer",grp:"Founders",
+ {slug:"venkata-akshintala",name:"Dr. Venkata Akshintala",title:"Co-inventor · Acting Chief Medical Officer",grp:"Founders",sum:"Co-developed the core technology; won the ASGE Shark Tank trophy for it.",
   bio:["Dr. Venkata Akshintala co-developed Origin Endoscopy’s primary technology and serves as the company’s acting Chief Medical Officer.","Representing ASGE, he won the Shark Tank trophy for a product designed to address bleeding after GI procedures."],
   q:"Current products to treat GI bleeding have challenges and limitations, so we created a durable and innovative gel unlike anything in the market that every endoscopist can use to manage a variety of gastrointestinal bleeding conditions and promote healing of the injured site.",qs:"BizWest, May 2023",link:{t:"Read the BizWest article",u:BW}},
- {slug:"stephen-hoag",nos:1,name:"Dr. Stephen Hoag",title:"Co-inventor",grp:"Founders",
+ {slug:"stephen-hoag",nos:1,name:"Dr. Stephen Hoag",title:"Co-inventor",grp:"Founders",sum:"Co-developed the sustained-release epinephrine gel at the heart of EpiMAX.",
   bio:["Dr. Stephen Hoag co-developed Origin Endoscopy’s primary technology, a sustained-release epinephrine gel designed to control and extend hemostasis of GI bleeding during endoscopy."]}
 ];
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
@@ -1003,6 +1021,8 @@ function head(o){
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
 function tCard(p){if(p.nos)return '<div class="tcard nos"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><p class="tbio">'+esc(p.bio[0])+'</p></div>';return '<a class="tcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
+function mRow(p){var inner='<h3 class="mn"><span>'+esc(p.name)+'</span></h3><p class="mr">'+esc(p.title)+'</p><p class="ms">'+esc(p.sum)+'</p>';if(p.nos)return '<div class="mrow">'+inner+'<span class="ma"></span></div>';return '<a class="mrow" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read more">'+inner+'<span class="ma">'+ARR+'</span></a>'}
+function mast(){var g=[],h="";TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});g.forEach(function(k){h+='<span class="lab mg">'+esc(k)+'</span>'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join("")});return '<div class="mast" data-group>'+h+'</div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pipe(){return '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Proof of concept</span><span>GMP · CMC</span><span>GLP efficacy</span><span>Pre-IND</span></span></div>'+
  '<div class="prow"><div><h3>EpiMAX</h3><span class="tagp">NIDDK · SBIR Phase II</span></div><div class="ind">Gastrointestinal bleeding, as a single injectable therapy</div><div class="track"><i></i><i></i><i></i><i></i><span class="bar" style="width:30%"><b></b></span></div><p class="note">In vivo proof of concept complete in a porcine ulcer model. Phase II optimizes microparticle production, manufactures GMP material at 100 g scale with CDMO Bravado Pharmaceuticals and runs a definitive GLP efficacy study to support pre-IND FDA interactions.</p></div></div>'}
@@ -1027,8 +1047,8 @@ function sceneSvg(){
   o+='<ellipse id="scV" class="k" cx="410" cy="244" rx="18" ry="18"/>';
   o+='<g id="scBlood">';for(var i=0;i<14;i++)o+='<circle class="cf" r="'+(3+i%3)+'"/>';o+='</g>';
   o+='<g id="scNeedle"><g transform="translate(600 96) rotate(-14)"><rect class="hs" x="0" y="-12" width="186" height="24" rx="12"/><circle class="k2" cx="17" cy="0" r="5"/></g><path id="scN" class="nd" d="M600 96L600 96"/></g>';
-  o+='<g id="scGel"><path class="af" d="M300 150C330 96 500 96 520 150C480 214 360 214 300 150Z"/>';
-  [[340,130],[377,160],[414,140],[451,170],[488,135],[365,186],[402,118],[439,190],[476,160],[352,152],[464,124]].forEach(function(c){o+='<circle class="mp" cx="'+c[0]+'" cy="'+c[1]+'" r="5"/>'});
+  o+='<g id="scGel"><path class="af" d="M322 148C340 96 480 96 498 148L490 150C450 210 370 210 330 150Z"/>';
+  [[360,140],[385,168],[410,126],[440,174],[464,140],[372,156],[425,150],[452,160],[395,145],[410,182],[438,124]].forEach(function(c){o+='<circle class="mp" cx="'+c[0]+'" cy="'+c[1]+'" r="5"/>'});
   o+='</g><path id="scArrow" class="a" d="M410 196V214M396 206l14 10 14-10" opacity="0"/>';
   o+='<g id="scEpi">';for(var j=0;j<28;j++)o+='<circle class="ep" r="2"/>';o+='</g>';
   o+='</svg><svg class="scl" viewBox="150 30 640 380" aria-hidden="true">'+scLbl("orL0","BLEEDING VESSEL")+scLbl("orL1","NEEDLE")+'<text class="bl" x="744" y="132" text-anchor="middle">ENDOSCOPE</text><text class="bl" x="212" y="182">MUCOSA</text><text class="bl" x="212" y="284">SUBMUCOSA</text><text class="bl" x="212" y="376">MUSCULARIS</text>'+scLbl("orL2","HYDROGEL")+scLbl("orL3","EPINEPHRINE")+'</svg>';
@@ -1043,9 +1063,9 @@ function makeScene(svg){
     /* bleeding: drops rise from the vessel through the ulcer, slowing and fading as the gel seals it */
     B.forEach(function(c,i){var ph=((i*.137+p*2.6)%1),x=400+((i*29)%40)-10+ph*((i%3)-1)*20,y=226-ph*150;c.setAttribute("cx",x.toFixed(1));c.setAttribute("cy",y.toFixed(1));c.setAttribute("opacity",(Math.sin(ph*Math.PI)*(1-stop)*.95).toFixed(3))});
     /* needle comes in from the endoscope, injects, then withdraws */
-    var tx=600+(470-600)*inj,ty=96+(176-96)*inj;N.setAttribute("d","M600 96L"+tx.toFixed(1)+" "+ty.toFixed(1));N.setAttribute("opacity",inj>.01?"1":"0");
-    /* hydrogel dome grows out of the injection site */
-    var k=.15+.85*gel;G.setAttribute("transform","translate(410 160) scale("+k.toFixed(4)+" "+(k*(.8+.2*gel)).toFixed(4)+") translate(-410 -160)");G.setAttribute("opacity",(sm((p-.33)/.06)).toFixed(3));
+    var tx=600+(430-600)*inj,ty=96+(186-96)*inj;N.setAttribute("d","M600 96L"+tx.toFixed(1)+" "+ty.toFixed(1));N.setAttribute("opacity",inj>.01?"1":"0");
+    /* hydrogel grows from the needle tip on the ulcer floor and fills the crater (its lower edge IS the crater wall, so no second outline) */
+    var k=.15+.85*gel;G.setAttribute("transform","translate(420 194) scale("+k.toFixed(4)+" "+(k*(.8+.2*gel)).toFixed(4)+") translate(-420 -194)");G.setAttribute("opacity",(sm((p-.33)/.06)).toFixed(3));
     /* vessel compressed */
     V.setAttribute("rx",(18+6*comp).toFixed(2));V.setAttribute("ry",(18-9*comp).toFixed(2));AR.setAttribute("opacity",(comp*(1-rel)).toFixed(3));
     /* epinephrine: a burst then a steady spread */
@@ -1053,7 +1073,7 @@ function makeScene(svg){
     var st=p*4,go=sm((p-.33)/.06);
     setLbl(LB[0],410,263,470,392,"start",.55+.45*lblV(st,0,4));
     var nm=[(600+tx)/2,(96+ty)/2];setLbl(LB[1],nm[0],nm[1],560,74,"end",(.55+.45*lblV(st,1,4))*sm(inj*5));
-    var gk=.15+.85*gel;setLbl(LB[2],410-104*gk,150-8*gk,300,82,"end",(.55+.45*lblV(st,2,4))*go);
+    var gk=.15+.85*gel;setLbl(LB[2],420-98*gk,194-46*gk*(.8+.2*gel),300,82,"end",(.55+.45*lblV(st,2,4))*go);
     setLbl(LB[3],560,214,700,262,"end",(.55+.45*lblV(st,3,4))*rel);
     LB.forEach(function(g,i){g.classList.toggle("on",lblV(st,i,4)>.5)});
     var st=p*4;caps.forEach(function(c,i){var v=cl((.5-Math.abs(st-(i+.5)))*7);if(i===0&&st<.5)v=1;if(i===3&&st>3.5)v=1;c.style.opacity=v.toFixed(3)});
@@ -1134,7 +1154,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Endoscopists and <em>scientists.</em></h2></div><p data-r>The inventors and investigators behind EpiMAX.</p></div>'+
-   '<div class="tgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+   mast()+
   '</div></section>'+
 
   '<section class="sec dark2" data-theme="dark" style="background:var(--ink2)"><div class="wrap">'+
@@ -1187,7 +1207,7 @@ function vProgram(){
 }
 function vTeam(){
   return head({k:"Team",h:'Meet the <em>team.</em>',p:'Inventors from Johns Hopkins Medicine and the University of Maryland, and the investigator leading EpiMAX’s Phase II.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="tgrid" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+mast()+'</div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'News and <em>awards.</em>',p:'Funding, recognition and coverage, each linked to its public source.'})+
@@ -1354,7 +1374,7 @@ function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.
 /* ================= HOME SCROLL ================= */
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){relM(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){relM(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){st.revert()}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

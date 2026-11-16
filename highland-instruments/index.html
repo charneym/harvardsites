@@ -161,6 +161,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .hero .eyebrow{color:var(--sinL);margin-bottom:clamp(22px,3vh,34px)}
 .hero-h{font-size:clamp(48px,7.4vw,148px);line-height:.95;letter-spacing:-.04em}
 .hero-h .l{display:block;white-space:nowrap}
+.hero-h em,.d1 em,.d2 em{line-height:0}
 .hero-foot{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(24px,3vh,34px);margin-top:clamp(26px,3.6vh,42px)}
 .hero-foot .s{max-width:46ch;margin:0;font-size:17px;line-height:1.6;color:rgba(242,246,246,.86)}
 .hero-foot .act{display:flex;gap:12px;flex-wrap:wrap}
@@ -1408,18 +1409,18 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     var t=$("#pageTitle",view);
     if(k==="home"&&!RM){
       var mob=MOBILE();
-      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var s=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
-      /* CP: the letters rise nearly together (total stagger capped), so a line still travelling never sits over a landed one; the copy below follows once the title has landed */
-      var hEach=Math.min(mob?.006:.024,.32/Math.max(1,s.chars.length));
-      htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:hEach}},0)
-         .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},s.chars.length*hEach+(mob?.55:1.1));
+      /* client R5 review: the headline rises line by line inside its masks (all lines land within ~0.15s, no trailing letters),
+         and the eyebrow, copy and buttons start while it is still settling: no dead pause, nothing arrives late */
+      htl.from(s.lines,{yPercent:105,duration:mob?.8:1.05,ease:"silk",stagger:.075},0)
+         .from(hr,{y:18,opacity:0,duration:mob?.7:.9,ease:"silk",stagger:.05},mob?.25:.32);
       htl.eventCallback("onComplete",function(){relMask(s.lines);relAll($("#view"))});if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});var tEach=Math.min(.018,.3/Math.max(1,s2.chars.length));window._tLand=s2.chars.length*tEach+.6;HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:tEach},delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});window._tLand=.3;HERO_TL.push(gsap.from(s2.lines,{yPercent:105,duration:1.05,ease:"silk",stagger:.075,delay:E+.05,onComplete:function(){relMask(s2.lines);relAll($("#view"))}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.05+(window._tLand||.3)}));window._tLand=0}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1797,9 +1798,9 @@ function preload(){
         .to(["#pre .dots","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
         .add(function(){field.intro(2);field.start()},.3)
         /* mobile: hero plays under the lifting veil so it is settled at hand-off */
-        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.55)
+        .add(function(){if(window._heroIn)window._heroIn.play()},mob?.12:.35)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
-        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.9);
+        .to("#hdr",{yPercent:0,duration:.7,ease:"silk"},.5);
     }
   }
 }

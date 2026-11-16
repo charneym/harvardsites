@@ -534,7 +534,7 @@ em{font-weight:300}
 .dark .note-s,.dark2 .note-s{color:var(--stone)}
 .cta{background:var(--bone2)}
 .ftr .bigw{letter-spacing:.02em;font-size:min(14vw,240px);text-transform:uppercase;padding-bottom:.12em;font-weight:300}
-.xc{background:linear-gradient(135deg,#c03078,#a0308a)}
+.xc{background:linear-gradient(135deg,#c03078,#a0308a) #b0307f}
 .xc::before{background:#fff;opacity:.5}
 @media (max-width:1100px){.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:1024px){.grant{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}.story-r{height:38vh;height:38svh}}
@@ -713,22 +713,30 @@ em{font-weight:300}
 @media (max-width:1024px){.story-l .kick{display:block;margin-bottom:8px}.story-l .d3{display:block;font-size:26px;margin-bottom:14px}}
 
 
-/* R4 / CI: masthead team list (no portraits) */
-.mast{width:100%}
-.mast .mrow:last-child,.mast .mrow:has(+.mg){border-bottom:1px solid var(--hairD)}
-.mrow+.mg{margin-top:clamp(56px,6vw,88px)}
-.mast .mg{display:block;margin:clamp(48px,5vw,72px) 0 14px}
-.mast .mg:first-child{margin-top:0}
-.mrow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.05fr) minmax(0,1.25fr) 28px;column-gap:clamp(24px,3vw,48px);align-items:start;padding:clamp(26px,2.6vw,38px) 0;border-top:1px solid var(--hairD);color:inherit;text-decoration:none}
-.mrow .mn{font-family:var(--sans);font-weight:300;font-size:clamp(28px,2.3vw,34px);line-height:1.12;letter-spacing:-.03em;margin:0;transition:color .3s var(--eo)}
-.mrow .mr{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
-.mrow .ms{margin:0;font-size:15px;line-height:1.55;color:var(--ink)}
-.mrow .ma{align-self:center;justify-self:end;color:var(--sinD)}
-.mrow .ma svg{width:18px;height:10px;display:block;transition:transform .3s var(--eo)}
-a.mrow:hover .mn,a.mrow:focus-visible .mn{color:var(--sinD)}
-a.mrow:hover .ma svg,a.mrow:focus-visible .ma svg{transform:translateX(6px)}
-@media (min-width:861px){.mrow .mr,.mrow .ms{padding-top:.62em}.mrow .ma{align-self:start;padding-top:1.05em}}
-@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:8px}.mrow .mn{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .mr,.mrow .ms{grid-column:1/-1}}
+/* CL (R5): the shared masthead component (_kit/components/masthead.html), re-skinned with tokens only */
+.mh{--mh-ink:#14161a;--mh-mute:#5b6068;--mh-line:rgba(20,22,26,.14);--mh-accent:#2b6;display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--sans);--mh-sans:var(--sans);--mh-mono:var(--mono)}
+@media (max-width:760px){div.mh-row{grid-template-columns:1fr 20px}}
 @media (max-width:560px){.cmp-r{grid-template-columns:minmax(0,1fr)}.cmp-r .lab{grid-column:auto}.cmp-h{display:none}}
 @media (max-width:560px){.mani .mblk{width:auto;margin:0}}
 </style>
@@ -1005,7 +1013,7 @@ var NEWS=[
  {d:"2023-05-05",s:"MTEC",t:"Company profile: an early-stage med-tech company focused on more effective solutions to control GI bleeding",u:"https://mtec-sc.org/life-sciences/origin-endoscopy"}
 ];
 var TEAM=[
- {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",sum:"Contact principal investigator on the 2026 NIDDK Direct-to-Phase II SBIR award developing EpiMAX for long-acting hemostasis of GI bleeding.",
+ {slug:"jeremy-starkweather",nos:1,name:"Jeremy Starkweather",title:"Principal investigator, NIDDK SBIR Phase II",grp:"Leadership",sum:"Leads the 2026 NIDDK Direct-to-Phase II SBIR award developing EpiMAX for long-lasting control of GI bleeding.",
   bio:["Jeremy Starkweather is the contact principal investigator on Origin Endoscopy’s 2026 NIDDK Direct-to-Phase II SBIR award to develop EpiMAX, an injectable hemostatic agent for long-acting hemostasis of gastrointestinal bleeding."]},
  {slug:"venkata-akshintala",name:"Dr. Venkata Akshintala",title:"Co-inventor · Acting Chief Medical Officer",grp:"Founders",sum:"Co-developed the core technology; won the ASGE Shark Tank trophy for it.",
   bio:["Dr. Venkata Akshintala co-developed Origin Endoscopy’s primary technology and serves as the company’s acting Chief Medical Officer.","Representing ASGE, he won the Shark Tank trophy for a product designed to address bleeding after GI procedures."],
@@ -1022,8 +1030,9 @@ function head(o){
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
 function tCard(p){if(p.nos)return '<div class="tcard nos"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><p class="tbio">'+esc(p.bio[0])+'</p></div>';return '<a class="tcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
-function mRow(p){var inner='<h3 class="mn"><span>'+esc(p.name)+'</span></h3><p class="mr">'+esc(p.title)+'</p><p class="ms">'+esc(p.sum)+'</p>';if(p.nos)return '<div class="mrow">'+inner+'<span class="ma"></span></div>';return '<a class="mrow" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read more">'+inner+'<span class="ma">'+ARR+'</span></a>'}
-function mast(){var g=[],h="";TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});g.forEach(function(k){h+='<span class="lab mg">'+esc(k)+'</span>'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join("")});return '<div class="mast" data-group>'+h+'</div>'}
+function mRow(p){return '<li><div class="mh-row"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span></div></li>'}
+/* CL: one list format; every row is static (each person's card carries what is known about them) */
+function mast(){var g=[];TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});return '<div class="mh">'+g.map(function(k){return '<div class="mh-group"><p class="mh-label">'+esc(k)+'</p><ul class="mh-list">'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join("")+'</ul></div>'}).join("")+'</div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pipe(){return '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Proof of concept</span><span>GMP · CMC</span><span>GLP efficacy</span><span>Pre-IND</span></span></div>'+
  '<div class="prow"><div><h3>EpiMAX</h3><span class="tagp">NIDDK · SBIR Phase II</span></div><div class="ind">Gastrointestinal bleeding, as a single injectable therapy</div><div class="track"><i></i><i></i><i></i><i></i><span class="bar" style="width:30%"><b></b></span></div><p class="note">In vivo proof of concept complete in a porcine ulcer model. Phase II optimizes microparticle production, manufactures GMP material at 100 g scale with CDMO Bravado Pharmaceuticals and runs a definitive GLP efficacy study to support pre-IND FDA interactions.</p></div></div>'}
@@ -1390,6 +1399,9 @@ function homeScroll(view){
 }
 
 /* BH: a line mask clips only while its reveal moves; afterwards it is released (or the split is reverted) */
+/* CM: a page title stays split after its entrance (masks released, so nothing clips at rest) and is reverted only if the width changes, so the title reads as one animated block rather than reappearing as fresh static text */
+function keepT(t,st){relM(st);t._kt=st}
+addEventListener("resize",function(){var w=innerWidth;if(w===keepT.w)return;keepT.w=w;document.querySelectorAll("#pageTitle").forEach(function(t){if(t._kt){t._kt.revert();t._kt=null}})});keepT.w=innerWidth;
 function relM(st){try{(st.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"});(st.lines||[]).forEach(function(l){var p=l.parentElement;if(p&&p.classList&&p.classList.contains("ln-mask")){p.style.overflow="visible";p.style.clipPath="none"}})}catch(e){}}
 document.addEventListener("pointerover",function(e){var c=e.target.closest&&e.target.closest(".pcard");if(!c||c.contains(e.relatedTarget))return;var f=c.querySelector(".pc-fig");if(!f)return;var r=f.getBoundingClientRect();c.style.setProperty("--mx",((e.clientX-r.left)/r.width*100)+"%");c.style.setProperty("--my",((e.clientY-r.top)/r.height*100)+"%")});
 /* ================= HEADER THEME ================= */
@@ -1426,12 +1438,12 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
-      htl.eventCallback("onComplete",function(){s.revert()});htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
+      htl.eventCallback("onComplete",function(){keepT(t,s)});htl.from(s.chars,{yPercent:100,opacity:0,duration:mob?.7:1.25,ease:"silk",stagger:{each:mob?.006:.024}},0)
          .from(hr,{y:22,opacity:0,duration:mob?.6:1,ease:"silk",stagger:.04},mob?.15:.4);
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){s2.revert()}}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",specialChars:/\d+/g});HERO_TL.push(gsap.from(s2.chars,{yPercent:100,opacity:0,duration:1.1,ease:"silk",stagger:{each:.018},delay:E+.05,onComplete:function(){keepT(t,s2)}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.08,delay:E+.35}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     /* AZ: [data-r] / [data-group] / .rows children now enter per item via rvView() */
@@ -1450,8 +1462,8 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ================= AZ: GLOBAL REVEAL (everything enters; one helper for every route, overlay and step) ================= */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
-var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.fg,.bk,.cmp-r,.ind";
+var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld,.fg,.bk,.cmp-r,.ind";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
 function rvMarks(root){var A=new Set(),K=new Set();
@@ -1469,12 +1481,12 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.35,ease:"power1.out",delay:dl,overwrite:true,clearProps:"opacity"});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 /* scroll-driven: everything in the view that nothing else animates */
@@ -1482,15 +1494,16 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */
-  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
-  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  /* CM: everything already on the first screen reveals with the page entrance (one small stagger); everything below rises as it scrolls in, so every block of a section animates */
+  var fh=items.filter(function(el){return el.getBoundingClientRect().top<innerHeight*.97}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)rvGo(fh,base(),Math.min(.06,.45/fh.length));
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 82%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}if(el._rvS&&!gsap.isTweening(el)&&+getComputedStyle(el).opacity<.99)gsap.set(el,{opacity:1})})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive())&&t.paused&&t.paused())t.play()});if((window._fsN=(window._fsN||0)+1)<6&&HERO_TL.some(function(t){return t&&t.progress()<1})){failsafe();return}
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}

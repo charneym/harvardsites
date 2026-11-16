@@ -171,3 +171,4 @@ Not used, with reasons:
 - **CO.** Portrait tiles warm from grey to colour and show the arrow on hover (unchanged from R4). They now pass the polish-audit HOVER check.
 - **CP.** Title entrances travel one line (central fix 96d211e), verified with polish-audit.
 - **CL.** Leadership, board and advisors now use the shared masthead component (`_kit/components/masthead.html`): its CSS copied verbatim, re-skinned with Fzata tokens only. The one addition is `justify-self:start` on the name, so the hover underline ends with the name. Each list is consistent: Leadership's only row is static, and every row in Board, Clinical advisors and Advisors opens a sheet.
+- R5 critic: page-head titles take the full width on phones and are sized so the longest word fits (no mid-word breaks). Static masthead rows use the phone grid. The hover arrow ends inside the row rule.

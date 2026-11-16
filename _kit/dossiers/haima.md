@@ -153,3 +153,4 @@ Not used, with reasons: none of the company's meaningful images were left out; t
 - **CO.** Portrait tiles warm from grey to colour and show the arrow on hover (unchanged from R4). They now pass the polish-audit HOVER check.
 - **CP.** Title entrances travel one line (central fix 96d211e), verified with polish-audit.
 - **CL.** No horizontal person lists: every group is a portrait grid.
+- R5 critic: page-head titles take the full width on phones and are sized so the longest word fits (no mid-word breaks).

@@ -543,6 +543,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   *{transition-duration:.01ms!important;animation-duration:.01ms!important}
   .mani .txt .w{opacity:1}
 }
+.prow p.ind{margin:0}
 </style>
 </head>
 <body>
@@ -727,7 +728,7 @@ function pipeTable(){
    {n:"Mark101",i:"First experimental candidate · proof of concept",w:40,p:1,note:"One-time AAV-driven expression of functional PLA2g6L stopped pathological loss of dopaminergic neurons in the substantia nigra and significantly slowed motor dysfunction in the preclinical idPD-like aging model.",tag:"Proof of concept"}
   ];
   return '<div class="pipe"><div class="pipe-h lab"><span>Candidate</span><span>Indication</span><span class="stg"><span>Discovery</span><span>Lead optimization</span><span>In vivo validation</span></span></div>'+
-   rows.map(function(r){return '<div class="prow"><div><h3>'+r.n+'</h3><span class="lab tagp">'+r.tag+'</span></div><div class="ind">'+r.i+'</div>'+
+   rows.map(function(r){return '<div class="prow"><div><h3>'+r.n+'</h3><span class="lab tagp">'+r.tag+'</span></div><p class="ind">'+r.i+'</p>'+
     '<div class="track"><i></i><i></i><i></i><span class="bar'+(r.p?" p":"")+'" style="width:'+r.w+'%"><b></b></span></div>'+
     '<p class="note">'+r.note+'</p></div>'}).join("")+'</div>';
 }
@@ -1264,7 +1265,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ============ GLOBAL REVEAL ============ */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill],.track";
 var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
@@ -1293,7 +1294,7 @@ function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return ou
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
-  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  var fh=items.filter(function(el){return el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
   if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}

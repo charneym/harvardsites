@@ -266,6 +266,31 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .tgroup:first-child{margin-top:0}
 .tgroup>.lab{display:block;margin-bottom:22px}
 
+
+/* CI (v16): masthead list, no portraits */
+.mast{width:100%}
+.mgrp+.mgrp{margin-top:clamp(48px,5vw,80px)}
+.mgl{display:block;color:var(--stoneD);margin-bottom:18px}
+.mrows{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD)}
+.mrows li{border-bottom:1px solid var(--hairD)}
+.mrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr) 24px;column-gap:var(--gap);align-items:start;padding:clamp(26px,2.6vw,38px) 0;color:inherit;text-decoration:none}
+.mrow .mn{font-family:var(--serif);font-weight:400;letter-spacing:-.025em;font-size:clamp(28px,2.3vw,34px);line-height:1.1;margin:0;transition:color .3s var(--eo)}
+.mrow .mr,.mrow .ms,.mrow .ma{padding-top:calc(clamp(28px,2.3vw,34px)*.55 - 9px)}
+.mrow .mr{font-size:15px;line-height:1.45;color:var(--ink)}
+.mrow .ms{font-size:15px;line-height:1.5;color:var(--stoneD)}
+.mrow .ma{color:var(--sinD);justify-self:end;margin-right:4px;transition:transform .3s var(--eo)}
+.mrow .ma svg{width:16px;height:10px;display:block}
+a.mrow:hover .mn,a.mrow:focus-visible .mn{color:var(--sinD)}
+a.mrow:hover .ma,a.mrow:focus-visible .ma{transform:translateX(4px)}
+.mrow.nolink{cursor:default}
+@media (max-width:900px){.mrow .mr,.mrow .ms{padding-top:0}.mrow{grid-template-columns:minmax(0,1fr) 24px;row-gap:8px}.mrow .mn,.mrow .mr,.mrow .ms{grid-column:1}.mrow .ma{grid-column:2;grid-row:1;align-self:start;margin-top:.9em}}
+
+/* CJ (v16): investors as one centred credit line */
+.credit{text-align:center;border-top:1px solid var(--hair);padding-top:clamp(36px,4vw,56px);margin-bottom:clamp(24px,3vw,40px)}
+.credit .lab{display:block;margin-bottom:22px;color:var(--stone)}
+.credit .cl{list-style:none;margin:0 auto;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:14px clamp(28px,4vw,64px);max-width:1100px}
+.credit .cl li{font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,24px);line-height:1.2;letter-spacing:-.015em;color:var(--bone)}
+
 /* backers */
 .backers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
 .bk{border:1px solid var(--hair);min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:22px;gap:10px;position:relative;transition:border-color .3s var(--eo),background-color .3s var(--eo)}
@@ -955,11 +980,11 @@ var NEWS=[
  {d:"2026-08-20",s:"MobiHealthNews",t:"MaxQ Medical raises $31.5M for its prostate imaging and therapy system",u:"https://www.mobihealthnews.com/news/maxq-medical-raises-315m-prostate-imaging-and-therapy-system"}
 ];
 var TEAM=[
- {slug:"amir-tehrani",name:"Amir Tehrani",title:"Chief Executive Officer",grp:"Leadership",
+ {slug:"amir-tehrani",name:"Amir Tehrani",title:"Chief Executive Officer",grp:"Leadership",one:"Co-led the $31.5 million Series A, closed in August 2026.",
   bio:["Amir leads MaxQ Medical as CEO. He co-led the company’s $31.5 million Series A with Executive Chairman Amir Abolfathi, closed in August 2026 to grow the team and advance the clinical program.","In announcing the round he described MaxQ’s aim: a single transurethral system with the durability of gold-standard resective therapy and side-effects more comparable to minimally invasive treatments."]},
- {slug:"amir-abolfathi",name:"Amir Abolfathi",title:"Executive Chairman",grp:"Leadership",
+ {slug:"amir-abolfathi",name:"Amir Abolfathi",title:"Executive Chairman",grp:"Leadership",one:"Co-led the $31.5 million Series A financing with CEO Amir Tehrani.",
   card:1,bio:["Co-led the $31.5 million Series A financing with CEO Amir Tehrani."]},
- {slug:"pierre-khuri-yakub",name:"Pierre Khuri-Yakub",title:"Co-founder & CSO, Orchard Ultrasound Innovation",grp:"Origins",
+ {slug:"pierre-khuri-yakub",name:"Pierre Khuri-Yakub",title:"Co-founder & CSO, Orchard Ultrasound Innovation",grp:"Origins",one:"Inventor of the CMUT; Professor Emeritus of Electrical Engineering at Stanford.",
   bio:["Professor Khuri-Yakub is co-founder and Chief Scientific Officer of Orchard Ultrasound Innovation, the Sunnyvale company that spun out MaxQ Medical, and Professor Emeritus of Electrical Engineering at Stanford University.","He invented the Capacitive Micromachined Ultrasonic Transducer (CMUT). Orchard was founded to commercialize semiconductor ultrasound technology developed at Stanford, and MaxQ is its first spinout."]}
 ];
 var SHEET=TEAM.filter(function(p){return !p.card});
@@ -972,9 +997,11 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
+function mast(){var g=[];TEAM.forEach(function(p){if(g.indexOf(p.grp)<0)g.push(p.grp)});return '<div class="mast">'+g.map(function(k){return '<div class="mgrp" data-group><span class="lab mgl">'+k+'</span><ul class="mrows">'+TEAM.filter(function(p){return p.grp===k}).map(mRow).join('')+'</ul></div>'}).join('')+'</div>'}
+function mRow(p){var c='<h3 class="mn">'+esc(p.name)+'</h3><span class="mr">'+esc(p.title)+'</span><span class="ms">'+esc(p.one)+'</span><span class="ma">'+(p.card?'':ARR)+'</span>';return p.card?'<li><div class="mrow nolink">'+c+'</div></li>':'<li><a class="mrow" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Read biography">'+c+'</a></li>'}
 function tCard(p){if(p.card)return '<div class="pcard noimg nolink"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><p class="bio1">'+esc(p.bio[0])+'</p></div></div>';return '<a class="pcard noimg" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
-function backers(){return '<div class="backers" data-group>'+INV.map(function(b){return '<div class="bk'+(b[2]?' lead':'')+'"><b>'+b[0]+'</b><span class="lab">'+b[1]+'</span></div>'}).join("")+'</div>'}
+function backers(){return '<div class="credit" data-r><span class="lab">Series A investors</span><ul class="cl">'+INV.map(function(b){return '<li>'+b[0]+'</li>'}).join('')+'</ul></div>'}
 
 /* BL: ONE continuous scene. The same axial gland stays on stage; its parts draw, rotate, light and grow along the scrubbed timeline */
 var GL='M60 150C60 92 112 58 180 58S300 92 300 150 262 236 180 238 60 208 60 150Z';
@@ -997,7 +1024,7 @@ function sceneSVG(){
    /* one label per step, top right, each pointing at the part that step changes */
    '<g class="sc-l1"><path class="h" d="M346 34H300L268 78"/><text x="346" y="28" text-anchor="end">ULTRASOUND SWEEP</text></g>'+
    '<g class="sc-l2"><path class="h" d="M346 34H300L252 106"/><text x="346" y="28" text-anchor="end">TREATMENT PLAN</text></g>'+
-   '<g class="sc-l3"><path class="h" d="M346 34H300L242 118"/><text x="346" y="28" text-anchor="end">FOCAL ZONES</text></g>'+
+   '<g class="sc-l3"><path class="h" d="M346 34H300L242 118"/><text x="346" y="28" text-anchor="end">TREATMENT SPOTS</text></g>'+
    '<g class="sc-l4"><path class="h" d="M346 34H300L204 112"/><text x="346" y="28" text-anchor="end">PROTECTED MARGIN</text></g></svg>';
 }
 function scene(root,tl,sec){
@@ -1019,7 +1046,7 @@ function scene(root,tl,sec){
   tl.to(q(".sc-hifu"),{opacity:0,duration:.05},.76);
   tl.to(q(".sc-foc"),{opacity:.55,duration:.08},.78);
   tl.to(q(".sc-lobe"),{opacity:.45,duration:.08},.78);
-  tl.fromTo(q(".sc-mar,.sc-marl"),{attr:{r:13},opacity:0},{attr:{r:36},opacity:1,duration:.14,ease:"none"},.78);
+  tl.fromTo(q(".sc-mar,.sc-marl"),{attr:{r:13},opacity:0},{attr:{r:20},opacity:1,duration:.14,ease:"none"},.78);
   /* label slot: crosses from step to step with the text */
   gsap.set(q(".sc-l2,.sc-l3,.sc-l4"),{opacity:0});
   tl.to(q(".sc-l1"),{opacity:0,duration:.04},.23).to(q(".sc-l2"),{opacity:1,duration:.04},.4)
@@ -1074,7 +1101,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Built to reach <em>the clinic.</em></h2></div><p data-r>Leadership with deep medical-device experience, and the semiconductor ultrasound science the platform is built on.</p></div>'+
-   '<div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div>'+
+   ''+mast()+''+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -1147,10 +1174,10 @@ function moaSvg(){
 function moaKey(){return '<ol class="mkey" data-group><li><b>1</b><span><strong>Probe in the urethra</strong>Imaging and therapy from one transurethral device.</span></li><li><b>2</b><span><strong>Target tissue</strong>Focal zones planned to the patient’s anatomy.</span></li><li><b>3</b><span><strong>Protected margin</strong>A preserved zone around the urethra.</span></li></ol>'}
 function vTeam(){
   return head({k:"Team",h:'The people behind <em>MaxQ.</em>',p:'Leadership guiding MaxQ to the clinic, and the ultrasound science behind it.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid three" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+mast()+'</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investors</span><h2 class="d2 split">Backed to <em>build.</em></h2></div><p data-r>A $31.5 million Series A, closed in August 2026, with strategic backing from Olympus Innovation Ventures.</p></div>'+
-   '<dl class="facts" data-group>'+INV.map(function(b){return '<div><dt class="lab">'+b[1]+'</dt><dd>'+b[0]+'</dd></div>'}).join("")+'</dl>'+
+   backers()+
    '<div class="qt c" data-r><p>“There’s a strong need in urology for technology that allows physicians to see and treat the prostate in one setting.”</p><span class="lab">Gabriela Kaynor · Chair, Olympus Innovation Ventures</span></div>'+
   '</div></section>'+cta();
 }
@@ -1426,7 +1453,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"center 62%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

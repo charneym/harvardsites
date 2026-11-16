@@ -164,8 +164,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sec.first{padding-top:clamp(72px,9vh,120px)}
 .cta{background:var(--bone2)}
 @media (min-width:1025px){.two>div:first-child{position:sticky;top:120px}}
-/* CM: the first section of a page reveals as a whole on load; its heading column scrolls with it */
-.sec.first .two>div:first-child{position:relative;top:auto}
 .moa .vm{display:none}
 @media (max-width:700px){.moa .hz{display:none}.moa .vm{display:block}.moa{padding:14px}}
 
@@ -1254,8 +1252,8 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   /* BB: a heading already on the first screen rises with the page entrance (after the cover), not underneath it; others fire well inside the viewport */
-  var sc=el.closest("section")||el,fs=el.getBoundingClientRect().top+scrollY<innerHeight||sc.getBoundingClientRect().top<innerHeight*.97;
-  var stv=fs?undefined:{trigger:el,start:"top 82%"};
+  var fs=el.getBoundingClientRect().top+scrollY<innerHeight*.75;
+  var stv=fs?{trigger:el,start:"top bottom"}:{trigger:el,start:rvStart};
   gsap.from(el,{opacity:0,duration:.35,ease:"power1.out",delay:fs?(E||0)+.45:0,scrollTrigger:stv,clearProps:"opacity"});
   gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:stv,onComplete:function(){st.revert()}});
 }
@@ -1266,7 +1264,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     var t=$("#pageTitle",view);
     if(k==="home"&&!RM){
       var mob=MOBILE();
-      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln"});
+      var s=SplitText.create(t,{type:"lines,words,chars",mask:"lines",linesClass:"ln",charsClass:"ch"});
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1});
@@ -1311,6 +1309,8 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
     /* BB: a unit taller than ~35% of the screen reveals piecewise, so its lower part never appears before it is scrolled into view */
     if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
+  /* CM: a text block outside the selector list still joins its section's reveal */
+  if(!c.querySelector(RV_SEL)&&c.textContent.trim()){var r2=c.getBoundingClientRect();if(r2.width>1&&r2.height>1)out.push(c);continue}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
@@ -1327,15 +1327,14 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   /* BB: a masked heading that already peeks in on the first screen rises with the page entrance (its box is visible, so it must not wait for a scroll) */
-  /* CM: a section that starts on the first screen reveals as a whole with the page entrance (one small stagger), so it never mixes load-time and scroll-time reveals */
-  var secIn=function(el){var sc=el.closest("section,footer")||el;return sc.getBoundingClientRect().top<innerHeight*.97};
-  var fh=items.filter(function(el){return el.getBoundingClientRect().top<innerHeight||secIn(el)}),rest=items.filter(function(el){return fh.indexOf(el)<0});
-  if(fh.length)rvGo(fh,base(),Math.min(.06,.45/fh.length));
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 82%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight*.75}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:rvStart,end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
 /* time-driven (overlays): stagger everything in root now */
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
-function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
+function rvStart(self){var t=self.trigger.getBoundingClientRect().top+scrollY;return Math.max(0,Math.min(t-innerHeight*.75,ScrollTrigger.maxScroll(window)-2))}
+function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight*.75&&scrollY<ScrollTrigger.maxScroll(window)-4)return;
   if(!el._rvDone){rvGo([el],0);return}
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}if(el._rvS&&!gsap.isTweening(el)&&+getComputedStyle(el).opacity<.99)gsap.set(el,{opacity:1})})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */

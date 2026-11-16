@@ -1066,7 +1066,8 @@ function makeStory(cv){
   /* a label is always anchored: a short leader from the thing to the text */
   function tag(txt,ax,ay,tx,ty,al,col,align){
     if(al<.02)return;
-    c.font="400 11px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
+    var FS=w<520?"400 10px 'IBM Plex Mono',monospace":"400 11px 'IBM Plex Mono',monospace",LS=w<520?"1px":"1.4px";
+    c.font=FS;if(c.letterSpacing!==undefined)c.letterSpacing=LS;
     var tw=c.measureText(txt).width+18;
     if(align==="right")tx=Math.max(tx,tw+12);else tx=Math.min(tx,w-tw-12);
     ty=Math.max(ty,18);ty=Math.min(ty,h-12);
@@ -1082,7 +1083,7 @@ function makeStory(cv){
     c.fill();c.restore();
     st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
-    c.font="400 11px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
+    c.font=FS;if(c.letterSpacing!==undefined)c.letterSpacing=LS;
     c.textAlign=align||"left";c.fillText(txt,tx+(align==="right"?-8:8),ty+4);
   }
   function draw(){
@@ -1092,11 +1093,11 @@ function makeStory(cv){
     c.lineCap="round";c.lineJoin="round";
     var s=Math.min(w/560,h/760);
     var approach=seg(P,0,.18),sweep=seg(P,.2,.46),wide=seg(P,.5,.72),flow=seg(P,.76,1);
-    var R=Math.min(w*.2,h*.165),cx=w*.5,ey=h*.3;
+    var R=Math.min(w*.2,h*.15),cx=w*.5,ey=h*.38,mob=w<520;
     /* ---------- the eye: always present, complete from the first frame ---------- */
     st(INK,.5);c.lineWidth=1.4;
     c.beginPath();c.arc(cx,ey,R,0,6.2832);c.stroke();
-    c.beginPath();c.arc(cx,ey-R*1.02,R*.42,Math.PI*1.2,Math.PI*1.8);c.stroke();   /* cornea */
+    c.beginPath();c.arc(cx,ey-R*.55,R*.5,4.093,5.332);c.stroke();   /* cornea: meets the globe */
     st(INK,.32);c.beginPath();c.ellipse(cx,ey-R*.72,R*.3,R*.15,0,0,6.2832);c.stroke(); /* lens */
     st(INK,.3);c.lineWidth=2.4;
     c.beginPath();c.arc(cx,ey,R*.93,Math.PI*.16,Math.PI*.84);c.stroke();          /* retina */
@@ -1105,7 +1106,7 @@ function makeStory(cv){
     st(CY,.85*Math.max(.1,sweep));c.lineWidth=2.8;
     c.beginPath();c.arc(cx,ey,R*.93,Math.PI*.5-half,Math.PI*.5+half);c.stroke();
     /* the probe, above the eye, arriving in step 1 and then held */
-    var py=ey-R*1.78+approach*R*.52, S=s*1.25;
+    var py=ey-R*1.5+approach*R*.24, S=s;
     c.save();c.translate(cx,py);
     st(INK,.5+.4*approach);c.lineWidth=1.6;
     rr(-26*S,-86*S,52*S,62*S,10*S);c.stroke();                    /* the handheld body */
@@ -1181,16 +1182,17 @@ function makeStory(cv){
     }
     /* ---------- labels: one per step, each anchored to its part ---------- */
     var l1=sm(1-seg(P,.22,.34))*Math.max(approach,.15), l2=sweep*(1-seg(P,.62,.74)), l3=wide*(1-seg(P,.86,.96)), l4=flow;
-    if(approach>.25)tag("LORIS T2 PROBE · UNDER 350 g",cx+30*s*1.25,py-55*s*1.25,cx+R*1.1,py-50*s,Math.max(l1,.34),DIM,"left");
+    var keep=.62; /* the probe and the eye stay named, clearly legible, throughout */
+    tag(mob?"PROBE · <350 g":"LORIS T2 PROBE · UNDER 350 g",cx+26*S,py-55*S,cx+R*1.1,py-50*S,Math.max(l1,keep),DIM,"left");
     /* the object the whole scene is about, named quietly throughout */
-    tag("THE EYE · WE IMAGE THE RETINA",cx-R*.99,ey+R*.22,cx-R*1.3,ey+R*.52,Math.max(l1,.3),DIM,"right");
+    tag(mob?"THE EYE":"THE EYE · WE IMAGE THE RETINA",cx-R*.99,ey+R*.22,cx-R*1.3,ey+R*.52,Math.max(l1,keep),DIM,"right");
     /* clear of the dashed drop line, which runs down the centre to the panel */
-    if(pa>.4)tag("B-SCAN · DEPTH AND LAYERS",(w-w*.72)/2+10,h*.6,(w-w*.72)/2,h*.555,Math.max(l2,l3,l4),DIM,"left");
-    var arcA=Math.PI*.5+half,arcX=cx+Math.cos(arcA)*R*.93,arcY=ey+Math.sin(arcA)*R*.93;
-    tag(wide>.45?"145° FIELD · TO THE PERIPHERY":"62° FIELD · THE MACULA",arcX,arcY,cx+R*1.5,ey+R*.55,Math.max(l2,l3),CY,"left");
-    tag("A-SCAN · 300,000 PER SECOND",cx,ey-R*.72,cx-R*1.35,ey-R*.78,l2,CY,"right");
+    if(pa>.4)tag(mob?"CROSS-SECTION":"CROSS-SECTION · THE RETINA’S LAYERS",(w-w*.72)/2+10,h*.6,(w-w*.72)/2,h*.555,Math.max(l2,l3,l4),DIM,"left");
+    var arcA=Math.PI*.5-half,arcX=cx+Math.cos(arcA)*R*.93,arcY=ey+Math.sin(arcA)*R*.93;
+    tag(mob?(wide>.45?"145° FIELD":"62° FIELD"):(wide>.45?"145° FIELD · TO THE EDGES":"62° FIELD · THE CENTRE"),arcX,arcY,cx+R*1.5,ey+R*.55,Math.max(l2,l3),CY,"left");
+    tag(mob?"DEPTH SCANS":"DEPTH SCANS · 300,000 A SECOND",cx,ey-R*.72,cx-R*1.35,ey-R*.78,l2,CY,"right");
     if(flow>.01){var fy=h*.58+h*.3*.78;
-      tag("BLOOD FLOW · NO DYE",w*.5+w*.16,fy,w*.5+w*.26,h*.95,l4,CY,"left")}
+      tag(mob?"BLOOD FLOW":"BLOOD FLOW · NO DYE",w*.5+w*.16,fy,w*.5+w*.26,h*.95,l4,CY,"left")}
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();

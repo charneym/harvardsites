@@ -1095,7 +1095,8 @@ function makeStory(cv){
   function rr(x,y,ww,hh,r){r=Math.min(r,ww/2,hh/2);c.beginPath();c.moveTo(x+r,y);c.arcTo(x+ww,y,x+ww,y+hh,r);c.arcTo(x+ww,y+hh,x,y+hh,r);c.arcTo(x,y+hh,x,y,r);c.arcTo(x,y,x+ww,y,r);c.closePath()}
   function tag(txt,ax,ay,tx,ty,al,col,align){
     if(al<.02)return;
-    c.font="400 11px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
+    var FS=w<520?"400 10px 'DM Mono',monospace":"400 11px 'DM Mono',monospace",LS=w<520?"1px":"1.4px";
+    c.font=FS;if(c.letterSpacing!==undefined)c.letterSpacing=LS;
     var tw=c.measureText(txt).width+18;
     if(align==="right")tx=Math.max(tx,tw+12);else tx=Math.min(tx,w-tw-12);
     ty=Math.max(ty,18);ty=Math.min(ty,h-12);
@@ -1111,7 +1112,7 @@ function makeStory(cv){
     c.fill();c.restore();
     st(col,.5*al);c.lineWidth=1;c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     fl(col,.9*al);c.beginPath();c.arc(ax,ay,2,0,6.2832);c.fill();
-    c.font="400 11px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
+    c.font=FS;if(c.letterSpacing!==undefined)c.letterSpacing=LS;
     c.textAlign=align||"left";c.fillText(txt,tx+(align==="right"?-8:8),ty+4);
   }
   function build(){
@@ -1128,8 +1129,8 @@ function makeStory(cv){
   function complex(x,y,r,open,ang,br){
     st(INK,.4*(1-open*.55));c.lineWidth=1.3;
     c.beginPath();c.arc(x,y,r,0,6.2832);c.stroke();                                  /* the protease */
-    if(open<.98){                                                                     /* the prodomain cap */
-      st(INK,.72*(1-open));c.lineWidth=2.8;
+    if(open<.8){                                                                      /* the prodomain cap */
+      st(INK,.72*Math.pow(1-open/.8,1.6));c.lineWidth=2.8;
       var g=.5+open*1.6;
       c.beginPath();c.arc(x,y-open*r*1.5,r*1.18,Math.PI+g,6.2832-g);c.stroke();
     }
@@ -1148,17 +1149,18 @@ function makeStory(cv){
     if(!PTS)build();
     var s=Math.min(w/560,h/760);
     var bind=seg(P,0,.2),trig=seg(P,.24,.44),amp=seg(P,.46,.74),read=seg(P,.78,1);
-    var lift=read*h*.07;
+    var lift=read*h*.04;
     var cx=PTS.cx,cy=PTS.cy-lift,R=PTS.R,rr0=10*s;
     /* ---------- the well: one boundary, present from the first frame ---------- */
     st(INK,.2);c.lineWidth=1.2;
     c.beginPath();c.ellipse(cx,cy,R*1.25,R*1.16,0,0,6.2832);c.stroke();
     c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
-    c.textAlign="left";fl(DIM,.7);c.fillText("ONE WELL · MIX AND READ",cx-R*1.25,cy-R*1.24);
+    var mob=w<520;
+    if(!mob){c.textAlign="left";fl(DIM,.7);c.fillText("ONE WELL · MIX AND READ",cx-R*1.25,cy-R*1.24)}
     /* ---------- the components ---------- */
     var front=amp;
     for(var i=0;i<PTS.list.length;i++){
-      var q=PTS.list[i],open=Math.max(0,Math.min(1,(front*1.3-q.u)*3.2));
+      var q=PTS.list[i],open=Math.max(0,Math.min(1,(front*1.45-q.u)*3.2));
       if(i===0)open=Math.max(open,trig);
       complex(q.x,q.y-lift,rr0,open,q.a,.6+.4*Math.sin(t*1.6+q.ph*6.3));
       /* the signal peptide each freed protease cuts: a small teal mark, only once the readout step starts */
@@ -1172,8 +1174,8 @@ function makeStory(cv){
     }
     /* ---------- the antibody and its target, at the centre ---------- */
     var q0=PTS.list[0];
-    if(bind>.01){
-      c.save();c.globalAlpha=sm(bind);
+    {                                     /* present, quietly, from the first frame; step 1 brings it up */
+      c.save();c.globalAlpha=.45+.55*sm(bind);
       var A=1.5*s,ax=cx,ay=cy-R*.06;
       st(INK,.9);c.lineWidth=1.8;
       c.beginPath();c.arc(ax,ay,15*A,0,6.2832);c.stroke();fl(INK,.18);c.fill();       /* the target */
@@ -1190,12 +1192,16 @@ function makeStory(cv){
     }
     /* ---------- the readout panel, framed and labelled ---------- */
     if(read>.01){
-      var pw=w*.62,ph=h*.2,px=(w-pw)/2,pyv=h*.76;
+      var pw=mob?w*.9:w*.62,ph=h*.21,px=(w-pw)/2,pyv=h*.765;
       c.save();c.globalAlpha=sm(read);
       st(INK,.22);c.lineWidth=1;rr(px,pyv,pw,ph,10);c.stroke();
       c.save();c.setLineDash([3,6]);st(DIM,.3);c.lineWidth=1;
       c.beginPath();c.moveTo(cx,cy+R*1.18);c.lineTo(cx,pyv);c.stroke();c.restore();
-      var ox=px+46,oy=pyv+ph-26,ow=pw-86,oh=ph-44;
+      c.font=mob?"400 10px 'DM Mono',monospace":"400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing=mob?"1px":"1.4px";
+      var hy=pyv+20;
+      fl(DIM,.85);c.textAlign="left";c.fillText(mob?"SIGNAL":"SIGNAL OVER TIME",px+14,hy);
+      fl(TL,.9);c.textAlign="right";c.fillText(mob?"EARLY RISE = MORE TARGET":"EARLIER LIFT-OFF = MORE TARGET",px+pw-14,hy);
+      var ox=px+18,oy=pyv+ph-14,ow=pw-36,oh=ph-44;
       st(DIM,.4);c.lineWidth=1;
       c.beginPath();c.moveTo(ox,oy);c.lineTo(ox+ow,oy);c.stroke();
       c.beginPath();c.moveTo(ox,oy);c.lineTo(ox,oy-oh);c.stroke();
@@ -1204,25 +1210,34 @@ function makeStory(cv){
       for(var j=0;j<=120;j++){var u=j/120,v=1/(1+Math.exp(-(u*13-5.6)));
         var X=ox+u*ow,Y=oy-v*oh*sm(read);j?c.lineTo(X,Y):c.moveTo(X,Y)}
       c.stroke();
-      c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
-      fl(DIM,.85);c.textAlign="right";c.fillText("SIGNAL",ox-10,oy-oh+4);
-      c.textAlign="center";c.fillText("TIME",ox+ow*.5,oy+20);
-      c.textAlign="left";fl(TL,.85);c.fillText("EARLIER LIFT-OFF = MORE TARGET",ox+12,oy-oh*.96);
       c.restore();
     }
     /* ---------- labels: one per step, each anchored ---------- */
-    var l1=Math.max(bind*(1-seg(P,.34,.46)),.0),l2=trig*(1-seg(P,.6,.72)),l3=amp*(1-seg(P,.84,.94)),l4=read;
-    var A2=1.5*s,ax2=cx,ay2=cy-R*.06;
-    tag("TARGET + IgG",ax2-15*A2,ay2-10*A2,cx-R*1.5,cy-R*.75,Math.max(l1,l2*.6,.34),INK,"right");
-    tag("INITIATING PROTEASE",ax2+38*A2,ay2+24*A2,cx+R*1.1,cy+R*.5,l1,RDL,"left");
-    var hq=PTS.list[PTS.list.length-1];
-    tag("PROTEASE HELD BY ITS INHIBITOR",hq.x,hq.y-lift,cx+R*1.05,cy-R*.95,Math.max(l1,l2,.3),DIM,"left");
-    tag("FREE PROTEASE · CUTTING THE NEXT",q0.x,q0.y-lift,cx-R*1.45,cy+R*.6,Math.max(l2,l3),RDL,"right");
+    var lT=Math.max(bind,.62)*(mob?1-seg(P,.72,.78):1),
+        lI=Math.max(bind,.62)*(1-seg(P,.47,.53)),
+        lH=Math.max(bind,.62)*(1-seg(P,.72,.78)),
+        lF=trig*(mob?1-seg(P,.72,.78):1),lF2=mob?seg(P,.72,.78):0,
+        l4=seg(P,.72,.8);
+    var A2=1.5*s,ax2=cx,ay2=cy-R*.06,hq=PTS.list[PTS.list.length-1];
+    var topY=cy-R*1.16-16,botY=cy+R*1.16+16;
+    if(!mob){
+      tag("TARGET + ANTIBODY",ax2-15*A2,ay2-10*A2,cx-R*1.5,cy-R*.75,lT,INK,"right");
+      tag("FIRST PROTEASE, CARRIED IN",ax2+38*A2,ay2+24*A2,cx+R*1.32,cy+R*.72,lI,RDL,"left");
+      tag("PROTEASE HELD BY ITS INHIBITOR",hq.x,hq.y-lift,cx+R*1.05,cy-R*.95,lH,DIM,"left");
+      tag("FREE PROTEASE · CUTTING THE NEXT",q0.x,q0.y-lift,cx-R*1.45,cy+R*.6,lF,RDL,"right");
+    }else{
+      tag("TARGET + ANTIBODY",ax2-15*A2,ay2-10*A2,12,topY,lT,INK,"left");
+      tag("HELD BY INHIBITOR",hq.x,hq.y-lift,w-12,topY,lH,DIM,"right");
+      tag("FIRST PROTEASE",ax2+38*A2,ay2+24*A2,w-12,botY,lI,RDL,"right");
+      tag("FREE PROTEASE",q0.x,q0.y-lift,12,botY,lF*(1-seg(P,.72,.78)),RDL,"left");
+      tag("FREE PROTEASE",q0.x,q0.y-lift,w-12,topY,lF2,RDL,"right");
+    }
     if(read>.02){
       var sq=PTS.list[0],sbest=-1e9;                       /* the peptide nearest the label: a short leader */
-      for(var si=0;si<PTS.list.length;si++){var scq=PTS.list[si].x*.7+PTS.list[si].y;if(scq>sbest){sbest=scq;sq=PTS.list[si]}}
+      for(var si=0;si<PTS.list.length;si++){var scq=mob?-(PTS.list[si].x+PTS.list[si].y):PTS.list[si].x*.7+PTS.list[si].y;if(scq>sbest){sbest=scq;sq=PTS.list[si]}}
       var sa=sq.ph*6.2832;
-      tag("SIGNAL PEPTIDE, CLEAVED",sq.x+Math.cos(sa)*rr0*2.1,sq.y-lift+Math.sin(sa)*rr0*2.1,cx+R*1.1,cy+R*.95,l4,TL,"left");
+      if(!mob)tag("SIGNAL PEPTIDE, CLEAVED",sq.x+Math.cos(sa)*rr0*2.1,sq.y-lift+Math.sin(sa)*rr0*2.1,cx+R*1.1,cy+R*.95,l4,TL,"left");
+      else tag("PEPTIDE, CUT",sq.x+Math.cos(sa)*rr0*2.1,sq.y-lift+Math.sin(sa)*rr0*2.1,12,topY,l4,TL,"left");
     }
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}

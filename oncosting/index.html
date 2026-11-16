@@ -1114,7 +1114,8 @@ function makeStory(cv){
   function fl(col,a){c.fillStyle="rgba("+col+","+Math.max(0,a).toFixed(3)+")"}
   function tag(txt,ax,ay,tx,ty,al,col,align){
     if(al<.02)return;
-    c.font="400 11px 'Geist Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
+    var FS=w<520?"400 10px 'Geist Mono',monospace":"400 11px 'Geist Mono',monospace",LS=w<520?"1px":"1.4px";
+    c.font=FS;if(c.letterSpacing!==undefined)c.letterSpacing=LS;
     var tw=c.measureText(txt).width+18;
     if(align==="right")tx=Math.max(tx,tw+12);else tx=Math.min(tx,w-tw-12);
     ty=Math.max(ty,18);ty=Math.min(ty,h-12);
@@ -1152,9 +1153,9 @@ function makeStory(cv){
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     c.lineCap="round";c.lineJoin="round";
     var arrive=seg(P,0,.18),uptake=seg(P,.22,.44),build=seg(P,.46,.72),fire=seg(P,.76,1);
-    var zoom=1+1.9*sm(seg(P,.14,.6));
+    var zoom=1+1.5*sm(seg(P,.14,.6)),mob=w<520;
     var baseR=Math.min(w*.2,h*.14),cellX=w*.5,cellY=h*.46;
-    var lumen=1-sm(seg(P,.3,.52));                 /* the lumen leaves the frame as the camera pushes in */
+    var lumen=1-sm(seg(P,.24,.4));                 /* the lumen leaves the frame as the camera pushes in */
     c.save();
     c.translate(cellX,cellY);c.scale(zoom,zoom);c.translate(-cellX,-cellY);
     var lw=1.4/Math.sqrt(zoom);
@@ -1175,12 +1176,14 @@ function makeStory(cv){
       }
     }
     /* the lumen above the wall, with the instilled BCG arriving in step 1 */
+    var BCG0=null;
     if(lumen>.01){
       st(INK,.16*lumen/Math.sqrt(zoom));c.lineWidth=lw*.8;
-      c.beginPath();c.moveTo(cellX-w,cellY-baseR*1.5);c.lineTo(cellX+w,cellY-baseR*1.5);c.stroke();
+      c.beginPath();c.moveTo(cellX-w,cellY-baseR*1.12);c.lineTo(cellX+w,cellY-baseR*1.12);c.stroke();
       for(var b2=0;b2<7;b2++){
-        var lane=((b2/6)-.5)*gap*2.8+(rnd(b2,1)-.5)*gap*.3,drop=Math.min(1,arrive*1.25+rnd(b2,2)*.18);
-        var bx=cellX+lane,by=cellY-baseR*3.1+(baseR*1.5)*drop;
+        var lane=((b2/6)-.5)*gap*(mob?1.6:1.8)+(rnd(b2,1)-.5)*gap*.12,drop=Math.min(1,arrive*1.25+rnd(b2,2)*.18);
+        var bx=cellX+lane,by=cellY-baseR*2.6+(baseR*1.38)*drop;
+        if(b2===4)BCG0=[bx,by];
         capsule(bx,by,baseR*.4,baseR*.13,-.3+rnd(b2,3)*.5+Math.sin(t*.3+b2)*.05,INK,(.2+.5*drop)*lumen/Math.sqrt(zoom),lw);
       }
     }
@@ -1210,9 +1213,9 @@ function makeStory(cv){
     }
     /* STING on the ER, and the signal to the nucleus */
     var sx2=cellX+baseR*.62,sy2=cellY-baseR*.42;
-    st(INK,(.2+.3*fire)/Math.sqrt(zoom));c.lineWidth=lw*.8;
-    c.beginPath();c.moveTo(cellX+baseR*.1,cellY-baseR*.74);
-    c.bezierCurveTo(cellX+baseR*.66,cellY-baseR*.74,cellX+baseR*.4,cellY-baseR*.2,cellX+baseR*.86,cellY-baseR*.1);c.stroke();
+    st(INK,(.5*fire)/Math.sqrt(zoom));c.lineWidth=lw*.8;
+    if(fire>.02){c.beginPath();c.moveTo(cellX+baseR*.1,cellY-baseR*.74);
+    c.bezierCurveTo(cellX+baseR*.66,cellY-baseR*.74,cellX+baseR*.4,cellY-baseR*.2,cellX+baseR*.86,cellY-baseR*.1);c.stroke()}
     if(fire>.01){
       var gs=c.createRadialGradient(sx2,sy2,0,sx2,sy2,baseR*.5);
       gs.addColorStop(0,"rgba("+TL+","+(.34*fire*(.6+.4*Math.sin(t*2.4))).toFixed(3)+")");gs.addColorStop(1,"rgba("+TL+",0)");
@@ -1231,22 +1234,22 @@ function makeStory(cv){
     c.restore();
     /* ---------- labels, in screen space, each anchored to its part ---------- */
     function S(x,y){return [cellX+(x-cellX)*zoom,cellY+(y-cellY)*zoom]}
-    var l1=lumen*Math.max(arrive,.2),l2=uptake*(1-seg(P,.62,.74)),l3=build*(1-seg(P,.86,.96)),l4=fire;
-    if(l1>.02){var lp=S(cellX,cellY-baseR*2.1);
-      tag("BCG, INSTILLED IN THE BLADDER",lp[0],lp[1],w*.62,h*.12,l1,DIM,"left")}
-    var up=S(cellX,cellY-baseR*1.5);
-    if(lumen>.02){var lq=S(cellX-gap*1.1,cellY-baseR*1.5);tag("BLADDER LUMEN",lq[0],lq[1],w*.04,h*.17,lumen*.9,DIM,"left");
-      var uq=S(cellX+gap,cellY-baseR*.9);tag("UROTHELIUM · THE BLADDER WALL",uq[0],uq[1],w*.04,h*.3,lumen*.9,DIM,"left");
-      var tq=S(cellX+baseR*.95,cellY+baseR*.22);tag("TUMOR CELL · WHERE THE DISEASE GROWS",tq[0],tq[1],w*.56,h*.62,lumen*.9,DIM,"left")}
+    /* each label is legible or gone, switching at the step boundaries; text sits in lanes clear of the drawing */
+    var lL=1-seg(P,.22,.28),lB=seg(P,.26,.34)*(1-seg(P,.72,.78)),lA=seg(P,.5,.56)*(1-seg(P,.72,.78)),lF=seg(P,.76,.82);
+    var top=h*.045,bot=h*.95,rowB=cellY+baseR*1.45;
+    if(lL>.02){
+      if(BCG0){var lp=S(BCG0[0],BCG0[1]);tag(mob?"BCG IN THE BLADDER":"BCG, INSTILLED IN THE BLADDER",lp[0],lp[1],w-12,top,lL*Math.max(arrive,.62),DIM,"right")}
+      var lq=S(cellX-gap*1.15,cellY-baseR*1.6);tag(mob?"BLADDER":"BLADDER · URINE SIDE",lq[0],lq[1],12,top,lL*.9,DIM,"left");
+      var uq=S(cellX-gap,cellY+baseR*.9);tag(mob?"BLADDER WALL":"UROTHELIUM · THE BLADDER WALL",uq[0],uq[1],12,rowB,lL*.9,DIM,"left");
+      var tq=S(cellX+baseR*.6,cellY+baseR*.85);tag("TUMOR CELL",tq[0],tq[1],w-12,rowB,lL*.9,DIM,"right")}
     var bp=S(inx[1][0],inx[1][1]);
-    tag("BCG, INSIDE THE CELL",bp[0],bp[1],w*.1,h*.2,Math.max(l2,l3*.8),DIM,"left");
-    if(build>.05){var dp=S(inx[0][0]-baseR*.5,inx[0][1]+baseR*.5);
-      tag("c-di-AMP, RELEASED CONTINUOUSLY",dp[0],dp[1],w*.06,h*.82,l3,TL,"left")}
-    if(build>.05||fire>.02){var np=S(cellX-baseR*.36,cellY+baseR*.3);
-      tag(fire>.2?"NUCLEUS · IRF3 · NF-κB":"NUCLEUS",np[0],np[1],w*.1,h*.9,Math.max(l4,build*.55),TL,"left")}
-    if(fire>.02){
-      var sp=S(sx2,sy2);tag("STING, ON THE ER",sp[0],sp[1],w*.78,h*.22,l4,TLL,"left");
-      var ip=S(cellX+baseR*1.2,cellY+baseR*.5);tag("INTERFERON-I, OUT OF THE CELL",ip[0],ip[1],w*.72,h*.9,l4,TLL,"left");
+    tag(mob?"BCG INSIDE THE CELL":"BCG, LIVING INSIDE THE CELL",bp[0],bp[1],12,top,lB,DIM,"left");
+    if(lA>.02){var dp=S(inx[0][0]-baseR*.5,inx[0][1]+baseR*.5);
+      tag(mob?"AGONIST RELEASED":"STING AGONIST (c-di-AMP), RELEASED",dp[0],dp[1],12,bot,lA,TL,"left")}
+    if(lF>.02){var np=S(cellX-baseR*.36,cellY+baseR*.3);
+      tag(mob?"NUCLEUS · GENES ON":"NUCLEUS · IMMUNE GENES SWITCH ON",np[0],np[1],12,bot,lF,TL,"left");
+      var sp=S(sx2,sy2);tag(mob?"STING SENSOR":"STING · THE CELL’S ALARM SENSOR",sp[0],sp[1],w-12,top,lF,TLL,"right");
+      var ip=S(cellX+baseR*1.2,cellY+baseR*.5);tag(mob?"INTERFERON OUT":"INTERFERON · ALARM SIGNAL OUT",ip[0],ip[1],w-12,bot,lF,TLL,"right");
     }
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}

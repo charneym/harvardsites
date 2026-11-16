@@ -494,6 +494,31 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ft p{color:var(--mu);margin:0;font-size:15.5px;max-width:34ch}
 @media (max-width:860px){.feats{grid-template-columns:repeat(2,minmax(0,1fr))}.pgrid.small{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.feats{grid-template-columns:1fr}}
+/* v16 CI/CG: portrait grid. no lift, no shadow, no Profile label; portrait warms to colour and a small arrow appears, 0.3s */
+.pcard,.pcard:hover,.pcard:focus-visible{transform:none}
+.pcard .pc-fig,.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:none}
+.pcard .ph2>*{transition:transform .3s ease-out,clip-path .3s ease-out}
+.pc-meta h3,.pc-meta h3 span,.pc-meta .ttl{transition:color .3s ease-out}
+.pc-meta h3 .go{display:inline-block;width:.62em;margin-left:.32em;vertical-align:.08em;color:inherit;opacity:0;transform:translateX(-6px);transition:opacity .3s ease-out,transform .3s ease-out,color .3s ease-out}
+.pc-meta h3 .go svg{opacity:1;transform:none;transition:color .3s ease-out}
+.pc-meta h3 .go path,.pc-meta .grp{transition:color .3s ease-out}
+.pc-meta h3 .go svg{display:block;width:100%;height:auto}
+.pcard:hover h3 .go,.pcard:focus-visible h3 .go{opacity:1;transform:none}
+.pcard.nos .go{display:none}
+/* v16 CI: founders as a masthead list (small headshots kept; rows are not links, so no hover) */
+.frows{grid-template-columns:1fr;gap:0;border-top:1px solid var(--hr)}
+.frow{position:relative;display:grid;grid-template-columns:88px minmax(0,6fr) minmax(0,6fr);gap:var(--gap);align-items:center;padding:clamp(22px,2.4vw,32px) 0;border-top:0;border-bottom:1px solid var(--hr)}
+.frow::before{display:none}
+.frow .fr-ph{width:88px;height:88px}
+.frow .fr-ph img,.frow:hover .fr-ph img{filter:grayscale(1);transform:none}
+.frow h3{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.1;margin:0;color:inherit}
+.frow .ttl{color:var(--mu);font-size:15px}
+.frow .fx{color:var(--mu);font-size:15px;line-height:1.5}
+@media (max-width:860px){.frow{grid-template-columns:64px minmax(0,1fr);row-gap:6px;align-items:start}.frow .fr-ph{width:64px;height:64px;grid-row:span 2}.frow .ttl,.frow .fx{grid-column:2}}
+/* v16 CH: statement sized to the measure */
+.mani .mblk,.mani .mblock{width:72%;max-width:none;margin-left:auto;margin-right:auto}
+.mani .mblk .txt,.mani .mblock .txt{max-width:none}
+@media (max-width:900px){.mani .mblk,.mani .mblock{width:100%}}
 </style>
 </head>
 <body>
@@ -536,7 +561,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   <div class="ps-sheet" id="psSheet">
     <div class="ps-media" id="psMedia"></div>
     <div class="ps-col">
-      <div class="ps-bar"><a class="btn sm" href="#/team" data-close>Close</a><div class="ps-step"><a class="btn sm" id="bioPrev" href="#/team" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/team" data-replace aria-label="Next person">Next</a></div></div>
+      <div class="ps-bar"><a class="btn sm" href="#/" data-close>Close</a><div class="ps-step"><a class="btn sm" id="bioPrev" href="#/" data-replace aria-label="Previous person">Prev</a><a class="btn sm" id="bioNext" href="#/" data-replace aria-label="Next person">Next</a></div></div>
       <div class="ps-body" id="psBody" data-lenis-prevent tabindex="0"></div>
     </div>
   </div>
@@ -863,7 +888,7 @@ SITE.views.home=function(){
    '<div class="hero-foot"><p class="s" data-r>CellectGen is developing a low-cost, point-of-care saliva test that measures active and total <span class="nw">MMP-8</span>, a marker of tissue destruction, to help dentists identify active periodontal disease in under&nbsp;15&nbsp;minutes.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">How it works '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i class="c"></i>Active MMP-8</span><span><i class="s"></i>Total MMP-8</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div></section>'+
+   '</section>'+
   '<section class="sec mani" data-tone="light2"><div class="wrap">'+
    '<div class="mblock"><span class="lab kick" data-r>Why it matters</span>'+
    '<p class="txt" id="mani">Periodontal disease moves in bursts of activity and remission. Exams and X-rays record the damage already done. CellectGen measures <em>tissue destruction as it happens.</em></p></div>'+
@@ -933,7 +958,7 @@ SITE.views.technology=function(){
   '</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap"><span class="lab kick" data-r>NIH awards</span>'+rowsHtml(AWARDS)+'</div></section>'+cta("technology");
 };
-function fCard(p){return '<div class="pcard nos frow"><span class="fr-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'none\');this.remove()"></span><span class="fr-meta"><h3><span>'+esc(p.name)+'</span></h3><span class="ttl">'+esc(p.title)+'</span></span></div>'}
+function fCard(p){return '<div class="frow"><span class="fr-ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'none\');this.remove()"></span><h3>'+esc(p.name)+'</h3><span class="ttl">'+esc(p.title)+'</span></div>'}
 SITE.views.team=function(){
   return head({k:"Team",h:'Meet the <em>team.</em>',p:'CellectGen is led by its founders from its laboratories in Pasadena, California.'})+
   '<section class="sec first" data-tone="light"><div class="wrap"><div class="frows">'+TEAM.map(function(p){return fCard(p,1)}).join("")+'</div></div></section>'+cta();
@@ -964,7 +989,7 @@ function head(o){
 }
 function tCard(p){if(p.nosheet)return '<div class="pcard nos">'+(p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'')+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></div>';
   var im=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
-  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+im+'<div class="pc-meta"><span class="lab grp">'+esc(p.grp||"Team")+'</span><h3><span>'+esc(p.name)+'</span><i class="go" aria-hidden="true">'+ARR+'</i></h3><p class="ttl">'+esc(p.title)+'</p></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function rowsHtml(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n.d)+'</span><span class="lab">'+esc(n.s)+'</span></span><span class="rt"><h3>'+esc(n.t)+'</h3>'+(n.m?'<span class="rm">'+esc(n.m)+'</span>':'')+'</span><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
@@ -1106,7 +1131,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 86%",end:"center 58%",scrub:true}})}
   /* BA: stats rise in at final value; captions after the numbers */
   if(!RM){var sts=$$(".stat",view);sts.forEach(function(st0,i){var v=$(".v",st0),k=$(".k",st0),l=$(".ln2",st0);var tr={trigger:st0.closest(".stats"),start:"top 85%"};
     var sp=SplitText.create(v,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(sp.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:tr,onComplete:function(){sp.revert()}});

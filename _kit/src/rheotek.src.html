@@ -1160,11 +1160,14 @@ function rvMarks(root){var A=new Set(),K=new Set();
   $$("*",root).forEach(function(el){var t=gsap.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
       for(var p=el.parentElement;p&&p!==root&&!K.has(p);p=p.parentElement)K.add(p);break}});
   return {A:A,K:K}}
+function rvTxt(c){if(/^(SVG|G|TEXT|TSPAN|svg|g|text|tspan)$/.test(c.tagName))return false;for(var t=c.firstChild;t;t=t.nextSibling)if(t.nodeType===3&&t.nodeValue.trim().length>1)return true;return false}
 function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling){
   if(M.A.has(c)||c.matches(RV_SKIP))continue;
   var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}/* a figure with ambient motion inside still fades in as one piece */
-  if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
+  /* CM: an element that holds its own text (a <b>, a <div> with a bare text node) is a unit too, or it would stay put while its neighbours rise */
+  var own=rvTxt(c);
+  if((c.matches(RV_SEL)||own)&&(c.matches(RV_UNIT)||own||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     /* BB: a unit taller than ~35% of the screen reveals piecewise, so its lower part never appears before it is scrolled into view */
     if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}

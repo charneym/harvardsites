@@ -729,19 +729,30 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 @media (min-width:1101px){.pg3 .pcard h3{font-size:23px}}
 
 
-/* CI: team as a masthead list */
-.mast+.mast{margin-top:clamp(64px,6vw,104px)}
-.mast .mk{display:block;margin-bottom:20px;color:var(--stoneD)}
-.mast ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD)}
-.mrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr) 34px;column-gap:var(--gap);align-items:baseline;padding:clamp(28px,2.6vw,38px) 0;border-bottom:1px solid var(--hairD);color:var(--ink)}
-.mrow .mn{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.01em;transition:color .3s ease-out}
-.mrow .mr{font-size:15px;line-height:1.45;color:var(--ink)}
-.mrow .ms{font-size:15px;line-height:1.5;color:var(--stoneD)}
-.mrow .ma{justify-self:start;display:flex;color:var(--sinD);transition:transform .3s ease-out}
-.mrow .ma svg{width:18px;height:10px}
-.mrow:hover .mn,.mrow:focus-visible .mn{color:var(--sinD)}
-.mrow:hover .ma,.mrow:focus-visible .ma{transform:translateX(6px)}
-@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 34px;row-gap:6px}.mrow .mn,.mrow .mr,.mrow .ms{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .ms{margin-top:4px}}
+/* CL: the one masthead component (_kit/components/masthead.html), re-skinned with tokens */
+.mh{--mh-ink:#14161a;--mh-mute:#5b6068;--mh-line:rgba(20,22,26,.14);--mh-accent:#2b6;display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono)}
+
 /* CH: the statement fills the content measure, centred as a block, text left-aligned */
 .mani .kick,.mani .txt{width:72%;max-width:none;margin-left:auto;margin-right:auto;text-align:left}
 .mani.light .txt em{color:var(--sinD)}
@@ -1016,8 +1027,8 @@ function relAll(root){$$(".ln,.ln-mask",root||document).forEach(function(m){m.st
 function ini(n){var p=n.replace(/,.*$/,"").split(/\s+/).filter(Boolean);return p[0][0]+p[p.length-1][0]}
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
 /* CI: a masthead list (no portraits): name | role | one-line summary, hairline rules, grouped under eyebrow labels */
-function mast(g,noLab){return '<div class="mast">'+(noLab?'':'<span class="lab mk" data-r>'+esc(g)+'</span>')+'<ul data-group>'+TEAM.filter(function(p){return p.grp===g}).map(function(p){
-  return '<li><a class="mrow" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="mn">'+esc(p.name)+'</span><span class="mr">'+esc(p.title)+'</span><span class="ms">'+esc(p.sum||"")+'</span><span class="ma" aria-hidden="true">'+ARR+'</span></a></li>'}).join("")+'</ul></div>'}
+function mast(gs,noLab){return '<section class="mh">'+gs.map(function(g){return '<div class="mh-group">'+(noLab?'':'<p class="mh-label">'+esc(g)+'</p>')+'<ul class="mh-list">'+TEAM.filter(function(p){return p.grp===g}).map(function(p){
+  return '<li><a class="mh-row" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum||"")+'</span><span class="mh-arrow" aria-hidden="true">→</span></a></li>'}).join("")+'</ul></div>'}).join("")+'</section>'}
 window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 /* ================= CONTENT (from dossier; nothing invented) ================= */
@@ -1139,7 +1150,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded by scientists trained at <em>Harvard and MIT.</em></h2></div><p data-r>Engineering and clinical leadership, with site principal investigators at Spaulding Rehabilitation Hospital and the University of Illinois at Chicago.</p></div>'+
-   mast("Leadership",1)+
+   mast(["Leadership"],1)+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Team and investigators '+ARR+'</a></div>'+
   '</div></section>'+
   cta();
@@ -1201,7 +1212,7 @@ function vInd(){
 }
 function vTeam(){
   return head({k:"Team",h:'Engineers, clinicians, <em>operators.</em>',p:'Highland was founded by scientists trained at Harvard Medical School and MIT, and runs its trials with site principal investigators at leading academic centers.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap">'+mast("Leadership")+mast("Clinical investigators")+'</div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+mast(["Leadership","Clinical investigators"])+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1456,7 +1467,7 @@ function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvH
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
 function rvFail(){relAll($("#view"));relAll($("#psBody"));RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.getTweensOf(t[0]).length&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive())&&t.paused&&t.paused())t.play()});if((window._fsN=(window._fsN||0)+1)<6&&HERO_TL.some(function(t){return t&&t.progress()<1})){failsafe();return}
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}

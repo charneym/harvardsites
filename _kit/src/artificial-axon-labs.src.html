@@ -589,7 +589,7 @@ em{font-family:var(--ital);font-style:italic}
 .pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px}
 .pc-meta .grp{display:none}
-.pc-meta h3{font-size:clamp(20px,1.6vw,24px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
+.pc-meta h3{font-size:clamp(20px,1.46vw,21px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
 .pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .35s var(--eo),color .3s ease-out}
 .pc-meta .ttl{margin:0;font-size:15px;line-height:1.45;color:var(--stoneD)}
 .pcard .go{position:absolute;right:16px;bottom:16px;z-index:2;display:flex;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
@@ -773,14 +773,31 @@ em{font-family:var(--ital);font-style:italic}
 .dark .pc-bio,.dark2 .pc-bio{color:var(--stone)}
 
 /* ================= round 3, critic pass ================= */
-/* BZ/BV: the advisors are set as type under a rule, not as two half-empty cards */
-.adv{margin-top:clamp(48px,5vw,80px);padding-top:26px;border-top:1px solid var(--hair)}
-.adv .kick{display:block;margin-bottom:18px;color:var(--stoneD)}
-.adv-l{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD)}
-.adv-l li{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:8px var(--gap);align-items:baseline;padding:clamp(22px,2.2vw,30px) 0;border-bottom:1px solid var(--hairD)}
-.adv-n{font-family:var(--sans);font-weight:300;font-size:clamp(26px,2.2vw,32px);line-height:1.15;letter-spacing:-.01em}
-.adv-t{font-size:15px;line-height:1.45;color:var(--stoneD)}
-@media (max-width:640px){.adv-l li{grid-template-columns:1fr}}
+/* CL: the one masthead component (_kit/components/masthead.html), re-skinned with tokens */
+.mh{--mh-ink:#14161a;--mh-mute:#5b6068;--mh-line:rgba(20,22,26,.14);--mh-accent:#2b6;display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--sans);--mh-sans:var(--sans);--mh-mono:var(--mono)}
+.adv-mh{margin-top:56px}
+
 
 /* BU: the five team cards sit in ONE row, so there is no short row and no card left
    alone with its photograph. Only above 1100px, where five columns still read. */
@@ -975,10 +992,9 @@ function collabRow(){return '<div class="plates" data-group>'+COLLAB.map(functio
 function pCard(p){return tCard(p)}
 /* BZ/BV: the two advisors carry a name and a field and nothing else known, so they are
    set as type under a rule instead of as two half-empty cards. */
-function advRow(){return '<div class="adv" data-group><span class="lab kick">Advisors</span>'+
-  '<ul class="adv-l">'+ADV.map(function(a){
-    return '<li><span class="adv-n">'+esc(a.name)+'</span><span class="adv-t">'+esc(a.title)+'</span></li>'}).join("")+
-  '</ul></div>';}
+function advRow(){return '<section class="mh adv-mh"><div class="mh-group"><p class="mh-label">Advisors</p><ul class="mh-list">'+ADV.map(function(a){
+    return '<li><div class="mh-row"><span class="mh-name">'+esc(a.name)+'</span><span class="mh-role">'+esc(a.title)+'</span><span class="mh-sum"></span></div></li>'}).join("")+
+  '</ul></div></section>';}
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 var PAPERS=[
  ["Artificial axons as a biomimetic 3D myelination platform for the discovery and validation of promyelinating compounds","Scientific Reports, 2023","https://doi.org/10.1038/s41598-023-44675-6"],
@@ -1352,7 +1368,7 @@ function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvH
 /* AW failsafe: anything in or above the viewport that is still waiting 2.5s after the page shows plays now; stuck ones are forced visible */
 function rvFail(){relAll($("#view"));relAll($("#psBody"));RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.getTweensOf(t[0]).length&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 /* failsafe (AW): anything in the opening block still hidden 2.5s after the page shows is forced visible */
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive())&&t.paused&&t.paused())t.play()});if((window._fsN=(window._fsN||0)+1)<6&&HERO_TL.some(function(t){return t&&t.progress()<1})){failsafe();return}
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}

@@ -168,8 +168,9 @@ i.sp{font-style:italic}
 /* manifesto + stats */
 /* BU: the scroll-coloured statement is a block on the page centre line; the words stay
    left-aligned, so the ragged right edge still reads as set type, not as a centred poem. */
-.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,64px);line-height:1.12;letter-spacing:-.02em;margin:0 auto;max-width:25ch;width:100%}
-.mani .kick{display:block;max-width:25ch;width:100%;margin-left:auto;margin-right:auto}
+.mani .txt{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3.8vw,64px);line-height:1.12;letter-spacing:-.02em;margin:0 auto;max-width:72%;width:100%}
+.mani .kick{display:block;max-width:72%;width:100%;margin-left:auto;margin-right:auto}
+@media (max-width:860px){.mani .txt,.mani .kick{max-width:100%}}
 .mani .txt .w{opacity:.18}
 .mani .txt em{color:var(--sinD)}
 .stats{margin-top:var(--sec);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -241,27 +242,31 @@ i.sp{font-style:italic}
 .pgrid.n1.feat .pc-bio{font-size:16.5px;max-width:52ch}
 @media (max-width:760px){.pgrid.n1.feat>.pcard{grid-template-columns:1fr;gap:22px}}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-@media (hover:hover){.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}}
+
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
-.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(6,39,42,.5)}
+
 .ph2{position:absolute;inset:0}
-.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;transition:transform .45s ease-out,clip-path .45s ease-out}
-@media (hover:hover){.pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}}
+.ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%}
+
 .ph2 .ph-g{filter:grayscale(1) contrast(1.04)}
-.ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
-@media (hover:hover){.pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}}
+.ph2 .ph-c{opacity:0;transition:opacity .3s ease-out}
+@media (hover:hover){.pcard:hover .ph2 .ph-c{opacity:1}}.pcard:focus-visible .ph2 .ph-c{opacity:1}
 .pc-meta{padding-top:16px;display:flex;flex-direction:column;gap:6px;flex:1 1 auto}
 .pc-meta .grp{display:none}
-.pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(25px,1.9vw,30px);line-height:1.1;margin:0;transition:color .3s ease-out,transform .3s ease-out}
-.pc-meta h3 span{text-decoration:underline;text-decoration-color:transparent;text-decoration-thickness:1px;text-underline-offset:.18em;transition:text-decoration-color .38s var(--eo)}
+.pc-meta h3{font-family:var(--serif);font-weight:400;font-size:clamp(20px,1.6vw,23px);line-height:1.2;margin:0;transition:color .3s ease-out}
+.pc-meta h3 .ar{display:inline-block;margin-left:.4em;opacity:0;transform:translateX(-6px);transition:opacity .3s ease-out,transform .3s ease-out,color .3s ease-out}
+.pc-meta h3 .ar svg,.pc-meta h3 .ar path{transition:color .3s ease-out}
+.pc-meta h3 .ar svg{width:16px;height:10px;vertical-align:middle}
+a.pcard:hover h3 .ar,a.pcard:focus-visible h3 .ar{opacity:1;transform:none}
+.pc-meta h3 span{transition:color .3s ease-out}
 .pc-meta .ttl{margin:0;font-size:14.5px;line-height:1.45;color:var(--stoneD)}
 .dark .pc-meta .ttl,.dark2 .pc-meta .ttl{color:var(--stone)}
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:auto;padding-top:10px}
 .dark .pc-meta .go,.dark2 .pc-meta .go{color:var(--sinL)}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
-@media (hover:hover){.pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}}
-.dark .pcard:hover h3,.dark2 .pcard:hover h3{color:var(--sinL)}
-@media (hover:hover){.pcard:hover h3 span,.pcard:focus-visible h3 span{text-decoration-color:currentColor}}
+a.pcard:hover h3,a.pcard:focus-visible h3{color:var(--sinD)}
+.dark a.pcard:hover h3,.dark2 a.pcard:hover h3,.dark a.pcard:focus-visible h3,.dark2 a.pcard:focus-visible h3{color:var(--sinL)}
+
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
 /* BZ: type and a rule do this job. The bordered plate was a 230px box holding four short
    lines, with the PROFILE label stranded at its foot. */
@@ -288,6 +293,32 @@ i.sp{font-style:italic}
 .tgroup{margin-top:clamp(64px,7vw,110px)}
 .tgroup:first-child{margin-top:0}
 .tgroup>.lab{display:block;margin-bottom:22px}
+/* short rows centred on the page; the group eyebrow stays on the left margin with the others */
+.tgroup .pgrid{margin-left:auto;margin-right:auto}
+.tgroup.tn1 .pgrid{max-width:calc((100% - 3 * var(--gap)) * .25)}
+.tgroup.tn2 .pgrid{max-width:calc((100% - 3 * var(--gap)) * .5 + var(--gap))}
+.tgroup.tn3 .pgrid{max-width:calc((100% - 3 * var(--gap)) * .75 + 2 * var(--gap))}
+/* masthead list (people without portraits) */
+.tgroup.ml>.lab{margin-bottom:0;padding-bottom:18px}
+.mlist{border-top:1px solid var(--hairD)}
+.dark .mlist,.dark2 .mlist{border-top-color:var(--hair)}
+.mrow{display:grid;grid-template-columns:minmax(0,4.4fr) minmax(0,2.6fr) minmax(0,5fr) 24px;gap:clamp(18px,2.4vw,40px);align-items:start;padding:clamp(26px,2.6vw,38px) 0;border-bottom:1px solid var(--hairD);color:inherit;text-decoration:none}
+.dark .mrow,.dark2 .mrow{border-bottom-color:var(--hair)}
+.mh-n{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.01em;margin:0;transition:color .3s ease-out}
+.mh-n span{transition:color .3s ease-out}
+.mh-r{margin:0;font-size:14.5px;line-height:1.5;color:var(--stoneD)}
+@media (min-width:861px){.mh-r,.mh-s{padding-top:calc(clamp(26px,2.2vw,32px) * .56 - 11px)}.mh-a{padding-top:calc(clamp(26px,2.2vw,32px) * .56 - 5px)}}
+.mh-s{margin:0;font-size:15px;line-height:1.6;color:var(--stoneD);max-width:56ch}
+.dark .mh-r,.dark2 .mh-r,.dark .mh-s,.dark2 .mh-s{color:var(--stone)}
+.mh-a{justify-self:end;color:var(--sinD);transition:transform .3s ease-out}
+.dark .mh-a,.dark2 .mh-a{color:var(--sinL)}
+.mh-a svg{width:18px;height:10px;display:block}
+a.mrow:hover .mh-n,a.mrow:focus-visible .mh-n{color:var(--sinD)}
+.dark a.mrow:hover .mh-n,.dark2 a.mrow:hover .mh-n,.dark a.mrow:focus-visible .mh-n,.dark2 a.mrow:focus-visible .mh-n{color:var(--sinL)}
+a.mrow:hover .mh-a,a.mrow:focus-visible .mh-a{transform:translateX(6px)}
+@media (max-width:860px){.tgroup.tn1 .pgrid,.tgroup.tn2 .pgrid,.tgroup.tn3 .pgrid{max-width:none}
+  .mrow{grid-template-columns:minmax(0,1fr) 20px;gap:8px 14px;padding:24px 0}
+  .mh-n{grid-column:1;grid-row:1}.mh-a{grid-column:2;grid-row:1;align-self:center}.mh-r,.mh-s{grid-column:1/-1}.mh-s{margin-top:4px}}
 .bio-ph{margin:0 0 26px;width:min(220px,50%);aspect-ratio:4/5;overflow:hidden;background:var(--bone3)}
 .bio-ph img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
 
@@ -360,6 +391,7 @@ i.sp{font-style:italic}
 .light .rows.plain li{border-bottom-color:var(--hairD)}
 .rows.plain .nm{grid-column:1/4;display:flex;flex-direction:column;gap:3px}
 .rows.plain .meta{grid-column:4/13;margin:8px 0 0;color:var(--stoneD)}
+.dark .rows.plain .meta,.dark2 .rows.plain .meta{color:var(--stone)}
 .rows.plain h3{grid-column:4/13;font-family:var(--serif);font-weight:400;font-size:clamp(19px,1.6vw,26px);line-height:1.22;margin:0}
 
 /* cta + footer */
@@ -504,7 +536,7 @@ i.sp{font-style:italic}
   .prow .note{grid-column:1/2}
   .row-a .nm,.rows.plain .nm{grid-column:1/13;flex-direction:row;gap:14px;flex-wrap:wrap;margin-bottom:8px}
   .row-a h3{grid-column:1/12}
-  .rows.plain h3{grid-column:1/13}
+  .rows.plain h3,.rows.plain .meta{grid-column:1/13}
   .row-a .c4{grid-column:12/13}
   .ftr .cols{grid-template-columns:1fr 1fr}
   .form{grid-template-columns:1fr}
@@ -855,13 +887,24 @@ function psThin(p){if(!p.bio||!p.bio.length)return false;
   var sw=W([p.title].concat(p.bio).join(" ")),extra=0;
   for(i=0;i<sw.length;i++)if(!cw[sw[i]])extra++;
   return extra<14||(sw.length?1-extra/sw.length:1)>.56}
+/* v16 CI: portraits = a uniform grid (name + role, the whole tile is the link, portrait warms on hover);
+   no portrait = a masthead row (name | role | one-line summary, hairline rules). No boxes, no "Profile" labels. */
+function tLead(t){t=String(t||"");var re=/[.!?](?=\s+[A-Z])/g,m;while((m=re.exec(t))){if(/(\bDr|\bSt|\bJr|\bMr|\bMs|\bNo|\bInc|\bCo|\bvs|\b[A-Z])$/.test(t.slice(Math.max(0,m.index-4),m.index)))continue;t=t.slice(0,m.index+1);break}
+  if(t.length>80){var re2=/(, | and | with | who | where )/g,mm;while((mm=re2.exec(t))){if(mm.index>=30){t=t.slice(0,mm.index);break}}}return t.replace(/\.$/,"")}
+/* the one-line summary: the first sentence that says something the name and role don't (skip "X sits on the board") */
+function tSum(p){var all=p.bio.join(" "),sur=p.name.split(",")[0].trim().split(" ").pop(),i=0,s=tLead(all),rest=all;
+  while(s&&s.indexOf(sur)>=0&&i<3){rest=rest.slice(rest.indexOf(s)+s.length).replace(/^[.!?]?\s*/,"");if(!rest)break;s=tLead(rest);i++}
+  if(!s||s.indexOf(sur)>=0)s=tLead(all);
+  s=s.replace(/^(She|He|They)\s+(is|was|serves as|has been)\s+(an?\s+|the\s+)?/,"");return s.charAt(0).toUpperCase()+s.slice(1)}
 function tCard(p){
-  var fig=p.img?'<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="viNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>':'';
-  var thin=psThin(p);
-  var meta='<div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p>'+
-   (thin?'<p class="pc-bio">'+esc(p.bio[0])+'</p>':'<span class="lab go">Profile '+ARR+'</span>')+'</div>';
-  if(thin)return '<div class="pcard'+(p.img?'':' noimg')+' flat">'+fig+meta+'</div>';
-  return '<a class="pcard'+(p.img?'':' noimg')+'" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+fig+meta+'</a>'}
+  var thin=!p.bio||!p.bio.length||psThin(p);
+  var lab=' href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"';
+  if(p.img){var fig='<figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="viNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>';
+    var meta='<div class="pc-meta"><h3><span>'+esc(p.name)+'</span>'+(thin?'':'<i class="ar">'+ARR+'</i>')+'</h3><p class="ttl">'+esc(p.title)+'</p></div>';
+    return thin?'<div class="pcard flat">'+fig+meta+'</div>':'<a class="pcard"'+lab+'>'+fig+meta+'</a>'}
+  var sum=thin?(p.bio||[]).join(" "):tSum(p);
+  var inner='<h3 class="mh-n"><span>'+esc(p.name)+'</span></h3><p class="mh-r">'+esc(p.title)+'</p><p class="mh-s">'+esc(sum)+'</p><span class="mh-a" aria-hidden="true">'+(thin?'':ARR)+'</span>';
+  return thin?'<div class="mrow flat">'+inner+'</div>':'<a class="mrow"'+lab+'>'+inner+'</a>'}
 window.viNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+nbh(esc(n.t))+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function awardRows(list){return '<ul class="rows plain">'+list.map(function(a){return '<li><span class="nm"><time class="lab" datetime="'+a.d+'">'+fd(a.d)+'</time><span class="lab">'+esc(a.ic)+' · '+esc(a.a)+'</span></span><h3>'+nbh(esc(a.t))+'</h3><p class="lab meta">'+esc(a.n)+' · '+esc(a.p)+'</p></li>'}).join("")+'</ul>'}
@@ -874,7 +917,7 @@ function cta(){
    '<span class="lab kick" data-r>Work with Via</span>'+
    '<h2 class="big split">Make the molecule <em>arrive.</em></h2>'+
    '<p class="sub" data-r>Bring a compound whose problem is delivery — through skin, into the lung, through the nose, or into a child-friendly dose — and work directly with the scientists who built the platform.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a collaboration '+ARR+'</a><a class="btn" href="#/technology">Capabilities and OINDP services</a></div>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a collaboration '+ARR+'</a><a class="btn" href="#/technology">Capabilities and inhaled &amp; nasal services</a></div>'+
   '</div></section>';
 }
 
@@ -888,7 +931,7 @@ function vHome(){
    '<div class="act" data-r><a class="btn solid" href="#/technology">What we build '+ARR+'</a><a class="btn" href="#/programs">Programs</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Engineered particle</span><span><i class="s"></i>Delivered into the target layer</span><span><i class="g"></i>Held back at the surface</span></div>'+
    '<span class="hrule" aria-hidden="true"></span>'+
-   '<div class="cue" aria-hidden="true"><i></i></div>'+
+   
   '</section>'+
 
   '<section class="sec mani light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
@@ -902,7 +945,7 @@ function vHome(){
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Four layers, <em>one target.</em></h2>'+
-    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Barrier</span><span>Screen</span><span>Deliver</span><span>File</span></div>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Barrier</span><span>Screen</span><span>Deliver</span><span>Clinic</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>The barrier is the whole problem.</h3><p>Skin is accessible, but topical treatment of skin cancers and precancerous lesions has been limited by either too little drug crossing the stratum corneum or too much of it reaching the circulation. The same compounds given orally can have under 1% bioavailability; given intravenously they can cause aggressive adverse effects.</p></article>'+
      '<article class="step"><h3>Screen the formulation, not just the molecule.</h3><p>Via built a high-throughput screening method with formulation libraries, and evaluated hundreds of formulations in ex vivo human skin. The screen looks for what actually lands in the epidermis and dermis and stays there — not for a better molecule.</p></article>'+
@@ -924,7 +967,7 @@ function vHome(){
     '<div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split">The bench behind <em>the programs.</em></h2><p class="muted" style="margin-top:24px" data-r>The same particle engineering and formulation work that advances Via’s own candidates is available to partners, guided directly by the scientists who built it.</p></div>'+
    '</div>'+
    '<div class="svc" data-group>'+CAPS.map(function(s){return '<div class="sv"><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p></div>'}).join("")+'</div>'+
-   '<div style="margin-top:52px" data-r><a class="btn" href="#/technology">OINDP services '+ARR+'</a></div>'+
+   '<div style="margin-top:52px" data-r><a class="btn" href="#/technology">Inhaled &amp; nasal product services '+ARR+'</a></div>'+
   '</div></section>'+
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
@@ -935,7 +978,7 @@ function vHome(){
 
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Funding record</span><h2 class="d2 split">Five new awards <em>in 2026.</em></h2></div><p data-r>Amounts are the first-year award amounts recorded in NIH RePORTER.</p></div>'+
-   awardRows(AWARDS.slice(0,4))+
+   awardRows(AWARDS.slice(0,5))+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/programs">The full record '+ARR+'</a></div>'+
   '</div></section>'+
   cta();
@@ -980,11 +1023,13 @@ function vProg(){
   '</div></section>'+cta();
 }
 function vTeam(){
-  var groups=["Leadership","Founding scientists","Operations"];
+  /* v16 CI: Operations has one person; a lone tile is never stranded, so she joins the leadership row */
+  var groups=["Leadership","Founding scientists"],GL={"Leadership":"Leadership and operations"};
   return head({k:"Team",h:'The people who <em>build it.</em>',p:'Via was founded by leaders in pharmaceutical formulation science. Programs are guided by a panel of scientific leaders rather than handed to a single project team.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap">'+
-   groups.map(function(g){var m=TEAM.filter(function(p){return p.grp===g});if(!m.length)return "";
-     return '<div class="tgroup"><span class="lab">'+esc(g)+'</span><div class="pgrid'+(m.length<7?' n'+m.length:'')+(m.length===1?' feat':'')+'" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
+   groups.map(function(g){var m=TEAM.filter(function(p){return p.grp===g||(g==="Leadership"&&p.grp==="Operations")}),lb=GL[g]||g;if(!m.length)return "";
+     if(!m.every(function(p){return p.img}))return '<div class="tgroup ml"><span class="lab">'+esc(lb)+'</span><div class="mlist" data-group>'+m.map(tCard).join("")+'</div></div>';
+     return '<div class="tgroup'+(m.length<4?' tn'+m.length:'')+'"><span class="lab">'+esc(lb)+'</span><div class="pgrid'+(m.length<7?' n'+m.length:'')+'" data-group>'+m.map(tCard).join("")+'</div></div>'}).join("")+
   '</div></section>'+cta();
 }
 function vNews(){
@@ -1281,7 +1326,7 @@ function makeStory(cv){
     c.restore();
     /* soft stage edge (BH): a figure fades out rather than being sliced by the boundary */
     c.save();c.setTransform(dpr,0,0,dpr,0,0);c.globalCompositeOperation="destination-out";
-    (function(){var F=Math.max(24,Math.min(w,h)*.075),g;
+    (function(){var F=Math.max(12,Math.min(w,h)*.035),g;
       function band(x0,y0,x1,y1,rx,ry,rw,rh){g=c.createLinearGradient(x0,y0,x1,y1);
         g.addColorStop(0,"rgba(0,0,0,1)");g.addColorStop(1,"rgba(0,0,0,0)");
         c.fillStyle=g;c.fillRect(rx,ry,rw,rh)}
@@ -1290,21 +1335,21 @@ function makeStory(cv){
     c.globalCompositeOperation="source-over";c.restore();
     function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-280||sx>w+280||sy<-40||sy>h+40)return;
       /* BH, canvas included: a label fades out before any glyph can be cut by the canvas edge, never clipped mid-word */
-      c.font="400 13px 'Geist Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
+      c.font="400 "+(w<600?10:13)+"px 'Geist Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var al=align||"center",tw=c.measureText(txt).width,L=al==="left"?sx:al==="right"?sx-tw:sx-tw/2,P=16,F=34,sl=Math.min(L-P,(w-P)-(L+tw),(sy-9)-P,(h-P)-(sy+4)),k=sl>=F?1:sl/F;if(k<=0)return;
-      c.globalAlpha=Math.min(1,a)*k;c.font="400 13px 'Geist Mono',monospace";c.shadowColor="rgba(6,39,42,.9)";c.shadowBlur=7;c.fillStyle="rgb(196,212,211)";c.textAlign=al;if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.save();c.shadowColor='#f4f4f0';c.shadowBlur=9;c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.restore();c.fillText(txt,sx,sy);c.shadowBlur=0;c.shadowColor='transparent';c.globalAlpha=1}
-    lab("STRATUM CORNEUM",20,SURF-28,W[0],"left");
+      c.globalAlpha=Math.min(1,a)*k;c.fillStyle="rgba(10,48,52,.86)";c.fillRect(L-7,sy-(w<600?10:13),tw+14,w<600?16:19);c.font="400 "+(w<600?10:13)+"px 'Geist Mono',monospace";c.shadowColor="rgba(6,39,42,.9)";c.shadowBlur=7;c.fillStyle="rgb(196,212,211)";c.textAlign=al;if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.save();c.shadowColor='#f4f4f0';c.shadowBlur=9;c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.restore();c.fillText(txt,sx,sy);c.shadowBlur=0;c.shadowColor='transparent';c.globalAlpha=1}
+    lab("OUTER SKIN BARRIER",20,SURF-28,W[0],"left");
     lab("EPIDERMIS",20,EPI-12,W[0]+W[1]*.5,"left");
     lab("DERMIS",20,DERM-14,W[0]+W[1]*.5,"left");
     lab("SYSTEMIC CIRCULATION",20,VES+18,W[0],"left");
-    lab("FORMULATION LIBRARY · EX VIVO HUMAN SKIN",500,SURF-86,W[1]);
-    lab("LEAD",594,DERM+52,W[1]);
+    lab("HUNDREDS OF FORMULATIONS, TESTED ON HUMAN SKIN",500,SURF-86,W[1]);
+    lab("BEST FORMULATION",594,DERM+52,W[1]);
     lab("EPIDERMIS",740,EPI-12,W[2]);
-    lab("DERMIS",740,DERM-26,W[2]);
-    lab("cSCC LESION",840,EPI-54,W[2]);
+    lab("SKIN-CANCER LESION",840,EPI-54,W[2]);
     lab("VT103 HELD IN THE DERMIS",840,96,W[2]+W[3]*.55);
-    lab("SCALE-UP",240,344,W[3]);lab("IN VIVO EFFICACY",570,344,W[3]);lab("IND-ENABLING TOX",900,344,W[3]);
-    lab("PHASE 1",960,270,W[3]);
+    /* narrow screens: the outer milestones anchor inward and the middle one sits above the axis, so all three read */
+    var NW=w<600;lab("MANUFACTURING",240,344,W[3],NW?"left":0);lab("ANIMAL STUDIES",570,NW?284:344,W[3]);lab("SAFETY STUDIES",900,344,W[3],NW?"right":0);
+    lab("PHASE 1 TRIAL",960,NW?236:270,W[3],NW?"right":0);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1388,7 +1433,7 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
     if(r.width>1&&(r.height>1||/^(IMG|PICTURE)$/.test(c.tagName)))out.push(c);continue}/* a lazy image has no height yet: still collect it, or it arrives pre-shown */
   rvWalk(c,out,M)}}
 function rvHide(el){
-  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
+  if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")&&!el.closest(".pc-meta,.mrow")){
     el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:140,opacity:0});gsap.set(el,{y:16});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
@@ -1417,7 +1462,7 @@ function failsafe(){setTimeout(function(){rvFail();window.__unmaskAll();HERO_TL.
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){unmask(s)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){unmask(s)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 88%",end:"center 62%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){unmask(st)},scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
@@ -1605,7 +1650,7 @@ function preload(){
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){
-      var mob=MOBILE();
+      gsap.killTweensOf(o);var mob=MOBILE();
       var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
         .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.01},.08)

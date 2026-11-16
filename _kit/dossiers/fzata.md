@@ -150,3 +150,14 @@ Not used, with reasons:
   villi spaced further apart. The opened capsule stays in the gut through SECRETE, so the switch
   from capsule to gut reads as one place. The last scene holds a 500-unit span instead of 980 and
   its two labels no longer collide.
+
+## Round 4 (client review 4, v16): what changed and why
+- **CE.** Hero scroll cue (moving line) removed.
+- **CH.** "Why it matters" is now ~72% of the container (was 25ch), centred as a block with the text left-aligned, and the colour sweep now ends when the block's centre reaches 62% of the viewport, so every word is fully coloured once it is centred.
+- **CI.** Team rebuilt to the two-form standard. Groups where everyone has a portrait form a uniform 4:5 portrait grid with the name (20-23px) and role only; the whole tile is the link, and on hover the portrait warms from grey to colour and an arrow appears (0.3s). There are no boxes, no lift or shadow, and no "Profile" labels. Groups without portraits form a masthead list: name | role | a one-line summary (the first sentence of the bio that adds something beyond name and role) | arrow, with hairline rules and no fills. People whose bio would only repeat the card are non-clickable. Short rows are centred, and group eyebrows stay on the left margin.
+- **CG.** Every hover change now has a 0.3s transition with no delay; the inherited colour on the arrow SVG used to snap.
+- **CD.** Names inside team tiles and rows reveal with the plain fade-up the role line uses, not a line mask that reached into the role below.
+- **CK.** Walk-through labels are plain language and sit on a small backing, so drawing strokes never run through them. The canvas edge fade is now a thin soft edge, so it no longer dims labels or shapes.
+- Funding rows: grant meta lines use the readable muted colour on dark and align under the title on mobile. The loader counter no longer runs backwards (the intro count is stopped before the exit count).
+- Fzata walk-through: the capsule is drawn as two real half-shells (the body open at the top, the cap open at the bottom), so it opens instead of reading as two pills. The villi now follow the wall's wave; they ignored the lumen offset and poked through the wall. Label changes: FREEZE-DRIED LIVE YEAST, THE YEAST (S. BOULARDII), GUT LINING, DRUG MADE BY THE YEAST, GUT BACTERIA UNHARMED, YEAST DOES NOT SETTLE, PASSES OUT.
+- Fzata: the home team preview shows the two founders (portraits) only. Leadership, board and advisors have no portraits and appear in the masthead list on #/team. Added a non-breaking space in "Challenge II".

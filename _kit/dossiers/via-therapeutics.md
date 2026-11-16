@@ -111,3 +111,15 @@ Not used, with reasons:
   (surface 46 → 24 and drawn larger, screen 9/6 → 6/4 per column, lesion 72 → 32). The epidermis
   and dermis stay named in the DELIVER scene, where the claim is about depth. The last scene holds
   a 1060-unit span instead of 1200 and the PHASE 1 label clears the canvas edge.
+
+## Round 4 (client review 4, v16): what changed and why
+- **CE.** Hero scroll cue (moving line) removed.
+- **CH.** "Why it matters" is now ~72% of the container (was 25ch), centred as a block with the text left-aligned, and the colour sweep now ends when the block's centre reaches 62% of the viewport, so every word is fully coloured once it is centred.
+- **CI.** Team rebuilt to the two-form standard. Groups where everyone has a portrait form a uniform 4:5 portrait grid with the name (20-23px) and role only; the whole tile is the link, and on hover the portrait warms from grey to colour and an arrow appears (0.3s). There are no boxes, no lift or shadow, and no "Profile" labels. Groups without portraits form a masthead list: name | role | a one-line summary (the first sentence of the bio that adds something beyond name and role) | arrow, with hairline rules and no fills. People whose bio would only repeat the card are non-clickable. Short rows are centred, and group eyebrows stay on the left margin.
+- **CG.** Every hover change now has a 0.3s transition with no delay; the inherited colour on the arrow SVG used to snap.
+- **CD.** Names inside team tiles and rows reveal with the plain fade-up the role line uses, not a line mask that reached into the role below.
+- **CK.** Walk-through labels are plain language and sit on a small backing, so drawing strokes never run through them. The canvas edge fade is now a thin soft edge, so it no longer dims labels or shapes.
+- Funding rows: grant meta lines use the readable muted colour on dark and align under the title on mobile. The loader counter no longer runs backwards (the intro count is stopped before the exit count).
+- Via walk-through labels: OUTER SKIN BARRIER, HUNDREDS OF FORMULATIONS TESTED ON HUMAN SKIN, BEST FORMULATION, SKIN-CANCER LESION, MANUFACTURING / ANIMAL STUDIES / SAFETY STUDIES / PHASE 1 TRIAL. Rail step "File" renamed "Clinic". The duplicate DERMIS label in the Deliver step was dropped (it collided with "VT103 held in the dermis"). On narrow screens the milestone labels sit in two rows.
+- Via team: Operations (one person) joins the leadership row as "Leadership and operations", so there is no stranded single tile.
+- Via home: "Five new awards in 2026" now lists all five 2026 awards (it listed four). "OINDP" buttons now read "inhaled & nasal".

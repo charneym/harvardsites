@@ -130,3 +130,16 @@ Not used, with reasons: none of the company's meaningful images were left out; t
 - **Empty cards (BZ).** A person with no portrait is a rule and type sized to its content.
 - **Walk-through.** Reviewed as OK (one vessel, platelets, labelled) and left as it is. Verified that
   no two step paragraphs are ever visible at once across the pin (G1).
+
+## Round 4 (client review 4, v16): what changed and why
+- **CE.** Hero scroll cue (moving line) removed.
+- **CH.** "Why it matters" is now ~72% of the container (was 25ch), centred as a block with the text left-aligned, and the colour sweep now ends when the block's centre reaches 62% of the viewport, so every word is fully coloured once it is centred.
+- **CI.** Team rebuilt to the two-form standard. Groups where everyone has a portrait form a uniform 4:5 portrait grid with the name (20-23px) and role only; the whole tile is the link, and on hover the portrait warms from grey to colour and an arrow appears (0.3s). There are no boxes, no lift or shadow, and no "Profile" labels. Groups without portraits form a masthead list: name | role | a one-line summary (the first sentence of the bio that adds something beyond name and role) | arrow, with hairline rules and no fills. People whose bio would only repeat the card are non-clickable. Short rows are centred, and group eyebrows stay on the left margin.
+- **CG.** Every hover change now has a 0.3s transition with no delay; the inherited colour on the arrow SVG used to snap.
+- **CD.** Names inside team tiles and rows reveal with the plain fade-up the role line uses, not a line mask that reached into the role below.
+- **CK.** Walk-through labels are plain language and sit on a small backing, so drawing strokes never run through them. The canvas edge fade is now a thin soft edge, so it no longer dims labels or shapes.
+- Funding rows: grant meta lines use the readable muted colour on dark and align under the title on mobile. The loader counter no longer runs backwards (the intro count is stopped before the exit count).
+- Haima walk-through labels: INJURY: WALL PROTEINS EXPOSED, BINDS THE SAME WALL PROTEINS, LINKS PLATELETS TOGETHER (were VWF / CBP·VBP·FMP / GPIIb-IIIa).
+- Haima hero key: each dot is now the colour the field actually draws (red cells #bf1717, SynthoPlate near-white, wall #8c3375).
+- Haima team: one tile size across all groups (the 5-across executive tile), with the advisory board and research rows centred.
+- Haima publications list: a stale `.paper` rule re-declared three columns, which put each paper's title into the 96px year column. Removed it.

@@ -1253,7 +1253,7 @@ function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=e
   if(!el._rvDone){rvGo([el],0);return}
   var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive()))t.progress(1)});
-  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
+  $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 
 function homeScroll(view){
   var m=$("#mani",view);

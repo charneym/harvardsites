@@ -728,6 +728,24 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
    left half empty. One line also means the split cannot change where the name wraps. */
 @media (min-width:1101px){.pg3 .pcard h3{font-size:23px}}
 
+
+/* CI: team as a masthead list */
+.mast+.mast{margin-top:clamp(64px,6vw,104px)}
+.mast .mk{display:block;margin-bottom:20px;color:var(--stoneD)}
+.mast ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD)}
+.mrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr) 28px;column-gap:var(--gap);align-items:baseline;padding:clamp(28px,2.6vw,38px) 0;border-bottom:1px solid var(--hairD);color:var(--ink)}
+.mrow .mn{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.01em;transition:color .3s ease-out}
+.mrow .mr{font-size:15px;line-height:1.45;color:var(--ink)}
+.mrow .ms{font-size:15px;line-height:1.5;color:var(--stoneD)}
+.mrow .ma{justify-self:end;display:flex;color:var(--sinD);transition:transform .3s ease-out}
+.mrow .ma svg{width:18px;height:10px}
+.mrow:hover .mn,.mrow:focus-visible .mn{color:var(--sinD)}
+.mrow:hover .ma,.mrow:focus-visible .ma{transform:translateX(6px)}
+@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:6px}.mrow .mn,.mrow .mr,.mrow .ms{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .ms{margin-top:4px}}
+/* CH: the statement fills the content measure, centred as a block, text left-aligned */
+.mani .kick,.mani .txt{width:72%;max-width:none;margin-left:auto;margin-right:auto;text-align:left}
+.mani.light .txt em{color:var(--sinD)}
+@media (max-width:860px){.mani .kick,.mani .txt{width:auto;margin-left:0;margin-right:0}}
 </style>
 </head>
 <body>
@@ -997,6 +1015,9 @@ function relAll(root){$$(".ln,.ln-mask",root||document).forEach(function(m){m.st
 
 function ini(n){var p=n.replace(/,.*$/,"").split(/\s+/).filter(Boolean);return p[0][0]+p[p.length-1][0]}
 function tCard(p){return '<a class="pcard" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="sfNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+/* CI: a masthead list (no portraits): name | role | one-line summary, hairline rules, grouped under eyebrow labels */
+function mast(g,noLab){return '<div class="mast">'+(noLab?'':'<span class="lab mk" data-r>'+esc(g)+'</span>')+'<ul data-group>'+TEAM.filter(function(p){return p.grp===g}).map(function(p){
+  return '<li><a class="mrow" href="#/team/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="mn">'+esc(p.name)+'</span><span class="mr">'+esc(p.title)+'</span><span class="ms">'+esc(p.sum||"")+'</span><span class="ma" aria-hidden="true">'+ARR+'</span></a></li>'}).join("")+'</ul></div>'}
 window.sfNoImg=function(im){var c=im.closest(".pcard");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 /* ================= CONTENT (from dossier; nothing invented) ================= */
@@ -1015,18 +1036,18 @@ var PUBS=[
  {d:"2014-01-15",s:"NeuroImage",t:"Impact of brain tissue filtering on neurostimulation fields: a modeling study",u:"https://doi.org/10.1016/j.neuroimage.2013.06.079"}
 ];
 var TEAM=[
- {slug:"timothy-wagner",name:"Timothy Wagner, PhD",title:"Founder and Chief Science Officer",grp:"Leadership",
+ {slug:"timothy-wagner",sum:"Trained at Harvard Medical School and MIT; PI of the 2026 NINDS Phase IIB Parkinson’s trial.",name:"Timothy Wagner, PhD",title:"Founder and Chief Science Officer",grp:"Leadership",
   bio:["Dr. Wagner is a scientist with an extensive portfolio, including multiple patents, scholarly papers, international presentations and book chapters, reflecting decades of research and innovation in the neurostimulation field.","He was trained at Harvard Medical School and MIT’s HST program, with degrees in medical and electrical engineering (PhD, dual distinction).","He is principal investigator of Highland’s 2026 NINDS Phase IIB trial of ESStim for postural instability in Parkinson’s disease."],
   link:{t:"Impact of brain tissue filtering on neurostimulation fields (NeuroImage)",u:"https://doi.org/10.1016/j.neuroimage.2013.06.079"}},
- {slug:"laura-dipietro",name:"Laura Dipietro, PhD",title:"Chief Technology Officer",grp:"Leadership",
+ {slug:"laura-dipietro",sum:"Biomedical engineer, formerly a research scientist at MIT; PI on several Highland trials.",name:"Laura Dipietro, PhD",title:"Chief Technology Officer",grp:"Leadership",
   bio:["Dr. Dipietro is an electrical and biomedical engineer and holds a PhD in biomedical robotics from Scuola Superiore Sant’Anna in Pisa, Italy. Her research focuses on neurotechnology.","She was a research scientist at MIT in the Mechanical Engineering Department before joining Highland, where she is a principal investigator on several clinical trials and projects, including the company’s chronic pain commercial readiness awards."]},
- {slug:"john-mcdonough",name:"John McDonough",title:"Chairman",grp:"Leadership",
+ {slug:"john-mcdonough",sum:"Five-time CEO who has raised over $500 million of public and private capital.",name:"John McDonough",title:"Chairman",grp:"Leadership",
   bio:["A five-time CEO, John has raised over $500 million of public and private capital, creating over $6 billion of market value over the past 30 years.","In addition to Highland, he is Executive Chairman of the Board at Sunbird Bio, Chairman of the Board at Cytrellis Biosystems, Chairman at BioPorto Diagnostics and founder and president of the Crush Colon Cancer Foundation."]},
- {slug:"alex-herzlinger",name:"Alex Herzlinger, MBA",title:"Chief Business Officer",grp:"Leadership",
+ {slug:"alex-herzlinger",sum:"More than 14 years in medtech, leading national sales and marketing teams for J&J and Abbott.",name:"Alex Herzlinger, MBA",title:"Chief Business Officer",grp:"Leadership",
   bio:["Alex serves as Highland’s Chief Business Officer after more than 14 years of medtech commercial and general management experience, including leading national sales and marketing teams for J&J and Abbott.","He began his career as a US Army infantry officer, including two combat tours, and holds an AB from Harvard College and an MBA from Harvard Business School."]},
- {slug:"felipe-fregni",name:"Felipe Fregni, MD, MPH, PhD",title:"Site Principal Investigator",grp:"Clinical investigators",
+ {slug:"felipe-fregni",sum:"Director of the Laboratory of Neuromodulation at Spaulding Rehabilitation Hospital, Harvard Medical School.",name:"Felipe Fregni, MD, MPH, PhD",title:"Site Principal Investigator",grp:"Clinical investigators",
   bio:["Dr. Fregni is Director of the Laboratory of Neuromodulation at Spaulding Rehabilitation Hospital, Professor of Physical Medicine & Rehabilitation at Harvard Medical School and Professor of Epidemiology at the Harvard T.H. Chan School of Public Health.","A pioneer in noninvasive brain stimulation, he has conducted instrumental trials exploring neuromodulation for chronic pain, Parkinson’s disease and stroke, and runs several of Highland’s trials."]},
- {slug:"ciro-ramos",name:"Ciro Ramos-Estebanez, MD, PhD",title:"Site Principal Investigator",grp:"Clinical investigators",
+ {slug:"ciro-ramos",sum:"Neurocritical Care Division Chief at the University of Illinois at Chicago.",name:"Ciro Ramos-Estebanez, MD, PhD",title:"Site Principal Investigator",grp:"Clinical investigators",
   bio:["Dr. Ramos-Estebanez is an Associate Professor in Neurology & Neurosurgery and Neurocritical Care Division Chief at the University of Illinois at Chicago.","His research focuses on developing and evaluating translational technology for neurological diseases, and he runs several of Highland’s trials."]}
 ];
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
@@ -1079,7 +1100,6 @@ function vHome(){
    '<div class="hero-foot"><p class="s" data-r>Highland Instruments develops ESStim™, a noninvasive neuromodulation platform that couples transcranial ultrasound with transcranial direct current stimulation to focus, amplify and steer stimulation inside the brain, entirely noninvasively.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">How ESStim works '+ARR+'</a><a class="btn" href="#/indications">Indications</a></div></div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Ultrasonic field</span><span><i class="e"></i>Electromagnetic field</span><span><i class="y"></i>Focused stimulation</span></div>'+
-   '<div class="cue" aria-hidden="true"><i></i></div>'+
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
@@ -1119,7 +1139,7 @@ function vHome(){
 
   '<section class="sec light" data-theme="light" style="background:var(--bone2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded by scientists trained at <em>Harvard and MIT.</em></h2></div><p data-r>Engineering and clinical leadership, with site principal investigators at Spaulding Rehabilitation Hospital and the University of Illinois at Chicago.</p></div>'+
-   '<div class="pgrid" data-group>'+[0,1,2,3].map(function(i){return tCard(TEAM[i])}).join("")+'</div>'+
+   mast("Leadership",1)+
    '<div style="margin-top:44px" data-r><a class="btn" href="#/team">Team and investigators '+ARR+'</a></div>'+
   '</div></section>'+
   cta();
@@ -1181,7 +1201,7 @@ function vInd(){
 }
 function vTeam(){
   return head({k:"Team",h:'Engineers, clinicians, <em>operators.</em>',p:'Highland was founded by scientists trained at Harvard Medical School and MIT, and runs its trials with site principal investigators at leading academic centers.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid pg3" data-group>'+TEAM.map(tCard).join("")+'</div></div></section>'+cta();
+  '<section class="sec light first" data-theme="light"><div class="wrap">'+mast("Leadership")+mast("Clinical investigators")+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1526,7 +1546,7 @@ function sceneSet(p){
 
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){relMask(s.lines)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){relMask(s.lines)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
   /* BA: stats reveal at their final value, never counted up */
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){relMask(st.lines)},scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}})});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});

@@ -505,6 +505,7 @@ html.xing #view,html.xing #field{visibility:hidden}
   .band-fig{height:75vw}
 }
 @media (max-width:560px){
+  #pre .pl{bottom:calc(var(--gut) + 108px)}
   .prog-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:1fr 1fr;gap:36px 16px}
   .stat .v{font-size:clamp(46px,13vw,64px)}
@@ -993,8 +994,7 @@ function makeStory(cv){
     /* otic capsule with the round window niche */
     c.save();c.beginPath();c.moveTo(1200,-420);c.lineTo(640,-420);c.bezierCurveTo(600,-260,560,-140,618,-80);c.bezierCurveTo(640,-62,648,-60,650,-58);c.lineTo(650,58);c.bezierCurveTo(648,60,640,62,618,80);c.bezierCurveTo(560,140,600,260,640,420);c.lineTo(1200,420);c.closePath();
     c.strokeStyle="rgba("+BONE+",.45)";c.stroke();c.clip();
-    c.fillStyle="rgba("+ST+",.06)";c.fillRect(540,-420,700,840);
-    c.restore();
+        c.restore();
     /* scala tympani: perilymph-filled duct that turns away and fades (no hard edge) */
     var sg1=c.createLinearGradient(760,0,1060,0);sg1.addColorStop(0,"rgba("+BONE+",.5)");sg1.addColorStop(1,"rgba("+BONE+",0)");
     var sf1=c.createLinearGradient(700,0,1060,0);sf1.addColorStop(0,"rgba("+AL+",.08)");sf1.addColorStop(1,"rgba("+AL+",0)");
@@ -1035,10 +1035,10 @@ function makeStory(cv){
     var k0=Math.max(0,Math.min(4,Math.floor(s+.5))),la=cl(1-(Math.abs(s-k0)-.3)/.15);
     function tmx2(y){return 300+30*(1-Math.abs(y)/122)}
     var SL=[
-      [["EARDRUM",tmx2(-90),-90,300,-205],["ROUND WINDOW MEMBRANE",RWX-5,-50,600,-205],["≈ 1 µL PERILYMPH DRAWN UP",tx-80,ny(tx-80)-3,470,-205],["DEX-P IN",tx+30,ny(tx)+16,700,195],["FIBERS RELAX",RWX-4,48,640,195]],
-      [["EAR CANAL",80,133,60,205],["FIBERS PUSHED APART",RWX-2,Math.max(6,hole)+2,620,195],["PERILYMPH",800,10,820,195],["PERILYMPH OUT · EQUAL VOLUME",tx+30,ny(tx)-16,690,-205],["EARDRUM",tmx2(-90),-90,300,-205]]];
+      [["EARDRUM",tmx2(-90),-90,300,-205],["ROUND WINDOW MEMBRANE",RWX-5,-50,600,-205],["≈ 1 µL INNER-EAR FLUID DRAWN UP",tx-80,ny(tx-80)-3,470,-205],["DRUG IN (DEXAMETHASONE)",tx+30,ny(tx)+16,700,195],["FIBERS RELAX",RWX-4,48,640,195]],
+      [["EAR CANAL",80,133,60,205],["FIBERS PUSHED APART",RWX-2,Math.max(6,hole)+2,620,195],["INNER-EAR FLUID (PERILYMPH)",800,10,820,195],["SAME VOLUME OF FLUID OUT",tx+30,ny(tx)-16,690,-205],["EARDRUM",tmx2(-90),-90,300,-205]]];
     c.font="400 12px 'IBM Plex Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";
-    var PL=[];
+    var PL=[],LBG=window.__hsLBG;
     SL.forEach(function(slot,si){var L3=slot[k0];if(la<.02)return;var txt=L3[0],tw=c.measureText(txt).width;
       var ax=(L3[1]-C.x)*sc+w/2,ay=(L3[2]-C.y)*sc+h/2,lx=(L3[3]-C.x)*sc+w/2,ly=(L3[4]-C.y)*sc+h/2;
       var padX=w*.07+16;lx=Math.max(padX+tw/2,Math.min(w-padX-tw/2,lx));ly=Math.max(30,Math.min(h-22,ly));
@@ -1046,7 +1046,7 @@ function makeStory(cv){
       var below=ly>ay,ey=below?ly-16:ly+6;
       c.globalAlpha=la*.8;c.strokeStyle="rgba("+ST+",.75)";c.lineWidth=.8;c.beginPath();c.moveTo(ax,ay);c.lineTo(lx,ey);c.stroke();
       c.fillStyle=si===0?"rgba("+AL+",1)":"rgba("+ST+",1)";c.beginPath();c.arc(ax,ay,2,0,6.283);c.fill();
-      c.globalAlpha=la;c.fillStyle=si===0?"rgb("+AL+")":"rgb(205,221,228)";c.textAlign="center";c.fillText(txt,lx,ly);c.globalAlpha=1});
+      c.globalAlpha=la;c.fillStyle=LBG||(LBG=(getComputedStyle(document.documentElement).getPropertyValue("--ink2")||"").trim()||"#021526");c.fillRect(lx-tw/2-8,ly-14,tw+16,20);c.fillStyle=si===0?"rgb("+AL+")":"rgb(205,221,228)";c.textAlign="center";c.fillText(txt,lx,ly);c.globalAlpha=1});
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();

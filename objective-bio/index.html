@@ -576,6 +576,7 @@ img.inset{width:110%!important;height:110%!important;max-width:none;margin:-5% 0
   .ps.noimg .ps-body{max-height:calc(100dvh - 120px)}
 }
 @media (max-width:560px){
+  #pre .pl{bottom:calc(var(--gut) + 108px)}
   .hm{display:none}
   .stats{grid-template-columns:1fr 1fr;gap:36px 16px}
   .stat .v{font-size:52px}
@@ -1304,7 +1305,7 @@ function makeStory(cv){
   var AXS=[Math.cos(-.75),Math.sin(-.75)];
   var PARK=[150,-205];
   /* camera: whole plate; a little closer for targets; toward the pipette for the clog */
-  var CAM=[[0,0,720],[0,0,660],[0,0,700],[40,-50,640]];
+  var CAM=[[0,0,720],[0,0,660],[0,0,700],[0,0,700]];
   function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);SP=makeSprite(58*1.18,0,dpr*2.2,.85)}
   function sm(x){x=Math.max(0,Math.min(1,x));return x*x*(3-2*x)}
   function cl(x){return Math.max(0,Math.min(1,x))}
@@ -1317,7 +1318,7 @@ function makeStory(cv){
   function box(e,al){if(al<.02)return;c.save();c.translate(e.x,e.y);c.rotate(e.a);c.globalAlpha=al;c.strokeStyle="rgb("+VL+")";c.lineWidth=1.4/curSc;var X=29*e.L+9,Y=11*e.L+8;c.strokeRect(-X,-Y,X*2,Y*2);c.restore();c.globalAlpha=1}
   function cross(x,y,al){if(al<.02)return;var r=17;c.globalAlpha=al;c.beginPath();c.moveTo(x-r,y);c.lineTo(x-5,y);c.moveTo(x+5,y);c.lineTo(x+r,y);c.moveTo(x,y-r);c.lineTo(x,y-5);c.moveTo(x,y+5);c.lineTo(x,y+r);c.lineCap="round";c.lineWidth=4.2/curSc;c.strokeStyle="rgba(13,11,18,.75)";c.stroke();c.lineWidth=1.8/curSc;c.strokeStyle="rgb("+VL+")";c.stroke();c.fillStyle="rgb("+VIO+")";c.beginPath();c.arc(x,y,2.6/curSc,0,6.283);c.fill();c.globalAlpha=1}
   /* pipette route: dwell at each site (inject), then travel to the next */
-  function route(u){var n=P.length,v=u*n,i0=Math.min(n-1,Math.floor(v)),f=Math.min(1,v-i0);var A=i0===0?PARK:P[i0-1],B=P[i0];var mv=sm(f/.45);return {p:[A[0]+(B[0]-A[0])*mv,A[1]+(B[1]-A[1])*mv],i:i0,f:f}}
+  function route(u){var n=P.length,v=u*n,i0=Math.min(n-1,Math.floor(v)),f=Math.min(1,v-i0);var A=i0===0?PARK:P[i0-1],B=P[i0];var mv=sm(f/.45),lift=i0===0?0:Math.sin(Math.PI*mv);/* between sites the pipette rises (draws back along its axis) so it never passes through an embryo */return {p:[A[0]+(B[0]-A[0])*mv+AXS[0]*70*lift,A[1]+(B[1]-A[1])*mv+AXS[1]*70*lift],i:i0,f:f,lift:lift}}
   function injAmt(r,i){return i<r.i?1:i===r.i?sm((r.f-.5)/.35):0}
   function setCap(t,a){if(!capEl)return;if(t!==capTxt){capTxt=t;capEl.textContent=t}capEl.style.opacity=String(Math.max(0,Math.min(1,a)))}
   function draw(){
@@ -1338,8 +1339,8 @@ function makeStory(cv){
       if(fresh>0){fluid="rgba("+VB+",.6)";tip=[PARK[0]+AXS[0]*900*(1-fresh),PARK[1]+AXS[1]*900*(1-fresh)]}
       else tip=[PARK[0]+AXS[0]*900*back,PARK[1]+AXS[1]*900*back]}
     else if(inj>=.9999){tip=PARK}
-    else if(inj>.92){var k=sm((inj-.92)/.08),L=P[P.length-1];tip=[L[0]+(PARK[0]-L[0])*k,L[1]+(PARK[1]-L[1])*k]}
-    needle(c,tip[0],tip[1],AXS,2400,.62,al,fluid);
+    else if(inj>.92){var k=sm((inj-.92)/.08),L=P[P.length-1],lf=Math.sin(Math.PI*k);tip=[L[0]+(PARK[0]-L[0])*k+AXS[0]*70*lf,L[1]+(PARK[1]-L[1])*k+AXS[1]*70*lf]}
+    needle(c,tip[0],tip[1],AXS,2400,.62,al*(1-.35*(r.lift||0)),fluid);
     if(clog>.02){var cx2=tip[0]+AXS[0]*15,cy2=tip[1]+AXS[1]*15;c.globalAlpha=clog;c.fillStyle="rgb(20,16,26)";c.beginPath();c.arc(cx2,cy2,6,0,6.283);c.fill();c.lineWidth=1.6/sc;c.strokeStyle="rgb("+VL+")";c.beginPath();c.arc(cx2,cy2,18,0,6.283);c.stroke();c.globalAlpha=1}
     c.restore();
     var a0=1-sm((s-.6)/.2),a1=sm((s-.7)/.2)*(1-sm((s-1.45)/.15)),a2=sm((s-1.55)/.15)*(1-sm((s-2.4)/.08));

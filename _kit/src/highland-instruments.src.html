@@ -729,15 +729,15 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .mast+.mast{margin-top:clamp(64px,6vw,104px)}
 .mast .mk{display:block;margin-bottom:20px;color:var(--stoneD)}
 .mast ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairD)}
-.mrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr) 28px;column-gap:var(--gap);align-items:baseline;padding:clamp(28px,2.6vw,38px) 0;border-bottom:1px solid var(--hairD);color:var(--ink)}
+.mrow{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr) 34px;column-gap:var(--gap);align-items:baseline;padding:clamp(28px,2.6vw,38px) 0;border-bottom:1px solid var(--hairD);color:var(--ink)}
 .mrow .mn{font-family:var(--serif);font-weight:400;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.01em;transition:color .3s ease-out}
 .mrow .mr{font-size:15px;line-height:1.45;color:var(--ink)}
 .mrow .ms{font-size:15px;line-height:1.5;color:var(--stoneD)}
-.mrow .ma{justify-self:end;display:flex;color:var(--sinD);transition:transform .3s ease-out}
+.mrow .ma{justify-self:start;display:flex;color:var(--sinD);transition:transform .3s ease-out}
 .mrow .ma svg{width:18px;height:10px}
 .mrow:hover .mn,.mrow:focus-visible .mn{color:var(--sinD)}
 .mrow:hover .ma,.mrow:focus-visible .ma{transform:translateX(6px)}
-@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:6px}.mrow .mn,.mrow .mr,.mrow .ms{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .ms{margin-top:4px}}
+@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 34px;row-gap:6px}.mrow .mn,.mrow .mr,.mrow .ms{grid-column:1}.mrow .ma{grid-column:2;grid-row:1}.mrow .ms{margin-top:4px}}
 /* CH: the statement fills the content measure, centred as a block, text left-aligned */
 .mani .kick,.mani .txt{width:72%;max-width:none;margin-left:auto;margin-right:auto;text-align:left}
 .mani.light .txt em{color:var(--sinD)}
@@ -1289,10 +1289,10 @@ var SCENE='<figure class="sfig" id="scene"><svg viewBox="0 0 460 330" aria-label
   '<g id="scElec"><rect x="196" y="20" width="68" height="16" rx="5"/><path d="M204 36v8M230 36v8M256 36v8"/>'+
     '<text class="lab2" x="274" y="32">Electrode</text></g>'+
   '<g id="scSpread"><path class="g" d="M206 46c-28 34-40 72-16 104 12 16 26 8 40 8M230 46c-4 44-2 82 0 112M254 46c28 34 40 72 16 104-12 16-26 8-40 8"/></g>'+
-  '<g id="scTrans"><g id="scTL"><rect x="58" y="128" width="16" height="48" rx="4"/><path class="a" d="M84 126a44 44 0 010 52M104 138a28 28 0 010 28"/></g>'+
-    '<g id="scTR"><rect x="386" y="128" width="16" height="48" rx="4"/><path class="a" d="M376 126a44 44 0 000 52M356 138a28 28 0 000 28"/></g>'+
-    '<text class="lab2" x="58" y="196">Ultrasound transducer</text>'+
-    '<text class="lab2" x="402" y="196" text-anchor="end">Ultrasound transducer</text></g>'+
+  '<g id="scSL"><text class="lab3" x="230" y="196" text-anchor="middle">Current spreads wide</text></g>'+
+  '<g id="scTrans"><g id="scTL"><rect x="75" y="128" width="16" height="48" rx="4"/><path class="a" d="M101 126a44 44 0 010 52M121 138a28 28 0 010 28"/></g>'+
+    '<g id="scTR"><rect x="369" y="128" width="16" height="48" rx="4"/><path class="a" d="M359 126a44 44 0 000 52M339 138a28 28 0 000 28"/></g>'+
+    '<g id="scTLab"><text class="lab2" x="88" y="198" text-anchor="end"><tspan x="88">Ultrasound</tspan><tspan x="88" dy="13">transducer</tspan></text><text class="lab2" x="372" y="198"><tspan x="372">Ultrasound</tspan><tspan x="372" dy="13">transducer</tspan></text></g></g>'+
   '<g id="scFocus"><circle class="ring" cx="230" cy="158" r="42"/><circle class="ring2" cx="230" cy="158" r="24"/><circle class="f" cx="230" cy="158" r="7"/></g>'+
   '<g id="scFL"><path class="tie2" d="M230 200v22"/><text class="lab3" x="230" y="238" text-anchor="middle">Focal point</text></g>'+
   '<g id="scRead"><path d="M66 326h328"/>'+
@@ -1328,11 +1328,13 @@ function sceneSet(p){
   var sp=q("scSpread");
   /* the broad spread fades back as the focused field takes over */
   if(sp)sp.style.filter="opacity("+((1-.86*cl((p-.42)/.22))*FADE).toFixed(3)+")";
+  var ssl=q("scSL");if(ssl)ssl.style.filter="opacity("+(1-cl((p-.26)/.16)).toFixed(3)+")";
   /* phase 1 (.26–.56): the two transducers arrive and their arcs draw */
   var e1=cl((p-.26)/.3);
   var tl2=q("scTL"),tr=q("scTR");
   if(tl2){tl2.style.translate=((1-ea(e1))*-120).toFixed(1)+"px 0";tl2.style.filter="opacity("+ea(cl((p-.26)/.16)).toFixed(3)+")"}
   if(tr){tr.style.translate=((1-ea(e1))*120).toFixed(1)+"px 0";tr.style.filter="opacity("+ea(cl((p-.26)/.16)).toFixed(3)+")"}
+  var tlb=q("scTLab");if(tlb)tlb.style.filter="opacity("+ea(cl((p-.4)/.16)).toFixed(3)+")";
   qq("#scTrans .a").forEach(function(n,i){draw(n,110,(e1-.18-(i%2)*.1)/.5)});
   /* phase 2 (.5–.8): coupling — the focus tightens and pulses */
   var e2=cl((p-.5)/.3);

@@ -708,9 +708,7 @@ em{font-style:normal;font-family:inherit}
 /* founders: portrait cards (AC hover), centred pair */
 .fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,330px));justify-content:center;gap:48px clamp(28px,4vw,64px)}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bone3);transition:box-shadow .32s ease-out}
-.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(6,24,32,.55)}
 .ph2{position:absolute;inset:0}
 .ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%;transition:transform .45s ease-out,clip-path .45s ease-out}
 .pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
@@ -718,7 +716,7 @@ em{font-style:normal;font-family:inherit}
 .ph2 .ph-c{clip-path:circle(0% at var(--mx,50%) var(--my,50%))}
 .pcard:hover .ph2 .ph-c,.pcard:focus-visible .ph2 .ph-c{clip-path:circle(150% at var(--mx,50%) var(--my,50%))}
 .pc-meta{padding-top:18px;display:flex;flex-direction:column;gap:6px;text-align:center;align-items:center}
-.pc-meta h3{font-family:var(--serif);font-weight:300;font-size:clamp(24px,2vw,30px);line-height:1.1;letter-spacing:-.02em;margin:0;transition:color .3s ease-out}
+.pc-meta h3{font-family:var(--serif);font-weight:300;font-size:clamp(21px,1.7vw,24px);line-height:1.1;letter-spacing:-.02em;margin:0;transition:color .3s ease-out}
 .pc-meta h3 span{background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .38s var(--eo),color .3s ease-out}
 .pc-meta .ttl{margin:0;font-size:15px;line-height:1.45;color:var(--stoneD)}
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:4px}
@@ -741,15 +739,14 @@ em{font-style:normal;font-family:inherit}
 .nm2 .d3{margin-bottom:24px}
 .nm2 .lede{margin-bottom:18px}
 /* advisors: bio on the card, no sheet (BV) */
-.advs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px var(--gap)}
-.adv{display:grid;grid-template-columns:104px 1fr;gap:22px;align-items:start;border-top:1px solid var(--hair);padding-top:26px}
-.adv-fig{margin:0;width:104px;height:104px;overflow:hidden;border-radius:2px;background:var(--ink3)}
-.adv-fig img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;filter:grayscale(1) brightness(.8) contrast(1.05);transition:filter .4s ease-out,transform .45s ease-out}
-.adv:hover .adv-fig img{filter:none;transform:scale(1.045)}
-.adv h3{font-family:var(--serif);font-weight:300;font-size:clamp(22px,1.8vw,27px);line-height:1.1;letter-spacing:-.02em;margin:2px 0 8px}
-.adv .lab{display:block;color:var(--sinL);margin-bottom:14px}
-.adv p{color:var(--stone);font-size:15px;line-height:1.6;margin:0}
-.adv.noimg{grid-template-columns:1fr}
+.advs{display:flex;flex-wrap:wrap;justify-content:center;gap:56px clamp(24px,3vw,56px)}
+.adv{width:min(300px,100%);display:flex;flex-direction:column}
+.adv-fig{margin:0;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--ink3)}
+.adv-fig img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(1) brightness(.85) contrast(1.05);transition:filter .3s ease-out,transform .4s ease-out}
+.adv:hover .adv-fig img{filter:none;transform:scale(1.03)}
+.adv h3{font-family:var(--serif);font-weight:300;font-size:clamp(20px,1.6vw,24px);line-height:1.15;letter-spacing:-.02em;margin:18px 0 4px}
+.adv .rl{color:var(--stone);font-size:14.5px;line-height:1.45;margin:0 0 12px}
+.adv p.bio{color:var(--stone);font-size:14.5px;line-height:1.6;margin:0;opacity:.85}
 .adv.noimg .adv-fig{display:none}
 /* gallery */
 .gal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
@@ -764,7 +761,7 @@ em{font-style:normal;font-family:inherit}
 @media (max-width:1024px){
   .scene text{font-size:18px;letter-spacing:.06em}
   .origin,.nm2{grid-template-columns:1fr}
-  .advs{grid-template-columns:1fr;max-width:640px;margin:0 auto}
+  .advs{gap:40px 16px}.adv{width:calc(50% - 8px)}
 }
 @media (max-width:860px){
   .stats{grid-template-columns:1fr}
@@ -912,7 +909,7 @@ function head(o){
 function fCard(p){return '<a class="pcard" href="#/company/'+p.slug+'" aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure>'+
   '<div class="pc-meta"><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go" aria-hidden="true">'+ARR+'</span></div></a>'}
 window.xNoImg=function(im){var c=im.closest(".pcard,.adv");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function advCard(a){return '<div class="adv"><figure class="adv-fig"><img src="'+a.img+'" alt="Portrait of '+esc(a.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"></figure><div class="adv-t"><h3>'+esc(a.name)+'</h3><span class="lab">'+esc(a.title)+'</span><p>'+esc(a.bio)+'</p></div></div>'}
+function advCard(a){return '<div class="adv"><figure class="adv-fig"><img src="'+a.img+'" alt="Portrait of '+esc(a.name)+'" loading="lazy" decoding="async" onerror="xNoImg(this)"></figure><div class="adv-t"><h3>'+esc(a.name)+'</h3><p class="rl">'+esc(a.title)+'</p><p class="bio">'+esc(a.bio)+'</p></div></div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm">'+(n.d?'<time class="lab"'+(n.d.length>4?' datetime="'+n.d+'"':'')+'>'+fd(n.d)+'</time>':'')+'<span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function founders(){return '<div class="fgrid" data-group>'+TEAM.map(fCard).join("")+'</div>'}
 function evidence(){
@@ -949,7 +946,7 @@ function sceneSvg(){
    '<path id="scKid" class="org" d="'+bean(240,392,24,14,-.6,6)+'"/>'+
    '<g id="scCk">'+dots+'</g>'+
    /* spleen and its nerves */
-   '<path id="scNrv" class="nrv" d="M300 192C318 192 330 202 344 208M300 198C320 202 332 212 346 216M300 204C318 212 330 220 342 224"/>'+
+   '<path id="scNrv" class="nrv" d="M300 192C318 192 332 202 348 208M300 198C320 202 336 212 350 216M300 204C320 212 338 220 355 220"/>'+
    '<path id="scSpl" class="org" d="'+bean(366,210,30,16,-.62,8)+'"/>'+
    /* focused beam from the device to the spleen */
    '<path id="scBeam" d="M428 186L370 206.5L370 209.5L428 230Z" fill="url(#beamG)"/>'+
@@ -962,7 +959,7 @@ function sceneSvg(){
    /* labels and their leaders */
    '<g class="lb" id="lb0"><path class="ld" d="M452 208H462"/><text x="468" y="204">ULTRASOUND</text><text x="468" y="222">DEVICE</text></g>'+
    '<g class="lb" id="lb1"><path class="ld" d="M384 226L462 266"/><text x="468" y="264">SPLEEN &amp;</text><text x="468" y="282">NERVES</text></g>'+
-   '<g class="lb" id="lb2"><path class="ld" d="M294 290H148"/><text x="6" y="286">INFLAMMATORY</text><text x="6" y="304">SIGNALS</text></g>'+
+   '<g class="lb" id="lb2"><path class="ld" d="M294 290H148"/><text x="6" y="286">ARTERY &amp;</text><text x="6" y="304">IMMUNE SIGNALS</text></g>'+
    '<g class="lb" id="lb3"><path class="ld" d="M386 300L462 346"/><text x="468" y="344">BIOMARKER</text><text x="468" y="362">FEEDBACK</text></g>'+
    '<g class="lb" id="lb4"><path class="ld" d="M214 398H148"/><text x="6" y="394">TRANSPLANTED</text><text x="6" y="412">KIDNEY</text></g>'+
   '</svg>'}

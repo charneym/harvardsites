@@ -52,7 +52,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .d2{font-family:var(--disp);font-weight:300;font-size:clamp(38px,4.9vw,90px);line-height:1.04;letter-spacing:-.045em;margin:0}
 .d3{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.2vw,54px);line-height:1.1;letter-spacing:-.035em;margin:0}
 .d1 em,.d2 em,.d3 em,.big em,.gq em,.mani .txt em,.evi blockquote em{font-style:normal;color:var(--cyanL)}
-.light .d1 em,.light .d2 em,.light .d3 em,.light .big em,.light .mani .txt em,.light2 .d1 em,.light2 .d2 em,.light2 .d3 em,.light2 .big em{color:var(--cyanD)}
+.light .d1 em,.light .d2 em,.light .d3 em,.light .big em,.light .mani .txt em,.mani.light .txt em,.light2 .d1 em,.light2 .d2 em,.light2 .d3 em,.light2 .big em{color:var(--cyanD)}
 .lede{font-family:var(--disp);font-weight:300;font-size:clamp(20px,1.65vw,26px);line-height:1.5;letter-spacing:-.015em;margin:0}
 p{margin:0 0 1.1em;text-wrap:pretty}
 h1,h2,h3{text-wrap:balance}
@@ -229,9 +229,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 .pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
-.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(4,24,43,.55)}
 .ph2{position:absolute;inset:0}
 .ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .45s ease-out,clip-path .45s ease-out}
 .pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
@@ -961,7 +959,7 @@ function makeStory(cv){
   function poly(P){c.beginPath();c.moveTo(P[0][0],P[0][1]);for(var i=1;i<P.length;i++)c.lineTo(P[i][0],P[i][1]);c.stroke()}
   function dot(x,y,r,col,a){c.fillStyle="rgba("+col+","+a+")";c.beginPath();c.arc(x,y,r,0,6.2832);c.fill()}
   function cell(x,y,a,tag){dot(x,y,5.2,GOLD,.95*a);dot(x-1.2,y+.6,2,NUC,a);if(tag>0){for(var k=0;k<3;k++){var an=k*2.1+.6;dot(x+Math.cos(an)*6.6,y+Math.sin(an)*6.6,1.1,CYL,tag*a)}}}
-  function bead(x,y,a,sc){dot(x,y,3.6,CY,.95*a);c.strokeStyle="rgba("+PAPER+","+(.5*a)+")";c.lineWidth=.7/sc;c.beginPath();c.arc(x,y,4.8,-.9,.9);c.stroke()}
+  function bead(x,y,a,sc){dot(x,y,3.6,CY,.95*a)}
   function draw(){
     p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
     var t=RM?10:(performance.now()-t0)/1000,C=cam();var W=[0,0,0,0];W[C.i0]=1-C.f;W[C.i0+1]=C.f;
@@ -996,16 +994,16 @@ function makeStory(cv){
     }
     /* droplet lattice */
     var S=34,off=(t*14)%S,rh=S*.866;
-    for(var j=-4;j<=4;j++)for(var q=-1;q<9;q++){var x2=1010+q*S+(j&1?S/2:0)+off,y2=j*rh;var a2=sm(1000,1050,x2)*(1-sm(1240,1290,x2))*(1-sm(100,124,Math.abs(y2)));if(a2<.03)continue;
+    for(var j=-4;j<=4;j++)for(var q=-1;q<9;q++){var x2=1010+q*S+(j&1?S/2:0)+off,y2=j*rh;var hw=x2<1000?10:x2<1040?10+(x2-1000)*3:130;var a2=sm(1000,1030,x2)*(1-sm(1250,1286,x2))*sm(0,6,hw-3-Math.abs(y2)-14);if(a2<.03)continue;
       var an=R(q-Math.floor(t*14/S),j)*6.28;
       c.fillStyle="rgba("+CY+","+(.07*a2)+")";c.strokeStyle="rgba("+CYL+","+(.7*a2)+")";c.lineWidth=1/sc;c.beginPath();c.arc(x2,y2,14,0,6.2832);c.fill();c.stroke();
       cell(x2-Math.cos(an)*3.5,y2-Math.sin(an)*3.5,a2,1);bead(x2+Math.cos(an)*6,y2+Math.sin(an)*6,a2,sc)}
     c.restore();
-    function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-200||sx>w+200||sy<-40||sy>h+40)return;c.globalAlpha=Math.min(1,a);c.font="400 10.5px 'IBM Plex Mono',monospace";c.fillStyle="rgb(196,214,226)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";c.fillText(txt,sx,sy);c.globalAlpha=1}
+    function lab(txt,wx,wy,a,align){if(a<.02)return;var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;if(sx<-200||sx>w+200||sy<-40||sy>h+40)return;c.font="400 10.5px 'IBM Plex Mono',monospace";c.fillStyle="rgb(196,214,226)";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.4px";var tw=c.measureText(txt).width,l0=align==="left"?sx:align==="right"?sx-tw:sx-tw/2,ed=Math.max(14,w*.03);a*=sm(ed,ed+28,l0)*sm(ed,ed+28,w-(l0+tw))*sm(ed,ed+20,sy-8)*sm(ed,ed+20,h-sy-4);if(a<.02)return;c.globalAlpha=Math.min(1,a);c.fillText(txt,sx,sy);c.globalAlpha=1}
     lab("WHOLE BLOOD",-24,-62,W[0]);lab("IN-LINE FILTER",170,-62,W[0]);lab("ONE-STEP LABELING",-62,72,W[0],"left");if(w<620)lab("RED CELLS + PLATELETS OUT",192,208,W[0]);else lab("RED CELLS + PLATELETS OUT",160,150,W[0],"right");
     lab("SINGLE-FILE ORDERING",470,-30,W[1]);lab("EVEN SPACING",470,36,W[1]);
-    lab("BARCODED BEADS",760,-256,W[2]);lab("ONE CELL · ONE BEAD",790,40,W[2]+W[1]*.5);
-    lab("OIL",930,-176,W[3]);lab("DROPLETS",1140,-150,W[3]);lab("UP TO 100M CELLS PER RUN",1140,160,W[3]);
+    lab("BARCODED BEADS",742,-170,W[2],"right");lab("ONE CELL · ONE BEAD",790,40,W[2]+W[1]*.5);
+    lab("OIL",948,-150,Math.max(W[3],W[2]*.7),"left");lab("DROPLETS",1140,-150,W[3]);lab("UP TO 100M CELLS PER RUN",1140,160,W[3]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();

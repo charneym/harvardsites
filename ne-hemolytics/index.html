@@ -51,7 +51,7 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .d2{font-family:var(--disp);font-weight:300;font-size:clamp(38px,4.9vw,90px);line-height:1.04;letter-spacing:-.045em;margin:0}
 .d3{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.2vw,54px);line-height:1.1;letter-spacing:-.035em;margin:0}
 .d1 em,.d2 em,.d3 em,.big em,.gq em,.mani .txt em,.evi blockquote em{font-style:normal;color:var(--cyanL)}
-.light .d1 em,.light .d2 em,.light .d3 em,.light .big em,.light .mani .txt em,.light2 .d1 em,.light2 .d2 em,.light2 .d3 em,.light2 .big em{color:var(--cyanD)}
+.light .d1 em,.light .d2 em,.light .d3 em,.light .big em,.light .mani .txt em,.mani.light .txt em,.light2 .d1 em,.light2 .d2 em,.light2 .d3 em,.light2 .big em{color:var(--cyanD)}
 .lede{font-family:var(--disp);font-weight:300;font-size:clamp(20px,1.65vw,26px);line-height:1.5;letter-spacing:-.015em;margin:0}
 p{margin:0 0 1.1em;text-wrap:pretty}
 h1,h2,h3{text-wrap:balance}
@@ -79,7 +79,7 @@ h1,h2,h3{text-wrap:balance}
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
 #pre .orb{width:66px;height:66px}
-#pre .wm{font-family:var(--disp);font-weight:300;font-size:clamp(30px,3.8vw,54px);letter-spacing:.14em;color:var(--paper);line-height:1.2;padding:.16em .2em .3em;margin-bottom:-.3em;overflow:hidden}
+#pre .wm{font-family:var(--disp);font-weight:300;font-size:clamp(24px,3.8vw,54px);letter-spacing:.14em;color:var(--paper);line-height:1.2;padding:.16em .2em .3em;margin-bottom:-.3em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--cyan);transform-origin:left;transform:scaleX(0)}
@@ -228,9 +228,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 
 .pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px var(--gap)}
 .pcard{display:flex;flex-direction:column;position:relative;transition:transform .32s ease-out}
-.pcard:hover,.pcard:focus-visible{transform:translateY(-6px)}
 .pc-fig{position:relative;margin:0;aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--paper3);transition:box-shadow .32s ease-out}
-.pcard:hover .pc-fig,.pcard:focus-visible .pc-fig{box-shadow:0 30px 50px -30px rgba(4,24,43,.55)}
 .ph2{position:absolute;inset:0}
 .ph2>*{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:transform .45s ease-out,clip-path .45s ease-out}
 .pcard:hover .ph2>*,.pcard:focus-visible .ph2>*{transform:scale(1.045)}
@@ -1078,17 +1076,17 @@ function makeStory(cv){
     ln([[-90,330],[-90,372],[-190,372]]);ln([[-66,330],[-66,396],[-190,396]]);
     ln([[-8,330],[-8,520]]);ln([[8,330],[8,520]]);
     ch(3);rr(-44,520,88,130,16);c.stroke();c.strokeStyle="rgba("+PAPER+",.34)";c.lineWidth=1.1/sc;
-    var lv=.25+.7*((t*.04)%1);c.fillStyle="rgba("+BL+",.16)";c.fillRect(-42,648-120*lv,84,120*lv);
+    var lv=.04+.78*sm(.7,.97,p);c.fillStyle="rgba("+BL+",.16)";c.fillRect(-42,648-120*lv,84,120*lv);
     ch(3);rr(-170,206,26,52,5);c.stroke();
     for(var a=0;a<5;a++){var ph=((t*.6+a/5)%1),R0=24+ph*110;c.strokeStyle="rgba("+BL+","+(.5*(1-ph))+")";c.beginPath();c.arc(-144,232,R0,-.55,.55);c.stroke()}
     /* blood cells liquefy as they descend */
     for(var i=0;i<16;i++){var s=(R(i,1)+t*.06)%1,y=-385+s*230,x=(R(i,2)-.5)*160,d=sm(.3,.8,s);if(d<.99)cellShape(x,y,7.5*(1-.45*d),R(i,3)*3+t*.2,.8*(1-d)*sm(0,.06,s),sc)}
     /* human DNA released and diverted out */
     for(i=0;i<16;i++){var s2=(R(i,4)+t*.05)%1,x2,y2,a2;
-      if(s2<.5){var v=s2/.5;x2=(R(i,5)-.5)*120*(1-sm(.5,.9,v));y2=-250+v*250;a2=sm(0,.15,v)}else{var v2=(s2-.5)/.5;x2=v2*172;y2=(R(i,6)-.5)*18;a2=1-sm(.7,1,v2)}
-      squig(x2,y2,18,.75*a2,DIM,sc,R(i,7)*6+t)}
+      var sl=18;if(s2<.5){var v=s2/.5;y2=-250+v*250;var nar=y2<-160?1-.95*sm(-250,-162,y2):y2<-66?.05:.05+.5*sm(-66,-30,y2);x2=(R(i,5)-.5)*120*nar;if(y2>-162&&y2<-66)sl=8;a2=sm(0,.15,v)}else{var v2=(s2-.5)/.5;x2=v2*172;y2=(R(i,6)-.5)*14;a2=1-sm(.7,1,v2)}
+      squig(x2,y2,sl,.75*a2,DIM,sc,R(i,7)*6+t)}
     /* wash flow through the membrane */
-    for(i=0;i<26;i++){var s3=(R(i,8)+t*.09)%1,P3=[[(R(i,9)-.5)*190,150],[(R(i,9)-.5)*150,320],[-78,360],[-190,384]],q3=along(P3,s3);dot(q3[0],q3[1],1.5,DIM,.6*sm(0,.08,s3)*(1-sm(.9,1,s3)))}
+    for(i=0;i<26;i++){var s3=(R(i,8)+t*.09)%1,P3=[[(R(i,9)-.5)*190,150],[(R(i,9)-.5)*150,300],[-78,322],[-78,384],[-190,384]],q3=along(P3,s3);dot(q3[0],q3[1],1.5,DIM,.6*sm(0,.08,s3)*(1-sm(.9,1,s3)))}
     /* pathogens: descend, land on the filter, burst under ultrasound, DNA flows to the tube */
     var N=16;
     for(i=0;i<N;i++){var s4=(i/N+t*.03)%1,xp=(R(i,10)-.5)*170,rod=R(i,11)>.45,an=R(i,12)*3;
@@ -1106,9 +1104,9 @@ function makeStory(cv){
     chLab(2,"3 · FILTER CHAMBER",110,180,128);
     chLab(3,w<620?"4 · COLLECTION TUBE":"4 · DNA COLLECTION TUBE",44,585,72);
     lab("WHOLE BLOOD · 4–7 mL",0,-420,.5+.5*W[0]);lab("pH SHOCK · LIQUEFIED",128,-304,w<620?0:W[0],"left");
-    lab(w<620?"DNA OUT · 99.9%":"HUMAN DNA OUT · 99.9%",w<620?208:210,0,W[1],"left");
-    lab("FILTER · >0.4 µm",124,236,W[2],"left");lab("WASH OUT",-198,396,W[2],"right");
-    lab("ULTRASOUND",-178,232,W[3],"right");lab("PCR-READY DNA · 50–100 µL",0,676,.5+.5*W[3]);
+    lab(w<620?"DNA OUT · 99.9%":"HUMAN DNA OUT · 99.9%",w<620?208:210,0,.4+.6*W[1],"left");
+    lab("FILTER · >0.4 µm",124,236,.4+.6*W[2],"left");lab("WASH OUT",-198,396,.4+.6*W[2],"right");
+    lab("ULTRASOUND",-178,232,.4+.6*W[3],"right");lab("PCR-READY DNA · 50–100 µL",0,676,.5+.5*W[3]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();

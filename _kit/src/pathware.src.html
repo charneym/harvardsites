@@ -462,20 +462,28 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ps.noimg .ps-media{display:none}
 .ps.noimg .ps-body{max-height:calc(100vh - 190px)}
 @media (max-width:760px){.ps.noimg .ps-sheet{width:100%;height:auto;max-height:calc(100dvh - 40px)}.ps.noimg .ps-body{max-height:calc(100dvh - 120px)}}
-/* CI: masthead list (no portraits) */
-.mast{border-bottom:1px solid var(--hairD)}
-.mgrp{display:block;color:var(--sinD);padding:0 0 16px}
-.mrow+.mgrp{margin-top:clamp(48px,5vw,72px)}
-.mrow{position:relative;display:grid;grid-template-columns:minmax(0,4.2fr) minmax(0,3fr) minmax(0,4.4fr) 28px;column-gap:var(--gap);align-items:start;padding:34px 0 32px;border-top:1px solid var(--hairD);color:var(--ink);text-decoration:none}
-.mrow h3{font-family:var(--serif);font-weight:300;font-size:clamp(28px,2.35vw,34px);line-height:1.1;letter-spacing:-.022em;margin:0;transition:color .3s var(--eo)}
-.mrow .role{font-size:15px;line-height:1.45;color:var(--stoneD);margin:0}
-.mrow .sum{font-size:15px;line-height:1.5;color:var(--ink);margin:0;max-width:44ch}
-.mrow .go{display:flex;justify-content:flex-end;padding-right:8px;color:var(--sinD);align-self:center}
-@media (min-width:861px){.mrow .role,.mrow .sum{padding-top:.62em}}
-.mrow .go svg{width:18px;height:10px;transition:transform .3s var(--eo)}
-a.mrow:hover h3,a.mrow:focus-visible h3{color:var(--sinD)}
-a.mrow:hover .go svg,a.mrow:focus-visible .go svg{transform:translateX(6px)}
-@media (max-width:860px){.mrow{grid-template-columns:minmax(0,1fr) 28px;row-gap:8px;padding:26px 0 24px}.mrow h3{grid-column:1}.mrow .role,.mrow .sum{grid-column:1}.mrow .go{grid-column:2;grid-row:1}.mrow .sum{margin-top:4px}}
+/* CL: the shared masthead list (_kit/components/masthead.html), re-skinned with tokens */
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono);display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{justify-self:start;font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
 [data-r]{will-change:auto}
 @media (max-width:1100px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-key{display:none}.fieldgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}}
 @media (max-width:1024px){
@@ -622,7 +630,7 @@ var NEWS=[
  {d:"2022-04-19",s:"Becker’s Hospital Review",t:"Pathware names former Veran executive CEO and closes a $7M Series A",u:BECK}
 ];
 var TEAM=[
- {slug:"tj-meyer",sum:"Came from Veran Medical, which grew from $2 million to $30 million in revenue before Olympus bought it.",name:"TJ Meyer",title:"Chief Executive Officer",grp:"Leadership",q:"Joined as CEO with the 2022 Series A",
+ {slug:"tj-meyer",static:1,sum:"Joined as CEO in 2022 with the $7 million Series A, after helping grow Veran Medical from $2 million to $30 million in revenue.",name:"TJ Meyer",title:"Chief Executive Officer",grp:"Leadership",q:"Joined as CEO with the 2022 Series A",
   bio:["TJ Meyer was appointed Chief Executive Officer of Pathware in April 2022, alongside the company’s oversubscribed $7 million Series A.","He came to Pathware from Veran Medical Technologies, where he helped grow revenue from $2 million to $30 million before Olympus acquired the company in December 2020."],
   src:'<a href="'+BECK+'" target="_blank" rel="noopener">Becker’s Hospital Review, April 2022</a>.'},
  {slug:"torsten-lyon",sum:"Leads the lung program, from the 2022 Phase I award to the 2026 Direct-to-Phase II.",static:1,name:"Torsten Lyon",title:"Contact principal investigator, NCI SBIR awards",grp:"Research",q:"Leads the coded ptychography lung program",
@@ -643,8 +651,9 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function mRow(p){var i='<h3>'+esc(p.name)+'</h3><p class="role">'+esc(p.title)+'</p><p class="sum">'+esc(p.sum||p.q)+'</p>';if(p.static)return '<div class="mrow static">'+i+'<i aria-hidden="true"></i></div>';return '<a class="mrow" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+i+'<i class="go">'+ARR+'</i></a>'}
-function mast(L){var g=null,h='';L.forEach(function(p){if(p.grp!==g){g=p.grp;h+='<span class="lab mgrp">'+esc(g==="Founder"?"Founders":g)+'</span>'}h+=mRow(p)});return '<div class="mast" data-group>'+h+'</div>'}
+function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum||"")+'</span>';return '<li>'+(p.static?'<div class="mh-row">'+i+'</div>':'<a class="mh-row" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+i+'<span class="mh-arrow" aria-hidden="true">→</span></a>')+'</li>'}
+function mhList(G){return '<div class="mh">'+G.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g[0])+'</p><ul class="mh-list">'+g[1].map(mhRow).join("")+'</ul></div>'}).join("")+'</div>'}
+function mast(L){var G=[],g=null;L.forEach(function(p){if(p.grp!==g){g=p.grp;G.push([g==="Founder"?"Founders":g,[]])}G[G.length-1][1].push(p)});return mhList(G)}
 function tCard(p){if(p.static)return '<div class="tcard static"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div>';return '<a class="tcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="lab grp">'+esc(p.grp)+'</span><h3><span>'+esc(p.name)+'</span></h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></a>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function icon(n){return ['<svg viewBox="0 0 48 48" aria-hidden="true"><rect x="8" y="8" width="32" height="32" rx="2"/><path class="a" d="M8 24h16V8"/></svg>',
@@ -784,13 +793,13 @@ function vClinical(){
     '<article><span class="lab">Second indication · NCI Phase I</span><h3>Thyroid nodules</h3><p>Thyroid nodules are common, and fine-needle aspiration is often a key diagnostic step. In up to 30% of procedures, insufficient cellularity leads to a repeat biopsy or surgery that may not have been needed.</p><p>According to Pathware, 92% of thyroid surgeries that follow an indeterminate biopsy are later found to be unnecessary.</p></article>'+
    '</div></div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Who benefits</span><h2 class="d2 split">Value at every <em>step of care.</em></h2></div><p data-r>Figures as stated on Pathware’s website.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Who benefits</span><h2 class="d2 split">Value at every <em>step of care.</em></h2></div></div>'+
    '<dl class="facts" data-group>'+
     '<div><dt class="lab">Patients</dt><dd>Fewer readmissions and re-biopsies, and fewer weeks of waiting between procedures.</dd></div>'+
     '<div><dt class="lab">Pathologists</dt><dd>Time back in the lab, where billing potential averages about $638 an hour, instead of roughly $88 an hour on site.</dd></div>'+
     '<div><dt class="lab">Hospitals</dt><dd>About 2.7 million FNA biopsies a year at roughly $3,000 each. Repeat procedures and unnecessary surgeries cost about $1.6 billion annually.</dd></div>'+
     '<div><dt class="lab">Payers</dt><dd>At about $11,000 per thyroidectomy, unwarranted surgeries after indeterminate biopsies cost an estimated $165 million a year.</dd></div>'+
-   '</dl></div></section>'+cta();
+   '</dl><p class="note-s">Figures as stated on Pathware’s website.</p></div></section>'+cta();
 }
 function vTeam(){
   return head({k:"Team",h:'The people <em>behind Bioptic.</em>',p:'Leadership and the principal investigators on Pathware’s National Cancer Institute awards.'})+
@@ -945,7 +954,7 @@ function lerp(a,b,t){return a+(b-a)*t}
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 64%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(m,{opacity:0,duration:.7,ease:"power1.out",scrollTrigger:{trigger:m,start:"top 90%"}});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 64%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
@@ -1001,6 +1010,7 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(el,{opacity:0,duration:.7,ease:"power1.out",delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
   gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){unmask(st)}});
 }
 var ENTRY=0;
@@ -1034,7 +1044,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ================= AZ: GLOBAL REVEAL ================= */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,b,strong,small,span,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
 var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
@@ -1052,12 +1062,12 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.7,ease:"power1.out",delay:dl});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
@@ -1065,7 +1075,8 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  setTimeout(function(){if(view.isConnected)ScrollTrigger.refresh()},700)}
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}

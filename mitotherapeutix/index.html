@@ -301,14 +301,29 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px}
 .pcard.noimg .pc-fig{display:none}
 .mgroup{margin-top:clamp(72px,8vw,120px)}
-/* CI: board and advisors as a masthead list */
-.mast{border-bottom:1px solid var(--hairD)}
-.mgrp{display:block;padding:0 0 16px}
-.mrow{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--gap);align-items:start;padding:24px 0 22px;border-top:1px solid var(--hairD)}
-.mrow h3{font-family:var(--serif);font-weight:300;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.018em;margin:0}
-.mrow .role{font-size:15px;line-height:1.45;color:var(--stoneD);margin:0}
-@media (min-width:561px){.mrow .role{padding-top:.55em}}
-@media (max-width:560px){.mrow{grid-template-columns:1fr;row-gap:6px}}
+/* CL: the shared masthead list (_kit/components/masthead.html), re-skinned with tokens */
+.mh{--mh-ink:var(--ink);--mh-mute:var(--stoneD);--mh-line:var(--hairD);--mh-accent:var(--sinD);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono);display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{justify-self:start;font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+
 
 .mgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:36px var(--gap)}
 .mgrid>.mini{flex:0 0 calc((100% - 2 * var(--gap)) / 3)}
@@ -866,7 +881,9 @@ function head(o){
 }
 function tCard(p){if(p.static)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"'+(p.z?' style="--z:'+p.z+'"':'')+'><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'<span class="go">'+ARR+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></a>'}
 window.mtNoImg=function(im){var c=im.closest(".pcard,.mini");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function mini(list,lab){return '<div class="mgroup"><div class="mast" data-group><span class="lab mgrp">'+lab+'</span>'+list.map(function(a){return '<div class="mrow"><h3>'+esc(a[0])+'</h3><p class="role">'+esc(a[1].replace(/^SAB /,"").replace(/^member$/,"Member"))+'</p></div>'}).join("")+'</div></div>'}
+function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum||"")+'</span>';return '<li>'+(p.static?'<div class="mh-row">'+i+'</div>':'<a class="mh-row" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+i+'<span class="mh-arrow" aria-hidden="true">→</span></a>')+'</li>'}
+function mhList(G){return '<div class="mh">'+G.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g[0])+'</p><ul class="mh-list">'+g[1].map(mhRow).join("")+'</ul></div>'}).join("")+'</div>'}
+function mini(G){return '<div class="mgroup">'+mhList(G.map(function(g){return [g[0],g[1].map(function(a){return {static:1,name:a[0],title:a[1].replace(/^SAB /,"").replace(/^member$/,"Member")}})]}))+'</div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pipe(n){var rows=PIPE.slice(0,n||PIPE.length);return '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Discovery</span><span>Preclinical</span><span>IND-enabling</span><span>Phase 1</span></span></div>'+
  rows.map(function(r,i){return '<div class="prow"><div><h3>'+r[0]+'</h3><p class="mod">'+r[1]+'</p>'+(i===0?'<span class="tagp">Lead · NIDDK SBIR</span>':'')+'</div><p class="ind">'+r[2]+'</p><div class="track"><span class="tk lab"><span>Discovery</span><span>Preclinical</span><span>IND-enabling</span><span>Phase 1</span></span><i></i><i></i><i></i><i></i><span class="bar '+r[4]+'" style="width:'+r[3]+'%"><b></b></span></div><p class="note">'+r[5]+'</p></div>'}).join("")+'</div>'}
@@ -1007,7 +1024,7 @@ function vPipeline(){
 function vTeam(){
   return head({k:"Team",h:'Leadership and <em>advisors.</em>',p:'Founders, operators and scientists, with a board and scientific advisory board from academia and industry.'})+
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="pgrid" data-group>'+TEAM.map(tCard).join("")+'</div>'+
-  mini(BOARD,"Board members and advisors")+mini(SAB,"Scientific Advisory Board")+'</div></section>'+cta();
+  mini([["Board members and advisors",BOARD],["Scientific Advisory Board",SAB]])+'</div></section>'+cta();
 }
 function vNews(){
   return head({k:"News",h:'News and <em>publications.</em>',p:'Awards, milestones and the peer-reviewed research behind MCJ, each linked to its source.'})+
@@ -1146,7 +1163,7 @@ function lerp(a,b,t){return a+(b-a)*t}
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 64%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(m,{opacity:0,duration:.7,ease:"power1.out",scrollTrigger:{trigger:m,start:"top 90%"}});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 64%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
@@ -1203,6 +1220,7 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(el,{opacity:0,duration:.7,ease:"power1.out",delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
   gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){unmask(st)}});
 }
 var ENTRY=0;
@@ -1236,7 +1254,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
   ScrollTrigger.refresh();
 }
 /* ================= AZ: GLOBAL REVEAL ================= */
-var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
+var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,b,strong,small,span,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
 var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
 var RV_SKIP=".hero,.ph-head,#pageTitle,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
@@ -1254,12 +1272,12 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.7,ease:"power1.out",delay:dl});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
@@ -1267,7 +1285,8 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
+  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
+  setTimeout(function(){if(view.isConnected)ScrollTrigger.refresh()},700)}
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}

@@ -143,3 +143,13 @@ Not used, with reasons: none of the company's meaningful images were left out; t
 - Haima hero key: each dot is now the colour the field actually draws (red cells #bf1717, SynthoPlate near-white, wall #8c3375).
 - Haima team: one tile size across all groups (the 5-across executive tile), with the advisory board and research rows centred.
 - Haima publications list: a stale `.paper` rule re-declared three columns, which put each paper's title into the 96px year column. Removed it.
+
+## Round 5 (client review 5, v17): what changed and why
+- **CM.** A section now animates as a whole:
+  - Text leaves outside the reveal selector list (the `<b>` titles in feature tiles and award tiles, bare spans) join the reveal.
+  - A captioned figure reveals as one piece, and its caption also rises when it arrives (unless the figure is taller than most of the screen).
+  - Below-the-fold reveals use an IntersectionObserver (live geometry) instead of scroll-trigger positions measured before images above them loaded.
+  - The failsafe no longer snaps a reveal that is queued (it checked `isTweening`, which is false during a delay; it now checks for any pending tween). Under accumulated hero timelines from earlier routes it was snapping portrait tiles from hidden to shown in one frame.
+- **CO.** Portrait tiles warm from grey to colour and show the arrow on hover (unchanged from R4). They now pass the polish-audit HOVER check.
+- **CP.** Title entrances travel one line (central fix 96d211e), verified with polish-audit.
+- **CL.** No horizontal person lists: every group is a portrait grid.

@@ -123,3 +123,13 @@ Not used, with reasons:
 - Via walk-through labels: OUTER SKIN BARRIER, HUNDREDS OF FORMULATIONS TESTED ON HUMAN SKIN, BEST FORMULATION, SKIN-CANCER LESION, MANUFACTURING / ANIMAL STUDIES / SAFETY STUDIES / PHASE 1 TRIAL. Rail step "File" renamed "Clinic". The duplicate DERMIS label in the Deliver step was dropped (it collided with "VT103 held in the dermis"). On narrow screens the milestone labels sit in two rows.
 - Via team: Operations (one person) joins the leadership row as "Leadership and operations", so there is no stranded single tile.
 - Via home: "Five new awards in 2026" now lists all five 2026 awards (it listed four). The "OINDP" buttons now read "Inhaled & nasal services", short enough not to clip at 390.
+
+## Round 5 (client review 5, v17): what changed and why
+- **CM.** A section now animates as a whole:
+  - Text leaves outside the reveal selector list (the `<b>` titles in feature tiles and award tiles, bare spans) join the reveal.
+  - A captioned figure reveals as one piece, and its caption also rises when it arrives (unless the figure is taller than most of the screen).
+  - Below-the-fold reveals use an IntersectionObserver (live geometry) instead of scroll-trigger positions measured before images above them loaded.
+  - The failsafe no longer snaps a reveal that is queued (it checked `isTweening`, which is false during a delay; it now checks for any pending tween). Under accumulated hero timelines from earlier routes it was snapping portrait tiles from hidden to shown in one frame.
+- **CO.** Portrait tiles warm from grey to colour and show the arrow on hover (unchanged from R4). They now pass the polish-audit HOVER check.
+- **CP.** Title entrances travel one line (central fix 96d211e), verified with polish-audit.
+- **CL.** No horizontal person lists: every group is a portrait grid.

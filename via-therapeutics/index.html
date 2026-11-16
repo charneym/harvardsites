@@ -1610,10 +1610,12 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   if(M.A.has(c)||c.matches(RV_SKIP))continue;
   var cs=getComputedStyle(c);if(cs.display==="none"||cs.visibility==="hidden"||+cs.opacity<.05||cs.position==="fixed")continue;
   if(M.K.has(c)&&!c.matches("figure")){rvWalk(c,out,M);continue}
-  if(c.matches("figure")&&c.querySelector("figcaption")){rvWalk(c,out,M);continue}/* a captioned figure reveals its image and caption separately, so a caption below the fold never arrives pre-shown */
+  if(c.matches("figure")&&c.querySelector("figcaption")&&c.getBoundingClientRect().height>innerHeight*.8){rvWalk(c,out,M);continue}/* CM: a figure reveals as one piece unless it is taller than most of the screen *//* a captioned figure reveals its image and caption separately, so a caption below the fold never arrives pre-shown */
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
-    if(r.height>innerHeight*.35&&!(c.matches("figure,picture")&&!c.querySelector("figcaption"))&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
-    if(r.width>1&&(r.height>1||/^(IMG|PICTURE)$/.test(c.tagName)))out.push(c);continue}/* a lazy image has no height yet: still collect it, or it arrives pre-shown */
+    if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
+    if(r.width>1&&(r.height>1||/^(IMG|PICTURE)$/.test(c.tagName))){out.push(c);var fc=c.matches("figure")&&c.querySelector("figcaption");if(fc)out.push(fc)}continue}/* a lazy image has no height yet: still collect it, or it arrives pre-shown; a figure's caption also rises when it arrives */
+  /* CM: a text leaf outside the selector list (a <b> tile title, a bare <span>) reveals with its neighbours instead of sitting still */
+  if(!c.querySelector(RV_SEL)&&(c.textContent||"").trim().length>1){var r3=c.getBoundingClientRect();if(r3.width>1&&r3.height>1)out.push(c);continue}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")&&!el.closest(".pc-meta,.mrow")){
@@ -1630,7 +1632,8 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.06,batchMax:28,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.06,batchMax:28,onEnter:function(b){rvGo(b,base())}})
+  /* CM: an IntersectionObserver reads live geometry, so a reveal never fires early from trigger positions measured before images above it loaded */
+  if(rest.length){var rvIO=new IntersectionObserver(function(es){var bt=[];es.forEach(function(e){if(e.isIntersecting){bt.push(e.target);rvIO.unobserve(e.target)}});if(bt.length)rvGo(bt,base())},{rootMargin:"0px 0px -10% 0px"});rest.forEach(function(el){rvIO.observe(el)})}
   if(!RM){var rvSw;function rvSweep(){rvSw=0;var due=[];for(var i=0;i<RV_LIVE.length;i++){var el=RV_LIVE[i];
     if(el._rvDone||!el.isConnected)continue;var r=el.getBoundingClientRect();
     if(r.top<innerHeight*.92&&r.bottom>0)due.push(el)}
@@ -1639,7 +1642,7 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
 function rvPlay(root,d){if(RM)return;var items=rvCollect(root);items.forEach(rvHide);RV_LIVE=RV_LIVE.concat(items);rvGo(items,d||0,Math.min(.06,.9/Math.max(1,items.length)))}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}
-  var t=el._rvS?el._rvS.lines:[el];if(!gsap.isTweening(t[0])&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
+  var t=el._rvS?el._rvS.lines:[el];if(!gsap.getTweensOf(t[0]).length&&+getComputedStyle(t[0]).opacity<.99){gsap.set(t,{opacity:1,y:0,yPercent:0,scale:1})}})}
 function failsafe(){setTimeout(function(){rvFail();window.__unmaskAll();HERO_TL.forEach(function(t){if(t&&t.progress()<1&&!(t.isActive&&t.isActive())&&t.paused&&t.paused())t.play()});if((window._fsN=(window._fsN||0)+1)<6&&HERO_TL.some(function(t){return t&&t.progress()<1})){failsafe();return}
   $$("#view .hero [data-r], #view .ph-head [data-r], #view .ph-head .eyebrow, #pageTitle, #pageTitle *").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!gsap.isTweening(el)&&!(el.parentElement&&gsap.isTweening(el.parentElement))){gsap.killTweensOf(el);gsap.set(el,{opacity:1,y:0,yPercent:0})}})},2500)}
 

@@ -161,3 +161,13 @@ Not used, with reasons:
 - Funding rows: grant meta lines use the readable muted colour on dark and align under the title on mobile. The loader counter no longer runs backwards (the intro count is stopped before the exit count).
 - Fzata walk-through: the capsule is drawn as two real half-shells (the body open at the top, the cap open at the bottom), so it opens instead of reading as two pills. The villi now follow the wall's wave; they ignored the lumen offset and poked through the wall. Label changes: FREEZE-DRIED LIVE YEAST, THE YEAST (S. BOULARDII), GUT LINING, DRUG MADE BY THE YEAST, GUT BACTERIA UNHARMED, YEAST DOES NOT SETTLE, PASSES OUT.
 - Fzata: the home team preview shows the two founders (portraits) only. Leadership, board and advisors have no portraits and appear in the masthead list on #/team. Added a non-breaking space in "Challenge II".
+
+## Round 5 (client review 5, v17): what changed and why
+- **CM.** A section now animates as a whole:
+  - Text leaves outside the reveal selector list (the `<b>` titles in feature tiles and award tiles, bare spans) join the reveal.
+  - A captioned figure reveals as one piece, and its caption also rises when it arrives (unless the figure is taller than most of the screen).
+  - Below-the-fold reveals use an IntersectionObserver (live geometry) instead of scroll-trigger positions measured before images above them loaded.
+  - The failsafe no longer snaps a reveal that is queued (it checked `isTweening`, which is false during a delay; it now checks for any pending tween). Under accumulated hero timelines from earlier routes it was snapping portrait tiles from hidden to shown in one frame.
+- **CO.** Portrait tiles warm from grey to colour and show the arrow on hover (unchanged from R4). They now pass the polish-audit HOVER check.
+- **CP.** Title entrances travel one line (central fix 96d211e), verified with polish-audit.
+- **CL.** Leadership, board and advisors now use the shared masthead component (`_kit/components/masthead.html`): its CSS copied verbatim, re-skinned with Fzata tokens only. The one addition is `justify-self:start` on the name, so the hover underline ends with the name. Each list is consistent: Leadership's only row is static, and every row in Board, Clinical advisors and Advisors opens a sheet.

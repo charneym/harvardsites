@@ -22,7 +22,8 @@ const { chromium } = require('playwright'); const path = require('path');
         if (!rec && rc.top >= innerHeight * 0.97 && rc.top < innerHeight * 1.6) { let op = 1, a = e; while (a && a !== document.body) { op *= +getComputedStyle(a).opacity; a = a.parentElement; } if (op < .55) e.__mxPre = 1; }
         if (rc.top < innerHeight * 0.97 && rc.bottom > 0) { let op = 1, a = e; while (a && a !== document.body) { op *= +getComputedStyle(a).opacity; a = a.parentElement; }
           const y = rc.top + scrollY; let kid = 0; if (!rec) { for (const c of e.querySelectorAll('.ln,.line,[class*=line],.w,.word,.ch,.char')) { const cs = getComputedStyle(c); if (+cs.opacity < .55) { kid = 1; break; } const m = cs.transform; if (m && m !== 'none') { const v = m.match(/-?[\d.e-]+/g).map(Number); const ty = v.length === 6 ? v[5] : v[13]; if (Math.abs(ty) > 4) { kid = 1; break; } } } }
-          if (!rec) { rec = { el: e, kid: kid || e.__mxPre || 0, op0: op, y0: y, sec: (e.closest('section,[class*=sec],[class*=band]') || document.body), txt: (e.innerText || e.getAttribute('alt') || e.tagName).trim().slice(0, 30) }; window.__mx.set(e.__mx, rec); } rec.y1 = y; rec.op1 = op; } }); }; });
+          let st = 0; for (let a = e; a && a !== document.body; a = a.parentElement) if (getComputedStyle(a).position === 'sticky') { st = 1; break; }
+          if (!rec) { rec = { el: e, st, kid: kid || e.__mxPre || 0, op0: op, y0: y, sec: (e.closest('section,[class*=sec],[class*=band]') || document.body), txt: (e.innerText || e.getAttribute('alt') || e.tagName).trim().slice(0, 30) }; window.__mx.set(e.__mx, rec); } rec.y1 = y; rec.op1 = op; } }); }; });
     // Sample from the moment of the hash change: first-screen blocks reveal on load and would otherwise be recorded
     // after they finished (as static), flagging sections whose every block in fact animates (Theia, R5).
     await p.evaluate(r => { if (location.hash !== r) location.hash = r; }, r);
@@ -30,7 +31,7 @@ const { chromium } = require('playwright'); const path = require('path');
     await p.evaluate(() => window.scrollTo(0, 0)); for (let k = 0; k < 6; k++) { await p.evaluate(() => window.__mxTick()); await p.waitForTimeout(100); }
     for (let k = 0; k < 120; k++) { await p.evaluate(() => window.__mxTick()); const d = await p.evaluate(() => scrollY + innerHeight >= document.documentElement.scrollHeight - 4); if (d) break; await p.mouse.wheel(0, 220); await p.waitForTimeout(110); }
     for (let k = 0; k < 10; k++) { await p.evaluate(() => window.__mxTick()); await p.waitForTimeout(150); }
-    const res = await p.evaluate(() => { const bySec = new Map(); window.__mx.forEach(rec => { if (!rec.sec.isConnected) return; const anim = rec.kid || rec.op0 < 0.55 || Math.abs((rec.y0 || 0) - (rec.y1 || 0)) > 10; const k = rec.sec; if (!bySec.has(k)) bySec.set(k, { a: [], s: [] }); (anim ? bySec.get(k).a : bySec.get(k).s).push(rec.txt); });
+    const res = await p.evaluate(() => { const bySec = new Map(); window.__mx.forEach(rec => { if (!rec.sec.isConnected) return; const anim = rec.kid || rec.op0 < 0.55 || (!rec.st && Math.abs((rec.y0 || 0) - (rec.y1 || 0)) > 10); // sticky columns move with scroll, not an entrance const k = rec.sec; if (!bySec.has(k)) bySec.set(k, { a: [], s: [] }); (anim ? bySec.get(k).a : bySec.get(k).s).push(rec.txt); });
       const o = []; bySec.forEach((v, sec) => { if (v.a.length >= 2 && v.s.length >= 2) o.push(`section "${(sec.querySelector('h2,h3') || sec).innerText.trim().split('\n')[0].slice(0, 30)}": ${v.a.length} blocks animate, ${v.s.length} don't (e.g. ${v.s.slice(0, 3).map(x => '"' + x + '"').join(', ')})`); }); return o; });
     res.forEach(x => out.push(`${r} MIXED: ${x}`));
   }

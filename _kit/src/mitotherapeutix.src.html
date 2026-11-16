@@ -85,7 +85,7 @@ h1,h2,h3{text-wrap:balance}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--sinL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--serif);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.03em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
-#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px)}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--gut) + 10px);max-width:calc(100% - 2*var(--side) - 150px);line-height:1.6}
 html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{display:none}
 
 /* header (always on a navy glass, so the logo tile sits on its own colour) */
@@ -166,7 +166,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .cta{background:var(--bone);border-top:1px solid var(--hairD)}
 
 /* manifesto + stats */
-.mani .txt{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3.9vw,64px);line-height:1.12;letter-spacing:-.025em;margin:0;max-width:30ch}
+.mani .txt{font-family:var(--serif);font-weight:300;font-size:clamp(30px,3.9vw,64px);line-height:1.12;letter-spacing:-.025em;margin:0;max-width:min(30ch,980px)}
 .mani-in{width:fit-content;max-width:100%;margin:0 auto}
 .mani .txt .w{opacity:.16}
 .mani .txt em{color:var(--sinL)}
@@ -292,10 +292,19 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .pc-meta .go{display:flex;align-items:center;gap:10px;color:var(--sinD);margin-top:6px}
 .pc-meta .go svg{width:16px;height:10px;opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .32s var(--eo)}
 .pcard:hover h3,.pcard:focus-visible h3{color:var(--sinD)}
+.pc-meta h3 .go{display:inline-flex;margin:0 0 0 12px;vertical-align:middle}
 .pcard:hover .go svg,.pcard:focus-visible .go svg{opacity:1;transform:none}
 .pcard.noimg{border:1px solid var(--hairD);padding:24px 22px 22px;min-height:220px}
 .pcard.noimg .pc-fig{display:none}
 .mgroup{margin-top:clamp(72px,8vw,120px)}
+/* CI: board and advisors as a masthead list */
+.mast{border-bottom:1px solid var(--hairD)}
+.mgrp{display:block;padding:0 0 16px}
+.mrow{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);column-gap:var(--gap);align-items:baseline;padding:24px 0 22px;border-top:1px solid var(--hairD)}
+.mrow h3{font-family:var(--serif);font-weight:300;font-size:clamp(26px,2.2vw,32px);line-height:1.12;letter-spacing:-.018em;margin:0}
+.mrow .role{font-size:15px;line-height:1.45;color:var(--stoneD);margin:0}
+@media (max-width:560px){.mrow{grid-template-columns:1fr;row-gap:6px}}
+
 .mgrid{display:flex;flex-wrap:wrap;justify-content:center;gap:36px var(--gap)}
 .mgrid>.mini{flex:0 0 calc((100% - 2 * var(--gap)) / 3)}
 .pcard.static{cursor:default}
@@ -671,9 +680,9 @@ function head(o){
   '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function tCard(p){if(p.static)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"'+(p.z?' style="--z:'+p.z+'"':'')+'><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p><span class="lab go">Profile '+ARR+'</span></div></a>'}
+function tCard(p){if(p.static)return '<div class="pcard static"><figure class="pc-fig"><div class="ph2"><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><h3>'+esc(p.name)+'</h3><p class="ttl">'+esc(p.title)+'</p></div></div>';return '<a class="pcard" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><figure class="pc-fig"><div class="ph2"'+(p.z?' style="--z:'+p.z+'"':'')+'><img class="ph-g" src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"><img class="ph-c" src="'+p.img+'" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.remove()"></div></figure><div class="pc-meta"><span class="lab grp">'+esc(p.grp)+'</span><h3>'+esc(p.name)+'<span class="go">'+ARR+'</span></h3><p class="ttl">'+esc(p.title)+'</p></div></a>'}
 window.mtNoImg=function(im){var c=im.closest(".pcard,.mini");if(c)c.classList.add("noimg");clearTimeout(window._nir);window._nir=setTimeout(function(){if(window.ScrollTrigger)ScrollTrigger.refresh()},120)};
-function mini(list,lab){return '<div class="mgroup"><span class="lab kick" data-r>'+lab+'</span><div class="mgrid" data-group>'+list.map(function(a){return '<figure class="mini"><div class="mph"><img'+(a[3]?' style="transform:scale('+a[3]+')"':'')+' src="'+IMG+a[2]+'" alt="Portrait of '+esc(a[0])+'" loading="lazy" decoding="async" onerror="mtNoImg(this)"></div><figcaption><b>'+esc(a[0])+'</b><span class="lab">'+esc(a[1])+'</span></figcaption></figure>'}).join("")+'</div></div>'}
+function mini(list,lab){return '<div class="mgroup"><div class="mast" data-group><span class="lab mgrp">'+lab+'</span>'+list.map(function(a){return '<div class="mrow"><h3>'+esc(a[0])+'</h3><p class="role">'+esc(a[1].replace(/^SAB /,"").replace(/^member$/,"Member"))+'</p></div>'}).join("")+'</div></div>'}
 function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pipe(n){var rows=PIPE.slice(0,n||PIPE.length);return '<div class="pipe" data-group><div class="pipe-h lab"><span>Program</span><span>Indication</span><span class="stg"><span>Discovery</span><span>Preclinical</span><span>IND-enabling</span><span>Phase 1</span></span></div>'+
  rows.map(function(r,i){return '<div class="prow"><div><h3>'+r[0]+'</h3><p class="mod">'+r[1]+'</p>'+(i===0?'<span class="tagp">Lead · NIDDK SBIR</span>':'')+'</div><p class="ind">'+r[2]+'</p><div class="track"><span class="tk lab"><span>Discovery</span><span>Preclinical</span><span>IND-enabling</span><span>Phase 1</span></span><i></i><i></i><i></i><i></i><span class="bar '+r[4]+'" style="width:'+r[3]+'%"><b></b></span></div><p class="note">'+r[5]+'</p></div>'}).join("")+'</div>'}
@@ -688,16 +697,16 @@ function scene(){
   return '<svg viewBox="0 0 800 460" aria-hidden="true"><defs><marker id="fah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#f3f5ef"/></marker></defs>'+
    '<path class="cell" d="M90 60H700l40 40V380l-40 40H90l-40-40V100z"/><text x="70" y="448">LIVER CELL (HEPATOCYTE)</text>'+
    '<ellipse class="nuc" cx="150" cy="120" rx="40" ry="30"/><text x="112" y="172">NUCLEUS</text>'+
-   '<g id="scLip"><circle class="lip" data-r0="42" cx="190" cy="320" r="42"/><circle class="lip" data-r0="36" cx="640" cy="330" r="36"/><circle class="lip" data-r0="28" cx="600" cy="112" r="28"/>'+
+   '<g id="scLip"><circle class="lip" data-r0="42" cx="190" cy="320" r="42"/><circle class="lip" data-r0="30" cx="640" cy="368" r="30"/><circle class="lip" data-r0="28" cx="600" cy="112" r="28"/>'+
     '<path class="lead" d="M218 352L262 380"/><text x="266" y="388">FAT DROPLETS</text></g>'+
-   '<g id="scFa"><path class="fa" d="M228 302L292 262" marker-end="url(#fah)"/><path class="fa" d="M606 314L560 276" marker-end="url(#fah)"/><path class="fa" d="M584 136L548 170" marker-end="url(#fah)"/><text x="230" y="282" class="g" id="scFaT">FATTY ACIDS</text></g>'+
+   '<g id="scFa"><path class="fa" d="M228 302L292 262" marker-end="url(#fah)"/><path class="fa" d="M618 346L552 276" marker-end="url(#fah)"/><path class="fa" d="M578 130L532 168" marker-end="url(#fah)"/><text x="240" y="252" text-anchor="end" class="g" id="scFaT">FATTY ACIDS</text></g>'+
    '<g transform="translate(420 220)"><rect id="scMo" class="mo" x="-150" y="-56" width="300" height="112" rx="56"/><rect class="mi" x="-138" y="-44" width="276" height="88" rx="44"/>'+cr+
     '<g id="scMcj" class="mcj">'+mcj+'</g></g>'+
    '<path class="lead" d="M420 164V134"/><text x="420" y="126" text-anchor="middle">MITOCHONDRION</text>'+
-   '<g id="scMcjL"><path class="lead" d="M544 189L590 200"/><text x="596" y="206" id="scMcjT">MCJ: THE BRAKE</text></g>'+
-   '<g id="scRec"><path class="asgpr" d="M740 216H726M726 216l-9 -9M726 216l-9 9"/><path class="lead" d="M716 228L700 252"/><text x="704" y="268" text-anchor="end">ASGPR RECEPTOR</text></g>'+
-   '<g id="scSi"><path class="si" d="M0 -5H40M0 5H40"/><path class="si2" d="M5 -5v10M15 -5v10M25 -5v10M35 -5v10"/><path class="gal" d="M40 0l10 -9M40 0h12M40 0l10 9"/><text x="52" y="30" text-anchor="end" id="scSiT">MITO-1041 (GalNAc-siRNA)</text></g>'+
-   '<text x="420" y="320" text-anchor="middle" class="g" id="scTag">LIVER FAT −55–65% IN MOUSE MODELS</text>'+
+   '<g id="scMcjL"><path class="lead" d="M546 189L558 182"/><text x="560" y="178" id="scMcjT">BRAKE (MCJ)</text></g>'+
+   '<g id="scRec"><path class="asgpr" d="M740 216H726M726 216l-9 -9M726 216l-9 9"/><path class="lead" d="M728 226L724 238"/><text x="732" y="258" text-anchor="end">UPTAKE</text><text x="732" y="280" text-anchor="end">RECEPTOR</text></g>'+
+   '<g id="scSi"><path class="si" d="M0 -5H40M0 5H40"/><path class="si2" d="M5 -5v10M15 -5v10M25 -5v10M35 -5v10"/><path class="gal" d="M40 0l10 -9M40 0h12M40 0l10 9"/><text x="52" y="86" text-anchor="end" id="scSiT">MITO-1041<tspan x="52" dy="1.3em">siRNA DRUG</tspan></text></g>'+
+   '<text x="420" y="334" text-anchor="middle" class="g" id="scTag">LIVER FAT −55–65%<tspan x="420" dy="1.3em">IN MOUSE MODELS</tspan></text>'+
   '</svg>';
 }
 
@@ -953,7 +962,7 @@ function lerp(a,b,t){return a+(b-a)*t}
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 function homeScroll(view){
   var m=$("#mani",view);
-  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 82%",end:"bottom 48%",scrub:true}})}
+  if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 64%",scrub:true}})}
   if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){unmask(st)}})});
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
@@ -967,11 +976,11 @@ function homeScroll(view){
     if(!E.si.isConnected)return;
     var b=pre.v;E.base.forEach(function(x){x.style.opacity=b});E.rec.style.opacity=b;
     var brake=seg(p,.22,.38),enter=seg(p,.48,.6),sil=seg(p,.58,.7),burn=seg(p,.74,.92);
-    E.lip.forEach(function(l){var r0=+l.getAttribute("data-r0");l.setAttribute("r",(r0*(1-.5*burn)).toFixed(1));l.style.opacity=b});
+    E.lip.forEach(function(l){var r0=+l.getAttribute("data-r0");l.setAttribute("r",(r0*(1-.5*burn)).toFixed(1));l.style.opacity=b});var lr=42*(1-.5*burn),ld=$("#scLip .lead",svg);if(ld)ld.setAttribute("d","M"+(190+lr*.77).toFixed(1)+" "+(320+lr*.64).toFixed(1)+"L262 380");
     E.mo.style.fillOpacity=(.22-.14*brake*(1-sil)+.22*burn).toFixed(3);
     E.mcj.style.opacity=(b*brake*(1-sil)).toFixed(3);
     E.mcjL.style.opacity=(b*brake*(1-.5*burn)).toFixed(3);
-    var m=sil>.5?1:0;if(m!==lastM){lastM=m;E.mcjT.textContent=m?"MCJ SILENCED":"MCJ: THE BRAKE"}
+    var m=sil>.5?1:0;if(m!==lastM){lastM=m;E.mcjT.textContent=m?"MCJ SILENCED":"BRAKE (MCJ)"}
     /* the conjugate docks at the receptor, then moves to the mitochondrion and is used up */
     var sx=lerp(686,560,seg(p,.56,.66)),sy=lerp(216,226,seg(p,.56,.66));
     E.si.setAttribute("transform","translate("+sx.toFixed(1)+" "+sy.toFixed(1)+")");

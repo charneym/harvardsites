@@ -16,7 +16,7 @@ const { chromium } = require('playwright'); const path = require('path');
       const big = [...e.querySelectorAll('*')].some(x => x.childElementCount === 0 && x.textContent.trim().length > 3 && parseFloat(getComputedStyle(x).fontSize) >= 19);
       const s = getComputedStyle(e); const ruled = parseFloat(s.borderTopWidth) > 0 || parseFloat(s.borderBottomWidth) > 0 || (e.previousElementSibling && parseFloat(getComputedStyle(e.previousElementSibling).borderBottomWidth) > 0);
       // feature grids (icon + heading + paragraph per column) are not person rows
-      if (kids.some(k => (k.querySelector('svg') && k.textContent.trim().length > 20) || (k.querySelector('h2,h3,h4') && k.querySelector('p')))) return false;
+      if (e.querySelector('img,picture') || kids.some(k => (k.querySelector('svg') && k.textContent.trim().length > 20) || (k.querySelector('h2,h3,h4') && k.querySelector('p')))) return false;
       if (/^[A-Z]{3} \d{1,2}, \d{4}/.test((e.innerText || "").trim())) return false; // dated news rows
       return big && (ruled || kids.length >= 3) && /(?:[A-Z][a-z]+\s){1,3}/.test(e.innerText || ""); });
     // The component's own rows are measured directly; the heuristic only covers bespoke lists not yet converted.

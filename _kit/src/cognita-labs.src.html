@@ -388,7 +388,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fld:focus-within .bar{transform:scaleX(1)}
 .fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--skyD)}
 .fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#9a2f1c;opacity:0;transition:opacity .3s}
-.fld.bad .err{opacity:1}
+.fld:not(.bad) .err{display:none}
+.fld.bad .err{opacity:1;animation:errIn .3s ease-out}
+@keyframes errIn{from{opacity:0}}
 .fld.bad input,.fld.bad textarea{border-bottom-color:#9a2f1c}
 .sub{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .thanks{display:none;padding:30px 0 10px}
@@ -1026,6 +1028,7 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(el,{opacity:0,duration:.35,ease:"none",delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
   gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"},onComplete:function(){st.revert();rfSoon()}});
 }
 var ENTRY=0;
@@ -1076,20 +1079,25 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
+  if([].some.call(c.childNodes,function(n){return n.nodeType===3&&n.nodeValue.trim().length>1})){var r2=c.getBoundingClientRect();if(r2.width>1&&r2.height>1&&r2.height<innerHeight*.35){out.push(c);continue}}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null;rfSoon()}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.35,ease:"none",delay:dl});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null;rfSoon()}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  /* CM: a section that starts on the first screen reveals as a whole, with one short uniform stagger */
+  var S0=new Set();items.forEach(function(el){if(el.getBoundingClientRect().top+scrollY<innerHeight){var s=el.closest("section");if(s)S0.add(s)}});
+  var now=items.filter(function(el){var s=el.closest("section");return s&&S0.has(s)});items=items.filter(function(el){return now.indexOf(el)<0});
+  if(now.length)rvGo(now,base(),Math.min(.06,.5/now.length));
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
   if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
@@ -1102,7 +1110,7 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
 function homeScroll(view){
   var m=$("#mani",view);
   if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,scrollTrigger:{trigger:m,start:"top 90%"},onComplete:function(){unmask(s)}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
-  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){st.revert();rfSoon()}})});
+  if(!RM)$$(".stat .v",view).forEach(function(el,i){var st=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(el,{opacity:0,duration:.35,ease:"none",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"}});gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",delay:i*.08,scrollTrigger:{trigger:el.closest(".stats"),start:"top 85%"},onComplete:function(){st.revert();rfSoon()}})});
   if(!RM)$$(".stat .ln2",view).forEach(function(l,i){gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.04,scrollTrigger:{trigger:".stats",start:"top 85%"}})});
   var sec=$("#story",view),cv=$("#storyCv",view);if(!sec)return;
   story=makeStory(cv);

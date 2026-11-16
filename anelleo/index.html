@@ -308,7 +308,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fld:focus-within .bar{transform:scaleX(1)}
 .fld.f label,.fld:focus-within label{top:12px;font-size:10px;color:var(--ac)}
 .fld .err{position:absolute;right:0;top:20px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--err);opacity:0;transition:opacity .3s}
-.fld.bad .err{opacity:1}
+.fld:not(.bad) .err{display:none}
+.fld.bad .err{opacity:1;animation:errIn .3s ease-out}
+@keyframes errIn{from{opacity:0}}
 .fsub{grid-column:1/3;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .thanks{display:none;padding:30px 0 10px}
 .thanks svg{width:140px;height:140px;display:block;margin-bottom:24px;overflow:visible}
@@ -462,6 +464,29 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
   .ps-bar{padding:12px 16px}
   .ps-body{padding:26px 20px 48px}
 }
+/* CL: the shared masthead list (_kit/components/masthead.html), re-skinned with tokens only */
+.mh{--mh-ink:#14161a;--mh-mute:#5b6068;--mh-line:rgba(20,22,26,.14);--mh-accent:#2b6;display:grid;gap:56px}
+.mh-label{margin:0 0 12px;font:500 11.5px/1.2 var(--mh-mono,ui-monospace,monospace);letter-spacing:.14em;text-transform:uppercase;color:var(--mh-mute)}
+.mh-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--mh-line)}
+.mh-list>li{border-bottom:1px solid var(--mh-line)}
+.mh-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px;column-gap:24px;align-items:baseline;padding:18px 0;color:var(--mh-ink);text-decoration:none}
+.mh-name{font:400 21px/1.25 var(--mh-display,Georgia,serif);letter-spacing:-.005em;transition:color .25s ease,background-size .35s cubic-bezier(.2,.7,.2,1);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;padding-bottom:2px}
+.mh-role{font:400 13.5px/1.4 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute)}
+.mh-sum{font:400 14.5px/1.5 var(--mh-sans,system-ui,sans-serif);color:var(--mh-ink);opacity:.86;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mh-arrow{justify-self:end;font:400 15px/1 var(--mh-sans,system-ui,sans-serif);color:var(--mh-mute);transition:transform .25s ease,color .25s ease}
+a.mh-row:hover .mh-name,a.mh-row:focus-visible .mh-name{color:var(--mh-accent);background-size:100% 1px}
+a.mh-row:hover .mh-arrow,a.mh-row:focus-visible .mh-arrow{transform:translateX(8px);color:var(--mh-accent)}
+a.mh-row:hover .mh-sum{opacity:1}
+.mh-sum{transition:opacity .25s ease}
+div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
+@media (max-width:760px){
+  .mh{gap:40px}
+  .mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+  .mh-name{grid-column:1;font-size:19px}.mh-arrow{grid-column:2;grid-row:1}
+  .mh-role,.mh-sum{grid-column:1 / -1}
+  .mh-sum{-webkit-line-clamp:3}
+}
+.mh{--mh-ink:var(--fg);--mh-mute:var(--mu);--mh-line:var(--hr);--mh-accent:var(--ac);--mh-display:var(--serif);--mh-sans:var(--sans);--mh-mono:var(--mono)}
 .quiet{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 var(--gap)}
 .quiet li{border-top:1px solid var(--hr);padding:18px 0 22px}
 .quiet b{display:block;font-family:var(--serif);font-weight:400;font-size:20px;line-height:1.25}
@@ -1027,7 +1052,7 @@ SITE.views.team=function(){
   '<section class="sec first" data-tone="light"><div class="wrap"><div class="pgrid small ctr">'+TEAM.map(tCard).join("")+'</div></div></section>'+
   '<section class="sec" data-tone="light2"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Consultants</span><h2 class="d3 split">Specialist <em>expertise.</em></h2></div></div>'+
-   '<ul class="quiet"><li><b>E. Allen, PhD</b><span>Clinical</span></li><li><b>W. Blanda, PhD</b><span>CMC</span></li><li><b>J. Dillberger, PhD</b><span>Toxicology</span></li><li><b>Gustavo Doncel, MD, PhD</b><span>Clinical</span></li></ul>'+
+   '<div class="mh"><div class="mh-group"><ul class="mh-list"><li><div class="mh-row"><span class="mh-name">E. Allen, PhD</span><span class="mh-role">Clinical</span><span class="mh-sum"></span><span class="mh-arrow" aria-hidden="true"></span></div></li><li><div class="mh-row"><span class="mh-name">W. Blanda, PhD</span><span class="mh-role">CMC</span><span class="mh-sum"></span><span class="mh-arrow" aria-hidden="true"></span></div></li><li><div class="mh-row"><span class="mh-name">J. Dillberger, PhD</span><span class="mh-role">Toxicology</span><span class="mh-sum"></span><span class="mh-arrow" aria-hidden="true"></span></div></li><li><div class="mh-row"><span class="mh-name">Gustavo Doncel, MD, PhD</span><span class="mh-role">Clinical</span><span class="mh-sum"></span><span class="mh-arrow" aria-hidden="true"></span></div></li></ul></div></div>'+
    '<div class="shead" style="margin-top:var(--sec)"><div><span class="lab kick" data-r>Partners</span><h2 class="d3 split">From printer to <em>product.</em></h2></div></div>'+
    '<ul class="credits"><li><b>Carbon</b><span>3D printing technology</span></li><li><b>Particle Sciences</b><span>Device manufacturing</span></li><li><b>Resolution Medical</b><span>Ring manufacturing</span></li><li><b>SynerG</b><span>Regulatory</span></li></ul>'+
   '</div></section>'+cta();
@@ -1138,6 +1163,7 @@ function splitReveal(el,E){
   if(RM)return;
   var st=SplitText.create(el,{type:"lines,words",mask:"lines",linesClass:"ln"});
   var fs=el.getBoundingClientRect().top+scrollY<innerHeight;
+  gsap.from(el,{opacity:0,duration:.35,ease:"none",delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
   gsap.from(st.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){unmask(st)},delay:fs?(E||0)+.45:0,scrollTrigger:{trigger:el,start:fs?"top bottom":"top 90%"}});
 }
 function heroGeom(){var v=$("#view"),h=v&&$(".hero, .ph-head",v);if(!h){window._hg=null;return}
@@ -1190,20 +1216,25 @@ function rvWalk(n,out,M){for(var c=n.firstElementChild;c;c=c.nextElementSibling)
   if(c.matches(RV_SEL)&&(c.matches(RV_UNIT)||c.querySelectorAll(RV_SEL).length<2)){var r=c.getBoundingClientRect();
     if(r.height>innerHeight*.35&&!c.matches("figure,picture")&&c.querySelectorAll(RV_SEL).length>1){rvWalk(c,out,M);continue}
     if(r.width>1&&r.height>1)out.push(c);continue}
+  if([].some.call(c.childNodes,function(n){return n.nodeType===3&&n.nodeValue.trim().length>1})){var r2=c.getBoundingClientRect();if(r2.width>1&&r2.height>1&&r2.height<innerHeight*.35){out.push(c);continue}}
   rvWalk(c,out,M)}}
 function rvHide(el){
   if(/^H[1-6]$/.test(el.tagName)&&!el.querySelector("img,svg,canvas")){
-    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});return}
+    el._rvS=SplitText.create(el,{type:"lines",mask:"lines",linesClass:"ln"});gsap.set(el._rvS.lines,{yPercent:100,opacity:0});gsap.set(el,{opacity:0});return}
   var med=/^(IMG|CANVAS|VIDEO|PICTURE)$/.test(el.tagName),clip=med&&el.parentElement&&/hidden|clip/.test(getComputedStyle(el.parentElement).overflow);
   el.style.transition="none";
   gsap.set(el,clip?{opacity:0,scale:1.06,transformOrigin:"50% 50%"}:{opacity:0,y:med?36:24})}
 function rvGo(b,d,gap){var g=gap==null?.07:gap;b.forEach(function(el,i){if(el._rvDone)return;el._rvDone=1;var dl=d+i*g;
-  if(el._rvS){var s=el._rvS;gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
+  if(el._rvS){var s=el._rvS;gsap.to(el,{opacity:1,duration:.35,ease:"none",delay:dl});gsap.to(s.lines,{yPercent:0,opacity:1,duration:1.1,ease:"silk",stagger:.08,delay:dl,overwrite:true,onComplete:function(){if(el._rvS===s){s.revert();el._rvS=null}}})}
   else gsap.to(el,{y:0,scale:1,opacity:1,duration:1,ease:"silk",delay:dl,overwrite:true,clearProps:"transform,opacity,transition,transformOrigin"})})}
 function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return out}
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
+  /* CM: a section that starts on the first screen reveals as a whole, with one short uniform stagger */
+  var S0=new Set();items.forEach(function(el){if(el.getBoundingClientRect().top+scrollY<innerHeight){var s=el.closest("section");if(s)S0.add(s)}});
+  var now=items.filter(function(el){var s=el.closest("section");return s&&S0.has(s)});items=items.filter(function(el){return now.indexOf(el)<0});
+  if(now.length)rvGo(now,base(),Math.min(.06,.5/now.length));
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
   if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}})}
@@ -1219,7 +1250,7 @@ function homeScroll(view){
   if(m&&!RM){var s=SplitText.create(m,{type:"lines,words",mask:"lines",linesClass:"ln",wordsClass:"w"});gsap.from(s.lines,{yPercent:100,opacity:0,duration:1.15,ease:"silk",stagger:.09,onComplete:function(){unmask(s)},scrollTrigger:{trigger:m,start:"top 90%"}});gsap.to(s.words,{opacity:1,stagger:.1,ease:"none",scrollTrigger:{trigger:m,start:"top 85%",end:"center 62%",scrub:true}})}
   /* BA: stats rise in at final value; captions after the numbers */
   if(!RM){var sts=$$(".stat",view);sts.forEach(function(st0,i){var v=$(".v",st0),k=$(".k",st0),l=$(".ln2",st0);var tr={trigger:st0.closest(".stats"),start:"top 85%"};
-    var sp=SplitText.create(v,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(sp.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){unmask(sp)},scrollTrigger:tr});
+    var sp=SplitText.create(v,{type:"lines",mask:"lines",linesClass:"ln"});gsap.from(v,{opacity:0,duration:.35,ease:"none",delay:i*.08,scrollTrigger:tr});gsap.from(sp.lines,{yPercent:140,opacity:0,duration:1.15,ease:"silk",delay:i*.08,onComplete:function(){unmask(sp)},scrollTrigger:tr});
     if(k)gsap.from(k,{y:16,opacity:0,duration:.9,ease:"silk",delay:.45+i*.08,scrollTrigger:tr});
     if(l)gsap.to(l,{scaleX:1,duration:1.2,ease:"flow",delay:i*.06,scrollTrigger:tr})})}
   var hk=$(".hero-key",view);if(hk)ScrollTrigger.create({trigger:hk.closest(".hero"),start:"top -25%",end:"max",toggleClass:{targets:hk,className:"gone"}});

@@ -13,6 +13,8 @@ Paste this whole file into a new chat as the brief. Everything the build needs i
 - **Maximum quality, no compromise, and fast.** Use parallel sub-agents, about 3 sites per agent. Run Playwright jobs one at a time inside each agent, because many browsers at once overload the machine and break timing-based checks.
 - **Remember every critique and turn it into a rule for all sites.** When I criticise one site, fix that issue on every site and add a rule to `_kit/PRINCIPLES.md`.
 - When you fix a site I've already sent to clients, push it to the **same** folder, so the URL I emailed stays the same.
+- **Never say a site is done, ready or fixed unless you have looked at it.** Automated checks only catch problems that have been seen before. A layout can pass every check and still look wrong (a heading squeezed into five lines, a hover fill flush against text, a section floating in empty space). Before reporting a site as finished, do the visual review in §5b yourself. If something hasn't been checked, say so plainly.
+- **Every fix must be checked on every site it touches.** Shared fixes have caused new bugs before (the loader timing change broke every hero background). After a site-wide change, record the affected moment on all sites and look at them.
 - Web searches are capped per session, so use them sparingly. Prefer one `allowed_domains` search per company, then WebFetch its pages and its funding release.
 
 ## 1. Setup
@@ -143,10 +145,18 @@ Run each on every route (home plus every sub-page) at 1440×900, and the home pa
    - no orphaned captions
    - WebGL sprites have no square edges (check a 2× crop)
 
+7. Also run, one at a time, on every site (each must print OK or every flag must be judged a false positive after looking at it):
+   `mixed-audit` (a section animates as a whole), `masthead-audit` (people lists), `polish-audit` (overflow, clipping, pop-ins, hover, links), `loader-audit`, `smoke`, `split-audit`, `balance-audit`, `clip-audit`, `unstyled-audit` (classes with no CSS), `cramped-audit` (headings squeezed into a narrow column), `hoverpad-audit` (hover fill flush with text), and `prepush-check` before every push.
+8. Title fit: at 1024, 1280, 1366, 1536, 1920, 2560 and 390 wide, no heading line runs past its box (a capped box clips the last word during the entrance).
+9. Opening, recorded as video at 4× CPU throttle and on a throttled network, with real scrollbars: the loader clears fully, then the title (whole lines), its copy and the nav arrive together within ~0.6s, and the hero background fades and builds in after the loader, never under it. Nothing shifts sideways when the scrollbar appears.
+
+### 5b. Visual review (mandatory, by eye)
+Capture every page of the site (home and every sub-page) scrolled through, at 1440 and 390. Hide the transition layer (`#xc,#xt{display:none}`) in full-page captures, or it shows as a large block. Look at every section and check: nothing floating in empty space; headings wrap naturally (no 4–5 line stacks beside a big gap); every block has its intended styling; buttons are sized to their text; rows and cards align; hover fills leave space around their content; people rows are vertically centred. Fix, recapture, and look again. Only then report the site.
+
 If a check is flaky because the machine is overloaded, re-run it when the machine is quiet. Never weaken the check.
 
 ## 6. Outreach (after sites are live)
-- **Emails:** use my Hunter.io account (Harvard login, few searches left) for CEO emails. Otherwise use emails listed on their site or in their releases. Note confidence and catch-all status.
+- **Emails:** use Hunter.io for CEO emails. The API key is read from the environment variable `HUNTER_API_KEY` (never ask me to paste it): use Email Finder with the CEO's name and domain, then Domain Search if the CEO is unknown. Otherwise use emails listed on their site or in their releases. Otherwise use emails listed on their site or in their releases. Note confidence and catch-all status.
 - **Mailmeteor CSV** columns: `Email, Greeting, Company, URL, Notes`.
 - **Greeting** is formal: `Dr.`/`Mr.`/`Ms.` + surname. Use Dr. only if they hold a PhD or MD.
 - **First email (exact template; no fee quote, no extra lines):**
@@ -174,3 +184,9 @@ Schedule a meeting: https://calendly.com/maxcharney/30min
 
 ## 7. Report per site (under 120 words)
 Include: the live URL, the concept, the signature moments, content gaps (anything unknown that was left out), and which QA gates passed.
+
+## 8. Scaling up (toward 150 sites a day)
+- Build from the shared, tested section types in `_kit/components/` (people list: `masthead.html`). Don't hand-write a new version of a common section (section header, funding block, news rows, cards). Most defects have come from one-off copies of these.
+- Roll out in stages: a batch of 5, which I score, then 20, then larger, and grow only once I'm finding nothing. Each batch report lists every site's gate results and states that the §5b review was done.
+- Give every worker session an hourly resume task so a usage-limit stop doesn't stall it, and delete each task when its sites are done.
+- Have a separate reviewer session, which didn't build the site, do the §5b review against `PRINCIPLES.md` before anything is shown to me.

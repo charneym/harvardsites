@@ -537,7 +537,8 @@ body{background:var(--bone);color:var(--ink)}
 @media (max-width:1024px){.figs4{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:36px}.case{grid-template-columns:1fr}.tri{grid-template-columns:1fr;row-gap:48px}}
 @media (max-width:860px){
   .hero{justify-content:flex-end}
-  .hero::before{background:linear-gradient(180deg,rgba(245,246,242,0) 0%,rgba(245,246,242,.2) 34%,rgba(245,246,242,.9) 50%,rgba(245,246,242,.97) 72%,#f5f6f2 100%)}
+  .hero::before{background:linear-gradient(180deg,rgba(245,246,242,0) 0%,rgba(245,246,242,.25) 26%,rgba(245,246,242,.94) 36%,#f5f6f2 46%,#f5f6f2 100%)}
+  .ph-head::before{background:linear-gradient(180deg,rgba(245,246,242,.3),#f5f6f2 30%)}
   .stats{grid-template-columns:1fr;gap:36px}
   .case dl{grid-template-columns:1fr 1fr}
   .pgrid.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -929,7 +930,7 @@ var field=(function(){
   function tri(x){x=x-Math.floor(x);return 1-Math.abs(2*x-1)}
   function geo(W,H,foot){
     if(foot)return {W:W,H:H,c:.5,base:function(t){return H*(.98+.02*t)},amp:function(t){return H*(.8-.3*t)},fade:0};
-    if(W<861)return {W:W,H:H,c:.62,base:function(t){return H*(.42+.07*t)},amp:function(t){return H*(.26-.08*t)},fade:0};
+    if(W<861)return {W:W,H:H,c:.62,base:function(t){return H*(.27+.05*t)},amp:function(t){return H*(.17-.05*t)},fade:0};
     return {W:W,H:H,c:.73,base:function(t){return H*(.8+.08*t)},amp:function(t){return H*(.44-.16*t)},fade:1};
   }
   /* height of ridge k at x, 0..~1.2 */
@@ -985,7 +986,7 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.5)*(1-p*.5));field.setScroll(p)}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:(innerWidth<861?.15:.5))*(1-p*.5));field.setScroll(p)}
 
 /* ================= HOME SCROLL ================= */
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -1169,7 +1170,7 @@ function paint(r){
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(r.k==="home"?1:.5);observeField();
+  field.snapDim(r.k==="home"?1:(innerWidth<861?.15:.5));observeField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();fitWM();
 }
 function fitWM(){var t=$("#bigwm text");if(!t)return;var L=t.getComputedTextLength();if(L>0)$("#bigwm").setAttribute("viewBox",(110-L/2-1).toFixed(1)+" 0 "+(L+2).toFixed(1)+" 27")}

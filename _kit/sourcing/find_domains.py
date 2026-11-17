@@ -10,7 +10,7 @@ def words(n):
     n = re.sub(r'[,.]|\b(INC|LLC|CORP|CORPORATION|CO|LTD|L\.L\.C|INCORPORATED|COMPANY|PBC|THE|D/B/A.*)\b', '', n.upper())
     return [x for x in re.sub(r'[^A-Z0-9 &-]', '', n).split() if x]
 def get(u):
-    r = subprocess.run(['curl', '-sSL', '-m', '12', '-A', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36', '-o', '-', '-w', '\n@@%{http_code} %{url_effective}', u], capture_output=True, text=True)
+    r = subprocess.run(['curl', '-sSL', '-m', '12', '-A', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131 Safari/537.36', '-o', '-', '-w', '\n@@%{http_code} %{url_effective}', u], capture_output=True, text=True, errors='replace')
     s = r.stdout; code = s.rsplit('@@', 1)[-1] if '@@' in s else ''; return s, code
 def check(o):
     if known(o['org']): o['skip'] = 'registry'; return o

@@ -2,7 +2,11 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
-# v18 (latest; client review round 5, after the "done" report)
+# v19 (latest; client review of batch 2026-11c, Blackford Capital)
+
+**CU. The hero visual is never an empty shape.** Client on Blackford: "that background design for the home page just seems like it's really missing something. like an empty circle just seems odd and out of place." A ring, frame, void or outline lifted from a logo must not be the centrepiece on its own: an empty container reads as a missing image. The signature element must carry real content and detail the eye can rest on: the actual mark or emblem (redrawn), a map, a composition built from their sectors/portfolio/science, or dense generative structure that fills its area. Abstracting a logo is fine only when the result has a filled focal point and visible richness at first sight (before any scroll). Self-check: screenshot the first screen and ask "if a stranger saw this, would they think an image failed to load?" If yes, it fails. Applies to sub-page heroes too.
+
+# v18 (client review round 5, after the "done" report)
 
 **CR. The first screen arrives together.** The headline rises as whole lines (never a letter stagger whose tail lands late: client, "the 'r it' issue"), and the eyebrow, lede, buttons and nav start while it is still settling, never after it has landed. Client: "the title usually loads first, there's a long pause, and then the rest comes up (the caption, buttons, etc.)". Measure with a recording at 4x CPU and a throttled network (fonts come from the CDN), not only on a local fast load: everything on the first screen is in within ~0.6s of the title. Lines of a headline are evenly spaced: an italic/serif accent never enlarges its own line box (`em{line-height:0}` in display headings).
 

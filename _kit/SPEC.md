@@ -58,6 +58,19 @@ Also skip: U.P. Oncolytics (blocked), Stem Pharm (same CEO as Retham), Antogen, 
 Also being built in a parallel session (do not pick or rebuild): materialize, channelrobotics, qualiaoto, synkopi, acqumen, headstrait, ciconia, flowmedical, bullseye, kinetitec, oralkleen, virchow, vegasurgical, enable-life-sciences, capienda, platform-therapeutics, intus, archean, koos, meteora3d; spares Parallel Robotics and EndoEvolve.
 Built in the Nov 2026 batch (not yet emailed; do not rebuild): truecath, onvagus, origin-endoscopy, mark-therapeutics, immunebro, oak-therapeutics, romix, cellectgen, ridgeline, artificial-axon-labs, jillion, highland-instruments, vasoptic, elements-endoscopy, mucommune, fzata, via-therapeutics, haima, maxq, bridgesource, virtus.
 
+
+## 2b. Private equity firms (a separate track; currently 50 of each batch of 150)
+A PE firm must meet ALL of these rules:
+1. **Who:** a US private equity firm (buyout, growth, search-fund-backed holding company, independent sponsor or family office that does control deals), small or lower-middle market. **Not** headquartered in New York, the Boston area or California (any other state is fine).
+2. **Active:** evidence of activity in roughly the last 12–18 months: a closed fund, a platform or add-on acquisition, a new hire or a press release. Source it.
+3. **Bad site, proven:** at least 3 quoted pieces of bad-site evidence (template look, broken or empty pages, outdated portfolio or team, no stated investment criteria, a one-page site, missing contact details, stale copyright year).
+4. **Contactable:** a named managing partner, founder or principal.
+
+**Drop:** polished sites, the firms already contacted (the PE/advisory list in §2), and any firm whose site or people cannot be verified.
+
+## 2c. Biotech startups
+Biotech/medtech startups can be anywhere in the US (no state restriction); everything else in §2 applies.
+
 ## 3. Research (accurate; never invent)
 - Use WebSearch with `allowed_domains=[their domain]`, then WebFetch their pages, the funding release and credible news.
 - **Collect:**
@@ -129,6 +142,15 @@ Built in the Nov 2026 batch (not yet emailed; do not rebuild): truecath, onvagus
 - **Lenis + ScrollTrigger:** `lenis.on('scroll',ScrollTrigger.update)`, `gsap.ticker.add(t=>lenis.raf(t*1000))`, `gsap.ticker.lagSmoothing(120,33)`. **Never lagSmoothing(0).** Don't combine Lenis with CSS scroll-snap.
 - **Callbacks after teardown:** any callback that touches a view must no-op after the view is torn down.
 
+
+## 4b. Building a PE firm site
+Everything in §4 (motion, loader, transitions, people list, quality bar) applies, adapted to a firm rather than a science company:
+- **Pages:** Home (hero with the firm's thesis in one line, what they invest in, how they partner with owners, selected portfolio, team preview, news/insights, contact CTA); Approach or Strategy; Investment criteria (only figures they publish: revenue/EBITDA range, sectors, geography, deal types, check size); Portfolio (only real companies with real descriptions and links; current vs realised only if they state it); Team (people list from `_kit/components/masthead.html`, or portraits when they have real headshots); News or Insights (only real items with links); Contact (front-end form, office address).
+- **Hero:** calm and editorial, no science visuals. A signature element tied to the firm (its region, sectors or name), e.g. a refined map of their home region, an abstract built from their sector icons, or typography-led composition. Never stock photography of handshakes or skylines.
+- **Audience:** business owners selling their company and intermediaries (bankers, brokers). Lead with how they treat owners and what they look for; keep the copy plain and confident. Never invent returns, fund sizes, deal counts, testimonials or portfolio outcomes.
+- **Brand:** evolve their logo and colours; finance sites suit restrained palettes (ink, bone, one accent from their logo).
+- The report (§7) adds: firm HQ city/state, the managing partner's name and title, and the activity evidence.
+
 ## 5. QA gates (every site must pass all of them before you show it to me)
 Run each on every route (home plus every sub-page) at 1440×900, and the home page at 390×844:
 1. `node _kit/reveal-audit.js <file> "<route>" 1440 900` must print `OK`. It scrolls with real wheel input and confirms every element animates while in view.
@@ -146,7 +168,7 @@ Run each on every route (home plus every sub-page) at 1440×900, and the home pa
    - WebGL sprites have no square edges (check a 2× crop)
 
 7. Also run, one at a time, on every site (each must print OK or every flag must be judged a false positive after looking at it):
-   `mixed-audit` (a section animates as a whole), `masthead-audit` (people lists), `polish-audit` (overflow, clipping, pop-ins, hover, links), `loader-audit`, `smoke`, `split-audit`, `balance-audit`, `clip-audit`, `unstyled-audit` (classes with no CSS), `cramped-audit` (headings squeezed into a narrow column), `hoverpad-audit` (hover fill flush with text), and `prepush-check` before every push.
+   `mixed-audit` (a section animates as a whole), `masthead-audit` (people lists), `polish-audit` (overflow, clipping, pop-ins, hover, links), `loader-audit`, `smoke`, `split-audit`, `balance-audit`, `clip-audit`, `unstyled-audit` (classes with no CSS), `cramped-audit` (headings squeezed into a narrow column), `hoverpad-audit` (hover fill flush with text), `bar-audit` (progress bars grow when their own row comes into view, never off-screen), and `prepush-check` before every push.
 8. Title fit: at 1024, 1280, 1366, 1536, 1920, 2560 and 390 wide, no heading line runs past its box (a capped box clips the last word during the entrance).
 9. Opening, recorded as video at 4× CPU throttle and on a throttled network, with real scrollbars: the loader clears fully, then the title (whole lines), its copy and the nav arrive together within ~0.6s, and the hero background fades and builds in after the loader, never under it. Nothing shifts sideways when the scrollbar appears.
 

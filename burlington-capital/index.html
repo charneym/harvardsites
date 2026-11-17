@@ -941,7 +941,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    corridor. Frames travel slowly toward the viewer from a vanishing point set in the right columns of the grid. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,SP={v:0},G=null,N=22;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,SP={v:0},G=null,N=30;
   var BONE="243,241,236",ACC="211,207,198";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
@@ -972,6 +972,12 @@ var field=(function(){
       c.lineWidth=acc?1.2:1;
       c.strokeStyle="rgba("+(acc?ACC:BONE)+","+(a*e*(acc?.6:.34)*(.55+.45*u)).toFixed(3)+")";c.stroke();
     }
+    /* the destination: the firm's own mark, lit, at the end of the corridor (CU: a filled focal point) */
+    var ms=Math.max(90,S*.24)*(.92+.08*e),mx=vx-ms/2,my=vy-ms/2;
+    var lg=c.createLinearGradient(mx,my,mx+ms,my+ms);lg.addColorStop(0,"rgba("+BONE+","+(.95*e)+")");lg.addColorStop(1,"rgba("+ACC+","+(.82*e)+")");
+    c.save();c.shadowColor="rgba("+ACC+","+(.35*e)+")";c.shadowBlur=ms*.5;rr(mx,my,ms,ms*.1);c.fillStyle=lg;c.fill();c.restore();
+    c.fillStyle="rgba(11,11,12,"+(.92*e)+")";c.font="400 "+(ms*.124).toFixed(1)+"px 'Hanken Grotesk',system-ui,sans-serif";c.textBaseline="alphabetic";
+    [["BURLINGTON",.42],["CAPITAL",.56],["PARTNERS",.70]].forEach(function(r){c.fillText(r[0],mx+ms*.08,my+ms*r[1])});
     /* keep the corridor in its own columns: fade it out over the text column (and over the text on phones) */
     c.globalCompositeOperation="destination-in";
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mk;

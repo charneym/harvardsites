@@ -102,7 +102,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 /*<R:logocss>*/.brand{display:flex;align-items:center;gap:14px;height:64px}
 .logo{height:64px;width:auto;display:block;overflow:visible;color:var(--bone)}
 .logo rect{fill:none;stroke:currentColor;stroke-width:1.6}
-.logo text{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:400;font-size:13.6px;fill:currentColor}/*</R:logocss>*/
+.logo text{font-family:'Hanken Grotesk',system-ui,sans-serif;font-weight:400;font-size:12.6px;fill:currentColor}/*</R:logocss>*/
 .nav{display:flex;align-items:center;gap:clamp(18px,2.4vw,40px)}
 .nav a.nl{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;position:relative;padding:8px 0}
 .ul{position:relative}
@@ -506,7 +506,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <header class="hdr" id="hdr">
   <!--<R:brand>--><a href="#/" class="brand" aria-label="Burlington Capital Partners, home">
-    <svg class="logo" viewBox="0 0 92 92" role="img" aria-label="Burlington Capital Partners"><rect x="1" y="1" width="90" height="90" rx="9"/><text x="7" y="39" textLength="78" lengthAdjust="spacingAndGlyphs">BURLINGTON</text><text x="7" y="52" textLength="50" lengthAdjust="spacingAndGlyphs">CAPITAL</text><text x="7" y="65" textLength="62" lengthAdjust="spacingAndGlyphs">PARTNERS</text></svg>
+    <svg class="logo" viewBox="0 0 92 92" role="img" aria-label="Burlington Capital Partners"><rect x="1" y="1" width="90" height="90" rx="9"/><text x="7" y="39">BURLINGTON</text><text x="7" y="52">CAPITAL</text><text x="7" y="65">PARTNERS</text></svg>
   </a><!--</R:brand>-->
   <!--<R:navmenu>--><nav class="nav" aria-label="Primary">
     <a class="nl ul" href="#/focus">Focus</a>
@@ -910,7 +910,7 @@ function footer(){
    '<div class="c"><span class="lab">Criteria</span>Minimum EBITDA of $2M<br>Control equity, US-based</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/focus">Focus</a><br><a class="ul" href="#/investments">Investments</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:hello@burlingtoncp.us">hello@burlingtoncp.us</a><br><a class="ul" href="#/contact">Send a message</a></div>'+
-  '</div><svg class="bigsvg" viewBox="0 0 520 26" aria-hidden="true"><text x="260" y="21" text-anchor="middle" textLength="516" lengthAdjust="spacingAndGlyphs">BURLINGTON CAPITAL PARTNERS</text></svg>'+
+  '</div><svg class="bigsvg" viewBox="0 0 520 26" aria-hidden="true"><text x="260" y="21" text-anchor="middle">BURLINGTON CAPITAL PARTNERS</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Burlington Capital Partners, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
@@ -941,7 +941,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    corridor. Frames travel slowly toward the viewer from a vanishing point set in the right columns of the grid. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,SP={v:0},G=null,N=30;
+  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,SP={v:0},G=null,N=30,PA=1;
   var BONE="243,241,236",ACC="211,207,198";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
@@ -973,10 +973,11 @@ var field=(function(){
       c.strokeStyle="rgba("+(acc?ACC:BONE)+","+(a*e*(acc?.6:.34)*(.55+.45*u)).toFixed(3)+")";c.stroke();
     }
     /* the destination: the firm's own mark, lit, at the end of the corridor (CU: a filled focal point) */
+    var heroOn=window.scrollY<innerHeight*.85?1:0;PA+=(heroOn-PA)*.12;if(once)PA=heroOn;var pe=e*PA;
     var ms=Math.max(90,S*.24)*(.92+.08*e),mx=vx-ms/2,my=vy-ms/2;
-    var lg=c.createLinearGradient(mx,my,mx+ms,my+ms);lg.addColorStop(0,"rgba("+BONE+","+(.95*e)+")");lg.addColorStop(1,"rgba("+ACC+","+(.82*e)+")");
-    c.save();c.shadowColor="rgba("+ACC+","+(.35*e)+")";c.shadowBlur=ms*.5;rr(mx,my,ms,ms*.1);c.fillStyle=lg;c.fill();c.restore();
-    c.fillStyle="rgba(11,11,12,"+(.92*e)+")";c.font="400 "+(ms*.124).toFixed(1)+"px 'Hanken Grotesk',system-ui,sans-serif";c.textBaseline="alphabetic";
+    var lg=c.createLinearGradient(mx,my,mx+ms,my+ms);lg.addColorStop(0,"rgba("+BONE+","+(.95*pe)+")");lg.addColorStop(1,"rgba("+ACC+","+(.82*pe)+")");
+    c.save();c.shadowColor="rgba("+ACC+","+(.35*pe)+")";c.shadowBlur=ms*.5;rr(mx,my,ms,ms*.1);c.fillStyle=lg;c.fill();c.restore();
+    c.fillStyle="rgba(11,11,12,"+(.92*pe)+")";c.font="400 "+(ms*.124).toFixed(1)+"px 'Hanken Grotesk',system-ui,sans-serif";c.textBaseline="alphabetic";
     [["BURLINGTON",.42],["CAPITAL",.56],["PARTNERS",.70]].forEach(function(r){c.fillText(r[0],mx+ms*.08,my+ms*r[1])});
     /* keep the corridor in its own columns: fade it out over the text column (and over the text on phones) */
     c.globalCompositeOperation="destination-in";
@@ -1070,7 +1071,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/innerWidth,fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W/2-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H/2-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
@@ -1202,9 +1203,10 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
   if(document.body.classList.contains("menu-open"))closeMenu();
   if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+function fitSvgType(root){$$("svg.bigsvg, svg.logo",root||document).forEach(function(svg){if(svg._fit)return;$$("text[textLength]",svg).forEach(function(t){t.setAttribute("textLength","");t.setAttribute("lengthAdjust","spacing")});try{var bb=svg.getBBox();if(bb.width>1){svg.setAttribute("viewBox",(bb.x-1).toFixed(1)+" "+(bb.y-1).toFixed(1)+" "+(bb.width+2).toFixed(1)+" "+(bb.height+2).toFixed(1));svg._fit=1}}catch(e){}})}
 function paint(r){
   var view=$("#view");if(ctx){ctx.revert();ctx=null}ScrollTrigger.getAll().forEach(function(s){s.kill()});
-  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
+  view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;fitSvgType(view);
   $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
   field.snapDim(r.k==="home"?1:.42);observeField();
@@ -1254,6 +1256,7 @@ function blockKey(e){if(LOCKKEYS[e.keyCode])e.preventDefault()}
 function lockScroll(){document.documentElement.style.overflow="hidden";document.body.style.overflow="hidden";if(lenis)lenis.stop();addEventListener("wheel",blockEv,{passive:false});addEventListener("touchmove",blockEv,{passive:false});addEventListener("keydown",blockKey,{passive:false})}
 function unlockScroll(){document.documentElement.style.overflow="";document.body.style.overflow="";removeEventListener("wheel",blockEv,{passive:false});removeEventListener("touchmove",blockEv,{passive:false});removeEventListener("keydown",blockKey,{passive:false});if(lenis&&!bioOpen)lenis.start()}
 function preload(){
+  fitSvgType(document);
   var pre=$("#pre"),cnt=$("#preCnt"),bar=$("#preBar");
   if(RM){go(true,function(){pre.remove();failsafe()});field.once();hdrTheme();return}
   if(SEEN){field.intro(1.4);field.start();ENTRY=.35;

@@ -8,6 +8,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 **CV. Never distort type or a logo.** A giant footer wordmark or hero word is fitted by font-size or letter-spacing, never by `preserveAspectRatio="none"`, `scaleX`, or a stretched SVG viewBox; the letterforms keep their true proportions at every width. Echoed graphics (a sun, glow or mark repeated behind the footer) must never show a clipped box or canvas edge. (Coordinator review, Fifth Ocean.)
 
+**CW. On phones, hero art never crosses text, at any scroll position.** Ridges, maps, labels or lines in the hero must not run through the eyebrow, title or copy, either at rest or while the page scrolls (parallax moves art at a different speed than the text). Phones get a clear band, a fade before the text, or no parallax. Check 360/390/430 with a real wheel scroll, not only the first frame. (Coordinator review, Snow Peak and Heartland.)
+
 # v18 (client review round 5, after the "done" report)
 
 **CR. The first screen arrives together.** The headline rises as whole lines (never a letter stagger whose tail lands late: client, "the 'r it' issue"), and the eyebrow, lede, buttons and nav start while it is still settling, never after it has landed. Client: "the title usually loads first, there's a long pause, and then the rest comes up (the caption, buttons, etc.)". Measure with a recording at 4x CPU and a throttled network (fonts come from the CDN), not only on a local fast load: everything on the first screen is in within ~0.6s of the title. Lines of a headline are evenly spaced: an italic/serif accent never enlarges its own line box (`em{line-height:0}` in display headings).

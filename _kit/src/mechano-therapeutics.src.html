@@ -1032,7 +1032,7 @@ var field=(function(){
     var band=0,sy=0;if(W<861){var eb=document.querySelector("#view .hero .eyebrow, #view .ph-head .eyebrow");sy=window.scrollY;band=eb?eb.getBoundingClientRect().top-22:H*.4;
       if(band<=0)return next(once);c.save();c.beginPath();c.rect(0,0,W,band);c.clip()}
     var pg=Lr.pg,ff=pg&&pg.f!=null?pg.f:st.f,LL=pg&&pg.L!=null?pg.L:st.L;
-    JOINT.draw(c,{S:Lr.S*(.97+.03*e),ox:Lr.ox+(band?0:m[0]*18),oy:Lr.oy-sy+(band?0:m[1]*12)+(1-e)*16,cx:Lr.cx,cy:Lr.cy,al:dim*e,f:ff,L:LL,caps:pg&&pg.rest?REST:st.caps,t:t});
+    JOINT.draw(c,{S:Lr.S*(.97+.03*e),ox:Lr.ox,oy:Lr.oy-sy+(1-e)*16,cx:Lr.cx,cy:Lr.cy,al:dim*e,f:ff,L:LL,caps:pg&&pg.rest?REST:st.caps,t:t});
     if(!band&&TX>0){c.save();c.globalCompositeOperation="destination-out";c.fillStyle="#000";c.fillRect(0,0,TX+40,H);
       var xg=c.createLinearGradient(TX+40,0,TX+160,0);xg.addColorStop(0,"rgba(0,0,0,1)");xg.addColorStop(1,"rgba(0,0,0,0)");c.fillStyle=xg;c.fillRect(TX+40,0,120,H);c.restore()}
     if(band){c.restore();c.save();c.globalCompositeOperation="destination-out";var fg=c.createLinearGradient(0,band-70,0,band);fg.addColorStop(0,"rgba(0,0,0,0)");fg.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=fg;c.fillRect(0,band-70,W,70);c.restore()}
@@ -1045,7 +1045,6 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   addEventListener("resize",size);size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},
    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
    setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},
@@ -1098,11 +1097,16 @@ function makeStory(cv){
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
     var r=JOINT.draw(c,{S:S,ox:w*.5,oy:h/2,cx:C.x,cy:C.y,al:1,f:f,L:L,caps:caps,t:t,inject:inj,needleA:1-seg(p,.12,.18)});
     /* labels in screen space; each leader line ends on the thing it names */
-    function lab(txt,wx,wy,a,tx,ty){if(a<.12)return;a=Math.min(1,(a-.12)/.5);var P=r.toScreen(wx,wy);
+    var PLACED=[];
+    function hit(x,y,ww,hh){for(var k=0;k<PLACED.length;k++){var q=PLACED[k];if(x<q[0]+q[2]+10&&x+ww+10>q[0]&&y<q[1]+q[3]+6&&y+hh+6>q[1])return true}return false}
+    function lab(txt,wx,wy,a,tx,ty){if(a<.12)return;a=Math.min(1,(a-.12)/.5);var P=r.toScreen(wx,wy);P=[P[0],P[1]];
       c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var tw=c.measureText(txt).width;var anc=tx==null?"c":(tx<wx?"l":"r");
       var lx=anc==="c"?P[0]-tw/2:(anc==="l"?P[0]:P[0]-tw);
+      var y0=P[1],OFF=[0,20,-20,40,-40,60,-60];for(var k2=0;k2<OFF.length;k2++){P[1]=y0+OFF[k2];if(!hit(lx,P[1]-11,tw,15))break}
+      if(hit(lx,P[1]-11,tw,15))return;
       if(lx<w*.12||lx+tw>w-16||P[1]<h*.12||P[1]>h*.88)return;
+      PLACED.push([lx,P[1]-11,tw,15]);
       c.globalAlpha=a;
       if(tx!=null){var T=r.toScreen(tx,ty);var sx=anc==="l"?P[0]-6:P[0]+6;
         c.strokeStyle="rgba(191,192,196,.7)";c.lineWidth=1;c.beginPath();c.moveTo(sx,P[1]-3.5);c.lineTo(T[0],T[1]);c.stroke();

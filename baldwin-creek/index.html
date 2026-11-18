@@ -377,7 +377,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .formwrap.done .thanks{display:block}
 
 /* transition cover */
-.xc{position:fixed;inset:0;z-index:950;pointer-events:none;background:var(--ink3);will-change:transform}
+.xc{position:fixed;inset:0;width:100vw;right:auto;z-index:950;pointer-events:none;background:var(--ink3);will-change:transform}
 .xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--sinL);opacity:.8}
 .xt{position:fixed;inset:0;z-index:951;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden}
 .xt .t{font-family:var(--serif);font-weight:300;font-style:italic;font-size:clamp(56px,9vw,170px);line-height:1.05;letter-spacing:-.02em;color:var(--bone);overflow:hidden;padding:.16em .18em .3em}
@@ -929,75 +929,83 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/* ================= HERO: a creek and its watershed, drawn in fine hairlines. Tributaries branch upstream from one main
-   channel; the network draws itself in from the creek outward, and slow points of light travel downstream along every
-   channel toward the main creek, where they meet. The firm's name, and its thesis: local businesses joining one platform. ===== */
+/* ================= HERO: a watershed in its basin. Terrain contours ring the valley; tributaries in graded weights converge
+   on one lit confluence, and Baldwin Creek leaves it toward the lower left. Light travels downstream into the confluence:
+   the firm's thesis, many local businesses joining one platform. ===== */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1,G=null,SP={v:0},CH=[],TOPO=[];
+  var IN={v:1},dim=1,dimT=1,G=null,SP={v:0},CH=[],off=null,oc=null;
   var BONE="244,241,235",ROSE="232,165,166",MIST="160,180,214";
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function nz(a,k){return Math.sin(a*3+k*1.7)*.5+Math.sin(a*5.3+k*.9)*.3+Math.sin(a*9.1+k*2.3)*.2}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side;
-    if(w<861)return {mob:1,ax:w*1.05,ay:h*.02,bx:-w*.05,by:h*.5,amp:w*.06,len:Math.max(w,h*.5)*.42,fx0:-1,fx1:-1,fy:h*.42,fy1:h*.6,cx:w*.5,cy:h*.25};
-    return {mob:0,ax:side+cw*1.04,ay:h*.04,bx:side+cw*.42,by:h*1.06,amp:cw*.05,len:Math.min(cw*.2,h*.3),fx0:side+cw*.3,fx1:side+cw*.5,fy:h*.8,fy1:h*1.04,cx:side+cw*.72,cy:h*.5}
+    if(w<861)return {mob:1,cx:w*.62,cy:h*.27,R:Math.max(w*.62,h*.3),fx0:-1,fx1:-1,fy:h*.33,fy1:h*.46,side:side};
+    return {mob:0,cx:side+cw*.7,cy:h*.54,R:Math.min(cw*.42,h*.62),fx0:side+cw*.3,fx1:side+cw*.5,fy:h*.82,fy1:h*1.04,side:side};
   }
-  function line(x0,y0,ang,len,n,wig,seed){var pts=[[x0,y0]],a=ang;for(var i=1;i<=n;i++){a+=(R(seed,i)-.5)*wig;var p=pts[i-1];pts.push([p[0]+Math.cos(a)*len/n,p[1]+Math.sin(a)*len/n])}return pts}
+  function fade(sx,sy){var a=1;if(G.fx0>0)a*=sm((sx-G.fx0)/(G.fx1-G.fx0));a*=1-sm((sy-G.fy)/(G.fy1-G.fy));a*=sm((w-sx)/(w*.06));a*=sm((sy-(G.mob?64:70))/110);return a}
+  /* a channel from an outer point down to (tx,ty), wandering, as a polyline from source to mouth */
+  function chan(x0,y0,tx,ty,n,wig,seed){var pts=[],dx=tx-x0,dy=ty-y0,L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L;
+    for(var i=0;i<=n;i++){var t=i/n,env=Math.sin(Math.PI*t),o=(Math.sin(t*6.3+seed)*.6+Math.sin(t*13.1+seed*2.1)*.25)*wig*L*env;pts.push([x0+dx*t+nx*o,y0+dy*t+ny*o])}return pts}
   function build(){
-    G=geo();CH=[];TOPO=[];
-    var main=[],N=90;
-    for(var i=0;i<=N;i++){var t=i/N,x=G.ax+(G.bx-G.ax)*t,y=G.ay+(G.by-G.ay)*t;var nx=-(G.by-G.ay),ny=(G.bx-G.ax),nl=Math.hypot(nx,ny);nx/=nl;ny/=nl;var o=Math.sin(t*Math.PI*2.6+.6)*G.amp+Math.sin(t*Math.PI*7.1)*G.amp*.18;main.push([x+nx*o,y+ny*o])}
-    /* main flows from (a) at the top right to (b): the mouth is b. Store channels from source to mouth. */
-    CH.push({p:main,o:0,s:0,e:.55});
-    var id=1;
-    function trib(pt,dirx,diry,len,order,s0,seed){
-      var ang=Math.atan2(diry,dirx),n=18,pts=line(pt[0],pt[1],ang,len,n,.5,seed);pts.reverse();
-      var ch={p:pts,o:order,s:s0,e:s0+.28};CH.push(ch);
-      if(order<3){var k=2+Math.floor(R(seed,3)*2);for(var j=0;j<k;j++){var u=.25+R(seed,10+j)*.55,q=pts[Math.round((pts.length-1)*u)];var side=(j%2?1:-1),a2=ang+side*(.7+R(seed,20+j)*.5);
-        trib(q,Math.cos(a2),Math.sin(a2),len*(.45+R(seed,30+j)*.2),order+1,s0+.12,seed*7+j+1)}}
-    }
-    var nb=G.mob?7:9;
-    for(var k=0;k<nb;k++){var u=.08+k/(nb-1)*.8+(R(k,1)-.5)*.05,ix=Math.round(N*u),q=main[ix],q2=main[Math.max(0,ix-2)];
-      var dx=q2[0]-q[0],dy=q2[1]-q[1],dl=Math.hypot(dx,dy)||1;dx/=dl;dy/=dl;var side=(k%2?1:-1),ca=Math.cos(side*1.0),sa=Math.sin(side*1.0);
-      trib(q,dx*ca-dy*sa,dx*sa+dy*ca,G.len*(.75+R(k,2)*.5),1,.22+u*.25,k*13+5)}
+    G=geo();CH=[];var C=[G.cx,G.cy],Rr=G.R,id=0;
+    /* tributaries: order-1 stems from all around the basin (mostly upstream, i.e. north and east), each fed by order-2 and order-3 branches */
+    var nS=G.mob?9:13;
+    for(var k=0;k<nS;k++){var a=-2.85+k/(nS-1)*2.75+(R(k,1)-.5)*.12,r=Rr*(.86+R(k,2)*.34),sx=C[0]+Math.cos(a)*r,sy=C[1]+Math.sin(a)*r*.82;
+      var stem=chan(sx,sy,C[0],C[1],28,.07,k*3.1);CH.push({p:stem,o:1});
+      var nb=2+Math.floor(R(k,3)*2);
+      for(var j=0;j<nb;j++){var u=.2+R(k,10+j)*.45,q=stem[Math.round(28*u)],side=(j%2?1:-1),aa=a+side*(.55+R(k,20+j)*.4),rr=Rr*(.32+R(k,30+j)*.22)*(1-u*.6);
+        var b2=chan(q[0]+Math.cos(aa)*rr,q[1]+Math.sin(aa)*rr*.82,q[0],q[1],16,.09,k*7+j);CH.push({p:b2,o:2});
+        for(var m2=0;m2<2;m2++){var v=.15+R(k*5+j,m2)*.5,q2=b2[Math.round(16*v)],a3=aa+(m2?1:-1)*(.6+R(j,m2+40)*.5),r3=rr*(.35+R(k,m2+50)*.25);
+          CH.push({p:chan(q2[0]+Math.cos(a3)*r3,q2[1]+Math.sin(a3)*r3*.82,q2[0],q2[1],10,.1,k*11+j*3+m2),o:3})}}}
+    /* the creek itself: out of the confluence toward the lower left (the mouth) */
+    var mx=G.mob?-w*.12:G.side+(w-2*G.side)*.36,my=G.mob?h*.4:h*1.08;CH.push({p:chan(C[0],C[1],mx,my,60,.06,2.2),o:0});
     CH.forEach(function(ch,i){var L=0,cum=[0];for(var j=1;j<ch.p.length;j++){L+=Math.hypot(ch.p[j][0]-ch.p[j-1][0],ch.p[j][1]-ch.p[j-1][1]);cum.push(L)}ch.L=L;ch.cum=cum;
-      ch.dots=[];var nd=Math.max(1,Math.round(L/(ch.o?170:120)));for(var d=0;d<nd;d++)ch.dots.push(R(i,d+40))});
-    /* contour lines: offset copies of the main channel, the valley walls */
-    for(var r=1;r<=5;r++)[-1,1].forEach(function(sg){TOPO.push({p:main.map(function(q,j){var t=j/N,o=sg*r*(G.mob?26:44)*(1+.25*Math.sin(t*9+r));var a=main[Math.min(N,j+1)],b=main[Math.max(0,j-1)],nx=-(a[1]-b[1]),ny=a[0]-b[0],nl=Math.hypot(nx,ny)||1;return [q[0]+nx/nl*o,q[1]+ny/nl*o]}),r:r})});
+      ch.dots=[];var nd=ch.o===3?0:Math.max(1,Math.round(L/(ch.o===0?140:ch.o===1?150:220)));for(var d=0;d<nd;d++)ch.dots.push(R(i,d+40))});
+    /* static layer: terrain contours of the basin, then every channel in graded weights */
+    off=document.createElement("canvas");off.width=Math.round(w*dpr);off.height=Math.round(h*dpr);oc=off.getContext("2d");oc.setTransform(dpr,0,0,dpr,0,0);oc.lineCap="round";oc.lineJoin="round";
+    var nR=G.mob?14:20;
+    for(var r2=1;r2<=nR;r2++){var base=Rr*(.1+r2/nR*1.25);oc.beginPath();
+      for(var s=0;s<=160;s++){var th=s/160*6.2832,rad=base*(1+.13*nz(th,r2)+.04*Math.sin(th*14+r2)),x=C[0]+Math.cos(th)*rad,y=C[1]+Math.sin(th)*rad*.8;s?oc.lineTo(x,y):oc.moveTo(x,y)}
+      oc.closePath();oc.lineWidth=r2%5===0?1:.65;oc.strokeStyle="rgba("+MIST+","+(r2%5===0?.2:.12)+")";oc.stroke()}
+    var W=[3.0,1.35,.85,.55],A=[.7,.42,.3,.2];
+    CH.forEach(function(ch){oc.beginPath();ch.p.forEach(function(q,j){j?oc.lineTo(q[0],q[1]):oc.moveTo(q[0],q[1])});
+      if(ch.o===0){oc.lineWidth=10;oc.strokeStyle="rgba("+ROSE+",.06)";oc.stroke()}
+      oc.lineWidth=W[ch.o];oc.strokeStyle=ch.o===0?"rgba("+ROSE+","+A[0]+")":"rgba("+BONE+","+A[ch.o]+")";oc.stroke()});
+    /* soft edges against the text and the page */
+    oc.globalCompositeOperation="destination-in";
+    var mk=document.createElement("canvas");mk.width=off.width;mk.height=off.height;var mc=mk.getContext("2d");mc.setTransform(dpr,0,0,dpr,0,0);
+    var step=8;for(var yy=0;yy<h;yy+=step)for(var xx=0;xx<w;xx+=step){mc.fillStyle="rgba(0,0,0,"+fade(xx+step/2,yy+step/2).toFixed(3)+")";mc.fillRect(xx,yy,step,step)}
+    oc.setTransform(1,0,0,1,0,0);oc.drawImage(mk,0,0);oc.globalCompositeOperation="source-over";
+    G.maxR=Math.hypot(Math.max(C[0],w-C[0]),Math.max(C[1],h-C[1]));
   }
   function at(ch,f){var target=f*ch.L,c2=ch.cum,j=1;while(j<c2.length-1&&c2[j]<target)j++;var a=ch.p[j-1],b=ch.p[j],seg=(c2[j]-c2[j-1])||1,u=(target-c2[j-1])/seg;return [a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u]}
-  function fade(sx,sy){var a=1;if(G.fx0>0)a*=sm((sx-G.fx0)/(G.fx1-G.fx0));a*=1-sm((sy-G.fy)/(G.fy1-G.fy));a*=sm((w-sx)/(w*.08));if(w<861)a*=sm((sy-64)/110);return a}
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);build();if(!running)frame(true)}
   function frame(once){
-    var t=RM?40:(performance.now()-t0)/1000;
-    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
+    var t=RM?40:(performance.now()-t0)/1000;dim+=(dimT-dim)*.08;
     cv.style.opacity=shown?String(.4+.6*dim):"";
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
-    var e=sm(IN.v),ox=m[0]*16,oy=m[1]*10-SP.v*50;
-    c.lineCap="round";c.lineJoin="round";
-    /* valley contours (deepest layer, smallest parallax) */
-    TOPO.forEach(function(tp){var a=sm((e-.1*tp.r)/.5);if(a<.01)return;c.beginPath();for(var j=0;j<tp.p.length;j+=2){var q=tp.p[j],x=q[0]+ox*.5,y=q[1]+oy*.5;j?c.lineTo(x,y):c.moveTo(x,y)}
-      c.lineWidth=.7;c.strokeStyle="rgba("+MIST+","+(.1-tp.r*.012)*a+")";c.stroke()});
-    for(var i=0;i<CH.length;i++){var ch=CH[i],f=sm((e-ch.s)/(ch.e-ch.s));if(f<.005)continue;
-      /* channels draw in from the mouth (end of the array) toward the source */
-      var n=ch.p.length,start=Math.floor((n-1)*(1-f));
-      var par=ch.o?.85:1;c.beginPath();
-      for(var j=start;j<n;j++){var q=ch.p[j],x=q[0]+ox*par,y=q[1]+oy*par;j===start?c.moveTo(x,y):c.lineTo(x,y)}
-      var mid=ch.p[Math.floor(n/2)],fa=fade(mid[0]+ox,mid[1]+oy);if(fa<.01)continue;
-      c.lineWidth=ch.o?(ch.o===1?1.1:.75):2.2;c.strokeStyle=ch.o?"rgba("+BONE+","+(ch.o===1?.36:.22)*fa+")":"rgba("+ROSE+","+.62*fa+")";c.stroke();
-      if(!ch.o){c.lineWidth=7;c.strokeStyle="rgba("+ROSE+","+.07*fa+")";c.stroke()}
-      /* light travelling downstream */
-      if(f>.98){var sp=ch.o?.035:.022;for(var d=0;d<ch.dots.length;d++){var u=(t*sp*(120/Math.max(80,ch.L))*3+ch.dots[d])%1,pp=at(ch,u),x2=pp[0]+ox*par,y2=pp[1]+oy*par,da=Math.sin(Math.PI*u)*fade(x2,y2);if(da<.02)continue;
-        c.beginPath();c.arc(x2,y2,ch.o?1.5:2.1,0,6.283);c.fillStyle="rgba("+(ch.o?BONE:ROSE)+","+(.8*da)+")";c.fill()}}
-    }
+    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);
+    var e=sm(IN.v),oy=-SP.v*50,C=[G.cx,G.cy+oy];
+    /* the basin draws in outward from the confluence */
+    c.save();c.beginPath();c.arc(C[0]*dpr,C[1]*dpr,Math.max(1,e*G.maxR*1.05*dpr),0,6.283);c.clip();c.drawImage(off,0,oy*dpr);c.restore();
+    c.setTransform(dpr,0,0,dpr,0,0);
+    /* light travelling downstream: into the confluence along the tributaries, then out along the creek */
+    if(e>.9)for(var i=0;i<CH.length;i++){var ch=CH[i];for(var d=0;d<ch.dots.length;d++){var sp=ch.o===0?.018:.03,u=(t*sp*(160/Math.max(90,ch.L))*3+ch.dots[d])%1,pp=at(ch,u),x2=pp[0],y2=pp[1]+oy,da=Math.sin(Math.PI*u)*fade(x2,y2)*sm((e-.9)/.1);if(da<.02)continue;
+      c.beginPath();c.arc(x2,y2,ch.o===0?2.2:1.5,0,6.283);c.fillStyle="rgba("+(ch.o===0?ROSE:BONE)+","+(.85*da)+")";c.fill()}}
+    /* the confluence: a lit, filled mark */
+    var cf=sm((e-.05)/.4)*fade(C[0],C[1]);if(cf>.01){var pulse=.5+.5*Math.sin(t*1.2);
+      var g=c.createRadialGradient(C[0],C[1],0,C[0],C[1],G.R*.32);g.addColorStop(0,"rgba("+ROSE+","+.32*cf+")");g.addColorStop(.35,"rgba("+ROSE+","+.1*cf+")");g.addColorStop(1,"rgba("+ROSE+",0)");c.fillStyle=g;c.beginPath();c.arc(C[0],C[1],G.R*.32,0,6.283);c.fill();
+      c.beginPath();c.arc(C[0],C[1],14+pulse*10,0,6.283);c.lineWidth=1;c.strokeStyle="rgba("+ROSE+","+(.5*(1-pulse*.7))*cf+")";c.stroke();
+      c.beginPath();c.arc(C[0],C[1],9,0,6.283);c.lineWidth=1.2;c.strokeStyle="rgba("+BONE+","+.7*cf+")";c.stroke();
+      c.beginPath();c.arc(C[0],C[1],4.6,0,6.283);c.fillStyle="rgba("+ROSE+","+cf+")";c.fill()}
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  /* CZ: the creek flows on its own; no pointer follow */
+  /* CZ: the watershed flows on its own; no pointer follow */
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.cx,G.cy]:[w/2,h/2]}};
 })();
@@ -1085,7 +1093,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
       gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
-    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.lines,{yPercent:100,duration:1.1,ease:"silk",stagger:.08,delay:E+.05,onComplete:function(){unmask(s2)}}));HERO_TL.push(gsap.from(s2.lines,{opacity:0,duration:.5,ease:"power1.out",stagger:.08,delay:E+.45}))}
+    }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.lines,{yPercent:100,duration:.9,ease:"power3.out",stagger:.06,delay:E+.05,onComplete:function(){unmask(s2)}}));HERO_TL.push(gsap.from(s2.lines,{opacity:0,duration:.4,ease:"power1.out",stagger:.06,delay:E+.3}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:1,ease:"silk",stagger:.06,delay:E+.15}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
     var tl=$("#tl",view);if(tl){var lis=$$("li",tl),last=lis[lis.length-1];if(last){var bt=Math.max(0,tl.offsetHeight-last.offsetTop-12);$$(".ln0,.ln1",tl).forEach(function(l){l.style.bottom=bt+"px"})}if(!RM)gsap.to($(".ln1",tl),{scaleY:1,ease:"none",scrollTrigger:{trigger:tl,start:"top 70%",end:"bottom 60%",scrub:true}})}

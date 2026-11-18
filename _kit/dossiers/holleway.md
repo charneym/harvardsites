@@ -1,0 +1,21 @@
+# Holleway Capital Partners: dossier (facts with sources)
+
+- Firm: Holleway Capital Partners LLC, private equity. Site: https://www.holleway.com/
+- HQ: 7733 Forsyth Blvd, Suite 2205, St. Louis, MO 63105; tel (314) 328-7103; additional office Overland Park, KS (https://www.holleway.com/contact/). Time zone: US Central.
+- Positioning (home): "a private equity firm backing management teams to buy or recapitalize the companies they operate, providing succession and liquidity to business owners." Invests "from a committed fund" in "manufacturers and distributors of industrial products headquartered in the Midwest, High Plains, Rocky Mountains and Southern regions of the United States."
+- Experience (home): principals have more than 60 years of combined experience; over 35 transactions; prefer product-oriented businesses that manufacture products or provide value-added distribution.
+- Values (home): Partnership (honesty, accountability, open and direct communication), Patience (multi-year investment horizon), Role (board-level advisor beyond capital).
+- Criteria (https://www.holleway.com/investment-criteria/): revenue $10M–$100M; EBITDA $2M–$10M; manufacturers and distributors of industrial products, or services to industrial customers; management with a proven track record, interested in investing alongside Holleway; HQ in the greater Midwest or Southern US; majority of operations in US. Value creation: new investments in equipment & facilities, recruiting management, add-on acquisitions.
+- Working with us (https://www.holleway.com/working-with-us/): 25+ years working with owners in transition. Situations: retirement and liquidity; some liquidity plus expansion capital; inactive shareholder liquidity; partner buyout; corporate divestiture with an operating management team. Management teams encouraged to invest meaningfully. Pays finders fees to buy-side advisors who bring transactions.
+- Team (https://www.holleway.com/team/), headshots 400x267 webp on the site:
+  - Holly Huels, Founder and Managing Partner, hhuels@holleway.com, 314-328-7106
+  - Wes Hampp, Founder and Managing Partner, whampp@holleway.com, 314-328-7105 (LinkedIn slug shows CFA)
+  - Gian Cavallini, Managing Director, gcavallini@holleway.com
+  - Erik Zentner, Principal, ezentner@holleway.com
+  - Joe Ludwig, Senior Associate, jludwig@holleway.com
+  - Thet Zin, Associate, tzin@holleway.com
+  - No bios published.
+- Portfolio (https://www.holleway.com/portfolio/), current: Aladdin Steel (carbon steel tube and pipe distributor); Allied Siding & Windows (residential siding and windows installer); Barco Products (commercial outdoor furniture, park amenity, traffic and pedestrian safety products); Braner USA (rolled metal coil processing & handling systems); DCA Manufacturing / Debron Circuit Assembly Manufacturing (PCB/electronic manufacturing services); Lift-A-Loft (custom engineered aerial work platforms); Panek Precision Products (complex, high-volume precision machined metal parts); Texdoor (overhead door distributor in Texas and the southeastern US; add-on Southeast Door Technologies); Vehicle Security Innovators (vehicle security products for truck OEM & aftermarket). Exited: T-TEK Material Handling (palletizing/de-palletizing equipment); Watershield Industries (wildland fire fighting products).
+- Activity: 2026-02-18, Holleway acquired Houston-based Allied Siding & Windows for its second fund, with Capital Alignment Partners and Juniper Street Capital; Wes Hampp quoted in paraphrase. https://www.acg.org/stlouis/news-trends/news/holleway-capital-partners-announces-acquisition-allied-siding-windows
+- Brand: logo https://www.holleway.com/wp-content/uploads/2022/01/Holleway-Logo.png (220x101, oxblood #7A2A20 wordmark over a grey gear, "CAPITAL" arched above, "PARTNERS, LLC" below). Redrawn as inline SVG.
+- Images not used: industry collage and banner photos (stock); portfolio logo tiles (mixed treatments, shown as type instead); target-regions map (raster; regions stated in type).

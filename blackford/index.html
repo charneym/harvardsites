@@ -593,6 +593,13 @@ a.pf:hover .pf-go,a.pf:focus-visible .pf-go{color:var(--accD);transform:translat
 @media (max-width:860px){
   .hero::before,.ph-head::before{background:linear-gradient(180deg,rgb(var(--inkR) / 0) 0,rgb(var(--inkR) / 0) calc(var(--st,40%) - 90px),var(--ink) var(--st,40%),var(--ink) 100%)!important}
 }
+/* critic round: group labels share the grid's axis and the site's label face */
+.pgroup>.mh-label{text-align:center;font-family:var(--mono)}
+/* sub-page titles sit on clear ground: the echoed hero art fades out behind the title column */
+@media (min-width:861px){.ph-head::before{background:linear-gradient(90deg,rgb(var(--inkR) / .96) 0%,rgb(var(--inkR) / .9) 48%,rgb(var(--inkR) / .35) 70%,rgb(var(--inkR) / 0) 86%),linear-gradient(180deg,rgb(var(--inkR) / .3),rgb(var(--inkR) / .1) 40%,var(--ink) 100%)}}
+/* phones: the footer echo stays below the link columns */
+@media (max-width:860px){.ftr .fcv{height:30%}.row-a h3{line-height:1.28}}
+@media (max-width:860px){.story .scene text{font-size:17px;letter-spacing:.05em}.story .scene text.nm{font-size:25px}}
 
 /* ===== Blackford ===== */
 .d1,.d2,.d3,.lede,.mani .txt,.stat .v,.cta .big,.step h3,.tl li h3,.facts dd,.pl3 h3,.addr h3,.ps-body h2,.xt .t,.mm li a,.crit .v,.row-a h3{font-weight:400}
@@ -998,6 +1005,8 @@ function homeScroll(view){
   var draw=SCENE.bind(svg),pre={v:RM?1:0},lastP=0;
   function D(p){if(!svg.isConnected)return;draw(p,pre.v)}
   if(!RM)ScrollTrigger.create({trigger:sec,start:"top 75%",end:"top top",onUpdate:function(s){pre.v=s.progress;D(lastP)},onLeave:function(){pre.v=1;D(lastP)},onLeaveBack:function(){pre.v=0;D(lastP)}});
+  /* phones: crop the figure's frame to its full (end-state) extent so it fills the width and its labels stay legible */
+  if(innerWidth<861&&svg.getBBox){try{draw(.999,1);var bb=svg.getBBox(),pd=22;svg.setAttribute("viewBox",(bb.x-pd)+" "+(bb.y-pd)+" "+(bb.width+2*pd)+" "+(bb.height+2*pd))}catch(e){}}
   if(sec.getBoundingClientRect().top<=0)pre.v=1;
   D(0);
   if(RM){pre.v=1;D(.98);return}
@@ -1178,7 +1187,7 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  /* CZ: the art animates on its own, so it does not also follow the pointer */
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},setScroll:function(p){SP.v=p},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d*1.4,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.cx,G.cy]:[w/2,h/2]}};
 })();

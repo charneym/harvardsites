@@ -815,7 +815,7 @@ function homeScroll(view){
   function D(p){if(!svg.isConnected)return;draw(p,pre.v)}
   if(!RM)ScrollTrigger.create({trigger:sec,start:"top 75%",end:"top top",onUpdate:function(s){pre.v=s.progress;D(lastP)},onLeave:function(){pre.v=1;D(lastP)},onLeaveBack:function(){pre.v=0;D(lastP)}});
   /* phones: crop the figure's frame to its full (end-state) extent so it fills the width and its labels stay legible */
-  if(innerWidth<861&&svg.getBBox){try{draw(.999,1);var bb=svg.getBBox(),pd=10;svg.setAttribute("viewBox",(bb.x-pd)+" "+(bb.y-pd)+" "+(bb.width+2*pd)+" "+(bb.height+2*pd))}catch(e){}}
+  if(innerWidth<861&&svg.getBBox){try{draw(.999,1);var bb=svg.getBBox(),pd=22;svg.setAttribute("viewBox",(bb.x-pd)+" "+(bb.y-pd)+" "+(bb.width+2*pd)+" "+(bb.height+2*pd))}catch(e){}}
   if(sec.getBoundingClientRect().top<=0)pre.v=1;
   D(0);
   if(RM){pre.v=1;D(.98);return}
@@ -990,7 +990,7 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  /* CZ: the art animates on its own, so it does not also follow the pointer */
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},setScroll:function(p){SP.v=p},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d*1.3,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.cx,G.cy]:[w/2,h/2]}};
 })();

@@ -1027,16 +1027,17 @@ function makeStory(cv){
     c.restore();
     /* labels in screen space */
     /* labels are collected, then drawn strongest first; one that would collide with an already placed label is skipped */
-    var LB=[];
+    var LB=[],NARROW=w<520;
     function lab(txt,wx,wy,a,align,tx,ty){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
       c.font="400 10.5px 'DM Mono',monospace";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:align==="right"?sx-tw:sx-tw/2,r=l+tw;
       if(l<w*.06+4||r>w*.94-4||sy<h*.07||sy>h*.94)return;
-      LB.push({txt:txt,a:a,align:align,tx:tx,ty:ty,sx:sx,sy:sy,l:l,r:r})}
+      LB.push({txt:txt,a:a,align:align,tx:tx,ty:ty,sx:sx,sy:sy,l:l,r:r,ko:NARROW})}
     function drawLab(o){var txt=o.txt,a=o.a,align=o.align,tx=o.tx,ty=o.ty,sx=o.sx,sy=o.sy,l=o.l,r=o.r;
       c.font="400 10.5px 'DM Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
       c.globalAlpha=Math.min(1,a);
       if(tx!=null){var qx=(tx-C.x)*sc+w/2,qy=(ty-C.y)*sc+h/2,lx=align==="left"?l-6:align==="right"?r+6:sx,ly=sy-4;c.strokeStyle="rgba(206,198,192,.55)";c.lineWidth=1;c.beginPath();c.moveTo(lx,ly);c.lineTo(qx,qy);c.stroke();c.fillStyle="rgb(206,198,192)";c.beginPath();c.arc(qx,qy,1.8,0,6.283);c.fill()}
+      if(o.ko){c.fillStyle="rgba(11,9,10,.88)";c.fillRect(l-6,sy-12,r-l+10,17)}
       c.shadowColor="rgba(11,9,10,.95)";c.shadowBlur=7;c.fillStyle="rgb(206,198,192)";
       c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
     lab("BLADDER · URINE",-260,-230,W[0]+W[4],"left");
@@ -1050,9 +1051,16 @@ function makeStory(cv){
     lab("NUCLEUS",FC.x+rx+10,FC.y+30,W[2],"left",FC.x+12,FC.y+12);
     lab("OSMOTIC LYSIS",FC.x,FC.y-ry-22,W[3]);
     var agx=0,agy=0;for(i=0;i<AG.length;i++){var go2=sm(sg(p,.72+AG[i].d,.9+AG[i].d*.5)),gx2=FC.x+AG[i].ax*rx*1.1,gy2=FC.y+AG[i].ay*ry*1.1;agx+=gx2+(dcx-gx2)*go2*.6;agy+=gy2+(dcy-gy2)*go2*.6}agx/=AG.length;agy/=AG.length;
-    lab("TUMOR ANTIGENS",FC.x-36,FC.y+6,W[3]*sg(p,.68,.72),"right",agx,agy);
+    if(!NARROW){
+    lab("TUMOR ANTIGENS",FC.x-36,FC.y+6,W[3]*sg(p,.68,.72)*(1-sg(p,.8,.86)),"right",agx,agy);
     lab("IMMUNE CELL (DENDRITIC)",dcx-26,dcy+4,W[3]*dcA,"right");
     lab("IONS LEAVE IN THE URINE",64,-196,W[4],"left",10,-110);
+    }else{
+    /* phones: short names with knock-out backgrounds and short leaders, in clear spots */
+    lab("ANTIGENS",FC.x+70,FC.y-56,W[3]*sg(p,.68,.72)*(1-sg(p,.8,.86)),"left",agx,agy);
+    lab("IMMUNE CELL",dcx-40,dcy-22,W[3]*dcA,"right",dcx-9,dcy-6);lab("IMMUNE CELL",dcx-52,dcy+40,W[4]*.9*dcA,"right",dcx-8,dcy+8);
+    lab("IONS OUT",110,-190,W[4]*sg(p,.9,.96),"left",FC.x+14,FC.y-150*clr);
+    }
     LB.sort(function(a,b){return b.a-a.a});var PL=[];
     /* the art itself is an obstacle too: the immune cell, and the ion cloud while it rises */
     function obs(wx,wy,rw,rh){var ox=(wx-C.x)*sc+w/2,oy=(wy-C.y)*sc+h/2;PL.push({l:ox-rw*sc,r:ox+rw*sc,t:oy-rh*sc,b:oy+rh*sc})}

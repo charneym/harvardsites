@@ -21,6 +21,15 @@ FIRST read the binding client spec `_kit/SPEC.md`, then `_kit/PRINCIPLES.md` in 
 - Avoid look-alikes with every existing site in the repo (list the folders at the repo root) and with the other sites in your own assignment.
 - One message per finished site to the coordinator, as in step 5; for PE firms include the HQ city/state, the managing partner, and the activity evidence instead of funding.
 
+
+## Efficiency rules (binding from 2026-11-18; the client's goal is ~2000 sites in ~2 weeks on a fixed usage plan, at the SAME quality)
+Usage per site is the bottleneck. Cut everything the client never sees and nothing they do:
+- Research: one pass by you, with no parallel research subagents. Fetch the firm's own pages and the cited release, write the facts file once, and don't re-fetch.
+- Design: one concept, built directly. No design explorations or throwaway prototypes.
+- QA: run the full gate list ONCE at the end, then re-run only the gates a fix touched. One opening recording (4x CPU). One fresh design-critic pass (fix its findings and don't loop it again). Look at the review screenshots yourself instead of producing many.
+- Context: keep your session lean. Don't paste large files or logs into the conversation; use grep/head. Use the existing engine (`_kit/src/hidden-river.src.html` and `burlington-capital.src.html` carry every central fix) for the invisible plumbing. The hero, story and layout stay custom (rule CX).
+- Ship each site (push + SITE DONE) before starting the next.
+
 ## Your workflow
 1. Verify each assigned company against spec section 2. Confirm the funding on RePORTER (or the release), US location, CEO/founder name and ≥3 bad-site evidence points by viewing their live site with Playwright (evidence seeds are below; re-check them). If a company truly fails, replace it with YOUR alternate (listed below), and say so in your report.
 2. Write a FACTUAL dossier per company at `_kit/dossiers/<slug>.md` (facts with source URLs only, no critique of their current site, because the repo is public) and the source file at `_kit/src/<slug>.src.html`. Build to `<slug>/index.html` with `node _kit/build.js _kit/src/<slug>.src.html <slug>/index.html`. Read `_kit/PRINCIPLES.md` in full and study `_kit/reference/sunflower.src.html` before writing any code.

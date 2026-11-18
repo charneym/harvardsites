@@ -665,6 +665,7 @@ a.pcard:hover h3 .ar,a.pcard:focus-visible h3 .ar{opacity:1;transform:none}
 /* captions switch with a short timed crossfade on step change, never scrubbed (no half-faded caption at rest) */
 .story .step{opacity:0;visibility:hidden;transition:opacity .22s ease-in,visibility 0s linear .22s}
 .story .step.on{opacity:1;visibility:visible;transition:opacity .35s ease-out .18s,visibility 0s linear 0s}
+.scene .mb{display:none}@media (max-width:1024px){.scene .mb{display:inline}}
 
 </style>
 <body>
@@ -847,16 +848,16 @@ function scene(){
   var col='';['M150 388C280 376 520 398 650 384','M170 400C300 392 500 410 640 398','M140 412C290 404 510 424 660 410','M180 424C320 416 480 432 620 422'].forEach(function(d,i){col+='<path class="col" id="scCol'+i+'" d="'+d+'"/>'});
   return '<svg viewBox="0 0 800 480" aria-hidden="true">'+
    '<g id="scCell"><path class="cell" id="scBody" d="M96 292C190 262 262 206 400 202S604 258 712 284C612 318 530 368 400 370S196 322 96 292Z"/>'+
-    '<ellipse class="nuc" cx="400" cy="262" rx="74" ry="38"/>'+chrom+'<text x="400" y="330" text-anchor="middle" class="dk">NUCLEUS</text></g>'+
-   '<g id="scR1"><path transform="translate(0 18)" class="rcp" d="M282 206v-34c0-10 12-10 12 0v32M298 204v-32c0-10 12-10 12 0v34"/><text x="270" y="118" text-anchor="middle" class="g dk">TGF-β RECEPTOR</text></g>'+
-   '<g id="scR2"><path transform="translate(0 6)" class="smo" d="M486 206l6-30 6 30 6-30 6 30 6-30 6 30"/><text x="540" y="118" text-anchor="middle" class="dk">PTCH1 / SMO</text></g>'+
+    '<ellipse class="nuc" cx="400" cy="262" rx="74" ry="38"/>'+chrom+'<text x="400" y="330" text-anchor="middle">NUCLEUS</text></g>'+
+   '<g id="scR1"><path transform="translate(0 18)" class="rcp" d="M282 206v-34c0-10 12-10 12 0v32M298 204v-32c0-10 12-10 12 0v34"/><text x="270" y="118" text-anchor="middle" class="g dk">TGF-β RECEPTOR</text><text x="250" y="118" text-anchor="middle" class="g mb">TGF-β R</text></g>'+
+   '<g id="scR2"><path transform="translate(0 6)" class="smo" d="M486 206l6-30 6 30 6-30 6 30 6-30 6 30"/><text x="540" y="118" text-anchor="middle" class="dk">PTCH1 / SMO</text><text x="575" y="118" text-anchor="middle" class="mb">PTCH1/SMO</text></g>'+
    '<g id="scL1"><circle class="lg" cx="0" cy="0" r="6"/><circle class="lg" cx="13" cy="0" r="6"/><text x="26" y="4" class="g">TGF-β</text></g>'+
    '<g id="scL2"><path class="hh" d="M0 -8L8 0L0 8L-8 0Z"/><text x="16" y="4" class="w">HEDGEHOG</text></g>'+
    '<path class="sig" id="scS1" d="M296 226C302 246 330 254 352 258"/><path class="sig" id="scS2" d="M504 214C500 240 470 252 448 258"/>'+
    '<g id="scCol">'+col+'<g id="scColT"><path class="lead" d="M400 436V448"/><text x="400" y="466" text-anchor="middle" class="w">COLLAGEN I · FIBRONECTIN</text></g></g>'+
    '<g id="scOxy">'+sterol(13,"oxy")+'<text x="0" y="-44" text-anchor="middle" class="w">OXY210</text></g>'+
-   '<g id="scB"><path class="lead" d="M372 170L324 232M428 170L476 232" style="stroke-dasharray:3 4"/><path class="blk" d="M313 249L327 230M487 249L473 230"/><text x="300" y="268" text-anchor="end" class="w dk">BLOCKED</text><text x="500" y="268" class="w dk">BLOCKED</text></g>'+
-   '<text x="780" y="196" text-anchor="end" class="g dk" id="scQ"><tspan x="780">PRO-FIBROTIC</tspan><tspan x="780" dy="1.3em">GENES QUIET</tspan></text>'+
+   '<g id="scB"><path class="lead" d="M372 170L324 232M428 170L476 232" style="stroke-dasharray:3 4"/><path class="blk" d="M313 249L327 230M487 249L473 230"/><text x="300" y="268" text-anchor="end" class="w">BLOCKED</text><text x="500" y="268" class="w">BLOCKED</text></g>'+
+   '<text x="780" y="196" text-anchor="end" class="g" id="scQ"><tspan x="780">PRO-FIBROTIC</tspan><tspan x="780" dy="1.3em">GENES QUIET</tspan></text>'+
   '</svg>';
 }
 
@@ -1152,7 +1153,7 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
+  /* no pointer-follow (client rule): the art keeps only its own motion */
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},setScroll:function(p){SP.v=p},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.mx,G.my]:[w/2,h/2]}};
 })();
@@ -1198,7 +1199,7 @@ function homeScroll(view){
     E.colT.style.opacity=(b*seg(p,.36,.46)*(1-quiet)).toFixed(3);
     /* 3: Oxy210 arrives and blocks both arms */
     var ox=seg(p,.5,.64);
-    E.oxy.setAttribute("transform","translate("+lerp(690,400,ox).toFixed(1)+" "+lerp(430,150,ox).toFixed(1)+")");
+    E.oxy.setAttribute("transform","translate(400 "+lerp(-30,150,ox).toFixed(1)+")");
     E.oxy.style.opacity=(b*seg(p,.46,.54)).toFixed(3);
     E.blk.style.opacity=blk.toFixed(3);
     /* 4: quiet */

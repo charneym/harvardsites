@@ -1,0 +1,95 @@
+# Highlander Partners: dossier (facts with sources)
+
+- Firm: Highlander Partners, L.P., Dallas-based private investment firm. Site: https://highlander-partners.com/
+- HQ: 300 Crescent Court, Suite 550, Dallas, TX 75201; tel (214) 245-5000; fax (214) 245-5015; contact cthomas@highlander-partners.com (Charles C. Thomas, Principal). Europe: plac Marszałka Józefa Piłsudskiego 2, 00-078 Warszawa, Poland (+48 22 521 04 20, adzagarow@highlander-partners.com); Charles de Gaulle Plaza, Charles de Gaulle Square no. 15, 16th floor, sector 1, Bucharest 011857, Romania ((031) 228 54 20, astroilescu@highlander-partners.com). Source: https://highlander-partners.com/contact/ . Time zone: US Central.
+- About (https://highlander-partners.com/about/): over $3.0 billion in assets under management; invests its own proprietary capital; offices in Warsaw and Bucharest; founded 2004; over 90 majority control transactions in eight countries in North America and Europe, transaction values exceeding $5.0 billion. Why different: only own capital (including all team members), no outside limited partners; complete flexibility in capital structures; no defined investment horizon deadlines; operators in past experiences, support entrepreneurial cultures; not bureaucratic, lower leverage than most PE firms. Partners combine investment professionals and builders/operators; spend time on strategy rather than "learning the business."
+- Home: principal focus on majority control, direct private equity investments; Mission and Vision statements (home page text).
+- Release boilerplate: "buy and build investment approach, creating value by helping companies grow both organically and through acquisitions."
+- Activity:
+  - 2026-01-20 Highlander acquired Tapatío hot sauce (#5 US hot sauce brand, founded 1971 by Jose-Luis Saavedra Sr.) from the Saavedra family; The Arnold Companies took a significant minority equity position; family retains a minority position. Plans: extend reach into nascent geographies, broaden distribution channels, new product development, complementary categories. Quotes: Jeff L. Hull (President and CEO), Jeff Partridge (Partner). Stout advised Tapatío; J.P. Morgan led senior financing; NMP Capital financing and equity; Katten legal advisor to Highlander. https://highlander-partners.com/news-posts/highlander-partners-acquires-iconic-hot-sauce-brand-tapatio/ ; also https://www.privsource.com/acquisitions/deal/highlander-partners-acquires-tapatio-hot-sauce-from-saavedra-family-ane_gaSL7A
+  - 2026-05-26 MONZA-ARES and Brain Institute merge (Romania). https://highlander-partners.com/news-posts/monza-ares-and-brain-institute-merge-to-form-one-of-romanias-leading-private-hospital-operators/
+  - 2026-07-06 Highlander sells DZYNE Technologies to Ondas. https://highlander-partners.com/uncategorized/highlander-partners-sells-its-defense-technology-business-dzyne-technologies-to-ondas/
+  - 2025-12-10 NiTEO acquires Faultless Brands; 2025-12-04 NiTEO acquires Folex(port). Faultless: https://highlander-partners.com/news-posts/niteo-products-a-portfolio-company-of-highlander-partners-acquires-faultless-brands/ ; Niteo acquires Folex https://highlander-partners.com/news-posts/niteo-products-a-portfolio-company-of-highlander-partners-acquires-folex/
+- Team (https://highlander-partners.com/team/, full bios with Responsibilities / Experience / Education captured from the page; 37 people):
+  - Laurence E. Hirsch Chairman (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_laurence_e_hirsch.jpg)
+  - Jeff L. Hull President and CEO (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_jeff_l_hull.jpg)
+  - Alex L. Guiva Partner (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_alex_l_gulva.jpg)
+  - Jeff Partridge Partner (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_jeff_partridge.jpg)
+  - Bret Furio Partner (headshot https://highlander-partners.com/wp-content/uploads/2022/11/Bret-Furio2.jpg)
+  - Stanley C. Bould Partner - Asian and Alternative Investments (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_stanley_c_bould.jpg)
+  - Stuart Leitch Managing Director (headshot https://highlander-partners.com/wp-content/uploads/2026/08/Stuart-Leitch.jpg)
+  - Robert A. Sussman Chief Financial Officer (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_robert_a_sussman.jpg)
+  - Chris M. McRorie General Counsel (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_chris_m_mcrorie.jpg)
+  - Stewart Baseley Chairman, CEE (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_stewart_baseley.jpg)
+  - Artur Dzagarow Managing Partner, CEE - Poland (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_artur_dzagarow.jpg)
+  - Raluca Nita Co-Managing Partner - CEE - Romania (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_raluca_nita.jpg)
+  - Adrian Stroilescu, MD Co-Managing Partner - CEE - Romania (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_adrian_stroilescu_md.jpg)
+  - Collins Bryan Principal (headshot https://highlander-partners.com/wp-content/uploads/2025/04/bios_collins_bryan-1.jpg)
+  - Dustin Herman Principal (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_dustin_herman.jpg)
+  - John Rabenhorst Principal (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_john_rabenhorst_t.jpg)
+  - Charles C. Thomas Principal (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_chaz_thomas.jpg)
+  - Joe Francescon Director (headshot https://highlander-partners.com/wp-content/uploads/2026/04/Joe2.jpg)
+  - Saurab Guha Director (headshot https://highlander-partners.com/wp-content/uploads/2021/08/bios_saurab_guha.jpg)
+  - Ryan Holcomb Director (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_ryan_holcomb.jpg)
+  - J McNamara Director (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_j_mcnamara.jpg)
+  - Chris Shriver Director (headshot https://highlander-partners.com/wp-content/uploads/2025/12/Chris-Shriver2-1.jpg)
+  - Michael Smith Director (headshot https://highlander-partners.com/wp-content/uploads/2026/07/Michael-Smith.jpg)
+  - Nicholas E. Thicksten Director and Co-Portfolio Manager (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_nicholas_e_thicksten.jpg)
+  - Piotr Popławski Director - CEE - Poland (headshot https://highlander-partners.com/wp-content/uploads/2021/05/bios_piotr_poplawski.jpg)
+  - Andrei Mihul Director – Counsel – CEE - Romania (headshot https://highlander-partners.com/wp-content/uploads/2025/08/bios_andrei_mihul.jpg)
+  - Stuart Blake Vice President (headshot https://highlander-partners.com/wp-content/uploads/2025/09/bios_stuart_blake.jpg)
+  - Tucker Fairbanks Vice President (headshot https://highlander-partners.com/wp-content/uploads/2026/09/Tucker-Fairbanks.jpg)
+  - Nick Julian Vice President (headshot https://highlander-partners.com/wp-content/uploads/2022/08/bios_nick_julian-1.jpg)
+  - James J. Laureys Vice President (headshot https://highlander-partners.com/wp-content/uploads/2022/04/bios_j_laureys-300x300-1.jpg)
+  - Arno Curtis Senior Associate (headshot https://highlander-partners.com/wp-content/uploads/2023/09/Arno-Curtis.jpg)
+  - Campbell Wilkerson Associate (headshot https://highlander-partners.com/wp-content/uploads/2025/04/bios_campbell_wilkerson.jpg)
+  - Ana Dolea Associate - CEE - Romania (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_ana_andrei.jpg)
+  - Simona Dineata Associate – CEE – Romania (headshot https://highlander-partners.com/wp-content/uploads/2025/08/bios_simona_dineata.jpg)
+  - Doran E. Smith Associate General Counsel (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_doran_e_smith.jpg)
+  - Ashley Greene Counsel (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_ashley_greene.jpg)
+  - Bradford R. Hirsch MD Senior Advisor (headshot https://highlander-partners.com/wp-content/uploads/2020/07/bios_bradford_hirsch.jpg)
+- Lead: Laurence E. Hirsch, co-founder and Chairman (co-founded April 2004 after retiring as CEO and Chairman of Centex Corporation; J.D. Villanova, M.I.P.P. Johns Hopkins, B.S. Econ Wharton). Jeff L. Hull, President and CEO.
+- Portfolio (https://highlander-partners.com/portfolio/):
+  - Akomex/DrukPak Group (Starogard Gdański, Poland; invested November 2010; exited March 2020; exited; Europe) https://www.akomex.pl/
+  - Ascend Custom Extrusions (Wylie, Texas, USA; invested September 2011; exited December 2018; exited; North America) 
+  - Balanced Nutritionals (New York City, New York; invested September 2020; exited February 2024; exited; North America) http://balancednutritionals.com/
+  - Bettera Brands (San Francisco, California, USA; invested November 2016; exited October 2021; exited; North America) https://bettera.com/
+  - Bevolution Group (Chicago, Illinois, USA; invested August 2013; exited November 2023; exited; North America) http://www.bevolutiongroup.com/
+  - Biamp Systems (Beaverton, OR USA; invested November 2017; current; North America) https://www.biamp.com/
+  - Chamberlin Edmonds (Atlanta, Georgia, USA; invested June 2008; exited October 2010; exited; North America) 
+  - Chicago Custom Foods, LLC (Chicago, Illinois, USA; invested January 2018; exited April 2020; exited; North America) https://www.kernelseasons.com/
+  - Custom Window Systems (Ocala, Florida, USA; invested December 2012; exited July 2014; exited; North America) 
+  - Direct Scaffolding Supply (Houston, TX; invested April 2022; current; North America) https://www.dss.net/
+  - DZYNE Technologies (Fairfax, VA; invested January 2023; exited; North America) http://www.dzynetech.com/
+  - Eagle Hospital Physicians (Dallas, Texas, USA; invested August 2010; exited May 2013; exited; North America) http://eagletelemedicine.com/
+  - Ergobaby (Torrance, California ; invested December 2024; current; North America) https://www.ergobaby.com/
+  - Fuerst Day Lawson (London, United Kingdom; invested February 2016; exited January 2024; exited; Europe) http://fdlworld.com/
+  - Iconic IP Interests (Dallas, TX USA; invested April 2018; current; North America) 
+  - Martin Fletcher (Irving, Texas, USA; invested December 2005; exited December 2012; exited; North America) 
+  - McIntosh Group (New York, NY; invested June 2022; exited November 2024; exited; North America) http://www.mcintoshgroup.com/
+  - MEDI-System Sp. z o.o. (Warsaw, Poland; invested August 2011; exited December 2015; exited; Europe) 
+  - Monarca Food Solutions (Chicago, IL USA; invested August 2019; current; North America) https://monarcasnacks.com/
+  - Monza Ares (Bucharest, Romania; invested July 2019; current; Europe) https://medicina-interventionala.ro/
+  - Niteo Products (Hernando, Mississippi and Dallas, Texas; invested July 2015; current; North America) https://www.niteoproducts.com/
+  - Pioneer Surgical Technology (Marquette, Michigan, USA; invested December 2006; exited July 2013; exited; North America) 
+  - Popular Ink (McKinney, Texas USA; invested February 2015; exited October 2019; exited; North America) 
+  - Pracownia Optyczna (Warsaw, Poland; invested July 2021; current; Europe) http://www.pracownieoptyczne.pl/
+  - Pretzilla (Milwaukee, WI; invested November 2020; current; North America) http://www.pretzilla.com/
+  - Profile Custom Extrusions (Rome, Georgia, USA; invested April 2014; exited July 2021; exited; North America) https://pcextrusions.com/
+  - ProService Agent Transferowy Sp. z o.o. (Warsaw, Poland; invested November 2012; exited May 2016; exited; Europe) https://psfinteco.pl/
+  - QFG Spółka z o.o. (Radom, Poland; invested January 2016; exited September 2021; exited; Europe) http://qfg.pl/
+  - QTI Fibers (Greensboro, NC and Dothan, AL; invested July 2015; exited July 2022; exited; North America) https://www.twitchellcorp.com/
+  - Realtruck (Ann Arbor, MI; invested April 2011; exited January 2021; exited; North America) http://realtruck.com/
+  - RMS Beauty (Charleston, South Carolina; invested October 2021; current; North America) https://www.rmsbeauty.com/
+  - Rotometal Sp. z o.o. (Świebodzin, Poland; invested May 2017; exited May 2022; exited; Europe) https://rotometal.pl/
+  - SanoVita (Râmnicu Vâlcea, Romania; invested February 2020; current; Europe) https://www.sanovita.ro/
+  - SensoryEffects (St. Louis, Missouri, USA; invested May 2006; exited May 2014; exited; North America) 
+  - SFERRA (Edison, New Jersey, USA; invested October 2018; current; North America) https://www.sferra.com/
+  - Signal Path (Raleigh, North Carolina, USA; invested April 2015; exited August 2021; exited; North America) 
+  - Strategic Equip. & Supply (Irving, Texas, USA; invested October 2009; exited May 2011; exited; North America) 
+  - Tapatío® (Vernon, CA; invested January 2026; current; North America) https://www.tapatiohotsauce.com/
+  - The Composites Group (North Kingsville, Ohio, USA; invested June 2008; exited November 2014; exited; North America) http://www.thecompositesgroup.com/
+  - Versatex Building Products (Aliquippa, Pennsylvania, USA; invested September 2014; exited June 2018; exited; North America) 
+  - ZREW Transformatory (Lodz, Poland; invested December 2012; exited December 2015; exited; Europe) https://the-rsgroup.com/
+- Brand: logo https://highlander-partners.com/wp-content/uploads/2020/07/transparent-background-logo.gif (464x140 GIF): navy (#131149) caps "HIGHLANDER", the "A" a black compass-needle shape over a slate-violet (#62637F) ellipse, "partners, L.P." below. Redrawn as inline SVG.
+- Images not used: hero night-earth photo and page header backgrounds (stock); portfolio logo tiles (mixed treatments, set as type).

@@ -61,7 +61,7 @@ Built in the Nov 2026 batch (not yet emailed; do not rebuild): truecath, onvagus
 
 ## 2b. Private equity firms (a separate track; currently 50 of each batch of 150)
 A PE firm must meet ALL of these rules:
-1. **Who:** a US private equity firm (buyout, growth, search-fund-backed holding company, independent sponsor or family office that does control deals), small or lower-middle market. **Not** headquartered in New York, the Boston area or California (any other state is fine).
+1. **Who:** a private equity firm (US or international: UK, Ireland, Canada, Australia, New Zealand, the Nordics, Benelux, DACH and other countries whose firm site is in English; added 2026-11-18 at the client's request) (buyout, growth, search-fund-backed holding company, independent sponsor or family office that does control deals), small or lower-middle market. US firms: **not** headquartered in New York, the Boston area or California (any other state is fine). International firms: any city; the site must have an English version, and the email greeting uses the lead's surname per local custom ("Dear Mr. X" / "Dear Ms. X").
 2. **Active:** evidence of activity in roughly the last 12–18 months: a closed fund, a platform or add-on acquisition, a new hire or a press release. Source it.
 3. **Bad site, proven:** at least 3 quoted pieces of bad-site evidence (template look, broken or empty pages, outdated portfolio or team, no stated investment criteria, a one-page site, missing contact details, stale copyright year).
 4. **Contactable:** a named managing partner, founder or principal.

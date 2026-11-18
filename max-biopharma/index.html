@@ -666,6 +666,9 @@ a.pcard:hover h3 .ar,a.pcard:focus-visible h3 .ar{opacity:1;transform:none}
 .ftr .fcv{-webkit-mask-image:radial-gradient(ellipse 62% 78% at 50% 64%,#000 30%,transparent 78%)!important;mask-image:radial-gradient(ellipse 62% 78% at 50% 64%,#000 30%,transparent 78%)!important}
 @media (max-width:1024px){.scene .dk{display:none}}
 @media (min-width:1101px){.pgrid.n4{--pn:4}}
+/* captions switch with a short timed crossfade on step change, never scrubbed (no half-faded caption at rest) */
+.story .step{opacity:0;visibility:hidden;transition:opacity .22s ease-in,visibility 0s linear .22s}
+.story .step.on{opacity:1;visibility:visible;transition:opacity .35s ease-out .18s,visibility 0s linear 0s}
 
 </style>
 <body>
@@ -1389,9 +1392,10 @@ function homeScroll(view){
   var lastP=0;draw(0);
   if(RM){draw(.98);return}
   var tl=gsap.timeline();tl.to({},{duration:1});
-  var fx=StoryFX({section:sec,figs:[],steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3.2)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  var fx=StoryFX({section:sec,figs:[],steps:[]});
+  var pinST=null;
+  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";var q=pinST?pinST.progress:p;if(!ScrollTrigger.isRefreshing)setStep(Math.min(N-1,Math.floor(q*N*.9999)));fx(p);draw(p)});
+  pinST=ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3.2)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:function(st){if(prog.isConnected){tl.progress(st.progress);setStep(Math.min(N-1,Math.floor(st.progress*N*.9999)))}}});
 }
 
 

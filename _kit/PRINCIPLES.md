@@ -4,6 +4,10 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v19 (latest; client review of batch 2026-11c, Blackford Capital)
 
+**CY. Labels never overlap.** Client (Corfigo): two figure callouts rendered on top of each other ("CHANNELS IN" over "HELIUM IN"). Check every callout and annotation on every route and every story step at 1440, 1280 and 390, and re-place any that collide or touch.
+
+**CZ. Art that moves on its own doesn't also follow the mouse.** Client (Corfigo): "since the heart is beating it's weird to have the design also move with the mouse." When the hero animates on its own (a beat, flow, drift, growth), no pointer parallax or tilt on top of it. If you add pointer interaction, keep it subtle and only on static compositions.
+
 **CX. Every site is custom.** Client: "i think the effectiveness of our site is its custom nature." Never reuse another firm's hero, story diagram or layout as a template. Shared code is allowed only for invisible plumbing (loader, transitions, sheets, footer fit, gates). Each firm gets its own signature concept.
 
 **CU. The hero visual is never an empty shape.** Client on Blackford: "that background design for the home page just seems like it's really missing something. like an empty circle just seems odd and out of place." A ring, frame, void or outline lifted from a logo must not be the centrepiece on its own: an empty container reads as a missing image. The signature element must carry real content and detail the eye can rest on: the actual mark or emblem (redrawn), a map, a composition built from their sectors/portfolio/science, or dense generative structure that fills its area. Abstracting a logo is fine only when the result has a filled focal point and visible richness at first sight (before any scroll). Self-check: screenshot the first screen and ask "if a stranger saw this, would they think an image failed to load?" If yes, it fails. Applies to sub-page heroes too.

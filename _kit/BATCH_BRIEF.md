@@ -22,6 +22,10 @@ FIRST read the binding client spec `_kit/SPEC.md`, then `_kit/PRINCIPLES.md` in 
 - One message per finished site to the coordinator, as in step 5; for PE firms include the HQ city/state, the managing partner, and the activity evidence instead of funding.
 
 
+
+## Their current site must ACTUALLY be bad (client: "absolutely critical"; binding)
+Before any research or design, screenshot the firm's CURRENT homepage at 1440 and 390 and look at it. Build ONLY if a stranger would call it clearly dated, broken, templated or thin: a stock template look, obvious leftovers or errors, broken or empty pages, stale content, missing basics. If it looks modern and professionally designed (even with small slips), STOP: report "SKIPPED: <slug>, current site is decent" with one line on why, and move to the next firm. Never build for a firm with a good site; it wastes usage and the email would land badly.
+
 ## Efficiency rules (binding from 2026-11-18; the client's goal is ~2000 sites in ~2 weeks on a fixed usage plan, at the SAME quality)
 Usage per site is the bottleneck. Cut everything the client never sees and nothing they do:
 - Research: one pass by you, with no parallel research subagents. Fetch the firm's own pages and the cited release, write the facts file once, and don't re-fetch.

@@ -255,8 +255,10 @@ a.pt:hover .go,a.pt:focus-visible .go{opacity:1;transform:none}
 .more{margin-top:48px}
 .stats.solo{margin-top:0}
 .sec.light.alt{background:var(--bone2)}
-.pillars.p2{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars.p3{grid-template-columns:repeat(3,minmax(0,1fr))}.pillars.p4{grid-template-columns:repeat(4,minmax(0,1fr))}
-@media (max-width:860px){.pillars.p2,.pillars.p4{grid-template-columns:1fr}}
+@media (min-width:861px){.pillars.p2{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars.p3{grid-template-columns:repeat(3,minmax(0,1fr))}.pillars.p4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:861px) and (max-width:1100px){.pillars.p4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* phones: a hero line too long for the screen wraps instead of running off it (the reveal splits real lines) */
+@media (max-width:560px){.hero-h .l{white-space:normal}}
 .offs .ol{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--stoneD)}
 .bigsvg text{font-family:var(--disp)}
 .dark .facts dt,.dark2 .facts dt{color:var(--stone)}

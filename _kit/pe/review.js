@@ -41,7 +41,7 @@ const url = 'file://' + path.join(ROOT, slug, 'index.html');
     await p.goto(url); await p.waitForTimeout(4600); let y = 0;
     for (const target of [0, 140, 300, 520]) { while (y < target) { await p.mouse.move(W / 2, 400); await p.mouse.wheel(0, 70); y += 70; await p.waitForTimeout(60); }
       await p.waitForTimeout(700); shots.push({ W, y: target, b64: (await p.screenshot()).toString('base64') }); }
-    if (W === 390) { await p.evaluate(() => scrollTo(0, document.body.scrollHeight)); await p.waitForTimeout(1500); shots.push({ W, y: 'footer', b64: (await p.screenshot()).toString('base64') }); }
+    if (W === 390) { for (let k = 0; k < 80; k++) { await p.mouse.wheel(0, 1600); await p.waitForTimeout(40); if (await p.evaluate(() => innerHeight + scrollY >= document.documentElement.scrollHeight - 4)) break; } await p.waitForTimeout(1800); shots.push({ W, y: 'footer', b64: (await p.screenshot()).toString('base64') }); }
     await p.close();
   }
   const p = await b.newPage({ viewport: { width: 1800, height: 900 } });

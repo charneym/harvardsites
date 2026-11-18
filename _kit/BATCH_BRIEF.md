@@ -28,6 +28,8 @@ Before any research or design, screenshot the firm's CURRENT homepage at 1440 an
 
 ## Efficiency rules (binding from 2026-11-18; the client's goal is ~2000 sites in ~2 weeks on a fixed usage plan, at the SAME quality)
 Usage per site is the bottleneck. Cut everything the client never sees and nothing they do:
+- ONE FIRM PER SESSION (from 2026-11-18 20:00). Cost is driven by context length: every turn re-reads the whole conversation, so a 2nd–5th site in one session costs 2–3x the first. Build exactly one site, send SITE DONE, then stop. Keep context lean: don't cat big files whole (grep/sed -n ranges), don't re-read the brief, view screenshots at the smallest size that answers the question, and never paste full gate output (tail it).
+- Fix requests from the coordinator go to the session that built the site (it still has the context).
 - Research: one pass by you, with no parallel research subagents. Fetch the firm's own pages and the cited release, write the facts file once, and don't re-fetch.
 - Design: one concept, built directly. No design explorations or throwaway prototypes.
 - QA: run the full gate list ONCE at the end, then re-run only the gates a fix touched. One opening recording (4x CPU). One fresh design-critic pass (fix its findings and don't loop it again). Look at the review screenshots yourself instead of producing many.

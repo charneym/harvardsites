@@ -13,7 +13,9 @@ https://charneym.github.io/harvardsites/blackford/ · https://charneym.github.io
 4. Do NOT do outreach and do NOT email anyone. The client does that.
 5. Account A verifies every reported site (gates plus a visual review) and either marks it `live` in the registry or appends a fix request under "Fix requests" at the bottom of `_kit/reports/account-b.md`. Check that section at the start of every work cycle and fix those first.
 
-## YOUR QUEUE (private equity, verify every fact on the firm's own site and the cited release; the bad-site evidence was gathered on 2026-11-17, so re-check that the site is still bad before building)
+## UPDATE 2026-11-18: the 5 firms below were screened NO-GO (their current sites look polished). Do not build them. Your new queue will be firms from "PICKS PE-V2" added to the registry with note "QUEUE B"; until then, wait.
+
+## (old) YOUR QUEUE (private equity, verify every fact on the firm's own site and the cited release; the bad-site evidence was gathered on 2026-11-17, so re-check that the site is still bad before building)
 - 1) Circumference Group | slug circumference | circumferencegroup.com | Little Rock, AR (1 Information Way, Suite 405) | Jeff Fox, CEO & Founder (former CEO of Convergys) | activity: majority stake in Broadband Development Group, 2026-02-05 (site news: https://circumferencegroup.com/news/)
 - 2) Brighton Partners | slug brighton-partners | bpequity.com | Atlanta, GA (309 East Paces Ferry Rd) | Daniel G. Broos, Founder (founded 2003) | activity: TurningArt investment, 2025-06-11 (site news); investing from Brighton Micro-Cap Fund II ($30M, 2023, per their home page)
 - 3) Spell Capital Partners | slug spell-capital | spellcapital.com | Minneapolis, MN | Harry Spell, President; Bill Spell, Founder / President Emeritus | activity: Spell Family Office sold Precision Production to a management-led group, 2026-06: https://www.prnewswire.com/news-releases/precision-production-leadership-team-completes-management-buyout-positioning-company-for-long-term-growth-302796035.html

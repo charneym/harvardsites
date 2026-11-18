@@ -1546,9 +1546,21 @@ function homeScroll(view){
   if(RM)return;
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,steps:[]});
-  function stepText(p){var q=p*4;steps.forEach(function(s,j){var d=q-j,a=(j===0?1:sm01((d+.54)/.1))*(j===4?1:1-sm01((d-.44)/.1));s.style.opacity=a.toFixed(3);s.style.visibility=a>.01?"visible":"hidden";s.style.translate="0 "+((1-a)*(d<0?14:-10)).toFixed(1)+"px"})}
+  var stCur=-1;function stepText(p){var n=Math.min(4,Math.round(p*4));
+    if(n===stCur)return;var first=stCur<0;stCur=n;var busyOut=false;
+    steps.forEach(function(s,j){if(j===n)return;gsap.killTweensOf(s);var o=+getComputedStyle(s).opacity;
+      if(o>.01&&!first){busyOut=true;gsap.to(s,{opacity:0,y:-8,duration:.16,ease:"power1.in",onComplete:function(){gsap.set(s,{visibility:"hidden",y:0})}})}
+      else gsap.set(s,{opacity:0,visibility:"hidden",y:0})});
+    var e=steps[n];gsap.killTweensOf(e);gsap.set(e,{visibility:"visible"});
+    if(first)gsap.set(e,{opacity:1,y:0});else gsap.to(e,{opacity:1,y:0,duration:.24,delay:busyOut?.12:0,ease:"power2.out",startAt:+getComputedStyle(e).opacity<.01?{y:10}:{}})}
   function sm01(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}stepText(0);
-  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;var p=tl.progress();story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(4,Math.round(p*4)));stepText(p);fx(p)});
+  tl.eventCallback("onUpdate",function(){if(!story||!prog.isConnected)return;fx(tl.progress())});
+  /* the story state follows the real scroll position through the pin (robust to refreshes) */
+  var lastSP=-1;function storyTick(){if(!prog.isConnected){gsap.ticker.remove(storyTick);return}if(!story)return;
+    var sp=sec.parentNode&&sec.parentNode.classList.contains("pin-spacer")?sec.parentNode:sec,r=sp.getBoundingClientRect();
+    if(r.bottom<-50||r.top>innerHeight+50)return;var p=Math.max(0,Math.min(1,-r.top/Math.max(1,r.height-innerHeight)));
+    if(Math.abs(p-lastSP)<.0005)return;lastSP=p;story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(4,Math.round(p*4)));stepText(p)}
+  gsap.ticker.add(storyTick);
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3.4)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
     onRefresh:function(){if(story)story.resize()}});
 }

@@ -257,6 +257,10 @@ a.pt:hover .go,a.pt:focus-visible .go{opacity:1;transform:none}
 .sec.light.alt{background:var(--bone2)}
 @media (min-width:861px){.pillars.p2{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars.p3{grid-template-columns:repeat(3,minmax(0,1fr))}.pillars.p4{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media (min-width:861px) and (max-width:1100px){.pillars.p4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* phones: the portrait sheet takes the full height so a long bio paragraph always fits its scroll area */
+@media (max-width:760px){.ps:not(.noimg) .ps-sheet{height:calc(100vh - 40px);height:calc(100dvh - 40px)}.ps-media{height:min(22vh,190px)}.ps-body p{font-size:16px;line-height:1.62}}
+/* the bio column scrolls (ps-body); its wrapper must not clip a line that is half-scrolled at the edge */
+.ps-col{overflow:visible}
 /* phones: a hero line too long for the screen wraps instead of running off it (the reveal splits real lines) */
 @media (max-width:560px){.hero-h .l{white-space:normal}}
 .offs .ol{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--stoneD)}

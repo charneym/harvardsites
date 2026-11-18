@@ -85,7 +85,7 @@ function vContact(){var C=D.contact||{},O=D.offices||[];
 }
 function v404(){return head({k:"Not found",h:'This page <em>does not exist.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){var O=D.offices||[],F=D.focus||{};
-  var c2=has(F.criteria)?['Criteria',F.criteria.slice(0,2).map(function(f){return esc(f[1].length>44?f[0]:f[1])}).join("<br>")]:(has(F.sectors)?['Focus',F.sectors.slice(0,3).map(esc).join("<br>")]:null);
+  var CR=(F.criteria||[]).filter(function(f){return f[1].length<=44}).slice(0,2);var c2=CR.length?['Criteria',CR.map(function(f){return esc(f[1])}).join("<br>")]:(has(F.sectors)?['Focus',F.sectors.slice(0,3).map(esc).join("<br>")]:null);
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">'+(O.length>1?"Offices":"Office")+'</span>'+(O.length?O.map(function(o){return esc(o.city)}).join("<br>"):esc(D.hq||""))+'</div>'+
    (c2?'<div class="c"><span class="lab">'+c2[0]+'</span>'+c2[1]+'</div>':'')+

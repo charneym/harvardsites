@@ -21,7 +21,7 @@ const url = 'file://' + path.join(ROOT, slug, 'index.html');
       if (r !== '#/') { await p.evaluate(r => location.hash = r, r); await p.waitForTimeout(2200); }
       const bad = await p.evaluate(() => { const o = [];
         document.querySelectorAll('#view h1, #view h2, #view h3').forEach(h => { const box = h.getBoundingClientRect(); if (box.width < 20 || h.closest('[aria-hidden=true]')) return;
-          const rg = document.createRange(); rg.selectNodeContents(h); const rs = [...rg.getClientRects()];
+          const rs = []; const tw = document.createTreeWalker(h, NodeFilter.SHOW_TEXT); let tn; while ((tn = tw.nextNode())) { if (!tn.textContent.trim()) continue; const rg = document.createRange(); rg.selectNodeContents(tn); rs.push(...[...rg.getClientRects()].filter(x => x.width > 0)); } if (!rs.length) return;
           const cs = getComputedStyle(h), pr = parseFloat(cs.paddingRight) || 0;
           const right = Math.max(...rs.map(x => x.right), 0), left = Math.min(...rs.map(x => x.left), 1e9);
           if (right > box.right - pr + 2 || left < box.left - 2 || right > innerWidth + 1) o.push('"' + h.textContent.trim().slice(0, 40) + '" line ' + Math.round(right - box.right) + 'px past its box'); });

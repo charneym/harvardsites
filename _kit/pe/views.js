@@ -6,6 +6,8 @@ function indList(L){return '<ul class="ind">'+L.map(function(x){return '<li>'+es
 function facts(L){return '<dl class="facts">'+L.map(function(f){return '<div><dt class="lab">'+esc(f[0])+'</dt><dd>'+esc(f[1])+'</dd></div>'}).join("")+'</dl>'}
 var PHOTOS=has(D.team)&&D.team.filter(function(p){return p.img}).length>=Math.ceil(D.team.length/2);
 var SHEETS=has(D.team)&&D.team.every(function(p){return has(p.bio)})?D.team:[];
+/* BI: a portrait smaller than the sheet's media column would be upscaled: open that person in the compact column */
+SHEETS.forEach(function(p){if(!p.img)return;var im=new Image();im.onload=function(){if(im.naturalWidth<440)p.small=1};im.src=p.img});
 var GROUPS=(function(){var G=[],g=null;(D.team||[]).forEach(function(p){if(p.grp!==g){g=p.grp;G.push([g,[]])}G[G.length-1][1].push(p)});return G})();
 function grid(groups){return groups.map(function(g){return '<div class="grp">'+(groups.length>1||g[0]?'<span class="lab grp-l">'+esc(g[0]||"Team")+'</span>':'')+'<div class="pg">'+g[1].map(function(p){var link=SHEETS.length>0;
   var inner='<div class="ph'+(p.img?'':' noph')+'">'+(p.img?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="eager" onerror="this.parentNode.classList.add(\'noph\')">':'')+'<span class="ini" aria-hidden="true"></span>'+(link?'<span class="go" aria-hidden="true">'+ARR+'</span>':'')+'</div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p>';

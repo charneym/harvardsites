@@ -54,27 +54,25 @@ const SERIF400 = '.d1,.d2,.d3,.lede,.mani .txt,.stat .v,.step h3,.ind li,.pco h3
 const SERIFSP = '.d1{letter-spacing:-.025em;line-height:.98}.d2{letter-spacing:-.022em}.d3{letter-spacing:-.018em}.hero-h{letter-spacing:-.03em}.stat .v{letter-spacing:-.03em}.mani .txt{letter-spacing:-.018em}.cta .big{letter-spacing:-.03em}.xt .t{letter-spacing:-.02em}';
 const EMSAME = '.d1 em,.d2 em,.d3 em,.cta .big em,.mani .txt em,.big em{font-family:var(--disp);font-size:1em}.hero-h .l>em:first-child,.d1>em:first-child,.d2>em:first-child,.d3>em:first-child,.big>em:first-child{padding-left:.08em}';
 const EMFLAT = '.d1 em,.d2 em,.d3 em,.cta .big em,.mani .txt em,.big em{font-style:normal;font-family:var(--disp);font-weight:400;font-size:1em}';
-const FONTS = {
-  grotesk:   { spec: 'Hanken Grotesk:300,400,500; Instrument Serif:400i; DM Mono:400', disp: 'Hanken Grotesk', serif: 'Instrument Serif', sans: 'Hanken Grotesk', mono: 'DM Mono', kind: 'sans', css: '' },
-  archivo:   { spec: 'Archivo:300,400; Instrument Sans:400,500; IBM Plex Mono:400', disp: 'Archivo', serif: 'Archivo', sans: 'Instrument Sans', mono: 'IBM Plex Mono', kind: 'sans', css: EMFLAT + '.d1{letter-spacing:-.04em}' },
-  sora:      { spec: 'Sora:300,400; Inter Tight:400,500; JetBrains Mono:400', disp: 'Sora', serif: 'Sora', sans: 'Inter Tight', mono: 'JetBrains Mono', kind: 'sans', css: EMFLAT + '.hero-h{font-size:clamp(46px,6.6vw,128px)}' },
-  garamond:  { spec: 'Cormorant Garamond:400,500,400i; Manrope:400,500; DM Mono:400', disp: 'Cormorant Garamond', serif: 'Cormorant Garamond', sans: 'Manrope', mono: 'DM Mono', kind: 'serif', css: SERIF400 + SERIFSP + EMSAME + '.hero-h{font-size:clamp(52px,7.6vw,148px)}.mani .txt{font-size:clamp(32px,4vw,66px)}.lab,.nav a.nl,.btn,.burger{font-weight:500}' },
-  spectral:  { spec: 'Spectral:300,300i; Schibsted Grotesk:400,500; Red Hat Mono:400', disp: 'Spectral', serif: 'Spectral', sans: 'Schibsted Grotesk', mono: 'Red Hat Mono', kind: 'serif', css: SERIFSP + EMSAME },
-  newsreader:{ spec: 'Newsreader:300,300i; Figtree:400,500; IBM Plex Mono:400', disp: 'Newsreader', serif: 'Newsreader', sans: 'Figtree', mono: 'IBM Plex Mono', kind: 'serif', css: SERIFSP + EMSAME },
-  caslon:    { spec: 'Libre Caslon Text:400,400i; Hanken Grotesk:400,500; DM Mono:400', disp: 'Libre Caslon Text', serif: 'Libre Caslon Text', sans: 'Hanken Grotesk', mono: 'DM Mono', kind: 'serif', css: SERIF400 + SERIFSP + EMSAME + '.d1{font-size:clamp(44px,6.4vw,124px)}.hero-h{font-size:clamp(42px,6vw,116px)}.d2{font-size:clamp(36px,4.5vw,84px)}' },
-  instrument:{ spec: 'Instrument Serif:400,400i; Instrument Sans:400,500; DM Mono:400', disp: 'Instrument Serif', serif: 'Instrument Serif', sans: 'Instrument Sans', mono: 'DM Mono', kind: 'serif', css: SERIF400 + SERIFSP + EMSAME + '.hero-h{font-size:clamp(54px,8vw,156px)}' }
-};
-const F = FONTS[J.fonts || 'grotesk'] || die('unknown font pairing ' + J.fonts + ' (use one of ' + Object.keys(FONTS).join(', ') + ')');
+/* fonts: chosen per site (any @fontsource family installed in _kit/node_modules; add one with npm i --no-save).
+   {spec:"Family:300,400; Other:400,500; Mono:400", disp, serif (accent italics), sans, mono, kind:"sans"|"serif", weight400}
+   kind serif applies the serif-display fixes (tracking, same-family italic accents, italic overhang pad). */
+const FS = J.fonts || {};
+if (!FS.spec || !FS.disp || !FS.sans || !FS.mono) die('fonts needs {spec, disp, sans, mono} (see schema.md)');
+const F = { spec: FS.spec, disp: FS.disp, serif: FS.serif || FS.disp, sans: FS.sans, mono: FS.mono, kind: FS.kind === 'serif' ? 'serif' : 'sans',
+  css: (FS.kind === 'serif' ? SERIFSP + EMSAME : '') + (FS.weight400 ? SERIF400 : '') + (FS.flatAccent ? EMFLAT : '') };
 const FAM = { sans: "system-ui,-apple-system,'Segoe UI',sans-serif", serif: "Georgia,'Times New Roman',serif" };
 const fontLoads = F.spec.split(';').map(s => s.trim()).flatMap(s => { const [fam, ws] = s.split(':'); return ws.split(',').map(w => (w.endsWith('i') ? 'italic ' : '') + w.replace('i', '') + ' 1em "' + fam.trim() + '"'); });
 
 /* ---------- shape + layout variants ---------- */
-const SHAPE = L.shape || 'soft';
-const SHP = { soft: { r: 12, rd: .1, css: '' },
-  pill: { r: 47, rd: .5, css: '.btn{border-radius:999px}.rail span::before,.ind li::before,.aims li::before{border-radius:50%}.pt .ph{border-radius:14px}' },
-  square: { r: 2, rd: .02, css: '.btn{border-radius:2px}.rail span::before{border-radius:0;transform:rotate(45deg) scale(.8)}.ind li::before,.aims li::before{border-radius:0}.pt .ph{border-radius:2px}' } }[SHAPE] || die('shape must be soft|pill|square');
-const ORDERS = { A: ['thesis', 'story', 'sectors', 'portfolio', 'team', 'news'], B: ['thesis', 'portfolio', 'story', 'team', 'sectors', 'news'], C: ['story', 'thesis', 'sectors', 'team', 'portfolio', 'news'] };
-const order = (ORDERS[L.order || 'A'] || die('order must be A|B|C')).filter(k => ({
+/* layout: chosen per site. sections = the home order (any of thesis, story, sectors, portfolio, team, news);
+   radius = corner radius in px for buttons/markers/portraits (site CSS in "css" does the rest) */
+const RAD = L.radius == null ? 10 : +L.radius;
+const SHP = { r: Math.min(47, RAD + 2), rd: Math.min(.5, RAD / 48), css: '.btn{border-radius:' + (RAD > 30 ? 999 : RAD) + 'px}.pt .ph{border-radius:' + Math.min(RAD, 16) + 'px}' + (RAD > 30 ? '.rail span::before,.ind li::before,.aims li::before{border-radius:50%}' : RAD < 4 ? '.rail span::before,.ind li::before,.aims li::before{border-radius:0}' : '') };
+const SECS = ['thesis', 'story', 'sectors', 'portfolio', 'team', 'news'];
+if (!Array.isArray(L.sections)) die('layout.sections (home section order) is required, e.g. ["thesis","story","sectors","portfolio","team","news"]');
+L.sections.forEach(k => { if (!SECS.includes(k)) die('unknown section ' + k); });
+const order = L.sections.filter(k => ({
   thesis: J.thesis || has(J.stats), story: J.story && has(J.story.steps), sectors: has(J.sectors), portfolio: has(J.portfolio), team: has(J.team), news: has(J.news) })[k]);
 /* themes: walk back from the (light) CTA so bands alternate; the story band is always dark (ink2) */
 const themes = []; let next = 'light', lightAlt = false;
@@ -116,18 +114,15 @@ const D = {
 if (D.news.some(n => !/^\d{4}-\d{2}-\d{2}$/.test(n.d))) die('news dates must be YYYY-MM-DD');
 const ROUTES = [['focus', 'Focus', has(D.focus.criteria) || has(D.focus.sectors)], ['portfolio', 'Portfolio', has(port)], ['team', 'Team', has(team)], ['news', 'News', has(D.news)]].filter(r => r[2]);
 
-/* ---------- hero + story modules ---------- */
-const HL = fs.readFileSync(path.join(DIR, 'heroes.js'), 'utf8');
-const mod = n => { const m = HL.match(new RegExp('/\\*==' + n + '==\\*/([\\s\\S]*?)/\\*==END==\\*/')); if (!m) die('unknown hero module ' + n); return m[1].trim(); };
-const H = J.hero || {}, HP = Object.assign({}, H.params || {});
-if ((H.module || 'corridor') === 'corridor' && !HP.lines) HP.lines = J.firm.toUpperCase().split(/\s+/).slice(0, 3);
-if (HP.round == null) HP.round = SHP.rd;
-const HERO = { params: HP, C: T.C, CF: T.CF, font: `'${F.disp}',${F.kind === 'serif' ? 'Georgia,serif' : 'system-ui,sans-serif'}`, mono: `'${F.mono}',ui-monospace,monospace`, word: (J.hero && J.hero.word) || short.toUpperCase() };
-const ST = require('./stories.js');
-const stype = story ? (story.type || 'hub') : 'hub';
-if (!ST[stype]) die('unknown story type ' + stype + ' (hub|poles|climb|layers)');
+/* ---------- the site's OWN hero and story (custom per firm; see BUILDER.md) ---------- */
+const SD = path.join(DIR, 'sites', J.slug), rd = f => fs.existsSync(path.join(SD, f)) ? fs.readFileSync(path.join(SD, f), 'utf8') : null;
+const heroJs = rd('hero.js'); if (!heroJs || !/var HM\s*=/.test(heroJs)) die('missing _kit/pe/sites/' + J.slug + '/hero.js defining var HM={geo,draw} (the firm\'s own hero)');
+
+const storyJs = story ? rd('story.js') : 'function scene(){return "<svg></svg>"}function storyDraw(){return function(){}}';
+if (!storyJs || !/function scene\(/.test(storyJs) || !/function storyDraw\(/.test(storyJs)) die('missing _kit/pe/sites/' + J.slug + '/story.js defining scene() and storyDraw(svg) (the firm\'s own diagram)');
 if (story && (story.steps.length < 3 || story.steps.length > 4)) die('story needs 3 or 4 steps');
-const sceneSvg = story ? ST[stype].svg(story.steps, story.params || {}) : '<svg></svg>';
+const H = J.hero || {}, HP = Object.assign({}, H.params || {});
+const HERO = { params: HP, C: T.C, CF: T.CF, font: `'${F.disp}',${F.kind === 'serif' ? 'Georgia,serif' : 'system-ui,sans-serif'}`, mono: `'${F.mono}',ui-monospace,monospace`, word: (J.hero && J.hero.word) || short.toUpperCase() };
 
 /* ---------- logo ---------- */
 const LG = J.logo || {};
@@ -216,8 +211,8 @@ var D=${JSON.stringify(D)};
 var HOMEORDER=${JSON.stringify(HOMEORDER)};
 var HERO=${JSON.stringify(HERO)};`,
   views: fs.readFileSync(path.join(DIR, 'views.js'), 'utf8'),
-  field: mod('SHELL').replace(/^var field=/, mod(H.module || 'corridor') + '\nvar field='),
-  story: `function scene(){return ${JSON.stringify(sceneSvg)}}\n` + ST[stype].draw
+  field: heroJs.trim() + '\n' + fs.readFileSync(path.join(DIR, 'field-shell.js'), 'utf8').replace(/^[\s\S]*?(?=var field=)/, ''),
+  story: storyJs
 };
 
 /* ---------- site css (shared components + variant overrides) ---------- */
@@ -260,7 +255,7 @@ a.pt:hover .go,a.pt:focus-visible .go{opacity:1;transform:none}
 .more{margin-top:48px}
 .stats.solo{margin-top:0}
 .sec.light.alt{background:var(--bone2)}
-.pillars.p2{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars.p4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.pillars.p2{grid-template-columns:repeat(2,minmax(0,1fr))}.pillars.p3{grid-template-columns:repeat(3,minmax(0,1fr))}.pillars.p4{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:860px){.pillars.p2,.pillars.p4{grid-template-columns:1fr}}
 .offs .ol{margin:10px 0 0;font-size:15px;line-height:1.55;color:var(--stoneD)}
 .bigsvg text{font-family:var(--disp)}
@@ -295,7 +290,7 @@ const LIGHT_CSS = BASE !== 'light' ? '' : `/* light-led base (lifted from Northe
 .scene text{fill:${T.stone}}.scene text.w{fill:${T.bone}}.scene text.a{fill:${T.acc}}.scene .node{fill:#ffffff}
 .light .pt .go{background:var(--ink);color:var(--bone)}
 .light a.pt:hover h3{color:var(--accD)}`;
-R.sitecss = PEOPLE_CSS + '\n/* typography: ' + (J.fonts || 'grotesk') + ' */\n' + F.css + '\n' + SHP.css + '\n' + LIGHT_CSS + (J.css ? '\n/* site */\n' + J.css : '');
+R.sitecss = PEOPLE_CSS + '\n/* typography */\n' + F.css + '\n' + SHP.css + '\n' + LIGHT_CSS + (J.css ? '\n/* site */\n' + J.css : '');
 
 /* ---------- assemble ---------- */
 let h = fs.readFileSync(path.join(DIR, 'engine.src.html'), 'utf8');
@@ -320,5 +315,5 @@ const dz = [`# ${J.firm}`, '', `Concept site generated by _kit/pe/gen.js from _k
   '', '## News', ...D.news.map(n => `- ${n.d} ${n.s}: ${n.t} — ${n.u}`),
   '', '## Sources', ...(J.sources || []).map(s => typeof s === 'string' ? '- ' + s : `- ${s.fact}: ${s.url}`)].filter(x => x !== '');
 fs.writeFileSync(path.join(KIT, 'dossiers', J.slug + '.md'), dz.join('\n') + '\n');
-console.log('gen: wrote ' + path.relative(ROOT, out) + ' (' + (h.length / 1024 | 0) + 'KB) · hero ' + (H.module || 'corridor') + ' · story ' + stype + ' · ' + BASE + '/' + (L.order || 'A') + '/' + SHAPE + ' · fonts ' + (J.fonts || 'grotesk'));
+console.log('gen: wrote ' + path.relative(ROOT, out) + ' (' + (h.length / 1024 | 0) + 'KB) · ' + BASE + ' base · ' + F.disp + ' / ' + F.sans);
 console.log('next: node _kit/build.js ' + path.relative(ROOT, out) + ' ' + J.slug + '/index.html   (qa.sh does this for you)');

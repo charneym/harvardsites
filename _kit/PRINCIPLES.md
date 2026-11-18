@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v19 (latest; client review of batch 2026-11c, Blackford Capital)
 
+**DA. The hero must be beautiful at a glance, not a clever diagram.** Client (Skyharbor ledger hero, rows of pill bars): "WHAT is that background / header animation thing. looks super weird and poorly done." The signature visual must read instantly as a refined, attractive image (an illustration, landscape, object, emblem, map, light). Never charts, UI-like rows, pills, bars, flowcharts or data-viz as the hero; keep those for the story section. Test: would a CEO screenshot it because it's beautiful? If you have to explain it, redo it.
+
 **CY. Labels never overlap.** Client (Corfigo): two figure callouts rendered on top of each other ("CHANNELS IN" over "HELIUM IN"). Check every callout and annotation on every route and every story step at 1440, 1280 and 390, and re-place any that collide or touch.
 
 **CZ. Art that moves on its own doesn't also follow the mouse.** Client (Corfigo): "since the heart is beating it's weird to have the design also move with the mouse." When the hero animates on its own (a beat, flow, drift, growth), no pointer parallax or tilt on top of it. If you add pointer interaction, keep it subtle and only on static compositions.

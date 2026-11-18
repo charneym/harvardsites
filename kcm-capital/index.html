@@ -593,6 +593,19 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:760px){.hm{grid-template-columns:1fr}}
 .offs b.em{font-size:clamp(17px,1.3vw,20px)}
 .offs{grid-template-columns:1fr 1fr}
+.scene .wall{fill:#fff;stroke:var(--bone);stroke-width:1.1}
+.scene .stone{fill:rgba(42,90,170,.08);stroke:var(--acc);stroke-width:1.1}
+.scene .joint{fill:none;stroke:rgba(42,90,170,.45);stroke-width:.8}
+.scene .cornice{fill:none;stroke:var(--bone);stroke-width:1.1}
+.scene .win{fill:#7cc4ec;fill-opacity:0;stroke:rgba(19,35,59,.7);stroke-width:.9}
+.scene .mull{fill:none;stroke:rgba(19,35,59,.45);stroke-width:.6}
+.scene .door{fill:none;stroke:var(--bone);stroke-width:1.1}
+.scene .arch{fill:none;stroke:#26abe2;stroke-width:1.2;stroke-dasharray:3 4}
+.scene .lead,.scene .link{fill:none;stroke:rgba(19,35,59,.35);stroke-width:.8}
+.scene text.cap{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;fill:#556274}
+.scene text.cap.a{fill:var(--acc)}
+.story-r{height:min(76vh,700px)}
+@media (max-width:1024px){.story-r{height:46vh;height:46svh}.scene text.cap{font-size:11px;letter-spacing:.06em}}
 .ph-head{min-height:72vh;min-height:72svh}
 .ps-col{overflow:visible}
 .grp{display:block}
@@ -1151,32 +1164,38 @@ function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.
 /* ================= HOME SCROLL ================= */
 function lerp(a,b,t){return a+(b-a)*t}
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-/*<R:story>*//* the story scene: ONE company, drawn as a building in elevation (BL/BY). Its foundation, "heritage and
-   culture", is there from the first frame and never changes: continuity. Step 2 a ring aligns owners and managers
-   around it; step 3 new floors go up on the same foundation; step 4 two add-on wings join it at ground level. */
+/*<R:story>*//* the story scene: ONE building in fine-line elevation, in the hero's hairline language (BL/BY). Its stone
+   foundation, heritage and culture, is drawn from the first frame and never changes: continuity. Step 2 the lights come
+   on inside as owners and managers align; step 3 new floors rise on the same foundation, their windows lighting as they
+   arrive; step 4 two add-on wings join at ground level, each with its own footing. Labels are captions, not boxes. */
+function win(x0,y0,cols,rows,w,h,gx,gy,cls){var o="";for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){var x=x0+c*(w+gx),y=y0+r*(h+gy);o+='<rect class="win '+cls+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'"/><path class="mull" d="M'+(x+w/2)+' '+y+'V'+(y+h)+'M'+x+' '+(y+h*.45)+'H'+(x+w)+'"/>'}return o}
+function stones(x0,x1,y0,y1,rows){var o='<rect class="stone" x="'+x0+'" y="'+y0+'" width="'+(x1-x0)+'" height="'+(y1-y0)+'"/>',hh=(y1-y0)/rows;for(var r=1;r<rows;r++)o+='<path class="joint" d="M'+x0+' '+(y0+r*hh)+'H'+x1+'"/>';for(var r2=0;r2<rows;r2++){for(var x=x0+(r2%2?14:28);x<x1-4;x+=28)o+='<path class="joint" d="M'+x+' '+(y0+r2*hh)+'V'+(y0+(r2+1)*hh)+'"/>'}return o}
 function scene(){
-  var floors=[["SYSTEMS",216],["TECHNOLOGY",164],["TALENT",112]].map(function(f){return '<g class="sFl"><rect class="flr" x="300" y="'+f[1]+'" width="200" height="52"/><text x="400" y="'+(f[1]+31)+'" text-anchor="middle" class="w">'+f[0]+'</text></g>'}).join("");
-  return '<svg viewBox="40 80 720 380" aria-hidden="true">'+
-   '<path class="ground" d="M60 398H740"/>'+
-   '<g id="scWings"><g class="sWg"><rect class="wing" x="150" y="296" width="120" height="102"/><text x="210" y="352" text-anchor="middle" class="w">ADD-ON</text><path class="gl" d="M270 330H300"/></g>'+
-    '<g class="sWg"><rect class="wing" x="530" y="296" width="120" height="102"/><text x="590" y="352" text-anchor="middle" class="w">ADD-ON</text><path class="gl" d="M500 330H530"/></g></g>'+
+  var floors=[["SYSTEMS",206],["TECHNOLOGY",162],["TALENT",118]].map(function(f,k){return '<g class="sFl"><rect class="wall" x="200" y="'+f[1]+'" width="200" height="44"/><path class="cornice" d="M196 '+f[1]+'H404"/>'+win(214,f[1]+10,6,1,20,24,10,0,"fw"+k)+'<path class="lead" d="M404 '+(f[1]+22)+'H432"/><text x="438" y="'+(f[1]+26)+'" class="cap">'+f[0]+'</text></g>'}).join("");
+  function wing(x0,side){return '<g class="sWg">'+stones(x0-6,x0+126,352,380,2)+'<rect class="wall" x="'+x0+'" y="292" width="120" height="60"/><path class="cornice" d="M'+(x0-4)+' 292H'+(x0+124)+'M'+(x0-4)+' 286H'+(x0+124)+'"/>'+win(x0+12,304,4,1,18,26,8,0,"ww")+'<path class="link" d="M'+(side<0?x0+120:x0)+' 312H'+(side<0?200:400)+'"/><text x="'+(x0+60)+'" y="276" text-anchor="middle" class="cap">ADD-ON</text></g>'}
+  return '<svg viewBox="44 104 532 318" aria-hidden="true">'+
+   '<path class="ground" d="M24 380H576"/>'+
+   '<g id="scWings">'+wing(54,-1)+wing(426,1)+'</g>'+
    '<g id="scFloors">'+floors+'</g>'+
-   '<g id="scBld"><rect class="bld" x="300" y="268" width="200" height="94"/><text x="400" y="310" text-anchor="middle" class="big">THE</text><text x="400" y="334" text-anchor="middle" class="big">COMPANY</text></g>'+
-   '<g id="scFnd"><rect class="fnd" x="280" y="362" width="240" height="36"/><text x="400" y="385" text-anchor="middle" class="a">HERITAGE · CULTURE</text></g>'+
-   '<g id="scRing"><ellipse class="ring" cx="400" cy="315" rx="196" ry="70"/><text x="400" y="222" text-anchor="middle" class="a">OWNERS · MANAGEMENT · KCM</text><text x="400" y="242" text-anchor="middle">INCENTIVES ALIGNED</text></g>'+
-   '<text x="400" y="440" text-anchor="middle" class="a" id="scGrow">COMPLEMENTARY ACQUISITIONS</text>'+
+   '<g id="scBld"><rect class="wall" x="200" y="250" width="200" height="102"/><path class="cornice" d="M194 250H406M194 244H406"/>'+win(214,262,6,2,20,24,10,10,"gw")+
+    '<path class="door" d="M286 352V322a14 14 0 0128 0V352"/></g>'+
+   '<g id="scFnd">'+stones(184,416,352,380,2)+'<text x="300" y="400" text-anchor="middle" class="cap a">HERITAGE · CULTURE · THE SAME FOUNDATION</text></g>'+
+   '<g id="scAlign"><path class="arch" d="M262 322a38 38 0 0176 0"/><text x="300" y="234" text-anchor="middle" class="cap a">OWNERS · MANAGEMENT · KCM, ALIGNED</text></g>'+
+   '<text x="300" y="416" text-anchor="middle" class="cap" id="scGrow">COMPLEMENTARY ACQUISITIONS</text>'+
   '</svg>';
 }
 function storyDraw(svg){
-  var E={bld:$("#scBld",svg),fnd:$("#scFnd",svg),ring:$("#scRing",svg),re:$("#scRing ellipse",svg),fl:$$("#scFloors .sFl",svg),wg:$$("#scWings .sWg",svg),gr:$("#scGrow",svg)};
+  var E={bld:$("#scBld",svg),fnd:$("#scFnd",svg),al:$("#scAlign",svg),gw:$$(".gw",svg),fl:$$("#scFloors .sFl",svg),wg:$$("#scWings .sWg",svg),gr:$("#scGrow",svg)};
+  var FW=[0,1,2].map(function(k){return $$(".fw"+k,svg)}),WW=E.wg.map(function(g){return $$(".ww",g)});
+  function lite(list,q){list.forEach(function(r,i){var a=seg(q,i/list.length*.7,i/list.length*.7+.3);r.style.fillOpacity=(a*.85).toFixed(3)})}
   return function(p,b){
     if(!E.bld.isConnected)return;
-    var s2=seg(p,.22,.38),s3=seg(p,.47,.68),s4=seg(p,.74,.92);
+    var s2=seg(p,.2,.38),s3=seg(p,.46,.7),s4=seg(p,.74,.94);
     E.bld.style.opacity=b;E.fnd.style.opacity=b;
-    E.ring.style.opacity=(b*s2*(1-s3)).toFixed(3);E.re.style.strokeDashoffset=(-(1-s2)*40).toFixed(1);
-    E.fl.forEach(function(f,k){var q=seg(s3,k*.25,.45+k*.25);f.style.opacity=(b*q).toFixed(3);f.setAttribute("transform","translate(0 "+(16*(1-q)).toFixed(1)+")")});
-    E.wg.forEach(function(g,k){var q=seg(s4,k*.2,.7+k*.2);g.style.opacity=(b*q).toFixed(3);g.setAttribute("transform","translate("+((k?1:-1)*24*(1-q)).toFixed(1)+" 0)")});
-    E.gr.style.opacity=(b*seg(s4,.5,1)).toFixed(3);
+    lite(E.gw,s2);E.al.style.opacity=(b*s2*(1-seg(s3,0,.18))).toFixed(3);
+    E.fl.forEach(function(f,k){var q=seg(s3,k*.26,.4+k*.26);f.style.opacity=(b*Math.min(1,q*1.6)).toFixed(3);f.setAttribute("transform","translate(0 "+(14*(1-q)).toFixed(1)+")");lite(FW[k],seg(q,.4,1))});
+    E.wg.forEach(function(g,k){var q=seg(s4,k*.2,.7+k*.2);g.style.opacity=(b*q).toFixed(3);g.setAttribute("transform","translate("+((k?1:-1)*22*(1-q)).toFixed(1)+" 0)");lite(WW[k],seg(q,.5,1))});
+    E.gr.style.opacity=(b*seg(s4,.6,1)).toFixed(3);
   };
 }/*</R:story>*/
 

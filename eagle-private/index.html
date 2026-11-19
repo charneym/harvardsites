@@ -196,7 +196,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .steps{position:relative;min-height:clamp(220px,30vh,300px)}
 .step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
 .step.on{opacity:1;visibility:visible}
-.step h3{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.03em;margin:0 0 16px}
+.step h3,.step h2{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.03em;margin:0 0 16px}
 .step p{color:rgba(var(--boner),.8);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(70vh,640px);align-self:center}
 .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
@@ -637,6 +637,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#06283f}}
 .light+.cta{border-top:1px solid rgba(6,40,63,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0!important}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0!important}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1003,10 +1009,10 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">How Eagle invests</span><h2 class="d3">Flexible capital, <em>patiently held.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Partners</span><span>The note</span><span>Equity</span><span>Horizon</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h3>Alongside owners and sponsors.</h3><p>Eagle partners with management or other private equity investors to supply growth and change of control capital, to privately-owned companies and sponsor-backed portfolio investments alike.</p></article>'+
-     '<article class="step"><h3>Subordinated debt, first.</h3><p>Eagle invests primarily in subordinated debt, in amounts of $4 million to $15 million per company. Larger investments are made together with co-investors.</p></article>'+
-     '<article class="step"><h3>With equity alongside.</h3><p>To a lesser extent, Eagle also takes warrants, preferred stock and common stock, giving its partners a flexible capital structure for each transaction.</p></article>'+
-     '<article class="step"><h3>Four to six years.</h3><p>Maturities typically range from four to six years: patient capital with a long-term investment horizon, so each company can meet its growth objectives.</p></article>'+
+     '<article class="step on"><h2>Alongside owners and sponsors.</h2><p>Eagle partners with management or other private equity investors to supply growth and change of control capital, to privately-owned companies and sponsor-backed portfolio investments alike.</p></article>'+
+     '<article class="step"><h2>Subordinated debt, first.</h2><p>Eagle invests primarily in subordinated debt, in amounts of $4 million to $15 million per company. Larger investments are made together with co-investors.</p></article>'+
+     '<article class="step"><h2>With equity alongside.</h2><p>To a lesser extent, Eagle also takes warrants, preferred stock and common stock, giving its partners a flexible capital structure for each transaction.</p></article>'+
+     '<article class="step"><h2>Four to six years.</h2><p>Maturities typically range from four to six years: patient capital with a long-term investment horizon, so each company can meet its growth objectives.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -1426,7 +1432,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

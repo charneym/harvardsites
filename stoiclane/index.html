@@ -625,6 +625,19 @@ div.pt:hover h3{color:inherit}
 div.pt:hover .ph img{filter:grayscale(1) contrast(1.03);transform:none}
 .pt .ph img{object-position:50% 25%}
 .grp-l{display:block;text-align:center;margin:0 0 28px}
+.scene .ghost{fill:none;stroke:rgba(238,241,245,.16);stroke-width:1;stroke-dasharray:3 5}
+.scene .stair{fill:rgba(91,143,224,.1);stroke:rgba(206,216,230,.75);stroke-width:1.1}
+.scene .shaft{fill:rgba(206,216,230,.08);stroke:rgba(214,226,240,.85);stroke-width:1.1}
+.scene .flute{fill:none;stroke:rgba(214,226,240,.35);stroke-width:.8}
+.scene rect.cap,.scene path.cap{fill:rgba(206,216,230,.12);stroke:rgba(214,226,240,.85);stroke-width:1}
+.scene .ent{fill:rgba(91,143,224,.12);stroke:rgba(214,226,240,.85);stroke-width:1.1}
+.scene .ent.fr{fill:rgba(10,80,174,.55)}
+.scene .ped{fill:rgba(94,199,162,.06);stroke:#5ec7a2;stroke-width:1.3}
+.scene text.cap{font-family:var(--mono);font-size:10px;letter-spacing:.16em;fill:#9ba7b7}
+.scene text.cap.a{fill:#5ec7a2}
+.scene text.cap.w{fill:#eef1f5}
+.story-r{height:min(76vh,700px)}
+@media (max-width:1024px){.story-r{height:46vh;height:46svh}.scene text.cap{font-size:12px;letter-spacing:.06em}}
 .mh-label{color:var(--stone)}
 div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}
 @media (max-width:760px){div.mh-row{grid-template-columns:1fr}}
@@ -1139,31 +1152,38 @@ function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.
 /* ================= HOME SCROLL ================= */
 function lerp(a,b,t){return a+(b-a)*t}
 function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-/*<R:story>*//* the story scene: ONE firm on ONE platform (BL/BY). Step 1 the platform business stands alone; step 2 a
-   common technology platform is laid beneath it; step 3 acquired practices set down on that platform one by one;
-   step 4 a single outline gathers them into one firm, held for the long term. */
+/*<R:story>*//* the story scene: ONE temple front in fine-line elevation, in the hero's classical language (BL/BY/DB).
+   The platform firm is the stylobate, the stepped base, drawn from the first frame with the colonnade it will carry
+   ghosted above it. Step 2 the common technology platform is laid as the entablature; step 3 each acquired practice
+   rises into place as a fluted column; step 4 the pediment closes the whole: one firm, held for the long term. */
+var SLX=[146,220,294,368,432,506,580,654];
 function scene(){
-  var slots=[100,170,240,560,630,700,135,205,595,665];
-  var prs=slots.map(function(x,i){var y=i<6?262:194;return '<rect class="prac" x="'+(x-28)+'" y="'+y+'" width="56" height="56" rx="3"/>'}).join("");
-  return '<svg viewBox="40 90 720 340" aria-hidden="true">'+
-   '<g id="scSlab"><rect class="slab" x="60" y="318" width="680" height="26" rx="3"/><text x="400" y="372" text-anchor="middle" class="a">COMMON TECHNOLOGY PLATFORM</text></g>'+
-   '<g id="scPr">'+prs+'<text x="170" y="182" text-anchor="middle" id="scPrT">ACQUIRED PRACTICES</text><text x="630" y="182" text-anchor="middle" id="scPrT2">ACQUIRED PRACTICES</text></g>'+
-   '<g id="scCore"><rect class="core" x="320" y="198" width="160" height="120" rx="3"/><text x="400" y="252" text-anchor="middle" class="big">PLATFORM</text><text x="400" y="276" text-anchor="middle" class="big">FIRM</text></g>'+
-   '<path class="hold" id="scHold" d="M60 150V128H740V150"/><text x="400" y="118" text-anchor="middle" class="a" id="scHoldT">ONE FIRM, BUILT FOR THE LONG TERM</text>'+
+  var ghosts=SLX.map(function(x){return '<rect class="ghost" x="'+(x-14)+'" y="176" width="28" height="152"/>'}).join("");
+  var cols=SLX.map(function(x){var f="";for(var k=1;k<4;k++)f+='<path class="flute" d="M'+(x-14+k*7)+' 182V322"/>';
+    return '<g class="sCol"><rect class="shaft" x="'+(x-14)+'" y="176" width="28" height="152"/>'+f+'<rect class="cap" x="'+(x-20)+'" y="168" width="40" height="8"/><path class="cap" d="M'+(x-16)+' 176q16 6 32 0"/><rect class="cap" x="'+(x-18)+'" y="322" width="36" height="6"/></g>'}).join("");
+  return '<svg viewBox="70 60 660 352" aria-hidden="true">'+
+   '<g id="scGhost">'+ghosts+'</g>'+
+   '<g id="scBase"><rect class="stair" x="92" y="360" width="616" height="16"/><rect class="stair" x="104" y="344" width="592" height="16"/><rect class="stair" x="116" y="328" width="568" height="16"/>'+
+    '<text x="400" y="400" text-anchor="middle" class="cap a">THE PLATFORM FIRM · THE BASE EVERYTHING STANDS ON</text></g>'+
+   '<g id="scCols">'+cols+'</g>'+
+   '<g id="scEnt"><rect class="ent" x="112" y="148" width="576" height="20"/><rect class="ent fr" x="112" y="128" width="576" height="20"/><path class="ent" d="M104 128H696M100 122H700"/>'+
+    '<text x="400" y="142" text-anchor="middle" class="cap w">COMMON TECHNOLOGY PLATFORM</text></g>'+
+   '<g id="scPed"><path class="ped" d="M100 122L400 70L700 122Z"/><text x="400" y="110" text-anchor="middle" class="cap a">ONE FIRM · HELD FOR THE LONG TERM</text></g>'+
+   '<text x="722" y="252" text-anchor="middle" class="cap" id="scPrT" transform="rotate(-90 722 252)">ACQUIRED PRACTICES</text>'+
   '</svg>';
 }
 function storyDraw(svg){
-  var E={slab:$("#scSlab",svg),pr:$$("#scPr .prac",svg),prT:$("#scPrT",svg),core:$("#scCore",svg),hold:$("#scHold",svg),holdT:$("#scHoldT",svg)};
-  var HL=E.hold.getTotalLength();
+  var E={base:$("#scBase",svg),gh:$("#scGhost",svg),ent:$("#scEnt",svg),cols:$$("#scCols .sCol",svg),ped:$("#scPed",svg),pp:$("#scPed path",svg),prT:$("#scPrT",svg)};
+  var PL=E.pp.getTotalLength();
   return function(p,b){
-    if(!E.core.isConnected)return;
-    var s2=seg(p,.22,.38),s3=seg(p,.47,.7),s4=seg(p,.76,.92);
-    E.core.style.opacity=b;
-    E.slab.style.opacity=(b*s2).toFixed(3);E.slab.setAttribute("transform","translate(400 331) scale("+(.25+.75*s2).toFixed(3)+" 1) translate(-400 -331)");
-    E.pr.forEach(function(r,k){var q=seg(s3,k*.07,.35+k*.07);r.style.opacity=(b*q).toFixed(3);r.setAttribute("transform","translate(0 "+(-30*(1-q)).toFixed(1)+")")});
-    E.prT.style.opacity=(b*seg(s3,.6,1)*(1-s4)).toFixed(3);$("#scPrT2",svg).style.opacity=E.prT.style.opacity;
-    E.hold.style.strokeDasharray=HL;E.hold.style.strokeDashoffset=(HL*(1-s4)).toFixed(1);E.hold.style.opacity=b;
-    E.holdT.style.opacity=(b*seg(s4,.5,1)).toFixed(3);
+    if(!E.base.isConnected)return;
+    var s2=seg(p,.2,.38),s3=seg(p,.45,.72),s4=seg(p,.76,.94);
+    E.base.style.opacity=b;E.gh.style.opacity=(b*(1-s3*.9)).toFixed(3);
+    E.ent.style.opacity=(b*s2).toFixed(3);E.ent.setAttribute("transform","translate(0 "+(-18*(1-s2)).toFixed(1)+")");
+    E.cols.forEach(function(g,k){var q=seg(s3,k*.09,.37+k*.09);g.style.opacity=(b*Math.min(1,q*2)).toFixed(3);g.setAttribute("transform","translate(0 328) scale(1 "+(.04+.96*q).toFixed(3)+") translate(0 -328)")});
+    E.prT.style.opacity=(b*seg(s3,.5,1)*(1-s4)).toFixed(3);
+    E.ped.style.opacity=b;E.pp.style.strokeDasharray=PL;E.pp.style.strokeDashoffset=(PL*(1-s4)).toFixed(1);
+    $("#scPed text",svg).style.opacity=(b*seg(s4,.55,1)).toFixed(3);
   };
 }/*</R:story>*/
 

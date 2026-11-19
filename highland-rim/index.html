@@ -669,6 +669,14 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .story-l .d3,.story-l .kick{display:none}
 }
 @media (max-width:860px){.hero-h{font-size:clamp(42px,11.5vw,96px)}}
+/* hero scrim: darken only behind the text column, keep the scene clear (critic) */
+.hero::before{background:radial-gradient(42% 62% at 18% 56%,rgba(var(--inkr),.82),rgba(var(--inkr),.42) 60%,rgba(var(--inkr),0) 88%),linear-gradient(180deg,rgba(var(--inkr),.32),rgba(var(--inkr),0) 18%,rgba(var(--inkr),0) 78%,rgba(var(--inkr),.55) 100%)}
+@media (max-width:860px){
+  #field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(42svh - 70px),transparent calc(42svh - 4px));mask-image:linear-gradient(180deg,#000 0,#000 calc(42svh - 70px),transparent calc(42svh - 4px))}
+  .hero::before{background:linear-gradient(180deg,rgba(var(--inkr),.3) 0,rgba(var(--inkr),0) 14%,rgba(var(--inkr),0) 34%,rgba(var(--inkr),.9) 46%,var(--ink) 60%)}
+  .hero{padding-top:calc(42svh + 8px);justify-content:flex-start}
+}
+.ph-head{min-height:78vh;min-height:78svh}
 </style>
 </head>
 </head>
@@ -713,7 +721,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
     <li><a href="#/contact">Contact</a></li>
   </ol>
   <div class="mmf">
-    <div><span class="lab">Office</span><br>20 Burton Hills Blvd, Suite 370<br>Nashville, TN 37215</div>
+    <div><span class="lab">Office</span><br>20 Burton Hills Blvd, Suite&nbsp;370<br>Nashville, TN 37215</div>
     <div><span class="lab">Email</span><br>info@highlandrimcap.com<br>+1 615-502-5999</div>
   </div>
 </div><!--</R:navmenu>-->
@@ -940,7 +948,7 @@ var MAIL="info@highlandrimcap.com";
 var HR="https://highlandrimcap.com/";
 var IND=["Light manufacturing","Value-add distribution","Business services"];
 var TT=["Management buyouts","Family succession","Founder transitions","Divisional spinouts","Corporate divestitures","Majority-control recapitalizations"];
-var CH=["Motivated, long-tenured in-house managers who want ownership in the company","A long and stable history of operating cash flows","A diversified customer base","Nationwide, with a focus on the South and Midwest"];
+var CH=["Motivated, long-tenured in-house managers who want ownership in the company","A long and stable history of operating cash flows","A diversified customer base"];
 var SEC=["Water and wastewater equipment","Capital equipment","Specialty paper products","Automotive equipment","Material handling equipment","Packaging equipment","Medical device components","Industrial sensors","Marine equipment","Sanitizing equipment","Transformers","Aerospace and defense components","Recreational products","Lab equipment","Gears and gearboxes","Promotional products"];
 /* [name, description, category, place · date, site] */
 var ACTIVE=[
@@ -979,8 +987,8 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg">'+g[1].map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
+function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg">'+g[1].map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span>'+c[3].split(" · ").map(function(x){return '<span class="lab" style="display:block;opacity:.85">'+esc(x)+'</span>'}).join("")+'</p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function inds(){return '<ul class="ind">'+IND.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function secs(){return '<ul class="ind c4">'+SEC.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
@@ -1026,7 +1034,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Where we invest</span><h2 class="d2 split">Established companies, <em>proven managers.</em></h2></div><p data-r>Lower middle market businesses with $10–100 million of revenue and $2.5–10 million of EBITDA, nationwide, with a focus on the South and Midwest.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Where we invest</span><h2 class="d2 split">Established companies, <em>proven managers.</em></h2></div><p data-r>Lower middle market businesses with $10–⁠100 million of revenue and $2.5–⁠10 million of EBITDA, nationwide, with a focus on the South and Midwest.</p></div>'+
    inds()+
    '<div style="margin-top:clamp(48px,5vw,72px)" data-r><a class="btn" href="#/criteria">Investment criteria '+ARR+'</a></div>'+
   '</div></section>'+
@@ -1078,7 +1086,7 @@ function vCriteria(){
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="kits"><div><span class="lab kick" data-r>Transaction types</span><h2 class="d3 split" style="margin:0 0 28px">How we <em>partner.</em></h2>'+aims(TT)+'</div>'+
-   '<div><span class="lab kick" data-r>Business characteristics</span><h2 class="d3 split" style="margin:0 0 28px">What we <em>look for.</em></h2>'+aims(CH)+'</div></div>'+
+   '<div><span class="lab kick" data-r>Business characteristics</span><h2 class="d3 split" style="margin:0 0 28px">The companies <em>we back.</em></h2>'+aims(CH)+'</div></div>'+
   '</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Sector-specific experience</span><h2 class="d2 split">Where the team <em>has invested.</em></h2></div><p data-r>Within light manufacturing, value-add distribution and business services, the team has experience across these sectors.</p></div>'+secs()+
@@ -1094,7 +1102,7 @@ function vPortfolio(){
    '<div class="shead"><div><span class="lab kick" data-r>Current</span><h2 class="d2 split">Current <em>investments.</em></h2></div><p data-r>Four platform companies backed by Fund I since May 2024, in business services and value-add distribution.</p></div>'+pf(ACTIVE)+'</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="two"><div><span class="lab kick" data-r>At a glance</span><h2 class="d3 split">A record built <em>together.</em></h2></div>'+
-   '<div class="nums n3">'+[["41","Platform investments, per Highland Rim’s at-a-glance figures"],["$208M","Committed capital in Fund I, Highland Rim Capital Partners"],["2008","The year the partners began investing together"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div></div>'+
+   '<div class="nums n3">'+[["41","Platform investments"],["$208M","Committed capital in Fund I, Highland Rim Capital Partners"],["2008","The year the partners began investing together"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div></div>'+
   '</div></section>'+
   cta();
 }
@@ -1115,7 +1123,7 @@ function vContact(){
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Office</span><h3>Nashville, Tennessee</h3><p>Highland Rim Capital<br>20 Burton Hills Blvd, Suite 370<br>Nashville, TN 37215</p>'+
     '<div class="offs"><div><span class="lab">Email</span><b class="em"><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></b></div><div><span class="lab">Phone</span><b class="em"><a class="ul" href="tel:+16155025999">+1 615-502-5999</a></b></div></div>'+
-    '<p class="muted" style="margin-top:28px;max-width:44ch">Highland Rim invests in companies with $10–100 million of revenue and $2.5–10 million of EBITDA, and in add-ons of any size.</p></div>'+
+    '<p class="muted" style="margin-top:28px;max-width:44ch">Highland Rim invests in companies with $10–⁠100 million of revenue and $2.5–⁠10 million of EBITDA, and in add-ons of any size.</p></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Company","text",0,1)+fld("msg","About the business or opportunity","ta",1,1)+
     '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><path d="M-62 30H-20L-8 -14L10 -10L22 -30L62 30"/><path d="M-66 44H66M-50 56H50"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin:14px auto 0;max-width:40ch">This concept form doesn’t send anything yet. On the live site it would reach the Highland Rim team directly; for now, write to '+MAIL+'.</p></div></div>'+
@@ -1169,7 +1177,7 @@ var field=(function(){
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var H=mob?Math.min(h*.34,w*.74):h;
+    var H=mob?Math.min(h*.42,w*.95):h;
     return {mob:mob,side:side,cw:cw,H:H,hz:H*(mob?.5:.56),
       sx:mob?w*.33:side+cw*.55,           /* the sun, on the far rim */
       bx:mob?w*.6:side+cw*.665,           /* the bluff's edge */
@@ -1179,7 +1187,7 @@ var field=(function(){
   function mk(){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round((G.H+2)*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   /* the river's centreline and width, t=0 at the far rim, t=1 where it leaves the frame */
   function rvAt(t){var H=G.H,hz=G.hz,y=hz+H*.035+(H*1.02-hz-H*.035)*Math.pow(t,1.55);
-    var x=G.sx+(G.rv-G.sx)*sm(t)+H*(.16*Math.sin(t*5.2+.2)*Math.sqrt(t)*(1-.5*t)+.03*Math.sin(t*13+1)*t*t);
+    var x=G.sx+(G.rv-G.sx)*sm(t)+H*(.16*Math.sin(t*5.2+.2)*Math.sqrt(t)*(1-.5*t)+.12*Math.sin(t*9-1.2)*t*t);
     return [x,y,G.H*(.006+.2*Math.pow(t,2.1))*(G.mob?1.1:1)]}
   /* a hardwood crown built from many small leaf-dabs in a few clumps, shaded toward the sun with a warm rim of first light */
   function crown(g,x,y,r,P,R){var lx=G.sx<x?-1:1,ds=Math.max(1.3,r*.14),nc=2+Math.floor(R()*3),C=[];
@@ -1203,7 +1211,7 @@ var field=(function(){
     /* first light: slate-blue overhead, warming to pale gold on the eastern horizon */
     var sky=g.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#1b2a3a");sky.addColorStop(.3,"#2f4a62");sky.addColorStop(.58,"#7090a6");sky.addColorStop(.8,"#c9b59a");sky.addColorStop(.93,"#efcb94");sky.addColorStop(1,"#f6dcaa");
     g.fillStyle=sky;g.fillRect(0,0,w,hz+2);
-    var R=rng(5);for(var i=0;i<9;i++){var cy=hz*(.22+R()*.5),cx=R()*w,cwid=w*(.1+R()*.2),ch=H*(.004+R()*.007),near=1-Math.min(1,Math.abs(cx-sx)/(w*.6)),a=.08+R()*.1;
+    var R=rng(5);for(var i=0;i<9;i++){var cy=hz*(.55+R()*.33),cx=R()*w,cwid=w*(.1+R()*.2),ch=H*(.004+R()*.007),near=1-Math.min(1,Math.abs(cx-sx)/(w*.6)),a=.08+R()*.1;
       g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);var col=near>.4?"255,214,170":"226,196,190";cg.addColorStop(0,"rgba("+col+","+(a*(.6+.6*near)).toFixed(3)+")");cg.addColorStop(1,"rgba("+col+",0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
     /* ---- the basin and the rim ---- */
     var B=mk(),m=B[1];oMid=B[0];
@@ -1238,7 +1246,7 @@ var field=(function(){
       crown(m,pb[0]+sd2*(pb[2]+szb*(Rk()*.8-.1)),pb[1]+szb*.5,szb,[mix([30,46,34],[130,136,132],hzz*.6),mix([76,98,62],[170,168,152],hzz*.55),"240,204,140",.4],Rk)}
     /* haze over the far basin, warm toward the sun */
     m.globalCompositeOperation="source-atop";
-    var hg=m.createRadialGradient(sx,hz,0,sx,hz,w*.55);hg.addColorStop(0,"rgba(255,226,170,.5)");hg.addColorStop(.4,"rgba(240,214,176,.2)");hg.addColorStop(1,"rgba(220,206,190,0)");m.fillStyle=hg;m.fillRect(0,hz-H*.06,w,H*.4);
+    var hg=m.createRadialGradient(sx,hz,0,sx,hz,w*.55);hg.addColorStop(0,"rgba(255,226,170,.5)");hg.addColorStop(.4,"rgba(240,214,176,.2)");hg.addColorStop(1,"rgba(220,206,190,0)");m.fillStyle=hg;m.fillRect(0,hz-H*.06,w,H*1.1);
     var vg=m.createLinearGradient(0,hz-H*.03,0,hz+H*.14);vg.addColorStop(0,"rgba(214,206,196,0)");vg.addColorStop(.25,"rgba(214,206,196,.36)");vg.addColorStop(1,"rgba(214,206,196,0)");m.fillStyle=vg;m.fillRect(0,hz-H*.03,w,H*.2);
     m.globalCompositeOperation="source-over";
     /* ---- the bluff: a limestone face of the escarpment, wooded on top ---- */
@@ -1251,19 +1259,22 @@ var field=(function(){
     for(bI=0;bI<=nb;bI++)edges.push(bx-H*.05*Math.pow(bI/nb,1.4)+H*.012*(Rb()-.5)*(bI>0&&bI<nb?1:0));
     var faceBot=bt+FH,BH=FH/nb;
     f.beginPath();f.moveTo(edges[0],bt);for(var xx=bx;xx<=w+12;xx+=6)f.lineTo(xx,topY(xx));f.lineTo(w+12,H+4);f.lineTo(edges[nb]-H*.1,H+4);f.lineTo(edges[nb]-H*.04,faceBot);
-    for(bI=nb;bI>=0;bI--){var yb=YS[bI];f.lineTo(edges[bI],yb);if(bI>0)f.lineTo(edges[bI]+H*.004,yb-(YS[bI]-YS[bI-1])*.1)}f.closePath();
+    for(bI=nb;bI>=0;bI--){var yb=YS[bI];f.lineTo(edges[bI],yb);if(bI>0){var ya=YS[bI-1],st=6;for(var q2=1;q2<st;q2++){var yq=yb-(yb-ya)*q2/st;f.lineTo(edges[bI]+(edges[bI-1]-edges[bI])*q2/st+H*.007*(Rb()-.3)+H*.004*Math.sin(yq*.3),yq)}f.lineTo(edges[bI-1]-H*.004,ya+(yb-ya)*.08)}}f.closePath();
     f.save();f.clip();
     var fg=f.createLinearGradient(edges[nb],0,w,0);fg.addColorStop(0,"#5b5446");fg.addColorStop(.12,"#3c3c34");fg.addColorStop(.45,"#28302b");fg.addColorStop(1,"#18221c");f.fillStyle=fg;f.fillRect(0,0,w,H+4);
     /* the bands of limestone: a lit lip on top, an undercut shadow below, joints between blocks */
     for(bI=0;bI<nb;bI++){var y0=YS[bI],bh=YS[bI+1]-YS[bI],tone=.03+.04*Rb();
       var lg=f.createLinearGradient(edges[bI],0,edges[bI]+H*.4,0);lg.addColorStop(0,"rgba(236,204,150,.42)");lg.addColorStop(.3,"rgba(220,190,140,.1)");lg.addColorStop(1,"rgba(200,180,140,0)");
-      f.fillStyle=lg;f.beginPath();f.moveTo(edges[bI]-2,y0);for(xx=edges[bI];xx<=w+8;xx+=8)f.lineTo(xx,y0+H*.002*Math.sin(xx*.03+bI*2));for(xx=w+8;xx>=edges[bI];xx-=8)f.lineTo(xx,y0+bh*(.06+.05*Math.sin(xx*.011+bI))+H*.002*Math.sin(xx*.05+bI));f.closePath();f.fill();
-      f.fillStyle="rgba(255,255,255,"+tone.toFixed(3)+")";f.fillRect(edges[bI],y0+bh*.15,w,bh*.5);
+      f.fillStyle=lg;for(var sx0=edges[bI]-2;sx0<w;){var sl=H*(.05+.18*Rb()),th=bh*(.04+.08*Rb()),dy=H*.004*(Rb()-.5);f.beginPath();f.moveTo(sx0,y0+dy);for(xx=sx0;xx<=sx0+sl;xx+=6)f.lineTo(xx,y0+dy+H*.002*Math.sin(xx*.03+bI*2));for(xx=sx0+sl;xx>=sx0;xx-=6)f.lineTo(xx,y0+dy+th*(.5+.5*Math.sin(Math.PI*(xx-sx0)/sl))+H*.002*Math.sin(xx*.05+bI));f.closePath();f.fill();sx0+=sl+H*(.005+.03*Rb())}
+      var tg=f.createLinearGradient(edges[bI],0,w,0);tg.addColorStop(0,"rgba(206,184,146,"+(tone*2.4).toFixed(3)+")");tg.addColorStop(.5,"rgba(150,150,140,"+tone.toFixed(3)+")");tg.addColorStop(1,"rgba(120,130,125,"+(tone*.5).toFixed(3)+")");f.fillStyle=tg;f.fillRect(edges[bI],y0+bh*.12,w,bh*(.4+.3*Rb()));
       f.fillStyle="rgba(6,12,9,.3)";f.beginPath();f.moveTo(edges[bI+1],y0+bh);for(xx=edges[bI+1];xx<=w+8;xx+=8)f.lineTo(xx,y0+bh+H*.0015*Math.sin(xx*.04+bI));for(xx=w+8;xx>=edges[bI+1];xx-=8)f.lineTo(xx,y0+bh*.9+H*.002*Math.sin(xx*.023+bI*3));f.closePath();f.fill();
-      f.strokeStyle="rgba(6,12,9,.22)";f.lineWidth=1;for(var jx=edges[bI]+H*(.02+.04*Rb());jx<edges[bI]+H*.3;jx+=H*(.05+.08*Rb())){f.beginPath();f.moveTo(jx,y0+bh*.12);f.lineTo(jx+H*.004*(Rb()-.5),y0+bh*(.5+.4*Rb()));f.stroke()}}
+      f.strokeStyle="rgba(6,12,9,.26)";f.lineWidth=1;for(var jx=edges[bI]+H*(.015+.03*Rb());jx<w;jx+=H*(.03+.07*Rb())){var jy=y0+bh*.1,jl=bh*(.5+.45*Rb());f.beginPath();f.moveTo(jx,jy);f.lineTo(jx+H*.004*(Rb()-.5),jy+jl*.5);f.lineTo(jx+H*.006*(Rb()-.5),jy+jl);f.stroke()}}
+    /* two deep fractures running the height of the face */
+    f.strokeStyle="rgba(6,12,9,.42)";f.lineWidth=1.6;[.18,.46].forEach(function(fr){var fx0=bx+H*fr,y1=bt;f.beginPath();f.moveTo(fx0,y1);while(y1<faceBot){y1+=H*.03;fx0+=H*.008*(Rb()-.5);f.lineTo(fx0,y1)}f.stroke()});
     /* weathering: streaks and blotches down the stone */
-    for(var mb=0;mb<(mob?40:90);mb++){var mx2=edges[nb]+Rb()*(w-edges[nb]),my2=bt+Rb()*FH,mr=H*(.006+.02*Rb());f.fillStyle=Rb()<.5?"rgba(6,12,9,.09)":"rgba(220,210,190,.04)";f.beginPath();f.ellipse(mx2,my2,mr*.5,mr*1.6,0,0,Math.PI*2);f.fill()}
-    var dk=f.createLinearGradient(bx+H*.1,0,w,0);dk.addColorStop(0,"rgba(10,18,13,0)");dk.addColorStop(1,"rgba(10,18,13,.5)");f.fillStyle=dk;f.fillRect(bx,bt,w,FH+H*.1);
+    for(var mb=0;mb<(mob?300:900);mb++){var mx2=edges[nb]+Rb()*(w-edges[nb]),my2=bt+Rb()*FH,mr=.6+Rb()*1.6;f.fillStyle=Rb()<.55?"rgba(6,12,9,.18)":"rgba(230,214,186,.08)";f.fillRect(mx2,my2,mr,mr*(1+2*Rb()))}
+    for(var st2=0;st2<(mob?12:26);st2++){var sx3=edges[nb]+H*.02+Rb()*(w-edges[nb]),sy3=bt+Rb()*FH*.7,sg2=f.createLinearGradient(0,sy3,0,sy3+H*.12);sg2.addColorStop(0,"rgba(6,12,9,.16)");sg2.addColorStop(1,"rgba(6,12,9,0)");f.fillStyle=sg2;f.fillRect(sx3,sy3,H*(.002+.004*Rb()),H*.12)}
+    var dk=f.createLinearGradient(bx+H*.1,0,w,0);dk.addColorStop(0,"rgba(10,18,13,0)");dk.addColorStop(1,"rgba(10,18,13,.5)");f.fillStyle=dk;f.fillRect(bx,bt,w,H);
     /* a soft shade falling across the face from the woods above */
     var sh=f.createLinearGradient(0,bt,0,bt+H*.08);sh.addColorStop(0,"rgba(6,12,9,.45)");sh.addColorStop(1,"rgba(6,12,9,0)");f.fillStyle=sh;f.fillRect(0,bt,w,H*.08);
     f.restore();
@@ -1276,7 +1287,7 @@ var field=(function(){
     var tr2=[];for(var x4=bx-H*.012;x4<w+H*.05;x4+=H*(mob?.026:.02))tr2.push(x4+H*.008*Rb());
     tr2.forEach(function(x5){var yb2=topY(x5)+H*.01;crown(f,x5,yb2,H*(.022+.016*Rb())*(1+.5*sm((x5-bx)/(H*.4))),PT,Rb)});
     /* two tall oaks on the rim frame the view */
-    var big=mob?[[w*.9,topY(w*.9)+H*.01,H*.3,H*.09]]:[[G.side+G.cw*.85,topY(G.side+G.cw*.85)+H*.01,H*.2,H*.085],[G.side+G.cw*.98,topY(G.side+G.cw*.98)+H*.01,H*.27,H*.1]];
+    var big=mob?[]:[[G.side+G.cw*.85,topY(G.side+G.cw*.85)+H*.01,H*.2,H*.085],[G.side+G.cw*.98,topY(G.side+G.cw*.98)+H*.01,H*.27,H*.1]];
     big.forEach(function(b){oak(f,b[0],b[1],b[2],b[3],PT,Rb)});
     /* the bluff's wooded foot along the water */
     for(var k2=0;k2<(mob?10:18);k2++){var t2=.55+k2*(.45/(mob?10:18)),p2=rvAt(t2),fx2=Math.max(p2[0]+p2[2]+H*.01,edges[nb]-H*.05+(t2-.55)*H*.1);crown(f,fx2+H*.03*Rb(),Math.min(p2[1]+H*.04,faceBot+H*.08+(t2-.55)*H*.4),H*(.025+.03*(t2-.4)),PS,Rb)}

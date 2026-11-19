@@ -677,6 +677,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .fieldbg{background:linear-gradient(180deg,#050f22 0,#1f3c66 calc(17svh - 20px),#6b7593 17svh,#142846 calc(17svh + 6px),#081a30 calc(34svh - 6px),#081a30 100%)}
   .brand .bm{width:40px;height:25px}.brand .w1{font-size:20px}
 }
+.ps-body .ctc a{text-transform:none;letter-spacing:0;font:400 16px/1.5 var(--sans)}
+@media (max-width:860px){.ph-head{min-height:0!important;padding-bottom:clamp(40px,8vw,64px)!important}}
+.sec.first.tm{padding-top:clamp(32px,4vh,48px)}
 
 </style>
 </head>
@@ -1009,6 +1012,7 @@ var TEAM=[
  {n:"Christian Musbach",r:"Analyst",i:IMG+"2026/09/Christian-Musbach-2.jpg",e:"cmusbach@shorehillcapital.com",ed:["B.S., Marquette University"],pw:["Taureau Group","Strohwig"],pc:[],pp:[]},
  {n:"Nina Fletcher",r:"Staff Accountant",i:IMG+"2026/03/Nina-Fletcher-scaled-e1772748114885.jpg",e:"nfletcher@shorehillcapital.com",ed:["B.S., North Park University"],pw:["Riverbend Industries","Business Sweden","Merrick Ventures","Joseph I. David CPA"],pc:[],pp:[]}];
 
+NEWS.forEach(function(n){n.s=/ acquires /.test(n.t)?"Portfolio":/ welcomes /.test(n.t)?"Team":/ exits /.test(n.t)?"Exit":"Firm"});
 function slug(n){return n.toLowerCase().replace(/[^a-z]+/g,"-").replace(/^-|-$/g,"")}
 var SHEETS=TEAM.map(function(p){var rows=[];
   if(p.ed.length)rows.push(["Education",p.ed.join(" · ")]);
@@ -1085,7 +1089,7 @@ function vHome(){
 
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Decades of private equity <em>experience.</em></h2></div><p data-r>Invest wisely, make few mistakes, continuously improve, and enjoy what you do. Select a portrait to read about each member of the team.</p></div>'+
-   pts(SHEETS)+
+   pts(SHEETS.slice(0,8))+
    '<div style="margin-top:56px;text-align:center" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -1149,7 +1153,7 @@ function vPortfolio(){
 }
 function vTeam(){
   return head({k:"Team",h:'Decades of private equity <em>experience.</em>',p:'Invest wisely, make few mistakes, continuously improve, and enjoy what you do. Select a portrait to read about each member of the team.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+pts(SHEETS)+'</div></section>'+
+  '<section class="sec dark first tm" data-theme="dark"><div class="wrap">'+pts(SHEETS)+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Executive Advisors</span><h2 class="d3 split">People who have built <em>businesses.</em></h2></div>'+
    '<div><p class="lede" data-r>The team is backed by more than 60 Executive Advisors who have built businesses themselves.</p>'+
    '<p class="muted" data-r style="margin-top:24px;max-width:58ch">Together the team has more than three decades of experience, over $1 billion invested and more than 100 transactions completed.</p></div></div></div></section>'+cta();
@@ -1164,7 +1168,7 @@ function vContact(){
   '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
    '<div class="addr" data-r><span class="lab">Office</span><h3>Chicago, Illinois</h3><p>Shorehill Capital LLC<br>10 South Wacker Drive, Suite 3300<br>Chicago, IL 60606</p>'+
     '<div class="offs"><div><span class="lab">Telephone</span><b class="em"><a class="ul" href="'+TELH+'">'+TEL+'</a></b></div><div><span class="lab">General</span><b class="em"><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></b></div>'+
-    '<div><span class="lab">New deals · Rob Hogan</span><b class="em"><a class="ul" href="mailto:'+DEAL+'">'+DEAL+'</a></b></div><div><span class="lab">Size</span><b class="em">EBITDA up to $15M · $20–150M EV · add-ons of any size</b></div></div></div>'+
+    '<div><span class="lab">New deals · Rob Hogan</span><b class="em"><a class="ul" href="mailto:'+DEAL+'">'+DEAL+'</a></b></div><div><span class="lab">Size</span><b class="em">EBITDA up to $15M<br>$20–150M EV<br>Add-ons of any size</b></div></div></div>'+
    '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Company or firm","text",0,1)+fld("msg","About the business or opportunity","ta",1,1)+
     '<div class="sub"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
     '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="0 0 250 156" aria-hidden="true"><path d="M8 154 125 2 162 50 142 76Z"/><path d="M147 80 175 62 248 154Z"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin:14px 0 0;max-width:40ch">This concept form doesn’t send anything yet. To reach Shorehill today, call '+TEL+' or write to '+MAIL+'.</p></div></div>'+
@@ -1375,7 +1379,7 @@ var PLANT=(function(){
   // road in front (comes forward with growth)
   s+='<g class="road">'+L(10,G+36,790,G+36,"")+L(10,G+64,790,G+64,"")+'<line class="dash" x1="14" y1="'+(G+50)+'" x2="786" y2="'+(G+50)+'"/></g>';
   // the Shorehill peak, far off behind the plant, engraved in fine hatching
-  var hill='<g class="hill"><path class="hl" d="M70 '+G+'L400 168L470 '+G+'Z"/><path class="hr" d="M400 168L730 '+G+'H470Z"/>';
+  var hill='<g class="hill" transform="translate(400 500) scale(1.12 .5) translate(-400 -500)"><path class="hl" d="M70 '+G+'L400 168L470 '+G+'Z"/><path class="hr" d="M400 168L730 '+G+'H470Z"/>';
   for(var hy=176;hy<G;hy+=7){var xl=400-(hy-168)*330/332,xm=400+(hy-168)*70/332;hill+=L((xl+1).toFixed(1),hy,(xm-1).toFixed(1),hy,"hh")}
   for(hy=174;hy<G;hy+=4.5){var xm2=400+(hy-168)*70/332,xr2=400+(hy-168)*330/332;hill+=L((xm2+1).toFixed(1),hy.toFixed(1),(xr2-1).toFixed(1),hy.toFixed(1),"hh2")}
   s+=hill+'</g>';
@@ -1406,12 +1410,12 @@ var PLANT=(function(){
   s+='<g class="flag">'+L(186,384,186,330,"")+'<path d="M187 332H214L208 340L214 348H187Z"/></g>';
   // captions: exactly one visible per step; each leader ends on the part it names
   s+='<g class="cap cap0"><text x="96" y="344" text-anchor="middle">THE TEAM</text><line x1="104" y1="352" x2="150" y2="394"/><circle cx="150" cy="394" r="2.5"/></g>';
-  s+='<g class="cap cap1"><text x="382" y="252" text-anchor="middle">THE FLOOR</text><line x1="382" y1="260" x2="382" y2="434"/><circle cx="382" cy="434" r="2.5"/></g>';
+  s+='<g class="cap cap1"><text x="612" y="300" text-anchor="middle">THE FLOOR</text><line x1="592" y1="308" x2="470" y2="430"/><circle cx="468" cy="432" r="2.5"/></g>';
   s+='<g class="cap cap2"><text x="664" y="290" text-anchor="middle">ADD-ONS</text><line x1="654" y1="298" x2="636" y2="330"/><circle cx="636" cy="330" r="2.5"/></g>';
-  s+='<g class="cap cap3"><text x="186" y="300" text-anchor="middle">THE COMPANY</text><line x1="186" y1="308" x2="186" y2="326"/><circle cx="186" cy="328" r="2.5"/></g>';
+  s+='<g class="cap cap3"><text x="132" y="300" text-anchor="middle">THE COMPANY</text><line x1="150" y1="308" x2="184" y2="330"/><circle cx="185" cy="331" r="2.5"/></g>';
   return s;
 })();
-function scene(){return '<svg class="pl s0" viewBox="'+(MOBILE()?"40 150 730 400":"14 150 772 430")+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+PLANT+'</svg>'}
+function scene(){return '<svg class="pl s0" viewBox="'+(MOBILE()?"40 200 730 380":"14 196 772 384")+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+PLANT+'</svg>'}
 function storyDraw(svg){var last=-1;
   return function(p,b){if(!svg.isConnected)return;var n=Math.min(3,Math.floor(p*4*.9999));svg.style.opacity=(.25+.75*b).toFixed(3);
     if(n!==last){last=n;svg.setAttribute("class","pl s"+n)}};
@@ -1545,7 +1549,7 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function fillBio(i){var p=SHEETS[i];bioIdx=i;var big=p.img&&!p.small;ps.classList.toggle("noimg",!big);
   psMedia.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.closest(\'.ps\').classList.add(\'noimg\')">':'';
-  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
+  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

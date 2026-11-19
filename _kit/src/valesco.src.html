@@ -683,6 +683,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:640px){.ex li{width:100%}}
 .pt .ph{display:block}
 @media (min-width:861px){.ph-head .d1{font-size:clamp(50px,6.4vw,124px);max-width:min(100%,calc(var(--maxw) * .45))}}
+@media (min-width:861px){.ph-head{min-height:84vh;min-height:84svh}}
+.rows{border-top:0}.rows>li:first-child{border-top:1px solid var(--hair)}.light .rows>li:first-child{border-top-color:var(--hairD)}
 
 </style>
 </head>
@@ -978,7 +980,7 @@ function vTeam(){
 }
 function vNews(){
   return head({k:"News",h:'Deals and <em>news.</em>',p:'Platform investments, add-on acquisitions and exits, as announced by Valesco.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Updates</span><div data-r>'+newsRows(NEWS)+'</div>'+'</div></section>'+cta();
+  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Updates</span>'+newsRows(NEWS)+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1372,7 +1374,7 @@ function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
   var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
-  if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base(),.05)}});
+  if(rest.length)ScrollTrigger.batch(rest,{start:function(){return "top "+(innerHeight+30)+"px"},end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base(),.05)}});
   setTimeout(function(){if(view.isConnected)ScrollTrigger.refresh()},700)}
 function rvFail(){RV_LIVE.forEach(function(el){if(!el.isConnected)return;var r=el.getBoundingClientRect();if(r.top>=innerHeight)return;
   if(!el._rvDone){rvGo([el],0);return}

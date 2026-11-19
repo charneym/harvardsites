@@ -202,14 +202,21 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene text.w{fill:var(--bone)}
 .scene .road{fill:none;stroke:rgba(var(--boner),.5);stroke-width:1.3}
 .scene .rdc{fill:none;stroke:rgba(var(--boner),.24);stroke-width:1;stroke-dasharray:10 9}
-.scene .tree{fill:rgba(var(--accr),.07);stroke:rgba(var(--boner),.3);stroke-width:1}
+.scene .tree circle{fill:rgba(var(--accr),.12);stroke:rgba(var(--boner),.38);stroke-width:1}
+.scene .tree path{fill:none;stroke:rgba(var(--boner),.28);stroke-width:.9}
+.scene .sign{fill:#f2c98a;opacity:.15}
+.scene .hatch{fill:none;stroke:rgba(var(--boner),.1);stroke-width:1}
+.scene .carw{fill:none;stroke:rgba(var(--boner),.4);stroke-width:1}
+.scene #scSurv{opacity:0}
+.scene .pin{fill:var(--ink2);stroke:var(--accL);stroke-width:1.3}
+.scene .dim{fill:none;stroke:var(--accL);stroke-width:1}
 .scene .parcel{fill:var(--accL);fill-opacity:0;stroke:var(--accL);stroke-opacity:.45;stroke-width:1.3;stroke-dasharray:4 5}
 .scene .bldg{fill:var(--accL);fill-opacity:.06;stroke:rgba(var(--boner),.75);stroke-width:1.3}
 .scene .unit{fill:var(--accL);fill-opacity:.06;stroke:var(--accL);stroke-opacity:.5;stroke-width:1}
 .scene .awn{fill:none;stroke:rgba(var(--boner),.35);stroke-width:1}
 .scene .aisle{fill:none;stroke:rgba(var(--boner),.18);stroke-width:1}
 .scene .stall{fill:none;stroke:rgba(var(--boner),.32);stroke-width:1}
-.scene .car{fill:rgba(var(--boner),.08);stroke:rgba(var(--boner),.45);stroke-width:1}
+.scene .car{fill:rgba(var(--boner),.16);stroke:rgba(var(--boner),.45);stroke-width:1}
 .scene .pad{fill:none;stroke:var(--accL);stroke-opacity:0;stroke-width:1;stroke-dasharray:3 4}
 .scene .padb{fill:rgba(var(--accr),.22);stroke:var(--accL);stroke-width:1.3;transform-box:fill-box;transform-origin:50% 100%;opacity:0}
 .scene .cap{opacity:0;transition:opacity .5s ease}
@@ -217,7 +224,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene .cap circle{fill:var(--accL)}
 .scene .cap rect{fill:var(--ink2);stroke:var(--accL);stroke-width:1}
 .scene .cap text{font-size:13px;letter-spacing:.14em}
-@media (max-width:1024px){.scene text{font-size:20px;letter-spacing:.06em}.scene .cap text{font-size:13px;letter-spacing:.1em}}/*</R:scenecss>*/
+@media (max-width:1024px){.scene text{font-size:20px;letter-spacing:.06em}.scene .cap text{font-size:13px;letter-spacing:.1em}}
+@media (max-width:1024px){.story-pin{padding-left:0;padding-right:0;padding-top:72px}.story-l{padding:0 var(--side)}.story-r{height:52svh!important}}/*</R:scenecss>*/
 
 /* focus list (industries) */
 .ind{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap);border-top:1px solid var(--hairD)}
@@ -655,6 +663,10 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   #field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 56px),transparent calc(34svh - 6px));mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 56px),transparent calc(34svh - 6px))}}
 .thanks svg{width:84px;height:110px}
 .offs b a{overflow-wrap:anywhere}
+@media (max-width:860px){.ftr .fcv{bottom:112px;height:30%}}
+.ps-media img{filter:grayscale(1) contrast(1.03);object-position:50% 14%}
+@media (max-width:760px){.ps-media{height:min(42vh,340px)!important}}
+.pt{max-width:250px}
 </style>
 </head>
 </head>
@@ -1370,17 +1382,19 @@ function scene(){
   var s='<svg viewBox="0 0 640 560" aria-hidden="true">';
   s+='<path class="road" d="M8 486H632M8 534H632"/><path class="rdc" d="M8 510H632"/><text x="624" y="526" text-anchor="end">STREET</text>';
   /* street trees along the frontage and the side boundaries */
-  for(var x=30;x<=612;x+=40){if(x>290&&x<350)continue;s+='<circle class="tree" cx="'+x+'" cy="472" r="9"/>'}
-  for(var y=84;y<=440;y+=34){s+='<circle class="tree" cx="34" cy="'+y+'" r="11"/><circle class="tree" cx="606" cy="'+y+'" r="11"/>'}
-  s+='<path id="scParcel" class="parcel" d="M58 66H582V458H58Z"/>';
+  function tr(x,y,r){return '<g class="tree"><circle cx="'+x+'" cy="'+y+'" r="'+r+'"/><path d="M'+(x-r*.5)+' '+y+'Q'+x+' '+(y-r*.6)+' '+(x+r*.5)+' '+y+'M'+x+' '+(y-r*.1)+'V'+(y+r*.55)+'"/></g>'}
+  for(var x=30;x<=612;x+=40){if(x>290&&x<350)continue;s+=tr(x,472,10)}
+  for(var y=84;y<=440;y+=34){s+=tr(34,y,12)+tr(606,y,12)}
+  s+='<path id="scParcel" class="parcel" d="M58 66H582V458H58Z"/><g id="scSurv">'+[[58,66],[582,66],[582,458],[58,458]].map(function(p){return '<circle class="pin" cx="'+p[0]+'" cy="'+p[1]+'" r="5"/>'}).join("")+'<path class="dim" d="M596 66V458M590 66H602M590 458H602"/></g>';
   s+='<g id="scCo"><rect class="bldg" x="88" y="92" width="464" height="92"/>';
   var ux=[88,212,258,304,350,396,442,488,552];
-  for(var u=0;u<ux.length-1;u++)s+='<rect class="unit" x="'+ux[u]+'" y="92" width="'+(ux[u+1]-ux[u])+'" height="92"/><path class="awn" d="M'+(ux[u]+6)+' 190H'+(ux[u+1]-6)+'"/>';
+  for(var u=0;u<ux.length-1;u++)s+='<rect class="unit" x="'+ux[u]+'" y="92" width="'+(ux[u+1]-ux[u])+'" height="92"/><path class="awn" d="M'+(ux[u]+6)+' 190H'+(ux[u+1]-6)+'"/><rect class="sign" x="'+(ux[u]+8)+'" y="168" width="'+(ux[u+1]-ux[u]-16)+'" height="7"/>';
+  for(var hx=98;hx<548;hx+=12)s+='<path class="hatch" d="M'+hx+' 100V'+(hx<212?160:150)+'"/>';
   s+='<text x="150" y="143" text-anchor="middle" class="w">ANCHOR</text></g>';
   s+='<path class="aisle" d="M88 214H552M88 300H552M88 386H552"/>';
   [[226,258],[268,300],[312,344],[354,386]].forEach(function(r){for(var x=96;x<=544;x+=16){if(x>292&&x<348)continue;s+='<path class="stall" d="M'+x+' '+r[0]+'V'+r[1]+'"/>'}});
   /* a few parked cars */
-  [[96,226],[128,268],[192,226],[240,312],[384,268],[432,226],[480,354],[512,312],[144,354],[400,354]].forEach(function(c){s+='<rect class="car" x="'+(c[0]+3)+'" y="'+(c[1]+5)+'" width="10" height="22"/>'});
+  [[96,226],[128,268],[192,226],[240,312],[384,268],[432,226],[480,354],[512,312],[144,354],[400,354]].forEach(function(c){s+='<rect class="car" x="'+(c[0]+3)+'" y="'+(c[1]+5)+'" width="10" height="22"/><path class="carw" d="M'+(c[0]+4)+' '+(c[1]+11)+'H'+(c[0]+12)+'"/>'});
   s+='<path class="aisle" d="M300 214V486M340 214V486"/>';
   s+='<g id="scPads"><rect class="pad" x="96" y="402" width="160" height="62"/><rect class="pad" x="384" y="402" width="160" height="62"/>'+
      '<rect class="padb" x="124" y="412" width="104" height="42"/><rect class="padb" x="412" y="412" width="104" height="42"/></g>';
@@ -1388,16 +1402,18 @@ function scene(){
   function lb(cx,cy,inner){return MOBILE()?'<g transform="translate('+cx+' '+cy+') scale(1.6) translate('+(-cx)+' '+(-cy)+')">'+inner+'</g>':inner}
   s+='<g class="cap" id="cap0"><path d="M320 92V40H372"/><circle cx="320" cy="92" r="3"/>'+lb(440,40,'<rect x="372" y="26" width="196" height="28"/><text x="382" y="45" class="w">OPERATING COMPANY</text>')+'</g>';
   s+='<g class="cap" id="cap1"><path d="M582 66V40H536"/><circle cx="582" cy="66" r="3"/>'+lb(466,40,'<rect x="396" y="26" width="140" height="28"/><text x="406" y="45" class="w">REAL ESTATE</text>')+'</g>';
-  s+='<g class="cap" id="cap2"><path d="M228 433H262V384H378V433H412"/><circle cx="228" cy="433" r="3"/><circle cx="412" cy="433" r="3"/>'+lb(320,383,'<rect x="242" y="368" width="156" height="30"/><text x="320" y="388" text-anchor="middle" class="w">NEW LOCATIONS</text>')+'</g>';
+  s+='<g class="cap" id="cap2"><path d="M176 454V510H242M464 454V510H398"/><circle cx="176" cy="454" r="3"/><circle cx="464" cy="454" r="3"/>'+lb(320,510,'<rect x="242" y="495" width="156" height="30"/><text x="320" y="515" text-anchor="middle" class="w">NEW LOCATIONS</text>')+'</g>';
   return s+'</svg>';
 }
 function storyDraw(svg){
-  var co=$("#scCo",svg),units=$$("#scCo .unit",svg),bl=$("#scCo .bldg",svg),pc=$("#scParcel",svg),pads=$$("#scPads .pad",svg),pb=$$("#scPads .padb",svg),cap=[$("#cap0",svg),$("#cap1",svg),$("#cap2",svg)];
+  var co=$("#scCo",svg),units=$$("#scCo .unit",svg),bl=$("#scCo .bldg",svg),pc=$("#scParcel",svg),pads=$$("#scPads .pad",svg),pb=$$("#scPads .padb",svg),cap=[$("#cap0",svg),$("#cap1",svg),$("#cap2",svg)],sg=$$("#scCo .sign",svg),sv=$("#scSurv",svg);
   return function(p,b){
     if(!co.isConnected)return;
     var s1=seg(p,.02,.18),s2=seg(p,.36,.56),s3=seg(p,.7,.9),k=p<1/3?0:p<2/3?1:2;
     svg.style.opacity=b;
     units.forEach(function(u){u.style.fillOpacity=(.06+.34*s1*(1-.6*s2)).toFixed(3);u.style.strokeOpacity=(.5+.5*s1).toFixed(3)});
+    sg.forEach(function(e,i){e.style.opacity=(.15+.85*seg(s1,i*.08,.4+i*.08)).toFixed(3)});
+    sv.style.opacity=s2.toFixed(3);
     bl.style.fillOpacity=(.06+.14*s2).toFixed(3);
     pc.style.fillOpacity=(.1*s2).toFixed(3);pc.style.strokeOpacity=(.45+.55*s2).toFixed(3);pc.style.strokeDasharray=s2>.5?"none":"4 5";
     pads.forEach(function(e){e.style.strokeOpacity=s3.toFixed(3)});

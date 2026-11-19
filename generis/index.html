@@ -199,7 +199,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .steps{position:relative;min-height:clamp(220px,30vh,300px)}
 .step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
 .step.on{opacity:1;visibility:visible}
-.step h3{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.025em;margin:0 0 16px}
+.step h3,.step h2{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.025em;margin:0 0 16px}
 .step p{color:rgba(var(--boner),.8);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(72vh,660px);align-self:center}
 .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
@@ -616,6 +616,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#071528}}
 .light+.cta{border-top:1px solid rgba(7,21,40,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1049,9 +1055,9 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">Investir autrement</span><h2 class="d3">De la PME à <em>l’ETI.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Humain</span><span>Croissance</span><span>Valeur</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h3>Nous investissons dans des entrepreneurs.</h3><p>Nous n’investissons pas dans des entreprises, nous investissons dans des entrepreneurs. Les dirigeants sont au cœur de nos préoccupations, et notre objectif est la réussite de leur projet.</p></article>'+
-     '<article class="step"><h3>Des financements sur mesure.</h3><p>Des tickets de 1 à 10'+NB+'M€ en fonds propres, quasi-fonds propres et prêts obligataires'+NB+': des techniques de financement adaptées aux besoins des PME en forte croissance.</p></article>'+
-     '<article class="step"><h3>Sur la route de l’ETI.</h3><p>Nous siégeons aux comités stratégiques et aux conseils d’administration, prenons part aux décisions stratégiques et portons un programme d’impact, jusqu’à la préparation de la sortie.</p></article>'+
+     '<article class="step on"><h2>Nous investissons dans des entrepreneurs.</h2><p>Nous n’investissons pas dans des entreprises, nous investissons dans des entrepreneurs. Les dirigeants sont au cœur de nos préoccupations, et notre objectif est la réussite de leur projet.</p></article>'+
+     '<article class="step"><h2>Des financements sur mesure.</h2><p>Des tickets de 1 à 10'+NB+'M€ en fonds propres, quasi-fonds propres et prêts obligataires'+NB+': des techniques de financement adaptées aux besoins des PME en forte croissance.</p></article>'+
+     '<article class="step"><h2>Sur la route de l’ETI.</h2><p>Nous siégeons aux comités stratégiques et aux conseils d’administration, prenons part aux décisions stratégiques et portons un programme d’impact, jusqu’à la préparation de la sortie.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -1483,7 +1489,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

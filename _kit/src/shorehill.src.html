@@ -675,6 +675,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ps-body .ctc a{text-transform:none;letter-spacing:0;font:400 16px/1.5 var(--sans)}
 @media (max-width:860px){.ph-head{min-height:0!important;padding-bottom:clamp(40px,8vw,64px)!important}}
 .sec.first.tm{padding-top:clamp(32px,4vh,48px)}
+@media (min-width:1101px){.pg.c5 .pt{width:calc((100% - 4 * var(--gap)) / 5)}}
 
 </style>
 </head>
@@ -835,6 +836,7 @@ var SHEETS=TEAM.map(function(p){var rows=[];
   if(p.pw.length)rows.push(["Before Shorehill",p.pw.join(" · ")]);
   if(p.pc.length)rows.push(["Current portfolio involvement",p.pc.join(" · ")]);
   if(p.pp.length)rows.push(["Prior portfolio involvement",p.pp.join(" · ")]);
+  rows.push(["Contact","Reach "+p.n.split(" ")[0]+" by email at "+p.e+"."]);
   return {slug:slug(p.n),name:p.n,title:p.r,img:p.i,mail:p.e,rows:rows,bio:[]}});
 /*</R:content>*/
 
@@ -850,8 +852,8 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function pts(list){return '<div class="pg">'+list.map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"><span class="ini" aria-hidden="true">'+esc(p.name.split(" ").map(function(s){return s[0]}).join(""))+'</span></span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p><span class="go" aria-hidden="true">'+ARR+'</span></a>'}).join("")+'</div>'}
-function pfA(list){return '<ul class="pf">'+list.map(function(c){var t=c.t.split(" · ");return '<li><h3>'+esc(c.n)+'</h3><p>'+esc(c.d)+'</p><p><span class="lab" style="display:block">'+esc(t[0])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(t[1]||"")+'</span></p><div class="w">'+c.l.map(function(l){return '<a class="ul" href="'+l[1]+'" target="_blank" rel="noopener">'+esc(l[0].indexOf("Shorehill")===0?"Profile":"Website")+' '+ARR+'<span class="sr"> ('+esc(c.n)+', opens in a new tab)</span></a>'}).join("")+'</div></li>'}).join("")+'</ul>'}
+function pts(list,c){return '<div class="pg'+(c?' '+c:'')+'">'+list.map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"><span class="ini" aria-hidden="true">'+esc(p.name.split(" ").map(function(s){return s[0]}).join(""))+'</span></span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p><span class="go" aria-hidden="true">'+ARR+'</span></a>'}).join("")+'</div>'}
+function pfA(list){return '<ul class="pf">'+list.map(function(c){var t=c.t.split(" · ");return '<li><h3>'+esc(c.n)+'</h3><p>'+esc(c.d)+'</p><p><span class="lab" style="display:block">'+esc(t[0])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(t[1]||"")+'</span></p><div class="w">'+c.l.map(function(l){return '<a class="ul" href="'+l[1]+'" target="_blank" rel="noopener" aria-label="'+esc(c.n)+' '+(l[0].indexOf("Shorehill")===0?"profile":"website")+' (opens in a new tab)">'+esc(l[0].indexOf("Shorehill")===0?"Profile":"Website")+' '+ARR+'</a>'}).join("")+'</div></li>'}).join("")+'</ul>'}
 function pfP(list){return '<ul class="ex">'+list.map(function(c){return '<li><span class="lab">'+esc(c.t)+'</span><h3>'+esc(c.n)+'</h3><p>'+esc(c.d)+'</p>'+(c.u?'<a class="vs ul" href="'+c.u+'" target="_blank" rel="noopener">Visit '+EXT+'<span class="sr"> ('+esc(c.n)+', opens in a new tab)</span></a>':'')+'</li>'}).join("")+'</ul>'}
 function lst(a,cls){return '<ul class="ind'+(cls?' '+cls:'')+'">'+a.map(function(s){return '<li>'+esc(s)+'</li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
@@ -969,7 +971,7 @@ function vPortfolio(){
 }
 function vTeam(){
   return head({k:"Team",h:'Decades of private equity <em>experience.</em>',p:'Invest wisely, make few mistakes, continuously improve, and enjoy what you do. Select a portrait to read about each member of the team.'})+
-  '<section class="sec dark first tm" data-theme="dark"><div class="wrap">'+pts(SHEETS)+'</div></section>'+
+  '<section class="sec dark first tm" data-theme="dark"><div class="wrap">'+pts(SHEETS,"c5")+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Executive Advisors</span><h2 class="d3 split">People who have built <em>businesses.</em></h2></div>'+
    '<div><p class="lede" data-r>The team is backed by more than 60 Executive Advisors who have built businesses themselves.</p>'+
    '<p class="muted" data-r style="margin-top:24px;max-width:58ch">Together the team has more than three decades of experience, over $1 billion invested and more than 100 transactions completed.</p></div></div></div></section>'+cta();

@@ -564,6 +564,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:480px){.sx{grid-template-columns:1fr}}
 .thanks svg{width:120px;height:88px}
 .pt .ph{display:block}
+.pt.nolink h3,.pt.nolink:hover h3{color:inherit}.pt.nolink:hover .ph img{filter:grayscale(1) contrast(1.03);transform:none}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -934,7 +935,7 @@ var ACTIVE=[
 var OTHER=[["Empire Investments","Listed among BlueRock Global’s key holdings. No further details are published.","Key holding","","https://bluerockglobalpe.com/portfolio/","Source"]];
 var IMG="https://bluerockglobalpe.com/wp-content/uploads/";
 function P(slug,name,title,img,sum,rows,grp){return {slug:slug,name:name,title:title,grp:grp,img:img,mail:"",sum:sum,rows:rows,bio:rows.map(function(r){return r[1]})}}
-var SHEETS=[
+var PEOPLE=[
  P("roddy-premsukh","Roddy Premsukh","Managing Partner · CPA, CGA, B.Com (Hons)",IMG+"2025/02/Roddy-Premsukh-819x1024.jpg","Oversees M&A strategy, deal execution and portfolio growth.",[
   ["Role","As Managing Partner at BlueRock Global, Roddy oversees M&A strategy, deal execution and portfolio growth. With decades of experience in private equity, corporate finance and operational restructuring, he has a track record of acquiring, scaling and optimizing businesses to maximize enterprise value."],
   ["Experience","Roddy has led complex transactions, including leveraged buyouts, strategic exits and operational turnarounds. His expertise spans capital structuring, financial strategy, financial due diligence, operational restructuring and risk management, and he has worked extensively with business owners, institutional investors and executive teams to keep acquisitions seamless."]],"Managing partners"),
@@ -946,7 +947,8 @@ var SHEETS=[
  P("natalie-paull","Natalie Paull","Director of Quality",IMG+"2026/07/Natalie-Paull-819x1024.jpg","",[["Role","Director of Quality at BlueRock Global."]],"Partners and directors"),
  P("matt-pityo","Matt Pityo","Director of Software & Technology",IMG+"2026/05/matt-pityo-headshot-819x1024.png","",[["Role","Director of Software & Technology at BlueRock Global."]],"Partners and directors")
 ];
-var GROUPS=[["Managing partners",SHEETS.slice(0,2)],["Partners and directors",SHEETS.slice(2)]];
+var SHEETS=PEOPLE.slice(0,2);
+var GROUPS=[["Managing partners",PEOPLE.slice(0,2)],["Partners and directors",PEOPLE.slice(2)]];
 var NEWS=[
  {d:"2026",s:"American Photonics",t:"BlueRock Global acquires American Photonics, uniting it with Direct Components and Paragon Manufacturing under one American manufacturing platform",u:"https://americanphotonics.com/about/"},
  {d:"2025-02-18",s:"EIN Presswire",t:"Direct Components is awarded AS6081 certification",u:"https://www.einpresswire.com/article/786840075/direct-components-awarded-as6081-certification"},
@@ -965,9 +967,10 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function pg(list){return '<div class="pg">'+list.map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"><span class="go">'+ARR+'</span></span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>'}
+function pg(list){return '<div class="pg">'+list.map(function(p){var lk=pBy(p.slug)>=0,in_='<span class="ph"><img src="'+p.img+'" alt="'+(lk?'':'Portrait of '+esc(p.name))+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')">'+(lk?'<span class="go">'+ARR+'</span>':'')+'</span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p>';
+  return lk?'<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+in_+'</a>':'<div class="pt nolink">'+in_+'</div>'}).join("")+'</div>'}
 function grid(groups){return groups.map(function(g){return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+pg(g[1])+'</div>'}).join("")}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span>'+(c[3]?'<span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span>':'')+'</p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">'+c[5]+' '+ARR+'<span class="sr"> ('+esc(c[0])+', opens in a new tab)</span></a></div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span>'+(c[3]?'<span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span>':'')+'</p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[0])+' '+c[5].toLowerCase()+' (opens in a new tab)">'+c[5]+' '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function sectors(){return '<ul class="sx">'+SECT.map(function(s,i){return '<li><span class="lab">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3><ul>'+s[1].map(function(f){return '<li>'+esc(f)+'</li>'}).join("")+'</ul></li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function crit(){return '<dl class="facts">'+
@@ -1078,7 +1081,7 @@ function vPortfolio(){
   cta();
 }
 function vTeam(){
-  return head({k:"Team",h:'Experienced leaders, <em>lasting impact.</em>',p:'Professionals in private equity, business growth and industry transformation. Select a name to read more.'})+
+  return head({k:"Team",h:'Experienced leaders, <em>lasting impact.</em>',p:'Professionals in private equity, business growth and industry transformation. Select a managing partner to read more.'})+
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Experience</span><h2 class="d3 split">Operators and <em>dealmakers.</em></h2></div>'+
    '<div><p class="lede" data-r>The team works closely with each company to scale it and create long-term value.</p>'+

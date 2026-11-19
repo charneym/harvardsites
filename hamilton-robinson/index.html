@@ -608,6 +608,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#120e0b}}
 .light+.cta{border-top:1px solid rgba(18,14,11,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1273,7 +1279,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    The scene is masked away before the headline column, so no line ever crosses the text.
    Ported as is from the approved one-page hero; it now runs as the site-wide field behind every page head. ================= */
 function Mill(cv,opt){
-  var c=cv.getContext("2d"),dpr=1,w=0,h=0,L=null,running=false,raf=0,t0=performance.now(),intro=opt.intro==null?1:opt.intro,introT=null,introD=2400;
+  var c=cv.getContext("2d"),dpr=1,w=0,h=0,L=null,running=false,raf=0,t0=performance.now(),intro=opt.intro==null?1:opt.intro,introT=null,introD=2400,RB=null,RBx=null;
   var sky=null,base=null,win=null,lines=null,glit=null;
   function mk(){var e=document.createElement("canvas");e.width=cv.width;e.height=cv.height;var x=e.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);return [e,x]}
   function R(seed){return function(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}}
@@ -1419,9 +1425,9 @@ function Mill(cv,opt){
     if(opt.birds!==false){var bp=(tt/48)%1;birds.forEach(function(bd){var u=(bp+bd[0])%1,bx=L.ox+(1080-u*700)*s,by=oy-(330+bd[1]+Math.sin(u*9+bd[2])*6)*s,fa=Math.sin(Math.PI*u);if(L.fl&&bx<L.fl[1]+40)fa*=Math.max(0,(bx-L.fl[1]+40)/80);if(fa<=.02)return;var fl=Math.sin(tt*6+bd[2])*2.6*s+1.2*s,ws=7*s;
       c.strokeStyle="rgba(18,22,30,"+(.75*fa*ie).toFixed(3)+")";c.lineWidth=Math.max(.9,1.1*s);c.beginPath();c.moveTo(bx-ws,by-fl);c.quadraticCurveTo(bx-ws*.4,by-fl*.2-1.5*s,bx,by);c.quadraticCurveTo(bx+ws*.4,by-fl*.2-1.5*s,bx+ws,by-fl);c.stroke()})}
     // water: engraved lines, each a sliver of the mirrored scene, trembling
-    c.setTransform(1,0,0,1,0,0);var D=dpr,cw=cv.width,i2,ln,amp,dx,ys;
+    c.setTransform(1,0,0,1,0,0);var D=dpr,cw=cv.width,i2,ln,amp,dx,ys;var sy0=Math.max(0,Math.floor((oy-((L.wb||h)-oy)*.95-2)*D)),sy1=Math.ceil((oy+1)*D),sh=Math.max(1,sy1-sy0);if(!RB||RB.width!==cw||RB.height!==sh){RB=document.createElement("canvas");RB.width=cw;RB.height=sh;RBx=RB.getContext("2d")}RBx.clearRect(0,0,cw,sh);RBx.drawImage(cv,0,sy0,cw,sh,0,0,cw,sh);
     for(i2=0;i2<lines.length;i2++){ln=lines[i2];amp=(1.4+12*ln[2])*Math.min(1.4,s*1.4+.3);dx=amp*(.62*Math.sin(ln[0]*.09+tt*1.05)+.38*Math.sin(ln[0]*.031-tt*.62+ln[2]*3));
-      ys=oy-(ln[0]-oy)*.94-ln[1];if(ys<0)break;c.globalAlpha=(.8-.55*ln[2])*ie;c.drawImage(cv,0,Math.round(ys*D),cw,Math.max(1,Math.round(ln[1]*D)),Math.round(dx*D),Math.round(ln[0]*D),cw,Math.max(1,Math.round(ln[1]*D)))}
+      ys=oy-(ln[0]-oy)*.94-ln[1];if(ys<0)break;c.globalAlpha=(.8-.55*ln[2])*ie;c.drawImage(RB,0,Math.round(ys*D)-sy0,cw,Math.max(1,Math.round(ln[1]*D)),Math.round(dx*D),Math.round(ln[0]*D),cw,Math.max(1,Math.round(ln[1]*D)))}
     c.globalAlpha=1;c.setTransform(dpr,0,0,dpr,0,0);
     // glitter on the sun's path
     c.globalCompositeOperation="lighter";for(i2=0;i2<lines.length;i2++){ln=lines[i2];var gq=glit[i2],fl2=.5+.5*Math.sin(tt*(1.2+gq[1]*1.8)+gq[0]);fl2*=fl2;var spread=(12+150*ln[2])*s,gx=L.sx+(gq[1]-.5)*spread*1.3+Math.sin(tt*.8+gq[0])*4*s,len=(4+40*(1-ln[2])*gq[2]+10*ln[2])*s*(.4+fl2),al=(.55*(1-ln[2]*.85))*fl2*ie;
@@ -1440,7 +1446,7 @@ function Mill(cv,opt){
    Phones: the scene sits in the top 34svh band above the copy. */
 function textRight(){var r=0;$$("#view .hero .eyebrow, #view .hero-h .l, #view .hero-foot .s, #view .hero-foot .act").forEach(function(el){var g=document.createRange();g.selectNodeContents(el);var rs=g.getClientRects();for(var i=0;i<rs.length;i++)if(rs[i].width>0)r=Math.max(r,rs[i].right)});return r}
 var field=(function(){
-  var cv=$("#field"),running=false,raf=0,shown=false,dim=1,dimT=1,lastF=0,lastTR=-1,t9=performance.now()+9000;
+  var cv=$("#field"),running=false,raf=0,shown=false,dim=1,dimT=1,lastF=0,lastTR=-1,ema=0,t9=performance.now()+9000;
   function geo(w,h){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side;
     if(w<861){var U=Math.min(h*.34,w*.74),oy=Math.round(U*.8),s=Math.min(w*.98/1000,(oy-74)/530);return {s:s,oy:oy,ox:w/2-540*s,fl:null,fr:null,wb:U+4}}
@@ -1450,10 +1456,10 @@ var field=(function(){
   var M=Mill(cv,{sky:true,intro:1,layout:geo});
   function frame(once){
     var now=performance.now();
-    if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    if(!once&&running&&now-lastF<Math.max(31,ema*3)){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
     dim+=(dimT-dim)*.08;
     if(shown)cv.style.opacity=String(.5+.5*dim);
-    M.draw(RM?t9:now);
+    var d0=performance.now();M.draw(RM?t9:now);var dt=performance.now()-d0;ema=ema?ema*.9+dt*.1:dt;
     if(!shown&&M.ready()){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1462,7 +1468,7 @@ var field=(function(){
   function relayout(){if(innerWidth<861)return;var tr=textRight();if(!(tr>0))return;if(Math.abs(tr-lastTR)>6){M.size();frame(true)}}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(function(){M.size();frame(true)},120)});M.size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(){},relayout:relayout,
-    intro:function(d){if(RM){M.show();return}M.intro(d)},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},
+    intro:function(d){if(RM){M.show();return}M.intro(d)},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},cost:function(){return ema},
     focus:function(){var L=M.L();return L?[L.ox+560*L.s,L.oy-180*L.s]:[innerWidth/2,innerHeight/2]}};
 })();/*</R:field>*/
 
@@ -1551,7 +1557,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k);var bw=$(".ftr .bigsvg");if(bw){var b=bw.getBoundingClientRect(),y0=(b.top-r.top)*d,y1=(b.bottom-r.top)*d,pad=(y1-y0)*.6;c.save();c.globalCompositeOperation="destination-out";var g=c.createLinearGradient(0,y0-pad*1.6,0,y1);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.45,"rgba(0,0,0,1)");g.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=g;c.fillRect(0,y0-pad*1.6,W,H);c.restore()}}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k);var bw=$(".ftr .bigsvg");if(bw){var b=bw.getBoundingClientRect(),y0=(b.top-r.top)*d,y1=(b.bottom-r.top)*d,pad=(y1-y0)*.6;c.save();c.globalCompositeOperation="destination-out";var g=c.createLinearGradient(0,y0-pad*1.6,0,y1);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(.45,"rgba(0,0,0,1)");g.addColorStop(1,"rgba(0,0,0,1)");c.fillStyle=g;c.fillRect(0,y0-pad*1.6,W,H);c.restore()}}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

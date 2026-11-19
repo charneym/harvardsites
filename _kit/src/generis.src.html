@@ -1028,7 +1028,7 @@ var field=(function(){
     var U=mob?Math.min(h*.34,w*.74):h,S=U;
     var hz=S*(mob?.74:.70),yw=S*(mob?.80:.752),tb=hz-S*.004,tt=S*(mob?.16:.105);
     var cx=mob?w*.7:side+cw*.79;
-    return {mob:mob,side:side,cw:cw,U:U,S:S,hz:hz,yw:yw,tb:tb,tt:tt,TH:tb-tt,cx:cx,wb:mob?U:h};
+    return {mob:mob,side:side,cw:cw,U:U,S:S,xs:mob?-S*.02:side+cw*.43,hz:hz,yw:yw,tb:tb,tt:tt,TH:tb-tt,cx:cx,wb:mob?U:h};
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   /* the tower's half-width as a fraction of its height, from the real profile (base 125 m wide, 330 m tall) */
@@ -1093,14 +1093,14 @@ var field=(function(){
     g.fillStyle=dg;g.fillRect(0,0,w,hz);
     var Rs=rng(3),n=mob?40:110;for(var s=0;s<n;s++){var sy=Math.pow(Rs(),1.7)*hz*.5;g.fillStyle="rgba(230,236,250,"+(.15+Rs()*.45)*(1-sy/(hz*.5))+")";g.fillRect(Rs()*w,sy,Rs()<.15?1.4:1,Rs()<.15?1.4:1)}
     /* far city: hazy roofs and a dome on the horizon */
-    var Rf=rng(5);g.fillStyle="rgba(58,78,112,.75)";g.beginPath();g.moveTo(0,hz);var x=0;
+    var Rf=rng(5),hzg=g.createLinearGradient(mob?0:G.xs-S*.3,0,mob?1:G.xs,0);hzg.addColorStop(0,mob?"rgba(58,78,112,.75)":"rgba(58,78,112,0)");hzg.addColorStop(1,"rgba(58,78,112,.75)");g.fillStyle=hzg;g.beginPath();g.moveTo(0,hz);var x=0;
     while(x<w){var bw=S*(.03+Rf()*.05),bh=S*(.025+Rf()*.035);g.lineTo(x,hz-bh);g.lineTo(x+bw,hz-bh);x+=bw}g.lineTo(w,hz);g.closePath();g.fill();
     var dx=mob?w*.2:G.side+G.cw*.47,dr=S*.03;g.fillStyle="rgba(66,86,120,.85)";g.fillRect(dx-dr*1.1,hz-S*.075,dr*2.2,S*.075);g.beginPath();g.ellipse(dx,hz-S*.075,dr,dr*1.25,0,Math.PI,0);g.fill();g.fillRect(dx-dr*.12,hz-S*.075-dr*1.25-dr*.7,dr*.24,dr*.7);
     /* the tower */
     tower(g,cx,G.tb,TH);
     var Rk=rng(41);for(var k=0;k<(mob?24:56);k++){var f=Math.pow(Rk(),.8)*.96,sd=Rk()*2-1;SPK.push([cx+sd*hw(f)*TH*.92,G.tb-f*TH,Rk()*6.283,.6+Rk()*1.4])}
     /* Haussmann façades, from the left edge to the tower */
-    var R=rng(19),xb=cx-TH*(mob?.36:.33),fh=S*.019,bx=-S*.02;
+    var R=rng(19),xb=cx-TH*(mob?.36:.33),fh=S*.019,bx=G.xs;
     while(bx<xb){
       var nF=R()<.6?5:6,bw2=S*(.085+R()*.07),gh=fh*1.35,fH=gh+nF*fh,top=hz-fH,mH=fh*1.45,tone=14+Math.round(R()*6);
       if(bx+bw2>xb)bw2=Math.max(S*.05,xb-bx);
@@ -1125,14 +1125,14 @@ var field=(function(){
       bx+=bw2;
     }
     /* plane trees along the quai, thicker round the foot of the tower */
-    var Rt=rng(7),tx=-S*.02;
+    var Rt=rng(7),tx=G.xs+S*.02;
     while(tx<w+S*.05){var near=Math.abs(tx-cx)<TH*.45,r=S*(near?.05+Rt()*.02:.034+Rt()*.016);
       tree(g,tx,hz+S*.004,r,Rt,near?"#0c1d30":"#0b1a2c");tx+=r*(near?1.2:1.7)+Rt()*S*.02}
     /* the quay wall and its lamps */
     var qw=g.createLinearGradient(0,hz,0,yw);qw.addColorStop(0,"#1f2c43");qw.addColorStop(1,"#121d31");g.fillStyle=qw;g.fillRect(0,hz,w,yw-hz+1);
     g.fillStyle="rgba(200,206,214,.2)";g.fillRect(0,hz,w,Math.max(1,S*.003));
     g.strokeStyle="rgba(0,0,0,.25)";g.lineWidth=1;g.beginPath();for(var bk=0;bk<w;bk+=S*.035){g.moveTo(bk,hz+S*.004);g.lineTo(bk,yw)}g.stroke();
-    var ls=mob?w/5:S*.16;for(var lx=ls*.5;lx<w;lx+=ls){var ly=hz-S*.032;g.fillStyle="#0a1220";g.fillRect(lx-.7,ly,1.4,S*.032);LAMPS.push([lx,ly]);REF.push([lx,S*.006,.7,1])}
+    var ls=mob?w/5:S*.16;for(var lx=mob?ls*.5:G.xs+ls*.5;lx<w;lx+=ls){var ly=hz-S*.032;g.fillStyle="#0a1220";g.fillRect(lx-.7,ly,1.4,S*.032);LAMPS.push([lx,ly]);REF.push([lx,S*.006,.7,1])}
     REF.push([cx,TH*.11,.5,2]);
     RIP=[];var Rr=rng(23);for(var rp=0;rp<(mob?50:140);rp++){var u0=Math.pow(Rr(),1.4);RIP.push([Rr()*w,u0,S*(.02+Rr()*.08)*(1+u0*2),Rr()*6.283])}
     /* stone steps down to the water, opposite the tower */

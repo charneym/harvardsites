@@ -238,8 +238,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .stg li::after,.ind li::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--eo)}
 .stg li:hover::after,.ind li:hover::after{transform:scaleX(1)}
 .stg .n{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
-.stg h3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.9vw,30px);line-height:1.15;letter-spacing:-.02em;margin:0}
-.stg p{margin:0;font-size:15.5px;line-height:1.55;color:var(--stoneD);max-width:52ch}
+.stg .t3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.9vw,30px);line-height:1.15;letter-spacing:-.02em;margin:0}
+.stg p:not(.t3){margin:0;font-size:15.5px;line-height:1.55;color:var(--stoneD);max-width:52ch}
 .stg .w{justify-self:end}
 .stg .w a{font:400 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;display:inline-flex;gap:10px;align-items:center;padding:8px 0}
 .stg .w svg{width:14px;height:10px;transition:transform .3s var(--eo)}
@@ -262,18 +262,22 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .vp .ph::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .vp a:hover .ph::after,.vp a:focus-visible .ph::after{transform:scaleX(1)}
 .vp .nm{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:18px}
-.vp h3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.75vw,28px);line-height:1.12;letter-spacing:-.02em;margin:0;transition:color .25s ease-out}
+.vp .t3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.75vw,28px);line-height:1.12;letter-spacing:-.02em;margin:0;transition:color .25s ease-out}
 .vp .ar{font-family:var(--sans);font-size:15px;color:var(--stoneD);transform:translate(-6px,0);opacity:.5;transition:transform .3s var(--eo),opacity .3s,color .3s}
-.vp a:hover h3,.vp a:focus-visible h3{color:var(--accD)}
+.vp a:hover .t3,.vp a:focus-visible .t3{color:var(--accD)}
 .vp a:hover .ar,.vp a:focus-visible .ar{transform:translate(0,-2px);opacity:1;color:var(--accD)}
 .vp .ttl{display:block;margin-top:6px}
 @media (max-width:1024px){.vpg{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:640px){.vpg{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}.vp h3{font-size:20px}}
+@media (max-width:640px){.vpg{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}.vp .t3{font-size:20px}.vp:first-child{grid-column:1/-1}.vp:first-child .ph{aspect-ratio:1/1}}
+@media (min-width:641px){.vpg{display:flex;flex-wrap:wrap;justify-content:center}.vp{width:calc((100% - 3 * var(--gap)) / 4)}}
+@media (min-width:641px) and (max-width:1024px){.vp{width:calc((100% - 2 * var(--gap)) / 3)}}
+@media (max-width:640px){#view .credit p span{white-space:normal}}
 .teamb{margin-top:clamp(64px,7vw,110px)}
 /* contact block */
 .adr{margin-top:clamp(48px,5vw,80px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);grid-column:1/-1}
 .adr>div{border-top:1px solid var(--hairD);padding-top:18px;font-size:15.5px;line-height:1.6}
 .adr .lab{display:block;margin-bottom:10px}
+.adr p{margin:0}
 @media (max-width:860px){.adr{grid-template-columns:1fr}}
 @media (min-width:1025px){.cta>.wrap>.adr{grid-row:4}}/*</R:scenecss>*/
 
@@ -1006,10 +1010,10 @@ document.addEventListener("click",function(e){var a=e.target.closest&&e.target.c
   var id=a.getAttribute("data-to");if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){toSec(id)},420)}else toSec(id)},true);
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function funders(){return '<ul class="ind">'+FUNDERS.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
-function path(){return '<ol class="stg">'+PATH.map(function(s,i){return '<li><span class="n">0'+(i+1)+' · '+esc(s[0])+'</span><h3>'+esc(s[1])+'</h3><p>'+esc(s[2])+'</p><div class="w">'+(s[3]?'<a class="ul" href="'+s[3]+'" target="_blank" rel="noopener">Paper '+ARR+'</a>':'')+'</div></li>'}).join("")+'</ol>'}
-function portraits(){return '<ul class="vpg">'+PEOPLE.map(function(p){return '<li class="vp"><a href="'+p[3]+'" target="_blank" rel="noopener" aria-label="'+esc(p[0])+', '+esc(p[1])+' (LinkedIn)"><div class="ph"><img src="'+wix(p[2],560,690)+'" alt="Portrait of '+esc(p[0])+'" loading="lazy" onerror="this.style.display=\'none\'"></div><div class="nm"><h3>'+esc(p[0])+'</h3><span class="ar" aria-hidden="true">↗</span></div><span class="lab ttl">'+esc(p[1])+'</span></a></li>'}).join("")+'</ul>'}
+function path(){return '<ol class="stg">'+PATH.map(function(s,i){return '<li><span class="n">0'+(i+1)+' · '+esc(s[0])+'</span><p class="t3">'+esc(s[1])+'</p><p>'+esc(s[2])+'</p><div class="w">'+(s[3]?'<a class="ul" href="'+s[3]+'" target="_blank" rel="noopener">Paper '+ARR+'</a>':'')+'</div></li>'}).join("")+'</ol>'}
+function portraits(){return '<div class="vpg">'+PEOPLE.map(function(p){return '<div class="vp"><a href="'+p[3]+'" target="_blank" rel="noopener" aria-label="'+esc(p[0])+', '+esc(p[1])+' (LinkedIn)"><div class="ph"><img src="'+wix(p[2],560,690)+'" alt="Portrait of '+esc(p[0])+'" loading="lazy" onerror="this.style.display=\'none\'"></div><div class="nm"><p class="t3">'+esc(p[0])+'</p><span class="ar" aria-hidden="true">↗</span></div><span class="lab ttl">'+esc(p[1])+'</span></a></div>'}).join("")+'</div>'}
 function mhStatic(label,list){return '<div class="mh-group"><p class="mh-label">'+label+'</p><ul class="mh-list">'+list.map(function(p){return '<li><div class="mh-row"><span class="mh-name">'+esc(p[0])+'</span><span class="mh-role">'+esc(p[1])+'</span><span class="mh-sum">'+esc(p[2])+'</span><span></span></div></li>'}).join("")+'</ul></div>'}
-function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -1020,7 +1024,7 @@ function vHome(){
   '</section>'+
 
   '<section class="sec mani dark" id="problem" data-theme="dark"><div class="wrap">'+
-   '<div class="mani-in"><span class="lab kick" data-r>The problem</span>'+
+   '<div class="mani-in"><h2 class="lab kick" style="margin-top:0;font-weight:400" data-r>The problem</h2>'+
    '<p class="txt" id="mani">Postpartum hemorrhage is preventable, but it can kill a woman in hours if it goes undetected or untreated. Most cases come in mothers rated low risk, and <em>low risk is not no risk.</em></p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">11<sup>%</sup></span><span class="k">Of US maternal deaths are caused by hemorrhage</span></div>'+
@@ -1074,9 +1078,9 @@ function cta(){
    '<p class="sub" data-r>Help enhance the birth experience and outcomes for all mothers. Hospitals, clinicians, investors and partners can reach the team directly.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a><a class="btn" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
    '<div class="adr">'+
-    '<div data-r><span class="lab">Headquarters</span>201 25th Avenue South, Unit 2B<br>Nashville, TN 37212</div>'+
-    '<div data-r><span class="lab">Philadelphia office</span>3600 Civic Center Blvd, Floor 9<br>Philadelphia, PA 19104</div>'+
-    '<div data-r><span class="lab">Chicago office</span>1623 W. Fulton Street<br>Chicago, IL 60612</div>'+
+    '<div><span class="lab">Headquarters</span><p>201 25th Avenue South, Unit 2B<br>Nashville, TN 37212</p></div>'+
+    '<div><span class="lab">Philadelphia office</span><p>3600 Civic Center Blvd, Floor 9<br>Philadelphia, PA 19104</p></div>'+
+    '<div><span class="lab">Chicago office</span><p>1623 W. Fulton Street<br>Chicago, IL 60612</p></div>'+
    '</div>'+
   '</div></section>';
 }
@@ -1231,8 +1235,8 @@ function storyDraw(svg){
   return function(p,b){
     if(!G[0].isConnected)return;
     var s=[seg(p,.02,.18),seg(p,.27,.43),seg(p,.52,.68),seg(p,.77,.93)];
-    G.forEach(function(g,i){var on=i===0?Math.max(s[0],.55):s[i];g.style.opacity=(b*(.2+.8*on)).toFixed(3)});
-    dash(P[0],L[0],.08+.92*s[0]);dash(P[1],L[1],s[1]);dash(P[2],L[2],s[2]);
+    G.forEach(function(g,i){var on=i===0?Math.max(s[0],.55):s[i];g.style.opacity=(b*(.26+.74*on)).toFixed(3)});
+    dash(P[0],L[0],.35+.65*s[0]);dash(P[1],L[1],s[1]);dash(P[2],L[2],s[2]);
     J.forEach(function(j,k){dash(j,JL[k],s[3])});
     mark.setAttribute("r",(4+3*s[2]).toFixed(2));mark.style.fill=s[2]>.95?"var(--accL)":"";
     pulse.style.opacity=(.6*(1-s[1])).toFixed(3);pulse.setAttribute("r",(26+10*s[0]).toFixed(1));

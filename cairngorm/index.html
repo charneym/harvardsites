@@ -635,6 +635,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (min-width:1025px){.ex{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .ftr .fcv{opacity:.22}
 @media (max-width:860px){.story-r{height:auto!important;aspect-ratio:620/420;max-height:48svh}.story-pin{padding-top:72px!important}}
+.ind.num li::before{display:none}
+.ind.num li{flex-direction:column;align-items:flex-start;gap:10px;padding:24px 0 26px;font-size:clamp(24px,2vw,32px);line-height:1.15}
+.ind.num .nn{color:var(--accD);font-family:var(--mono)}.dark .ind.num .nn,.dark2 .ind.num .nn{color:var(--accL)}
+@media (min-width:861px){.pg.c3 .pt{width:calc((100% - 2 * var(--gap)) / 3);max-width:300px}.pg.c3{max-width:calc(900px + 2 * var(--gap));margin:0 auto}}
+.ps-media img{filter:grayscale(1) contrast(1.03)}
+@media (max-width:860px){.story-l{align-self:start!important}.story-pin{row-gap:22px!important}}
 
 </style>
 </head>
@@ -994,10 +1000,10 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg">'+g[1].map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
+function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg'+(g[1].length===6?' c3':'')+'">'+g[1].map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
 function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[0])+' website (opens in a new tab)">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function ex(list){return '<ul class="ex">'+list.map(function(c){var rel=/cairngormcapital/.test(c[3]);return '<li><span class="lab">'+esc(c[2])+' · Realised</span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><a class="ul exl" href="'+c[3]+'" target="_blank" rel="noopener" aria-label="'+esc(c[0])+': '+(rel?"read the release":"website")+' (opens in a new tab)">'+(rel?"Read the release":"Website")+' '+ARR+'</a></li>'}).join("")+'</ul>'}
-function cats(list,cls){return '<ul class="ind '+(cls||"c4")+'">'+list.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
+function cats(list,cls){return '<ul class="ind num '+(cls||"c4")+'">'+list.map(function(c,i){return '<li><span class="lab nn">0'+(i+1)+'</span><span>'+esc(c)+'</span></li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function crit(){return '<dl class="facts">'+
     '<div><dt class="lab">Valuation</dt><dd>Majority positions in companies valued at up to £200 million.</dd></div>'+
@@ -1192,14 +1198,14 @@ var field=(function(){
     var hz=mob?U*.64:h*.64,ys=mob?U*.88:h*.84;
     return {mob:mob,side:side,cw:cw,U:U,hz:hz,ys:ys,
       mx:mob?w*.5:side+cw*.64,mw:mob?w*.6:Math.max(cw*.4,380),mh:mob?U*.36:h*.31,
-      pines:mob?[[w*.96,U*1.02,U*.7,1]]:[[side+cw*.995,h*.97,h*.66,1],[side+cw*.925,h*.9,h*.36,.8]],
+      pines:mob?[[w*.96,U*1.02,U*.7,1]]:[[side+cw*.965,h*.95,h*.56,1],[side+cw*.9,h*.9,h*.32,.8]],
       sun:mob?w*.2:side+cw*.43};
   }
   /* the main massif: two broad, flat-topped granite tops split by a deep notch, low hills to the left */
   function L(u,cc,wd,p){return Math.pow(1+Math.pow((u-cc)/wd,2),-p)}
   function H(x){var u=(x-G.mx)/G.mw;
     var v=.98*L(u,-.2,.3,1.15)+.8*L(u,.62,.22,1.2)+.26*L(u,-1.05,.3,1)+.24*L(u,1.32,.28,1);
-    v=Math.tanh(1.3*v)/Math.tanh(1.3)-.22*Math.exp(-Math.pow((u-.33)/.08,2));
+    v=Math.tanh(1.6*v)/Math.tanh(1.6)-.22*Math.exp(-Math.pow((u-.33)/.08,2));
     v+=.06*(fb(x/G.mw*7)-.45)+.025*(fb(x/G.mw*26+5)-.45)+.008*(n1(x*.35)-.5);
     return G.mh*Math.max(.06,v)}
   function B(x){var u=(x-G.mx)/G.mw;
@@ -1209,7 +1215,7 @@ var field=(function(){
     /* a Scots pine: a tall, slightly kinked bare trunk, copper-barked high up, and flat clumped crowns near the top */
     var tw=Math.max(1.4,H2*.026)*sc,kx=bx+H2*.04*(R()-.5),tx=bx+H2*.06*(R()-.3),ty=by-H2;
     g.fillStyle="#0c0a18";g.beginPath();g.moveTo(bx-tw*1.4,by);g.quadraticCurveTo(kx-tw,by-H2*.55,tx-tw*.35,ty+H2*.1);g.lineTo(tx+tw*.35,ty+H2*.1);g.quadraticCurveTo(kx+tw,by-H2*.55,bx+tw*1.4,by);g.closePath();g.fill();
-    if(lit){var cg=g.createLinearGradient(0,by-H2*.25,0,ty+H2*.12);cg.addColorStop(0,"rgba(176,96,70,0)");cg.addColorStop(.5,"rgba(196,112,78,.55)");cg.addColorStop(1,"rgba(214,132,92,.7)");
+    if(lit){var cg=g.createLinearGradient(0,by-H2*.25,0,ty+H2*.12);cg.addColorStop(0,"rgba(176,96,70,0)");cg.addColorStop(.5,"rgba(150,96,90,.3)");cg.addColorStop(1,"rgba(170,110,100,.4)");
       g.strokeStyle=cg;g.lineWidth=Math.max(.8,tw*.6);g.beginPath();g.moveTo(bx-tw*.9,by-H2*.25);g.quadraticCurveTo(kx-tw*.7,by-H2*.55,tx-tw*.2,ty+H2*.14);g.stroke()}
     /* limbs and crown clumps */
     var nC=4+Math.floor(R()*3);g.strokeStyle="#0c0a18";g.lineCap="round";
@@ -1237,15 +1243,15 @@ var field=(function(){
     /* the massif, column by column: snow on the high plateau, lingering in the gullies; granite below; lit from the dawn side */
     var M=mk(hz+2),m=M[1],sL=[252,234,236],sD=[136,130,190],rL=[122,98,128],rD=[38,33,70];
     var top0=Math.floor(hz-mh*1.08),IH=Math.ceil(hz-top0)+2,ID=m.createImageData(Math.ceil(w),IH),px=ID.data,W2=ID.width;
-    for(x=0;x<W2;x++){var tp=hz-H(x),sl=(H(x+3)-H(x-3))/6,s0=.52+.26*(fb(x*.007+3)-.45);
+    for(x=0;x<W2;x++){var tp=hz-H(x),sl=(H(x+14)-H(x-14))/28,s0=.52+.26*(fb(x*.007+3)-.45);
       for(var y=Math.max(0,Math.floor(tp));y<hz+2;y++){var yy=y-top0;if(yy<0||yy>=IH)continue;
-        var d=(y-tp)/mh,alt=(hz-y)/mh,wx=x/G.mw*15+1.3*vn2(x*.012,y*.012),wy=y/mh*1.6;
+        var d=(y-tp)/mh,alt=(hz-y)/mh,wx=x/G.mw*11+1.3*vn2(x*.012,y*.012),wy=y/mh*3;
         var rb=rib(wx,wy),rb1=rib(wx+.06,wy),tex=vn2(x*.25,y*.25);
-        var lt=cl(.48+sl*2.4*Math.exp(-d*2.2)+(rb1-rb)*5+.12*(rb-.5)+.08*(tex-.5));
-        var sn=Math.max(sm((alt-s0)/.05)*(.75+.25*rb),sm((alt-(s0-.42*Math.pow(1-rb,2.2)))/.035));
+        var snP=sm((alt-s0)/.05),lt=cl(.48+sl*2.4*Math.exp(-d*2.2)+(1-.75*snP)*((rb1-rb)*5+.12*(rb-.5))+.06*(tex-.5));
+        var sn=Math.max(sm((alt-s0)/.05)*(.94+.06*rb),sm((alt-(s0-.3*Math.pow(1-rb,2.6)))/.05));
         var col=mix(mix(rD,rL,lt),mix(sD,sL,lt),sn),edge=cl(y-tp+.5),i4=(yy*W2+x)*4;
         px[i4]=col[0];px[i4+1]=col[1];px[i4+2]=col[2];px[i4+3]=255*edge}}
-    var IC=document.createElement("canvas");IC.width=W2;IC.height=IH;IC.getContext("2d").putImageData(ID,0,0);m.drawImage(IC,0,top0);
+    var IC=document.createElement("canvas");IC.width=W2;IC.height=IH;IC.getContext("2d").putImageData(ID,0,0);m.filter="blur(.7px)";m.drawImage(IC,0,top0);m.filter="none";
     m.globalCompositeOperation="source-atop";
     var md=m.createLinearGradient(0,hz-mh*.55,0,hz);md.addColorStop(0,"rgba(22,19,42,0)");md.addColorStop(1,"rgba(22,19,42,.72)");m.fillStyle=md;m.fillRect(0,0,w,hz+2);
     var mhz=m.createLinearGradient(0,hz-mh*.3,0,hz);mhz.addColorStop(0,"rgba(214,180,206,0)");mhz.addColorStop(1,"rgba(214,180,206,.16)");m.fillStyle=mhz;m.fillRect(0,0,w,hz+2);
@@ -1302,7 +1308,7 @@ var field=(function(){
     for(var mk2=0;mk2<3;mk2++){var mxp=((t*(6+mk2*3)+mk2*w*.47)%(w+mw2))-mw2;mist(mxp,hz-mh*(.07+mk2*.05),mw2,mh2,(.5-mk2*.1)*e)}
     /* the loch: the reflection, broken into slow ripples */
     var WH=ys-hz+4;c.fillStyle="#2a2450";c.globalAlpha=e;c.fillRect(0,hz,w,WH);
-    for(var rr=0;rr<WH;rr+=2){var k=rr/WH,amp=(.6+k*k*7)*(mob?.6:1),off=Math.sin(rr*(.22+k*.1)-t*1.3+Math.sin(rr*.045+t*.25)*2.2)*amp;
+    for(var rr=0;rr<WH;rr+=2){var k=rr/WH,amp=(.4+k*k*3.2)*(mob?.6:1),off=Math.sin(rr*(.09+k*.05)-t*1.1+Math.sin(rr*.03+t*.25)*1.6)*amp;
       c.drawImage(oRef,0,Math.round(rr*dpr),oRef.width,Math.max(1,Math.round(2*dpr)),off-2,hz+rr,w+4,2.2)}
     for(var l=0;l<(mob?14:30);l++){var kk=(l+.5)/(mob?14:30),ly=hz+(ys-hz)*Math.pow(kk,1.4),lx=((t*(5+l%3*3)*(l%2?1:-1)+l*197)%w+w)%w,lw=w*(.03+.1*(1-kk)),la=.12*(1-kk*.5);
       c.fillStyle="rgba(250,220,226,"+(la*e).toFixed(3)+")";c.fillRect(lx-lw/2,ly,lw,1)}
@@ -1364,10 +1370,10 @@ function scene(){
   var W=[40].concat(SC_WP.map(function(w){return w[0]}));
   for(var r=1;r<W.length;r++)s+='<path class="rt" id="scR'+r+'" pathLength="1" d="'+scP(function(x){return scRidge(x)+4},W[r-1],W[r],0,3)+'"/>';
   SC_WP.forEach(function(wp,i){var x=wp[0],y=scRidge(x)+1,lab=mob?wp[2]:wp[1],ly=y-(mob?62:52)-(i===3?(mob?20:14):0),tw=lab.length*fs*.64;
-    var lx=Math.max(tw/2+4,Math.min(796-tw/2,x));
+    var lx=Math.max(tw/2+4,Math.min(796-tw/2,x));if(i===2&&!mob)lx=x-tw/2+18;if(i===2&&mob)ly-=34;
     s+='<g class="wp" id="scW'+i+'"><g class="cn"><ellipse cx="'+x+'" cy="'+(y-4)+'" rx="10" ry="4.2"/><ellipse cx="'+(x-.5)+'" cy="'+(y-11)+'" rx="8" ry="3.8"/><ellipse cx="'+(x+.5)+'" cy="'+(y-17.5)+'" rx="5.8" ry="3.2"/><ellipse cx="'+x+'" cy="'+(y-22.5)+'" rx="3.4" ry="2.4"/></g>'+
       '<path class="ll" d="M'+x+' '+(y-30)+'V'+(ly+8)+'"/><text x="'+lx+'" y="'+ly+'" text-anchor="middle" style="font-size:'+fs+'px" class="'+(i===3?"a":"w")+'">'+lab+'</text></g>'});
-  return '<svg class="'+(mob?"mob":"")+'" viewBox="'+(mob?"30 100 620 420":"0 120 800 400")+'" preserveAspectRatio="xMidYMax meet" aria-hidden="true">'+s+'</svg>';
+  return '<svg class="'+(mob?"mob":"")+'" viewBox="'+(mob?"20 50 640 470":"0 120 800 400")+'" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'+s+'</svg>';
 }
 function storyDraw(svg){
   var R=[1,2,3,4].map(function(i){return $("#scR"+i,svg)}),Wp=[0,1,2,3].map(function(i){return $("#scW"+i,svg)}),sun=$(".sun",svg);
@@ -1377,7 +1383,7 @@ function storyDraw(svg){
     /* step 1: the first leg and cairn; step 2: transformation; step 3: build, then the summit */
     var q=[seg(p,.02,.2),seg(p,.36,.56),seg(p,.66,.8),seg(p,.8,.95)];
     R.forEach(function(r,i){r.style.strokeDasharray="1";r.style.strokeDashoffset=(1-q[i]).toFixed(3)});
-    Wp.forEach(function(g,i){var v=seg(q[i],.6,1);g.style.opacity=(.12+.88*v).toFixed(3);g.classList.toggle("on",v>.5)});
+    Wp.forEach(function(g,i){var v=seg(q[i],.6,1);g.style.opacity=(.3+.7*v).toFixed(3);g.classList.toggle("on",v>.5)});
     if(sun)sun.setAttribute("cy",(250-60*seg(p,0,1)).toFixed(1));
   };
 }/*</R:story>*/

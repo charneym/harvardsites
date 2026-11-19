@@ -102,3 +102,20 @@ photo-inventory: 3 meaningful images on the one page, plus 9 circular headshots 
 - UNUSED: headshots — originals are mostly small (Dodge 250x333, Di Vitantonio 131x137, Kelly 300x250, de Bruijn 500,
   others mixed); a portrait grid would mix sizes and quality, so the people list uses the masthead format (PRINCIPLES CI).
 - UNUSED: Penn / PCI Ventures / NSF logos — partners are set in type as one credit line (PRINCIPLES BW/CJ).
+
+## Home-only rebuild (HOME_BRIEF, batch 2026-11c, 19 Nov 2026)
+- Pre-screen: live site (re-read 19 Nov 2026) is a GoDaddy Website Builder single page: coral header bar
+  (#f35240) with "MECHANO THERAPEUTICS LLC" in condensed caps, an all-caps centred hero over a blurry greyscale
+  micrograph, pill buttons, a cookie banner and a TrustedSite badge. Activity since 2025-05-18: NSF SBIR Phase II
+  (28 Jul 2026) and NIH NIAMS SBIR Phase I (17 Sep 2026). In scope (SPEC §2b biotech).
+- Palette re-sampled from the live site: theme-color #f35240, black/#161616 grounds, greys #a4a4a4/#919191, white.
+  Logo orange #ef4e22 stays the accent (lightened #f4744f on dark, deepened #c8401a on light); logo grey #bfc0c4.
+- Built on the Firelight engine regions (square corners, DE), one route #/. Nav: Science → story, Programs →
+  #programs, Team → #team, News → #news (links out to NSF/NIH records), Contact → #contact (mailto + address).
+- Hero: the knee joint (femoral condyle on the tibial plateau) with drug-loaded microcapsules flattening and
+  releasing under load — the company's actual mechanism, recognisable as a joint (DC/DD). The live site's only
+  photograph is a low-resolution micrograph, so DG does not call for using it.
+- Story (pinned, fills the right half of the frame): inject → settle → load → release → repeat, same joint.
+- Programs table rows draw their rule in the accent on hover (DH).
+- Assemble script and region sources kept in the session scratchpad (regions: meta, fonts, root, fieldbg, logocss,
+  scenecss, seen, pre, brand, navmenu, xc, site, content, views, field, story).

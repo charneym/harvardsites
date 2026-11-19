@@ -13,7 +13,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="philosophy" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Dedication</span>'+
-   '<p class="txt" id="mani">Investment management and financial planning for a limited number of clients is our only business, and every account is managed or overseen by <em>a principal.</em></p></div>'+
+   '<h2 class="txt" id="mani">Investment management and financial planning for a limited number of clients is our only business, and every account is managed or overseen by <em>a principal.</em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1994</span><span class="k">Founded as Mullaney &amp; Associates, the forerunner of today’s firm</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">Fee-only</span><span class="k">No commissions, referral fees or other compensation from anyone else</span></div>'+

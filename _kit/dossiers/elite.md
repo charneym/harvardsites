@@ -1,0 +1,31 @@
+# Elite Financial, Inc. — dossier (facts with sources)
+
+- Firm: Elite Financial, Inc., an SEC-registered investment adviser (RIA), wealth manager. Site: https://www.elitefinancialinc.net (Wix; pages Home, About (/about2), Services, Benefits, Contact).
+- Home: "Welcome to Elite Financial Inc., a Registered Investment Advisor based in Lewiston, Idaho. We specialize in working with individuals, professionals and business owners. Our services differ from the normal sales and transaction based business of most investment companies. Our focus is in long term relationships, built on trust and communication."
+- About: "At Elite Financial Inc. we care about you. We embrace our fiduciary duty to put your interests first."
+- Services: "Being accountable to our clients and making a positive impact on their lives and future is our motivation." Investments: "First, we listen and understand the needs and goals of our clients. Then we create a personalized investment program that works toward executing and achieving the goals expressed. We then work with clients to ensure their investments stay aligned with their financial objectives and risk tolerance." Planning: "Some clients request specific financial planning for retirement, education or other areas like the selling of a business. In these cases we work with clients to develop a reasonable and attainable plan to reach their financial goals."
+- Benefits: Advisors are fiduciaries; advisors tell you what they charge (fees in writing); advisors have investment flexibility (fees based on assets, not products; "open architecture").
+- Contact (footer, every page): 739 Bryden, Suite B, Lewiston, ID 83501; T: 208.746.2007; info@elitefinancialinc.net. "Investment Advisory Services offerred through Elite Financial, Inc., an SEC Registered Investment Adviser." Form CRS link: https://www.elitefinancialinc.net/_files/ugd/f98838_406782b35e4a45538f3d13ea965e8955.pdf
+- Brand: logo = lighthouse in front of a gold/amber sun disc (#f8c818 → #f0a828), black serif wordmark "Elite / FINANCIAL INC." (italic "Elite"). Site UI teal #3cb2b2, orange #f4b94e and green #7ab644 buttons.
+
+## Regulatory (IAPD, https://adviserinfo.sec.gov/firm/summary/286667)
+- CRD 286667, SEC# 801-119574. SEC registration approved 9/30/2020 (state registrations in ID, NV, TX, WA terminated 2018–2020). Notice filings: CA, HI (4/21/2026), ID, MT (2/14/2024), TX, WA.
+- Latest Form ADV filing: 04/21/2026. Brochure ADV Part 2A & 2B submitted 2/10/2026.
+- Form CRS (Feb 14, 2024): ongoing asset-based fee, quarterly; advisory fee never exceeds 1.5% annually; financial planning $250/hour; discretionary accounts; quarterly updates by phone, email, statements or quarterly updates; no disciplinary history; reps may sell insurance (conflict disclosed).
+- ADV Part 2A (Feb 2026): owned by Ryan Skinner, "created in 2017 as an independent investment advisor". $274,230,878 discretionary AUM as of December 31, 2025; no wrap program. Services: discretionary portfolio management (construction, selection, trading, rebalancing, monitoring, tax-loss harvesting), mostly mutual funds and ETFs; held-away 401(k)/HSA via Pontera; financial planning and consulting (retirement, sale of a business, career transitions, wealth transfer, family changes, loss of life); estate planning documents via Wealth, Inc. (wealth.com). Types of clients: individuals, pension and profit sharing plans, trusts, estates, charitable organizations, corporations, associations and other business entities. No minimum account size. Custodian usually Charles Schwab & Co.; some clients use American Funds. No performance-based fees.
+
+## People
+- Ryan L. Skinner — owner, Investment Adviser Representative, Chief Compliance Officer (ADV 2B; CRD 4466041). Site bio: grew up in Lewiston (Lewiston HS 1994, state champions); University of Idaho on a football scholarship, degree in communications and business finance; Vandal team captain on the 1998 Humanitarian Bowl team; started in financial services in 2001 with Northwestern Mutual; after 8 years established Elite Financial Inc. in July 2009; registered as an investment advisor with Idaho and Washington in April 2017. ADV 2B: NM 2001–2009, LPL Financial 2009–2017, started Elite (RIA) 2017. Involved with the Lewis-Clark Chamber of Commerce, Boys and Girls Club alumni association, United Way, University of Idaho Vandal Boosters; Skinner Canyon mountain bike trail system (est. 2019, Community Park, Lewiston) honoring his parents. Pronouns: he (site bio). Greeting: Mr. Skinner.
+- Rod Ehrlich — principal of RIA Systems, LLC (separate, unaffiliated; hired for back-office compliance, operations and supervision). Formerly VP of Advisory Services and CCO at Pacific West Financial Consultants (2003–2012); Kansas State University 1991; AIFA 2004; Merrill Lynch 2000–2003.
+- Jeff Hughes — principal and Operations Manager, RIA Systems, LLC (joined 2014). Western Washington University 1990; Freeman Welwood 1990; Pacific West Financial Consultants 2006–2012 (Operations Supervisor); ran TD Ameritrade operations for Cetera Advisors for two years.
+
+## Lead / outreach facts
+- Lead: Ryan L. Skinner, Owner & Chief Compliance Officer. Greeting: Mr. Skinner.
+- Best published email: info@elitefinancialinc.net (no personal address published; Hunter key not available in this session).
+- Latest activity: Form ADV amendment filed 04/21/2026 (Hawaii notice filing effective 4/21/2026); ADV 2A/2B brochure 2/10/2026.
+- HQ: Lewiston, Idaho (America/Los_Angeles).
+
+## Bad-site evidence
+- Wix template layout from the early 2010s: a snapshot-style portrait of the owner in a doorway as the hero, beside glossy orange "INVESTMENTS" and green "PLANNING" buttons with play-arrow icons.
+- The welcome copy is small text in a teal box; the whole home page is one paragraph; nav has only four items and the Contact page is just a "Send" form.
+- Typos and stale copy: "offerred" in the regulatory line on every page; About says "over 23 years" of experience and that the firm registered with Idaho and Washington in 2017, while it has been SEC-registered since 2020. Benefits page says advisers "do not receive commissions", while the Form CRS discloses insurance commissions.

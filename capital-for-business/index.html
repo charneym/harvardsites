@@ -217,7 +217,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
 .sz li{border-top:2px solid var(--ink);padding-top:24px}
 .sz .lab{color:var(--accD)}
-.sz .v{display:block;margin-top:18px;font:500 clamp(46px,4.3vw,72px)/1 var(--disp);white-space:nowrap;letter-spacing:-.012em;font-variant-numeric:lining-nums}
+.sz .v{display:block;margin-top:18px;font:500 clamp(46px,4.3vw,62px)/1 var(--disp);white-space:nowrap;letter-spacing:-.012em;font-variant-numeric:lining-nums}
 .sz .k{display:block;margin-top:12px;color:var(--mute);font-size:15.5px;max-width:20em}
 .cgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:56px var(--gap);margin-top:clamp(70px,8vw,120px)}
 .cgrid h3{font:500 clamp(28px,2.3vw,36px)/1.1 var(--disp);margin-bottom:20px}
@@ -841,7 +841,7 @@ function arch(svg,o){
   s+='<g class="rf" mask="url(#'+P+'rfm)" opacity=".2">'+R+'</g>';
   s+='<line x1="-4000" y1="0" x2="4000" y2="0" stroke="#c4a36f" stroke-opacity=".5" vector-effect="non-scaling-stroke"/>';
   svg.innerHTML=s;
-  var bds=$$(".bd",svg),edges=$$(".edge,.ridge",svg),hc=svg.querySelector("#"+P+"hc"),wat=$$(".wat line",svg),hig=$(".hi",svg),cityG=$(".city",svg),skyG=$(".sky",svg),sunG=$(".sun",svg);
+  var bds=$$(".bd",svg),edges=$$(".edge,.ridge",svg),hc=svg.querySelector("#"+P+"hc"),wat=$$(".wat line",svg),hig=$(".hi",svg),cityG=$(".city",svg),skyG=$(".sky",svg),sunG=$(".sun",svg),bodyG=$(".body",svg);
   edges.forEach(function(e){var Lg=e.getTotalLength();e._L=Lg;e.style.strokeDasharray=Lg;e.style.strokeDashoffset=0});
   var st={intro:0,introT:null,t0:performance.now(),running:false,raf:0,vis:true,want:false};
   function layout(){if(foot){svg.setAttribute("viewBox","-470 -700 940 760");return}
@@ -854,7 +854,7 @@ function arch(svg,o){
     // construction: the legs rise from both bases and meet at the top
     var lim=e3*NBANDS;bds.forEach(function(g,i){var v=Math.max(0,Math.min(1,lim-i));g.style.opacity=v.toFixed(3)});
     edges.forEach(function(e){e.style.strokeDashoffset=(e._L*(1-e3)).toFixed(1)});
-    cityG.style.opacity=((foot?.32:.4)*Math.min(1,ie*1.6)).toFixed(3);sunG.style.opacity=Math.min(1,ie*1.25).toFixed(3);skyG.style.opacity=((foot?.16:.13)*Math.min(1,ie*1.4)).toFixed(3);
+    cityG.style.opacity=((foot?.32:.4)*Math.min(1,ie*1.6)).toFixed(3);sunG.style.opacity=Math.min(1,ie*1.25).toFixed(3);bodyG.style.opacity=e3.toFixed(3);skyG.style.opacity=((foot?.16:.13)*Math.min(1,ie*1.4)).toFixed(3);
     // a slow highlight travels the steel, up one leg and down the other (14 s)
     var u=(t%14)/14,sd=AR.S*(.08+.84*(.5-.5*Math.cos(u*2*Math.PI))),p=AR.at(sd);hc.setAttribute("cx",f1(p.x));hc.setAttribute("cy",f1(-p.y));hig.style.opacity=(.85*ie).toFixed(3);
     wat.forEach(function(l,i){l.style.strokeDashoffset=(-(t*(6+i%5*2))+(+l.dataset.o)).toFixed(1)})}

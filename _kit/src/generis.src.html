@@ -535,6 +535,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .mm .mmf{word-break:break-word}
 .accl li span b{display:block;font-family:var(--disp);font-weight:300;font-size:clamp(20px,1.7vw,26px);line-height:1.3;letter-spacing:-.02em}
 .accl li span small{display:block;margin-top:6px;font-size:15px;line-height:1.5;color:var(--stoneD)}
+@media (min-width:861px){.ph-head{min-height:93vh!important;min-height:93svh!important}}
 @media (min-width:1025px){.g5 .pt{width:calc((100% - 4 * var(--gap)) / 5)}.story-r{height:min(62vh,560px)}}
 @media (min-width:1025px){.story-pin{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}}
 @media (max-width:860px){.story-r{height:min(40svh,48vw)!important}.story-pin{row-gap:22px}}
@@ -802,13 +803,14 @@ var NEWS=[
  {d:"2024-11-25",s:"Cession",t:"Leetchi rachète l’éditeur de logiciels iRaiser",u:GN+"actualiteacutes/leetchi-rachete-lediteur-de-logiciels-iraiser"}];
 /* [name, description, sector, region, site, year] */
 var ACTIVE=PF.map(function(p){var sr=p[2].split(" · ");return [p[1],p[3],sr[0],sr[1]||"",p[4],p[0]]});
+var LOWRES=/etchegaray|lissowski|meunier|leblanc/; /* sources narrower than the 410px sheet portrait: compact sheet (BI) */
 function slugify(s){return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
 function firstS(t){var m=t.match(/^.*?[.!?](\s|$)/);return m?m[0].trim():t}
 var SHEETS_T=TEAM.map(function(p,i){var rows=[["Parcours",p.p[0]]];if(p.p[1])rows.push([/^Diplôm/.test(p.p[1])?"Formation":"Fondateur",p.p[1]]);
-  return {slug:slugify(p.n),name:p.n.replace(/ /g," "),title:p.r,grp:"Équipe de gestion",img:p.img,sum:firstS(p.p[0]),rows:rows,bio:p.p}});
+  return {slug:slugify(p.n),name:p.n.replace(/ /g," "),title:p.r,grp:"Équipe de gestion",img:p.img,small:LOWRES.test(p.img),sum:firstS(p.p[0]),rows:rows,bio:p.p}});
 var SHEETS_B=BOARD.map(function(p){var cv=p.cv.slice(),last=cv[cv.length-1],rows=[];var edu=/^Formation/.test(last)?cv.pop().replace(/^Formation\s*:\s*/,""):"";
   rows.push(["Parcours",cv.join(" · ")]);if(edu)rows.push(["Formation",edu.charAt(0).toUpperCase()+edu.slice(1)]);
-  return {slug:slugify(p.n),name:p.n.replace(/ /g," "),title:p.r,grp:"Comité stratégique",img:p.img,sum:cv[0],rows:rows,bio:p.cv}});
+  return {slug:slugify(p.n),name:p.n.replace(/ /g," "),title:p.r,grp:"Comité stratégique",img:p.img,small:LOWRES.test(p.img),sum:cv[0],rows:rows,bio:p.cv}});
 var SHEETS=SHEETS_T.concat(SHEETS_B);
 var GROUPS=[["Équipe de gestion",SHEETS_T],["Comité stratégique",SHEETS_B]];
 /*</R:content>*/

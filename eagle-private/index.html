@@ -238,6 +238,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .sp.s3 .c4 .cf,.sp.s3 .c5 .cf,.sp.s3 .c6 .cf{fill:rgba(81,176,157,.2);stroke:rgba(29,116,112,.6)}
 .sp.s3 .c4 .rs,.sp.s3 .c5 .rs,.sp.s3 .c6 .rs{stroke:rgba(29,116,112,.85)}
 .sp.mob .sm,.sp.mob .sl{display:none}
+.sp .main{transition:transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.sp.s0 .main,.sp.s1 .main{transform:translateX(67px)}
 /*</R:scenecss>*/
 
 /* focus list (industries) */
@@ -559,6 +561,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 60px),transparent calc(34svh - 4px))!important;mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 60px),transparent calc(34svh - 4px))!important}}
 @media (max-width:1024px){.story-r{height:50vh;height:50svh}.story-pin{padding-top:76px}}
 .ftr .fcv{opacity:.3}
+@media (min-width:1025px){.story-pin{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}.story-r{height:min(80vh,740px)}}
+@media (max-width:560px){.pf li>p:first-of-type{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
 
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
@@ -973,7 +977,7 @@ function crit(){return '<dl class="facts">'+
     '<div><dt class="lab">Track record</dt><dd>Histories of stable cash flow and profitability, with positive outlooks for sustainable margins, profitability and growth.</dd></div>'+
     '<div><dt class="lab">Geography</dt><dd>Generalists, investing in a broad range of businesses located in the United States.</dd></div>'+
    '</dl>'}
-function exits(){return '<div class="credit"><span class="lab">Realized investments · '+EXI.length+' companies</span><p>'+EXI.map(function(n){return '<span>'+esc(n)+'</span>'}).join('<i aria-hidden="true">·</i> ')+'</p></div>'}
+function exits(){return '<div class="credit"><span class="lab">Realized investments · '+EXI.length+' companies</span><p>'+EXI.map(function(n,i){return '<span>'+esc(n)+(i<EXI.length-1?'<i aria-hidden="true">·</i>':'')+'</span>'}).join(' ')+'</p></div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -1080,7 +1084,7 @@ function vPortfolio(){
 }
 function vTeam(){
   return head({k:"Team",h:'Lenders, investors <em>and advisors.</em>',p:'Eagle’s principals have backgrounds in commercial and investment banking and public accounting. Select a name to read the full biography.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
+  '<section class="sec dark first" data-theme="dark" style="padding-top:clamp(110px,16vh,180px)"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Experience</span><h2 class="d3 split">Hundreds of middle <em>market businesses.</em></h2></div>'+
    '<div><p class="lede" data-r>Eagle’s principals have worked with hundreds of middle market businesses as senior lenders, equity investors and strategic advisors.</p>'+
    '<p class="muted" data-r style="margin-top:24px;max-width:58ch">The firm’s roots go back to Mississippi Valley Capital, co-founded by Managing Director Scott Fesler and the general partner of Eagle Fund I from 1998.</p></div></div></div></section>'+cta();
@@ -1143,16 +1147,16 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    eagle's wing flex and glide, the river's glitter and ripples, the tow, the mist) and has no pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,oWat=null,oMist=null,LX=[0,0];
+  var SUB={v:0,t:0},IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,oWat=null,oMist=null,LX=[0,0];
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.min(h*.34,w*.74):h,hz=mob?U*.62:h*.655;
+    var U=mob?Math.min(h*.34,w*.74):h,hz=mob?U*.62:h*.69;
     var aH=mob?U*.3:Math.min(h*.2,cw*.15);
     return {mob:mob,side:side,cw:cw,U:U,hz:hz,aH:aH,ax:mob?w*.2:side+cw*.86,
       sx:mob?w*.08:side+cw*.86+aH*.95,
-      ex:mob?w*.63:side+cw*.69,ey:mob?U*.43:h*.3,hs:mob?w*.28:Math.min(cw*.175,h*.27),
+      ex:mob?w*.6:side+cw*.71,ey:mob?U*.42:h*.29,hs:mob?w*.25:Math.min(cw*.15,h*.24),
       wb:mob?U:h};
   }
   function mk(W,H){var o=document.createElement("canvas");o.width=Math.max(1,Math.round(W*dpr));o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
@@ -1191,7 +1195,7 @@ var field=(function(){
     var Rb=rng(G.mob?5:13),x0=ax-aH*(G.mob?.95:1.75),x1=ax+aH*(G.mob?1.25:1.1),bx=x0,lit=[];LX=[x0-aH*.2,x1+aH*.2];
     while(bx<x1){var bw=aH*(.06+Rb()*.09),dc=Math.abs(bx+bw/2-ax)/aH,bh=aH*(.1+Rb()*.36)*(dc<.15?.55:1)*(1-Math.min(.5,Math.max(0,dc-.6)*.6));
       if(Rb()<.12)bh=aH*(.5+Rb()*.1);
-      l.fillStyle=Rb()<.5?sil:sil2;l.fillRect(bx,base-bh,bw,bh+1);
+      l.fillStyle=Rb()<.5?sil:sil2;l.fillRect(bx,base-bh,bw,bh+1);if(bh>aH*.3&&Rb()<.6){l.fillRect(bx+bw*.18,base-bh-aH*.04,bw*.64,aH*.04+1);if(Rb()<.5)l.fillRect(bx+bw*.34,base-bh-aH*.07,bw*.32,aH*.03+1)}
       if(Rb()<.25){l.fillRect(bx+bw*.4,base-bh-aH*.05,Math.max(1,bw*.06),aH*.05)}
       var nw=Math.floor(bw/(aH*.02)),nh=Math.floor(bh/(aH*.03));for(var wy=1;wy<nh;wy++)for(var wx=0;wx<nw;wx++)if(Rb()<.05)lit.push([bx+wx*aH*.02+aH*.006,base-bh+wy*aH*.03]);
       bx+=bw+aH*(Rb()<.3?.02:0)}
@@ -1199,6 +1203,7 @@ var field=(function(){
     l.fillStyle="rgba(255,206,140,.75)";lit.forEach(function(p){l.fillRect(p[0],p[1],Math.max(1,aH*.007),Math.max(1,aH*.008))});
     arch(l,ax,base,aH,["#0f2a3f","#3a5163","#f4d4a6","rgba(255,244,222,.8)"]);
     l.fillStyle=sil;l.fillRect(0,base-aH*.012,w,aH*.012+1);
+    if(!G.mob){l.save();l.globalCompositeOperation="destination-out";var fo=l.createLinearGradient(0,0,G.side+G.cw*.6,0);fo.addColorStop(0,"rgba(0,0,0,1)");fo.addColorStop(.62,"rgba(0,0,0,1)");fo.addColorStop(1,"rgba(0,0,0,0)");l.fillStyle=fo;l.fillRect(0,0,w,hz+2);l.restore()}
     /* the river: the sky's colours, muddier and darker, deepening toward the viewer */
     var C=mk(w,wb-hz+2),r=C[1];oWat=C[0];var WH=wb-hz;
     var wg=r.createLinearGradient(0,0,0,WH);wg.addColorStop(0,"#8f7f74");wg.addColorStop(.07,"#5c6670");wg.addColorStop(.3,"#28445a");wg.addColorStop(.7,"#0c2b42");wg.addColorStop(1,"#06283f");
@@ -1212,7 +1217,7 @@ var field=(function(){
      underside, white head and fanned white tail, yellow beak and feet. Units: half-span = 1, head toward -y. */
   var LE=[[.06,-.15],[.2,-.205],[.38,-.228],[.55,-.218],[.68,-.192],[.77,-.158]],
       TE=[[.745,.105],[.63,.165],[.49,.198],[.35,.214],[.21,.214],[.08,.17]],
-      FL=[.2,.25,.275,.28,.265,.235,.19];
+      FL=[.19,.24,.27,.275,.255,.22,.17];
   function eagle(x,y,s,rot,t,al){
     var flex=Math.sin(t*.9),spread=.04*Math.sin(t*.55+1),sxk=1-.03*(1+flex)/2;
     c.save();c.globalAlpha=al;c.translate(x,y);c.rotate(rot);c.scale(s,s*.86);
@@ -1220,12 +1225,12 @@ var field=(function(){
     function wing(sg){
       c.save();c.scale(sg*sxk,1);
       /* primaries: separated fingers, tips curling up */
-      for(var i=0;i<7;i++){var u=i/6,bx=.775-.03*u,by=-.15+.255*u,an=-.34+.86*u+spread*(u-.5)*2+.03*flex,L=FL[i],ca=Math.cos(an),sa=Math.sin(an),wd=.03-.004*Math.abs(u-.5)*2;
+      for(var i=0;i<7;i++){var u=i/6,bx=.775-.03*u,by=-.15+.255*u,an=-.34+.86*u+spread*(u-.5)*2+.03*flex,L=FL[i],ca=Math.cos(an),sa=Math.sin(an),wd=.036-.006*Math.abs(u-.5)*2;
         var tx=bx+ca*L,ty=by+sa*L-.025*L*(1+flex*.4),mx=bx+ca*L*.55,my=by+sa*L*.55;
         c.fillStyle=i%2?"#2a1d15":"#2f2219";c.beginPath();c.moveTo(bx-sa*wd,by+ca*wd);c.quadraticCurveTo(mx-sa*wd*.9,my+ca*wd*.9,tx,ty);c.quadraticCurveTo(mx+sa*wd*.9,my-ca*wd*.9,bx+sa*wd,by-ca*wd);c.closePath();c.fill();
         c.strokeStyle="rgba(255,206,160,.28)";c.lineWidth=lw;c.beginPath();c.moveTo(bx+sa*wd*.6,by-ca*wd*.6);c.quadraticCurveTo(mx+sa*wd*.6,my-ca*wd*.6,tx,ty);c.stroke()}
       /* arm and hand */
-      var gr=c.createLinearGradient(0,-.23,0,.22);gr.addColorStop(0,"#241811");gr.addColorStop(.45,"#33241a");gr.addColorStop(1,"#3d2b1f");
+      var gr=c.createLinearGradient(0,-.23,0,.22);gr.addColorStop(0,"#21160f");gr.addColorStop(.4,"#36261b");gr.addColorStop(.8,"#4a3424");gr.addColorStop(1,"#6b4a30");
       c.fillStyle=gr;c.beginPath();c.moveTo(LE[0][0],LE[0][1]);
       for(var k=1;k<LE.length;k++){var p=LE[k-1],q=LE[k];c.quadraticCurveTo(p[0],p[1]-.006,(p[0]+q[0])/2,(p[1]+q[1])/2)}c.lineTo(LE[LE.length-1][0],LE[LE.length-1][1]);
       c.lineTo(.79,-.02);c.lineTo(TE[0][0],TE[0][1]);
@@ -1271,19 +1276,19 @@ var field=(function(){
     /* the skyline's reflection, broken by the current */
     var Rr=Math.min(WH*.8,aH*1.15),lx0=Math.max(0,LX[0]),lx1=Math.min(w,LX[1]),st=G.mob?2:3;
     c.globalAlpha=e*.32;
-    for(var ry=0;ry<Rr;ry+=st){var sy=hz-ry/.9,off=Math.sin(ry*.22+t*1.6)*(.6+ry*.05)+Math.sin(ry*.07-t*.9)*1.2;
+    for(var ry=0;ry<Rr;ry+=st){var sy=hz-ry/.9,off=Math.sin(ry*.16+t*1.3)*(.4+ry*.02)+Math.sin(ry*.05-t*.7)*.8;
       if(sy<0)break;c.drawImage(oLand,lx0*dpr,Math.max(0,(sy-st))*dpr,(lx1-lx0)*dpr,st*dpr,lx0+off,hz+ry,lx1-lx0,st)}
     c.globalAlpha=e;
     c.drawImage(oLand,0,0,oLand.width,oLand.height,0,0,w,hz+2);
     /* glitter on the sun's path, widening toward the viewer */
     c.globalCompositeOperation="lighter";
-    var gn=G.mob?50:120,Rg=rng(5);
+    var gn=G.mob?60:160,Rg=rng(5);
     for(var i=0;i<gn;i++){var k=Rg(),gy=hz+2+Math.pow(k,1.7)*WH*.9,sp=(aH*.25+(gy-hz)*1.1),gx=sx+(Rg()-.5)*sp+Math.sin(t*.7+i)*3,
         tw=Math.max(0,Math.sin(t*(1.4+Rg()*2.6)+Rg()*6.3)),ga=tw*tw*(.55-.35*k),gw=2+Rg()*(4+k*16);
       if(ga<.03)continue;c.fillStyle="rgba(255,226,180,"+ga.toFixed(3)+")";c.fillRect(gx-gw/2,gy,gw,Math.max(1,k*1.6))}
     c.globalCompositeOperation="source-over";
     /* slow ripples drifting downstream */
-    for(var l=0;l<(G.mob?14:34);l++){var kk=(l+.5)/(G.mob?14:34),ly=hz+WH*Math.pow(kk,1.3)*.95,lx=((t*(6+l%4*3)+l*211)%(w+300))-150,lw2=w*(.05+.16*kk),la=.06+.05*(1-kk);
+    for(var l=0;l<(G.mob?14:34);l++){var kk=(l+.5)/(G.mob?14:34),ly=hz+WH*Math.pow(kk,1.15)*.97,lx=((t*(6+l%4*3)+l*211)%(w+300))-150,lw2=w*(.05+.16*kk),la=.07+.04*(1-kk);
       c.fillStyle="rgba(196,206,214,"+la.toFixed(3)+")";c.fillRect(lx,ly,lw2,1)}
     /* a towboat pushing a raft of barges downstream */
     var bs=aH*(G.mob?.9:.75),by=hz+WH*(G.mob?.13:.1),span=(G.mob?w*.55:G.cw*.42),bx0=(G.mob?w*.42:G.side+G.cw*.52),bp=((t*(G.mob?3:5)+span*.45)%span),bxx=bx0+span-bp,ba=Math.min(1,bp/(span*.12),(span-bp)/(span*.12));
@@ -1299,8 +1304,9 @@ var field=(function(){
       c.globalAlpha=e*(.22+.08*Math.sin(t*.2+m));c.drawImage(oMist,mx,my-aH*.06,mw,aH*.14)}
     c.globalAlpha=1;
     /* the eagle: a slow soaring glide, wings flexing, drifting on the air */
-    var ex=G.ex+G.cw*.012*Math.sin(t*.17)-(1-e)*G.cw*.06,ey=G.ey+G.hs*.05*Math.sin(t*.29)+(1-e)*G.hs*.15,rot=-.27+.05*Math.sin(t*.23);
-    eagle(ex,ey,G.hs,rot,t,e);
+    SUB.v+=(SUB.t-SUB.v)*.08;var sb=G.mob?0:SUB.v;
+    var ex=G.ex+G.cw*(.012*Math.sin(t*.17)+.06*sb)-(1-e)*G.cw*.06,ey=G.ey*(1-.28*sb)+G.hs*.05*Math.sin(t*.29)+(1-e)*G.hs*.15,rot=-.27+.05*Math.sin(t*.23);
+    eagle(ex,ey,G.hs*(1-.15*sb),rot,t,e);
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1308,14 +1314,14 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.ax,G.hz]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},sub:function(b){SUB.t=b?1:0},focus:function(){return G?[G.ax,G.hz]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.78)*(1-p*.5));field.setScroll(p);var fs=(curKey!=="home"&&!MOBILE())?"translateY(-5vh)":"";if(FCV.style.transform!==fs)FCV.style.transform=fs}
+function fieldScroll(){if(field.sub)field.sub(curKey!=="home");var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.78)*(1-p*.5));field.setScroll(p);var fs=(curKey!=="home"&&!MOBILE())?"translateY(-5vh)":"";if(FCV.style.transform!==fs)FCV.style.transform=fs}
 var FCV=$("#field");
 
 /* ================= HOME SCROLL ================= */
@@ -1353,8 +1359,8 @@ function scene(){
   s+='<rect class="fr" x="152" y="142" width="426" height="184" rx="1"/>';
   s+='<path class="rs" d="'+rose(524,222,38,38,.12,14,7)+'"/><circle class="fr" cx="524" cy="222" r="29"/><circle class="fr" cx="524" cy="222" r="25"/>';
   s+=txt(524,225.5,'EQUITY','eqt')+'<path class="fr" d="M492 296H556M500 304H548"/></g>';
-  /* the note */
-  s+='<g class="nt"><rect class="pp" x="40" y="70" width="430" height="290" rx="2"/>';
+  /* the note and its coupons (and their captions) move as one, centred until the equity slides out */
+  s+='<g class="main"><g class="nt"><rect class="pp" x="40" y="70" width="430" height="290" rx="2"/>';
   s+='<path class="bd" d="'+band(52,82,406,266,5,3.6,58,4)+'"/>';
   s+='<rect class="fr" x="66" y="96" width="378" height="238" rx="1"/><rect class="fr thin" x="40.5" y="70.5" width="429" height="289" rx="2"/>';
   s+=txt(255,312,'THE EAGLE FAMILY OF FUNDS','sm');
@@ -1373,6 +1379,7 @@ function scene(){
   s+='</g>';
   s+=cap(0,'<path d="M255 58V70"/><circle cx="255" cy="70" r="3"/>',255,45,125,260,'GROWTH &amp; CHANGE OF CONTROL');
   s+=cap(1,'<path d="M112 58V111"/><circle cx="112" cy="111" r="3"/>',160,45,40,240,'PRIMARILY SUBORDINATED DEBT');
+  s+='</g>';
   s+=cap(2,'<path d="M524 58V120"/><circle cx="524" cy="120" r="3"/>',478,45,352,252,'WARRANTS · PREFERRED · COMMON');
   s+=cap(3,'<path d="M270 478V490H470V478M370 490V506"/>',370,519,236,268,'TYPICAL MATURITY · 4 TO 6 YEARS');
   return SCN[mob]='<svg class="sp s0'+(mob?' mob':'')+'" viewBox="30 26 584 512" aria-hidden="true">'+s+'</svg>';

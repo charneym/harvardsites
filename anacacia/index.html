@@ -80,7 +80,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(60% 70% at 72% 46%,#165038 0%,#0f3a2a 45%,#0b2a20 80%),#0b2a20}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(60% 70% at 72% 46%,#165038 0%,#0f3a2a 45%,#0b2a20 80%)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -237,12 +237,12 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .ac.s2 .lf,.ac.s3 .lf,.ac.s2 .lf2,.ac.s3 .lf2{opacity:1;transition-delay:.9s}
 .ac.s3 .bl{opacity:1;transform:scale(1)}
 .ac.s3 .sun{stroke:rgba(240,213,42,.3)}
-.ac .cap{opacity:0;transition:opacity .5s ease}
+.ac .cap{opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s}
 .ac .cap line{stroke:var(--accL);stroke-width:1}
 .ac .cap circle{fill:var(--accL)}
 .ac .cap rect{fill:var(--ink2);stroke:rgba(244,242,232,.5);stroke-width:1}
 .ac .cap text{font-family:var(--mono);font-weight:400;font-size:12.5px;letter-spacing:.15em;fill:var(--bone)}
-.ac.s0 .cap0,.ac.s1 .cap1,.ac.s2 .cap2,.ac.s3 .cap3{opacity:1;transition:opacity .6s ease .55s}
+.ac.s0 .cap0,.ac.s1 .cap1,.ac.s2 .cap2,.ac.s3 .cap3{opacity:1;visibility:visible;transition:opacity .6s ease .55s,visibility 0s}
 .ac.s2 .g3,.ac.s3 .g3{transition-delay:.55s}.ac.s2 .g4,.ac.s3 .g4{transition-delay:.8s}.ac.s2 .g5,.ac.s3 .g5{transition-delay:1.05s}
 .ac.s2 .lf,.ac.s3 .lf,.ac.s2 .lf2,.ac.s3 .lf2{transition-delay:1.5s}
 .ac.s0 .sun{stroke:rgba(240,213,42,.14)}
@@ -626,7 +626,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .excl{margin-top:clamp(40px,4vw,64px);max-width:62ch}
 .excl .lab{display:block;margin-bottom:12px}
 .quote .meta .btn{margin-top:6px}
-.ph-head{min-height:72vh;min-height:72svh}
+.ph-head{min-height:88vh;min-height:88svh}
 .nums b sup{font-size:.42em;vertical-align:top;position:relative;top:.22em;margin-left:.06em;color:var(--accL);letter-spacing:0}
 .light .nums b sup{color:var(--accD)}
 @media (min-width:861px){.pillars .pl3 h3{min-height:2.12em}}
@@ -670,6 +670,8 @@ input,textarea,select{border-radius:0}
 /* DF: the wattle echoed behind the footer sits low and to the right, under a scrim, never at strength across the wordmark */
 .ftr .fcv{-webkit-mask-image:linear-gradient(180deg,transparent,#000 40%),linear-gradient(90deg,transparent 30%,#000 80%);-webkit-mask-composite:source-in;mask-image:linear-gradient(180deg,transparent,#000 40%),linear-gradient(90deg,transparent 30%,#000 80%);mask-composite:intersect}
 .bigsvg text{fill:var(--bone)}
+@media (min-width:761px){.ps-sheet{grid-template-rows:minmax(0,1fr)}.ps-col{height:100%}}
+@media (min-width:1025px){.ex.bac{grid-template-columns:repeat(5,minmax(0,1fr))}}
 </style>
 </head>
 </head>
@@ -1371,7 +1373,7 @@ function treeSVG(mob){var m=mob?1.75:1;
   // captions, one per step, each with a leader to the part it names
   var top=tips.reduce(function(m,t){return Math.abs(t[0]-TX-40)<Math.abs(m[0]-TX-40)?t:m},tips[0]),right=tips.reduce(function(m,t){return t[0]>m[0]?t:m},tips[0]);
   var CAP=[["OWNERS + MANAGEMENT",TX+30,GY+40,532,404],["THE BOARD",TX+3,GY-104,250,286],["ACQUISITIONS",right[0]-4,right[1]+8,690,392],["SALE OR IPO",top[0],top[1]-10,top[0],78]];
-  CAP.forEach(function(c,i){var k=i===0?1/2:1,tw=(c[0].length*10.2*m+30)*k,lx=Math.max(20+tw/2,Math.min(780-tw/2,c[3])),hh=15*k*Math.sqrt(m);
+  CAP.forEach(function(c,i){var k=i===0?1/2:1,tw=(c[0].length*10.2*m+30)*k,lx=Math.max(20+tw/2,Math.min(744-tw/2,c[3])),hh=15*k*Math.sqrt(m);
     s+='<g class="cap cap'+i+'"><line x1="'+c[1].toFixed(1)+'" y1="'+c[2].toFixed(1)+'" x2="'+lx.toFixed(1)+'" y2="'+c[4]+'" stroke-width="'+k.toFixed(2)+'"/><circle cx="'+c[1].toFixed(1)+'" cy="'+c[2].toFixed(1)+'" r="'+(2.6*k).toFixed(2)+'"/><rect x="'+(lx-tw/2).toFixed(1)+'" y="'+(c[4]-hh).toFixed(1)+'" width="'+tw.toFixed(1)+'" height="'+(2*hh).toFixed(1)+'"/><text x="'+lx.toFixed(1)+'" y="'+(c[4]+4.5*k*m).toFixed(1)+'" text-anchor="middle" style="font-size:'+(12.5*k*m).toFixed(2)+'px;letter-spacing:'+(1.9*k*Math.min(m,1.3)).toFixed(2)+'px">'+c[0]+'</text></g>'});
 
   return s}

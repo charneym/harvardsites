@@ -985,12 +985,13 @@ if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplie
 var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
-/* Southeast Acquisition Capital: "your company, owned by everyone who built it." The hero is a barn raising on a
-   Tennessee hilltop at golden hour, drawn as a steel engraving in the firm's green ink. A timber frame of five bents
-   stands on a stone-footed deck: four are already up and pegged, and the crew heaves the last one up with pike poles
-   and ropes while the low sun sets behind ranges of wooded ridges. The frame is modelled in 3D, so the timbers keep
-   true perspective and cast long evening shadows down the knoll. On arrival the bents rise one by one. After that the
-   crew's slow heave, the breathing sun, drifting chaff and a few swallows move on their own, with no pointer response (CZ). */
+/* Southeast Acquisition Capital: "your company, owned by everyone who built it." The hero is a timber-frame barn,
+   all but finished, standing alone on a Tennessee knoll at sunset, drawn as a steel engraving in the firm's green ink.
+   The frame is modelled in 3D: five bents, plates, girts, braces, purlins and common rafters, each timber engraved as
+   a box with grain lines, cross-hatched shade, a warm sheen on its top faces and oak pegs at the front joints, casting
+   long shadows down the knoll. Behind it, ranges of wooded ridges step back into an amber sky. On arrival the bents
+   rise one by one and the bays are pegged in. After that only the light moves: the sun breathes, chaff drifts and a
+   few swallows cross the sky. No pointer response (CZ). */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var HB1={c:null},HB2={c:null},IN={v:1},dim=1,dimT=1,SP={v:0},S=null,TXR=-1,fc=0;
@@ -1015,13 +1016,9 @@ var field=(function(){
   var LS=(function(){var v=[.4,.075,.9],l=Math.hypot(v[0],v[1],v[2]);return v.map(function(x){return x/l})})();
   function pr0(P){var d=[P[0]-CP[0],P[1]-CP[1],P[2]-CP[2]],Z=d[0]*CF[0]+d[1]*CF[1]+d[2]*CF[2];return [(d[0]*CR[0]+d[1]*CR[1]+d[2]*CR[2])/Z,-(d[0]*CU[0]+d[1]*CU[1]+d[2]*CU[2])/Z,Z]}
   function bentPt(x,y,z0,ph){return [x,y*Math.cos(ph),z0-y*Math.sin(ph)]}
-  function hands(x,yb,ph,len){/* a pike-pole pusher in front of the rising bent: tip on the bent, hands at chest height */
-    var T=bentPt(x,yb,0,ph),dy=T[1]-(GY+4.3),dz=Math.sqrt(Math.max(1,len*len-dy*dy));return {T:T,H:[x,GY+4.3,T[2]-dz],F:[x,GY,T[2]-dz-1.5]}}
-  var CREW=[[-10.6,12.6,16],[-5.4,15.6,17],[.6,17,17.5],[6,15.2,16.5],[10.8,12.4,16]];
   /* fit: scale the projected frame into its box on screen */
   function fit(G){var pts=[],i;BZ.forEach(function(z){BENT.forEach(function(m){pts.push([m[0],m[1],z],[m[2],m[3],z])})});
-    BENT.forEach(function(m){pts.push(bentPt(m[2],m[3],0,32*D2R))});CREW.forEach(function(q){pts.push(hands(q[0],q[1],32*D2R,q[2]).F)});
-    pts.push([-BW-1,GY,-1],[BW+1,GY,41]);
+    pts.push([-BW-1,GY,-1],[BW+1,GY,41],[-BW-1,GY,-1]);
     var x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(i=0;i<pts.length;i++){var p=pr0(pts[i]);x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1])}
     var s=G.bw/(x1-x0),ox=G.cx-(x0+x1)/2*s,oy=G.by-y1*s;
     return {s:s,ox:ox,oy:oy,top:oy+y0*s,left:ox+x0*s,right:ox+x1*s}}
@@ -1030,7 +1027,7 @@ var field=(function(){
   function geo(W,H,opt){
     var G={W:W,H:H,foot:!!opt.foot,mob:!!opt.mob,top:opt.top||0};
     if(G.foot){var nar=W<700;G.bw=nar?Math.min(W*.58,H*.6):Math.min(W*.3,H*1.0);G.cx=W*.5;G.by=H*(nar?.9:.86)}
-    else if(G.mob){var bh=Math.max(150,H*.34-70-G.top);G.bw=Math.min(W*.66,bh*1.55);G.cx=W*.53;G.by=G.top+bh*.98}
+    else if(G.mob){var bh=Math.max(100,H*.34-70-G.top);G.bw=Math.min(W*.6,bh*1.2);G.cx=W*.53;G.by=G.top+bh*.98}
     else{var R=opt.R,room=W-R,ramp=Math.min(170,room*.26);G.ml=R+18;G.mr=G.ml+ramp;G.bw=Math.min(room*.68,H*.62,800);
       G.cx=Math.min(G.mr+G.bw/2+4,W-G.bw/2-Math.max(16,W*.02));G.by=H*.82}
     G.F=fit(G);
@@ -1047,7 +1044,7 @@ var field=(function(){
     var sunR=u*4.2,hy=G.hy,yT=G.foot?H*.15:G.top;
     function sunK(px,py){return Math.exp(-Math.pow(Math.hypot(px-G.sx,(py-G.sy)*1.5)/(u*46),2))}
     /* evening sky: warm toward the horizon, strongest under the sun */
-    if(!foot){var sk=x.createLinearGradient(0,yT,0,hy+u*4);sk.addColorStop(0,rgba(pal.glow,0));sk.addColorStop(.55,rgba(pal.glow,.08));sk.addColorStop(1,rgba(pal.glow,.26));x.fillStyle=sk;x.fillRect(X0,yT,XE-X0,hy+u*4-yT)}
+    if(!foot){var sk=x.createLinearGradient(0,yT,0,hy+u*4);sk.addColorStop(0,rgba(pal.glow,.04));sk.addColorStop(.45,rgba(pal.glow,.2));sk.addColorStop(.8,rgba(pal.glow,.42));sk.addColorStop(1,rgba(pal.rim,.6));x.fillStyle=sk;x.fillRect(X0,yT,XE-X0,hy+u*4-yT)}
     /* sky: fine engraved lines that thicken toward the zenith and open into light around the sun */
     var sp=G.mob?2.4:Math.max(2.5,u*.6);
     for(var y=yT;y<hy+u*6;y+=sp){var k=(y-yT)/Math.max(1,hy-yT),al=(foot?.05:.07)*sm((y-(G.sy-u*44))/(u*22))*(1-.4*k);
@@ -1061,7 +1058,7 @@ var field=(function(){
         var gl=v>.45;x.strokeStyle=gl?rgba(pal.rim,(.3+.45*v)*(foot?.6:1)):rgba(ink,.09+.07*(1-v));x.lineWidth=gl?.9:.6;x.stroke()}});
     /* ranges of wooded ridges, far to near: each filled to hide the one behind, crowned with hardwood canopy,
        then engraved along its own contour. Nearer ranges roll higher and darker. */
-    var RID=[{y:0,a:u*6,l:u*26,s:11,tone:.16,ht:.07,tr:0},{y:hy-u*5,a:u*7,l:u*24,s:23,tone:.3,ht:.1,tr:.8},{y:hy,a:u*7,l:u*19,s:31,tone:.44,ht:.14,tr:1.05},{y:hy+u*5.5,a:u*5.5,l:u*15,s:47,tone:.58,ht:.18,tr:1.3}];
+    var RID=[{y:0,a:u*6,l:u*26,s:11,tone:.34,ht:.08,tr:0},{y:hy-u*5,a:u*7,l:u*24,s:23,tone:.5,ht:.12,tr:.8},{y:hy,a:u*7,l:u*19,s:31,tone:.64,ht:.16,tr:1.05},{y:hy+u*5.5,a:u*5.5,l:u*15,s:47,tone:.78,ht:.2,tr:1.3}];
     var f0=ridgeF(RID[0].s,RID[0].a,RID[0].l);RID[0].y=G.sy+sunR*.2+f0(G.sx);
     RID.forEach(function(Rd,ri){var f=ridgeF(Rd.s,Rd.a,Rd.l),stp=Math.max(1.5,u*.45),tr=Rn(Rd.s*7);
       var cr=function(X){return Rd.y-f(X)};
@@ -1069,7 +1066,7 @@ var field=(function(){
       var cn=null;if(Rd.tr){cn=[];var ph=0,cw0=u*1.1*Rd.tr;for(var Xc=X0-cw0;Xc<=XE+cw0;Xc+=stp){ph+=stp/(cw0*(.7+.6*Math.abs(Math.sin(Xc*.37))));var b=Math.abs(Math.sin(ph*Math.PI));cn.push([Xc,cr(Xc)-cw0*(.5+.55*Math.pow(b,.6))*(.75+.5*Math.abs(Math.sin(Xc*.021+Rd.s)))])}}
       var top=function(i,X){return cn?Math.min(cr(X),cn[i][1]):cr(X)};
       x.beginPath();x.moveTo(X0,H);var pts=cn||[];if(cn){cn.forEach(function(p){x.lineTo(p[0],p[1])})}else{for(var X=X0;X<=XE+stp;X+=stp)x.lineTo(X,cr(X))}x.lineTo(XE,H);x.closePath();
-      var base="rgb("+mix(pal.pap,foot?pal.acc:mix(pal.acc,pal.gold,.2),Rd.tone*(foot?.5:.72))+")";x.fillStyle=base;x.fill();
+      var base="rgb("+mix(pal.pap,foot?pal.acc:mix(mix(pal.acc,pal.ink,ri*.2),pal.gold,.5-ri*.13),Rd.tone*(foot?.5:.72))+")";x.fillStyle=base;x.fill();
       if(cn){/* the canopy band reads darker than the open slope below it */
         x.save();x.clip();var cg=x.createLinearGradient(0,Rd.y-Rd.a-u*2*Rd.tr,0,Rd.y+u*3);cg.addColorStop(0,rgba(ink,.16+Rd.tone*.4));cg.addColorStop(1,rgba(ink,0));x.fillStyle=cg;x.fillRect(X0,0,XE-X0,H);
         /* crown texture: small arcs of foliage */
@@ -1087,7 +1084,7 @@ var field=(function(){
     var cxK=G.F.left+(G.F.right-G.F.left)*.55,kn=function(X){var dx=(X-cxK)/(G.bw*.95);return G.ky+G.bw*(.07*dx*dx)+Math.sin(X*.03)*.6};
     G.kn=kn;var stp2=Math.max(2,u*.6);
     x.beginPath();x.moveTo(X0,H);for(var X6=X0;X6<=XE+stp2;X6+=stp2)x.lineTo(X6,kn(X6));x.lineTo(XE,H);x.closePath();
-    var kg=x.createLinearGradient(0,G.ky,0,H);kg.addColorStop(0,"rgb("+mix(pal.pap,mix(pal.acc,pal.gold,.55),foot?.25:.34)+")");kg.addColorStop(.5,"rgb("+mix(pal.pap,pal.acc,foot?.2:.26)+")");kg.addColorStop(1,"rgb("+mix(pal.pap,pal.acc,foot?.15:.18)+")");x.fillStyle=kg;x.fill();
+    var kg=x.createLinearGradient(0,G.ky,0,H);kg.addColorStop(0,"rgb("+mix(pal.pap,mix(pal.acc,pal.gold,.7),foot?.25:.5)+")");kg.addColorStop(.35,"rgb("+mix(pal.pap,mix(pal.acc,pal.gold,.35),foot?.2:.42)+")");kg.addColorStop(1,"rgb("+mix(pal.pap,pal.acc,foot?.15:.26)+")");x.fillStyle=kg;x.fill();
     for(var k2=1;k2<80;k2++){var off2=Math.pow(k2,1.3)*(G.mob?1.4:u*.34),al2=.08+.14*Math.min(1,k2/14);if(G.ky+off2>H+10)break;x.beginPath();var on2=false;
       for(var X7=X0;X7<=XE;X7+=stp2){if(r()<.02){on2=false;continue}var yy7=kn(X7)+off2+Math.sin(X7*.04+k2*1.3)*.5;if(!on2){x.moveTo(X7,yy7);on2=true}else x.lineTo(X7,yy7)}
       x.strokeStyle=k2<4?rgba(pal.rim,.55-k2*.1):rgba(ink,al2);x.lineWidth=.55;x.stroke()}
@@ -1117,90 +1114,100 @@ var field=(function(){
     var sa=Math.atan2(G.sy-cy0,G.sx-ox);
     B.forEach(function(b,j){for(var s=-1.6;s<=1.6;s+=.12){var a=sa+s,px=b[0]+Math.cos(a)*b[2],py=b[1]+Math.sin(a)*b[2];if(inside(px,py,j))continue;
       x.beginPath();x.arc(b[0],b[1],b[2],a-.06,a+.08);x.strokeStyle=rgba(pal.rim,.85*Math.cos(s*.9));x.lineWidth=1.1;x.stroke()}})}
-  /* ---- the live layer: sun, the frame, its shadows, the crew ---- */
-  function quad(x,a,b,wa,wb){var dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l;
-    x.beginPath();x.moveTo(a[0]+nx*wa/2,a[1]+ny*wa/2);x.lineTo(b[0]+nx*wb/2,b[1]+ny*wb/2);x.lineTo(b[0]-nx*wb/2,b[1]-ny*wb/2);x.lineTo(a[0]-nx*wa/2,a[1]-ny*wa/2);x.closePath();return [nx,ny]}
-  function members(t,e){
-    var M=[],hv=RM?0:Math.pow(.5-.5*Math.cos(t*Math.PI*2/3.8),3),i;
-    var order=[4,3,2,1],up=[];
-    for(i=0;i<5;i++)up[i]=0;
-    order.forEach(function(b,j){up[b]=sm((e*1.6-j*.24)/.34)});
-    var ph0=sm((e-.5)/.5),phF=(84-(84-31)*ph0-1.8*hv*ph0)*D2R;
-    for(i=0;i<5;i++){var ph=i?(1-up[i])*82*D2R:phF;BENT.forEach(function(m){M.push({a:bentPt(m[0],m[1],BZ[i],ph),b:bentPt(m[2],m[3],BZ[i],ph),s:m[4],al:1})})}
-    for(i=1;i<4;i++){var al=sm((Math.min(up[i],up[i+1])-.85)/.15);if(al<.02)continue;var z0=BZ[i],z1=BZ[i+1];
-      [-1,1].forEach(function(sd){var X=sd*BW;M.push({a:[X,PH,z0],b:[X,PH,z1],s:.75,al:al},{a:[X,7,z0],b:[X,7,z1],s:.55,al:al},{a:[X,PH-3.6,z0],b:[X,PH,z0+3.4],s:.42,al:al},{a:[X,PH-3.6,z1],b:[X,PH,z1-3.4],s:.42,al:al},{a:[sd*6.2,rafY(6.2),z0],b:[sd*6.2,rafY(6.2),z1],s:.5,al:al})});
-      M.push({a:[0,RH,z0],b:[0,RH,z1],s:.6,al:al})}
+  /* ---- the live layer: sun, the frame, its shadows ---- */
+  function sub(a,b){return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]}
+  function add(a,b,k){return [a[0]+b[0]*k,a[1]+b[1]*k,a[2]+b[2]*k]}
+  function crs(a,b){return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]}
+  function nrm(a){var l=Math.hypot(a[0],a[1],a[2])||1;return [a[0]/l,a[1]/l,a[2]/l]}
+  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]}
+  /* the members of the frame at intro progress e: bents rise far to near, then the bays are pegged in, then the common rafters */
+  function members(e){
+    var M=[],i,up=[];
+    for(i=0;i<5;i++)up[i]=sm((e*1.7-(4-i)*.2)/.32);
+    for(i=0;i<5;i++){var ph=(1-up[i])*82*D2R;BENT.forEach(function(m){M.push({a:bentPt(m[0],m[1],BZ[i],ph),b:bentPt(m[2],m[3],BZ[i],ph),s:m[4],al:1,j:i===0?m:null})})}
+    for(i=0;i<4;i++){var al=sm((Math.min(up[i],up[i+1])-.85)/.15);if(al<.02)continue;var z0=BZ[i],z1=BZ[i+1];
+      [-1,1].forEach(function(sd){var X=sd*BW;M.push({a:[X,PH,z0],b:[X,PH,z1],s:.8,al:al},{a:[X,7,z0],b:[X,7,z1],s:.6,al:al},{a:[X,PH-3.8,z0+.3],b:[X,PH-.4,z0+3.6],s:.45,al:al},{a:[X,PH-3.8,z1-.3],b:[X,PH-.4,z1-3.6],s:.45,al:al},{a:[sd*6.2,rafY(6.2)-.35,z0],b:[sd*6.2,rafY(6.2)-.35,z1],s:.55,al:al})});
+      M.push({a:[0,RH-.3,z0],b:[0,RH-.3,z1],s:.6,al:al});
+      var cr=sm((e-.78-i*.04)/.12);if(cr>.02){[1/3,2/3].forEach(function(f){var z=z0+(z1-z0)*f;[-1,1].forEach(function(sd){M.push({a:[sd*(BW+1.1),PH-.25,z],b:[0,RH+.25,z],s:.45,al:cr})})})}}
     [-1,1].forEach(function(sd){M.push({a:[sd*BW,0,-.4],b:[sd*BW,0,40.4],s:.9,al:1})});
-    /* timbers for the front bay, waiting in a pile beside the deck */
-    for(i=0;i<5;i++){var px=15.4+(i%3)*.95+(i>2?.5:0),py=GY+.45+(i>2?.9:0);M.push({a:[px,py,3],b:[px,py,13.5],s:.85,al:1})}
-    return {M:M,ph:phF,hv:hv}}
-  function person(x,F,Hd,Hn,pal,u,pose,lean){/* F feet, Hd top of head, Hn hands (screen). pose 0 push, 1 haul, 2 stand */
-    var s=Math.hypot(Hd[0]-F[0],Hd[1]-F[1]),dir=Hn?(Hn[0]>=F[0]?1:-1):1,ink=pal.ink;
-    var lx=dir*s*(pose===0?.26+lean:pose===1?-.16:0),hip=[F[0]+dir*s*(pose===0?.02:-.04),F[1]-s*.48],sh=[F[0]+lx,F[1]-s*.8],hd=[F[0]+lx*1.15,F[1]-s*.92];
-    x.lineCap="round";x.strokeStyle=rgba(ink,.95);
-    x.lineWidth=s*.062;x.beginPath();x.moveTo(F[0]-dir*s*(pose===0?.24:.08),F[1]);x.lineTo(hip[0],hip[1]);x.stroke();
-    x.beginPath();x.moveTo(F[0]+dir*s*(pose===0?.14:.1),F[1]);x.lineTo(hip[0]+dir*s*.12,F[1]-s*.24);x.lineTo(hip[0],hip[1]);x.stroke();
-    x.lineWidth=s*.13;x.beginPath();x.moveTo(hip[0],hip[1]);x.lineTo(sh[0],sh[1]);x.stroke();
-    x.lineWidth=s*.038;
-    if(Hn){x.beginPath();x.moveTo(sh[0],sh[1]);x.lineTo(Hn[0]-dir*s*.04,Hn[1]+s*.03);x.stroke();x.beginPath();x.moveTo(sh[0],sh[1]+s*.04);x.lineTo(Hn[0]+dir*s*.07,Hn[1]-s*.02);x.stroke()}
-    else{x.beginPath();x.moveTo(sh[0],sh[1]);x.lineTo(sh[0]-s*.06,hip[1]+s*.02);x.stroke();x.beginPath();x.moveTo(sh[0],sh[1]);x.lineTo(sh[0]+s*.16,sh[1]-s*.22);x.stroke()}
-    x.fillStyle=rgba(ink,.95);x.beginPath();x.arc(hd[0],hd[1],s*.07,0,Math.PI*2);x.fill();
-    x.lineWidth=s*.035;x.beginPath();x.moveTo(hd[0]-s*.11,hd[1]-s*.03);x.lineTo(hd[0]+s*.11,hd[1]-s*.03);x.stroke();
-    x.beginPath();x.arc(hd[0],hd[1]-s*.04,s*.055,Math.PI,0);x.fill();
-    /* sun-side rim on the back and shoulders */
-    x.lineWidth=.8;x.strokeStyle=rgba(pal.rim,.85);x.beginPath();x.moveTo(hip[0]+s*.06,hip[1]);x.lineTo(sh[0]+s*.07,sh[1]);x.stroke();
-    x.beginPath();x.arc(hd[0],hd[1],s*.075,-1.3,.3);x.stroke();x.lineCap="butt"}
-  function drawScene(x,G,pl,t,e,pal,d,HB){
-    var W=G.W,H=G.H,u=G.u,F=G.F,ink=pal.ink,foot=pal.foot;
-    /* the low sun and its glow, breathing slowly */
-    var br=.92+.08*Math.sin(t*.4),R0=u*120;
-    var gl=x.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,R0);gl.addColorStop(0,rgba(pal.glow,(foot?.22:.5)*br));gl.addColorStop(.18,rgba(pal.glow,(foot?.1:.24)*br));gl.addColorStop(.5,rgba(pal.glow,(foot?.04:.08)*br));gl.addColorStop(1,rgba(pal.glow,0));x.fillStyle=gl;x.fillRect(0,0,W,H);
-    var sr=u*4.2,sg=x.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,sr*1.5);sg.addColorStop(0,rgba(pal.sun,1));sg.addColorStop(.62,rgba(pal.sun,.95));sg.addColorStop(.66,rgba(pal.glow,.35));sg.addColorStop(1,rgba(pal.glow,0));x.fillStyle=sg;x.beginPath();x.arc(G.sx,G.sy,sr*1.5,0,Math.PI*2);x.fill();
-    x.save();x.setTransform(1,0,0,1,0,0);x.drawImage(pl,0,0);x.restore();
-    /* warm haze where the light spills over the ridges */
-    var hz=x.createRadialGradient(G.sx,G.sy+u*4,0,G.sx,G.sy+u*4,u*40);hz.addColorStop(0,rgba(pal.glow,foot?.1:.26*br));hz.addColorStop(1,rgba(pal.glow,0));x.fillStyle=hz;x.fillRect(0,0,W,H);
-    var MS=members(t,e),M=MS.M,i;
-    /* long shadows down the knoll, away from the sun */
+    return M}
+  /* one timber as an engraved box: lit top faces, hatched shade, grain along its length */
+  function timber(x,F,m,pal,d,fine){
+    var a=nrm(sub(m.b,m.a)),hint=Math.abs(a[2])>.9?[1,0,0]:[0,0,1],n1=nrm(crs(a,hint)),n2=crs(a,n1),h=m.s/2,ink=pal.ink,foot=pal.foot;
+    var mid=add(m.a,sub(m.b,m.a),.5),toC=nrm(sub(CP,mid)),faces=[];
+    [[n1,n2],[[-n1[0],-n1[1],-n1[2]],n2],[n2,n1],[[-n2[0],-n2[1],-n2[2]],n1]].forEach(function(q){var n=q[0],o=q[1];if(dot(n,toC)<=0)return;
+      faces.push({n:n,p:[add(add(m.a,n,h),o,h),add(add(m.a,n,h),o,-h),add(add(m.b,n,h),o,-h),add(add(m.b,n,h),o,h)]})});
+    [[a,m.b],[[-a[0],-a[1],-a[2]],m.a]].forEach(function(q){if(dot(q[0],toC)<=0)return;var c0=q[1];faces.push({n:q[0],cap:1,p:[add(add(c0,n1,h),n2,h),add(add(c0,n1,h),n2,-h),add(add(c0,n1,-h),n2,-h),add(add(c0,n1,-h),n2,h)]})});
+    x.globalAlpha=m.al;
+    faces.forEach(function(f){var S=f.p.map(function(p){return P(F,p)}),sun=Math.max(0,dot(f.n,LS)),up=Math.max(0,f.n[1]),dn=Math.max(0,-f.n[1]);
+      /* backlit at sunset: tops catch a warm sheen, sun-facing sides blaze, faces toward us sit in shade */
+      var lf=Math.max(0,-f.n[0]),v=Math.max(0,Math.min(1,.14+.7*up+2.2*sun+.2*lf-.14*dn));if(f.cap)v*=.75;
+      var wd=mix(pal.pap,pal.gold,.4),c0=mix(ink,wd,foot?.15:.2),c1=mix(ink,wd,foot?.4:.55),col=v<.35?mix(c0,c1,v/.35):mix(c1,mix(pal.pap,pal.rim,.45),(v-.35)/.65);
+      x.beginPath();x.moveTo(S[0][0],S[0][1]);for(var k=1;k<4;k++)x.lineTo(S[k][0],S[k][1]);x.closePath();x.fillStyle="rgb("+col+")";x.fill();
+      if(f.cap||!fine)return;
+      /* grain lines along the timber */
+      var wA=Math.hypot(S[1][0]-S[0][0],S[1][1]-S[0][1]),wB=Math.hypot(S[2][0]-S[3][0],S[2][1]-S[3][1]),nl=Math.max(1,Math.round(Math.max(wA,wB)/1.9));
+      x.lineWidth=.45;x.strokeStyle=v<.35?rgba(ink,.55):rgba(ink,.18+.25*(1-v));
+      x.beginPath();for(var g=1;g<=nl;g++){var t=(g-.5)/nl,j=Math.sin(g*7.3+S[0][0])*.08;x.moveTo(S[0][0]+(S[1][0]-S[0][0])*t,S[0][1]+(S[1][1]-S[0][1])*t);x.lineTo(S[3][0]+(S[2][0]-S[3][0])*(t+j),S[3][1]+(S[2][1]-S[3][1])*(t+j))}x.stroke();
+      /* cross-hatching across the shaded faces */
+      if(v<.3){var len=Math.hypot(S[3][0]-S[0][0],S[3][1]-S[0][1]),nc=Math.floor(len/2.6);x.strokeStyle=rgba(ink,.42*(1-v/.3));x.lineWidth=.4;
+        x.beginPath();for(var q=1;q<nc;q++){var u0=q/nc,u1=Math.min(1,u0+.6/nc);x.moveTo(S[0][0]+(S[3][0]-S[0][0])*u0,S[0][1]+(S[3][1]-S[0][1])*u0);x.lineTo(S[1][0]+(S[2][0]-S[1][0])*u1,S[1][1]+(S[2][1]-S[1][1])*u1)}x.stroke()}
+      /* the edge nearest the sun catches a fine line of light */
+      if(v>.45||sun>.02){x.beginPath();x.moveTo(S[0][0],S[0][1]);x.lineTo(S[3][0],S[3][1]);x.strokeStyle=rgba(pal.rim,.5+.4*Math.min(1,v));x.lineWidth=.6;x.stroke()}});
+    x.globalAlpha=1}
+  /* oak pegs through the front bent's joints */
+  function pegs(x,F,pal){var J=[[-BW,PH-1.2],[BW,PH-1.2],[-BW,PH-3.9],[BW,PH-3.9],[-BW+3.5,PH-1],[BW-3.5,PH-1],[-6.6,rafY(6.6)-.25],[6.6,rafY(6.6)-.25],[-BW+.2,PH-.2],[BW-.2,PH-.2],[0,RH-.6]];
+    J.forEach(function(j){var p=P(F,[j[0],j[1],-.46]),r=Math.max(.7,.14*F.s/p[2]);x.beginPath();x.arc(p[0],p[1],r,0,Math.PI*2);x.fillStyle=rgba(mix(pal.pap,pal.gold,.45),.9);x.fill();x.lineWidth=.4;x.strokeStyle=rgba(pal.ink,.8);x.stroke()})}
+  function barn(x,G,e,pal,d,HB){
+    var W=G.W,H=G.H,u=G.u,F=G.F,ink=pal.ink,foot=pal.foot,M=members(e),i;
+    /* long warm shadows down the knoll, away from the sun */
     var SH=HB.c;if(!SH||SH.width!==Math.round(W*d)||SH.height!==Math.round(H*d)){SH=HB.c=document.createElement("canvas");SH.width=Math.round(W*d);SH.height=Math.round(H*d)}
-    var sx=SH.getContext("2d");sx.setTransform(1,0,0,1,0,0);sx.clearRect(0,0,SH.width,SH.height);sx.setTransform(d,0,0,d,0,0);sx.fillStyle="#000";sx.strokeStyle="#000";
-    function shd(p){var k=(p[1]-GY)/LS[1];k=Math.min(k,26+p[1]*1.2);return [p[0]-LS[0]*k,GY,p[2]-LS[2]*k]}
-    var dk=[[-BW-.6,0,-.6],[BW+.6,0,-.6],[BW+.6,0,40.6],[-BW-.6,0,40.6]].map(function(p){return P(F,shd(p))});
-    sx.beginPath();dk.forEach(function(p,j){j?sx.lineTo(p[0],p[1]):sx.moveTo(p[0],p[1])});sx.fill();
+    var sx=SH.getContext("2d");sx.setTransform(1,0,0,1,0,0);sx.clearRect(0,0,SH.width,SH.height);sx.setTransform(d,0,0,d,0,0);sx.fillStyle="#000";
+    function shd(p){var k=(p[1]-GY)/LS[1];k=Math.min(k,5+p[1]*1.15);return [p[0]-LS[0]*k,GY,p[2]-LS[2]*k]}
+    var dk=[[-BW-.6,0,-.6],[BW+.6,0,-.6],[BW+.6,0,40.6],[-BW-.6,0,40.6]];
     for(i=0;i<M.length;i++){var m=M[i],a=P(F,shd(m.a)),b=P(F,shd(m.b));sx.globalAlpha=m.al;quad(sx,a,b,m.s*F.s/a[2],m.s*F.s/b[2]);sx.fill()}
     sx.globalAlpha=1;
-    x.save();x.globalAlpha=foot?.08:.13;x.setTransform(1,0,0,1,0,0);if(!foot)x.filter="blur("+(1.5*d).toFixed(1)+"px)";x.drawImage(SH,0,0);x.restore();
-    /* the deck: stone footing, sill and planks */
-    var D=[[-BW-.6,0,-.6],[BW+.6,0,-.6],[BW+.6,0,40.6],[-BW-.6,0,40.6]].map(function(p){return P(F,p)}),Db=[[-BW-.6,GY,-.6],[BW+.6,GY,-.6],[BW+.6,GY,40.6],[-BW-.6,GY,40.6]].map(function(p){return P(F,p)});
-    x.beginPath();x.moveTo(D[0][0],D[0][1]);x.lineTo(D[1][0],D[1][1]);x.lineTo(D[2][0],D[2][1]);x.lineTo(D[3][0],D[3][1]);x.closePath();x.fillStyle="rgb("+mix(pal.pap,mix(ink,pal.gold,.25),foot?.35:.42)+")";x.fill();
-    for(var z=0;z<=40;z+=1.25){var a1=P(F,[-BW-.6,0,z]),b1=P(F,[BW+.6,0,z]);x.beginPath();x.moveTo(a1[0],a1[1]);x.lineTo(b1[0],b1[1]);x.strokeStyle=rgba(ink,.28);x.lineWidth=.5;x.stroke()}
-    [[0,1],[3,0]].forEach(function(f){var A=D[f[0]],B=D[f[1]],Bb=Db[f[1]],Ab=Db[f[0]];x.beginPath();x.moveTo(A[0],A[1]);x.lineTo(B[0],B[1]);x.lineTo(Bb[0],Bb[1]);x.lineTo(Ab[0],Ab[1]);x.closePath();x.fillStyle=rgba(ink,.86);x.fill();
-      for(var q=1;q<6;q++){var t1=q/6,pa=[A[0]+(B[0]-A[0])*t1,A[1]+(B[1]-A[1])*t1],pb=[Ab[0]+(Bb[0]-Ab[0])*t1,Ab[1]+(Bb[1]-Ab[1])*t1];x.beginPath();x.moveTo(pa[0]+(pb[0]-pa[0])*.45,pa[1]+(pb[1]-pa[1])*.45);x.lineTo(pb[0],pb[1]);x.strokeStyle=rgba(pal.pap,.18);x.lineWidth=.5;x.stroke()}
+    x.save();x.setTransform(1,0,0,1,0,0);x.globalAlpha=foot?.1:.2;if(!foot&&e>=1)x.filter="blur("+(.6*d).toFixed(1)+"px)";x.drawImage(SH,0,0);x.restore();
+    /* the deck: stone footing and planks */
+    var D=dk.map(function(p){return P(F,p)}),Db=dk.map(function(p){return P(F,[p[0],GY,p[2]])});
+    x.beginPath();x.moveTo(D[0][0],D[0][1]);for(i=1;i<4;i++)x.lineTo(D[i][0],D[i][1]);x.closePath();x.fillStyle="rgb("+mix(pal.pap,mix(ink,pal.gold,.35),foot?.35:.5)+")";x.fill();
+    x.beginPath();for(var z=0;z<=40;z+=1.1){var a1=P(F,[-BW-.6,0,z]),b1=P(F,[BW+.6,0,z]);x.moveTo(a1[0],a1[1]);x.lineTo(b1[0],b1[1])}x.strokeStyle=rgba(ink,.32);x.lineWidth=.45;x.stroke();
+    [[0,1],[3,0]].forEach(function(f){var A=D[f[0]],B=D[f[1]],Bb=Db[f[1]],Ab=Db[f[0]];x.beginPath();x.moveTo(A[0],A[1]);x.lineTo(B[0],B[1]);x.lineTo(Bb[0],Bb[1]);x.lineTo(Ab[0],Ab[1]);x.closePath();x.fillStyle=rgba(ink,.88);x.fill();
+      x.strokeStyle=rgba(pal.pap,.2);x.lineWidth=.45;for(var q=1;q<14;q++){var t1=q/14,pa=[A[0]+(B[0]-A[0])*t1,A[1]+(B[1]-A[1])*t1],pb=[Ab[0]+(Bb[0]-Ab[0])*t1,Ab[1]+(Bb[1]-Ab[1])*t1],o=q%2?.45:0;x.beginPath();x.moveTo(pa[0]+(pb[0]-pa[0])*o,pa[1]+(pb[1]-pa[1])*o);x.lineTo(pa[0]+(pb[0]-pa[0])*(o+.45),pa[1]+(pb[1]-pa[1])*(o+.45));x.stroke()}
       x.beginPath();x.moveTo(A[0]+(Ab[0]-A[0])*.45,A[1]+(Ab[1]-A[1])*.45);x.lineTo(B[0]+(Bb[0]-B[0])*.45,B[1]+(Bb[1]-B[1])*.45);x.stroke()});
-    x.beginPath();x.moveTo(D[1][0],D[1][1]);x.lineTo(D[2][0],D[2][1]);x.lineTo(D[3][0],D[3][1]);x.strokeStyle=rgba(pal.rim,.8);x.lineWidth=.9;x.stroke();
-    /* everything with depth, drawn far to near: timbers, ropes and the crew */
-    var L=[];
-    var sxp=G.sx,syp=G.sy;
-    M.forEach(function(m){var a=P(F,m.a),b=P(F,m.b);L.push({z:(a[2]+b[2])/2,f:function(){x.globalAlpha=m.al;var wa=m.s*F.s/a[2],wb=m.s*F.s/b[2],n=quad(x,a,b,wa,wb);x.fillStyle=rgba(ink,foot?.6:.94);x.fill();
-      var mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2,sd=(sxp-mx)*n[0]+(syp-my)*n[1]>0?1:-1;x.beginPath();x.moveTo(a[0]+n[0]*sd*wa*.42,a[1]+n[1]*sd*wa*.42);x.lineTo(b[0]+n[0]*sd*wb*.42,b[1]+n[1]*sd*wb*.42);
-      x.strokeStyle=rgba(pal.rim,.85);x.lineWidth=Math.max(.6,Math.min(1.3,(wa+wb)*.12));x.stroke();x.globalAlpha=1}})});
-    var ph=MS.ph,lean=.06*MS.hv,ps=sm((e-.45)/.4);
-    if(ps>.01){
-      CREW.forEach(function(q,j){var hh=hands(q[0],q[1],ph,q[2]),Fs=P(F,hh.F),Hs=P(F,hh.H),Ts=P(F,hh.T),Hd=P(F,[hh.F[0],GY+5.9,hh.F[2]]);
-        L.push({z:Fs[2],f:function(){x.globalAlpha=ps;x.strokeStyle=rgba(ink,.95);x.lineWidth=Math.max(.8,.32*F.s/Hs[2]);x.beginPath();x.moveTo(Hs[0]+(Hs[0]-Ts[0])*.12,Hs[1]+(Hs[1]-Ts[1])*.12);x.lineTo(Ts[0],Ts[1]);x.stroke();
-          person(x,Fs,Hd,Hs,pal,u,0,lean);x.globalAlpha=1}})});
-      /* two haulers on the deck pulling the ridge forward with ropes */
-      [[-3.2,9.5],[3.6,11.5]].forEach(function(q){var T=P(F,bentPt(0,RH,0,ph)),Fh=[q[0],0,q[1]],Fs=P(F,Fh),Hs=P(F,[q[0],3.9,q[1]-.8]),Hd=P(F,[q[0],5.8,q[1]]);
-        L.push({z:Fs[2],f:function(){x.globalAlpha=ps;x.strokeStyle=rgba(ink,.7);x.lineWidth=.7;x.beginPath();x.moveTo(T[0],T[1]);x.quadraticCurveTo((T[0]+Hs[0])/2,(T[1]+Hs[1])/2+u*.8,Hs[0],Hs[1]);x.lineTo(Hs[0]+(Hs[0]-T[0])*.08,Hs[1]+(Hs[1]-T[1])*.08+u*.6);x.stroke();
-          person(x,Fs,Hd,Hs,pal,u,1,0);x.globalAlpha=1}})});
-      /* the foreman on the ground, calling the heave */
-      var Ff=[-19,GY,-6],Fs2=P(F,Ff),Hd2=P(F,[-19,GY+5.9,-6]);L.push({z:Fs2[2],f:function(){x.globalAlpha=ps;person(x,Fs2,Hd2,null,pal,u,2,0);x.globalAlpha=1}});
-    }
-    L.sort(function(a,b){return b.z-a.z});L.forEach(function(o){o.f()});
+    x.beginPath();x.moveTo(D[1][0],D[1][1]);x.lineTo(D[2][0],D[2][1]);x.lineTo(D[3][0],D[3][1]);x.strokeStyle=rgba(pal.rim,.85);x.lineWidth=.9;x.stroke();
+    /* grass grows up against the footing so the deck sits in the knoll */
+    if(!foot||1){var gr=Rn(13);[[Db[3],Db[0]],[Db[0],Db[1]]].forEach(function(E){var L=Math.hypot(E[1][0]-E[0][0],E[1][1]-E[0][1]),n=Math.round(L/(u*.28));x.lineWidth=.6;
+      for(var q=0;q<n;q++){var t2=gr(),px=E[0][0]+(E[1][0]-E[0][0])*t2,py=E[0][1]+(E[1][1]-E[0][1])*t2+gr()*u*.5,gh=u*(.5+gr()*1.1),ln=(gr()-.5)*u*.5;
+        x.beginPath();x.moveTo(px,py);x.quadraticCurveTo(px+ln*.3,py-gh*.6,px+ln,py-gh);x.strokeStyle=rgba(ink,.55+gr()*.3);x.stroke();if(gr()<.5){x.beginPath();x.moveTo(px+ln*.6,py-gh*.7);x.lineTo(px+ln,py-gh);x.strokeStyle=rgba(pal.rim,.85);x.stroke()}}})}
+    /* timbers, far to near */
+    M.forEach(function(m){m.z=(pr0(m.a)[2]+pr0(m.b)[2])/2});M.sort(function(a,b){return b.z-a.z});
+    M.forEach(function(m){timber(x,F,m,pal,d,e>=1)});
+    if(e>.6){x.globalAlpha=sm((e-.6)/.4);pegs(x,F,pal);x.globalAlpha=1}
+  }
+  function quad(x,a,b,wa,wb){var dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l;
+    x.beginPath();x.moveTo(a[0]+nx*wa/2,a[1]+ny*wa/2);x.lineTo(b[0]+nx*wb/2,b[1]+ny*wb/2);x.lineTo(b[0]-nx*wb/2,b[1]-ny*wb/2);x.lineTo(a[0]-nx*wa/2,a[1]-ny*wa/2);x.closePath()}
+  function backdrop(x,G,pl,e,pal,d,HB,br){var W=G.W,H=G.H,u=G.u,foot=pal.foot;
+    var R0=u*130,gl=x.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,R0);gl.addColorStop(0,rgba(pal.glow,(foot?.25:.75)*br));gl.addColorStop(.16,rgba(pal.glow,(foot?.12:.4)*br));gl.addColorStop(.45,rgba(pal.glow,(foot?.05:.14)*br));gl.addColorStop(1,rgba(pal.glow,0));x.fillStyle=gl;x.fillRect(G.sx-R0,G.sy-R0,R0*2,R0*2);
+    var sr=u*4.4,sg=x.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,sr*1.5);sg.addColorStop(0,rgba(pal.sun,1));sg.addColorStop(.62,rgba(pal.sun,.97));sg.addColorStop(.66,rgba(pal.glow,.45));sg.addColorStop(1,rgba(pal.glow,0));x.fillStyle=sg;x.beginPath();x.arc(G.sx,G.sy,sr*1.5,0,Math.PI*2);x.fill();
+    x.save();x.setTransform(1,0,0,1,0,0);x.drawImage(pl,0,0);x.restore();
+    /* warm haze where the light spills over the ridges */
+    var R1=u*44,hz=x.createRadialGradient(G.sx,G.sy+u*4,0,G.sx,G.sy+u*4,R1);hz.addColorStop(0,rgba(pal.glow,foot?.1:.34*br));hz.addColorStop(1,rgba(pal.glow,0));x.fillStyle=hz;x.fillRect(G.sx-R1,G.sy+u*4-R1,R1*2,R1*2);
+    barn(x,G,e,pal,d,HB)}
+  function drawScene(x,G,pl,t,e,pal,d,HB){
+    var W=G.W,H=G.H,u=G.u,F=G.F,foot=pal.foot,i,br=.93+.07*Math.sin(t*.4);
+    /* while the frame rises everything is drawn live; once it stands, the whole picture is kept as one finished plate
+       and only the light moves over it */
+    if(e<1)backdrop(x,G,pl,e,pal,d,HB,br);
+    else{var key=W+"x"+H+"x"+d+"x"+G.F.s;if(!HB.a||HB.k!==key){var ac=document.createElement("canvas");ac.width=Math.round(W*d);ac.height=Math.round(H*d);var ax=ac.getContext("2d");ax.setTransform(d,0,0,d,0,0);backdrop(ax,G,pl,1,pal,d,HB,1);HB.a=ac;HB.k=key;HB.c=null}
+      x.save();x.setTransform(1,0,0,1,0,0);x.drawImage(HB.a,0,0);x.restore();
+      /* the sun breathes: a soft swell of light over its own patch of sky */
+      var R2=u*26,sw=x.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,R2),k=(br-.93)/.14;sw.addColorStop(0,rgba(pal.sun,(foot?.08:.3)*k));sw.addColorStop(1,rgba(pal.sun,0));x.fillStyle=sw;x.fillRect(G.sx-R2,G.sy-R2,R2*2,R2*2)}
     /* chaff drifting in the light, and swallows over the knoll */
     if(!foot){var mr=Rn(5);for(i=0;i<(G.mob?12:30);i++){var mx0=mr(),my0=mr(),sp=.004+mr()*.007,ph2=mr()*6,uu=(mx0+t*sp)%1,px=F.left-G.bw*.1+uu*G.bw*1.4,py=G.sy+u*(-6+my0*30)+Math.sin(t*.7+ph2)*u*.8,
-      dd=Math.hypot(px-G.sx,py-G.sy)/(u*45),al=(1-sm(dd))*.7*e*sm(uu/.15)*(1-sm((uu-.85)/.15));if(al<.02)continue;x.beginPath();x.arc(px,py,.5+mr()*.9,0,Math.PI*2);x.fillStyle=rgba(pal.sun,al);x.fill()}
-      for(i=0;i<3;i++){var bt=t*.035+i*.33,bx=F.left+G.bw*(.1+.9*((bt+i*.2)%1)),by=F.top-u*(5+i*4)+Math.sin(bt*9+i)*u*2,fl=Math.sin(t*(6+i)+i)*.5+.5,bs=u*(.9-i*.15),ba=sm(((bt+i*.2)%1)/.1)*(1-sm((((bt+i*.2)%1)-.9)/.1))*e;
-        if(by<G.top+u*2||ba<.02)continue;x.globalAlpha=ba;x.beginPath();x.moveTo(bx-bs,by-bs*(.2+.5*fl));x.quadraticCurveTo(bx-bs*.4,by-bs*.15,bx,by);x.quadraticCurveTo(bx+bs*.4,by-bs*.15,bx+bs,by-bs*(.2+.5*fl));x.strokeStyle=rgba(ink,.8);x.lineWidth=1;x.stroke();x.globalAlpha=1}}
+      dd=Math.hypot(px-G.sx,py-G.sy)/(u*45),al=(1-sm(dd))*.8*e*sm(uu/.15)*(1-sm((uu-.85)/.15));if(al<.02)continue;x.beginPath();x.arc(px,py,.5+mr()*.9,0,Math.PI*2);x.fillStyle=rgba(pal.sun,al);x.fill()}
+      for(i=0;i<3;i++){var bt=t*.035+i*.33,ph3=(bt+i*.2)%1,bx2=F.left+G.bw*(.1+.9*ph3),by=F.top-u*(5+i*4)+Math.sin(bt*9+i)*u*2,fl=Math.sin(t*(6+i)+i)*.5+.5,bs=u*(.9-i*.15),ba=sm(ph3/.1)*(1-sm((ph3-.9)/.1))*e;
+        if(by<G.top+u*2||ba<.02)continue;x.globalAlpha=ba;x.beginPath();x.moveTo(bx2-bs,by-bs*(.2+.5*fl));x.quadraticCurveTo(bx2-bs*.4,by-bs*.15,bx2,by);x.quadraticCurveTo(bx2+bs*.4,by-bs*.15,bx2+bs,by-bs*(.2+.5*fl));x.strokeStyle=rgba(pal.ink,.8);x.lineWidth=1;x.stroke();x.globalAlpha=1}}
   }
   /* ---- the hero canvas ---- */
   function sideOf(){return Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2)}

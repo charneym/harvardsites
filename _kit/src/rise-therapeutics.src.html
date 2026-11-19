@@ -580,6 +580,26 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .prow .ind em{color:var(--accD)}
 .pipe-h .stg span:first-child{border-left:0;padding-left:0}
 .prow .track i:first-child{border-left:0}
+
+/* ===== home-only build (2026-11-19) ===== */
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.tagp,.prow .bar,.fld input,.fld textarea,.pt-fig,.gmp .ph,.pcard{border-radius:0!important}
+.prow .bar b{border-radius:0!important;width:10px;margin-right:0}
+/* section anchors clear the fixed header */
+.anch{position:relative;display:block;height:0;scroll-margin-top:0}
+/* DH: list rows draw their rule on hover */
+.prow::after,.rows li::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--eo)}
+.dark .prow::after,.dark2 .prow::after,.dark .rows li::after,.dark2 .rows li::after{background:var(--accL)}
+.rows li{position:relative}
+.prow:hover::after,.rows li:hover::after{transform:scaleX(1)}
+/* team tiles carry one line of substance instead of a bio sheet */
+.pt .exl{margin:10px 0 0;font-size:13.5px;line-height:1.55;color:var(--stoneD);max-width:30ch}
+.dark .pt .exl,.dark2 .pt .exl{color:var(--stone)}
+.pt .nm svg{display:none}
+.pipewrap{margin-top:clamp(44px,5vw,72px)}
+.mapwrap .map{margin-top:0}
+.addr .em a{font-family:var(--mono);font-size:13px;letter-spacing:.06em}
+@media (max-width:860px){.pipewrap{margin-top:34px}}
 </style>
 </head>
 <body>
@@ -605,23 +625,23 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
     <span class="wmk"><b>RISE</b><i>THERAPEUTICS</i></span>
   </a>
   <nav class="nav" aria-label="Primary">
-    <a class="nl ul" href="#/platform">Platform</a>
-    <a class="nl ul" href="#/programs">Programs</a>
-    <a class="nl ul" href="#/team">Team</a>
-    <a class="nl ul" href="#/news">News</a>
-    <a class="btn" href="#/contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
+    <a class="nl ul" href="#platform">Platform</a>
+    <a class="nl ul" href="#pipeline">Pipeline</a>
+    <a class="nl ul" href="#team">Team</a>
+    <a class="nl ul" href="#news">News</a>
+    <a class="btn" href="#contact">Contact <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
   </nav>
 </header>
 
 <div class="mm" id="mm" aria-hidden="true">
   <ol>
-    <li><a href="#/">Home</a></li>
-    <li><a href="#/platform">Platform</a></li>
-    <li><a href="#/programs">Programs</a></li>
-    <li><a href="#/team">Team</a></li>
-    <li><a href="#/news">News</a></li>
-    <li><a href="#/contact">Contact</a></li>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#platform">Platform</a></li>
+    <li><a href="#pipeline">Pipeline</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ol>
   <div class="mmf">
     <div><span class="lab">Rockville, Maryland</span><br>Rise Therapeutics, LLC</div>
@@ -645,11 +665,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   </div>
 </div>
 
-<div class="xc" id="xc" aria-hidden="true"></div>
-<div class="xt" id="xt" aria-hidden="true"><span class="lab" id="xlab">Rise Therapeutics</span><div class="t" id="xtt"></div></div>
 <div class="sr" aria-live="polite" id="live"></div>
 <!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->
-<script>gsap.set(".xc",{y:0,yPercent:101});</script>
 <script>
 (function(){
 "use strict";
@@ -665,6 +682,7 @@ var IMG="https://risetherapeutics.com/images/";
 var PR5780="https://risetherapeutics.com/news/77-rise-therapeutics-completes-dose-escalation-in-r-5780-phase-1-cancer-trial-advances-to-dose-expansion";
 var PR2487="https://risetherapeutics.com/news/76-rise-therapeutics-completes-enrollment-in-four-week-dose-expansion-cohort-for-the-r-2487-rheumatoid-arthritis-clinical-trial";
 var CT="https://clinicaltrials.gov/study/";
+var MAIL="hr@risetherapeutics.com";
 
 /* ============ CONTENT (dossier only; nothing invented) ============ */
 var NEWS=[
@@ -721,16 +739,11 @@ var TEAM=[
 function pBy(s){for(var i=0;i<TEAM.length;i++)if(TEAM[i].slug===s)return i;return -1}
 
 /* ============ VIEW HELPERS ============ */
-function head(o){
-  return '<section class="ph-head" data-field data-theme="dark"><span class="lab eyebrow">'+o.k+'</span>'+
-  '<h1 class="d1 split" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
-  (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
-}
-function pAttrs(p){return p.flat?'':' href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"'}
-function pTile(p){var tg=p.flat?'div':'a';
-  return '<'+tg+' class="pt"'+pAttrs(p)+'><figure class="pt-fig"><img'+(p.fx?' style="'+p.fx+'"':'')+' src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></figure><h3 class="nm"><span>'+esc(p.name)+'</span>'+(p.flat?'':ARR)+'</h3><p class="rl">'+esc(p.title)+'</p></'+tg+'>'}
-function pRow(p,sum){var tg=p.flat?'div':'a';
-  return '<li><'+tg+' class="mh-row"'+pAttrs(p)+'><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+(sum&&p.ex?esc(p.ex):'')+'</span>'+(p.flat?'':'<span class="mh-arrow" aria-hidden="true">→</span>')+'</'+tg+'></li>'}
+function pAttrs(){return ''}
+function pTile(p){var tg='div';
+  return '<'+tg+' class="pt"'+pAttrs(p)+'><figure class="pt-fig"><img'+(p.fx?' style="'+p.fx+'"':'')+' src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async" onerror="this.style.visibility=\'hidden\'"></figure><h3 class="nm"><span>'+esc(p.name)+'</span>'+''+'</h3><p class="rl">'+esc(p.title)+'</p>'+(p.ex?'<p class="exl">'+esc(p.ex)+'</p>':'')+'</'+tg+'>'}
+function pRow(p,sum){var tg='div';
+  return '<li><'+tg+' class="mh-row"'+pAttrs(p)+'><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+(sum&&p.ex?esc(p.ex):'')+'</span>'+'</'+tg+'></li>'}
 function mhGroup(ppl,label,sum){return '<div class="mh-group">'+(label?'<p class="mh-label">'+esc(label)+'</p>':'')+'<ul class="mh-list" data-group>'+ppl.map(function(p){return pRow(p,sum)}).join('')+'</ul></div>'}
 function pSet(ppl,cols,sum,label){if(ppl.every(function(p){return p.img}))return '<div class="pgrid'+(cols||'')+'" data-group>'+ppl.map(pTile).join('')+'</div>';
   return '<div class="mh">'+mhGroup(ppl,label,sum)+'</div>'}
@@ -752,7 +765,7 @@ function vHome(){
    '<span class="lab eyebrow" data-r>Oral live biotherapeutics · Rockville, Maryland</span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Immunity is</span><span class="l">decided at</span><span class="l"><em>the gut wall.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Rise Therapeutics engineers food-grade bacteria to carry one immune signal to the lining of the intestine, where dendritic cells read it and reset the immune repertoire across the body. It is swallowed as a capsule. Three of these medicines are in Phase 1 trials today.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/platform">How the signal travels '+ARR+'</a><a class="btn" href="#/programs">Programs</a></div></div>'+
+   '<div class="act" data-r><a class="btn solid" href="#platform">How the signal travels '+ARR+'</a><a class="btn" href="#pipeline">The programs</a></div></div>'+
    '</div>'+
    '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Engineered L. lactis in the lumen</span><span><i class="s"></i>Ligand released at the epithelium</span><span><i class="g"></i>T cells programmed and sent out</span></div>'+
   '</section>'+
@@ -780,13 +793,44 @@ function vHome(){
    '<div class="story-r"><canvas id="storyCv" aria-hidden="true"></canvas></div>'+
   '</div></section>'+
 
+  '<div class="anch" id="platform" aria-hidden="true"></div>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">Seven Phase 1 studies from <em>one platform.</em></h2></div><p data-r>Three live biotherapeutic candidates, each carrying a different ligand, are registered across autoimmune, inflammatory, respiratory and oncology indications. Every stage below is as registered on ClinicalTrials.gov.</p></div>'+
-   candCards()+
-   '<div style="margin-top:46px" data-r><a class="btn" href="#/programs">The full pipeline, study by study '+ARR+'</a></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Platform</span><h2 class="d2 split">A signal, not a <em>suppressant.</em></h2></div><p data-r>Every candidate is the same machine with a different cargo: a food-grade bacterium, engineered to express one protein ligand and to deliver it to the intestinal tract, where the receptors that set systemic immune tone are waiting.</p></div>'+
+   '<div class="pillars" data-group>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="24" cy="32" rx="12" ry="9"/><ellipse cx="42" cy="36" rx="12" ry="9"/><path class="a" d="M8 14c14 4 28 4 46 0"/><circle class="f" cx="52" cy="18" r="3"/></svg><h3>A food-grade chassis</h3><p><em>Lactococcus lactis</em> is a non-pathogenic, GRAS-designated bacterium already used as a probiotic and in the food industry, with an extensive safety record in humans, including in genetically modified forms.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="16"/><path class="a" d="M32 16V5M32 59v-9M16 32H5M59 32h-9"/><circle class="f" cx="32" cy="32" r="4"/></svg><h3>One defined ligand</h3><p>SlpA, CFA/I or the SagA enzyme. Each has a known receptor and a known immunological consequence, which is what makes the mechanism characterizable rather than a bacterial cocktail with an effect nobody can trace.</p></div>'+
+    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="18" y="8" width="28" height="48" rx="14"/><path class="a" d="M18 32h28"/><circle class="f" cx="32" cy="20" r="3"/><circle class="f" cx="32" cy="44" r="3"/></svg><h3>An oral capsule, made in-house</h3><p>Enteric-coated capsules carry the live biotherapeutic past the stomach. Drug substance and drug product are both manufactured under GMP in the company&rsquo;s own facility, encapsulated, labeled and shipped to sites.</p></div>'+
+   '</div></div></section>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Mechanism</span><h2 class="d2 split">The receptors that read <em>the lumen.</em></h2></div><p data-r>What the ligand does once it reaches the epithelium.</p></div>'+
+   '<div class="two"><div><p class="lede" data-r>Surface proteins from commensal bacteria are already read by the immune cells in the gut wall; Rise supplies that signal on purpose.</p></div>'+
+   '<div><ul class="aims" data-group>'+
+    '<li><span>Surface layer proteins and lipoteichoic acid from commensal bacteria interact with pattern-recognition receptors on innate immune cells in the gut, tuning immunity in health and in disease.</span></li>'+
+    '<li><span>SlpA, the predominant anti-inflammatory surface layer signal, binds the C-type lectin SIGNR3 on dendritic cells lining the gut and prevented experimentally induced colitis in multiple models; the protection was absent in SIGNR3-deficient mice.</span></li>'+
+    '<li><span>Oral delivery of SlpA from <em>L. lactis</em> reduced inflammatory cytokines, strengthened the mucosal barrier and supported a healthier microbiota in animal models of gut inflammation.</span></li>'+
+    '<li><span>CFA/I, delivered the same way, induces antigen-specific regulatory T cells and bystander tolerance, which is the basis of the R‑2487 program in rheumatoid arthritis and Sjögren&rsquo;s disease.</span></li>'+
+    '<li><span>The SagA enzyme from <em>Enterococcus faecium</em> remodels peptidoglycan; the fragments it generates engage host pattern-recognition receptors and potentiated PD-1 checkpoint therapy in tumor models.</span></li>'+
+   '</ul></div></div>'+
+  '</div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Manufacturing</span><h2 class="d2 split">Clinical GMP, <em>in-house.</em></h2></div><p data-r>Rise designed and built its own GMP operation so that a living drug substance and the capsule made from it stay under one roof.</p></div>'+
+   '<ul class="aims" data-group>'+
+    '<li><span>Clean-space isolator systems and modular GMP clean rooms, for processing at several production scales.</span></li>'+
+    '<li><span>High-throughput automatic encapsulation for drug product, followed by packaging, labeling and distribution to clinical sites nationwide.</span></li>'+
+    '<li><span>Advanced analytical systems for validated product release, characterization and stability assessment.</span></li>'+
+    '<li><span>Compliance with 21 CFR Part 11 for data integrity.</span></li>'+
+   '</ul>'+
+   gmp()+
   '</div></section>'+
 
+  '<div class="anch" id="pipeline" aria-hidden="true"></div>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">Seven Phase 1 studies from <em>one platform.</em></h2></div><p data-r>Three live biotherapeutic candidates, each carrying a different ligand, are registered across autoimmune, inflammatory, respiratory and oncology indications. Every stage below is as registered on ClinicalTrials.gov.</p></div>'+
+   candCards()+
+   '<div class="pipewrap">'+pipeTable()+'</div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Evidence</span><h2 class="d2 split">What the clinic has <em>shown so far.</em></h2></div><p data-r>These are the results Rise has reported from its own trials so far.</p></div>'+
    '<div class="two"><div><p class="lede" data-r>Three candidates are in the clinic, and the readouts so far are safety, tolerability and the first signs of the mechanism doing what it should.</p></div>'+
    '<div><ul class="aims" data-group>'+
@@ -799,18 +843,19 @@ function vHome(){
    '</div></div>'+
   '</div></section>'+
 
+  '<div class="anch" id="team" aria-hidden="true"></div>'+
   '<section class="sec light" data-theme="light" style="background:var(--paper2)"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Under <em>one roof.</em></h2></div><p data-r>Research, GMP manufacturing and clinical development are run by five people in Rockville, Maryland, and the NIH awards behind the programs are written in their names.</p></div>'+
-   '<div class="credit" data-r><span class="lab">Leadership</span><p class="cl">'+TEAM.map(function(t){return '<span>'+esc(t.name.split(',')[0])+'</span>'}).join('')+'</p></div>'+
-   '<div style="margin-top:44px;text-align:center" data-r><a class="btn" href="#/team">Meet the team '+ARR+'</a></div>'+
+   pSet(TEAM,' five',0,'')+
   '</div></section>'+
 
-  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Backing</span><h2 class="d2 split">Funded by the NIH <em>since 2018.</em></h2></div><p data-r>Two SBIR Phase II awards were made in September 2026: $740,140 in first-year funding from the National Cancer Institute for R‑5780, and $1,042,478 from NIDDK to take R‑3750 into Crohn&rsquo;s disease.</p></div>'+
    '<div class="credit" data-r><span class="lab">Institutes that have funded the platform</span><p class="cl"><span>NCI</span><span>NIDDK</span><span>NIAID</span><span>NIDCR</span><span>NIA</span><span>NCATS</span></p></div>'+
-   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2><a class="btn" href="#/news" data-r>All news '+ARR+'</a></div>'+newsRows(NEWS.slice(0,3))+'</div>'+
+   '<div class="anch" id="news" aria-hidden="true"></div>'+
+   '<div style="margin-top:var(--sec)"><div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Trial progress and awards</h2><a class="btn" href="'+PR5780+'" target="_blank" rel="noopener" data-r>Latest announcement '+ARR+'</a></div>'+newsRows(NEWS)+'</div>'+
   '</div></section>'+
-  cta('home');
+  cta()+contactBlock();
 }
 /* AA: the home page introduces the three candidates; the full study-by-study table lives on Programs */
 function candCards(){
@@ -837,123 +882,26 @@ function pipeTable(short){
    '<div class="track"><i></i><i></i><i></i><span class="bar" style="width:'+(r.w*100)+'%"><b></b></span></div><p class="axis lab" aria-hidden="true"><span>Preclinical</span><span>Phase 1</span><span>Phase 2</span></p><p class="note">'+r.note+'</p></div>'}).join("")+'</div>';
 }
 /* a drawn section through the gut wall: lumen, villus, epithelium, dendritic cell, T cells leaving */
-function cta(k){
-  var alt=(k==='platform')?['#/programs','See the programs']:['#/platform','Read the platform'];
-  return '<section class="sec light cta" data-theme="light"><div class="wrap">'+
+function cta(){
+  var alt=['#platform','Read the platform'];
+  return '<div class="anch" id="contact" aria-hidden="true"></div>'+
+  '<section class="sec light cta" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Work with us</span>'+
    '<h2 class="big split">Let&rsquo;s talk about the <em>gut.</em></h2>'+
    '<p class="sub" data-r>Whether you run an autoimmune or oncology clinical program, study mucosal immunology, or invest in living medicines, we would like to hear which problem brought you here.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/contact">Start a conversation '+ARR+'</a><a class="btn" href="'+alt[0]+'">'+alt[1]+'</a></div>'+
+   '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to the team '+ARR+'</a><a class="btn" href="'+alt[0]+'">'+alt[1]+'</a></div>'+
   '</div></section>';
 }
-function vPlatform(){
-  return head({k:"Platform",h:'A signal, not a <em>suppressant.</em>',p:'Every live biotherapeutic candidate is the same machine with a different cargo: a food-grade bacterium, engineered to express one protein ligand and to deliver it to the intestinal tract, where the receptors that set systemic immune tone are waiting.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
-   '<div class="pillars" data-group>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="24" cy="32" rx="12" ry="9"/><ellipse cx="42" cy="36" rx="12" ry="9"/><path class="a" d="M8 14c14 4 28 4 46 0"/><circle class="f" cx="52" cy="18" r="3"/></svg><h3>A food-grade chassis</h3><p><em>Lactococcus lactis</em> is a non-pathogenic, GRAS-designated bacterium already used as a probiotic and in the food industry, with an extensive safety record in humans, including in genetically modified forms.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="16"/><path class="a" d="M32 16V5M32 59v-9M16 32H5M59 32h-9"/><circle class="f" cx="32" cy="32" r="4"/></svg><h3>One defined ligand</h3><p>SlpA, CFA/I or the SagA enzyme. Each has a known receptor and a known immunological consequence, which is what makes the mechanism characterizable rather than a bacterial cocktail with an effect nobody can trace.</p></div>'+
-    '<div class="pl3"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="18" y="8" width="28" height="48" rx="14"/><path class="a" d="M18 32h28"/><circle class="f" cx="32" cy="20" r="3"/><circle class="f" cx="32" cy="44" r="3"/></svg><h3>An oral capsule, made in-house</h3><p>Enteric-coated capsules carry the live biotherapeutic past the stomach. Drug substance and drug product are both manufactured under GMP in the company&rsquo;s own facility, encapsulated, labeled and shipped to sites.</p></div>'+
-   '</div></div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>Starting point</span><h2 class="d3 split">The gaps these programs are <em>aimed at.</em></h2><p class="muted" style="margin-top:24px" data-r>This is the standard of care each program is trying to improve on.</p></div>'+
-   '<dl class="facts" data-group>'+
-    '<div><dt class="lab">Inflammatory bowel disease</dt><dd>Current treatments can have serious side-effects and patients become refractory; an estimated 800,000 to 1 million US adults live with Crohn&rsquo;s disease, which is lifelong and has no cure.</dd></div>'+
-    '<div><dt class="lab">Rheumatoid arthritis</dt><dd>Despite effective cytokine- and cell-targeting therapies, no therapy induces long-term remission, and prolonged treatment carries risks; about half of patients become disabled as the disease progresses.</dd></div>'+
-    '<div><dt class="lab">Sjögren&rsquo;s disease</dt><dd>Treatment still relies on replacement therapies such as artificial saliva and eye lubricants, or on immunosuppressive agents.</dd></div>'+
-    '<div><dt class="lab">Checkpoint-refractory cancer</dt><dd>Checkpoint inhibitors are a cornerstone of treatment, yet only about one in five patients with advanced cancer responds to them.</dd></div>'+
-    '<div><dt class="lab">Delivery</dt><dd>Protein biologics are unstable and short-lived when given by mouth. Delivering them from a bacterium that makes them in place avoids both the injection and the caustic conditions of the stomach.</dd></div>'+
-   '</dl></div></div></section>'+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Mechanism</span><h2 class="d2 split">The receptors that read <em>the lumen.</em></h2></div><p data-r>What the ligand does once it reaches the epithelium.</p></div>'+
-   '<div class="two"><div><p class="lede" data-r>Surface proteins from commensal bacteria are already read by the immune cells in the gut wall; Rise supplies that signal on purpose.</p></div>'+
-   '<div><ul class="aims" data-group>'+
-    '<li><span>Surface layer proteins and lipoteichoic acid from commensal bacteria interact with pattern-recognition receptors on innate immune cells in the gut, tuning immunity in health and in disease.</span></li>'+
-    '<li><span>SlpA, the predominant anti-inflammatory surface layer signal, binds the C-type lectin SIGNR3 on dendritic cells lining the gut and prevented experimentally induced colitis in multiple models; the protection was absent in SIGNR3-deficient mice.</span></li>'+
-    '<li><span>Oral delivery of SlpA from <em>L. lactis</em> reduced inflammatory cytokines, strengthened the mucosal barrier and supported a healthier microbiota in animal models of gut inflammation.</span></li>'+
-    '<li><span>CFA/I, delivered the same way, induces antigen-specific regulatory T cells and bystander tolerance, which is the basis of the R‑2487 program in rheumatoid arthritis and Sjögren&rsquo;s disease.</span></li>'+
-    '<li><span>The SagA enzyme from <em>Enterococcus faecium</em> remodels peptidoglycan; the fragments it generates engage host pattern-recognition receptors and potentiated PD-1 checkpoint therapy in tumor models.</span></li>'+
-   '</ul></div></div>'+
-  '</div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Manufacturing</span><h2 class="d2 split">Clinical GMP, <em>in-house.</em></h2></div><p data-r>Rise designed and built its own GMP operation so that a living drug substance and the capsule made from it stay under one roof.</p></div>'+
-   '<ul class="aims" data-group>'+
-    '<li><span>Clean-space isolator systems and modular GMP clean rooms, for processing at several production scales.</span></li>'+
-    '<li><span>High-throughput automatic encapsulation for drug product, followed by packaging, labeling and distribution to clinical sites nationwide.</span></li>'+
-    '<li><span>Advanced analytical systems for validated product release, characterization and stability assessment.</span></li>'+
-    '<li><span>Compliance with 21 CFR Part 11 for data integrity.</span></li>'+
-   '</ul>'+
-   gmp()+
-  '</div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Reading</span><h2 class="d2 split">Published work behind <em>the targets.</em></h2></div><p data-r>Peer-reviewed papers on the three ligands Rise delivers and the receptors they engage.</p></div>'+
-   '<div data-r>'+paperRows()+'</div>'+
-  '</div></section>'+cta('platform');
-}
-function vPrograms(){
-  return head({k:"Programs",h:'One platform, <em>seven studies.</em>',p:'Three live biotherapeutic candidates are registered on ClinicalTrials.gov across inflammatory bowel disease, rheumatoid arthritis, Sjögren&rsquo;s disease, solid tumors, ARDS and COPD. Stage, status and enrollment below are as registered.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap">'+pipeTable()+'</div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>R‑3750</span><h2 class="d3 split">SlpA, for the <em>inflamed gut.</em></h2></div>'+
-   '<div><p class="lede" data-r style="margin-bottom:30px">An <em>L. lactis</em> strain engineered to express Surface Layer Protein A, formulated in enteric-coated capsules, designed to restore intestinal immune regulation and mucosal barrier function.</p>'+
-   '<ul class="aims" data-group>'+
-    '<li><span>Phase 1 in mild-to-moderate ulcerative colitis under IND 28994 (NCT05666960), run with Mayo Clinic and the University of Colorado, Denver.</span></li>'+
-    '<li><span>The company reports excellent safety in that study, with no serious or drug-related adverse events, alongside improvement in disease symptoms and upregulation of regulatory T cells.</span></li>'+
-    '<li><span>A randomized, double-blind, placebo-controlled Phase 1 in Crohn&rsquo;s disease is registered (NCT07791888): 40 patients, 12 weeks of daily dosing, followed to about day 168, with endoscopic response, biomarkers and microbiome composition among the assessments.</span></li>'+
-    '<li><span>Two further Phase 1 studies take the same strain to the lung, where the gut–lung axis is the rationale: late-stage ARDS (NCT07646028) and mild-to-moderate COPD (NCT07076290).</span></li>'+
-   '</ul></div>'+
-  '</div></div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>R‑2487</span><h2 class="d3 split">CFA/I, and <em>bystander tolerance.</em></h2></div>'+
-   '<div><p class="lede" data-r style="margin-bottom:30px">Colonization factor antigen I, originally studied as a diarrhoeal vaccine antigen, induces antigen-specific regulatory T cells when it is delivered orally. R‑2487 is the <em>L. lactis</em> strain that expresses it.</p>'+
-   '<ul class="aims" data-group>'+
-    '<li><span>Because tolerance is induced without knowing the disease antigen, one product can be tested across autoimmune indications; R‑2487 reduced symptoms in animal models of arthritis, Sjögren&rsquo;s syndrome, diabetes and multiple sclerosis.</span></li>'+
-    '<li><span>The rheumatoid arthritis Phase 1 (NCT05961592) is recruiting at six US sites and targets intervention before patients start biologics or JAK inhibitors.</span></li>'+
-    '<li><span>Its four-week dose-expansion cohort of 40 patients completed enrollment in June 2026; the Data Monitoring Committee reviewed the data and recommended progression, which the company says positions R‑2487 for Phase 2.</span></li>'+
-    '<li><span>A Phase 1 in Sjögren&rsquo;s disease is registered with the Johns Hopkins Jerome L. Greene Sjögren&rsquo;s Syndrome Center and the University of Michigan (NCT06297213).</span></li>'+
-   '</ul></div>'+
-  '</div></div></section>'+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>R‑5780</span><h2 class="d3 split">SagA, and the <em>refractory tumor.</em></h2></div>'+
-   '<div><p class="lede" data-r style="margin-bottom:30px">Specific <em>Enterococcus</em> strains have been linked to better responses to anti-PD-1 therapy. They express SagA, a peptidoglycan-remodeling enzyme — so Rise put SagA into a probiotic that can be given as a drug.</p>'+
-   '<ul class="aims" data-group>'+
-    '<li><span>Delivered recombinantly from a strain that does not naturally express it, SagA potentiated the anti-tumor effects of PD-1 checkpoint therapy in murine tumor models, through intestinal engagement of pattern-recognition receptors.</span></li>'+
-    '<li><span>The FDA cleared the IND in January 2025 and the Phase 1 (NCT06398418) is recruiting at Sarah Cannon Research Institute in Denver and Nashville, enrolling up to 33 patients on a PD-1 inhibitor.</span></li>'+
-    '<li><span>Dose escalation completed in September 2026; with a recommended dose established, the study moved into dose expansion at the highest fixed dose.</span></li>'+
-    '<li><span>The NCI Phase II award of 16 September 2026 funds safety, clinical benefit, pharmacodynamic activity, biomarker work and manufacturing scale-up to ready R‑5780 for larger confirmatory trials.</span></li>'+
-   '</ul></div>'+
-  '</div></div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two">'+
-   '<div><span class="lab kick" data-r>Also in development</span><h2 class="d3 split">R‑5280, a modified <em>resistant starch.</em></h2></div>'+
-   '<div><p class="lede" data-r style="margin-bottom:30px">Not every immune signal has to be made by a bacterium: R‑5280 is a butyrylated and acetylated high-amylose starch that releases short-chain fatty acids in the intestinal tract.</p>'+
-   '<ul class="aims" data-group>'+
-    '<li><span>In a prior Phase 1 trial enrolling adolescents with recent-onset type 1 diabetes, oral R‑5280 increased short-chain fatty acid production, which the company reports led to improved overall glycemic control.</span></li>'+
-    '<li><span>The same study reported significant increases in specific beneficial metabolites and a reduction in inflammatory T cells.</span></li>'+
-    '<li><span>The program is supported by an NIDDK SBIR Phase II award (1R44DK137649).</span></li>'+
-   '</ul></div>'+
-  '</div></div></section>'+cta('programs');
-}
-function vTeam(){
-  return head({k:"Team",h:'The people behind <em>the platform.</em>',p:'Rise Therapeutics is a small company in Rockville, Maryland that does its own research, its own GMP manufacturing and its own clinical development.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap">'+pSet(TEAM,' five',1,'Leadership')+
-  '</div></section>'+cta('team');
-}
-function vNews(){
-  return head({k:"News",h:'Trial progress and <em>awards.</em>',p:'Every item links to its source: the company&rsquo;s own announcements and the NIH RePORTER award records.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+newsRows(NEWS)+
-  '<div style="margin-top:clamp(56px,6vw,96px)" data-r><a class="btn" href="'+CT+'NCT06398418" target="_blank" rel="noopener">The oncology study on ClinicalTrials.gov '+ARR+'</a></div>'+
-  '</div></section>'+cta('news');
-}
-function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
-function vContact(){
-  return head({k:"Contact",h:'Start a <em>conversation.</em>',p:'Collaborations, clinical sites, partnering and press. Send a note and it will reach the team in Rockville.'})+
-  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="cgrid">'+
-   '<div class="addr" data-r><span class="lab">Office and GMP facility</span><h3>Rockville, Maryland</h3><p>Rise Therapeutics, LLC<br>1405 Research Blvd., Suite 220<br>Rockville, MD 20850</p><p><a class="ul" href="https://www.linkedin.com/company/rise-therapeutics/" target="_blank" rel="noopener">LinkedIn</a></p>'+
-    '<div class="map">'+mapSvg()+'</div></div>'+
-   '<div class="formwrap" id="fw" data-r><form class="form" id="cform" novalidate>'+fld("name","Name","text",1)+fld("email","Email","email",1)+fld("org","Organization","text",0,1)+fld("msg","What brings you here?","ta",1,1)+
-    '<div class="subr"><span class="lab">Front-end concept form · no data is sent</span><button class="btn solid" type="submit">Send message '+ARR+'</button></div></form>'+
-    '<div class="thanks" id="thanks" tabindex="-1"><svg viewBox="-70 -70 140 140" aria-hidden="true"><circle r="66"/><circle r="46"/><circle r="26"/><circle r="8" style="fill:#5f6a0a;stroke:none"/></svg><h3 class="d3">Thank you.</h3><p class="muted" style="margin-top:16px;max-width:44ch">Your message is noted. On the live site this form would reach the Rise Therapeutics team directly.</p></div></div>'+
+function contactBlock(){
+  return '<section class="sec light" data-theme="light" style="background:var(--paper2);padding-top:0"><div class="wrap"><div class="cgrid">'+
+   '<div class="addr" data-r><span class="lab">Office and GMP facility</span><h3>Rockville, Maryland</h3>'+
+    '<p>Rise Therapeutics, LLC<br>1405 Research Blvd., Suite 220<br>Rockville, MD 20850</p>'+
+    '<p class="em"><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p>'+
+    '<p><a class="ul" href="https://www.linkedin.com/company/rise-therapeutics/" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://risetherapeutics.com/" target="_blank" rel="noopener">risetherapeutics.com</a></p></div>'+
+   '<div class="mapwrap" data-r><div class="map">'+mapSvg()+'</div></div>'+
   '</div></div></section>';
 }
+function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function mapSvg(){
   var g='';for(var i=0;i<76;i++){var r=Math.sqrt(i/76)*150,a=i*2.39996;g+='<circle cx="'+(250+Math.cos(a)*r).toFixed(1)+'" cy="'+(200+Math.sin(a)*r*.8).toFixed(1)+'" r="'+(1.2+Math.sqrt(i/76)*2.2).toFixed(2)+'" fill="rgba(23,26,19,.14)"/>'}
   return '<svg viewBox="0 0 500 400" aria-label="Stylized map marking Rockville, Maryland">'+g+
@@ -961,12 +909,11 @@ function mapSvg(){
   '<g class="mpin" transform="translate(250 200)"><circle r="30" fill="rgba(95,106,10,.12)" class="pr"/><circle r="6" fill="#5f6a0a"/><text x="18" y="-10" font-family="Spectral,serif" font-size="27" fill="#171a13">Rockville</text><text x="18" y="12" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.5" fill="#5f6355">MARYLAND</text></g>'+
   '<text x="30" y="370" font-family="Geist Mono,monospace" font-size="11" letter-spacing="1.5" fill="#5f6355">I-270 BIOTECH CORRIDOR</text></svg>';
 }
-function v404(){return head({k:"Not found",h:'That page isn&rsquo;t <em>here.</em>',p:'<a class="ul" href="#/">Return home →</a>'})}
 function footer(){
   return '<footer class="ftr" data-theme="dark"><div class="cols" data-group>'+
    '<div class="c"><span class="lab">Office</span>Rise Therapeutics, LLC<br>1405 Research Blvd., Suite 220<br>Rockville, MD 20850</div>'+
    '<div class="c"><span class="lab">Elsewhere</span><a class="ul" href="https://www.linkedin.com/company/rise-therapeutics/" target="_blank" rel="noopener">LinkedIn</a><br><a class="ul" href="https://risetherapeutics.com/" target="_blank" rel="noopener">risetherapeutics.com</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/programs">Programs</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#platform">Platform</a><br><a class="ul" href="#pipeline">Programs</a><br><a class="ul" href="#team">Team</a><br><a class="ul" href="#news">News</a></div>'+
    '<div class="c"><span class="lab">Funding</span>NCI SBIR Phase II · 2026<br>NIDDK SBIR Phase II · 2026<br>NIA, NIDCR, NIAID and NCATS awards since 2018</div>'+
   '</div><canvas id="ftrCv" aria-hidden="true"></canvas><span class="bigw" aria-hidden="true" id="bigwm">Rise</span>'+
   '<div class="legal"><span class="lab">© 2026 Rise Therapeutics, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
@@ -995,16 +942,8 @@ function footerFX(){
 }
 
 /* ============ ROUTER ============ */
-function route(h){
-  var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
-  if(!p.length)return {k:"home",v:vHome,t:SITE+" — Oral immune biomodulators, delivered at the gut wall",x:"Home"};
-  if(p[0]==="platform")return {k:"platform",v:vPlatform,t:"Platform — "+SITE,x:"Platform"};
-  if(p[0]==="programs")return {k:"programs",v:vPrograms,t:"Programs — "+SITE,x:"Programs"};
-  if(p[0]==="team"&&p[1]&&pBy(p[1])>=0)return {k:"team",bio:p[1],v:vTeam,t:TEAM[pBy(p[1])].name+" — "+SITE,x:"Team"};
-  if(p[0]==="team")return {k:"team",v:vTeam,t:"Team — "+SITE,x:"Team"};
-  if(p[0]==="news")return {k:"news",v:vNews,t:"News — "+SITE,x:"News"};
-  if(p[0]==="contact")return {k:"contact",v:vContact,t:"Contact — "+SITE,x:"Contact"};
-  return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
+function route(){
+  return {k:"home",v:vHome,t:SITE+" — Oral immune biomodulators, delivered at the gut wall",x:"Home"};
 }
 
 /* ============ ENV ============ */
@@ -1282,7 +1221,7 @@ function makeStory(cv){
       [["DENDRITIC CELL",195,240,"tl"],["T CELLS PROGRAMMED",232,292,"br"]],
       [["INTO THE CIRCULATION",300,292,"bl"],["LAMINA PROPRIA",300,250,"tr"]]
     ];
-    L5[dom].forEach(function(q,qi){lab(q[0],q[1],q[2],DA,q[3],0)});
+    L5[dom].forEach(function(q,qi){lab(q[0],q[1],q[2],DA,q[3],(w<620&&qi)?1.6:0)});
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
@@ -1489,13 +1428,16 @@ var PS=(function(){
 
 /* ============ NAV / ROUTING ============ */
 var busy=false,queued=false,curKey=null,navByClick=false,scrollMem={},prevHash=location.hash||"#/";
+function secTop(el){var r=el.getBoundingClientRect();return Math.max(0,r.top+window.scrollY-6)}
+function scrollToSec(id,instant){var el=document.getElementById(id);if(!el)return false;
+  ScrollTrigger.refresh();var y=secTop(el);
+  if(instant||RM){if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y)}
+  else if(lenis)lenis.scrollTo(y,{duration:1.5});else window.scrollTo({top:y,behavior:"smooth"});
+  return true}
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
-  if(/^#\/team\/[^/]+$/.test(h)&&(curKey==="team"||curKey==="home")){e.preventDefault();var i=pBy(h.split("/")[2]);if(i<0)return;
-    history.pushState(null,"",h);prevHash=h;PS.open(i);return}
-  navByClick=true;
-  if(h==="#main"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
   if(document.body.classList.contains("menu-open"))closeMenu();
-  if(h===location.hash||(h==="#/"&&(location.hash===""||location.hash==="#/"))){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0)}},true);
+  if(h==="#main"||h==="#/"||h==="#hero"){e.preventDefault();lenis?lenis.scrollTo(0,{duration:1.4}):scrollTo(0,0);return}
+  if(h.length>1&&document.getElementById(h.slice(1))){e.preventDefault();scrollToSec(h.slice(1))}},true);
 function fitWord(){var el=$("#bigwm");if(!el)return;var par=el.parentElement,cs=getComputedStyle(par);
   var avail=par.getBoundingClientRect().width-parseFloat(cs.paddingLeft||0)-parseFloat(cs.paddingRight||0);
   el.style.display="inline-block";el.style.fontSize="100px";
@@ -1506,36 +1448,27 @@ function paint(r){
   if(ftrFX){ftrFX.kill();ftrFX=null}
   view.innerHTML=r.v()+footer();document.title=r.t;curKey=r.k;
   ftrFX=footerFX();fitWord();
-  $$(".nav .nl").forEach(function(a){var h=a.getAttribute("href").slice(2);if(r.k===h)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
   if(lenis)lenis.scrollTo(0,{immediate:true,force:true});window.scrollTo(0,0);
-  field.snapDim(1);var vv=VIEWS[r.k]||VIEWS.home;field.setView(vv[0],vv[1],r.k==="home",r.k!=="home",vv[2]);observeField();
+  field.snapDim(1);var vv=VIEWS.home;field.setView(vv[0],vv[1],true,false,vv[2]);observeField();
   $("#live").textContent=r.x+" page";lastSY=0;hdrTheme();
 }
 function restoreY(y,cb){if(!(y>0)){if(cb)cb();return}requestAnimationFrame(function(){requestAnimationFrame(function(){ScrollTrigger.refresh();var m=Math.max(0,document.documentElement.scrollHeight-innerHeight);y=Math.min(y,m);if(lenis)lenis.scrollTo(y,{immediate:true,force:true});window.scrollTo(0,y);ScrollTrigger.update();hdrTheme();if(cb)requestAnimationFrame(function(){requestAnimationFrame(cb)})})})}
 function go(first,ready){
-  var r=route(location.hash);
-  if(first){paint(r);initView(r.k,true);var sy=0;try{sy=+sessionStorage.getItem("rt-y:"+(location.hash||"#/"))||0}catch(e){}if(r.bio)sy=0;
-    restoreY(sy,function(){if(r.bio)PS.open(pBy(r.bio),true);if(ready)ready()});prevHash=location.hash||"#/";return}
-  if(r.bio&&curKey&&(curKey==="team"||curKey==="home")){PS.open(pBy(r.bio));prevHash=location.hash;return}
-  if(!r.bio&&PS.isOpen()&&r.k===curKey){PS.close();prevHash=location.hash||"#/";return}
-  if(PS.isOpen())PS.close();
-  if(busy){queued=true;return}busy=true;
-  scrollMem[prevHash]=window.scrollY;var back=!navByClick&&scrollMem[location.hash||"#/"]>0?scrollMem[location.hash||"#/"]:0;navByClick=false;prevHash=location.hash||"#/";
-  var xc=$("#xc"),xt=$("#xt"),tt=$("#xtt");tt.innerHTML="<span>"+esc(r.x)+"</span>";
-  if(lenis)lenis.stop();
-  var sp=RM?null:SplitText.create(tt.firstChild,{type:"chars"});
-  var D=RM?.01:1;
-  var tl=gsap.timeline({onComplete:function(){xt.style.visibility="hidden";gsap.set(xc,{yPercent:101});if(sp)sp.revert();busy=false;var hh=$("#pageTitle");if(hh)hh.focus({preventScroll:true});failsafe();if(queued){queued=false;go(false)}}});
-  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.72*D,ease:"power3.inOut"},0);
-  if(sp){tl.set(xt,{visibility:"visible",opacity:1},.46*D).fromTo(sp.chars,{yPercent:150,opacity:0},{yPercent:0,opacity:1,duration:.45,ease:"power3.out",stagger:.02},.49*D).fromTo("#xlab",{opacity:0,y:8},{opacity:1,y:0,duration:.35},.56*D)}
-  tl.call(function(){paint(r)},null,.76*D)
-    .call(function(){if(lenis)lenis.start();ENTRY=RM?0:.55;initView(r.k,false);if(back)restoreY(back);if(r.bio)PS.open(pBy(r.bio))},null,.82*D);
-  if(sp){tl.to("#xlab",{opacity:0,duration:.25},1.18*D)}
-  tl.to(xt,{opacity:0,duration:.3,ease:"power2.in"},"<");tl.to(xc,{yPercent:-101,duration:.72*D,ease:"power3.inOut"},1.24*D);
+  var r=route();
+  paint(r);initView(r.k,true);
+  var id=(location.hash||"").replace(/^#\/?/,"");
+  restoreY(0,function(){if(id&&document.getElementById(id))scrollToSec(id,true);navSpy();if(ready)ready()});
+}
+function navSpy(){
+  var ids=["platform","pipeline","team","news","contact"],links=$$(".nav .nl, .mm a");
+  function upd(){var y=window.scrollY+innerHeight*.35,cur="";
+    ids.forEach(function(id){var el=document.getElementById(id);if(el&&secTop(el)<=y)cur=id});
+    links.forEach(function(a){var h=a.getAttribute("href")||"";if(h==="#"+cur&&cur)a.setAttribute("aria-current","true");else a.removeAttribute("aria-current")})}
+  addEventListener("scroll",upd,{passive:true});upd();
 }
 addEventListener("pagehide",function(){try{sessionStorage.setItem("rt-y:"+(location.hash||"#/"),String(Math.round(window.scrollY)))}catch(e){}});
 try{history.scrollRestoration="manual"}catch(e){}
-addEventListener("hashchange",function(){go(false)});
+addEventListener("hashchange",function(){var id=(location.hash||"").replace(/^#\/?/,"");if(id)scrollToSec(id)});
 
 /* menu */
 var mm=$("#mm"),burger=$("#burger");

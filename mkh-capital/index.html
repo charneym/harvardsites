@@ -229,7 +229,6 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .fm.s0 .cap0,.fm.s1 .cap1,.fm.s2 .cap2{opacity:1;transition:opacity .6s ease .35s}
 .fm.s1 .rt1,.fm.s2 .rt1,.fm.s2 .rt2{opacity:1}
 .fm.mob .pn{font-size:13px;letter-spacing:.06em}
-.scene svg.mob{overflow:hidden}
 /*</R:scenecss>*/
 
 /* focus list (industries) */
@@ -548,8 +547,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ind.dk{margin-top:22px;border-top-color:var(--hair)}.ind.dk li{border-bottom-color:var(--hair)}.ind.dk li::before{border-color:var(--accL)}
 .thanks svg{width:96px;height:94px}
 .thanks svg path{fill:var(--ink);stroke:none}.thanks svg path.b{fill:var(--acc)}
-.pf .w a .sr{position:absolute}
 .pt .ph{display:block}
+.row-a h3{max-width:40ch}
+.ps:not(.noimg) .ps-col{overflow:visible}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -939,7 +939,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 /*<R:views>*//* ================= VIEWS ================= */
 function pt(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"></span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p><span class="go" aria-hidden="true">'+ARR+'</span></a>'}
 function grid(groups){return groups.map(function(g){return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span><div class="pg">'+g[1].map(pt).join("")+'</div></div>'}).join("")}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">'+c[5]+' '+ARR+'<span class="sr"> for '+esc(c[0])+' (opens in a new tab)</span></a></div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+c[5]+' for '+esc(c[0])+' (opens in a new tab)">'+c[5]+' '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function ind(list,cls){return '<ul class="ind'+(cls?' '+cls:'')+'">'+list.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function crit(){return '<dl class="facts">'+
@@ -1069,7 +1069,7 @@ function vTeam(){
 }
 function vNews(){
   return head({k:"News",h:'Deals and <em>milestones.</em>',p:'Acquisitions, launches and exits from MKH and its portfolio companies.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Updates</span>'+newsRows(NEWS)+'</div></section>'+cta();
+  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Updates</span><div data-r>'+newsRows(NEWS)+'</div></div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<span class="bar"></span><span class="err">Required</span></div>'}
 function vContact(){
@@ -1292,7 +1292,7 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
    step 3 the Atlantic side (Port St. Lucie, Cutler Bay) and the sale. Each step lights one set of markets. */
 function mapSvg(mob){
   var C=FL,s='',id=mob?"m":"d";
-  s+='<defs><clipPath id="fmc'+id+'"><rect x="0" y="0" width="800" height="640"/></clipPath>'+
+  s+='<defs><clipPath id="fmc'+id+'">'+(mob?'<rect x="404" y="200" width="372" height="352"/>':'<rect x="0" y="0" width="800" height="640"/>')+'</clipPath>'+
      '<pattern id="fmh'+id+'" width="8" height="5" patternUnits="userSpaceOnUse"><path class="hat" d="M0 2.5H8"/></pattern>'+
      '<pattern id="fmn'+id+'" width="8" height="5" patternUnits="userSpaceOnUse"><path class="nbh" d="M0 2.5H8"/></pattern>'+
      '<radialGradient id="fmg'+id+'" cx=".6" cy=".55" r=".62"><stop offset=".6" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="fmk'+id+'"><rect width="800" height="640" fill="url(#fmg'+id+')"/></mask></defs>';

@@ -124,7 +124,7 @@ function docRows(list){return '<ul class="rows">'+list.map(function(n){var dt=/^
 function team(){return '<div class="tm">'+TEAM.map(function(p){var ini=p[0].split(" ").map(function(x){return x[0]}).slice(0,2).join("");
   return '<article><div class="ph"><img src="'+p[2]+'" alt="'+esc(p[0].replace(/, CFA$/,""))+'" loading="lazy" onerror="this.parentNode.classList.add(\'noph\')"><span class="ini" aria-hidden="true">'+ini+'</span></div>'+
    '<h3>'+esc(p[0])+'</h3><p class="ttl">'+esc(p[1])+'</p><p class="sm">'+esc(p[3])+'</p>'+
-   '<details><summary>Background</summary><p>'+esc(p[4])+'</p></details></article>'}).join("")+'</div>'}
+   '<details><summary class="dbtn">Background</summary><p>'+esc(p[4])+'</p></details></article>'}).join("")+'</div>'}
 function ico(n){var I={
   vault:'<rect x="6" y="10" width="52" height="44"/><circle cx="32" cy="32" r="12"/><path class="a" d="M32 20v24M20 32h24"/><path d="M12 54v4M52 54v4"/>',
   page:'<path d="M14 6h28l10 10v42H14z"/><path d="M42 6v10h10"/><path class="a" d="M22 28h22M22 36h22M22 44h14"/>',

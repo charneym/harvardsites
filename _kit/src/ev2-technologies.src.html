@@ -911,112 +911,108 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: the bent knee, as on EV2's own homepage artwork, drawn as a lit anatomical study.
-   A leg in profile, knee raised, the skin softly translucent over the femoral artery as it runs down the thigh, bends
-   and twists through the hollow behind the knee (the popliteal) and branches down the shin. Biocarpet sits where the
-   artery bends, a fine pale lattice. A pulse travels down the artery on its own, about once a second; no pointer response (CZ). ================= */
+/*<R:field>*//* ================= HERO FIELD: a leg in profile, seated with the knee bent, drawn as a medical illustration (echoing
+   the bent knee on EV2's own homepage). The outline is built from anatomical landmarks: tapering thigh, patella and knee
+   joint, the patellar tendon and tibial ridge, the calf swelling at the back of the lower leg, the Achilles tendon and
+   ankle, and a foot with heel, arch and toes. Beneath the skin, the femoral artery runs along the thigh, becomes the
+   popliteal behind the knee, where Biocarpet sits as a fine lattice, and divides into the tibial arteries down the leg.
+   A pulse travels down it about once a second; no pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oLeg=null,MAIN=null,BR=[],SPK=[];
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function V(x,y){return {x:x,y:y}}
-  function add(a,b,k){k=k==null?1:k;return V(a.x+b.x*k,a.y+b.y*k)}
   function sub(a,b){return V(a.x-b.x,a.y-b.y)}
   function nrm(a){var l=Math.hypot(a.x,a.y)||1;return V(a.x/l,a.y/l)}
   function lerpP(a,b,t){return V(a.x+(b.x-a.x)*t,a.y+(b.y-a.y)*t)}
+  /* the outline in units of S, origin at the knee joint, x to the right (toward the hip), y down; clockwise from the hip */
+  var OUT=[[1.4,-.135],[.85,-.124],[.6,-.114],[.4,-.1],[.24,-.087],[.12,-.075],[.04,-.069],
+    [-.02,-.062],[-.05,-.045],[-.06,-.02],[-.055,.006],[-.05,.02],[-.056,.04],                    /* patella, patellar tendon, tibial tuberosity */
+    [-.053,.1],[-.046,.2],[-.039,.3],[-.034,.36],[-.034,.385],                                     /* tibial ridge to the ankle */
+    [-.045,.403],[-.08,.418],[-.12,.432],[-.16,.444],[-.195,.452],[-.214,.46],[-.217,.47],[-.2,.477], /* instep, toes */
+    [-.16,.478],[-.12,.474],[-.075,.467],[-.035,.469],[.008,.477],[.035,.48],                      /* ball, arch, heel pad */
+    [.056,.472],[.063,.452],[.052,.425],[.036,.395],[.033,.36],                                    /* heel, Achilles tendon */
+    [.04,.31],[.062,.24],[.088,.17],[.1,.12],[.094,.082],[.07,.058],                               /* calf (gastrocnemius) */
+    [.1,.054],[.18,.058],[.3,.066],[.5,.075],[.8,.083],[1.4,.09]];                                 /* popliteal crease, hamstrings */
+  function L(p){return V(G.K.x+p[0]*G.S,G.K.y+p[1]*G.S)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.min(h*.44,w*.95):h,S=mob?U*.82:h;
-    var K=mob?V(w*.42,U*.37):V(side+cw*.6,h*.35),T=mob?V(w+U*.3,U*.43):V(w+S*.3,h*.41),Sh=mob?V(w*.53,U*.71):V(side+cw*.675,h*.8);
-    var dT=nrm(sub(K,T)),dS=nrm(sub(Sh,K));
-    var nT=V(-dT.y,dT.x);if((nT.x*(Sh.x-T.x)+nT.y*(Sh.y-T.y))>0)nT=V(-nT.x,-nT.y);
-    var nS=V(-dS.y,dS.x);if((nS.x*(T.x-K.x)+nS.y*(T.y-K.y))>0)nS=V(-nS.x,-nS.y);
-    var down=nrm(sub(lerpP(T,Sh,.5),K));
-    return {mob:mob,side:side,U:U,S:S,K:K,T:T,Sh:Sh,dT:dT,dS:dS,nT:nT,nS:nS,down:down,wT:S*.175,wK:S*.1,wS:S*.042,wC:S*.13};
+    var U=mob?Math.min(h*.44,w*.95):h,S=mob?U*.86:h*1.16;
+    var K=mob?V(w*.5,U*.31):V(side+cw*.6,h*.26);
+    return {mob:mob,side:side,U:U,S:S,K:K};
   }
-  function thigh(t,o){/* point on thigh axis at t (0 bottom .. 1 knee), offset o along the outer normal */var p=lerpP(G.T,G.K,t);return add(p,G.nT,o)}
-  function shin(t,o){var p=lerpP(G.K,G.Sh,t);return add(p,G.nS,o)}
-  function tw(t){return G.wT+(G.wK-G.wT)*t}      /* thigh half-width */
-  function sw(t){return G.wK+(G.wS-G.wK)*t}      /* shin half-width */
-  function legPath(g){
-    var S=G.S,A=thigh(-.1,tw(0)),A1=thigh(.8,tw(.8)),Bk=shin(.12,sw(.12)),B=shin(1,sw(1)),Bi=shin(1,-sw(1)),Ci=shin(.12,-sw(.12)),Ai=thigh(.84,-tw(.84)),Z=thigh(-.1,-tw(0));
-    var F=add(G.K,G.down,S*.15),pat=add(add(G.K,G.nT,S*.01),G.dT,S*.012);
-    g.beginPath();g.moveTo(A.x,A.y);
-    var q=thigh(.42,tw(.42)*1.16);g.quadraticCurveTo(q.x,q.y,A1.x,A1.y);           /* quadriceps */
-    var k1=add(A1,G.dT,S*.06),k2=add(pat,G.dT,-S*.05);g.bezierCurveTo(k1.x,k1.y,k2.x,k2.y,pat.x,pat.y); /* kneecap */
-    var k3=add(pat,G.dT,S*.05),k4=add(Bk,G.dS,-S*.05);g.bezierCurveTo(k3.x,k3.y,k4.x,k4.y,Bk.x,Bk.y);
-    var sh=shin(.6,sw(.6)*1.06);g.quadraticCurveTo(sh.x,sh.y,B.x,B.y);              /* shin, nearly straight */
-    /* the foot: instep, toes, sole, heel */
-    var fd=V(G.nS.x<0?-1:1,0),dn=V(0,1),Bf=shin(1,sw(1)),Bb=shin(1,-sw(1));
-    var toe=add(add(Bf,fd,S*.165),dn,S*.092),toeB=add(add(toe,dn,S*.028),fd,-S*.012),heelB=add(add(Bb,dn,S*.112),fd,-S*.02),heel=add(add(Bb,dn,S*.06),fd,-S*.035);
-    var i1=add(add(Bf,dn,S*.035),fd,S*.02),i2=add(add(toe,fd,-S*.07),dn,-S*.03);g.bezierCurveTo(i1.x,i1.y,i2.x,i2.y,toe.x,toe.y);
-    var tq=add(add(toe,fd,S*.022),dn,S*.016);g.quadraticCurveTo(tq.x,tq.y,toeB.x,toeB.y);
-    var sm=add(lerpP(toeB,heelB,.55),dn,-S*.012);g.quadraticCurveTo(sm.x,sm.y,heelB.x,heelB.y);
-    var hq=add(add(heelB,fd,-S*.03),dn,-S*.012);g.quadraticCurveTo(hq.x,hq.y,heel.x,heel.y);
-    var aq=add(lerpP(heel,Bb,.5),fd,S*.012);g.quadraticCurveTo(aq.x,aq.y,Bb.x,Bb.y);
-    var c1=shin(.72,-G.wC*.95),c2=shin(.3,-G.wC*1.75);g.bezierCurveTo(c1.x,c1.y,c2.x,c2.y,Ci.x,Ci.y); /* calf */
-    g.quadraticCurveTo(F.x,F.y,Ai.x,Ai.y);                                            /* hollow of the knee */
-    var hb=thigh(.4,-tw(.4)*1.14);g.quadraticCurveTo(hb.x,hb.y,Z.x,Z.y);               /* hamstrings */
-    g.lineTo(Z.x-G.dT.x*S,Z.y-G.dT.y*S);g.lineTo(A.x-G.dT.x*S,A.y-G.dT.y*S);g.closePath();
-  }
-  function limbShade(g,axis,n,wd){/* cylindrical light across one limb: lit front edge, shadowed back */
-    var S=G.S,p=G.K,a=add(p,n,wd),b=add(p,n,-wd),lg=g.createLinearGradient(a.x,a.y,b.x,b.y);
-    lg.addColorStop(0,"#a07a6c");lg.addColorStop(.18,"#7c5d53");lg.addColorStop(.55,"#4b3833");lg.addColorStop(1,"#1d1615");return lg}
-  function spline(P,n){/* Catmull-Rom through P, n samples per span */var out=[];for(var i=0;i<P.length-1;i++){var p0=P[i-1]||P[i],p1=P[i],p2=P[i+1],p3=P[i+2]||P[i+1];
-    for(var k=0;k<n;k++){var t=k/n,t2=t*t,t3=t2*t;out.push(V(.5*((2*p1.x)+(-p0.x+p2.x)*t+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3),.5*((2*p1.y)+(-p0.y+p2.y)*t+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3)))}}
-    out.push(P[P.length-1]);return out}
+  function cr(P,n,closed){/* Catmull-Rom through P */var out=[],N=P.length,M=closed?N:N-1;
+    for(var i=0;i<M;i++){var p0=P[(i-1+N)%N],p1=P[i],p2=P[(i+1)%N],p3=P[(i+2)%N];if(!closed){if(i===0)p0=p1;if(i+2>=N)p3=p2}
+      for(var k=0;k<n;k++){var t=k/n,t2=t*t,t3=t2*t;out.push(V(.5*((2*p1.x)+(-p0.x+p2.x)*t+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3),.5*((2*p1.y)+(-p0.y+p2.y)*t+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3)))}}
+    if(!closed)out.push(P[N-1]);return out}
+  function path(g,P){g.beginPath();P.forEach(function(p,i){i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y)})}
+  function legPath(g){path(g,cr(OUT.map(L),10,true));g.closePath()}
+  function vessel(list,n){return cr(list.map(L),n||10,false)}
   function vessels(){
-    var F=add(G.K,G.down,G.S*.115),S=G.S;
-    /* femoral artery down the inner thigh, the tortuous popliteal behind the knee, the tibial artery down the shin */
-    var main=spline([thigh(-.15,-tw(0)*.22),thigh(.2,-tw(.2)*.3),thigh(.5,-tw(.5)*.42),thigh(.72,-tw(.72)*.55),add(F,G.dT,-S*.03),add(add(F,G.down,S*.012),G.nT,-S*.012),add(F,G.dS,S*.012),add(add(F,G.dS,S*.04),G.down,-S*.008),shin(.22,-sw(.22)*.5),shin(.5,-sw(.5)*.45),shin(.8,-sw(.8)*.3),shin(1.15,-sw(1)*.25)],10);
-    var bi=Math.round(main.length*.47),be=Math.round(main.length*.62);
-    var ant=spline([main[Math.round(main.length*.66)],shin(.3,sw(.3)*.05),shin(.55,sw(.55)*.38),shin(.85,sw(.85)*.42),shin(1.15,sw(1)*.4)],10);
-    var deep=spline([main[Math.round(main.length*.12)],thigh(.3,-tw(.3)*.05),thigh(.55,tw(.55)*.2),thigh(.75,tw(.75)*.35)],10);
-    var g1=spline([main[Math.round(main.length*.42)],thigh(.86,tw(.86)*.2),thigh(.95,tw(.95)*.62),add(G.K,G.dS,S*.02)],8);
-    var g2=spline([main[Math.round(main.length*.6)],shin(.08,sw(.08)*.1),shin(.12,sw(.12)*.62)],8);
-    var g3=spline([main[Math.round(main.length*.55)],add(G.K,G.down,S*.02),add(add(G.K,G.dT,-S*.02),G.nT,S*.01)],8);
-    return {main:main,bi:bi,be:be,br:[[ant,.62],[deep,.55],[g1,.3],[g2,.28],[g3,.24]]};
+    /* femoral (thigh) -> popliteal (behind the knee) -> posterior tibial (down the calf) -> along the sole */
+    var main=vessel([[1.4,.012],[.8,.008],[.45,.01],[.22,.02],[.12,.03],[.07,.038],[.05,.05],[.04,.064],[.036,.085],[.036,.13],[.03,.22],[.018,.31],[.01,.38],[0,.43],[-.04,.458],[-.1,.463]],10);
+    var bi=0,be=0;main.forEach(function(p,i){var x=(p.x-G.K.x)/G.S,y=(p.y-G.K.y)/G.S;if(!bi&&x<.1)bi=i;if(!be&&y>.1)be=i});
+    var ant=vessel([[.036,.085],[.0,.098],[-.03,.12],[-.034,.2],[-.028,.3],[-.022,.39],[-.05,.43],[-.11,.447],[-.16,.456]],10); /* anterior tibial -> dorsalis pedis */
+    var per=vessel([[.036,.11],[.05,.18],[.048,.27],[.032,.36]],10);                                       /* peroneal */
+    var deep=vessel([[1.0,.02],[.7,.04],[.45,.045],[.3,.04]],10);                                          /* deep femoral */
+    var g1=vessel([[.1,.03],[.05,0],[.0,-.03],[-.035,-.038]],8),g2=vessel([[.06,.05],[.0,.065],[-.045,.06]],8); /* genicular arteries */
+    return {main:main,bi:bi,be:be,br:[[ant,.7],[per,.45],[deep,.5],[g2,.2]]};
   }
   function stroke(g,P,w0,w1,col,blur,bc){g.lineCap="round";g.lineJoin="round";g.strokeStyle=col;if(blur){g.shadowBlur=blur;g.shadowColor=bc}
     for(var i=0;i<P.length-1;i++){var k=i/(P.length-1);g.lineWidth=w0+(w1-w0)*k;g.beginPath();g.moveTo(P[i].x,P[i].y);g.lineTo(P[i+1].x,P[i+1].y);g.stroke()}g.shadowBlur=0}
+  function blob(g,cx,cy,rx,ry,rot,col){var p=L([cx,cy]);g.save();g.translate(p.x,p.y);g.rotate(rot||0);g.scale(1,ry/rx);var r=rx*G.S,gr=g.createRadialGradient(0,0,0,0,0,r);gr.addColorStop(0,col);gr.addColorStop(1,col.replace(/[\d.]+\)$/,"0)"));g.fillStyle=gr;g.beginPath();g.arc(0,0,r,0,Math.PI*2);g.fill();g.restore()}
+  function line(g,list,col,wd){path(g,vessel(list,12));g.strokeStyle=col;g.lineWidth=wd;g.stroke()}
   function mk(){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.round((G.mob?G.U:h)*dpr);var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   function build(){
     var A=mk(),g=A[1],S=G.S,K=G.K;oLeg=A[0];
-    /* the leg: lit from the upper right, falling into shadow toward the floor and the hollow of the knee */
-    g.save();legPath(g);g.fillStyle="#3a2c28";g.fill();g.clip();
-    var bis=G.down,bn=V(-bis.y,bis.x),far=S*3;
-    [[G.nT,G.T],[G.nS,G.Sh]].forEach(function(L){var n=L[0],side=(bn.x*(L[1].x-G.K.x)+bn.y*(L[1].y-G.K.y))>0?1:-1;
-      g.save();g.beginPath();var a=add(G.K,bis,-far),b=add(G.K,bis,far);g.moveTo(a.x,a.y);g.lineTo(b.x,b.y);g.lineTo(b.x+bn.x*far*side,b.y+bn.y*far*side);g.lineTo(a.x+bn.x*far*side,a.y+bn.y*far*side);g.closePath();g.clip();
-      var c0=add(G.K,n,S*.13),c1=add(G.K,n,-S*.2),lg=g.createLinearGradient(c0.x,c0.y,c1.x,c1.y);lg.addColorStop(0,"#a27c6e");lg.addColorStop(.25,"#7a5b51");lg.addColorStop(.65,"#3f2f2b");lg.addColorStop(1,"#1a1413");
-      g.fillStyle=lg;g.fillRect(-w,-h,w*3,h*3);g.restore()});
-    var fall=g.createLinearGradient(G.K.x,G.K.y,G.K.x+bis.x*S*.95,G.K.y+bis.y*S*.95);fall.addColorStop(0,"rgba(14,12,12,0)");fall.addColorStop(.55,"rgba(14,12,12,.25)");fall.addColorStop(1,"rgba(14,12,12,.85)");g.fillStyle=fall;g.fillRect(-w,-h,w*3,h*3);
-    /* volume: soft shadow along the inner edges, warm light on the kneecap and the front of the shin */
-    var kc=add(add(K,G.dT,-S*.02),G.nT,S*.05),kg=g.createRadialGradient(kc.x,kc.y,0,kc.x,kc.y,S*.2);kg.addColorStop(0,"rgba(236,190,170,.42)");kg.addColorStop(1,"rgba(236,190,170,0)");g.fillStyle=kg;g.fillRect(kc.x-S*.3,kc.y-S*.3,S*.6,S*.6);
-    var fs=add(K,G.down,S*.2),fg=g.createRadialGradient(fs.x,fs.y,0,fs.x,fs.y,S*.24);fg.addColorStop(0,"rgba(10,7,7,.55)");fg.addColorStop(1,"rgba(10,7,7,0)");g.fillStyle=fg;g.fillRect(fs.x-S*.3,fs.y-S*.3,S*.6,S*.6);
-    g.lineWidth=S*.07;g.strokeStyle="rgba(8,6,6,.35)";g.filter="blur("+Math.round(S*.025)+"px)";legPath(g);g.stroke();g.filter="none";
-    /* engraved contour lines across the limb, as in an anatomical plate */
-    g.strokeStyle="rgba(246,226,214,.07)";g.lineWidth=1;
-    for(var i=1;i<12;i++){var t=i/12;[[thigh,tw,G.nT,G.dT],[shin,sw,G.nS,G.dS]].forEach(function(L){var a=L[0](t,L[1](t)*1.2),b=L[0](t,-L[1](t)*1.2),m=add(L[0](t,0),L[3],-S*.025*(L[0]===thigh?1:-1));g.beginPath();g.moveTo(a.x,a.y);g.quadraticCurveTo(m.x,m.y,b.x,b.y);g.stroke()})}
+    g.save();legPath(g);
+    /* skin: light from the upper left, so the top of the thigh and the front of the shin catch it and the back falls away */
+    var lg=g.createLinearGradient(K.x-S*.1,K.y-S*.12,K.x+S*.22,K.y+S*.32);lg.addColorStop(0,"#b08c7d");lg.addColorStop(.3,"#8a6a5e");lg.addColorStop(.7,"#5e4740");lg.addColorStop(1,"#3f302c");
+    g.fillStyle=lg;g.fill();g.clip();
+    /* rounded form: the thigh lit on top and shadowed beneath, the shin lit along the tibia and the calf in shadow */
+    /* form shading at the edges, as on a modelled limb */
+    g.lineWidth=S*.026;g.strokeStyle="rgba(10,7,7,.3)";g.filter="blur("+Math.max(2,Math.round(S*.01))+"px)";legPath(g);g.stroke();g.filter="none";
+    blob(g,.7,.075,.8,.04,0,"rgba(14,10,10,.36)");blob(g,.7,-.11,.8,.03,0,"rgba(214,170,150,.16)");
+    blob(g,.09,.21,.045,.17,.08,"rgba(14,10,10,.34)");blob(g,-.045,.22,.026,.18,0,"rgba(214,170,150,.2)");
+    /* muscle and bone: quadriceps mass, patella, patellar tendon, tibial ridge, gastrocnemius, malleolus, heel */
+    blob(g,.42,-.07,.3,.028,0,"rgba(226,186,166,.2)");
+    blob(g,.13,-.045,.09,.03,.15,"rgba(214,170,150,.16)");                                    /* vastus medialis above the knee */
+    blob(g,-.04,-.022,.026,.036,0,"rgba(236,196,176,.26)");                                   /* patella */
+    (function(){var p=L([-.036,-.022]);g.save();g.translate(p.x,p.y);g.scale(1,1.45);g.beginPath();g.arc(0,0,S*.026,0,Math.PI*2);g.restore();g.strokeStyle="rgba(240,206,188,.16)";g.lineWidth=1;g.stroke()})();
+    blob(g,-.04,.02,.016,.022,0,"rgba(14,10,10,.35)");                                         /* recess beside the patellar tendon */
+    blob(g,-.042,.045,.014,.012,0,"rgba(230,186,166,.3)");                                     /* tibial tuberosity */
+    blob(g,.055,.16,.045,.1,.1,"rgba(214,170,150,.22)");                                       /* gastrocnemius belly */
+    blob(g,.068,.1,.02,.035,0,"rgba(14,10,10,.25)");
+    blob(g,.0,.385,.016,.016,0,"rgba(230,186,166,.32)");                                        /* malleolus */
+    blob(g,.035,.462,.025,.016,0,"rgba(200,156,138,.22)");                                     /* heel */
+    blob(g,-.1,.472,.08,.006,0,"rgba(10,7,7,.3)");                                             /* the sole in shadow */
+    line(g,[[1.2,-.02],[.6,-.018],[.3,-.012],[.12,0],[.06,.02]],"rgba(10,7,7,.14)",Math.max(1,S*.0025));  /* division of quadriceps and hamstrings */
+    line(g,[[-.04,.06],[-.036,.2],[-.03,.3],[-.026,.37]],"rgba(240,206,188,.3)",Math.max(1,S*.0022));    /* tibial ridge */
+    line(g,[[.078,.09],[.06,.2],[.04,.29],[.034,.36]],"rgba(240,206,188,.18)",Math.max(1,S*.002));      /* edge of the calf muscle into the tendon */
+    line(g,[[-.17,.461],[-.168,.472]],"rgba(10,7,7,.4)",1);line(g,[[-.185,.462],[-.184,.472]],"rgba(10,7,7,.35)",1); /* toes */
+    /* fine cross-contour hatching, as in an engraved anatomical plate */
+    g.strokeStyle="rgba(246,226,214,.06)";g.lineWidth=1;
+    for(var x=.14;x<1.3;x+=.075){var a=L([x,-.13]),b=L([x+.012,.09]),m=L([x-.025,-.02]);g.beginPath();g.moveTo(a.x,a.y);g.quadraticCurveTo(m.x,m.y,b.x,b.y);g.stroke()}
+    for(var y=.1;y<.4;y+=.045){var a2=L([-.08,y]),b2=L([.1,y+.012]),m2=L([.01,y+.022]);g.beginPath();g.moveTo(a2.x,a2.y);g.quadraticCurveTo(m2.x,m2.y,b2.x,b2.y);g.stroke()}
     /* the arteries under the skin */
     var VS=vessels();MAIN=VS.main;BR=VS.br;
     g.globalCompositeOperation="screen";
-    BR.forEach(function(b){stroke(g,b[0],S*.007*b[1]*1.4,S*.0035*b[1]*1.4,"rgba(196,70,62,.42)",S*.008,"rgba(220,90,80,.45)")});
-    stroke(g,MAIN,S*.01,S*.006,"rgba(204,76,66,.55)",S*.012,"rgba(232,110,96,.42)");
+    BR.forEach(function(b){stroke(g,b[0],S*.0075*b[1]*1.4,S*.0035*b[1]*1.4,"rgba(196,70,62,.42)",S*.008,"rgba(220,90,80,.45)")});
+    stroke(g,MAIN,S*.01,S*.005,"rgba(204,76,66,.58)",S*.012,"rgba(232,110,96,.42)");
     stroke(g,MAIN,S*.003,S*.0015,"rgba(255,170,150,.32)",0);
     g.globalCompositeOperation="source-over";
-    /* Biocarpet: a fine pale lattice sleeved over the artery where it bends */
-    var bw=S*.014;g.strokeStyle="rgba(246,240,234,.5)";g.lineWidth=Math.max(.8,S*.0012);
+    /* Biocarpet: a fine pale lattice sleeved over the popliteal artery where it bends behind the knee */
+    var bw=S*.011;g.strokeStyle="rgba(246,240,234,.42)";g.lineWidth=Math.max(.8,S*.0012);
     for(var j=VS.bi;j<VS.be;j++){var p=MAIN[j],q=MAIN[j+1],d=nrm(sub(q,p)),n=V(-d.y,d.x),p2=MAIN[Math.min(VS.be,j+2)];
       g.beginPath();g.moveTo(p.x+n.x*bw,p.y+n.y*bw);g.lineTo(p2.x-n.x*bw,p2.y-n.y*bw);g.moveTo(p.x-n.x*bw,p.y-n.y*bw);g.lineTo(p2.x+n.x*bw,p2.y+n.y*bw);g.stroke()}
     [1,-1].forEach(function(sg){g.beginPath();for(var j=VS.bi;j<=VS.be;j++){var p=MAIN[j],q=MAIN[Math.min(MAIN.length-1,j+1)],d=nrm(sub(q,p)),n=V(-d.y,d.x);var x=p.x+n.x*bw*sg,y=p.y+n.y*bw*sg;j===VS.bi?g.moveTo(x,y):g.lineTo(x,y)}g.stroke()});
     G.bc=MAIN[Math.round((VS.bi+VS.be)/2)];
     g.restore();
-    /* rim light along the front of the thigh, the kneecap and the shin */
-    g.save();g.beginPath();var A0=thigh(.05,tw(.05)),A1=thigh(.8,tw(.8)),Bk=shin(.12,sw(.12)),B=shin(1,sw(1)),pat=add(add(G.K,G.nT,S*.01),G.dT,S*.012);g.moveTo(A0.x,A0.y);
-    var q=thigh(.42,tw(.42)*1.16);g.quadraticCurveTo(q.x,q.y,A1.x,A1.y);var k1=add(A1,G.dT,S*.06),k2=add(pat,G.dT,-S*.05);g.bezierCurveTo(k1.x,k1.y,k2.x,k2.y,pat.x,pat.y);
-    var k3=add(pat,G.dT,S*.05),k4=add(Bk,G.dS,-S*.05);g.bezierCurveTo(k3.x,k3.y,k4.x,k4.y,Bk.x,Bk.y);var sh=shin(.6,sw(.6)*1.06);g.quadraticCurveTo(sh.x,sh.y,B.x,B.y);
-    var rl=g.createLinearGradient(A0.x,A0.y,B.x,B.y);rl.addColorStop(0,"rgba(246,222,208,0)");rl.addColorStop(.4,"rgba(246,222,208,.6)");rl.addColorStop(.62,"rgba(246,222,208,.5)");rl.addColorStop(1,"rgba(246,222,208,0)");
-    g.strokeStyle=rl;g.lineWidth=1.4;g.shadowBlur=S*.02;g.shadowColor="rgba(246,200,180,.5)";g.stroke();g.restore();
+    /* rim light along the top of the thigh, over the patella and down the shin to the instep */
+    var rim=cr(OUT.map(L),10,true).filter(function(p){var x=(p.x-K.x)/S,y=(p.y-K.y)/S;return y<.0&&x<1.2||x<-.025&&y<.43});
+    var rl=g.createLinearGradient(K.x+S*.9,K.y,K.x,K.y+S*.45);rl.addColorStop(0,"rgba(246,222,208,0)");rl.addColorStop(.35,"rgba(246,222,208,.55)");rl.addColorStop(.75,"rgba(246,222,208,.4)");rl.addColorStop(1,"rgba(246,222,208,0)");
+    g.save();g.beginPath();var last=null;rim.forEach(function(p){if(last&&Math.hypot(p.x-last.x,p.y-last.y)>S*.06)g.moveTo(p.x,p.y);else if(last)g.lineTo(p.x,p.y);else g.moveTo(p.x,p.y);last=p});
+    g.strokeStyle=rl;g.lineWidth=1.3;g.shadowBlur=S*.018;g.shadowColor="rgba(246,200,180,.45)";g.stroke();g.restore();
     SPK=[];var R=rng(7);for(var s=0;s<(G.mob?8:16);s++)SPK.push([R(),.6+R()*.8,R()<.75?-1:Math.floor(R()*2)]);
   }
   function size(){dpr=Math.min(devicePixelRatio||1,2);w=cv.clientWidth||innerWidth;h=cv.clientHeight||innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}

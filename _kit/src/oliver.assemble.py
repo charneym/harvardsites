@@ -424,6 +424,7 @@ CSS = r'''
 .d1,.d2,.d3,.cta .big,.mani .txt,.stat .v,.step h2,.pl3 h3,.row-a h3,.facts dd,.ind li{font-weight:400}
 .d1 em,.d2 em,.d3 em,.cta .big em,.mani .txt em{font-weight:400}
 .hero-h{font-size:clamp(54px,7.6vw,144px);letter-spacing:-.025em;line-height:.95}
+@media (max-width:860px){.hero-h{font-size:clamp(38px,10.6vw,92px)}}
 .hero::before{background:radial-gradient(48% 66% at 19% 54%,rgba(var(--inkr),.82),rgba(var(--inkr),.5) 56%,rgba(var(--inkr),0) 86%),linear-gradient(180deg,rgba(var(--inkr),.45),rgba(var(--inkr),0) 22%,rgba(var(--inkr),0) 70%,var(--ink) 100%)}
 .hero .eyebrow{color:var(--accL)}
 .brand .colg{stroke:var(--accL)}

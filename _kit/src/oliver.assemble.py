@@ -471,6 +471,7 @@ CSS = r'''
 @media (min-width:1025px){.cta>.wrap>.cinfo{grid-row:4}}
 @media (max-width:1024px){.cinfo{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.cinfo{grid-template-columns:1fr}}
+@media (max-width:640px){.ftr .legal>span.lab:nth-child(2){white-space:normal}}
 @media (max-width:860px){.fieldbg{background:#06182e}.story-r{height:48vh;height:48svh}}
 '''
 i = s.rfind('</style>')

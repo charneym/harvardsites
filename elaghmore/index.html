@@ -637,13 +637,14 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .tl span{font-size:17px;line-height:1.5;color:var(--bone)}
 .nums b{font-size:clamp(34px,3vw,52px)}
 /* portrait cards: two partners, larger */
-.pt{width:calc((100% - 3 * var(--gap)) / 4);max-width:320px}
+@media (min-width:561px){.pt{width:calc((100% - 3 * var(--gap)) / 4);max-width:320px}}
+.pt .ph{display:block}
 .pt .ph img{filter:grayscale(.85) contrast(1.03)}
 @media (max-width:560px){.pt .ph{width:76px;height:95px;aspect-ratio:auto}}
 /* footer: regulatory line, and the wordmark kept legible over the echoed terrace (DF) */
 .ftr .reg{position:relative;z-index:1;max-width:none;margin:clamp(18px,2vw,30px) 0 0;font-size:13px;line-height:1.6;color:#b9c7cd}
-.ftr .fcv{opacity:.28;height:58%;bottom:auto;top:0;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 55%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 55%,transparent 100%)}
-@media (max-width:860px){.ftr .fcv{height:40%;opacity:.3}}
+.ftr .fcv{opacity:.2;height:60%;top:auto;bottom:0;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 45%);mask-image:linear-gradient(180deg,transparent 0,#000 45%)}
+@media (max-width:860px){.ftr .fcv{display:none}}
 .bigsvg{color:var(--bone)}
 @media (max-width:860px){.fieldbg{background:#081a2a}}
 .light+.cta{border-top:1px solid rgba(8,26,42,.12)}
@@ -942,7 +943,7 @@ var TEL="01926 430077",TELH="tel:+441926430077";
 /* British dates: 25 Nov 2025 */
 function fd(iso){var d=iso.split("-");return d[2]?(+d[2])+" "+MO[+d[1]-1]+" "+d[0]:MO[+d[1]-1]+" "+d[0]}
 var SIT=["Entrepreneurs","Founders","Family owners"];
-var SEC=["Manufacturing","Food","Retail"];
+var SEC=["Signage","Vehicle components","Food","School wear"];
 var TRX=["Integrity","Respect","Hard work","Openness"];
 var CRIT=[["Leadership","A talented and ambitious management team."],["Uniqueness","Clear differentiation in its market."],["Potential","Significant growth that a supportive owner, with operational skills and a deep international network, can unlock."],["Markets","Fragmented markets, with the opportunity to make bolt-on acquisitions."]];
 /* [name, description, category, year, links] */
@@ -1013,9 +1014,9 @@ function vHome(){
 
   '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Grow more. Build more. Be more.</span>'+
-   '<p class="txt" id="mani">We didn’t spin out of a bank or a big fund. We began in the Midlands, investing our own money in companies that could benefit from <em>our experience in industry.</em></p></div>'+
+   '<p class="txt" id="mani">We began from a base in the UK Midlands, investing our own money. Today we buy companies from entrepreneurs, founders and family owners, and <em>back the people who run them.</em></p></div>'+
    '<div class="stats s4">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">£90m</span><span class="k">Fund for UK companies, raised from investors in the US and Europe</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">£90m</span><span class="k">Fund for businesses in the UK that show real promise</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">14x</span><span class="k">Return on invested capital across the partners’ first 14 investments</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">2x</span><span class="k">Our typical revenue goal within a company’s first three to five years</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">2004</span><span class="k">Founded as a partnership between David Manning and Andy Ducker</span></div>'+
@@ -1188,7 +1189,7 @@ var field=(function(){
     var U=mob?Math.min(h*.34,w*.8):h;
     var base=mob?U*.97:h*.9,s=mob?U*.7/470:Math.min(h*.66/470,w*.62/650);
     var tw=VW*s,tx=mob?Math.min(0,w-tw+s*36):w-tw+s*30;
-    return {mob:mob,side:side,cw:cw,U:U,base:base,s:s,tx:tx,ty:base+VY*s,fade0:mob?-1:side+cw*.44,fade1:mob?0:side+cw*.66,
+    return {mob:mob,side:side,cw:cw,U:U,base:base,s:s,tx:tx,ty:base+VY*s,fade0:mob?-1:side+cw*.5,fade1:mob?0:side+cw*.7,
       moon:mob?[w*.6,U*.16,Math.max(9,U*.045)]:[side+cw*.86,h*.2,Math.max(14,h*.022)]};
   }
   function terraceSVG(lit){
@@ -1261,10 +1262,10 @@ var field=(function(){
     c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
     for(var k=0;k<ST.length;k++){var q=ST[k],a=q[5]*(.45+.55*Math.sin(t*q[4]+q[3]))*.7;if(a<.05)continue;c.fillStyle="rgba(230,240,255,"+a.toFixed(3)+")";c.fillRect(q[0],q[1],q[2],q[2])}
     /* moon and its halo */
-    var M=G.moon,mh=c.createRadialGradient(M[0],M[1],0,M[0],M[1],M[2]*9);mh.addColorStop(0,"rgba(214,236,248,.30)");mh.addColorStop(.25,"rgba(170,210,232,.10)");mh.addColorStop(1,"rgba(150,200,230,0)");
+    var M=G.moon;if(!G.mob){var mh=c.createRadialGradient(M[0],M[1],0,M[0],M[1],M[2]*9);mh.addColorStop(0,"rgba(214,236,248,.30)");mh.addColorStop(.25,"rgba(170,210,232,.10)");mh.addColorStop(1,"rgba(150,200,230,0)");
     c.fillStyle=mh;c.fillRect(M[0]-M[2]*9,M[1]-M[2]*9,M[2]*18,M[2]*18);
     var mg=c.createRadialGradient(M[0]-M[2]*.3,M[1]-M[2]*.3,0,M[0],M[1],M[2]);mg.addColorStop(0,"#f6fbfd");mg.addColorStop(1,"#d3e6ee");c.fillStyle=mg;c.beginPath();c.arc(M[0],M[1],M[2],0,Math.PI*2);c.fill();
-    c.fillStyle="rgba(150,175,190,.18)";c.beginPath();c.arc(M[0]+M[2]*.28,M[1]-M[2]*.2,M[2]*.22,0,Math.PI*2);c.arc(M[0]-M[2]*.3,M[1]+M[2]*.3,M[2]*.16,0,Math.PI*2);c.fill();
+    c.fillStyle="rgba(150,175,190,.18)";c.beginPath();c.arc(M[0]+M[2]*.28,M[1]-M[2]*.2,M[2]*.22,0,Math.PI*2);c.arc(M[0]-M[2]*.3,M[1]+M[2]*.3,M[2]*.16,0,Math.PI*2);c.fill()}
     /* long thin clouds drifting across */
     for(var j=0;j<CL.length;j++){var cl=CL[j],cx=((cl[0]+t*cl[5]*4)%(w+cl[2]*2)+w+cl[2]*2)%(w+cl[2]*2)-cl[2];
       c.save();c.translate(cx,cl[1]);c.scale(1,cl[3]/cl[2]);var cg=c.createRadialGradient(0,0,0,0,0,cl[2]);cg.addColorStop(0,"rgba(150,180,206,"+cl[4].toFixed(3)+")");cg.addColorStop(1,"rgba(150,180,206,0)");c.fillStyle=cg;c.beginPath();c.arc(0,0,cl[2],0,Math.PI*2);c.fill();c.restore()}
@@ -1314,7 +1315,7 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 /*<R:story>*//* the story scene: an engraved elevation of a founder's works (BL/BY/DB). Step 1 the founder-owned workshop; step 2 a
    management team arrives at the door and the windows light; step 3 the works grows by two new sawtooth bays (organic
    growth); step 4 two acquired buildings join it by covered links (bolt-ons). The view eases out as the works grows. */
-var SC_VB=[[180,222,330,254],[180,222,330,254],[189,170,440,338],[40,10,750,577]];
+var SC_VB=[[180,222,330,254],[180,222,330,254],[189,170,440,338],[44,100,740,400]];
 var SC_CAP=[["FOUNDER-OWNED",345,256,272],["MANAGEMENT TEAM",335,256,362],["ORGANIC GROWTH",530,236,272],["BOLT-ONS",702,262,316]];
 function scene(){
   var s='',G=470;
@@ -1378,7 +1379,7 @@ function homeScroll(view){
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p,pre.v)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1});
 }
 
 /* ================= HEADER ================= */

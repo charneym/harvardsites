@@ -1,0 +1,21 @@
+# The Edgewater Funds — dossier (facts with sources only)
+
+- Firm: The Edgewater Funds (fund vehicle: Edgewater Growth Capital Partners; current fund Edgewater Growth Capital Partners V, L.P.). https://www.edgewaterfunds.com/about-us/
+- HQ: 900 North Michigan Avenue, Suite 1800, Chicago, IL 60611 · 312-649-5666 · info@edgewaterfunds.com (contact page). Time zone: America/Chicago. https://www.edgewaterfunds.com/contact-us/
+- "Chicago-based private equity firm with over $4 billion of capital commitments raised since 2001." Growth equity (minority) and buyout investments. Partners have been successful CEOs and business leaders; Executive Advisory Board of business and financial leaders. (About Us)
+- Criteria (https://www.edgewaterfunds.com/investment-criteria/): executive-led, buy-and-build opportunities and consolidation strategies in fragmented industries; control and non-control. Target size $3M–$40M EBITDA, no minimum for add-ons; initial equity $10M–$100M; U.S. and Canada; Business Services, Healthcare, Industrials. Transaction types: recapitalizations, management buyouts, family successions, corporate carve-outs, growth capital, co-investments. Attributes: sufficient industry scale, consistent profitability, highly fragmented, non-capital intensive, favorable growth, recurring revenue. Core segment lists copied verbatim into the site.
+- Lead: James (Jim) Gordon, Founder & Managing Partner, jim@edgewaterfunds.com. President of Gordon Foods, Inc. and Gordon's Wholesale, Inc.; 1982 leveraged buy-out of family interests in The Gordon Companies, sold 1986; over 200 private equity transactions since 1982; B.A. Northwestern. https://edgewaterfunds.com/about-us/james-gordon/
+- Team bios (names, titles, published emails, backgrounds) from https://www.edgewaterfunds.com/our-team/ and each /about-us/<name>/ page: David Tolmie (Senior Partner; former CEO/President Yesmail), Matthew Snyder (COO & Senior Partner; former EVP Marmon Group), Gerald Saltarelli (Senior Partner), Jason Kopelman (Principal), Jordon Cooper, Nick Rabideau (VPs), Jack Henige (Senior Associate), Ryan Trueman, Patrick Feldmeier, James Gammill (Associates); Ryan Mullin, Brennan Smith (business development); Nadia Evstiounina (CFO). Advisory boards: names from the team page.
+- No team photos are published on the site (text cards used).
+- Active portfolio (19) with descriptions and links: https://www.edgewaterfunds.com/portfolio/ and /project/<slug>/ pages.
+- News (dates from https://www.edgewaterfunds.com/wp-json/wp/v2/posts):
+  - 2026-07-30 Investment in Parker Manufacturing Group (Buckeye, AZ; precision fasteners). https://www.edgewaterfunds.com/edgewater-funds-investment-parker-manufacturing-group/
+  - 2026-05-20 Exit of Deerfield Group to Martis Capital (invested Feb 2021).
+  - 2026-04-14 Investment in AFT Industries, Inc. (Mansfield, TX). https://www.edgewaterfunds.com/edgewater-funds-investment-aft-industries/
+  - 2026-03-27 Nationwide Cooling Group acquires Protecall Corp. (Scott Township, PA; branches in PA, CA, FL, TX).
+  - 2025-12-01 Nationwide Cooling Group acquires Cooney Coil & Energy (King of Prussia, PA).
+  - 2025-11-11 Boulden Holdings acquires Ace Precision Industries (Akron, OH; founded 1950).
+  - 2025-09-22 posts: Silver State acquires four HVAC providers (Sept 2025); FCM acquires Aquatrol (May 2025) and Master Packing & Rubber (Jan 2025); Nationwide acquires four coil makers (April 2025).
+  - 2025-08-08 Investment in Boulden Company; 2025-07-31 exit of Elevate Patient Financial Solutions.
+- Nationwide Cooling Group (formed 2024; HVAC/R coil platform; CEO Hal Liller; contact address 200 Morgan St., Brownsville, TN): April 2025 add-ons Precision Coils (Brownsville, TN), Specialty Coils (Longview, TX), Emergent Coils (Denver, CO), JMG Thermal (Lexington, TN); Liller: "Nationwide is now one of the largest independent coil manufacturers in the country". Metcam, Inc. (Alpharetta, GA) acquired 2026-07-14. https://www.nationwidecoolinggroup.com/news/the-edgewater-funds-announces-nationwide-cooling-group-llcs-acquisition-of-metcam-inc/
+- Brand: wordmark "the edgewater funds", lowercase, Montserrat 700, navy rgb(16,47,81) #102F51; link blue rgb(55,108,180) #376CB4.

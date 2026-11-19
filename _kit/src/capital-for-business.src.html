@@ -554,6 +554,7 @@ em,.d1 em,.d2 em,.d3 em,.cta .big em,.mani .txt em{font-style:italic;font-weight
 .kits .d3{max-width:14ch}
 .row-a h3{text-wrap:pretty}
 .ftr .legal{position:relative;background:var(--deep);box-shadow:0 0 0 100vmax var(--deep);clip-path:inset(0 -100vmax -100vmax -100vmax)}
+.rows{border-top:0}.rows>li:first-child .row-a{border-top:1px solid var(--hair)}
 
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
@@ -822,7 +823,7 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'<span class="sr"> (opens in a new tab)</span></a></div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function inds(list,cls){return '<ul class="ind'+(cls?' '+cls:'')+'">'+list.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function people(){return '<div class="pg">'+SHEETS.map(function(p){return '<a class="pt" data-r href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p><span class="go" aria-hidden="true">'+ARR+'</span></a>'}).join("")+'</div>'}
@@ -950,7 +951,7 @@ function vTeam(){
 }
 function vNews(){
   return head({k:"News",h:'Deals and <em>milestones.</em>',p:'Investments, add-on acquisitions, exits and announcements from CFB and its portfolio companies.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Updates</span>'+newsRows(NEWS)+'</div></section>'+cta();
+  '<section class="sec dark first" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick" data-r>Updates</span><h2 class="d3 split">Every <em>release.</em></h2></div><p data-r>'+NEWS.length+' releases from CFB, August 2020 to July 2026, each linking to the full announcement on cfb.com.</p></div>'+newsRows(NEWS)+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1329,7 +1330,7 @@ function rvCollect(root){var M=rvMarks(root),out=[];rvWalk(root,out,M);return ou
 function rvView(view,E){if(RM)return;var t0=performance.now(),E0=(E||0)+.3;
   function base(){return Math.max(0,E0-(performance.now()-t0)/1000)}
   var items=rvCollect(view);items.forEach(rvHide);RV_LIVE=items;
-  var fh=items.filter(function(el){return el._rvS&&el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
+  var fh=items.filter(function(el){return el.getBoundingClientRect().top+scrollY<innerHeight}),rest=items.filter(function(el){return fh.indexOf(el)<0});
   if(fh.length)ScrollTrigger.batch(fh,{start:"top bottom",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base())}});
   if(rest.length)ScrollTrigger.batch(rest,{start:"top 90%",end:"max",once:true,interval:.1,batchMax:10,onEnter:function(b){rvGo(b,base(),.05)}});
   setTimeout(function(){if(view.isConnected)ScrollTrigger.refresh()},700)}

@@ -389,13 +389,17 @@ function colParts(cx,k,y0,y1){
 var SC_ANCH=[[[.93,140],[.93,140]],[[.26,50],[.36,51],[.47,52],[.58,53],[.69,54]],[[.1,88],[.145,95],[.17,52]],[[.5,53],[.6,54]]];
 function scene(){
   var mob=MOBILE(),W=mob?480:780,H=mob?540:580,cx=mob?150:390,k=mob?.78:1,y0=mob?26:34,y1=mob?512:548;
-  var P=colParts(cx,k,y0,y1),L=mob?SC_L.m:SC_L.d,tw=mob?178:214,th=mob?30:34;
+  var P=colParts(cx,k,y0,y1),L=mob?SC_L.m:SC_L.d,tw=mob?178:214,th=mob?28:34;
   function v(f){return y0+f*(y1-y0)}
   /* tag slots: desktop puts step 2 on the left and the rest on the right; phones stack everything on the right */
   var slots;
-  if(mob){var R0=W-tw-2;slots=[[[R0,v(.89)],[R0,v(.96)]],[[R0,v(.33)],[R0,v(.42)],[R0,v(.51)],[R0,v(.6)],[R0,v(.69)]],[[R0,v(.14)],[R0,v(.205)],[R0,v(.27)]],[[R0,v(.02)],[R0,v(.08)]]]}
+  if(mob){var R0=W-tw-2;slots=[[[R0,v(.872)],[R0,v(.95)]],[[R0,v(.41)],[R0,v(.488)],[R0,v(.566)],[R0,v(.644)],[R0,v(.722)]],[[R0,v(.176)],[R0,v(.254)],[R0,v(.332)]],[[R0,v(.02)],[R0,v(.098)]]]}
   else{var LX=6,RX=W-tw-6;slots=[[[LX,v(.93)],[RX,v(.93)]],[[LX,v(.26)],[LX,v(.36)],[LX,v(.46)],[LX,v(.56)],[LX,v(.66)]],[[RX,v(.15)],[RX,v(.25)],[RX,v(.35)]],[[RX,v(.5)],[RX,v(.6)]]]}
-  function tags(n){return L[n].map(function(t,i){var s=slots[n][i],a=SC_ANCH[n][i],ty=s[1],left=s[0]<cx,ex=left?s[0]+tw:s[0],ax=cx+(left?-1:1)*(a[1]*k+6),ay=v(a[0]),mxp=left?(ex+ax)/2:(ex+ax)/2;
+  function hwAt(f){return f>=.957?150:f>=.914?130:f>=.875?110:f>=.84?80:f>=.766?74:48+8*(f-.18)/.586}
+  function tags(n){return L[n].map(function(t,i){var s=slots[n][i],a=SC_ANCH[n][i],ty=s[1];
+    if(mob&&n===3)a=[[.073,100],[.04,104]][i];
+    if(mob&&(n<2)){var ff=(ty-y0)/(y1-y0);a=[ff,hwAt(ff)]}
+    var left=s[0]<cx,ex=left?s[0]+tw:s[0],ax=cx+(left?-1:1)*(a[1]*k+6),ay=v(a[0]),mxp=mob?ex-10-i*9:(ex+ax)/2;
     var d='M'+ex.toFixed(1)+' '+ty.toFixed(1)+'H'+mxp.toFixed(1)+'V'+ay.toFixed(1)+'H'+ax.toFixed(1);
     return '<g class="tg t'+(n+1)+'"><path class="join sJ" d="'+d+'"/><circle class="dot" cx="'+ax.toFixed(1)+'" cy="'+ay.toFixed(1)+'" r="2.6"/><rect class="tag" x="'+s[0]+'" y="'+(ty-th/2).toFixed(1)+'" width="'+tw+'" height="'+th+'"/><text x="'+(s[0]+tw/2)+'" y="'+(ty+4.5).toFixed(1)+'" text-anchor="middle" class="w">'+t.replace("&","&amp;")+'</text></g>'}).join("")}
   function grp(n){return '<g class="part" id="scP'+n+'">'+P["s"+n].map(function(d){return '<path class="cl dr" d="'+d+'"/>'}).join("")+P["h"+n].map(function(d){return '<path class="hat dr" d="'+d+'"/>'}).join("")+'</g>'}

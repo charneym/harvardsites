@@ -212,3 +212,7 @@ Include: the live URL, the concept, the signature moments, content gaps (anythin
 - Roll out in stages: a batch of 5, which I score, then 20, then larger, and grow only once I'm finding nothing. Each batch report lists every site's gate results and states that the §5b review was done.
 - Give every worker session an hourly resume task so a usage-limit stop doesn't stall it, and delete each task when its sites are done.
 - Have a separate reviewer session, which didn't build the site, do the §5b review against `PRINCIPLES.md` before anything is shown to me.
+
+
+## Outreach spreadsheet greeting rule (client, 2026-11-19)
+Every greeting is "Dear Mr. <Last>" / "Dear Ms. <Last>" / "Dear Dr. <Last>" (PhD/MD), US and international alike, never a first name. Take Mr./Ms. only from the person's own published bio pronouns; if none are published, use "Dear <First> <Last>" and flag it in Notes.

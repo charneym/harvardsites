@@ -646,6 +646,13 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ftr .fwm::before{content:"";position:absolute;left:-4%;right:-4%;top:-30%;bottom:-30%;background:radial-gradient(60% 60% at 50% 50%,rgba(5,19,39,.82),rgba(5,19,39,0));z-index:-1;pointer-events:none}
 .bigsvg{width:min(100%,1100px)}
 @media (max-width:860px){.ftr .fcv{height:34%}}
+.pt .ph{display:block;width:100%}
+@media (min-width:861px){.pg{justify-content:flex-start}.pt{width:calc((100% - 4 * var(--gap)) / 5);max-width:none}}
+.grp .pg{max-width:1320px;margin:0 auto}
+.ftr .fcv{top:0;bottom:auto;height:62%;-webkit-mask-image:linear-gradient(180deg,#000 30%,transparent 92%);mask-image:linear-gradient(180deg,#000 30%,transparent 92%)}
+@media (max-width:860px){.ftr .fcv{height:40%}}
+.ftr .fwm::before{left:-50vw;right:-50vw;top:-20%;bottom:-20%;background:linear-gradient(180deg,rgba(5,19,39,0),rgba(5,19,39,.94) 25%,rgba(5,19,39,.94) 75%,rgba(5,19,39,0))}
+.fld .err{top:auto;bottom:-20px}
 /* phones: the harbor band at the top keeps the fort and flag fully opaque */
 @media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 36px),transparent calc(34svh - 2px));mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 36px),transparent calc(34svh - 2px))}}
 .hero::before{background:radial-gradient(46% 64% at 20% 52%,rgba(var(--inkr),.82),rgba(var(--inkr),.46) 58%,rgba(var(--inkr),0) 86%),linear-gradient(180deg,rgba(var(--inkr),.35),rgba(var(--inkr),0) 20%,rgba(var(--inkr),0) 70%,var(--ink) 100%)}
@@ -811,7 +818,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 /*<R:views>*//* ================= VIEWS ================= */
 function pt(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><span class="ph"><img src="'+p.img+'" alt="" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></span><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+' · '+esc(p.office)+'</p></a>'}
 function grid(groups){return groups.map(function(g){return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span><div class="pg">'+g[1].map(pt).join("")+'</div></div>'}).join("")}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w">'+(c[4]?'<a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5])+' '+ARR+'<span class="sr"> ('+esc(c[0])+', opens in a new tab)</span></a>':'')+'</div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w">'+(c[4]?'<a class="ul" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[5])+': '+esc(c[0])+' (opens in a new tab)">'+esc(c[5])+' '+ARR+'</a>':'')+'</div></li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function crit(){return '<dl class="facts">'+
     '<div><dt class="lab">Revenue</dt><dd>At least $10 million a year; the strategy covers revenues of $10 million to $200 million.</dd></div>'+
@@ -909,7 +916,7 @@ function vCriteria(){
    '<div class="shead"><div><span class="lab kick" data-r>Investment criteria</span><h2 class="d2 split">What we <em>look for.</em></h2></div><p data-r>We believe the key to success is investing in the right industry, the right management team, and the financing structure that best meets the requirements of the business.</p></div>'+crit()+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="kits k3"><div><span class="lab kick" data-r>We look for</span>'+aims(CRI)+'</div><div><span class="lab kick" data-r>Structure</span>'+aims(STR)+'</div><div><span class="lab kick" data-r>Use of capital</span>'+aims(USE)+'</div></div>'+
+   '<div class="two"><div><span class="lab kick" data-r>We look for</span><h2 class="d3 split">Proven teams, <em>lasting advantages.</em></h2><div data-r style="margin-top:36px"><a class="btn" href="#/approach">Structures and uses of capital '+ARR+'</a></div></div>'+aims(CRI)+'</div>'+
   '</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="two"><div><span class="lab kick" data-r>By the numbers</span><h2 class="d3 split">The scale <em>we work at.</em></h2></div>'+
@@ -933,7 +940,7 @@ function vTeam(){
 }
 function vNews(){
   return head({k:"News",h:'Investments and <em>updates.</em>',p:'New investments and company updates from Patriot Capital.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r style="margin-bottom:44px">Updates</span>'+newsRows(NEWS)+'</div></section>'+cta();
+  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r style="margin-bottom:clamp(44px,8vh,96px)">Updates</span>'+newsRows(NEWS)+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+'>')+'<i class="bar"></i><span class="err">Required</span></div>'}
 function vContact(){
@@ -1173,7 +1180,7 @@ function scArc(a,b,k){var mx=(a[0]+b[0])/2,my=Math.min(a[1],b[1])-Math.abs(a[0]-
 function scLab(x,y,t,anc,t2,cls){return '<text x="'+Math.round(x)+'" y="'+Math.round(y)+'" text-anchor="'+(anc||"start")+'" class="'+(cls||"w")+'">'+t+'</text>'+(t2?'<text x="'+Math.round(x)+'" y="'+Math.round(y+16)+'" text-anchor="'+(anc||"start")+'" class="s2">'+t2+'</text>':'')}
 function scene(){
   var mob=MOBILE(),poly=SC_US.map(function(p){return scX(p[0]).toFixed(1)+' '+scY(p[1]).toFixed(1)}).join("L");
-  var vb=mob?"190 66 492 344":"0 0 690 410";
+  var vb=mob?"214 64 470 342":"0 0 690 410";
   var h='';for(var y=24;y<400;y+=7)h+='M0 '+y+'H690';
   var s='<svg viewBox="'+vb+'" aria-hidden="true"'+(mob?' class="mob"':'')+'><defs><clipPath id="scClip"><path d="M'+poly+'Z"/></clipPath></defs>'+
     '<path class="land" d="M'+poly+'Z"/><path class="hatch" clip-path="url(#scClip)" d="'+h+'"/>';
@@ -1186,11 +1193,13 @@ function scene(){
   s+='<g id="sc2">'+SC_IN.map(function(v){var a=scP(SC_OF[v[4]]),b=[scX(v[2]),scY(v[3])];return '<path class="flow sJ" d="'+scArc(a,b,.3)+'"/>'}).join("")+
      SC_IN.map(function(v){var b=[scX(v[2]),scY(v[3])];return '<circle class="co" cx="'+b[0].toFixed(1)+'" cy="'+b[1].toFixed(1)+'" r="6"/>'}).join("");
   var z=[scX(-89.6),scY(44.6)],o=[scX(-81.38),scY(28.54)],il=[scX(-96.62),scY(33.2)];
-  s+=scLab(z[0]-14,z[1]-8,"ZANDER SOLUTIONS","end","WISCONSIN · 2026","a")+scLab(o[0]-16,o[1]+8,"FLASH-RITE · VERMANA","end","ORLANDO · 2025–26","a")+
-     scLab(il[0]-14,il[1]-28,"ILS GUMMIES","end","McKINNEY, TX · 2026","a")+'</g>';
+  /* McKinney sits just north of Dallas: its marker is lifted clear of the office square on a short leader */
+  s=s.replace('<circle class="co" cx="'+il[0].toFixed(1)+'" cy="'+il[1].toFixed(1)+'" r="6"/>','<path class="flow" d="M'+il[0].toFixed(1)+' '+il[1].toFixed(1)+'L'+(il[0]-12).toFixed(1)+' '+(il[1]-14).toFixed(1)+'"/><circle class="co" cx="'+(il[0]-12).toFixed(1)+'" cy="'+(il[1]-14).toFixed(1)+'" r="6"/>');
+  s+=scLab(z[0]-14,z[1]-8,"ZANDER SOLUTIONS","end","WISCONSIN · 2026","a")+scLab(o[0]+16,o[1]+6,"FLASH-RITE · VERMANA","start","ORLANDO · 2025–26","a")+
+     (mob?scLab(il[0]-8,il[1]-44,"ILS GUMMIES","start","McKINNEY, TX · 2026","a"):scLab(il[0]-24,il[1]-40,"ILS GUMMIES","end","McKINNEY, TX · 2026","a"))+'</g>';
   /* step 1: the Baltimore headquarters */
   s+='<g id="sc0"><circle class="hq-r" id="scRing" cx="'+B[0].toFixed(1)+'" cy="'+B[1].toFixed(1)+'" r="16"/><rect class="hq" x="'+(B[0]-6.5).toFixed(1)+'" y="'+(B[1]-6.5).toFixed(1)+'" width="13" height="13" transform="rotate(45 '+B[0].toFixed(1)+' '+B[1].toFixed(1)+')"/>'+
-     scLab(B[0]+24,B[1]-6,"BALTIMORE","start","HEADQUARTERS","big")+'</g>';
+     '<path class="join" d="M'+(B[0]+9).toFixed(1)+' '+(B[1]+4).toFixed(1)+'L'+(B[0]+46).toFixed(1)+' '+(B[1]+12).toFixed(1)+'"/>'+scLab(B[0]+52,B[1]+16,"BALTIMORE","start","HEADQUARTERS","big")+'</g>';
   return s+'</svg>';
 }
 function storyDraw(svg){
@@ -1335,7 +1344,7 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function fillBio(i){var p=SHEETS[i];bioIdx=i;var big=p.img&&!p.small;ps.classList.toggle("noimg",!big);
   psMedia.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.closest(\'.ps\').classList.add(\'noimg\')">':'';
-  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
+  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

@@ -4,6 +4,10 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v19 (latest; client review of batch 2026-11c, Blackford Capital)
 
+**DH. Portfolio rows animate their rule on hover.** Client: "going forward I like it when on hover over portfolio companies there's a bit of a hover animation on the line." Every portfolio/holdings row (and similar list rows) has a divider line that animates on hover: e.g. the accent colour draws across the rule left-to-right (~0.4s ease-out) and retracts on leave. Keep it inside the row bounds (rule 16).
+
+**DG. Illustrated scenes must beat the original's professionalism, and skylines rarely do.** Client: illustrated city scenes (Shorehill's skyline, BlueRock's bridge) "just don't seem too professional, and not as professional as the original sites", whereas Burlington's freighter "looks professional/good", and Greendelta and OceanM19 "could be good". The fake scene is fine when the original site was weak and had no real photography of buildings, people or places. When the original HAS real professional photography, a cartoon scene reads as a downgrade: use their real photography (full-bleed, colour-graded to the palette, with a refined overlay) or a restrained single-subject illustration at Burlington quality. Generic downtown skylines are the weakest choice; prefer one specific, well-lit subject (a vessel, a building, a landscape, a tree) with depth and atmosphere, rendered with painterly restraint, not toy-like flat shapes.
+
 **DE. Boxed corners.** Client: "I prefer boxed corners to rounded -- it's more professional." Buttons, CTAs, nav contact button, tags, cards, inputs and form fields use square corners (border-radius 0, at most 2px). No pills, no rounded cards.
 
 **DF. Footer wordmark stays legible.** Client on Firelight: the fire behind the footer "FIRELIGHT" wordmark "makes the text of the title a bit difficult to see." Any art echoed in the footer sits behind or beside the wordmark at low contrast, never crossing its letterforms at a strength that hurts legibility (wordmark-to-background contrast ≥ 4.5:1 across every glyph); add a scrim or move the art.

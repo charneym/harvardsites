@@ -1,5 +1,5 @@
 # Convert a one-page site to the full multi-page format (client-approved 2026-11-19)
-Pilot: firelight (live; recipe below). The client dislikes the one-page format ("everything down to even the styling of buttons, text size... just worse"). Convert to the multi-page format at the level of tonka-bay / rock-hill / holleway / serata, keeping the same URL and all verified content.
+RETIRED for new work (client: home-only builds are the fast format, see HOME_BRIEF.md). Pilot: firelight (live; recipe below). The client dislikes the one-page format ("everything down to even the styling of buttons, text size... just worse"). Convert to the multi-page format at the level of tonka-bay / rock-hill / holleway / serata, keeping the same URL and all verified content.
 
 ## Rules
 - PRINCIPLES CU–DF, especially DC (hero is a real thing, never abstract geometry), DD (recognisable in one second, no logo-frame or symbolic mash-ups), DE (boxed corners: no pills, no rounded cards/buttons), DF (footer wordmark legible).

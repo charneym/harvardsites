@@ -4,6 +4,10 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v19 (latest; client review of batch 2026-11c, Blackford Capital)
 
+**DE. Boxed corners.** Client: "I prefer boxed corners to rounded -- it's more professional." Buttons, CTAs, nav contact button, tags, cards, inputs and form fields use square corners (border-radius 0, at most 2px). No pills, no rounded cards.
+
+**DF. Footer wordmark stays legible.** Client on Firelight: the fire behind the footer "FIRELIGHT" wordmark "makes the text of the title a bit difficult to see." Any art echoed in the footer sits behind or beside the wordmark at low contrast, never crossing its letterforms at a strength that hurts legibility (wordmark-to-background contrast ≥ 4.5:1 across every glyph); add a scrim or move the art.
+
 **DD. The hero is recognisable in one second.** Client on Firelight (a flame inside a tilted trapezoid "logo frame"): "cool... but weird and unintuitive, you're like 'what in the world is that' rather than 'oh yeah, cool design'." A first-time visitor must name the subject instantly and find it natural (a landscape, a building, a tree, a vessel, a real object in a believable setting). No conceptual mash-ups (object inside a logo shape, symbolic frames, metaphors that need explaining). If it needs the caption to make sense, redo it.
 
 **DC. The hero depicts a real thing, never abstract geometry.** Client on Burlington (concentric rounded squares around a name plaque): "I've never seen a worse homepage background design... it looks so ugly. You cannot be serious." Banned as heroes: concentric/nested shapes, tunnels, plaques, abstract planes, dot fields, network lines, tile grids, plaid or ribbon patterns, faint line art that reads as empty. The hero is a specific, recognisable, beautifully rendered subject tied to the firm (a place, landscape, building, vessel, tree, object, their own mark rendered as a crafted object) with depth and light. Test: describe the hero in five words to a stranger; if the words are shapes ("squares", "lines", "grid"), redo it.

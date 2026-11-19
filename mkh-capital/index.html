@@ -549,6 +549,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .thanks svg{width:96px;height:94px}
 .thanks svg path{fill:var(--ink);stroke:none}.thanks svg path.b{fill:var(--acc)}
 .pf .w a .sr{position:absolute}
+.pt .ph{display:block}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -1133,7 +1134,7 @@ var field=(function(){
     var U=mob?Math.min(h*.34,w*.74):h;
     var hz=mob?U*.66:h*.70;                     /* the waterline */
     var S=mob?hz*.86/640:Math.min(hz*.84/630,w/1250);  /* building scale: the tallest mast stops well below the header */
-    return {mob:mob,side:side,cw:cw,U:U,hz:hz,S:S,cx:mob?w*.5:side+cw*.66,bot:mob?U:h};
+    return {mob:mob,side:side,cw:cw,U:U,hz:hz,S:S,cx:mob?w*.5:side+cw*.7,bot:mob?U:h};
   }
   function mk(W,H){var o=document.createElement("canvas");o.width=Math.max(1,Math.round(W*dpr));o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   /* building silhouettes, x and width in scale units around the composition centre; types: box, step, taper, spire, round */
@@ -1141,9 +1142,9 @@ var field=(function(){
     var S=G.S,cx=G.cx,R=rng(91),B=[];
     function add(x,wd,ht,type,layer,o){B.push({x:cx+x*S,w:wd*S,h:ht*S,t:type,l:layer,o:o||{}})}
     /* far layer: hazy mass behind the Loop */
-    for(var i=-34;i<36;i++){var wd=24+R()*30,ht=90+R()*170*(1-Math.abs(i)/44);add(i*26+R()*10,wd,ht,"box",0)}
+    for(var i=-60;i<36;i++){var wd=24+R()*30,ht=Math.max(60,90+R()*170*(1-Math.abs(i)/44));add(i*26+R()*10,wd,ht,"box",0)}
     /* mid layer */
-    for(var j=-24;j<26;j++){var wd2=30+R()*38,ht2=70+R()*150*(1-Math.abs(j-2)/34);if(ht2<50)ht2=50+R()*30;add(j*37+R()*14,wd2,ht2,R()<.25?"step":"box",1)}
+    for(var j=-44;j<26;j++){var wd2=30+R()*38,ht2=70+R()*150*(1-Math.abs(j-2)/34);if(ht2<50)ht2=50+R()*30;add(j*37+R()*14,wd2,ht2,R()<.25?"step":"box",1)}
     /* the landmarks */
     add(-250,64,560,"twin",2);                        /* stepped black tower with twin masts */
     add(-120,46,330,"step",2,{n:3});

@@ -1,0 +1,63 @@
+# Mangrove Equity Partners: dossier (facts with sources)
+
+- Firm: Mangrove Equity Partners, LP, Tampa-based lower middle-market private equity firm. Site: https://mangroveequity.com/
+- Office: 320 W. Kennedy Blvd, Suite 300, Tampa, Florida 33606; T (813) 868-4500; F (813) 224-0922; info@mangroveequity.com (https://mangroveequity.com/contact-us/). Time zone: US Eastern.
+- About (home): 100+ years collective reputation; from captive equity funds sponsors MBOs, MBIs, majority recapitalizations, family succession recaps and industry consolidations; team completed over 160 deals in 60+ industries; "The Ideal Partners for Liquidity and Growth".
+- Criteria (https://mangroveequity.com/criteria/): service companies, manufacturers and value-added distributors HQ in U.S. or Canada with $3–$10M pre-tax profits (EBITDA); revenues $10–$100M for new platform investments; transactions typically $15–$75M; types: recapitalizations, family succession recapitalizations, MBOs, MBIs, industry consolidations, select underperformers. Industry characteristics and four focus areas (industrial product manufacturing, consumer product manufacturing (enthusiast), industrial services, distribution >10% EBITDA margins): https://mangroveequity.com/criteria/industries/
+- Owners & management (https://mangroveequity.com/owners-management/): three of seven principals are seasoned operators; principals in over 160 acquisitions and majority recapitalizations in 60+ industries; service orientation since 1989; meaningful management ownership; culture of integrity, respect, courtesy, fairness and fun. Testimonials with names (Dale Dutcher, Gayesco; Rich Crawford, IGS; Bill Troubridge, Excalibur Crossbow).
+- Core values (https://mangroveequity.com/core-values/): Do the right thing; Work life integration; Intellectual curiosity; Rule 17 (humility and respect); Move the needle; Be a good partner; Make it fun.
+- Operating partners, intermediaries, independent sponsors pages: generous buy-side referral fees; captive capital incl. bridge capabilities; 25+ years practice of partnership with deal sources.
+- Activity / news (https://mangroveequity.com/news/):
+  - 2026-08-26 acquisitions of Cascon Pumps and Chamberlain Machine (Cascon-Chamberlain; Walpole NH and Yarmouth ME; Fund IV): https://mangroveequity.com/mangrove-announces-acquisition-of-cascon-pumps-chamberlain-machine/ ; also https://www.privsource.com/acquisitions/deal/mangrove-equity-partners-acquires-cascon-pumps-and-chamberlain-machine-ane_qw189kvONI
+  - 2026-06-25 formation of Peak Pavement Group: https://mangroveequity.com/mangrove-equity-partners-announces-formation-of-peak-pavement-group/
+  - 2026-04-28 recent strategic acquisitions (Birmingham Gear into Griffin Gear; Stuppy Greenhouse into Atlas Greenhouse): https://mangroveequity.com/recent-strategic-acquisitions/
+  - 2026-03-06 final close of Mangrove Investors IV, L.P. at its $250M hard cap, oversubscribed: https://mangroveequity.com/mangrove-equity-partners-closes-oversubscribed-250-million-fund-iv/ (quotes: Mark Danzi; Matt Young, "a Founder and Managing Director")
+  - 2026-01-21 sale of PowerParts Group: https://mangroveequity.com/mangrove-announces-sale-of-powerparts-group/
+- Team (https://mangroveequity.com/the-team/; headshots are 2560px-scaled JPG/PNG uploads; full bios captured):
+  - Glenn Oken, Managing Director (https://mangroveequity.com/wp-content/uploads/2024/12/Glenn-Oken_Managing_Director-scaled.jpg)
+  - Hunter Reichert, Managing Director (https://mangroveequity.com/wp-content/uploads/2024/12/Hunter-Reichert_Managing_Director-scaled.jpg)
+  - Matt Young, Managing Director (https://mangroveequity.com/wp-content/uploads/2024/12/Matt-Young_Managing_Director-scaled.jpg)
+  - Roger Bates, Operating Partner (https://mangroveequity.com/wp-content/uploads/2024/12/Roger-Bates_Operator_Partner-scaled.jpg)
+  - Mark Danzi, Managing Director (https://mangroveequity.com/wp-content/uploads/2026/09/Mark-Danzi_rsz.png)
+  - Andrew Winner, Principal (https://mangroveequity.com/wp-content/uploads/2024/12/Andrew-Winner_Principal-scaled.jpg)
+  - Jordan Hopper, Director, Portfolio Operations (https://mangroveequity.com/wp-content/uploads/2024/12/Jordan-Hopper_Director_Portfolio_Operations-scaled.jpg)
+  - Kristen Bistany, Senior Vice President (https://mangroveequity.com/wp-content/uploads/2024/12/Kristen-Bistany_Vice_President-scaled.jpg)
+  - Alex Montgomery, Vice President (https://mangroveequity.com/wp-content/uploads/2024/12/Alex-Montgomery_Vice_President-scaled.jpg)
+  - Erik Vosatka, CFO (https://mangroveequity.com/wp-content/uploads/2024/12/Erik-Vosatka_CFO-scaled.jpg)
+  - Katie Faircloth, Vice President (https://mangroveequity.com/wp-content/uploads/2024/12/Katie-Welch_Associate-scaled.jpg)
+  - Ryan Wierzbicki, Associate (https://mangroveequity.com/wp-content/uploads/2024/12/Ryan-Wierzbicki_Associate-scaled.jpg)
+  - Connor Paskoff, Associate (https://mangroveequity.com/wp-content/uploads/2026/09/Connor-Paskoff_rsz.png)
+  - Paola Pales-Lugo, Office Administrator (https://mangroveequity.com/wp-content/uploads/2026/09/Paola-Pales-Lugo_rsz.png)
+- Lead: Matt Young, Founding Partner and Managing Director (leads internal operating team; BS Aerospace Engineering Georgia Tech, MS Industrial Engineering Virginia Tech, MBA Darden). Glenn Oken, Managing Director and co-founder (B.A. UVA).
+- Portfolio (https://mangroveequity.com/portfolio/, current vs exited from the site's filters):
+  - APR (exited; Auburn, AL; Fund II; invested April 2014) http://www.goapr.com/
+  - Atlas Greenhouse (current; Alapaha, GA; Fund III; invested October 2022) https://atlasgreenhouse.com/
+  - Cascon-Chamberlain (current; Walpole, NH and Yarmouth, ME; Fund IV; invested July 2026) https://www.casconpump.com/
+  - Computer Aided Technology (exited; Buffalo Grove, IL; Fund II; invested April 2015) http://cati.com
+  - DDM Concut (exited; Lilburn, GA; Fund II; invested October 2015) http://www.ddmconcut.com/
+  - Everett (exited; West Orange, NJ; Fund I; invested July 2008) https://exeltisusa.com/
+  - Excalibur Crossbow (exited; Kitchener, Ontario, Canada; Fund I; invested January 2010) http://www.excaliburcrossbow.com/
+  - Filling Machines & Systems (exited; Louisville, CO; Fund II; invested June 2016) https://wildgoosefilling.com/
+  - Gayesco International (exited; Houston, TX; Fund I; invested October 2009) http://www.gayesco.com/
+  - Griffin Gear (current; Roebuck, SC; Fund III; invested November 2024) https://www.griffingear.com/
+  - Hi-Lite Airfield Services (exited; Watertown, NY; Fund II; invested December 2019) https://www.hi-lite.com/
+  - Integrated Global Services (exited; Richmond, VA; Fund I; invested August 2010) http://integratedglobal.com/
+  - MT2 (current; Arvada, CO; Fund III; invested February 2021) https://mt2.com/
+  - NORMco Pump & Power (current; Shawnee, OK; Fund III; invested January 2024) https://www.normcopump.com/
+  - North American Aircraft Services (NAAS) (exited; San Antonio, TX; Fund I; invested August 2011) http://www.naasinc.com/
+  - Peak Pavement (current; Waterford, MI; Fund III; invested August 2024) https://peakpavement.com/
+  - PowerParts Group (exited; Marion, OH & Greenville, SC; Fund III; invested November 2020) https://www.powerparts-group.com/
+  - PPS (exited; Multiple U.S. locations; Fund II; invested December 2018) https://www.patrolprotectsecure.com/
+  - Ravyx (current; Endwell, NY; Fund III; invested February 2022) https://ravyx.com/
+  - RC Rasmussen Corporation (exited; Seattle, WA; Fund II; invested December 2017) http://www.rasmussenco.com/
+  - ReadyLIFT Suspension (exited; Henderson, NV; Fund II; invested February 2015) http://www.readylift.com/
+  - Seaside Waste Services (exited; Hammonton, NJ; Fund III; invested January 2021) https://www.seasidewaste.com/
+  - Sharp Tooling Solutions (exited; Romeo, MI; Fund II; invested October 2017) https://www.sharptoolingsolutions.com/
+  - Shields Business Solutions (exited; Moorestown, NJ; Fund II; invested November 2018) http://shieldsbusinesssolutions.com//
+  - Sphere Investigations (current; Multiple U.S. locations; Fund III; invested March 2025) 
+  - Tioga Air Heaters (exited; Minneapolis, MN; Fund I; invested June 2013) https://www.tiogaairheaters.com/
+  - Vintage Air (exited; San Antonio, TX; Fund III; invested December 2021) https://www.vintageair.com/
+  - Wear-Concepts (current; Liberty, MO; Fund III; invested June 2023) https://wearcon.com/
+  - Westland Technologies (exited; Modesto, CA; Fund I; invested April 2011) http://www.westlandtech.com/
+- Brand: logo https://mangroveequity.com/wp-content/uploads/2014/02/mangrove-main-logo.png (242x144: bronze #946A3D mangrove tree above deep teal #003745 serif "MANGROVE", "EQUITY PARTNERS", on cream #F2EDDA). Redrawn as an inline SVG wordmark.
+- Images not used: hero mangrove photo slider (photography of mangroves; replaced by an illustration of the same motif), portfolio logo tiles (mixed treatments; set as type), Wistia video thumbnail.

@@ -112,7 +112,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 @media (max-width:860px){.caps{grid-template-columns:1fr;row-gap:40px}}
 /* programmes */
 .progs{border-top:1px solid var(--hair)}
-.prog-row{display:grid;grid-template-columns:minmax(0,3.4fr) minmax(0,5fr) minmax(0,3fr);column-gap:var(--gap);align-items:start;padding:30px 0 34px;border-bottom:1px solid var(--hair);position:relative}
+.prog-row{display:grid;grid-template-columns:minmax(0,3.4fr) minmax(0,5fr) minmax(0,3fr);column-gap:var(--gap);align-items:start;padding:18px 0 22px;border-bottom:1px solid var(--hair);position:relative}
 .prog-row::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accL);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .prog-row:hover::after{transform:scaleX(1)}
 .prog-row h3{font-family:var(--disp);font-weight:300;font-size:clamp(32px,3vw,50px);line-height:1.02;letter-spacing:-.03em;margin:0}

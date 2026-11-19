@@ -1,0 +1,119 @@
+/* ================= HERO FIELD: neurons under a fluorescence microscope, the image Xosomix's science is about. A pyramidal
+   neuron (soma, apical and basal dendrites with spines, an axon) releases exosomes, small lit vesicles in the logo's cyan with
+   a few in the ring's pink, green and indigo, which drift across to a second neuron; an action potential runs down the axon
+   every few seconds. Out-of-focus neurons behind give depth. It animates on its own, with no pointer response (CZ). ================= */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oBg=null,EX=[],AX=[],AXL=[],AXT=0;
+  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function geo(){
+    var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
+    var U=mob?Math.min(h*.34,w*.74):h,S=mob?U/430:Math.max(.62,Math.min(h/900,w/1500));
+    return {mob:mob,side:side,cw:cw,U:U,S:S,
+      A:mob?[w*.64,U*.52]:[side+cw*.76,h*.5],
+      B:mob?[w*.06,U*1.02]:[side+cw*.5,h*.98],
+      C:mob?[w*1.04,U*.0]:[w+40*S,h*.06]};
+  }
+  function mk(W,H){var o=document.createElement("canvas");o.width=Math.max(1,Math.round(W*dpr));o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
+  /* a dendrite: a wandering, tapering branch that forks; segments are batched by width into Path2D buckets (one stroke each) */
+  function branch(B,R,x,y,a,len,wd,dep,spines){
+    var n=Math.max(4,Math.round(len/7)),st=len/n,px=x,py=y;
+    for(var i=0;i<n;i++){a+=(R()-.5)*.32;var nx=px+Math.cos(a)*st,ny=py+Math.sin(a)*st,t=(i+1)/n,ww=Math.max(.45,wd*(1-.55*t)),k=(Math.round(ww*4)/4).toFixed(2);
+      var P=B[k]||(B[k]=new Path2D());P.moveTo(px,py);P.lineTo(nx,ny);
+      if(spines&&dep>=1&&R()<.5){var sa=a+(R()<.5?1:-1)*(1.2+R()*.6),sl=1.6+R()*2.6,q=B["0.75"]||(B["0.75"]=new Path2D());q.moveTo(nx,ny);q.lineTo(nx+Math.cos(sa)*sl,ny+Math.sin(sa)*sl);
+        B.h.moveTo(nx+Math.cos(sa)*sl+.95,ny+Math.sin(sa)*sl);B.h.arc(nx+Math.cos(sa)*sl,ny+Math.sin(sa)*sl,.95,0,6.283)}
+      px=nx;py=ny}
+    if(dep>0){var f=R()<.85?2:1;for(var b=0;b<f;b++)branch(B,R,px,py,a+(b?1:-1)*(.28+R()*.42),len*(.62+R()*.2),wd*.66,dep-1,spines)}
+  }
+  /* one neuron: the tree is built once, then stroked twice (soft glow, then the crisp core) */
+  function neuron(g,x,y,s,seed,o){
+    var R=rng(seed),B={h:new Path2D()};
+    branch(B,R,x,y-14*s*(o.sr||1),-Math.PI/2+(o.tilt||0),(o.ap||150)*s*(o.reach||1),4.2*s,o.ad||4,!o.blur);
+    var nb=o.nb||6;for(var i=0;i<nb;i++){var a=Math.PI*(.12+.76*i/(nb-1))+(R()-.5)*.2;branch(B,R,x+Math.cos(a)*10*s,y+Math.sin(a)*6*s,a,(70+R()*50)*s*(o.reach||1),3*s,3,!o.blur)}
+    for(var j=0;j<3;j++){var a2=-Math.PI*(.18+.64*j/2)+(R()-.5)*.3;if(Math.abs(a2+Math.PI/2)<.35)continue;branch(B,R,x,y-6*s,a2,(55+R()*35)*s*(o.reach||1),2.4*s,3,!o.blur)}
+    var passes=o.blur?[[o.col,0]]:[["rgba(0,174,239,.32)",9*s],[o.col,0]];
+    passes.forEach(function(P){g.save();g.shadowColor=P[1]?"rgba(0,174,239,.9)":"transparent";g.shadowBlur=P[1];g.lineCap="round";g.lineJoin="round";g.strokeStyle=P[0];g.fillStyle=P[0];
+      for(var k in B){if(k==="h")continue;g.lineWidth=+k;g.stroke(B[k])}g.fill(B.h);g.restore()});
+    /* soma: a pyramidal body lit from within, a darker nucleus, a bright nucleolus */
+    var r=15*s*(o.sr||1),sg=g.createRadialGradient(x-r*.25,y-r*.2,0,x,y,r*1.5);sg.addColorStop(0,o.blur?"rgba(120,200,240,.5)":"rgba(215,244,255,.95)");sg.addColorStop(.45,o.blur?"rgba(40,150,210,.35)":"rgba(70,196,240,.85)");sg.addColorStop(1,"rgba(0,120,190,0)");
+    g.save();if(!o.blur){g.shadowColor="rgba(0,174,239,.9)";g.shadowBlur=22*s}g.fillStyle=sg;g.beginPath();g.moveTo(x,y-r*1.55);g.bezierCurveTo(x+r*.55,y-r*.7,x+r*1.25,y+r*.15,x+r*.95,y+r*.75);g.bezierCurveTo(x+r*.5,y+r*1.1,x-r*.5,y+r*1.1,x-r*.95,y+r*.75);g.bezierCurveTo(x-r*1.25,y+r*.15,x-r*.55,y-r*.7,x,y-r*1.55);g.fill();g.restore();
+    if(!o.blur){g.fillStyle="rgba(6,30,56,.55)";g.beginPath();g.ellipse(x,y+r*.12,r*.5,r*.42,0,0,6.283);g.fill();g.fillStyle="rgba(190,236,255,.8)";g.beginPath();g.arc(x+r*.12,y+r*.06,r*.13,0,6.283);g.fill()}
+  }
+  function axonPath(A,B,s){
+    var R=rng(41),pts=[],x=A[0],y=A[1]+16*s,tx=B[0]+60*s,ty=B[1]-90*s,n=60;
+    for(var i=0;i<=n;i++){var t=i/n,e=t*t*(3-2*t);var bx=x+(tx-x)*t+Math.sin(t*6.5+1)*26*s*(1-t*.5),by=y+(ty-y)*e+Math.sin(t*4.2)*18*s+ 40*s*Math.sin(t*Math.PI);pts.push([bx,by])}
+    return pts;
+  }
+  function build(){
+    var A=mk(w,h),g=A[1];oBg=A[0];var S=G.S;
+    /* the dish: deep navy, a little lighter around the main cell */
+    var bg=g.createRadialGradient(G.A[0],G.A[1],0,G.A[0],G.A[1],Math.max(w,h)*.8);bg.addColorStop(0,"#0d2a48");bg.addColorStop(.45,"#071a30");bg.addColorStop(1,"#040b15");g.fillStyle=bg;g.fillRect(0,0,w,h);
+    /* out-of-focus neurons for depth (logo indigo and teal, blurred) */
+    var R=rng(7),far=G.mob?4:9,Q=mk(w/4,h/4),q=Q[1];q.scale(.25,.25);
+    for(var i=0;i<far;i++){var fx=G.mob?R()*w:w*(.32+R()*.7),fy=(G.mob?G.U:h)*(R()*1.05),fs=S*(.5+R()*.5);
+      q.globalAlpha=.3+R()*.25;neuron(q,fx,fy,fs,100+i*13,{blur:1,col:i%3===0?"rgba(120,130,220,.7)":"rgba(60,170,210,.65)",reach:1.1,tilt:(R()-.5)*1.2})}
+    g.save();g.filter="blur(3px)";g.drawImage(Q[0],0,0,w,h);g.restore();
+    /* mid-focus neuron at the top edge, and the receiving neuron low in the frame */
+    g.save();g.globalAlpha=.5;neuron(g,G.C[0],G.C[1],S*.85,23,{col:"rgba(110,205,240,.7)",tilt:.5,reach:1.1});g.restore();
+    g.save();g.globalAlpha=.8;neuron(g,G.B[0],G.B[1],S*.95,57,{col:"rgba(120,212,245,.78)",tilt:.25});g.restore();
+    /* the axon from the main neuron toward the receiving one, with boutons at its end */
+    AX=axonPath(G.A,G.B,S);AXL=[0];for(var k=1;k<AX.length;k++)AXL.push(AXL[k-1]+Math.hypot(AX[k][0]-AX[k-1][0],AX[k][1]-AX[k-1][1]));
+    g.save();g.lineCap="round";g.shadowColor="rgba(0,174,239,.8)";g.shadowBlur=6*S;g.strokeStyle="rgba(110,205,240,.6)";g.lineWidth=1.3*S;g.beginPath();g.moveTo(AX[0][0],AX[0][1]);for(k=1;k<AX.length;k++)g.lineTo(AX[k][0],AX[k][1]);g.stroke();
+    var e=AX[AX.length-1],Rb=rng(5);for(k=0;k<5;k++){var ba=Math.PI*(.4+Rb()*.9),bl=(14+Rb()*22)*S,ex=e[0]+Math.cos(ba)*bl,ey=e[1]+Math.sin(ba)*bl;g.beginPath();g.moveTo(e[0],e[1]);g.quadraticCurveTo(e[0]+Math.cos(ba-.4)*bl*.6,e[1]+Math.sin(ba-.4)*bl*.6,ex,ey);g.stroke();g.fillStyle="rgba(170,230,255,.8)";g.beginPath();g.arc(ex,ey,2.2*S,0,6.283);g.fill()}
+    g.restore();
+    /* the main neuron, in focus */
+    neuron(g,G.A[0],G.A[1],S*1.2,11,{col:"rgba(150,226,252,.92)",reach:1.05,nb:7,sr:1.55,ap:92,ad:3});
+    /* exosomes: some travel from the main neuron to the receiving one, some drift near where they were released */
+    var Re=rng(19),N=G.mob?18:40,pal=["0,174,239","0,174,239","0,174,239","82,198,242","212,126,171","127,193,85","120,130,220"];EX=[];
+    for(var q=0;q<N;q++){var tv=q<N*.55;
+      EX.push({tv:tv,ph:Re(),sp:.035+Re()*.03,r:(3+Re()*5)*S*(G.mob?.9:1),c:pal[Math.floor(Re()*pal.length)],
+        ox:(Re()-.5)*120*S,oy:(Re()-.5)*120*S,wob:Re()*6.28,
+        x0:G.A[0]+(Re()-.5)*60*S,y0:G.A[1]+(Re()-.5)*50*S,
+        x3:G.B[0]+(30+Re()*90)*S,y3:G.B[1]-(60+Re()*120)*S,
+        hx:G.A[0]+(Re()-.5)*360*S,hy:G.A[1]+(Re()-.5)*300*S})}
+  }
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;
+    cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);c.setTransform(dpr,0,0,dpr,0,0);G=geo();build();if(!running)frame(true);
+  }
+  function ves(x,y,r,col,a){
+    var g=c.createRadialGradient(x-r*.3,y-r*.35,r*.1,x,y,r);g.addColorStop(0,"rgba(235,250,255,"+(.75*a).toFixed(3)+")");g.addColorStop(.55,"rgba("+col+","+(.35*a).toFixed(3)+")");g.addColorStop(.9,"rgba("+col+","+(.85*a).toFixed(3)+")");g.addColorStop(1,"rgba("+col+",0)");
+    c.fillStyle=g;c.beginPath();c.arc(x,y,r,0,6.283);c.fill();
+    var h2=c.createRadialGradient(x,y,r*.6,x,y,r*3.2);h2.addColorStop(0,"rgba("+col+","+(.22*a).toFixed(3)+")");h2.addColorStop(1,"rgba("+col+",0)");c.fillStyle=h2;c.beginPath();c.arc(x,y,r*3.2,0,6.283);c.fill();
+  }
+  function frame(once){
+    var t=(performance.now()-t0)/1000;dim+=(dimT-dim)*.08;var e=IN.v,S=G.S;
+    var oy=-SP.v*h*.06;
+    c.setTransform(dpr,0,0,dpr,0,0);c.globalAlpha=1;c.fillStyle="#040b15";c.fillRect(0,0,w,h);
+    c.globalAlpha=Math.max(0,Math.min(1,e))*dim;
+    c.save();c.translate(0,oy);var sc=1+(1-e)*.04;c.translate(G.A[0],G.A[1]);c.scale(sc,sc);c.translate(-G.A[0],-G.A[1]);
+    c.drawImage(oBg,0,0,w,h);
+    c.globalCompositeOperation="lighter";
+    /* soma breathing */
+    var br=.5+.5*Math.sin(t*1.1),sr=46*S;var sg=c.createRadialGradient(G.A[0],G.A[1],0,G.A[0],G.A[1],sr*2.2);sg.addColorStop(0,"rgba(80,200,245,"+(.12+.08*br).toFixed(3)+")");sg.addColorStop(1,"rgba(0,174,239,0)");c.fillStyle=sg;c.beginPath();c.arc(G.A[0],G.A[1],sr*2.2,0,6.283);c.fill();
+    /* an action potential runs down the axon every ~4.5s; the far end flashes as it arrives */
+    var P=4.6,ph=(t%P)/P,L=AXL[AXL.length-1],pos=sm(ph/.7)*L;
+    if(ph<.72){var k=1;while(k<AXL.length-1&&AXL[k]<pos)k++;var u=(pos-AXL[k-1])/Math.max(1e-3,AXL[k]-AXL[k-1]),px=AX[k-1][0]+(AX[k][0]-AX[k-1][0])*u,py=AX[k-1][1]+(AX[k][1]-AX[k-1][1])*u;
+      var pg=c.createRadialGradient(px,py,0,px,py,16*S);pg.addColorStop(0,"rgba(200,245,255,.85)");pg.addColorStop(.3,"rgba(0,174,239,.35)");pg.addColorStop(1,"rgba(0,174,239,0)");c.fillStyle=pg;c.beginPath();c.arc(px,py,16*S,0,6.283);c.fill()}
+    var arr=Math.max(0,1-Math.abs(ph-.76)/.1),en=AX[AX.length-1];if(arr>0){var ag=c.createRadialGradient(en[0],en[1],0,en[0],en[1],46*S);ag.addColorStop(0,"rgba(150,230,255,"+(.4*arr).toFixed(3)+")");ag.addColorStop(1,"rgba(0,174,239,0)");c.fillStyle=ag;c.beginPath();c.arc(en[0],en[1],46*S,0,6.283);c.fill()}
+    c.globalCompositeOperation="source-over";
+    /* exosomes */
+    for(var i=0;i<EX.length;i++){var x=EX[i],xx,yy,a;
+      if(x.tv){var q=(t*x.sp+x.ph)%1,s1=1-q;
+        var x1=x.x0+x.ox,y1=x.y0+x.oy+60*S,x2=x.x3+x.oy*.5,y2=x.y3-80*S;
+        xx=s1*s1*s1*x.x0+3*s1*s1*q*x1+3*s1*q*q*x2+q*q*q*x.x3+Math.sin(t*.9+x.wob)*5*S;
+        yy=s1*s1*s1*x.y0+3*s1*s1*q*y1+3*s1*q*q*y2+q*q*q*x.y3+Math.cos(t*.7+x.wob)*5*S;
+        a=sm(q/.12)*(1-sm((q-.86)/.14))}
+      else{xx=x.hx+Math.sin(t*.21+x.wob)*22*S+Math.sin(t*.53+x.ph*9)*7*S;yy=x.hy+Math.cos(t*.17+x.wob)*18*S+Math.cos(t*.47+x.ph*7)*6*S;a=.55+.45*Math.sin(t*.6+x.wob)}
+      ves(xx,yy,x.r,x.c,a*.95)}
+    c.restore();c.globalAlpha=1;
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  var rzT,lw0=0;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(function(){var nw=document.documentElement.clientWidth||innerWidth;if(nw===lw0&&w<861&&Math.abs(innerHeight-h)<140)return;lw0=nw;size()},120)});size();lw0=w;
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.A[0],G.A[1]]:[w/2,h/2]}};
+})();

@@ -1,0 +1,71 @@
+/* the story scene: the founding science, drawn in the hero's language (neurons, vesicles). Step 1: a neuron sends exosomes
+   to a target neuron and the two fire together. Step 2 (Rett): the vesicles arrive empty, synapses fade, firing falls out of
+   step. Step 3 (rescue): healthy exosomes restore cargo, synapses and synchronized firing. Step 4 (delivery): a blood vessel
+   appears above, and an extracellular vesicle carrying AAV capsids crosses its wall toward the target neuron (EV-AAV-CPE).
+   Vesicles flow with the scroll; every label sits in its own clear space and the step labels cross-fade in place (CY). */
+function scL(){var m=MOBILE();return m?{vb:"0 0 400 430",S:[92,178],R:[300,272],sS:.56,rS:.6,vp:[[112,176],[180,112],[250,160],[286,258]],
+    vessel:[6,54,0,400],tr:[372,410,16,384],lab:{S:[92,264,"middle"],R:[300,350,"middle"],C:[204,234,"middle"],T:[16,350,"start"],B:[394,74,"end"]},ev:[[150,30],[166,70],[214,196]],fs:12}
+  :{vb:"0 0 640 520",S:[150,255],R:[488,300],sS:.78,rS:.82,vp:[[176,252],[290,150],[400,170],[470,288]],
+    vessel:[18,84,0,640],tr:[452,496,30,610],lab:{S:[150,372,"middle"],R:[488,396,"middle"],C:[322,300,"middle"],T:[30,430,"start"],B:[636,108,"end"]},ev:[[300,44],[322,96],[404,234]],fs:12}}
+function nSvg(x,y,s,seed,reach,bR){bR=bR||1;
+  var R=(function(q){return function(){q=(q*16807)%2147483647;return (q-1)/2147483646}})(seed),P=[],SP=[];
+  function br(x0,y0,a,len,wd,dep){var n=Math.max(3,Math.round(len/9)),st=len/n,px=x0,py=y0,d="M"+px.toFixed(1)+" "+py.toFixed(1);
+    for(var i=0;i<n;i++){a+=(R()-.5)*.34;px+=Math.cos(a)*st;py+=Math.sin(a)*st;d+="L"+px.toFixed(1)+" "+py.toFixed(1);if(dep<2&&R()<.32)SP.push([px+Math.cos(a+1.4)*2.6,py+Math.sin(a+1.4)*2.6])}
+    P.push([d,Math.max(.7,wd)]);if(dep>0){br(px,py,a-(.3+R()*.4),len*(.62+R()*.18),wd*.68,dep-1);if(R()<.85)br(px,py,a+(.3+R()*.4),len*(.62+R()*.18),wd*.68,dep-1)}}
+  br(x,y-13*s,-Math.PI/2+.12,128*s*reach,3.2*s,3);
+  for(var i=0;i<5;i++){var a=Math.PI*(.14+.72*i/4)+(R()-.5)*.2;br(x+Math.cos(a)*9*s,y+Math.sin(a)*6*s,a,(58+R()*30)*s*reach*bR,2.4*s,2)}
+  [-.2,-.82].forEach(function(f){var a=Math.PI*f;br(x,y-5*s,a,(48+R()*22)*s*reach,2*s,2)});
+  var r=14*s,soma="M"+x+" "+(y-r*1.55)+"C"+(x+r*.55)+" "+(y-r*.7)+" "+(x+r*1.25)+" "+(y+r*.15)+" "+(x+r*.95)+" "+(y+r*.75)+"C"+(x+r*.5)+" "+(y+r*1.1)+" "+(x-r*.5)+" "+(y+r*1.1)+" "+(x-r*.95)+" "+(y+r*.75)+"C"+(x-r*1.25)+" "+(y+r*.15)+" "+(x-r*.55)+" "+(y-r*.7)+" "+x+" "+(y-r*1.55)+"Z";
+  var paths=P.map(function(p){return '<path class="nr g" d="'+p[0]+'" stroke-width="'+(p[1]*2.4).toFixed(2)+'"/>'}).join("")+P.map(function(p){return '<path class="nr" d="'+p[0]+'" stroke-width="'+p[1].toFixed(2)+'"/>'}).join("");
+  return {svg:paths+SP.map(function(q){return '<circle class="sp" cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="'+(1.3*s+.4).toFixed(2)+'"/>'}).join("")+'<path class="soma" d="'+soma+'"/><ellipse class="nuc" cx="'+x+'" cy="'+(y+r*.12)+'" rx="'+(r*.48)+'" ry="'+(r*.4)+'"/>',spines:SP};
+}
+function trace(x0,x1,y,spikes,jit){var d="M"+x0+" "+y,R=(function(q){return function(){q=(q*16807)%2147483647;return (q-1)/2147483646}})(jit||3);
+  spikes.forEach(function(sx){var x=x0+(x1-x0)*sx;d+="L"+(x-5).toFixed(1)+" "+y+"L"+(x-2).toFixed(1)+" "+(y-16-R()*3).toFixed(1)+"L"+(x+1).toFixed(1)+" "+(y+6).toFixed(1)+"L"+(x+4).toFixed(1)+" "+y});return d+"L"+x1+" "+y}
+function bez(P,t){var s=1-t;return [s*s*s*P[0][0]+3*s*s*t*P[1][0]+3*s*t*t*P[2][0]+t*t*t*P[3][0],s*s*s*P[0][1]+3*s*s*t*P[1][1]+3*s*t*t*P[2][1]+t*t*t*P[3][1]]}
+function scene(){
+  var L=scL(),N1=nSvg(L.S[0],L.S[1],L.sS,11,1,.72),N2=nSvg(L.R[0],L.R[1],L.rS,57,1,.62),V=L.vessel,T=L.tr,lb=L.lab,fs=L.fs;
+  function tx(k,cls,str,id){var p=lb[k];return '<text '+(id?'id="'+id+'" ':'')+'x="'+p[0]+'" y="'+p[1]+'" text-anchor="'+p[2]+'" class="'+cls+'" style="font-size:'+fs+'px">'+str+'</text>'}
+  var ves="";for(var i=0;i<6;i++)ves+='<g class="vz"><circle class="ves" r="10"/><g class="cgg"><circle class="cg" cx="-3.5" cy="-2" r="2.3" fill="#d47eab"/><circle class="cg" cx="3.2" cy="-3" r="2" fill="#7fc155"/><circle class="cg" cx=".5" cy="3.6" r="2.4" fill="#52c6f2"/></g></g>';
+  /* synapses: short green arcs on the target's spines; the later ones are the new synapses formed in the rescue */
+  var syn=N2.spines.slice(0,14).map(function(q,i){return '<path class="syn'+(i>6?' nw':'')+'" d="M'+(q[0]-3.2).toFixed(1)+' '+(q[1]+2).toFixed(1)+'Q'+q[0].toFixed(1)+' '+(q[1]-3.6).toFixed(1)+' '+(q[0]+3.2).toFixed(1)+' '+(q[1]+2).toFixed(1)+'"/>'}).join("");
+  var sp=[.08,.24,.37,.55,.68,.86],spX=[.15,.29,.47,.6,.79,.93];
+  var cells="";for(var x=V[2]+10;x<V[3];x+=58)cells+='<path class="cell" d="M'+x+' '+(V[1]-1)+'Q'+(x+29)+' '+(V[1]-11)+' '+(x+56)+' '+(V[1]-1)+'"/><ellipse class="cell" cx="'+(x+28)+'" cy="'+(V[1]-5)+'" rx="8" ry="2.6"/>';
+  var rbc="";[[.12,.5],[.3,.42],[.52,.56],[.74,.46],[.9,.55]].forEach(function(r){rbc+='<ellipse class="rbc" cx="'+(V[2]+(V[3]-V[2])*r[0])+'" cy="'+(V[0]+(V[1]-V[0])*r[1])+'" rx="11" ry="5.5"/>'});
+  var cap="";[[-6,-4],[6,-5],[0,6]].forEach(function(c){var h="";for(var k=0;k<6;k++){var a=Math.PI/3*k+Math.PI/6;h+=(k?"L":"M")+(c[0]+Math.cos(a)*5).toFixed(1)+" "+(c[1]+Math.sin(a)*5).toFixed(1)}cap+='<path class="cap" d="'+h+'Z"/>'});
+  return '<svg viewBox="'+L.vb+'" class="'+(MOBILE()?"mob":"")+'" aria-hidden="true"><defs><radialGradient id="scSoma" cx="40%" cy="38%" r="70%"><stop offset="0" stop-color="#d8f4ff"/><stop offset=".5" stop-color="#46c4f0"/><stop offset="1" stop-color="#0a5f8f"/></radialGradient></defs>'+
+   '<g id="scV"><path class="wall" d="M'+V[2]+' '+V[0]+'H'+V[3]+'V'+V[1]+'H'+V[2]+'Z"/>'+rbc+cells+tx("B","p","BLOOD–BRAIN BARRIER")+'</g>'+
+   '<g id="scR">'+N2.svg+'<g id="scSyn">'+syn+'</g></g>'+
+   '<g id="scS">'+N1.svg+'</g>'+
+   '<g id="scVz">'+ves+'</g>'+
+   '<g id="scEv"><circle class="ves" r="17"/>'+cap+'<text x="-26" y="5" text-anchor="end" class="g" style="font-size:'+fs+'px">EV-AAV-CPE</text></g>'+
+   '<g id="scLab">'+tx("S","a","NEURON")+tx("R","a","TARGET NEURON")+tx("C","a","EXOSOMES","scC1")+tx("C","p","MISSING SIGNALS","scC2")+tx("C","g","HEALTHY EXOSOMES","scC3")+tx("C","g","GENE THERAPY IN A VESICLE","scC4")+'</g>'+
+   '<g id="scTr">'+tx("T","a","SYNCHRONIZED FIRING","scT1")+tx("T","p","FIRING OUT OF STEP","scT2")+
+    '<path class="base" d="M'+T[2]+' '+T[0]+'H'+T[3]+'M'+T[2]+' '+T[1]+'H'+T[3]+'"/>'+
+    '<path class="tr" d="'+trace(T[2],T[3],T[0],sp,3)+'"/>'+
+    '<path class="tr" id="scSync" d="'+trace(T[2],T[3],T[1],sp,5)+'"/>'+
+    '<path class="tr off" id="scOff" d="'+trace(T[2],T[3],T[1],spX.slice(0,3).concat([.71]),9)+'"/></g>'+
+  '</svg>';
+}
+function storyDraw(svg){
+  var L=scL(),E={v:$("#scV",svg),s:$("#scS",svg),r:$("#scR",svg),syn:$$("#scSyn path",svg),vz:$$("#scVz .vz",svg),ev:$("#scEv",svg),
+    c:[$("#scC1",svg),$("#scC2",svg),$("#scC3",svg),$("#scC4",svg)],t1:$("#scT1",svg),t2:$("#scT2",svg),sync:$("#scSync",svg),off:$("#scOff",svg),tr:$("#scTr",svg),lab:$("#scLab",svg)};
+  var VP=L.vp,EV=L.ev;
+  function f(n){return n.toFixed(3)}
+  return function(p,b){
+    if(!E.s.isConnected)return;
+    var s2=seg(p,.2,.3),s3=seg(p,.45,.55),s4=seg(p,.7,.8),bad=s2*(1-s3);
+    E.s.style.opacity=f(b);E.r.style.opacity=f(b*(1-.45*bad));E.tr.style.opacity=f(b*(1-.35*s4));
+    E.v.style.opacity=f(b*s4);
+    /* vesicles flow from the neuron to its target as the page scrolls */
+    E.vz.forEach(function(g,i){var q=(i/E.vz.length+p*2.4)%1,xy=bez(VP,q),a=Math.min(1,q/.1,(1-q)/.1);
+      g.setAttribute("transform","translate("+xy[0].toFixed(1)+" "+xy[1].toFixed(1)+")");g.style.opacity=f(b*a*(1-.55*s4));
+      g.lastChild.style.opacity=f(1-bad);g.firstChild.classList.toggle("dim",bad>.5)});
+    /* synapses: present, then fading in Rett, then restored with new ones in the rescue */
+    E.syn.forEach(function(s,i){var nw=s.classList.contains("nw");s.style.opacity=f(b*(nw?s3:(1-.85*s2+.85*s3)))});
+    /* the vesicle with its AAV cargo crosses the vessel wall */
+    var e=bez([EV[0],EV[1],EV[1],EV[2]],seg(p,.74,.98));E.ev.setAttribute("transform","translate("+e[0].toFixed(1)+" "+e[1].toFixed(1)+")");E.ev.style.opacity=f(b*s4);
+    /* step labels cross-fade in place */
+    var w=[1-s2,bad,s3*(1-s4),s4];E.c.forEach(function(t,i){t.style.opacity=f(b*w[i])});
+    E.t1.style.opacity=f(1-bad);E.t2.style.opacity=f(bad);E.sync.style.opacity=f(1-bad);E.off.style.opacity=f(bad);
+  };
+}

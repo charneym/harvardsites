@@ -571,6 +571,8 @@ ul.ex.ex>li{flex:0 0 calc((100% - 3 * var(--gap)) / 4);width:auto;margin:0;min-w
 .pf li{column-gap:clamp(28px,3.2vw,52px)}
 @media (max-width:1024px){.story-r:has(svg.mob){height:auto;aspect-ratio:760/520}.story-pin:has(svg.mob){row-gap:28px;padding-top:96px}}
 .ps-body .ctc a{text-transform:none;letter-spacing:.02em;font-size:13px}
+.hero-foot .s{max-width:41ch;hyphens:none;-webkit-hyphens:none;text-wrap:pretty}
+@media (max-width:560px){.hero-foot .s{max-width:none}}
 
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
@@ -643,6 +645,12 @@ ul.ex.ex>li{flex:0 0 calc((100% - 3 * var(--gap)) / 4);width:auto;margin:0;min-w
 @media (max-width:860px){.fieldbg{background:#0a1b2c}}
 .light+.cta{border-top:1px solid rgba(10,27,44,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0!important}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0!important}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1019,14 +1027,14 @@ function crit(){return '<dl class="facts">'+
     '<div><dt class="lab">EBITDA</dt><dd>$3 million to $7 million.</dd></div>'+
     '<div><dt class="lab">Cash flow</dt><dd>Strong and growing free cash flow.</dd></div>'+
     '<div><dt class="lab">Structure</dt><dd>Control-oriented buyouts of established, privately-owned lower middle-market U.S. companies.</dd></div>'+
-    '<div><dt class="lab">Selection</dt><dd>Company-centric rather than <span style="white-space:nowrap">industry-focused</span>: the characteristics of the company itself matter most.</dd></div>'+
+    '<div><dt class="lab">Selection</dt><dd>Company-centric rather than industry&#8209;focused: the characteristics of the company itself matter most.</dd></div>'+
    '</dl>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Private equity · Stamford, Connecticut<span class="nomob"> · Since 2006</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Building value</span><span class="l">through <em>partnership.</em></span></h1>'+
-   '<div class="hero-foot"><p class="s" data-r>Hudson Ferry Capital makes control-oriented buyout investments in established lower middle-market U.S. companies, and gives their management teams the resources to build larger, <span style="white-space:nowrap">professionally-managed</span> organizations.</p>'+
+   '<div class="hero-foot"><p class="s" data-r>Hudson Ferry Capital makes control-oriented buyout investments in established lower middle&#8209;market U.S. companies, and gives their management teams the resources to build larger, professionally&#8209;managed organizations.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/approach">Our approach '+ARR+'</a><a class="btn" href="#/contact">Present an opportunity</a></div></div>'+
   '</section>'+
 
@@ -1040,13 +1048,13 @@ function vHome(){
    '</div></div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">The crossing</span><h2 class="d3">From <span style="white-space:nowrap">founder-led</span> to <em>fully built.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">The crossing</span><h2 class="d3">From founder&#8209;led to <em>fully built.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Company</span><span>Team</span><span>Growth</span><span>Scale</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h3>An established business, ready to grow.</h3><p>Private, established lower middle-market companies with strong cash flow and growth prospects, typically $10 million to $50 million of enterprise value.</p></article>'+
      '<article class="step"><h3>Management, committed.</h3><p>We back a strong management team that is financially committed to the transaction, with the vision and desire to take the company to the next level.</p></article>'+
      '<article class="step"><h3>Five ways to grow.</h3><p>Organic growth, new markets, broader product or service offerings, manufacturing efficiencies and acquisitions, with help from senior executives the partners have worked with closely.</p></article>'+
-     '<article class="step"><h3>A larger, <span style="white-space:nowrap">professionally-managed</span> company.</h3><p>We build entrepreneurial businesses into larger, integrated enterprises. Percheron, merged with three related companies in 2012, grew from the Northeast to the West and South before its sale in 2026.</p></article>'+
+     '<article class="step"><h3>A larger, professionally&#8209;managed company.</h3><p>We build entrepreneurial businesses into larger, integrated enterprises. Percheron, merged with three related companies in 2012, grew from the Northeast to the West and South before its sale in 2026.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -1186,100 +1194,122 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
 
 
 /*<R:field>*//* ================= HERO FIELD: a ferry crossing the Hudson at dusk. The sun has just gone down behind the Palisades on
-   the far (western) bank, whose wooded basalt cliffs stand dark against an amber sky; the river holds the afterglow. A
-   white, double-decked commuter ferry with lit windows crosses mid-river toward the near bank, where a timber pier with
-   a lamp reaches out over the water in the foreground. It animates on its own (the ferry rides the swell, the wake
-   unrolls, the water glitters, lights twinkle), with no pointer response (CZ). ================= */
+   the far (western) bank: sheer cliffs of columnar basalt, fluted and flat-topped with woods, standing on their talus
+   slopes, dark against an amber sky, on the right two-thirds of the view (the copy column stays open sky and water).
+   A white double-decked commuter ferry with a navy sheer stripe, wheelhouse, rails and warm cabin light crosses
+   mid-river, pushing a bow wave and trailing its wake; the river fills the frame to the bottom. It animates on its
+   own (swell, wake, glitter, lights), with no pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oCliff=null,oNear=null,ST=[],LT=[],GL=[];
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oCliff=null,ST=[],LT=[],GL=[],WIN=[],FO=[];
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.min(h*.34,w*.8):h,hz=mob?U*.47:h*.64;
-    var L=mob?Math.min(w*.4,U*.62):Math.max(190,Math.min(cw*.22,h*.4));
+    var U=mob?Math.min(h*.34,w*.8):h,hz=mob?U*.5:h*.6;
+    var L=mob?Math.min(w*.56,U*.95):Math.max(240,Math.min(cw*.33,h*.52));
     return {mob:mob,side:side,cw:cw,U:U,hz:hz,L:L,
-      fx:mob?w*.6:side+cw*.73,fy:mob?U*.7:h*.79,
-      ny:mob?U*.93:h*.93,px:mob?w*.78:side+cw*.9,sun:mob?w*.3:side+cw*.56};
+      x0:mob?w*.28:side+cw*.58,x1:mob?w*.46:side+cw*.7,
+      fx:mob?w*.56:side+cw*.74,fy:mob?U*.82:h*.8,sun:mob?w*.42:side+cw*.62};
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  /* cliff height along the far bank: lower upriver (left), rising toward the right */
-  function cliffTop(x){var U=G.U,k=x/w;return G.hz-U*(G.mob?.1:.05)-U*(G.mob?.07:.1)*sm(k*1.25)-U*.012*Math.sin(k*9.3+1.1)-U*.006*Math.sin(k*23+.4)}
+  /* the cliff: 0 before x0 (copy column), rising to full height by x1, then a flat top with gentle steps */
+  function cliffH(x){var k=sm((x-G.x0)/(G.x1-G.x0));return k*G.U*(G.mob?.17:.19)*(1+.04*Math.sin(x*.004+1.3)+.015*Math.sin(x*.021))}
   function build(){
     var hz=G.hz,U=G.U,A=mk(hz+2),g=A[1];oSky=A[0];
-    /* dusk over the west bank: deep navy overhead, amber at the cliff line */
-    var top=hz-U*.2;
     var sky=g.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#081322");sky.addColorStop(.3,"#13284a");sky.addColorStop(.55,"#2f4870");
-    sky.addColorStop(.72,"#6f6a86");sky.addColorStop(.83,"#c08a7a");sky.addColorStop(.92,"#e7a874");sky.addColorStop(1,"#f2c48c");
+    sky.addColorStop(.72,"#6f6a86");sky.addColorStop(.84,"#c08a7a");sky.addColorStop(.93,"#e7a874");sky.addColorStop(1,"#f2c48c");
     g.fillStyle=sky;g.fillRect(0,0,w,hz+2);
-    var sg=g.createRadialGradient(G.sun,top+U*.06,0,G.sun,top+U*.06,w*.42);sg.addColorStop(0,"rgba(255,206,140,.55)");sg.addColorStop(.35,"rgba(240,160,110,.18)");sg.addColorStop(1,"rgba(240,160,110,0)");
+    var sy0=hz-U*.16,sg=g.createRadialGradient(G.sun,sy0,0,G.sun,sy0,w*.45);sg.addColorStop(0,"rgba(255,206,140,.5)");sg.addColorStop(.35,"rgba(240,160,110,.16)");sg.addColorStop(1,"rgba(240,160,110,0)");
     g.fillStyle=sg;g.fillRect(0,0,w,hz+2);
-    /* a few thin clouds lit from below */
-    var R=rng(7);for(var i=0;i<9;i++){var cy=hz*(.32+R()*.38),cx=R()*w,cwid=w*(.08+R()*.16),ch=U*(.004+R()*.006),a=.08+R()*.1,warm=cy>hz*.5;
+    var R=rng(7);for(var i=0;i<9;i++){var cy=hz*(.3+R()*.4),cx=R()*w,cwid=w*(.08+R()*.16),ch=U*(.004+R()*.006),a=.07+R()*.09,warm=cy>hz*.5;
       g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,warm?"rgba(250,190,150,"+a.toFixed(3)+")":"rgba(170,160,200,"+(a*.8).toFixed(3)+")");cg.addColorStop(1,"rgba(200,160,170,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
     ST=[];var Rs=rng(3),n=G.mob?24:60;for(var s=0;s<n;s++){var sy=Math.pow(Rs(),1.8)*hz*.42;ST.push([Rs()*w,sy,.4+Rs()*.8,Rs()*6.28,.4+Rs()*1.2,1-sy/(hz*.42)])}
-    /* the Palisades: a dark cliff with a wooded crown, faint vertical basalt columns and a talus slope to the water */
+    /* far shore upriver (left): a thin low line of land, so the copy column stays open */
+    g.fillStyle="#1a2338";g.beginPath();g.moveTo(-4,hz+2);for(var lx=-4;lx<=G.x1;lx+=6)g.lineTo(lx,hz-U*(.008+.004*Math.sin(lx*.02))-U*.01*sm((lx-G.x0*.8)/(G.x1-G.x0*.8)));g.lineTo(G.x1,hz+2);g.closePath();g.fill();
+    /* the Palisades */
     var B=mk(hz+2),q=B[1];oCliff=B[0];
-    var cg2=q.createLinearGradient(0,hz-U*.18,0,hz);cg2.addColorStop(0,"#222f4a");cg2.addColorStop(.6,"#162339");cg2.addColorStop(1,"#0e192b");
-    q.fillStyle=cg2;q.beginPath();q.moveTo(-4,hz+2);for(var x=-4;x<=w+8;x+=4)q.lineTo(x,cliffTop(x));q.lineTo(w+8,hz+2);q.closePath();q.fill();
-    /* basalt columns, lit faintly by the afterglow */
-    var Rc=rng(19);q.lineWidth=1;
-    for(var cx2=0;cx2<w;cx2+=5+Rc()*9){var ct=cliffTop(cx2)+U*.012,cb=hz-U*(.018+Rc()*.012),a2=.012+Rc()*.03;if(cb<=ct||G.mob||1)continue;
-      q.strokeStyle="rgba(190,200,230,"+a2.toFixed(3)+")";q.beginPath();q.moveTo(cx2,ct+Rc()*U*.01);q.lineTo(cx2+Rc()*1.2-.6,cb);q.stroke()}
-    /* talus: a softer slope at the cliff foot */
-    q.fillStyle="#0c1626";q.beginPath();q.moveTo(-4,hz+2);for(var x3=-4;x3<=w+8;x3+=6)q.lineTo(x3,hz-U*(.016+.008*Math.sin(x3*.013)+.005*Math.sin(x3*.051)));q.lineTo(w+8,hz+2);q.closePath();q.fill();
-    /* trees along the crown: dense small crowns that break the skyline */
-    var Rt=rng(41);q.fillStyle="#0b1424";
-    for(var tx=-6;tx<w+6;tx+=1.6+Rt()*2.2){var ty=cliffTop(tx),tr=U*(.0025+Rt()*.0055);q.beginPath();q.arc(tx,ty-tr*.5,tr,0,Math.PI*2);q.fill();q.fillRect(tx-tr,ty-tr*.5,tr*2,tr*1.5)}
-    /* rim light on the crown, warm where the sun went down */
-    q.globalCompositeOperation="source-atop";var rim=q.createRadialGradient(G.sun,hz-U*.2,0,G.sun,hz-U*.2,w*.35);rim.addColorStop(0,"rgba(255,170,110,.16)");rim.addColorStop(1,"rgba(255,170,110,0)");q.fillStyle=rim;q.fillRect(0,0,w,hz+2);q.globalCompositeOperation="source-over";
-    /* lights along the far shore (a riverside road and a marina upriver) */
-    LT=[];var Rl=rng(53),nl=G.mob?10:24;for(var l=0;l<nl;l++){var lx=Math.pow(Rl(),1.5)*w*.62;LT.push([lx,hz-U*(.004+Rl()*.01),.8+Rl()*.9,Rl()*6.28,Rl()<.25])}
-    /* the near bank: a dark grassy shore and a timber pier with pilings and a lamp */
-    var C=mk(h+2),r=C[1];oNear=C[0];var ny=G.ny,wb=G.mob?U:h;
-    r.fillStyle="#060e18";r.beginPath();r.moveTo(-4,wb+2);for(var x4=-4;x4<=w+8;x4+=6){var yy=ny+U*(.012*Math.sin(x4*.006+.8)+.006*Math.sin(x4*.031))+U*.02*sm((x4-G.px+G.L*.6)/(G.L*.6));r.lineTo(x4,yy)}r.lineTo(w+8,wb+2);r.closePath();r.fill();
-    /* reeds along the shore */
-    var Rr=rng(61);r.strokeStyle="#081321";r.lineWidth=1;for(var k=0;k<(G.mob?60:160);k++){var rx=Rr()*w*.7,ry=ny+U*(.012*Math.sin(rx*.006+.8)+.006*Math.sin(rx*.031))+2,rh=U*(.01+Rr()*.025);r.beginPath();r.moveTo(rx,ry);r.quadraticCurveTo(rx+rh*.15,ry-rh*.6,rx+rh*(.1+Rr()*.3),ry-rh);r.stroke()}
-    /* pier deck, from the shore out over the water */
-    var pd=ny-U*.035,p0=G.px-G.L*.75;r.fillStyle="#0a1524";r.fillRect(p0,pd,w-p0+4,U*.012);
-    r.strokeStyle="rgba(230,190,140,.18)";r.beginPath();r.moveTo(p0,pd+.5);r.lineTo(w+4,pd+.5);r.stroke();
-    r.strokeStyle="#091321";r.lineWidth=Math.max(2,U*.006);for(var pi=0;pi<9;pi++){var pxx=p0+6+pi*(w-p0)/8.5;r.beginPath();r.moveTo(pxx,pd);r.lineTo(pxx,ny+U*.03);r.stroke()}
-    /* railing */
-    r.lineWidth=1;r.strokeStyle="#0c1828";r.beginPath();r.moveTo(p0,pd-U*.022);r.lineTo(w+4,pd-U*.022);for(var ri=0;ri<14;ri++){var rx2=p0+ri*(w-p0)/13;r.moveTo(rx2,pd);r.lineTo(rx2,pd-U*.022)}r.stroke();
-    /* lamp post */
-    var lx2=Math.min(w-G.side*.6,p0+G.L*.95);r.lineWidth=Math.max(1.5,U*.004);r.beginPath();r.moveTo(lx2,pd);r.lineTo(lx2,pd-U*.075);r.lineTo(lx2+U*.012,pd-U*.075);r.stroke();
-    G.lamp=[lx2+U*.012,pd-U*.072];G.pd=pd;G.p0=p0;
-    GL=[];var Rg=rng(71);for(var gi=0;gi<(G.mob?40:90);gi++)GL.push([Rg(),Rg(),Rg()*6.28,.5+Rg()]);
+    var talT=U*(G.mob?.026:.03);
+    function top(x){return hz-cliffH(x)}
+    function base(x){return hz-talT*sm((x-G.x0)/(G.x1-G.x0))*(1+.3*Math.sin(x*.013)+.15*Math.sin(x*.057))}
+    /* cliff face */
+    var fg=q.createLinearGradient(0,hz-U*.2,0,hz);fg.addColorStop(0,"#2a3550");fg.addColorStop(.5,"#1c2740");fg.addColorStop(1,"#131c30");
+    q.fillStyle=fg;q.beginPath();q.moveTo(G.x0-2,hz+2);for(var x=G.x0-2;x<=w+6;x+=3)q.lineTo(x,top(x));q.lineTo(w+6,hz+2);q.closePath();q.fill();
+    /* columnar fluting: each column lit on its western edge by the afterglow, shadowed on the east, with joints */
+    q.save();q.beginPath();q.moveTo(G.x0-2,hz+2);for(var x2=G.x0-2;x2<=w+6;x2+=3)q.lineTo(x2,top(x2));q.lineTo(w+6,hz+2);q.closePath();q.clip();
+    var Rc=rng(19),cx2=G.x0;
+    while(cx2<w+6){var cwc=(G.mob?2.5:3.5)+Rc()*(G.mob?3:5),t1=top(cx2)+U*(.006+Rc()*.01),b1=base(cx2)+2,warmK=Math.max(0,1-Math.abs(cx2-G.sun)/(w*.5));
+      if(b1>t1){var lit=(.05+Rc()*.07)*(.6+.8*warmK);
+        q.fillStyle="rgba(214,184,170,"+lit.toFixed(3)+")";q.fillRect(cx2,t1,cwc*.42,b1-t1);
+        q.fillStyle="rgba(4,8,18,"+(.18+Rc()*.16).toFixed(3)+")";q.fillRect(cx2+cwc*.62,t1,cwc*.38,b1-t1);
+        var nj=1+Math.floor(Rc()*3);q.fillStyle="rgba(4,8,18,.25)";for(var jj=0;jj<nj;jj++){q.fillRect(cx2,t1+(b1-t1)*Rc(),cwc,1)}}
+      cx2+=cwc}
+    /* a few deeper clefts between column groups */
+    var Rk=rng(23);for(var kx=G.x1;kx<w;kx+=w*(.05+Rk()*.06)){var kt=top(kx)+U*.01,kb=base(kx);q.fillStyle="rgba(3,6,14,.45)";q.beginPath();q.moveTo(kx-2,kt);q.lineTo(kx+3,kt);q.lineTo(kx+5+Rk()*4,kb);q.lineTo(kx-1,kb);q.closePath();q.fill()}
+    q.restore();
+    /* the flat wooded top: a dense low band of crowns on the cliff edge */
+    var Rt=rng(41);q.fillStyle="#0e1729";
+    for(var tx=G.x0;tx<w+6;tx+=1.3+Rt()*1.8){var ch2=cliffH(tx);if(ch2<U*.01)continue;var ty=top(tx),tr=U*(.003+Rt()*.004)*Math.min(1,ch2/(U*.08));q.beginPath();q.arc(tx,ty-tr*.3,tr,0,Math.PI*2);q.fill();q.fillRect(tx-tr,ty-tr*.3,tr*2,U*.01)}
+    /* rim light along the crown */
+    q.globalCompositeOperation="source-atop";var rim=q.createRadialGradient(G.sun,hz-U*.2,0,G.sun,hz-U*.2,w*.4);rim.addColorStop(0,"rgba(255,170,110,.2)");rim.addColorStop(1,"rgba(255,170,110,0)");q.fillStyle=rim;q.fillRect(0,0,w,hz+2);q.globalCompositeOperation="source-over";
+    /* talus: a scree slope at the foot, wooded in patches */
+    q.fillStyle="#1a2338";q.beginPath();q.moveTo(G.x0,hz+2);for(var x3=G.x0;x3<=w+6;x3+=4)q.lineTo(x3,base(x3));q.lineTo(w+6,hz+2);q.closePath();q.fill();
+    var Rd=rng(31);for(var d=0;d<(G.mob?500:1800);d++){var dx=G.x0+Rd()*(w-G.x0),by=base(dx);if(by>=hz-1)continue;var dy=by+Rd()*(hz-by);
+      q.fillStyle=Rd()<.5?"rgba(190,190,215,.07)":"rgba(6,10,20,.35)";q.fillRect(dx,dy,1.3,1)}
+    for(var tb=G.x0;tb<w;tb+=3+Rd()*6){var by2=base(tb);if(by2>=hz-2)continue;var tr2=U*(.003+Rd()*.004);q.fillStyle="#0d1626";q.beginPath();q.arc(tb,hz-tr2*.6-Rd()*(hz-by2)*.4,tr2,0,Math.PI*2);q.fill()}
+    LT=[];var Rl=rng(53),nl=G.mob?8:18;for(var l=0;l<nl;l++){LT.push([Rl()*G.x1,hz-U*(.006+Rl()*.006),.8+Rl()*.9,Rl()*6.28])}
+    GL=[];var Rg=rng(71);for(var gi=0;gi<(G.mob?50:110);gi++)GL.push([Rg(),Rg(),Rg()*6.28,.5+Rg()]);
+    /* cabin windows: each pane its own warmth */
+    WIN=[];var Rw=rng(83);for(var wi=0;wi<40;wi++)WIN.push([.55+Rw()*.45,Rw()*6.28,Rw()<.18]);
+    FO=[];var Rf=rng(97);for(var fi=0;fi<60;fi++)FO.push([Rf(),Rf()*2-1,Rf(),Rf()*6.28]);
   }
-  /* the ferry: a white double-decked commuter ferry, bow to the right, lit windows, pilot house and mast light */
+  /* NY Waterway-style double-deck ferry, bow to the right. Origin at the waterline amidships. */
   function ferry(x,y,L,t,e){
-    var roll=Math.sin(t*.9)*.006;c.save();c.translate(x,y);c.rotate(roll);
-    var hh=L*.06;
-    /* hull: dark below a white rub-rail, a raked bow and a squared stern */
-    c.fillStyle="#0c1a2c";c.beginPath();c.moveTo(-L*.5,-hh*.55);c.lineTo(L*.44,-hh*.6);c.quadraticCurveTo(L*.53,-hh*.7,L*.55,-hh*1.05);c.lineTo(L*.47,hh*.42);c.lineTo(-L*.47,hh*.42);c.closePath();c.fill();
-    c.fillStyle="#c9d3df";c.fillRect(-L*.5,-hh*.62,L*.96,hh*.16);
-    /* main deck cabin */
-    var y1=-hh*.62,H1=L*.075,sup=c.createLinearGradient(0,y1-H1,0,y1);sup.addColorStop(0,"#e3e9f0");sup.addColorStop(1,"#9daabb");
-    c.fillStyle=sup;c.beginPath();c.moveTo(-L*.43,y1);c.lineTo(-L*.43,y1-H1);c.lineTo(L*.33,y1-H1);c.lineTo(L*.4,y1);c.closePath();c.fill();
-    /* upper deck cabin */
-    var y2=y1-H1,H2=L*.062;c.fillStyle="#d4dce6";c.beginPath();c.moveTo(-L*.3,y2);c.lineTo(-L*.3,y2-H2);c.lineTo(L*.18,y2-H2);c.lineTo(L*.24,y2);c.closePath();c.fill();
-    /* pilot house */
-    var y3=y2-H2,H3=L*.05;c.fillStyle="#e8edf3";c.fillRect(-L*.02,y3-H3,L*.13,H3);c.fillStyle="#0c1a2c";c.fillRect(-L*.03,y3-H3-L*.008,L*.15,L*.01);
-    /* rails on the upper deck */
-    c.strokeStyle="rgba(230,236,244,.8)";c.lineWidth=Math.max(.7,L*.003);c.beginPath();c.moveTo(-L*.42,y2-L*.018);c.lineTo(-L*.3,y2-L*.018);for(var rr=0;rr<5;rr++){c.moveTo(-L*.42+rr*L*.03,y2);c.lineTo(-L*.42+rr*L*.03,y2-L*.018)}c.stroke();
-    /* windows: warm cabin light */
-    var fl=.85+.15*Math.sin(t*1.7);
-    c.fillStyle="rgba(255,214,150,"+(.95*fl).toFixed(3)+")";
-    for(var i=0;i<15;i++){var wx=-L*.4+i*L*.048;c.fillRect(wx,y1-H1*.72,L*.032,H1*.42)}
-    for(var j=0;j<10;j++){var wx2=-L*.27+j*L*.047;c.fillRect(wx2,y2-H2*.72,L*.03,H2*.42)}
-    c.fillStyle="rgba(170,210,240,.85)";c.fillRect(L*.005,y3-H3*.75,L*.095,H3*.4);
-    /* mast with the white masthead light and the green starboard light */
-    c.strokeStyle="#0c1a2c";c.lineWidth=Math.max(1,L*.005);c.beginPath();c.moveTo(L*.05,y3-H3);c.lineTo(L*.05,y3-H3-L*.07);c.stroke();
+    var roll=Math.sin(t*.9)*.004;c.save();c.translate(x,y);c.rotate(roll);
+    var H=L*.07,sw=Math.max(.6,L*.0025);
+    /* hull: sheer rising to the bow, a raked stem, shaded side */
+    var hullTop=function(u){return -H*(1+.35*Math.pow(Math.max(0,u),3))};
+    c.beginPath();c.moveTo(-L*.5,-H*.98);for(var u=-1;u<=1.001;u+=.1)c.lineTo(u*L*.46,hullTop(u));
+    c.lineTo(L*.53,-H*1.42);c.quadraticCurveTo(L*.5,-H*.3,L*.44,H*.18);c.lineTo(-L*.48,H*.18);c.lineTo(-L*.5,-H*.98);c.closePath();
+    var hg=c.createLinearGradient(0,-H*1.4,0,H*.2);hg.addColorStop(0,"#eef2f7");hg.addColorStop(.45,"#c3cdd9");hg.addColorStop(.8,"#7f8ca0");hg.addColorStop(1,"#4c5870");c.fillStyle=hg;c.fill();
+    /* navy sheer stripe and boot top */
+    c.fillStyle="#00447c";c.beginPath();c.moveTo(-L*.5,-H*.55);for(var u2=-1;u2<=1.001;u2+=.1)c.lineTo(u2*L*.46,hullTop(u2)*.55+H*.02);c.lineTo(L*.5,-H*.7);c.lineTo(L*.49,-H*.44);for(var u3=1;u3>=-1.001;u3-=.1)c.lineTo(u3*L*.46,hullTop(u3)*.4+H*.02);c.closePath();c.fill();
+    c.fillStyle="#0b1626";c.fillRect(-L*.48,H*.02,L*.93,H*.18);
+    /* fenders */
+    c.strokeStyle="rgba(20,26,40,.8)";c.lineWidth=Math.max(1,H*.12);c.beginPath();c.moveTo(-L*.5,-H*.05);c.lineTo(L*.45,-H*.05);c.stroke();
+    /* main cabin */
+    var y1=-H*1.02,H1=L*.085,x1a=-L*.44,x1b=L*.34;
+    var cg=c.createLinearGradient(0,y1-H1,0,y1);cg.addColorStop(0,"#f2f5f9");cg.addColorStop(1,"#a9b5c4");c.fillStyle=cg;
+    c.beginPath();c.moveTo(x1a,y1);c.lineTo(x1a,y1-H1);c.lineTo(x1b-L*.03,y1-H1);c.lineTo(x1b+L*.04,y1);c.closePath();c.fill();
+    /* window band, tinted, with each pane lit differently */
+    var wy=y1-H1*.78,wh=H1*.48,n1=18,pw=(x1b-x1a-L*.04)/n1;
+    c.fillStyle="#1d2a3c";c.fillRect(x1a+L*.01,wy,x1b-x1a-L*.02,wh);
+    for(var i=0;i<n1;i++){var Wp=WIN[i],gl=Wp[0]*(.88+.12*Math.sin(t*.7+Wp[1]));
+      var wg=c.createLinearGradient(0,wy,0,wy+wh);wg.addColorStop(0,"rgba(255,226,170,"+(gl*.95).toFixed(3)+")");wg.addColorStop(1,"rgba(240,170,100,"+(gl*.75).toFixed(3)+")");
+      c.fillStyle=wg;c.fillRect(x1a+L*.012+i*pw,wy+1,pw-Math.max(1.2,L*.004),wh-2);
+      if(Wp[2]){c.fillStyle="rgba(40,30,30,.55)";var hx=x1a+L*.012+i*pw+pw*.5;c.beginPath();c.arc(hx,wy+wh*.55,wh*.16,0,Math.PI*2);c.fill();c.fillRect(hx-wh*.2,wy+wh*.7,wh*.4,wh*.3)}}
+    c.fillStyle="rgba(255,255,255,.35)";c.fillRect(x1a,y1-H1,x1b-x1a-L*.03,Math.max(1,L*.003));
+    /* upper deck: cabin forward, open deck aft with railings */
+    var y2=y1-H1,H2=L*.07,x2a=-L*.18,x2b=L*.2;
+    c.fillStyle="#dfe5ed";c.beginPath();c.moveTo(x2a,y2);c.lineTo(x2a,y2-H2);c.lineTo(x2b-L*.03,y2-H2);c.lineTo(x2b+L*.03,y2);c.closePath();c.fill();
+    var wy2=y2-H2*.78,wh2=H2*.46,n2=10,pw2=(x2b-x2a-L*.02)/n2;c.fillStyle="#1d2a3c";c.fillRect(x2a+L*.008,wy2,x2b-x2a-L*.01,wh2);
+    for(var j=0;j<n2;j++){var Wq=WIN[20+j],g2=Wq[0]*(.85+.15*Math.sin(t*.6+Wq[1]));c.fillStyle="rgba(255,214,150,"+(g2*.88).toFixed(3)+")";c.fillRect(x2a+L*.01+j*pw2,wy2+1,pw2-Math.max(1.2,L*.004),wh2-2)}
+    c.strokeStyle="rgba(235,240,246,.85)";c.lineWidth=sw;c.beginPath();var ry=y2-L*.026;c.moveTo(x1a+L*.01,ry);c.lineTo(x2a,ry);c.moveTo(x2b+L*.02,ry+L*.006);c.lineTo(x1b-L*.04,ry+L*.006);
+    for(var r=0;r<9;r++){var rx=x1a+L*.01+r*(x2a-x1a-L*.01)/8;c.moveTo(rx,y2);c.lineTo(rx,ry)}for(var r2=0;r2<4;r2++){var rx2=x2b+L*.02+r2*(x1b-x2b-L*.06)/3;c.moveTo(rx2,y2);c.lineTo(rx2,ry+L*.006)}c.stroke();
+    c.strokeStyle="rgba(235,240,246,.5)";c.beginPath();c.moveTo(x1a+L*.01,ry+L*.013);c.lineTo(x2a,ry+L*.013);c.stroke();
+    /* wheelhouse with wraparound glass, roof overhang, mast with masthead and green sidelight */
+    var y3=y2-H2,H3=L*.05,x3a=-L*.03,x3b=L*.13;
+    c.fillStyle="#f0f3f7";c.fillRect(x3a,y3-H3,x3b-x3a,H3);
+    c.fillStyle="#24364c";c.fillRect(x3a+L*.006,y3-H3*.82,x3b-x3a-L*.012,H3*.46);
+    c.fillStyle="rgba(150,200,235,.55)";c.fillRect(x3a+L*.006,y3-H3*.82,x3b-x3a-L*.012,H3*.14);
+    c.fillStyle="#0c1a2c";c.fillRect(x3a-L*.012,y3-H3-L*.009,x3b-x3a+L*.024,L*.009);
+    c.strokeStyle="#0c1a2c";c.lineWidth=Math.max(1,L*.004);c.beginPath();c.moveTo(L*.05,y3-H3-L*.009);c.lineTo(L*.05,y3-H3-L*.08);c.moveTo(L*.03,y3-H3-L*.06);c.lineTo(L*.07,y3-H3-L*.06);c.stroke();
+    /* shadow under the upper deck overhang */
+    c.fillStyle="rgba(10,20,36,.25)";c.fillRect(x1a,y1-H1,x1b-x1a-L*.03,H1*.12);
     c.globalCompositeOperation="lighter";
-    var mh=c.createRadialGradient(L*.05,y3-H3-L*.07,0,L*.05,y3-H3-L*.07,L*.03);mh.addColorStop(0,"rgba(255,250,235,"+(.95*e).toFixed(3)+")");mh.addColorStop(1,"rgba(255,250,235,0)");c.fillStyle=mh;c.fillRect(L*.02,y3-H3-L*.1,L*.06,L*.06);
-    var gn=c.createRadialGradient(L*.13,y3-H3*.3,0,L*.13,y3-H3*.3,L*.022);gn.addColorStop(0,"rgba(120,255,170,"+(.85*e).toFixed(3)+")");gn.addColorStop(1,"rgba(120,255,170,0)");c.fillStyle=gn;c.fillRect(L*.1,y3-H3,L*.06,L*.05);
-    var cw2=c.createRadialGradient(0,y1-H1*.5,0,0,y1-H1*.5,L*.5);cw2.addColorStop(0,"rgba(255,190,120,"+(.08*fl).toFixed(3)+")");cw2.addColorStop(1,"rgba(255,190,120,0)");c.fillStyle=cw2;c.fillRect(-L*.55,y1-H1*2,L*1.1,H1*3);
+    var my=y3-H3-L*.08,mh=c.createRadialGradient(L*.05,my,0,L*.05,my,L*.035);mh.addColorStop(0,"rgba(255,250,235,"+(.95*e).toFixed(3)+")");mh.addColorStop(1,"rgba(255,250,235,0)");c.fillStyle=mh;c.fillRect(L*.01,my-L*.04,L*.08,L*.08);
+    var gn=c.createRadialGradient(x3b+L*.004,y3-H3*.5,0,x3b+L*.004,y3-H3*.5,L*.022);gn.addColorStop(0,"rgba(120,255,170,"+(.85*e).toFixed(3)+")");gn.addColorStop(1,"rgba(120,255,170,0)");c.fillStyle=gn;c.fillRect(x3b-L*.02,y3-H3,L*.05,L*.05);
+    var cw2=c.createRadialGradient(0,y1-H1*.5,0,0,y1-H1*.5,L*.55);cw2.addColorStop(0,"rgba(255,190,120,.09)");cw2.addColorStop(1,"rgba(255,190,120,0)");c.fillStyle=cw2;c.fillRect(-L*.6,y1-H1*2.5,L*1.2,H1*3.5);
     c.globalCompositeOperation="source-over";
     c.restore();
   }
@@ -1290,57 +1320,49 @@ var field=(function(){
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
     var t=RM?9:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var hz=G.hz,U=G.U,L=G.L,ny=G.ny,wb=G.mob?U:h;
+    var hz=G.hz,U=G.U,L=G.L,wb=G.mob?U:h;
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
     c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
     for(var i=0;i<ST.length;i++){var s=ST[i],a=s[5]*(.45+.55*Math.sin(t*s[4]+s[3]))*.7;if(a<.05)continue;c.fillStyle="rgba(236,240,255,"+a.toFixed(3)+")";c.fillRect(s[0],s[1],s[2],s[2])}
     c.setTransform(1,0,0,1,0,0);c.drawImage(oCliff,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* the river: afterglow on the water near the far bank, deepening toward us */
-    var wg=c.createLinearGradient(0,hz,0,wb);wg.addColorStop(0,"#2a3550");wg.addColorStop(.05,"#3c4766");wg.addColorStop(.22,"#22324f");wg.addColorStop(.6,"#11223a");wg.addColorStop(1,"#0a1b2c");
+    /* the river fills the frame: afterglow near the far bank, deepening toward us */
+    var wg=c.createLinearGradient(0,hz,0,wb);wg.addColorStop(0,"#5a5a74");wg.addColorStop(.05,"#3c4766");wg.addColorStop(.3,"#24344f");wg.addColorStop(.7,"#16263f");wg.addColorStop(1,"#0f2036");
     c.fillStyle=wg;c.fillRect(0,hz,w,wb-hz+2);
-    /* the cliffs mirrored in the river, broken by the current */
-    var rh=U*.15,sl=2;
+    /* mirrored cliffs */
+    var rh=U*.2,sl=2;
     for(var ry=0;ry<rh;ry+=sl){var off=Math.sin(ry*.35+t*1.1)*(1+ry*.05)+Math.sin(ry*.11-t*.6)*1.5,sy=hz-ry-sl;if(sy<0)break;
-      c.globalAlpha=e*.55*(1-ry/rh);c.drawImage(oCliff,0,sy*dpr,oCliff.width,sl*dpr,off,hz+ry,w,sl)}
+      c.globalAlpha=e*.6*(1-ry/rh);c.drawImage(oCliff,0,sy*dpr,oCliff.width,sl*dpr,off,hz+ry,w,sl)}
     c.globalAlpha=e;
-    /* the afterglow's path on the water, under where the sun went down */
     c.globalCompositeOperation="lighter";
-    for(var gi=0;gi<GL.length;gi++){var gq=GL[gi],dy=Math.pow(gq[1],1.4),gy=hz+U*.01+dy*(ny-hz-U*.04),spread=w*(.03+dy*.1),gx=G.sun+(gq[0]-.5)*spread*2+Math.sin(t*.5+gq[2])*6,ga=(1-dy)*.35*(.5+.5*Math.sin(t*gq[3]*2+gq[2]));
-      if(ga<.02)continue;c.fillStyle="rgba(255,190,130,"+ga.toFixed(3)+")";c.fillRect(gx,gy,spread*(.12+.2*gq[0]),1)}
-    /* far-shore lights and their streaks */
-    for(var l=0;l<LT.length;l++){var lt=LT[l],la=.55+.45*Math.sin(t*1.3+lt[3]);c.fillStyle="rgba(255,214,150,"+(la*.9).toFixed(3)+")";c.fillRect(lt[0],lt[1],lt[2],lt[2]);
-      if(lt[4]){c.fillStyle="rgba(255,200,130,"+(la*.16).toFixed(3)+")";c.fillRect(lt[0],hz+1,lt[2],U*.02+Math.sin(t+lt[3])*U*.004)}}
+    /* the afterglow's path on the water */
+    for(var gi=0;gi<GL.length;gi++){var gq=GL[gi],dy=Math.pow(gq[1],1.3),gy=hz+U*.01+dy*(wb-hz-U*.03),spread=w*(.03+dy*.12),gx=G.sun+(gq[0]-.5)*spread*2+Math.sin(t*.5+gq[2])*6,ga=(1-dy*.8)*.32*(.5+.5*Math.sin(t*gq[3]*2+gq[2]));
+      if(ga<.02)continue;c.fillStyle="rgba(255,190,130,"+ga.toFixed(3)+")";c.fillRect(gx,gy,spread*(.1+.18*gq[0]),1+dy)}
+    for(var l=0;l<LT.length;l++){var lt=LT[l],la=.55+.45*Math.sin(t*1.3+lt[3]);c.fillStyle="rgba(255,214,150,"+(la*.85).toFixed(3)+")";c.fillRect(lt[0],lt[1],lt[2],lt[2])}
     c.globalCompositeOperation="source-over";
-    /* current lines across the river */
-    var nlines=G.mob?14:28;
-    for(var k=0;k<nlines;k++){var kk=(k+.5)/nlines,ly=hz+U*.02+(ny-hz-U*.03)*Math.pow(kk,1.3),lx=((t*(5+k%3*3)*(k%2?1:-1)+k*233)%w+w)%w,lw=w*(.04+.1*kk),la2=.05+.07*kk;
-      c.fillStyle="rgba(170,200,230,"+la2.toFixed(3)+")";c.fillRect(lx-lw/2,ly,lw,1)}
-    /* the ferry: it crosses very slowly and rides the swell */
-    var fx=G.fx+Math.sin(t*.025)*G.cw*.015,fy=G.fy+Math.sin(t*.8)*Math.max(.6,L*.004);
-    /* reflection of the lit windows and the white hull */
+    /* swell lines, longer and brighter toward the viewer */
+    var nlines=G.mob?16:34;
+    for(var k=0;k<nlines;k++){var kk=(k+.5)/nlines,ly=hz+U*.02+(wb-hz-U*.02)*Math.pow(kk,1.25),lx=((t*(5+k%3*4)*(k%2?1:-1)+k*233)%w+w)%w,lw=w*(.04+.16*kk),la2=.04+.08*kk;
+      c.fillStyle="rgba(170,200,230,"+la2.toFixed(3)+")";c.fillRect(lx-lw/2,ly,lw,1+kk);
+      c.fillStyle="rgba(4,12,24,"+(.12*kk).toFixed(3)+")";c.fillRect(lx-lw/2+lw*.1,ly+2+kk*2,lw*.8,1+kk*1.5)}
+    var fx=G.fx+Math.sin(t*.025)*G.cw*.012,fy=G.fy+Math.sin(t*.8)*Math.max(.6,L*.003);
+    /* reflection of the hull and the lit windows */
     c.globalCompositeOperation="lighter";
-    for(var r2=0;r2<16;r2++){var rx=fx-L*.4+r2*L*.05,rl=L*(.06+.05*Math.sin(r2*1.7+t*.7)),ra=.1+.06*Math.sin(t*2+r2);c.fillStyle="rgba(255,200,130,"+ra.toFixed(3)+")";
-      for(var sgm=0;sgm<4;sgm++){var sy2=fy+L*.03+sgm*rl*.3;c.fillRect(rx+Math.sin(t*2.3+sgm+r2)*2,sy2,L*.03,Math.max(1,rl*.16))}}
-    c.fillStyle="rgba(200,212,228,.07)";c.fillRect(fx-L*.47,fy+L*.03,L*.9,L*.05);
+    c.fillStyle="rgba(200,212,228,.08)";c.fillRect(fx-L*.48,fy+L*.02,L*.94,L*.06);
+    for(var r2=0;r2<18;r2++){var rx=fx-L*.42+r2*L*.042,rl=L*(.05+.04*Math.sin(r2*1.7+t*.7)),ra=(.08+.05*Math.sin(t*2+r2))*WIN[r2][0];c.fillStyle="rgba(255,200,130,"+ra.toFixed(3)+")";
+      for(var sgm=0;sgm<5;sgm++){var sy2=fy+L*.025+sgm*rl*.3;c.fillRect(rx+Math.sin(t*2.3+sgm+r2)*2,sy2,L*.028,Math.max(1,rl*.14))}}
     c.globalCompositeOperation="source-over";
-    /* the wake: two arms of foam spreading astern, and churned water at the stern */
-    var wk=L*1.6;
-    for(var arm=-1;arm<=1;arm+=2){c.strokeStyle="rgba(225,234,246,.5)";c.lineWidth=1;c.beginPath();
-      for(var u=0;u<=1.001;u+=.04){var wx=fx-L*.48-u*wk,wy=fy+L*.02+arm*u*L*.11*(arm>0?1:.35)+Math.sin(u*14-t*2.2)*1.2;
-        var on=Math.sin(u*40-t*3)>-.2;if(u===0||!on)c.moveTo(wx,wy);else c.lineTo(wx,wy)}
-      c.globalAlpha=e*.8;c.stroke();c.globalAlpha=e}
-    for(var f=0;f<26;f++){var fu=((f*.137+t*.06)%1),fxx=fx-L*.48-fu*L*.7,fyy=fy+L*.02+Math.sin(f*2.1)*L*.03*fu,fa=(1-fu)*.45;c.fillStyle="rgba(236,242,250,"+fa.toFixed(3)+")";c.fillRect(fxx,fyy,L*.05*(1-fu*.5),1.2)}
-    /* bow wave */
-    c.strokeStyle="rgba(236,242,250,.55)";c.lineWidth=1.1;c.beginPath();c.moveTo(fx+L*.55,fy+L*.012);c.quadraticCurveTo(fx+L*.48,fy+L*.04,fx+L*.3,fy+L*.05);c.stroke();
+    /* the wake: two arms of broken foam astern, a churned trail, and the bow wave */
+    var wk=L*1.5;
+    for(var arm=-1;arm<=1;arm+=2){c.strokeStyle="rgba(225,234,246,.55)";c.lineWidth=Math.max(1,L*.004);c.beginPath();
+      for(var u=0;u<=1.001;u+=.03){var wx=fx-L*.47-u*wk,wy=fy+L*.012+arm*u*L*(arm>0?.13:.04)+Math.sin(u*16-t*2.2)*1.2,on=Math.sin(u*44-t*3)>-.25;
+        if(u===0||!on)c.moveTo(wx,wy);else c.lineTo(wx,wy)}
+      c.globalAlpha=e*.85;c.stroke();c.globalAlpha=e}
+    for(var f=0;f<FO.length;f++){var fq=FO[f],fu=(fq[0]+t*.05)%1,fxx=fx-L*.47-fu*L*.9,fyy=fy+L*.015+fq[1]*L*.04*fu,fa=(1-fu)*.5*(.6+.4*Math.sin(t*3+fq[3]));c.fillStyle="rgba(236,242,250,"+fa.toFixed(3)+")";c.fillRect(fxx,fyy,L*.04*(1-fu*.5),1.2+fq[2])}
+    c.fillStyle="rgba(236,242,250,.35)";c.beginPath();c.moveTo(fx+L*.53,fy-L*.012);c.quadraticCurveTo(fx+L*.6,fy+L*.006,fx+L*.42,fy+L*.03);c.lineTo(fx+L*.3,fy+L*.024);c.quadraticCurveTo(fx+L*.48,fy+L*.012,fx+L*.53,fy-L*.012);c.fill();
+    c.strokeStyle="rgba(240,246,252,.7)";c.lineWidth=Math.max(1,L*.004);c.beginPath();c.moveTo(fx+L*.54,fy-L*.008);c.quadraticCurveTo(fx+L*.5,fy+L*.03,fx+L*.22,fy+L*.04);c.stroke();
+    for(var sp=0;sp<10;sp++){var sa=.5+.5*Math.sin(t*5+sp*1.7);c.fillStyle="rgba(240,246,252,"+(sa*.6).toFixed(3)+")";c.fillRect(fx+L*(.5+.04*Math.sin(sp*2.1)),fy-L*(.004+.012*((sp*.37+t*.8)%1)),1.4,1.4)}
     ferry(fx,fy,L,t,e);
-    /* the near bank, the pier and the lamp */
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oNear,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    c.globalCompositeOperation="lighter";
-    var lp=G.lamp,lg=c.createRadialGradient(lp[0],lp[1],0,lp[0],lp[1],U*.06);lg.addColorStop(0,"rgba(255,210,140,"+(.75*e).toFixed(3)+")");lg.addColorStop(.25,"rgba(255,180,110,"+(.2*e).toFixed(3)+")");lg.addColorStop(1,"rgba(255,170,100,0)");
-    c.fillStyle=lg;c.fillRect(lp[0]-U*.06,lp[1]-U*.06,U*.12,U*.12);
-    for(var q=0;q<5;q++){c.fillStyle="rgba(255,200,130,"+(.18-.03*q).toFixed(3)+")";c.fillRect(lp[0]-2+Math.sin(t*2+q)*2,G.pd+U*.016+q*U*.009,4,U*.005)}
-    c.globalCompositeOperation="source-over";c.globalAlpha=1;
-    G.fpos=[fx,fy];
+    c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -1453,7 +1475,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

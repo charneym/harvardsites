@@ -556,6 +556,13 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .addr .ml{margin:0 0 4px}
 .thanks svg{width:120px;height:120px}
 @media (max-width:860px){.hero-h{font-size:clamp(38px,10.4vw,96px)}}
+.pillars .pl3 h3{min-height:0!important;margin-top:14px}
+.pl3 .lab{margin:0!important}
+.ps-body .ctc a{text-transform:none;letter-spacing:.02em;font-size:13px}
+.ph-head .d1{max-width:16.5ch}
+.cta .big{max-width:16ch}
+@media (min-width:1025px){.cta>.wrap>.big{font-size:clamp(52px,5vw,92px)}}
+.two .d3{font-size:clamp(34px,3.3vw,56px)}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -933,7 +940,7 @@ function vPortfolio(){
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investments</span><h2 class="d2 split">Current <em>companies.</em></h2></div><p data-r>'+ACT.length+' companies, from metal fabricators and a pasta maker to a dental support organization and a women-led bank.</p></div>'+pf(ACT)+'</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Realized</span><h2 class="d2 split">Realized <em>investments.</em></h2></div><p data-r>'+REA.length+' companies exited between 2000 and 2026, back to the first, Wm. E. Wright, acquired in 1989.</p></div>'+realized(REA)+'</div></section>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Realized</span><h2 class="d2 split">Realized <em>investments.</em></h2></div><p data-r>'+REA.length+' companies exited between 2000 and 2026, back to the first, Wm. E. Wright, acquired in 1989.</p></div>'+pf(REA)+'</div></section>'+
   cta();
 }
 function vTeam(){
@@ -1076,12 +1083,12 @@ var field=(function(){
     /* wavelets, bucketed by colour and strength so each bucket is one fill */
     for(var q=0;q<BK.length;q++)BK[q].length=0;
     var sun=e*(.55+.45*sm((hz-sy)/R));
-    for(var i=0;i<WV.length;i++){var v=WV[i],zz=v[3],x=v[0]+Math.sin(t*.35*v[5]+v[4])*(3+14*zz),y=v[1]+Math.sin(t*.9*v[5]+v[4])*(.6+3*zz),len=v[2],th=.5+2.2*zz;
+    for(var i=0;i<WV.length;i++){var v=WV[i],zz=v[3],x=v[0]+Math.sin(t*.35*v[5]+v[4])*(3+14*zz),y=v[1]+Math.sin(t*.9*v[5]+v[4])*(.6+3*zz),len=v[2],th=.4+1.5*zz;
       var gw=R*(.55+3.6*zz),dx=(x+len/2-sx)/gw,inG=Math.exp(-dx*dx*1.4);
       if(inG>.05){var tw=.5+.5*Math.sin(t*(2.2+v[5]*2)+v[4]*3),sp=inG*sun*Math.pow(tw,2.2);if(sp>.04){var ci=zz<.25&&sp>.5?0:1;BK[ci*4+Math.min(3,sp*4|0)].push(x,y,len*(.6+.4*inG),th)}}
       if(v[6]<.55){var ci2=zz<.12?2:zz<.45?3:4,a=(.25+.6*zz)*(1-inG*.6);BK[(ci2)*4+Math.min(3,a*4|0)].push(x,y-th*.9,len,Math.max(.5,th*.6))}
       else{BK[20+Math.min(3,((.3+.5*zz)*4)|0)].push(x,y+th,len*1.1,th*1.1)}}
-    for(var b2=0;b2<BK.length;b2++){var L=BK[b2];if(!L.length)continue;var al=[.22,.42,.66,.9][b2%4]*(b2>=20?.7:b2>=8?.55:1);c.fillStyle="rgba("+BKC[b2/4|0]+","+(al*(.4+.6*e)).toFixed(3)+")";c.beginPath();for(var j=0;j<L.length;j+=4)c.rect(L[j],L[j+1],L[j+2],L[j+3]);c.fill()}
+    for(var b2=0;b2<BK.length;b2++){var L=BK[b2];if(!L.length)continue;var al=[.22,.42,.66,.9][b2%4]*(b2>=20?.42:b2>=8?.36:1);c.fillStyle="rgba("+BKC[b2/4|0]+","+(al*(.4+.6*e)).toFixed(3)+")";c.beginPath();for(var j=0;j<L.length;j+=4)c.rect(L[j],L[j+1],L[j+2],L[j+3]);c.fill()}
     /* the sloop, and gulls high to the right */
     c.globalAlpha=.4+.6*e;sail(G.bx,G.by,G.bs,t);
     c.strokeStyle="rgba(14,28,48,.75)";c.lineWidth=G.mob?1.1:1.4;c.lineCap="round";
@@ -1134,7 +1141,7 @@ function plateTubes(){var o='<g class="pl p0">',r=40,gap=4,dx=150,dy=-96,T=[],ro
     o+='<circle class="ink" cx="'+R(t.x)+'" cy="'+R(t.y)+'" r="'+r+'"/><circle cx="'+R(t.x)+'" cy="'+R(t.y)+'" r="'+R(ri)+'" fill="#dde5ea"/><path d="M'+R(t.x-ri)+' '+R(t.y)+'A'+R(ri)+' '+R(ri)+' 0 0 1 '+R(t.x+ri)+' '+R(t.y)+'A'+R(ri*1.05)+' '+R(ri*.8)+' 0 0 0 '+R(t.x-ri)+' '+R(t.y)+'Z" fill="url(#hA)"/>';
     
     o+='<circle class="ink" cx="'+R(t.x)+'" cy="'+R(t.y)+'" r="'+R(ri)+'"/>';
-    if(i===10)o+='<circle class="blue" cx="'+R(t.x)+'" cy="'+R(t.y)+'" r="'+(r+5)+'"/>'});
+    });
   o+='<path class="hair" d="M60 547H760M90 562H730"/>';
   for(var k=0;k<26;k++){o+='<line class="hair" x1="'+(110+k*22)+'" y1="547" x2="'+(96+k*22)+'" y2="562"/>'}
   return o+'</g>'+cap(0,"Fabricated tubular steel","National Metalwares · 1995 – 2019")}
@@ -1321,7 +1328,7 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function fillBio(i){var p=SHEETS[i];bioIdx=i;var big=p.img&&!p.small;ps.classList.toggle("noimg",!big);
   psMedia.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.closest(\'.ps\').classList.add(\'noimg\')">':'';
-  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
+  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

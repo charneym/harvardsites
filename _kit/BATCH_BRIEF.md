@@ -28,6 +28,7 @@ Before any research or design, screenshot the firm's CURRENT homepage at 1440 an
 
 ## Efficiency rules (binding from 2026-11-18; the client's goal is ~2000 sites in ~2 weeks on a fixed usage plan, at the SAME quality)
 Usage per site is the bottleneck. Cut everything the client never sees and nothing they do:
+- FORMAT (client, 2026-11-19): the client dislikes the one-page format ("everything down to the buttons, text size... it is just worse"). All new builds use the FULL MULTI-PAGE format (hash-routed pages: home, approach, criteria, portfolio, team with bio sheets, news, contact) with styling at the level of rock-hill, tonka-bay, holleway and serata. Do NOT copy firelight/argonne styling. ONEPAGE_BRIEF.md is retired.
 - ONE FIRM PER SESSION (from 2026-11-18 20:00). Cost is driven by context length: every turn re-reads the whole conversation, so a 2nd–5th site in one session costs 2–3x the first. Build exactly one site, send SITE DONE, then stop. Keep context lean: don't cat big files whole (grep/sed -n ranges), don't re-read the brief, view screenshots at the smallest size that answers the question, and never paste full gate output (tail it).
 - Fix requests from the coordinator go to the session that built the site (it still has the context).
 - Research: one pass by you, with no parallel research subagents. Fetch the firm's own pages and the cited release, write the facts file once, and don't re-fetch.

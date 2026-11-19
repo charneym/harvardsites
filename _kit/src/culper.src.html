@@ -609,6 +609,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#0b0f2c}}
 .light+.cta{border-top:1px solid rgba(18,14,11,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0!important}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0!important}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -645,6 +651,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .bigsvg{position:relative}
 .bigsvg text{font-family:"Hanken Grotesk",system-ui,sans-serif;font-weight:300;font-size:46px;letter-spacing:.04em}
 .hero::before{background:radial-gradient(46% 64% at 20% 52%,rgba(var(--inkr),.8),rgba(var(--inkr),.45) 58%,rgba(var(--inkr),0) 86%),linear-gradient(180deg,rgba(var(--inkr),.3),rgba(var(--inkr),0) 20%,rgba(var(--inkr),0) 76%,var(--ink) 100%)}
+.ps-body .ctc{padding:18px 0 16px}
+@media (min-width:761px){.ps-sheet{grid-template-columns:300px 1fr}}
+@media (max-width:760px){.ps-sheet{grid-template-rows:minmax(0,1fr)}.ps-media{display:none}}
 
 </style>
 </head>
@@ -913,14 +922,14 @@ function vCriteria(){
    '<div class="two"><div><span class="lab kick" data-r>Target profile</span><h2 class="d3 split">What we <em>look for.</em></h2></div><div>'+aims(SIT)+'</div></div>'+
   '</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Equity industries</span><h2 class="d2 split">Where we <em>invest.</em></h2></div><p data-r>Equity investments across six industries, in the United States.</p></div>'+cats(SEC,"dk")+
+   '<div class="shead"><div><span class="lab kick" data-r>Equity industries</span><h2 class="d2 split">Where we <em>invest.</em></h2></div><p data-r>Equity investments across six industries, in the United States.</p></div>'+cats(SEC)+
   '</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>02 · Debt capital</span><h2 class="d2 split">Alongside <em>lenders.</em></h2></div></div>'+facts(DB)+
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>03 · Industrial Solutions</span><h2 class="d2 split">With investment <em>partners.</em></h2></div></div>'+facts(IS).replace('class="facts"','class="facts dk"')+
-   '<span class="lab kick" style="margin-top:clamp(56px,6vw,88px)" data-r>Core verticals</span>'+cats(VRT,"dk")+
+   '<div class="shead"><div><span class="lab kick" data-r>03 · Industrial Solutions</span><h2 class="d2 split">With investment <em>partners.</em></h2></div></div>'+facts(IS)+
+   '<span class="lab kick" style="margin-top:clamp(56px,6vw,88px)" data-r>Core verticals</span>'+cats(VRT)+
   '</div></section>'+cta();
 }
 function vPortfolio(){
@@ -937,7 +946,7 @@ function vPortfolio(){
 }
 function vTeam(){
   return head({k:"Team",h:'Operators and <em>investors.</em>',p:'Real-world experience in credit, private equity, M&amp;A, corporate development, strategy and operations. Select a portrait to read the full biography.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
+  '<section class="sec dark first" data-theme="dark" style="padding-top:clamp(112px,13.5vh,160px)"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Experience</span><h2 class="d3 split">Run a business, <em>then invest.</em></h2></div>'+
    '<div><p class="lede" data-r>Adam Cook spent seven years as majority shareholder, Chairman and CEO of Glebar, a diversified industrial and niche medical machinery business, before co-founding Culper in 2020.</p>'+
    '<p class="muted" data-r style="margin-top:24px;max-width:58ch">Kevin Wilson brings twenty years in capital markets at European investment banks, and Mark Kraus more than 25 years leading medical device businesses.</p></div></div></div></section>'+cta();
@@ -1208,7 +1217,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

@@ -598,6 +598,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#0b1720}}
 .light+.cta{border-top:1px solid rgba(11,23,32,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -654,6 +660,10 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (min-width:861px){.sec.first{padding-top:clamp(140px,18vh,200px)}}
 /* DF: the lighthouse echoed in the footer stands beside the wordmark, never through its letters */
 @media (min-width:861px){.bigsvg{width:min(72%,1000px);margin:0 auto 0 0}}
+/* approach cards: label clear of the title, body close under it */
+.pillars .pl3 .lab{display:block;margin:0 0 20px}
+.pillars .pl3 h3{min-height:0!important;margin-bottom:12px}
+.ps-body .ctc a{font:400 clamp(18px,1.5vw,21px)/1.4 var(--disp);letter-spacing:-.01em;text-transform:none}
 </style>
 </head>
 </head>
@@ -844,7 +854,7 @@ function ptile(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person ari
 function grid(groups){return groups.map(function(g){return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span><div class="pg">'+g[1].map(ptile).join("")+'</div></div>'}).join("")}
 /* the wider team: portraits without a sheet, so the tiles are not links and do not pretend to be (CO/CL) */
 function staff(){return '<div class="pg pgs">'+STAFF.map(function(s){return '<div class="pt st"><div class="ph"><img src="'+s[2]+'" alt="Portrait of '+esc(s[0])+'" loading="lazy" decoding="async" onerror="this.parentNode.classList.add(\'noph\')"></div><h3><span>'+esc(s[0])+'</span></h3><p>'+esc(s[1])+'</p></div>'}).join("")+'</div>'}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3]).replace(" · ","<br>")+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function bySector(g){return ACTIVE.filter(function(c){return c[2]===g})}
 function sectors(){return '<div class="secg">'+SECTORS.map(function(g){return '<div class="sgc"><h3>'+esc(g[0])+'</h3><ul class="aims">'+g[1].map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
@@ -970,7 +980,7 @@ function vTeam(){
   '<section class="sec dark first" data-theme="dark"><div class="wrap">'+grid(GROUPS)+'</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="grp"><span class="lab grp-l">Investment &amp; firm team</span>'+staff()+'</div>'+
    '<p class="tnote" data-r>*Operating Partners are independent contractors on retainer or work exclusively with Blue Point.</p></div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Experience</span><h2 class="d3 split">Investors, <em>and operators.</em></h2></div>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="two"><div><span class="lab kick" data-r>Experience</span><h2 class="d3 split">Investors <em>and operators.</em></h2></div>'+
    '<div class="nums n3">'+[["16","Investment professionals"],["165+","Combined years of experience on the investment team"],["~30 yrs","Average operating experience in the Operating Executive Group"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div></div></div></section>'+cta();
 }
 function vNews(){
@@ -1041,8 +1051,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),mob=w<861;
     if(mob){var U=h*.34,s=Math.min(U*.66,w*.62);
       return {mob:true,side:side,U:U,s:s,x:w*.7,y:U*.87,hz:U*.79,shore:w*.5,bot:U+40,stars:46,glints:170}}
-    var s=Math.min(h*.5,w*.27);
-    return {mob:false,side:side,U:h,s:s,x:w-side-s*.42,y:h*.72,hz:h*.66,shore:w*.5,bot:h,stars:110,glints:460}
+    var s=Math.min(h*.62,w*.33);
+    return {mob:false,side:side,U:h,s:s,x:w-side-s*.5,y:h*.8,hz:h*.7,shore:w*.5,bot:h,stars:110,glints:460}
   }
   /* the tower: tapering shaft, gallery with railings, lantern room and dome; drawn again flipped as its reflection */
   function tower(ctx,X,Y,s,refl){var b0=s*.085,b1=s*.058,Ht=s*.62,sg=refl?-1:1;
@@ -1092,7 +1102,7 @@ var field=(function(){
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=.15+.85*e;c.drawImage(bg,0,0);c.globalAlpha=1;c.setTransform(dpr,0,0,dpr,0,0);
     var lp=G.lamp,ang=t*.42+1.2,fwd=Math.sin(ang),la=A*(.55+.45*dim),H=G.hz,B=G.bot;
     c.globalCompositeOperation="lighter";
-    for(var i=0;i<GL.length;i++){var q=GL[i],v=.5+.5*Math.sin(t*q.sp+q.ph+q.x*.01),b=Math.pow(v,3);if(b<.08)continue;
+    var tb=G.y+G.s*.05*1.4,tx=G.s*.11;for(var i=0;i<GL.length;i++){var q=GL[i];if(q.y<tb&&Math.abs(q.x-G.x)<tx+q.l/2)continue;var v=.5+.5*Math.sin(t*q.sp+q.ph+q.x*.01),b=Math.pow(v,3);if(b<.08)continue;
       var al=(q.near?(.5*(1-q.d*.5)):(.13*(1-q.d)))*b*la*(q.near?(.75+.25*Math.max(0,fwd)):1);
       c.strokeStyle=q.near?"rgba(95,227,255,"+al.toFixed(3)+")":"rgba(190,215,225,"+al.toFixed(3)+")";c.lineWidth=q.near?1.2:1;var dx=Math.sin(t*.5+q.ph)*2;c.beginPath();c.moveTo(q.x-q.l/2+dx,q.y);c.lineTo(q.x+q.l/2+dx,q.y);c.stroke()}
     /* two opposite beams of the lens, foreshortened as they turn */
@@ -1101,7 +1111,7 @@ var field=(function(){
       c.fillStyle=gb;c.beginPath();c.moveTo(lp.lx,lp.ly-lp.lh*.22);c.lineTo(ex,lp.ly-sp);c.lineTo(ex,lp.ly+sp);c.lineTo(lp.lx,lp.ly+lp.lh*.22);c.closePath();c.fill()});
     var fl=Math.pow(Math.max(0,fwd),6),R=G.s*(.06+.2*fl);var lg=c.createRadialGradient(lp.lx,lp.ly,0,lp.lx,lp.ly,R*3);lg.addColorStop(0,"rgba(220,250,255,"+(.9*la).toFixed(3)+")");lg.addColorStop(.1,"rgba(95,227,255,"+(.45*la).toFixed(3)+")");lg.addColorStop(1,"rgba(95,227,255,0)");
     c.fillStyle=lg;c.beginPath();c.arc(lp.lx,lp.ly,R*3,0,6.283);c.fill();
-    c.fillStyle="rgba(200,248,255,"+(.75*la).toFixed(3)+")";c.fillRect(lp.lx-lp.lw*.55,lp.ly-lp.lh*.26,lp.lw*1.1,lp.lh*.52);
+    var lens=c.createRadialGradient(lp.lx,lp.ly,0,lp.lx,lp.ly,lp.lw*.7);lens.addColorStop(0,"rgba(235,252,255,"+(.95*la).toFixed(3)+")");lens.addColorStop(.6,"rgba(150,238,255,"+(.6*la).toFixed(3)+")");lens.addColorStop(1,"rgba(95,227,255,0)");c.fillStyle=lens;c.fillRect(lp.lx-lp.lw*.9,lp.ly-lp.lh*.42,lp.lw*1.8,lp.lh*.84);
     var rc=c.createLinearGradient(0,H,0,B);rc.addColorStop(0,"rgba(95,227,255,"+(.05*la*(1+fl)).toFixed(3)+")");rc.addColorStop(1,"rgba(95,227,255,0)");c.fillStyle=rc;c.fillRect(G.x-G.s*.06,H,G.s*.12,B-H);
     c.globalCompositeOperation="source-over";
     var mg=c.createLinearGradient(0,H-G.s*.08,0,H+G.s*.1),ma=(.07+.03*Math.sin(t*.2))*la;mg.addColorStop(0,"rgba(157,190,205,0)");mg.addColorStop(.5,"rgba(157,190,205,"+ma.toFixed(3)+")");mg.addColorStop(1,"rgba(157,190,205,0)");c.fillStyle=mg;c.fillRect(0,H-G.s*.08,w,G.s*.18);
@@ -1155,7 +1165,7 @@ function MapFig(svg,fs,mob){
   var oris=DEALS.map(function(d){return d.b?el("circle",{"class":"pd",r:5*fs}):null});var dds=DEALS.map(function(){return el("circle",{"class":"dl",r:6*fs})});
   function tag(txt){var t=el("g",{"class":"tl"},svg);var r=el("rect",{rx:2},t);var x=el("text",{},t);x.textContent=txt;return {g:t,r:r,x:x}}
   var otags=OFF.map(function(o){return tag(mob?o[1].replace(" · HQ",""):o[1])}),atag=tag("ASIA"),dtags=DEALS.map(function(d){return tag(mob?d.l.replace(/^.*\+ /,"").replace(/ · .*$/,""):d.l)});
-  var FS=12*(mob?2.3:fs);[].concat(otags,[atag],dtags).forEach(function(t){t.x.style.fontSize=FS+"px"});
+  var FS=12*(mob?2.05:fs);[].concat(otags,[atag],dtags).forEach(function(t){t.x.style.fontSize=FS+"px"});
   function place(t,x,y,dx,anchor,op){t.g.style.display=op>.01?"":"none";if(op<=.01)return;t.x.setAttribute("x",x+dx);t.x.setAttribute("y",y+FS*.36);t.x.setAttribute("text-anchor",anchor);t.g.style.opacity=op;
     try{var b=t.x.getBBox();t.r.setAttribute("x",b.x-6);t.r.setAttribute("y",b.y-3);t.r.setAttribute("width",b.width+12);t.r.setAttribute("height",b.height+6)}catch(e){}}
   return function(p){var c=cam(p),k=800/c.w,ox=400-c.x*k,oy=320-c.y*k;g.setAttribute("transform","translate("+ox.toFixed(2)+" "+oy.toFixed(2)+") scale("+k.toFixed(5)+")");
@@ -1211,7 +1221,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});
@@ -1308,7 +1318,7 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function fillBio(i){var p=SHEETS[i];bioIdx=i;var big=p.img&&!p.small;ps.classList.toggle("noimg",!big);
   psMedia.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.closest(\'.ps\').classList.add(\'noimg\')">':'';
-  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
+  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">'+p.mail+'</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

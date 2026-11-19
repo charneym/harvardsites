@@ -673,6 +673,17 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .pf .w a{white-space:nowrap}
 @media (max-width:860px){.fieldbg{background:#071a3d}}
 .ps-media img{object-position:50% 25%}
+.addr .offs{grid-template-columns:1fr}.addr .offs b.em{overflow-wrap:normal;font-size:clamp(16px,1.3vw,20px)}
+.ps-body .psrows p{border-bottom:0;padding:0 0 1.05em}
+.ps-body .psrows p:first-child{padding-top:16px}
+.ps-body .psrows{border-bottom:1px solid var(--hairD);padding-bottom:4px}
+.ps-body .psrows b:empty{display:none}
+.ps-body .ctc{padding:20px 0 8px}
+.ps-col{overflow:visible}
+.ex{display:flex;flex-wrap:wrap;justify-content:center;border-top:0}
+.ex li{width:calc((100% - 3 * var(--gap)) / 4);border-top:1px solid var(--hairD)}
+@media (max-width:1024px){.ex li{width:calc((100% - var(--gap)) / 2)}}
+@media (max-width:640px){.ex li{width:100%}}
 </style>
 </head>
 </head>
@@ -968,7 +979,7 @@ var PAST=[["Cascade Windows","A leading manufacturer of vinyl windows and doors.
  ["Vivify","A leading supplier of specialty colorants and functional ingredients.","Industrial services","Realized investment","https://centeroakpartners.com/centeroak-partners-announces-sale-of-vivify-specialty-ingredients/","Sale release"],
  ["Wetzel’s Pretzels","A leading owner and franchisor of specialty snack stores.","Consumer services","Realized investment","https://centeroakpartners.com/centeroak-partners-llc-completes-sale-of-wetzels-pretzels/","Sale release"]];
 function slugOf(n){return n.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
-function P(name,title,grp,img,mail,bio){var first=(bio[0]||"").split(/(?<=[a-z]{2}\.)\s+(?=[A-Z])/)[0];return {slug:slugOf(name),name:name,title:title,grp:grp,img:img,mail:mail,sum:first,rows:bio.length?[["Background",bio.join("\n")]]:[],bio:bio}}
+function P(name,title,grp,img,mail,bio){var first=(bio[0]||"").split(/(?<=[a-z]{2}\.)\s+(?=[A-Z])/)[0];return {slug:slugOf(name),name:name,title:title,grp:grp,img:img,mail:mail,sum:first,rows:bio.map(function(b,i){return [i?"":"Background",b]}),bio:bio}}
 var GN={i:"Investment team",o:"Operating partners",f:"Finance & administration"};
 var SHEETS=[
  P("Randall Fojtasek","CEO & Founder","i","https://centeroakpartners.com/wp-content/uploads/2020/02/Randall24.0-1-1024x1024.jpg","rfojtasek@centeroakpartners.com",["Mr. Fojtasek is the Firm’s Chief Executive Officer & Founder. He chairs the Firm’s Investment Committee and is actively involved in all aspects of the Firm’s strategic and investment objectives. Prior to CenterOak, Mr. Fojtasek was Co-Founder and Co-Chief Executive Officer of Brazos Private Equity Partners, managing $1.4 billion of private equity capital across three private equity funds. Previously, Mr. Fojtasek served as the Chief Executive Officer of Atrium Companies, a leading manufacturer of residential building products and a closely-held family business. As Atrium’s CEO, he led the company through three successful buyouts with both private equity partners and corporate investors.","Mr. Fojtasek serves on the Board of Directors of Grismer Tire & Auto Service, NOW CFO, HK Solutions Group, HomeTown Services, Entomo Brands, Guardian Access Solutions, Solid Ground Solutions, and Village Green. He previously served on the Board of Directors of Turf Masters Brands, Shamrock Environmental, SurfacePrep, CollisionRight, Wetzel’s Pretzels, Vivify, Cascade Windows, Service Champions, FullSpeed Automotive, TruRoad, BlackHawk Industrial, Southern Tide, Lone Star, ORS and SESC and was the lead director of the Board of Rennhack, Cheddar’s and Tri-Northern as well as Vice Chairman of the Board of Ennis-Flint.","Mr. Fojtasek served on the Executive Board of the Cox School of Business at Southern Methodist University and is a recipient of the Cox School of Business Distinguished Young Alumni Award. He served on the Board of Trustees of the St. Marks School of Texas, most recently as President of the Board, and has also served as Chairman of both the Executive Committee and the Investment Committee. He also served on the Board of Directors of the Dallas Museum of Art. He is a former member of the Board of Directors and Strategic Planning Committee at North Texas Public Broadcasting.","Mr. Fojtasek received a Master of Business Administration degree and a Bachelor of Business Administration degree from the Cox School of Business at Southern Methodist University in Dallas, Texas. He also attended Franklin College, Lugano, Switzerland."]),
@@ -1612,7 +1623,7 @@ function contactInit(view){
 var ps=$("#ps"),psSheet=$("#psSheet"),psBody=$("#psBody"),psMedia=$("#psMedia"),bioOpen=false,bioIdx=-1,lastFocus=null;
 function fillBio(i){var p=SHEETS[i];bioIdx=i;var big=p.img&&!p.small;ps.classList.toggle("noimg",!big);
   psMedia.innerHTML=big?'<img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.closest(\'.ps\').classList.add(\'noimg\')">':'';
-  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]).replace(/\n/g,'<br><br>'))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
+  psBody.innerHTML='<span class="lab">'+esc(SITE)+'</span><h2 id="psName">'+esc(p.name)+'</h2><p class="role">'+esc(p.title)+'</p>'+(p.rows?'<div class="psrows">'+p.rows.map(function(r){return '<p><b>'+esc(r[0])+'</b>'+(r[2]?'<q>'+esc(r[1])+'</q>':esc(r[1]))+'</p>'}).join("")+'</div>'+(p.mail?'<div class="ctc"><a class="ul" href="mailto:'+p.mail+'">Email</a></div>':''):p.bio.map(function(b){return '<p>'+esc(b)+'</p>'}).join(""));
   psBody.scrollTop=0;document.title=p.name+" — "+SITE;
 }
 function openBio(slug,instant){var i=pBy(slug);if(i<0)return;fillBio(i);

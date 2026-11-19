@@ -85,18 +85,26 @@ chemical linkers used in many existing adhesives. Stated properties: tough adhes
   and "over 200 media outlets, including Forbes, BBC, NPR, and The Washington Post".
 
 ## Brand
-- Logo: an "L" built from two blocks in a blue→violet gradient, with "LIMAX BIOSCIENCES" and the line
-  "HYDROGEL TECHNOLOGIES" beneath. File (white-out version used in their header):
-  https://static.wixstatic.com/media/d1609a_7518405da86d4642b97b619d27af7114~mv2.png/v1/fill/w_34,h_34,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/LIMAX_Logo_transparent_whiteout.png
-  A larger full-colour lockup appears in their banner image (1173×719) listed below.
-- photo-inventory pixel-sampled logo palette: #48a8c0 22% · #7860a8 5% · #7878a8 5% · #a890c0 5% · #48c0c0 4% ·
-  #4890c0 4%.
-- Site CSS colours: navy #18334F (rgb 24,51,79), slate blue #3A5881 (rgb 58,88,129), #324158, #9DACC0,
-  link blue #4495D1, white.
-- Palette mapping (PRINCIPLES BK): logo cyan-blue #48a8c0 → `--acc` family (#2E8FAE deep on light,
-  #5FC2D8 on dark); logo violet #7860a8 → `--vio` #8E6FBE, used only for the second polymer network in the
-  diagrams and for the gel itself; site navy #18334F → `--ink`; near-white #f4f5f7 → `--paper`. No hue outside
-  the logo and their site CSS is used.
+Rebranded Nov 2026 at the client's request: their site was redesigned after this dossier was first written and
+now runs on a white ground with a teal→blue→violet gradient system. Earlier navy/cyan notes are superseded.
+- Logo (current): full-colour lockup in their hero banner (1173×719 / original 1672×941,
+  https://static.wixstatic.com/media/d1609a_ca4c6d6bf1e74dc48e541446585bbb85~mv2.png): gradient "L" (teal top →
+  cyan → blue → violet/magenta foot) with a black molecular-network motif, "LIMAX" in heavy black caps over
+  spaced "BIOSCIENCES", then "HYDROGEL TECHNOLOGIES" in spaced gradient caps. The concept uses this exact lockup,
+  cut from the banner with the white ground converted to transparency (no redraw): full lockup on the preloader;
+  in the header the tagline line is dropped (it would render ~5px tall at nav size), mark and wordmark intact.
+  Their 34px nav icon (…7518405da86d4642b97b619d27af7114~mv2.png, 2400² original) is an older gradient L.
+- Pixel-sampled (Playwright at 1440 + banner original): hero rule under the headline #0fc7bd → #14b5cc → #1479e6
+  → #5254e8 → #713ee1 → #b211e1; logo L #03d0c0 (top) → #00b7e0 → #01a4e8 → #6977d3 → #a54ab2 (foot); tagline
+  #42e3c3 → #0471f1 → #5a19e2 → #b90df0; network art #0078d8 · #0060d8 · #6000d8 · #78c0f0; headline #000000;
+  nav links #4495d1; page ground #fefefd / #f8fafe.
+- Palette mapping (PRINCIPLES BK): gradient --grad #0fc7bd → #00b7e0 → #1479e6 → #5254e8 → #b211e1 (rules,
+  buttons' hover fill, progress bars, diagram strokes); text-safe gradient --gradT #007f78 → #0a6fd6 → #5254e8 →
+  #b211e1 for accent words (each stop ≥4.5:1 on white); accent text/links --accD #0a6fd6 (shade of their blue,
+  4.9:1; their #4495d1 is 3.25:1 so not used for text); --ink #0b0c10 (their black wordmark); --paper #ffffff,
+  --paper2 #f6f8fd (their #f8fafe ground); muted text #4b5363 (neutral). Deep-ink bands: the home "company"
+  section and the footer, on #111319 / #07080b, accent there teal #0fc7bd. No hue outside their logo/site.
+- Type: headings bold Inter Tight (700), closest to their bold black grotesk headline; body Inter Tight; labels DM Mono.
 
 ## Image inventory (PRINCIPLES BJ) — `node _kit/photo-inventory.js`
 Used in the concept:

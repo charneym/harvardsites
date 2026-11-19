@@ -684,6 +684,11 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ex li{width:calc((100% - 3 * var(--gap)) / 4);border-top:1px solid var(--hairD)}
 @media (max-width:1024px){.ex li{width:calc((100% - var(--gap)) / 2)}}
 @media (max-width:640px){.ex li{width:100%}}
+.light .btn.solid{background:var(--ink);border-color:var(--ink);color:var(--bone)}
+.light .btn.solid::before{background:var(--accD)}
+.light .btn.solid:hover{color:var(--bone);border-color:var(--accD)}
+.secs .scp{margin:0;font-size:15.5px;line-height:1.6;color:rgba(var(--boner),.84);max-width:34ch}
+.kits .kick[style]{display:block}
 </style>
 </head>
 </head>
@@ -1047,7 +1052,7 @@ function grid(groups){return groups.map(function(g){return '<div class="grp"><sp
 function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5].replace(/ release$/,""))+' '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function ex(list){return '<ul class="ex">'+list.map(function(c){return '<li><span class="lab">'+esc(c[2])+'</span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><a class="ul exl" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5])+' '+ARR+'</a></li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
-function secs(){return '<div class="secs">'+SEC.map(function(s,i){return '<div class="sc" data-r><span class="lab">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3><ul>'+s[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
+function secs(c){return '<div class="secs">'+SEC.map(function(s,i){return '<div class="sc" data-r><span class="lab">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3>'+(c?'<p class="scp">'+s[1].map(esc).join(' · ')+'</p>':'<ul>'+s[1].map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>')+'</div>'}).join("")+'</div>'}
 var VALS=[["Excellence","CenterOak understands successful investments are tied to finding a balance in operational and financial excellence along with a focus on culture and people.","Bill Scheller, Operating Partner and former CEO of BlackHawk Industrial"],
  ["Legacy","The CenterOak team emphasizes partnering with founders and ownership teams to continue and improve the strong legacy characteristics of a family business.","Steve Vetter, Operating Partner and former CEO of Ennis-Flint"],
  ["Integrity","What is most unique about CenterOak, simply stated, is integrity. CenterOak is interested in building recurring and long-term relationships with sellers, management teams and advisers.","Jim Harris, former Interim CEO of Southern Tide"]];
@@ -1069,7 +1074,7 @@ function nums(){return '<div class="nums n3">'+[["$50–500M","Enterprise value 
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<span class="lab eyebrow" data-r>Middle-market private equity · Dallas, Texas</span>'+
+   '<span class="lab eyebrow" data-r><span class="nomob">Middle-market </span>Private equity · Dallas, Texas</span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Strong</span><span class="l">businesses,</span><span class="l">grown <em>stronger.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>CenterOak Partners invests in business, industrial and consumer services companies, and partners with founders, families and management teams to grow them: operationally, strategically and through acquisitions.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/approach">Our approach '+ARR+'</a><a class="btn" href="#/contact">Start a conversation</a></div></div>'+
@@ -1099,7 +1104,7 @@ function vHome(){
 
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Where we invest</span><h2 class="d2 split">Essential <em>services.</em></h2></div><p data-r>Control investments in U.S. business, industrial and consumer services companies with $7–35 million of EBITDA and room to grow.</p></div>'+
-   secs()+
+   secs(1)+
    '<div style="margin-top:clamp(48px,5vw,72px)" data-r><a class="btn" href="#/criteria">Investment criteria '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -1142,14 +1147,11 @@ function vApproach(){
   '</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>The value creation plan</span><h2 class="d2 split">How companies <em>grow.</em></h2></div><p data-r>Each plan is designed with the management team. CenterOak’s plans often include:</p></div>'+
-   '<div class="kits"><div><span class="lab kick" data-r>Value creation plans</span>'+aims(VCP)+'</div><div><span class="lab kick" data-r>Transaction focus</span>'+aims(TRN)+'</div></div>'+
-  '</div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Core values</span><h2 class="d2 split">What partners <em>say.</em></h2></div><p data-r>Excellence, integrity and respect for each company’s legacy.</p></div>'+vals()+
+   '<div class="kits"><div><span class="lab kick" data-r>Value creation plans</span>'+aims(VCP)+'</div><div><span class="lab kick" data-r>Transaction focus</span>'+aims(TRN)+'<span class="lab kick" data-r style="margin-top:44px">Geography</span>'+aims(["Companies based in the United States"])+'</div></div>'+
   '</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="two"><div><span class="lab kick" data-r>Track record</span><h2 class="d3 split">Three funds, <em>one team.</em></h2></div>'+
-   '<div class="nums n3">'+[["$2.5B+","Equity capital commitments across three funds"],["180+","Acquisitions completed by the team"],["$1.1B","Fund III, oversubscribed at its hard cap in 2024"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div></div>'+
+   '<div class="nums n3">'+[["$1.1B","CenterOak Equity Fund III, oversubscribed at its hard cap in 2024"],["3","Funds, with more than $2.5 billion of equity capital commitments"],["8","Sales from Fund I, a 2016 vintage buyout fund; Shamrock Environmental was the last"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div></div>'+
   '</div></section>'+cta();
 }
 function vCriteria(){
@@ -1321,7 +1323,7 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.34,w*.74):h,hz=mob?U*.8:h*.75;
     var s=mob?Math.min(w*.36,(hz-U*.25)/TH):Math.min(cw*.265,(hz-h*.15)/TH,540);
-    var tx=mob?w*.6:Math.min(side+cw*.76,w-side*.4-s*.9);
+    var tx=mob?w*.6:Math.min(side+cw*.79,w-side*.3-s*.9);
     return {mob:mob,side:side,cw:cw,U:U,hz:hz,s:s,tx:tx,wb:mob?U:h};
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
@@ -1476,12 +1478,12 @@ function drawLabels(c,w,h,hl,T){var M=GV.main,S=GV.MS;
   var fs=w<600?10:11.5;c.font="400 "+fs+"px 'Red Hat Mono', ui-monospace, monospace";try{c.letterSpacing=(w<600?1.2:1.8)+"px"}catch(e){}
   for(var j=0;j<5;j++){var a=hl[j];if(a<.02)continue;var ax=A[j][0],ay=A[j][1],L=LABS[j],lh=fs*1.45,tw=Math.max.apply(null,L.map(function(s){return c.measureText(s).width}));
     var dir=j<3?"r":"u",lx,ly,al="left";
-    if(dir==="r"){lx=ax+28;ly=ay-(L.length-1)*lh/2;if(lx+tw>w-10){lx=w-10-tw}}
+    if(dir==="r"){lx=ax+28;ly=ay-(L.length-1)*lh/2;if(j===2){ly=ay+fs*3.2}if(j===1){ly=ay+fs*2.2}if(lx+tw>w-10){lx=w-10-tw}}
     else{ly=ay-26-(L.length-1)*lh;lx=ax-tw/2;lx=Math.max(6,Math.min(w-6-tw,lx));ly=Math.max(fs+4,ly)}
     c.globalAlpha=a;c.strokeStyle="rgba(28,111,37,.9)";c.fillStyle="rgba(28,111,37,1)";c.lineWidth=1;c.beginPath();
-    if(dir==="r"){c.moveTo(ax+4,ay);c.lineTo(lx-8,ay)}else{c.moveTo(ax,ay-5);c.lineTo(ax,ly+(L.length-1)*lh+6)}c.stroke();
+    if(dir==="r"){c.moveTo(ax+4,ay);c.lineTo(lx-8,ly)}else{c.moveTo(ax,ay-5);c.lineTo(ax,ly+(L.length-1)*lh+6)}c.stroke();
     c.beginPath();c.arc(ax,ay,2.6,0,Math.PI*2);c.fill();
-    c.fillStyle="#0a1a38";c.textBaseline="middle";L.forEach(function(s,i){c.fillText(s,lx,ly+i*lh)});c.globalAlpha=1}
+    c.fillStyle="rgba(233,228,214,.94)";c.fillRect(lx-7,ly-lh*.62,tw+14,(L.length-1)*lh+lh*1.24);c.fillStyle="#0a1a38";c.textBaseline="middle";L.forEach(function(s,i){c.fillText(s,lx,ly+i*lh)});c.globalAlpha=1}
   try{c.letterSpacing="0px"}catch(e){}}
 function scene(){return '<svg class="sc-hit" viewBox="0 0 10 7" aria-hidden="true"></svg><canvas class="scv" aria-hidden="true"></canvas>'}
 function storyDraw(svg){
@@ -1492,7 +1494,7 @@ function storyDraw(svg){
     c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.setTransform(dpr,0,0,dpr,0,0);drawScene(c,w,h,pp,lb,0,0,null,MOBILE()?1.06:1.14)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,140)});
   size();
-  return function(p,b){if(!cv.isConnected)return;if(!w)size();lp=p;lb=b;paint()};
+  return function(p,b){if(!cv.isConnected)return;if(!w)size();lp=p;lb=MOBILE()?1:b;paint()};
 }
 /*</R:story>*/
 

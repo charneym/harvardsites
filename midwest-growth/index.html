@@ -516,7 +516,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .light .btn.solid::before{background:var(--accD)}
 .light .btn.solid:hover{color:#2b221b;border-color:var(--accD)}
 .nav .btn[aria-current="page"]{background:var(--acc);border-color:var(--acc);color:#fff}
-.hero::before{background:radial-gradient(48% 66% at 20% 54%,rgba(var(--inkr),.92),rgba(var(--inkr),.62) 56%,rgba(var(--inkr),0) 86%)}
+.hero::before{background:radial-gradient(52% 70% at 20% 58%,rgba(var(--inkr),.97),rgba(var(--inkr),.8) 52%,rgba(var(--inkr),0) 88%)}
 .xc{background:#2b221b}.xt .t{color:#f4f0e6}.xt .lab{color:#b5d46e}.xc::before{background:#b5d46e}
 .ps-scrim{background:rgba(43,34,27,.42)}
 .ftr{background:#2b221b;color:#f4f0e6;--hair:rgba(244,240,230,.16)}
@@ -530,7 +530,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .light{background:#2b221b}
 .cta{background:#34510f;border-top:0}
 .cta .sub{color:#e3ead2}.cta .kick{color:#cfe39c}
-.ph-head::before{background:radial-gradient(52% 72% at 18% 62%,rgba(var(--inkr),.94),rgba(var(--inkr),.55) 60%,rgba(var(--inkr),0) 86%),linear-gradient(180deg,rgba(var(--inkr),0) 70%,var(--ink) 100%)}
+.ph-head::before{background:radial-gradient(60% 80% at 20% 60%,rgba(var(--inkr),.98),rgba(var(--inkr),.86) 55%,rgba(var(--inkr),0) 90%),linear-gradient(180deg,rgba(var(--inkr),0) 70%,var(--ink) 100%)}
 .ph-head .d1{font-size:clamp(46px,6vw,112px)}
 .ps-sheet{background:#f8f5ec;color:#2b221b}
 .ps-body .role{color:#6b5f51}.ps-body .lab{color:#4a7810}
@@ -548,8 +548,6 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ind.c3{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media (max-width:860px){.ind.c3{grid-template-columns:1fr}}
 .rail.r4 span{font-size:12.5px}
-
-.ps-body .ctc a{color:#4a7810}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -677,6 +675,13 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 /* DE: boxed corners everywhere */
 .btn,.btn::before,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.pt .go,.fld input,.fld textarea,.burger,.mm a{border-radius:0!important}
 @media (max-width:1024px){.story-pin{align-content:center}}
+.ps-body .ctc a{color:#4a7810!important}
+/* sub-pages: keep the landscape seated on the bottom edge (no lifted canvas, no hard line) */
+@media (min-width:861px){#field{transform:none!important}}
+.ftr{background:#221a14!important;border-top:0}
+.scene .usm.mob .lb text,.scene .usm.mob .hql{font-size:34px}.scene .usm.mob .omal{font-size:27px}
+.usm .hq{stroke:#f4f0e6;stroke-width:2;paint-order:stroke}
+.grp-l+.pg{margin-top:clamp(28px,8vh,90px)}
 </style>
 </head>
 </head>
@@ -1037,7 +1042,8 @@ function slugOf(n){return n.replace(/,.*$/,"").toLowerCase().replace(/[^a-z]+/g,
 var SHEETS=TEAM.map(function(p,i){var rows=[["Background",p.b[0]]];if(p.ed)rows.push(["Education",p.ed]);
   return {slug:slugOf(p.n),name:p.n,title:p.r,grp:i<4?"Partners":"Team",img:p.i,mail:p.e,sum:SUMS[p.n]||"",rows:rows,bio:p.b}});
 var GROUPS=[["Partners",SHEETS.slice(0,4)],["Team",SHEETS.slice(4)]];
-NEWS.forEach(function(n){var m=/^(\w{3}) (\d+), (\d{4})$/.exec(n.d);if(m)n.d=m[3]+"-"+("0"+(MO.indexOf(m[1])+1)).slice(-2)+"-"+("0"+m[2]).slice(-2)});/*</R:content>*/
+NEWS.forEach(function(n){var m=/^(\w{3}) (\d+), (\d{4})$/.exec(n.d);if(m)n.d=m[3]+"-"+("0"+(MO.indexOf(m[1])+1)).slice(-2)+"-"+("0"+m[2]).slice(-2)});
+SHEETS.forEach(function(p){if(p.slug==="barb-phillips")p.small=true});/* the only published portrait is 354px wide: no upscaled sheet photo *//*</R:content>*/
 
 /* ================= VIEW HELPERS ================= */
 function head(o){
@@ -1198,7 +1204,7 @@ function footer(){
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">Approach</a><br><a class="ul" href="#/criteria">Criteria</a><br><a class="ul" href="#/portfolio">Portfolio</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="tel:+15154214800">(515) 421-4800</a><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="#/contact">Send a message</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 44" aria-hidden="true"><text x="260" y="38" text-anchor="middle" style="font-family:\'Big Shoulders Display\',\'Arial Narrow\',sans-serif;font-weight:800;font-size:50px;letter-spacing:.06em">MIDWEST GROWTH</text></svg>'+
-  '<div class="legal"><span class="lab">© 2026 Midwest Growth Partners</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+  '<div class="legal"><span class="lab">© 2026 Midwest Growth Partners</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top</a></div></footer>';
 }
 
 /* ================= ROUTER ================= */
@@ -1310,7 +1316,7 @@ var field=(function(){
       x.beginPath();for(var k=-11;k<12;k+=2.4){x.moveTo(k*u,-11*u);x.lineTo(k*u,-2.5*u)}x.strokeStyle=ink(.26);x.lineWidth=.7;x.stroke();
       x.beginPath();x.arc(-8*u,0,2*u,0,7);x.moveTo(10*u,0);x.arc(8*u,0,2*u,0,7);x.strokeStyle=ink(.8);x.stroke();x.restore()}}
   function geo(){vw=innerWidth;vh=innerHeight;mob=vw<861;W=vw;
-    if(mob){var band=Math.round(vh*.34);H=Math.max(band+30,Math.round(band*1.1));hz=H*.7;u=Math.max(.52,Math.min(.66,Math.min(W/560,band/420)));cx=W*.6}
+    if(mob){var band=Math.round(vh*.34);H=Math.max(band+30,Math.round(band*1.1));hz=H*.7;u=Math.max(.52,Math.min(.66,Math.min(W/560,band/420)));cx=W*.54}
     else{H=vh;hz=H*.58;u=Math.max(.72,Math.min(1.2,Math.min(W/1440,H/860)*1.02));cx=W*.7}}
   function size(){geo();dpr=Math.min(window.devicePixelRatio||1,2);cv.width=Math.round(vw*dpr);cv.height=Math.round(vh*dpr);build();if(!running)frame(true)}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -1359,7 +1365,7 @@ function mapSVG(mob){var P=MAP.P,o=[];
     o.push('<circle class="pr'+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="5"/><circle class="d'+cls+'" cx="'+p[0]+'" cy="'+p[1]+'" r="5.2"/>')})});
   var h=P.hq,om=P.oma;
   o.push('<circle class="oma" cx="'+om[0]+'" cy="'+om[1]+'" r="4.2"/><text class="omal" x="'+(om[0]-12)+'" y="'+(om[1]+22)+'" text-anchor="end">OMAHA</text>');
-  o.push('<path class="hq" d="M'+h[0]+' '+(h[1]-8)+'L'+(h[0]+8)+' '+h[1]+'L'+h[0]+' '+(h[1]+8)+'L'+(h[0]-8)+' '+h[1]+'Z"/><line class="ld" x1="'+(h[0]-10)+'" y1="'+(h[1]-3)+'" x2="'+(h[0]-54)+'" y2="'+(h[1]-14)+'"/><text class="hql" x="'+(h[0]-58)+'" y="'+(h[1]-9)+'" text-anchor="end">'+(mob?'HQ':'WEST DES MOINES · HQ')+'</text>');
+  o.push('<path class="hq" d="M'+h[0]+' '+(h[1]-10)+'L'+(h[0]+10)+' '+h[1]+'L'+h[0]+' '+(h[1]+10)+'L'+(h[0]-10)+' '+h[1]+'Z"/><line class="ld" x1="'+(h[0]-10)+'" y1="'+(h[1]-3)+'" x2="'+(h[0]-54)+'" y2="'+(h[1]-14)+'"/><text class="hql" x="'+(h[0]-58)+'" y="'+(h[1]-9)+'" text-anchor="end">'+(mob?'HQ':'WEST DES MOINES · HQ')+'</text>');
   FUNDS.forEach(function(F,fi){o.push('<g class="lb l'+fi+'">');F.L.forEach(function(L){var p=P[L[0]];o.push('<text x="'+(p[0]+L[2])+'" y="'+(p[1]+L[3])+'" text-anchor="'+L[4]+'">'+esc(L[1]).toUpperCase()+'</text>')});o.push('</g>')});
   FUNDS.forEach(function(F,fi){var c=fi===0?"c0":"c"+fi+"x";o.push(mob?'':'<g class="cap '+c+'"><rect x="24" y="540" width="330" height="62"/><text class="c1" x="44" y="566">'+F.c1+'</text><text class="c2" x="44" y="589">'+esc(F.c2)+'</text></g>')});
   return o.join("")}

@@ -621,6 +621,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#120e0b}}
 .light+.cta{border-top:1px solid rgba(18,14,11,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0!important}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0!important}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1212,7 +1218,7 @@ var field=(function(){
     var hz=mob?U*.72:h*.66;
     function X(d,m){return mob?w*m:side+cw*d}
     return {mob:mob,side:side,cw:cw,U:U,k:k,hz:hz,wb:mob?U:h,
-      crane:X(.75,.6),arma:X(.865,.83),hydro:X(.975,1.03),uni:X(.545,.16),tri:X(.64,.36),sun:X(.6,.42)};
+      f0:side+cw*.4,f1:side+cw*.52,crane:X(.75,.6),arma:X(.865,.83),hydro:X(.975,1.03),uni:X(.545,.16),tri:X(.64,.36),sun:X(.6,.42)};
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   /* --- the skyline, drawn once into its own layer so the river can mirror it --- */
@@ -1326,7 +1332,10 @@ var field=(function(){
     /* the quay wall */
     cg.fillStyle="#0a1a26";cg.fillRect(0,hz-k*.014,w,k*.014+2);
     cg.fillStyle="rgba(232,200,170,.12)";cg.fillRect(0,hz-k*.014,w,1);
-    for(var lx=k*.04;lx<w;lx+=k*.12){cg.fillStyle="#0a1a26";cg.fillRect(lx,hz-k*.05,Math.max(1,k*.0022),k*.036);LAMPS.push([lx,hz-k*.052])}
+    for(var lx=k*.04;lx<w;lx+=k*.12){if(!mob&&lx<G.f1)continue;cg.fillStyle="#0a1a26";cg.fillRect(lx,hz-k*.05,Math.max(1,k*.0022),k*.036);LAMPS.push([lx,hz-k*.052])}
+    /* desktop: the city fades out before the copy column, leaving clear dusk sky over water behind the text */
+    if(!mob){cg.save();cg.setTransform(dpr,0,0,dpr,0,0);cg.globalCompositeOperation="destination-out";var fo=cg.createLinearGradient(G.f0,0,G.f1,0);fo.addColorStop(0,"rgba(0,0,0,1)");fo.addColorStop(1,"rgba(0,0,0,0)");cg.fillStyle=fo;cg.fillRect(0,0,G.f1,hz+2);cg.restore();
+      WIN=WIN.filter(function(q){return q[0]>G.f0+(G.f1-G.f0)*.6})}
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
   var lastF=0;
@@ -1453,7 +1462,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

@@ -543,6 +543,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .scene .arc{fill:none;stroke:var(--accL);stroke-width:1.3;stroke-linecap:round}
 .scene .dot{fill:var(--accL)}
 .step h2.sh{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.03em;margin:0 0 16px}
+.scene .art *{vector-effect:non-scaling-stroke}
+.ph-head::before{background:radial-gradient(64% 80% at 18% 52%,rgba(var(--inkr),.92),rgba(var(--inkr),.6) 60%,rgba(var(--inkr),.2) 90%),linear-gradient(180deg,rgba(var(--inkr),.3),rgba(var(--inkr),0) 25%,rgba(var(--inkr),0) 70%,var(--ink) 100%)}
+.ftr .legal{background:var(--deep);box-shadow:0 0 0 100vmax var(--deep);clip-path:inset(0 -100vmax -100vmax -100vmax)}
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
 .pt{position:relative;display:block;width:calc((100% - 3 * var(--gap)) / 4);max-width:300px;min-width:0;color:inherit}
@@ -910,12 +913,12 @@ var AIMS=["Eine wertorientierte Strategie, die in erster Linie auf Gewinne aus d
 var ACTIVE=[
  ["KAP AG","Börsennotierte Industriegruppe mit Sitz in Fulda, die in drei Segmenten flexible Folien, Oberflächenlösungen für metallische Werkstoffe sowie technische Gewebe und Fäden entwickelt und produziert. Tempus Capital hält seit dem 21. August 2026 29,0 % der Aktien.","Börsennotiert · Industrie","Fulda, Hessen","https://www.kap.de/"]
 ];
-var SEGS=[["Flexible films","Beschichtete, flexible Folien für unterschiedlichste Anwendungen."],["Surface technologies","Oberflächenlösungen für metallische Werkstoffe."],["Engineered products","Technische Gewebe und Fäden mit chemischer und physikalischer Veredelung."]];
+var SEGS=[["Flexible Folien","Beschichtete, flexible Folien für unterschiedlichste Anwendungen."],["Oberflächentechnik","Oberflächenlösungen für metallische Werkstoffe."],["Technische Gewebe","Technische Gewebe und Fäden mit chemischer und physikalischer Veredelung."]];
 function P(slug,name,title,sum,rows){return {slug:slug,name:name,title:title,grp:"Geschäftsführung",img:"",mail:MAIL,sum:sum,rows:rows,bio:[sum]}}
 var SHEETS=[
- P("martin-herrmann","Martin Herrmann","Geschäftsführer","Vertretungsberechtigter Geschäftsführer · Frankfurt am Main",
+ P("martin-herrmann","Martin Herrmann","Geschäftsführer","Vertretungsberechtigter Geschäftsführer",
   [["Funktion","Vertretungsberechtigter Geschäftsführer der Tempus Capital GmbH."],["Gesellschaft","Tempus Capital ist eine inhabergeführte Private-Equity-Gesellschaft mit Sitz in Frankfurt am Main."]]),
- P("marco-moser","Marco Moser","Geschäftsführer","Vertretungsberechtigter Geschäftsführer · Frankfurt am Main",
+ P("marco-moser","Marco Moser","Geschäftsführer","Vertretungsberechtigter Geschäftsführer",
   [["Funktion","Vertretungsberechtigter Geschäftsführer der Tempus Capital GmbH und inhaltlich Verantwortlicher für die Website."],["Gesellschaft","Tempus Capital ist eine inhabergeführte Private-Equity-Gesellschaft mit Sitz in Frankfurt am Main."]])
 ];
 var GROUPS=[["Geschäftsführung",SHEETS]];
@@ -1059,7 +1062,7 @@ function vTeam(){
 }
 function vNews(){
   return head({k:"Aktuelles",h:'Aktuelle <em>Meldungen.</em>',p:'Pflichtmitteilungen zu unserer Beteiligung an der KAP&nbsp;AG, veröffentlicht über EQS.'})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap"><span class="lab kick" data-r>Mitteilungen</span>'+newsRows(NEWS)+'</div></section>'+cta();
+  '<section class="sec dark first" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick" data-r>Mitteilungen</span><h2 class="d2 split">Zur Beteiligung an der <em>KAP AG.</em></h2></div><p data-r>Veröffentlicht über EQS; die Links führen zu den Mitteilungen auf boerse-online.de.</p></div>'+newsRows(NEWS)+'</div></section>'+cta();
 }
 function fld(id,lab,type,req,w){return '<div class="fld'+(w?' w':'')+'"><label for="f-'+id+'">'+lab+(req?' *':'')+'</label>'+(type==="ta"?'<textarea id="f-'+id+'" name="'+id+'" rows="4"'+(req?' required aria-required="true"':'')+'></textarea>':'<input id="f-'+id+'" name="'+id+'" type="'+type+'"'+(req?' required aria-required="true"':'')+' autocomplete="'+(id==="email"?"email":id==="name"?"name":"organization")+'">')+'<i class="bar"></i><span class="err">Pflichtfeld</span></div>'}
 function vContact(){
@@ -1136,7 +1139,7 @@ var field=(function(){
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.34,w*.74):h;
-    var yb=mob?U*.66:h*.66,S=mob?Math.min(U*.6,w*.62):Math.min(h*.6,w*.4);
+    var yb=mob?U*.74:h*.66,S=mob?Math.min(U*.45,w*.5):Math.min(h*.6,w*.4);
     return {mob:mob,side:side,cw:cw,U:U,yb:yb,S:S,
       x0:mob?w*.0:side+cw*.53,x1:mob?w*1.0:w-side*.3,
       yr:mob?U:h*.86,yd:mob?U*.8:h*.775};
@@ -1203,11 +1206,11 @@ var field=(function(){
     TW.forEach(function(T){if(T[4]){var px=x0+T[0]*span,top=0;for(var i=1;i<T[2].length;i+=2)top=Math.max(top,T[2][i]);q.beginPath();q.moveTo(px,yb-top*S);q.lineTo(px,yb-T[4]*S);q.stroke()}});
     for(k=0;k<TW.length;k++)if(TW[k][1]===1)tower(TW[k],"#0c1834");
     /* old town in front: gabled roofs, the Kaiserdom's tower */
-    q.fillStyle="#0a1430";var Ro=rng(13);q.beginPath();q.moveTo(0,yb+1);
-    for(var ox=-10;ox<w+30;){var gw=S*(.03+Ro()*.04),gh=S*(.06+Ro()*.06);q.lineTo(ox,yb-gh*.6);q.lineTo(ox+gw*.5,yb-gh);q.lineTo(ox+gw,yb-gh*.6);ox+=gw+S*Ro()*.01}
+    q.fillStyle="#0a1430";var Ro=rng(13),oX=mob?-10:G.side+G.cw*.46;q.beginPath();q.moveTo(oX,yb+1);
+    for(var ox=oX;ox<w+30;){var gw=S*(.03+Ro()*.04),gh=S*(.06+Ro()*.06);q.lineTo(ox,yb-gh*.6);q.lineTo(ox+gw*.5,yb-gh);q.lineTo(ox+gw,yb-gh*.6);ox+=gw+S*Ro()*.01}
     q.lineTo(w+30,yb+1);q.closePath();q.fill();
     q.fillStyle="#1a1530";dom(q,x0+span*(mob?.2:.02)-(mob?0:S*.1),yb,S*(mob?.85:.8));
-    for(var d=0;d<(mob?30:80);d++){var dx=Ro()*w,dy=yb-S*(.01+Ro()*.05);l.fillStyle="rgba(255,206,150,"+(.4+Ro()*.4).toFixed(2)+")";l.fillRect(dx,dy,Math.max(1,S*.004),Math.max(1,S*.005))}
+    for(var d=0;d<(mob?30:80);d++){var dx=oX+Ro()*(w-oX),dy=yb-S*(.01+Ro()*.05);l.fillStyle="rgba(255,206,150,"+(.4+Ro()*.4).toFixed(2)+")";l.fillRect(dx,dy,Math.max(1,S*.004),Math.max(1,S*.005))}
     /* near side: the iron footbridge (deck, lattice, piers) and the dark Sachsenhausen quay */
     var C=mk(h+2),nq=C[1];oNear=C[0];var yd=G.yd,yr=G.yr,bx0=mob?-10:G.side+G.cw*.36,piers=mob?[w*.36,w*.78]:[bx0+(w-bx0)*.3,bx0+(w-bx0)*.72];
     nq.strokeStyle="#09112a";nq.fillStyle="#09112a";nq.lineWidth=Math.max(1,U*.003);
@@ -1221,8 +1224,7 @@ var field=(function(){
     piers.forEach(function(px){nq.fillRect(px-U*.006,yd,U*.012,(yr-yd)*.55)});
     /* the quay: a dark stone wall with a railing and lamp posts */
     if(!mob){var qy=yr;var qg=nq.createLinearGradient(0,qy,0,h);qg.addColorStop(0,"#0a1226");qg.addColorStop(1,"#070c1a");nq.fillStyle=qg;nq.fillRect(0,qy,w,h-qy+2);
-      nq.strokeStyle="rgba(150,166,210,.25)";nq.lineWidth=1;nq.beginPath();nq.moveTo(0,qy+.5);nq.lineTo(w,qy+.5);nq.stroke();
-      nq.strokeStyle="#0d1630";nq.beginPath();nq.moveTo(0,qy-U*.012);nq.lineTo(w,qy-U*.012);for(var rx=0;rx<w;rx+=U*.012){nq.moveTo(rx,qy-U*.012);nq.lineTo(rx,qy)}nq.stroke();
+            nq.strokeStyle="#0d1630";nq.beginPath();nq.moveTo(0,qy-U*.012);nq.lineTo(w,qy-U*.012);for(var rx=0;rx<w;rx+=U*.012){nq.moveTo(rx,qy-U*.012);nq.lineTo(rx,qy)}nq.stroke();
       nq.lineWidth=Math.max(1.2,U*.0022);nq.beginPath();for(var lx=G.side+G.cw*.45;lx<w;lx+=U*.11){nq.moveTo(lx,qy);nq.lineTo(lx,qy-U*.05)}nq.stroke()}
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
@@ -1262,7 +1264,6 @@ var field=(function(){
     c.fillStyle="rgba(255,206,140,"+(.18*lit).toFixed(3)+")";for(var rI=0;rI<5;rI++)c.fillRect(bxp-bl*.3+Math.sin(t*2+rI)*2,byp+bl*.05+rI*bl*.035,bl*.6,1);
     /* the bridge and quay */
     c.setTransform(1,0,0,1,0,0);c.drawImage(oNear,0,0);c.setTransform(D,0,0,D,0,0);
-    if(!mob){var Rl=rng(21);c.globalCompositeOperation="lighter";for(var lx=G.side+G.cw*.45;lx<w;lx+=U*.11){var ly=yr-U*.052,lg=c.createRadialGradient(lx,ly,0,lx,ly,U*.012);lg.addColorStop(0,"rgba(255,214,150,"+(.9*lit).toFixed(3)+")");lg.addColorStop(.25,"rgba(255,200,130,"+(.35*lit).toFixed(3)+")");lg.addColorStop(1,"rgba(255,206,140,0)");c.fillStyle=lg;c.fillRect(lx-U*.012,ly-U*.012,U*.024,U*.024)}c.globalCompositeOperation="source-over"}
     c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
@@ -1293,9 +1294,9 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
    draws the share scale (Tempus 29,0 %, Carlyle 16,5 %); step 3 draws the line from Frankfurt to Fulda. */
 function scene(){
   var mob=MOBILE(),fs=mob?24:13,ls=mob?.04:.14,T=function(x,y,s,cls,anc){return '<text x="'+x+'" y="'+y+'" class="'+(cls||"w")+'" text-anchor="'+(anc||"middle")+'" style="font-size:'+fs+'px;letter-spacing:'+ls+'em">'+s+'</text>'};
-  var o='<svg viewBox="0 '+(mob?0:30)+' 800 '+(mob?520:460)+'" aria-hidden="true">';
+  var o='<svg viewBox="0 0 800 '+(mob?510:470)+'" aria-hidden="true">';
   /* hills */
-  o+='<path class="hill" d="M0 214C90 180 170 196 250 176S420 150 520 172 690 160 800 182V330H0Z"/>';
+  o+='<g class="art" transform="matrix(1 0 0 1.35 0 -115.5)"><path class="hill" d="M0 214C90 180 170 196 250 176S420 150 520 172 690 160 800 182V330H0Z"/>';
   o+='<path class="hill2" d="M0 250C120 232 220 246 330 236S560 226 800 244"/>';
   /* Frankfurt, far off on the horizon */
   o+='<g class="far">';[[40,30],[48,44],[55,36],[62,52],[70,40],[78,34]].forEach(function(b){o+='<rect x="'+(b[0]-3)+'" y="'+(196-b[1])+'" width="6" height="'+b[1]+'"/>'});o+='<path d="M62 144V136"/></g>';
@@ -1310,19 +1311,19 @@ function scene(){
   halls.forEach(function(hl,i){var a=hl[0],b=hl[1],n=4,wd=(b-a)/n,p='M'+a+' 330V274';for(var k=0;k<n;k++){p+='L'+(a+k*wd+wd*.75)+' 248L'+(a+(k+1)*wd)+' 274'}p+='V330';
     o+='<g class="bld hall" id="hall'+i+'"><path d="'+p+'"/>';for(var k2=0;k2<n;k2++)o+='<path class="gl" d="M'+(a+k2*wd+wd*.75)+' 252V274"/>';
     for(var r=0;r<7;r++)o+='<path class="win" d="M'+(a+10+r*(b-a-20)/7)+' 292h'+((b-a-20)/7-6)+'"/>';o+='<path d="M'+(a+(b-a)/2-14)+' 330V306H'+(a+(b-a)/2+14)+'V330"/></g>'});
-  o+='<g class="bld"><path d="M742 330V150H752V330"/><path d="M742 170H752M742 190H752"/></g>';
-  o+='<path class="ground" d="M0 330H800"/>';
+  o+='<g class="bld"><path d="M778 330V150H788V330"/><path d="M778 170H788M778 190H788"/></g>';
+  o+='<path class="ground" d="M0 330H800"/></g>';
   /* step 1: segment names + firm label */
-  o+='<g id="scS1">'+T(375,mob?372:360,"FOLIEN")+T(535,mob?372:360,mob?"OBERFLÄCHE":"OBERFLÄCHEN")+T(695,mob?372:360,"TEXTILIEN")+T(560,214,"KAP AG · FULDA","a")+'</g>';
+  o+='<g id="scS1">'+T(375,mob?372:360,"FOLIEN")+T(535,mob?400:360,"OBERFLÄCHEN")+T(695,mob?372:360,"TEXTILIEN")+T(640,196,"KAP AG · FULDA","a")+'</g>';
   /* step 2: the share scale */
   var sx=40,sw=720,sy=mob?430:418;
   o+='<g id="scS2"><path class="rule" d="M'+sx+' '+sy+'H'+(sx+sw)+'"/>';
   for(var t=0;t<=100;t++){var x=sx+sw*t/100,len=t%10?5:t%50?9:13;o+='<path class="tick" d="M'+x.toFixed(1)+' '+sy+'v'+len+'"/>'}
   o+='<rect class="tp" id="scTp" x="'+sx+'" y="'+(sy-9)+'" width="'+(sw*.29)+'" height="8"/>';
   o+='<rect class="cy" id="scCy" x="'+(sx+sw*.29)+'" y="'+(sy-9)+'" width="'+(sw*.165)+'" height="8"/>';
-  o+=T(sx,sy+(mob?46:34),"TEMPUS 29,0 %","a","start")+T(sx+sw*.29+8,sy+(mob?76:34),"CARLYLE 16,5 %","w","start")+T(sx+sw,sy+(mob?46:34),"100 %","w","end")+'</g>';
+  o+=T(sx,sy+(mob?46:34),"TEMPUS 29,0 %","a","start")+T(sx+sw*.29+(mob?18:8),sy+(mob?46:34),"CARLYLE 16,5 %","w","start")+T(sx+sw,sy+(mob?46:34),"100 %","w","end")+'</g>';
   /* step 3: Frankfurt to Fulda */
-  o+='<g id="scS3"><path class="arc" id="scArc" d="M62 132C150 30 420 20 535 244"/><circle class="dot" cx="535" cy="244" r="4"/>'+T(14,mob?118:122,"FRANKFURT","w","start")+T(300,mob?56:52,"GOVERNANCE IM DIALOG","a")+'</g>';
+  o+='<g id="scS3"><path class="arc" id="scArc" d="M62 66C140 -6 380 -6 468 214"/><circle class="dot" cx="468" cy="214" r="4"/>'+T(14,mob?208:200,"FRANKFURT","w","start")+T(250,mob?22:16,"GOVERNANCE IM DIALOG","a")+'</g>';
   return o+'</svg>';
 }
 function storyDraw(svg){

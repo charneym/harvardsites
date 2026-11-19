@@ -71,3 +71,9 @@ Meaningful images found: 4.
 - UNUSED: service-page images (wsimg isteam/getty/…) — Getty stock, off-topic.
 - UNUSED: career image "Healthcare team stacking hands" (stock) — generic stock.
 - Logo JPEG: re-drawn as inline SVG (white box background cannot sit on the dark header).
+
+## Home-only rebuild (2026-11-19, HOME_BRIEF)
+- Replaced the multi-page site at /athna-biotech/ with the home-only format on the Firelight engine (src assembled by region; regions from this dossier and the previous Athna src).
+- Live site re-sampled 2026-11-19 (GoDaddy template): text #1b1b1b, theme accent (headings, active nav) dusty rose #8f6e6e, white ground; logo crimson #c01830 + black. Accent stays the logo crimson; --stoneD #6a5859 is a dark shade of the live site's dusty rose (labels on bone).
+- Hero: the AB-002 nanoparticle (rock-salt lattice of Na+/Cl- in a lipid coat) dissolving; no pointer tilt (CZ). Story: the bladder lining canvas (instill, enter, dissolve, lyse, clear).
+- Nav (Technology / Pipeline / Team / News / Contact) scrolls to sections on the home page.

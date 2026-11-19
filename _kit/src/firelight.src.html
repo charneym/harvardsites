@@ -597,7 +597,11 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#120e0b}}
 .light+.cta{border-top:1px solid rgba(18,14,11,.12)}
 .ps.noimg .ps-col{overflow:visible}
-.ps-body .ctc{padding-bottom:6px}
+.ps-body .ctc{padding:18px 0 6px}
+.ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
+#field{transition:opacity .9s ease-out,transform .6s var(--eo)}
+@media (min-width:1025px){.ind.c4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (min-width:641px) and (max-width:1024px){.ind.c4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .scene .flm{fill:var(--accL);opacity:.9}
 .scene svg.mob text{font-size:12.5px;letter-spacing:.04em}.scene svg.mob text.big{font-size:12px;letter-spacing:.16em}
 .scene text{font-size:12px}
@@ -751,7 +755,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 /*<R:views>*//* ================= VIEWS ================= */
 function grid(groups){return groups.map(function(g){return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+mhList(g[1])+'</div>'}).join("")}
 function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span><span class="lab" style="display:block;opacity:.85">'+esc(c[3])+'</span></p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
-function cats(){return '<ul class="ind">'+CATS.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
+function cats(){return '<ul class="ind c4">'+CATS.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
 function crit(){return '<dl class="facts">'+
     '<div><dt class="lab">Revenue</dt><dd>$25 million to $100 million.</dd></div>'+
@@ -1026,7 +1030,7 @@ var field=(function(){
     for(var pi=0;pi<G.palms.length;pi++)palm(G.palms[pi],t);
     /* friends round the fire: a couple on the left, one roasting over the flames, one leaning back on the right, one standing */
     var ps=F*(G.mob?1.25:1.32);
-    figure("stand",fx-F*3.7,fy-F*.7,ps*.9,1,fl*.6);
+    figure("stand",fx+F*.6,fy-F*.95,ps*.74,-1,fl*.55);
     figure("hug",fx-F*2.55,fy-F*.05,ps,1,fl*.85);
     figure("roast",fx-F*1.75,fy+F*.3,ps*1.04,1,fl);
     figure("lean",fx+F*2.35,fy+F*.15,ps,-1,fl);
@@ -1057,7 +1061,8 @@ var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]})
 function chkField(){var any=$$("[data-field]").some(function(el){var r=el.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight});any?field.start():field.stop()}
 function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function(el){fieldIO.observe(el)})}
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
-function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.78)*(1-p*.5));field.setScroll(p)}
+function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.78)*(1-p*.5));field.setScroll(p);var fs=(curKey!=="home"&&!MOBILE())?"translateY(-17vh)":"";if(FCV.style.transform!==fs)FCV.style.transform=fs}
+var FCV=$("#field");
 
 /* ================= HOME SCROLL ================= */
 function lerp(a,b,t){return a+(b-a)*t}

@@ -562,7 +562,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:1024px){.story-r{height:50vh;height:50svh}.story-pin{padding-top:76px}}
 .ftr .fcv{opacity:.3}
 @media (min-width:1025px){.story-pin{grid-template-columns:minmax(0,4fr) minmax(0,8fr)}.story-r{height:min(80vh,740px)}}
-@media (max-width:560px){.pf li>p:first-of-type{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}}
+.ps-col{overflow:visible}
+.pf .pn{display:block;font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.9vw,30px);line-height:1.12;letter-spacing:-.02em;margin:0}
+@media (max-width:860px){.hero-h{font-size:clamp(36px,10.4vw,96px)}}
 
 /* portrait grid (CI) */
 .pg{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(30px,3vw,44px) var(--gap)}
@@ -962,7 +964,7 @@ function grid(groups){return groups.map(function(g){return '<div class="grp">'+(
 function ptile(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" onerror="this.parentNode.classList.add(\'noph\')"><span class="ini" aria-hidden="true">'+esc(p.name.replace(/,.*$/,"").split(" ").filter(function(x){return /^[A-Z][a-z]/.test(x)}).map(function(x){return x[0]}).join(""))+'</span><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}
 function added(c){return MO[c.m-1]+" "+c.y}
 function locs(l){return l.length?esc(l[0])+(l.length>1?" and "+(l.length-1)+" more":""):"United States"}
-function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c.n)+'</h3><p>'+esc(c.d)+'</p><p><span class="lab" style="display:block">'+esc(c.i)+'</span><span class="lab" style="display:block;opacity:.85">'+locs(c.l)+'</span></p><div class="w">'+(c.u?'<a class="ul" href="'+c.u+'" target="_blank" rel="noopener" aria-label="'+esc(c.n)+' website">Website '+ARR+'</a>':'<span class="lab">Added '+added(c)+'</span>')+'</div></li>'}).join("")+'</ul>'}
+function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><b class="pn" role="heading" aria-level="3">'+esc(c.n)+'</b><p>'+esc(c.d)+'</p><p><span class="lab" style="display:block">'+esc(c.i)+'</span><span class="lab" style="display:block;opacity:.85">'+locs(c.l)+'</span></p><div class="w">'+(c.u?'<a class="ul" href="'+c.u+'" target="_blank" rel="noopener" aria-label="'+esc(c.n)+' website">Website '+ARR+'</a>':'<span class="lab">Added '+added(c)+'</span>')+'</div></li>'}).join("")+'</ul>'}
 function byYear(){var Y={},ys=[];ACT.forEach(function(c){if(!Y[c.y]){Y[c.y]=[];ys.push(c.y)}Y[c.y].push(c)});
   var early=ys.filter(function(y){return y<2019}),out=ys.filter(function(y){return y>=2019}).map(function(y){return [String(y),Y[y]]});
   if(early.length)out.push([early[early.length-1]+"–"+early[0],[].concat.apply([],early.map(function(y){return Y[y]}))]);return out}

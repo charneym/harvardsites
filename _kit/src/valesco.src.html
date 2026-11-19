@@ -681,6 +681,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ex li{width:calc((100% - 3 * var(--gap)) / 4)}
 @media (max-width:1024px){.ex li{width:calc((100% - var(--gap)) / 2)}}
 @media (max-width:640px){.ex li{width:100%}}
+.pt .ph{display:block}
+@media (min-width:861px){.ph-head .d1{font-size:clamp(50px,6.4vw,124px);max-width:min(100%,calc(var(--maxw) * .45))}}
 
 </style>
 </head>
@@ -902,7 +904,7 @@ function vHome(){
   '<section class="sec light" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Where we invest</span><h2 class="d2 split">Three sectors, <em>one focus.</em></h2></div><p data-r>Growth-oriented small and lower middle-market businesses headquartered in the United States, preferably family and founder owned and operated.</p></div>'+
    ind(SEC)+
-   '<div class="nums n4" style="margin-top:clamp(48px,5vw,80px)">'+[["$15–100M","Annual revenue"],["$4M<sup>+</sup>","Minimum cash flow, with a history of profitability"],["U.S.","Headquartered in the United States"],["3","Ways to invest: majority, minority or subordinated debt"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div>'+
+   '<div class="nums n4" style="margin-top:clamp(48px,5vw,80px)">'+[["$15–100M","Annual revenue"],["$4M+","Minimum cash flow, with a history of profitability"],["U.S.","Headquartered in the United States"],["3","Ways to invest: majority, minority or subordinated debt"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div>'+
    '<div style="margin-top:clamp(48px,5vw,72px)" data-r><a class="btn" href="#/criteria">Investment criteria '+ARR+'</a></div>'+
   '</div></section>'+
 
@@ -955,7 +957,7 @@ function vCriteria(){
   '</div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap">'+
    '<div class="two"><div><span class="lab kick" data-r>By the numbers</span><h2 class="d3 split">The scale <em>we work at.</em></h2></div>'+
-   '<div><div class="nums n3">'+[["$15–100M","Annual revenue of the businesses we invest in"],["$4M<sup>+</sup>","Minimum cash flow, with a history of profitability"],["$434M","Valesco Fund III commitments, above its $375M target"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div>'+
+   '<div><div class="nums n3">'+[["$15–100M","Annual revenue of the businesses we invest in"],["$4M+","Minimum cash flow, with a history of profitability"],["$434M","Valesco Fund III commitments, above its $375M target"]].map(function(n){return '<div data-r><b>'+n[0]+'</b><span>'+n[1]+'</span></div>'}).join("")+'</div>'+
    '<p class="muted excl" data-r>Valesco’s history is filled with investments in underserved communities, diverse workforces and female or minority owned and operated businesses.</p></div></div>'+
   '</div></section>'+cta();
 }
@@ -1039,10 +1041,10 @@ var field=(function(){
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?h*.34:h;
-    var hz=mob?U*.66:h*.66;                     /* the city's base line */
+    var hz=mob?U*.66:h*.7;                     /* the city's base line */
     var u=mob?U*.00155:Math.min(h*.00146,w*.00098); /* pixels per metre of tower height */
     var x0=mob?-w*.02:side+cw*.5,x1=mob?w*1.02:w+side*.3; /* the skyline's span */
-    var deck=mob?U*.88:h*.83;
+    var deck=mob?U*.88:h*.9;
     return {mob:mob,side:side,cw:cw,U:U,hz:hz,u:u,x0:x0,x1:x1,deck:deck,
       ax0:mob?w*.1:side+cw*.56,ax1:mob?w*.9:side+cw*.98,ah:mob?U*.3:h*.25,bot:mob?U:h};
   }
@@ -1283,6 +1285,8 @@ function homeScroll(view){
   var fx=StoryFX({section:sec,figs:[],steps:steps});
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p,pre.v)});
   ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  /* a refresh after the pin can fire onUpdate at 0 and restore the timeline silently: redraw from its real progress */
+  var upd0=tl.eventCallback("onUpdate");ScrollTrigger.addEventListener("refresh",function(){if(prog.isConnected)setTimeout(function(){if(prog.isConnected)upd0()},0)});
 }
 
 /* ================= HEADER ================= */

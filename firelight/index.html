@@ -601,6 +601,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:860px){.fieldbg{background:#120e0b}}
 .light+.cta{border-top:1px solid rgba(18,14,11,.12)}
 .ps.noimg .ps-col{overflow:visible}
+/* DE: boxed corners everywhere */
+.btn,.btn::before,.burger,.ps-sheet,.ps-media,.pp .ph,.pt .ph,.fld input,.fld textarea,.formwrap,.thanks{border-radius:0!important}
+@media (max-width:760px){.ps-sheet,.ps-media{border-radius:0!important}}
+/* DF: the footer echo of the scene stays dim and low-right, so every glyph of the wordmark keeps >=4.5:1 */
+.ftr .fcv{opacity:.3!important}
+.ftr .bigsvg{position:relative;z-index:1}
 .ps-body .ctc{padding:18px 0 6px}
 .ps-body .ctc a{font:400 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 #field{transition:opacity .9s ease-out,transform .6s var(--eo)}
@@ -1260,15 +1266,15 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 var SC_PE=["GROWTH CAPITAL","FLEXIBLE STRUCTURE","FINANCIAL EXPERTISE","OPERATIONAL EXPERTISE","SENIOR ADVISORS","CONSUMER TRACK RECORD","EXECUTIVE NETWORK"];
 var SC_BM=["MARKETING & BRANDING","DIGITAL & E-COMMERCE","LIFESTYLE & LICENSING","TREND FORECASTING","PUBLIC RELATIONS","MARKETPLACE SEEDING"];
 function scTags(list,x,cls){var n=list.length,y0=250-(n-1)*28;return list.map(function(t,i){var y=y0+i*56,jx=x<400?x+234:x;
-  return '<g class="'+cls+'"><path class="join sJ" d="M'+jx+' '+y+'C'+(x<400?jx+50:jx-50)+' '+y+' '+(x<400?300:500)+' 250 '+(x<400?312:488)+' 250"/><rect class="tag" x="'+x+'" y="'+(y-19)+'" width="234" height="38" rx="19"/><text x="'+(x+117)+'" y="'+(y+4.5)+'" text-anchor="middle" class="w">'+t.replace("&","&amp;")+'</text></g>'}).join("")}
+  return '<g class="'+cls+'"><path class="join sJ" d="M'+jx+' '+y+'C'+(x<400?jx+50:jx-50)+' '+y+' '+(x<400?300:500)+' 250 '+(x<400?312:488)+' 250"/><rect class="tag" x="'+x+'" y="'+(y-19)+'" width="234" height="38" rx="2"/><text x="'+(x+117)+'" y="'+(y+4.5)+'" text-anchor="middle" class="w">'+t.replace("&","&amp;")+'</text></g>'}).join("")}
 /* phones get a vertical layout of the same scene, so every label stays legible (the wide one would shrink to ~5px type) */
 function sceneMob(){
   function col(list,x,cls,head,hx){return '<g id="'+(cls==="sP"?"scPE":"scBM")+'">'+list.map(function(t,i){var y=200+i*36,ex=cls==="sP"?x+194:x;
-    return '<g class="'+cls+'"><path class="join sJ" d="M'+ex+' '+y+'H200V136"/><rect class="tag" x="'+x+'" y="'+(y-14)+'" width="194" height="28" rx="14"/><text x="'+(x+97)+'" y="'+(y+4.5)+'" text-anchor="middle" class="w">'+t.replace("&","&amp;")+'</text></g>'}).join("")+'<text x="'+hx+'" y="168" text-anchor="middle" class="a">'+head+'</text></g>'}
+    return '<g class="'+cls+'"><path class="join sJ" d="M'+ex+' '+y+'H200V136"/><rect class="tag" x="'+x+'" y="'+(y-14)+'" width="194" height="28" rx="2"/><text x="'+(x+97)+'" y="'+(y+4.5)+'" text-anchor="middle" class="w">'+t.replace("&","&amp;")+'</text></g>'}).join("")+'<text x="'+hx+'" y="168" text-anchor="middle" class="a">'+head+'</text></g>'}
   return '<svg class="mob" viewBox="0 0 400 446" aria-hidden="true">'+col(SC_PE,2,"sP","PRIVATE EQUITY",99)+col(SC_BM,204,"sB","BRANDING &amp; MARKETING",301)+
    '<g id="scFd"><path class="join" id="scFj1" d="M144 78H114"/><path class="join" id="scFj2" d="M256 78H286"/>'+
-    '<rect class="tag" x="2" y="64" width="112" height="28" rx="14"/><text x="58" y="82.5" text-anchor="middle" class="w">FOUNDERS</text>'+
-    '<rect class="tag" x="286" y="64" width="112" height="28" rx="14"/><text x="342" y="82.5" text-anchor="middle" class="w">MANAGEMENT</text></g>'+
+    '<rect class="tag" x="2" y="64" width="112" height="28" rx="2"/><text x="58" y="82.5" text-anchor="middle" class="w">FOUNDERS</text>'+
+    '<rect class="tag" x="286" y="64" width="112" height="28" rx="2"/><text x="342" y="82.5" text-anchor="middle" class="w">MANAGEMENT</text></g>'+
    '<circle class="wrapf" id="scRing" cx="200" cy="78" r="70"/>'+
    '<g id="scCo"><circle class="co" cx="200" cy="78" r="56"/><path class="flm" d="M200 40c6 10 13 16 13 26a13 13 0 0 1-26 0c0-7 4-10 6-17 4 4 4 7 7 9 1-7 0-11 0-18z"/><text x="200" y="104" text-anchor="middle" class="big">THE BRAND</text></g></svg>';
 }
@@ -1278,8 +1284,8 @@ function scene(){
    '<g id="scPE">'+scTags(SC_PE,6,"sP")+'<text x="123" y="36" text-anchor="middle" class="a">PRIVATE EQUITY</text></g>'+
    '<g id="scBM">'+scTags(SC_BM,560,"sB")+'<text x="677" y="64" text-anchor="middle" class="a">BRANDING &amp; MARKETING</text></g>'+
    '<g id="scFd"><path class="join" id="scFj1" d="M400 162V120"/><path class="join" id="scFj2" d="M400 338V380"/>'+
-    '<rect class="tag" x="322" y="82" width="156" height="38" rx="19"/><text x="400" y="106" text-anchor="middle" class="w">FOUNDERS</text>'+
-    '<rect class="tag" x="322" y="380" width="156" height="38" rx="19"/><text x="400" y="404" text-anchor="middle" class="w">MANAGEMENT</text></g>'+
+    '<rect class="tag" x="322" y="82" width="156" height="38" rx="2"/><text x="400" y="106" text-anchor="middle" class="w">FOUNDERS</text>'+
+    '<rect class="tag" x="322" y="380" width="156" height="38" rx="2"/><text x="400" y="404" text-anchor="middle" class="w">MANAGEMENT</text></g>'+
    '<circle class="wrapf" id="scRing" cx="400" cy="250" r="104"/>'+
    '<g id="scCo"><circle class="co" cx="400" cy="250" r="88"/>'+
     '<path class="flm" d="M400 196c8 14 18 22 18 36a18 18 0 0 1-36 0c0-9 6-14 8-23 5 6 6 10 9 12 2-9 1-15 1-25z"/>'+
@@ -1333,7 +1339,7 @@ function hdrTheme(){
 function footCopy(){var f=$(".ftr .fcv");if(!f)return;var r=f.getBoundingClientRect();if(r.bottom<=0||r.top>=innerHeight)return;
   var src=$("#field"),d=Math.min(devicePixelRatio||1,2),W=Math.round(r.width*d),H=Math.round(r.height*d);if(!src.width)return;if(f.width!==W||f.height!==H){f.width=W;f.height=H}
   var c=f.getContext("2d"),sw=src.width,sh=src.height,sd=sw/(document.documentElement.clientWidth||innerWidth),fc=field.focus(),k=Math.max(W/sw,H/sh)*1.02;c.clearRect(0,0,W,H);
-  var ox=Math.min(0,Math.max(W-sw*k,W*.84-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.42-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
+  var ox=Math.min(0,Math.max(W-sw*k,W*.9-fc[0]*sd*k)),oy=Math.min(0,Math.max(H-sh*k,H*.8-fc[1]*sd*k));c.drawImage(src,ox,oy,sw*k,sh*k)}
 var _hf=0;gsap.ticker.add(function(){fieldScroll();if((++_hf&1)===0)footCopy();if((_hf&7)===0)hdrTheme()});
 addEventListener("scroll",hdrTheme,{passive:true});
 hdr.addEventListener("focusin",function(){hdr.classList.remove("hide");lastSY=window.scrollY});

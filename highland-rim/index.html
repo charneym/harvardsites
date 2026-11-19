@@ -677,6 +677,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .hero{padding-top:calc(42svh + 8px);justify-content:flex-start}
 }
 .ph-head{min-height:78vh;min-height:78svh}
+@media (min-width:861px){.sec.first{padding-top:calc(var(--sec) + 100px)}}
 </style>
 </head>
 </head>
@@ -958,7 +959,7 @@ var ACTIVE=[
  ["I-Deal Optics","Founded in 1996, I-Deal Optics is a value-added distributor and designer of prescription eyewear and sunwear frames, selling to about 4,000 mostly private eyecare professionals nationwide.","Value-add distribution","Troy, Michigan · May 2024","https://www.i-dealoptics.com/"]
 ];
 var IMG="https://highlandrimcap.com/wp-content/uploads/";
-function P(slug,name,title,grp,img,bio){return {slug:slug,name:name,title:title,grp:grp,img:img?IMG+img:"",sum:bio[0].split(". ")[0]+".",rows:[["Background",bio[0]],["Earlier career",bio[1]]],bio:bio}}
+function P(slug,name,title,grp,img,bio){return {slug:slug,name:name,title:title,grp:grp,img:img?IMG+img:"",small:1,sum:bio[0].split(". ")[0]+".",rows:[["Background",bio[0]],["Earlier career",bio[1]]],bio:bio}}
 var SHEETS=[
  P("chris-godwin","Chris Godwin","Partner & Co-founder","Partners","2022/10/Highland-Rim-Team-Chris-Godwin.jpg",["Chris is a Partner and co-founder of Highland Rim Capital. Previously he was a Managing Director at Gen Cap America, a Nashville-based lower middle market private equity firm, where he spent 16 years and served on the boards of 14 lower middle market businesses in light manufacturing, value-add distribution and business services.","Before that he was with Draupnir, LLC, a lower middle market private equity firm, and Arthur Andersen Business Consulting, and began his career in equity research at J.C. Bradford & Co. Chris holds a BA from Rhodes College and an MBA from the University of Texas, and is a CFA charterholder."]),
  P("mark-isaacs","Mark Isaacs","Partner & Co-founder","Partners","2024/06/Highland-Rim-Team-Mark-Issacs-04.jpg",["Mark is a Partner and co-founder of Highland Rim Capital. Previously he was a Managing Director at Gen Cap America, where he spent 14 years and served on the boards of 10 lower middle market businesses in light manufacturing, value-add distribution and business services.","Before that he was with First Avenue Partners, a private equity firm focused on control buyouts and growth equity, and Richland Ventures, an expansion-stage venture firm. He began his career in public accounting with Deloitte & Touche and Arthur Andersen. Mark holds a BS from Washington and Lee University and an MBA from Northwestern's Kellogg School of Management, and is a licensed CPA (inactive)."]),
@@ -981,13 +982,13 @@ function head(o){
   '<h1 class="d1" id="pageTitle" tabindex="-1">'+o.h+'</h1>'+
   (o.p?'<p class="lede intro" data-r>'+o.p+'</p>':'')+'</section>';
 }
-function newsRows(list){return '<ul class="rows">'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
+function newsRows(list){return '<ul class="rows" data-r>'+list.map(function(n){return '<li><a class="row-a" href="'+n.u+'" target="_blank" rel="noopener"><span class="nm"><time class="lab" datetime="'+n.d+'">'+fd(n.d)+'</time><span class="lab">'+esc(n.s)+'</span></span><h3>'+esc(n.t)+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function pBy(s){for(var i=0;i<SHEETS.length;i++)if(SHEETS[i].slug===s)return i;return -1}
 function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum||"")+'</span>';return '<li><a class="mh-row" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile">'+i+'<span class="mh-arrow" aria-hidden="true">→</span></a></li>'}
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS ================= */
-function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg">'+g[1].map(function(p){return '<a class="pt" href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
+function grid(groups){return groups.map(function(g){var photo=g[1].some(function(p){return p.img});return '<div class="grp"><span class="lab grp-l">'+esc(g[0])+'</span>'+(photo?'<div class="pg">'+g[1].map(function(p){return '<a class="pt" data-r href="#/team/'+p.slug+'" data-person aria-label="'+esc(p.name)+', '+esc(p.title)+'. Open profile"><div class="ph"><img src="'+p.img+'" alt="Portrait of '+esc(p.name)+'" onerror="this.parentNode.classList.add(\'noph\')"><span class="go" aria-hidden="true">'+ARR+'</span></div><h3><span>'+esc(p.name)+'</span></h3><p>'+esc(p.title)+'</p></a>'}).join("")+'</div>':mhList(g[1]))+'</div>'}).join("")}
 function pf(list){return '<ul class="pf">'+list.map(function(c){return '<li><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><p><span class="lab" style="display:block">'+esc(c[2])+'</span>'+c[3].split(" · ").map(function(x){return '<span class="lab" style="display:block;opacity:.85">'+esc(x)+'</span>'}).join("")+'</p><div class="w"><a class="ul" href="'+c[4]+'" target="_blank" rel="noopener">Website '+ARR+'</a></div></li>'}).join("")+'</ul>'}
 function inds(){return '<ul class="ind">'+IND.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}
 function secs(){return '<ul class="ind c4">'+SEC.map(function(c){return '<li>'+esc(c)+'</li>'}).join("")+'</ul>'}

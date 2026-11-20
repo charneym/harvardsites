@@ -1,7 +1,7 @@
 /* LAYOUT FIT (coordinator phase 2, 2026-11-20; client on /finatem/ at ~1920: "too narrow and leave way too much white space ... maybe their text should be smaller on smaller dimensions?")
    Shared by every home-only site (bundled with "buildout" in build.js). Runs in <head> order before the site's script, so the CSS is in place before any text is split.
    1. Wide screens: the content container grows from 1320px to ~1600px between 1500 and 2000px of viewport.
-   2. The large serif statement (.mani) sits on the grid (left edge = grid left, ~2/3 width) and scales with the viewport.
+   2. The large serif statement (.mani) spans the full grid width on desktop and scales with the viewport.
    3. Display type eases at 1024-1366 and on phones; the hero H1 stops growing at ~1700px.
       H1 / stat / section-heading sizes are min(site's own size, shared curve), so a site tuned smaller stays smaller.
       The site's own rules (and their @media variants) are read from the CSSOM and mirrored, so per-site tuning keeps working.
@@ -39,7 +39,7 @@ function build(){var css=
   /* 2. the statement on the grid, ~2/3 wide, scaling with the viewport */
   ".mani .mani-in{width:auto;max-width:none;margin-left:0;margin-right:0}"+
   ".mani .txt{font-size:clamp(28px, 2.8vw + 6px, 76px)!important;max-width:none;text-wrap:pretty}"+
-  "@media (min-width:1100px){.mani .mani-in{display:grid;grid-template-columns:1fr 2fr;column-gap:clamp(32px,4vw,80px);align-items:start}.mani .mani-in>*{grid-column:2}.mani .mani-in>.lab,.mani .mani-in>.kick{grid-column:1;padding-top:.85em}.mani .txt{max-width:none!important;font-size:clamp(28px, 2.1vw + 8px, 60px)!important}}"+
+  "@media (min-width:1100px){.mani .txt{max-width:none!important;width:100%;font-size:clamp(32px, 2.5vw + 12px, 68px)!important;line-height:1.16}}"+
   /* 3. gentler display type; the hero H1 caps out */
   minRules("html body .hero h1.d1, html body .hero .hero-h",F.h1,CURVE.h1)+
   minRules("html body .ph-head h1.d1",F.ph,CURVE.h1)+

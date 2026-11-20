@@ -20,8 +20,8 @@ var field=(function(){
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861,U=mob?Math.min(h*.45,w*1.1):h,ih,iw,cx,cy;
-    if(!mob){ih=h*1.06;iw=ih*IR;if(iw>cw*.56){iw=cw*.56;ih=iw/IR}cx=side+cw*.76;cy=h*.5}
-    else{iw=w*1.12;ih=iw/IR;cx=w*.56;cy=(64+U)/2+ih*.1}
+    if(!mob){ih=h*.92;iw=ih*IR;if(iw>cw*.56){iw=cw*.56;ih=iw/IR}cx=side+cw*.76;cy=Math.max(h*.5,ih*.5+h*.1)} /* QA: the surgical lamp at the photo top keeps ~10% headroom below the nav instead of running off the top */
+    else{iw=w*1.12;ih=iw/IR;cx=w*.56;cy=(64+U)/2+ih*.25}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,cx:cx,cy:cy,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}

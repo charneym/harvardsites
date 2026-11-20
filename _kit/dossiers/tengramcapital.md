@@ -34,4 +34,11 @@
 ## Rev 2 / HOME_BRIEF update 2026-11-20 (part 1)
 - Town and trees fade out between 60% and 72% of the width on desktop, so the H1 and lede sit on clean sky and water (coordinator review).
 - Nav items Approach / Criteria / Portfolio / Team / News open build-out pages at #/more/<item> via the kit module (_kit/lib/buildout.js, "buildout" added to @libs in assemble.py): eyebrow "Concept preview", H1 "<Item>, built out.", the brief's copy, "Back to the home page" and "Or keep scrolling the concept". Contact and the home CTAs still scroll. Gate: buildout-test.js OK (10 nav clicks, 1440 + 390).
-- Part 2 (photography-first hero) not applied in this pass: the coordinator asked for part 1 only. The site has no usable own photography (only a stock suit-jacket slideshow and brand-logo tiles), so (b), an Unsplash/Pexels photo of Westport's Saugatuck riverfront, would be the route if requested.
+
+## Rev 3 (HOME_BRIEF update part 2: photography-first hero)
+- (a) impossible: the firm's own imagery is a stock suit-jacket slideshow and brand-logo tiles.
+- (b) place: no free Unsplash/Pexels photo of Westport, CT exists (checked Unsplash westport-connecticut, westport-ct, saugatuck-river, compo-beach; Pexels westport connecticut / westport ct: results are Saugatuck MI, Westport Ireland, Stamford/Norwalk, WA/OR or Unsplash+). Real Westport photos are only on Getty/iStock/Shutterstock/Dreamstime/Wikimedia (excluded).
+- Coordinator chose option A: a real photo of the firm's SUBJECT (consumer brands), not labelled as Westport.
+- Hero photo: "Elegant Boutique Storefront at Night", Gizem Erol, Pexels License (free, commercial use, modification allowed). Source: https://www.pexels.com/photo/elegant-boutique-storefront-at-night-32561585/ (downloaded at 2400x1600 from images.pexels.com/photos/32561585/).
+- Edits (offline, PIL): third-party store name "BEST COLLECTION" removed from the awning (column interpolation of the plain fabric); window and door interiors softened with a feathered Gaussian blur (shallow-focus look) so no brand on posters/garments is legible; graded toward Tengram navy (#0e1a24 shadows, slight desaturation, gentle contrast). Saved as tengramcapital/hero.jpg (382 KB).
+- Drawn in field.js with a slow Ken Burns drift (~48s cycle); desktop: photo frames the right ~56% and feathers into the ink so the H1/lede column is clean; phones: top band fading into the page. The painted Westport riverfront is retired.

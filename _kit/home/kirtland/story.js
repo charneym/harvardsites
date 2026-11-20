@@ -13,10 +13,10 @@ function pzPath(r,c,s){var H=[[1,-1,1],[-1,1,-1]],V=[[1,-1],[-1,1],[1,-1]],h=s/2
   var kt=r?-H[r-1][c]:0,kb=r<2?H[r][c]:0,kr=c<2?V[r][c]:0,kl=c?-V[r][c-1]:0;
   return "M"+(-h)+" "+(-h)+pzEdge([-h,-h],[h,-h],[0,-1],kt,s)+pzEdge([h,-h],[h,h],[1,0],kr,s)+pzEdge([h,h],[-h,h],[0,1],kb,s)+pzEdge([-h,h],[-h,-h],[-1,0],kl,s)+"Z"}
 function pzConf(){
-  if(MOBILE())return {mob:1,W:400,H:480,s:78,D:[200,212],k:1.3,sc:.76,
+  if(MOBILE())return {mob:1,W:400,H:500,s:78,D:[200,230],k:1.17,sc:.76,
     scat:[[72,78,-16],[200,74,12],[328,84,-10],[70,232,18],[204,240,-6],[330,236,14],[76,392,8],[204,398,-20],[330,390,-12]],
-    plan:[200,418,["FINANCIAL PLAN","+ INVESTMENT POLICY STATEMENT"]],q:[200,466,"start"],qT:["MEASURED QUARTERLY VS. BENCHMARK"],fs:13};
-  return {W:800,H:560,s:112,D:[380,272],k:1.32,sc:.82,
+    plan:[200,438,["FINANCIAL PLAN","+ INVESTMENT POLICY STATEMENT"]],q:[200,486,"start"],qT:["MEASURED QUARTERLY VS. BENCHMARK"],fs:13};
+  return {W:800,H:560,s:112,D:[380,272],k:1.42,sc:.82,
     scat:[[110,110,-18],[340,96,12],[590,112,-10],[176,290,20],[430,282,-6],[690,292,16],[118,460,8],[388,464,-22],[650,456,-14]],
     plan:[380,546,["FINANCIAL PLAN + INVESTMENT POLICY STATEMENT"]],q:[0,0,"start"],qT:["MEASURED EVERY QUARTER","AGAINST YOUR BENCHMARK"],fs:12};
 }

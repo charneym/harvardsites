@@ -20,3 +20,8 @@ src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
 (K / 'src/champlain-financial.src.html').write_text(src)
 print('wrote src/champlain-financial.src.html', len(src))
+
+import shutil
+(K.parent / 'champlain-financial').mkdir(exist_ok=True)
+shutil.copy(H / 'hero.jpg', K.parent / 'champlain-financial' / 'hero.jpg')
+print('copied hero.jpg')

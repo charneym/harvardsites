@@ -7,7 +7,7 @@ var field=(function(){
   var FX=.6,FY=.45;
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   /* right edge of the hero text (H1 + lede), measured from the DOM about once a second (QA-2 framing) */
-  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var r=document.createRange();r.selectNodeContents(L[i]);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}TXc=m}catch(_){}}return TXc}
+  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var tw=document.createTreeWalker(L[i],4),n;while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;var r=document.createRange();r.selectNodeContents(n);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}}TXc=m}catch(_){}}return TXc}
   img.onload=function(){ok=true;frame(true)};img.src="data:image/webp;base64,__HERO__";
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
   var lastF=0;
@@ -24,7 +24,7 @@ var field=(function(){
     var x=w*(mob?.56:.7)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.58:.6)-fy+SP.v*H*.04;
     x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));
     if(!mob){y=Math.min(0,Math.max(y,H-dh,(h<1000?118:132)-.08*dh)); /* her head (~8% down hero.webp) keeps headroom below the nav at every desktop size */
-      x+=Math.max(0,Math.min(TXR()+40-(x+dw*.5),w-24-(x+dw*.8)));} /* the white coat (~50% across) moves out from behind the H1 and lede, but never so far that she leaves the frame; the strip this opens at the left is ink */
+      x+=Math.max(0,Math.min(TXR()+110-(x+dw*.5),w-24-(x+dw*.8)));} /* the white coat (~50% across) moves out from behind the H1 and lede, but never so far that she leaves the frame; the strip this opens at the left is ink */
     else y=Math.max(y,46); /* phone: her head drops below the logo row; the strip above is ink under the top scrim */
     FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;

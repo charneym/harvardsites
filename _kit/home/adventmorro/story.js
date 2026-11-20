@@ -68,8 +68,8 @@ function storyDraw(svg){
   return function(p,b){
     if(!E.sj.isConnected)return;
     if(b!==lastB){lastB=b;E.base.forEach(function(el,k){el.style.strokeDasharray=BL[k];el.style.strokeDashoffset=(BL[k]*(1-b)).toFixed(1)});E.soft.forEach(function(el){el.style.opacity=b.toFixed(3)})}
-    var s1=seg(p,0,.14),s2=seg(p,.25,.45),s3=seg(p,.5,.7),s4=seg(p,.75,.95);
-    E.sj.style.opacity=(b*s1).toFixed(3);
+    var s1=seg(p,0,.08),s2=seg(p,.25,.45),s3=seg(p,.5,.7),s4=seg(p,.75,.95);
+    E.sj.style.opacity=(b*(.55+.45*s1)).toFixed(3);
     E.rings.forEach(function(r,n){r.style.transform="scale("+(.6+.4*s1).toFixed(3)+")"});
     E.netO.style.opacity=(b*Math.min(1,s2*1.6)).toFixed(3);
     E.net.forEach(function(el,k){var d=Math.max(0,Math.min(1,s2*1.4-k*.06));el.style.strokeDasharray=NL[k];el.style.strokeDashoffset=(NL[k]*(1-d)).toFixed(1)});

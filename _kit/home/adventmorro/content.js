@@ -21,7 +21,7 @@ var GEO=["Companies operating in Puerto Rico.",
 var ACTIVE=[
  ["Olé Life","Insurance","A fully digital term life insurer operating from Puerto Rico and selling policies across Latin America."],
  ["Puerto Rico A.S.C. Holding Co.","Healthcare · 2008","Builds, owns and operates ambulatory surgical centres in Puerto Rico, including the island’s largest ophthalmic ASC."],
- ["Hotel El Convento & Hotel Provincial","Hospitality · Old San Juan","Puerto Rico Hospitality Group: a 1646 monastery opposite the San Juan Cathedral, and and the 43-room Hotel Provincial next door, in a building raised in 1849–51 for the Spanish Crown’s appointed senators, opened January 2021."],
+ ["Hotel El Convento & Hotel Provincial","Hospitality · Old San Juan","Puerto Rico Hospitality Group: a 1646 monastery opposite the San Juan Cathedral, and the 43-room Hotel Provincial next door, in a building raised in 1849–51 for the Spanish Crown’s appointed senators, opened January 2021."],
  ["Vigilant Shipping Holding","Logistics · 2019","Stevenson Formel Freight Services, a San Juan family company operating in the region since the early 1970s."],
  ["Holberton Puerto Rico","Education","Code Puerto Rico LLC, a two-year software development school that trains students to become programmers."],
  ["Universal Protection and Maintenance","Services","Services, installs and maintains the control networks that govern the performance of mechanical equipment."],

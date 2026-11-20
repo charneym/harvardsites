@@ -32,3 +32,7 @@
 
 ## Photos (BJ)
 - The site has only the logo and a text image; no photography exists, hence option (c).
+
+## Gates (2026-11-20)
+- smoke, reveal 1440/390, anim 1440/390, clip 1440/390, overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo, buildout-test (8 nav clicks): OK.
+- hero-audit: "no title found", the same result it gives on shipped sites (nephrodi, dotyscientific): an environment-wide audit issue.

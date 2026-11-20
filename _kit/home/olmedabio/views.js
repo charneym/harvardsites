@@ -1,6 +1,6 @@
 /* ================= VIEWS (home only: Science / Programs / Team / News open build-out pages via _kit/lib/buildout.js; Contact and in-page CTAs scroll) ================= */
 function progs(){return '<ul class="pfr">'+PROG.map(function(c){
-  return '<li><span class="lab tg">'+esc(c[2])+'</span><h3>'+esc(c[0])+'<span class="loc">'+esc(c[1])+'</span></h3><p>'+esc(c[3])+'</p><a class="lab ul lk" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5])+'</a></li>'}).join("")+'</ul>'}
+  return '<li><span class="lab tg">'+esc(c[2])+'</span><div class="pn"><h3>'+esc(c[0])+'</h3><span class="loc">'+esc(c[1])+'</span></div><p>'+esc(c[3])+'</p><a class="lab ul lk" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5])+'</a></li>'}).join("")+'</ul>'}
 function lead(){var p=TEAM[0];
   return '<div class="lead"><div class="lead-n"><span class="lab kick" data-r>'+esc(p.g)+'</span><h3 class="split">'+esc(p.name)+'</h3><p class="lab rl" data-r>'+esc(p.title)+'</p></div>'+
    '<div class="lead-b"><p data-r>'+esc(p.sum)+'</p><p class="aff" data-r>Ph.D. in Neuroscience, University of Southern California</p></div></div>'}

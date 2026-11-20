@@ -76,24 +76,39 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">本社</span>東京都千代田区神田三崎町2-15-6<br>K-STAGE 5F</div>'+
    '<div class="c"><span class="lab">お問い合わせ</span><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="mailto:'+MAIL+'">メール</a></div>'+
-   '<div class="c"><span class="lab">メニュー</span><a class="ul" href="#/approach">私たちの考え方</a><br><a class="ul" href="#/criteria">投資基準</a><br><a class="ul" href="#/portfolio">投資先</a><br><a class="ul" href="#/team">役員</a><br><a class="ul" href="#/news">ニュース</a></div>'+
+   '<div class="c"><span class="lab">メニュー</span><a class="ul" href="#/more/approach">私たちの考え方</a><br><a class="ul" href="#/more/criteria">投資基準</a><br><a class="ul" href="#/more/portfolio">投資先</a><br><a class="ul" href="#/more/team">役員</a><br><a class="ul" href="#/more/news">ニュース</a></div>'+
    '<div class="c"><span class="lab">四国オフィス</span>香川県高松市浜ノ町8-33</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Montserrat\',Arial,sans-serif;font-weight:700;font-size:66px;letter-spacing:.04em">JPE</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 日本プライベートエクイティ株式会社</span><span class="lab">コンセプトサイト</span><a class="lab ul" href="#main" id="toTop">ページの先頭へ ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
+/* ================= BUILD-OUT PAGES (HOME_BRIEF update 2026-11-20): every nav item except Contact opens #/more/<item> ================= */
+var MORE={approach:"私たちの考え方",criteria:"投資基準",portfolio:"投資先",team:"役員",news:"ニュース"};
+function vMore(k){
+  return '<section class="ph-head more" data-field data-theme="dark">'+
+   '<span class="lab eyebrow">コンセプトプレビュー</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1"><span class="nb">「'+MORE[k]+'」も、</span><em class="nb">本格構築へ。</em></h1>'+
+   '<p class="intro" data-r>これはホームページのコンセプトです。この方向性を気に入っていただけましたら、役員、投資先、ニュースを含め、このページとサイト全体を同じスタイルで構築し、現在のサイトからの移行も対応いたします。このリンクをお送りしたメールにご返信いただければ、そこから進めてまいります。</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/">ホームページに戻る '+ARR+'</a><a class="more-k ul" href="#/'+k+'">このままコンセプトを見る</a></div>'+
+  '</section>';
+}
+
+/* ================= ROUTER: #/more/<item> is a page; #/<section> scrolls to that section on home ================= */
 var SECS={about:"about",approach:"story",criteria:"criteria",portfolio:"portfolio",team:"team",news:"news",contact:"contact"};
 function route(h){
+  var m=/^#\/more\/([a-z]+)$/.exec(h||"");
+  if(m&&MORE[m[1]]){var k=m[1];return {k:"more-"+k,v:function(){return vMore(k)},t:MORE[k]+"｜日本プライベートエクイティ",x:MORE[k]}}
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"日本プライベートエクイティ｜事業承継・事業再編ファンドの運営",x:"ホーム"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
-addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
-  e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(r.k!=="home"||!r.sec)return;
+  e.preventDefault();e.stopPropagation();
+  if(curKey!=="home"){location.hash="#/";(function wait(n){if(curKey==="home"&&document.getElementById(r.sec)&&document.documentElement.style.overflow!=="hidden"){setTimeout(function(){secGo(r.sec)},450);return}if(n<200)setTimeout(function(){wait(n+1)},50)})(0);return}
+  if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
+(function(){var r=route(location.hash);if(r.k!=="home"||!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
   setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();

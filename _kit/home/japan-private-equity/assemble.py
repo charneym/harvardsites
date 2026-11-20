@@ -14,6 +14,8 @@ for name, f in REG.items():
     new, n = pat.subn(lambda m: m.group(1) + part(f) + m.group(3), src)
     assert n == 1, (name, n)
     src = new
+import base64 as _b
+src = src.replace('__HERO__', _b.b64encode((H / 'hero.webp').read_bytes()).decode())
 src = src.replace('<html lang="en">','<html lang="ja">',1)
 # site-specific CSS goes after every template rule
 assert src.count('</style>') == 1

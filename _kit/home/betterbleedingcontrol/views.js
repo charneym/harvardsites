@@ -16,9 +16,9 @@ function vHome(){
     '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
      '<h2 class="txt" id="mani">Uncontrolled hemorrhage remains the leading cause of preventable death in military combat. Trainees learn to stop it, but <b class="w0">skills fade, and under stress they fail.</b> <em>Most training models never tell you whether you got it right.</em></h2></div>'+
     '<div class="stats">'+
-     '<div class="stat"><span class="ln2"></span><span class="v">~50%</span><span class="k">Of preventable combat hemorrhage deaths come from extremity and junctional injuries</span></div>'+
-     '<div class="stat"><span class="ln2"></span><span class="v">0.5 s</span><span class="k">Target for a trainee to see the flow respond to an intervention</span></div>'+
-     '<div class="stat"><span class="ln2"></span><span class="v">$320K</span><span class="k">NIH NIBIB STTR Phase I award, September 2026</span></div>'+
+     '<div class="stat"><span class="ln2"></span><span class="v">~50%</span><p class="k">Of preventable combat hemorrhage deaths come from extremity and junctional injuries</p></div>'+
+     '<div class="stat"><span class="ln2"></span><span class="v">0.5 s</span><p class="k">Target for a trainee to see the flow respond to an intervention</p></div>'+
+     '<div class="stat"><span class="ln2"></span><span class="v">$320K</span><p class="k">NIH NIBIB STTR Phase I award, September 2026</p></div>'+
     '</div>'+
    '</div>'+
    '<div class="plat">'+
@@ -82,7 +82,7 @@ function cta(){
    '<div class="act" data-r><a class="btn solid" href="'+RPT+'" target="_blank" rel="noopener">The NIH project '+ARR+'</a></div>'+
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Based in</span><p data-r>Houston, Texas</p></div>'+
-    '<div><span class="lab" data-r>Funding</span><p data-r>NIH NIBIB STTR Phase I<br>1R41EB038879</p></div>'+
+    '<div><span class="lab" data-r>Funding</span><p data-r>NIH STTR 1R41EB038879</p></div>'+
     '<div><span class="lab" data-r>Company</span><p data-r>Better Bleeding Control, LLC</p></div>'+
    '</div>'+
   '</div></section>';

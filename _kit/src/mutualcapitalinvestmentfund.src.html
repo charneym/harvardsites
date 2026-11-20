@@ -223,7 +223,9 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene text{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;fill:#c3d0dc}
 .scene text.a{fill:var(--accL)}
 .scene text.w{fill:var(--bone)}
-.scene svg.mob text{font-size:14px;letter-spacing:.06em}/*</R:scenecss>*/
+.scene svg.mob text{font-size:14px;letter-spacing:.06em}
+.scene .ghost{opacity:.17}
+.scene .ghost .q,.scene .ghost .stone.i{opacity:.6}/*</R:scenecss>*/
 
 /* focus list (industries) */
 .ind{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap);border-top:1px solid var(--hairD)}
@@ -1092,6 +1094,7 @@ function barn(o){
   g+='<path class="gr sD" d="M0 '+Y+'H'+o.W+'"/>';
   for(i=0;i<o.grass;i++){var gx=R()*o.W,gy=Y+6+R()*(o.H-Y-12)*.9,gl=3+R()*5;g+='<path class="gs" d="M'+gx.toFixed(1)+' '+gy.toFixed(1)+'l'+(1+R()*2).toFixed(1)+' '+(-gl).toFixed(1)+'"/>'}
   g+='</g>';
+  var i0=g.length;
   /* step 4 backdrop: the sun rising behind the hills */
   var sx=o.sun[0],sy=o.sun[1],sr=o.sun[2];
   g+='<g id="scSun"><path class="sun" d="M'+(sx-sr)+' '+sy+'A'+sr+' '+sr+' 0 0 1 '+(sx+sr)+' '+sy+'"/>';
@@ -1129,6 +1132,8 @@ function barn(o){
   g+='<path class="farm" d="'+L([[-14,-228],[-14,-252],[14,-252],[14,-228]])+'M'+P(-20,-252)+'L'+P(0,-266)+'L'+P(20,-252)+'M'+P(0,-266)+'L'+P(0,-292)+'M'+P(-16,-286)+'L'+P(16,-286)+'M'+P(10,-290)+'L'+P(16,-286)+'L'+P(10,-282)+'M'+P(-16,-290)+'L'+P(-11,-286)+'L'+P(-16,-282)+'"/>';
   var fz=o.fence,fp='M'+P(fz[0],-22)+'L'+P(fz[1],-22)+'M'+P(fz[0],-11)+'L'+P(fz[1],-11);for(var fx=fz[0];fx<=fz[1]+.1;fx+=(fz[1]-fz[0])/5)fp+='M'+P(fx,0)+'L'+P(fx,-28);
   g+='<path class="farm" d="'+fp+'"/></g>';
+  /* the finished farmstead as a faint ghost from the first frame (DB): each step then inks its own part */
+  g=g.slice(0,i0)+'<g class="ghost">'+g.slice(i0).replace(/ id="[^"]*"/g,'')+'</g>'+g.slice(i0);
   /* labels, one set per step */
   function lab(id,items){var s='<g id="'+id+'" class="lb">';items.forEach(function(t){if(t.ld)s+='<path class="lead" d="M'+t.ld[0]+' '+t.ld[1]+'L'+t.ld[2]+' '+t.ld[3]+'"/><circle class="mk" cx="'+t.ld[2]+'" cy="'+t.ld[3]+'" r="2.6"/>';s+='<text x="'+t.x+'" y="'+t.y+'" text-anchor="'+(t.a||"start")+'" class="'+(t.c||"w")+'">'+t.t+'</text>'});return s+'</g>'}
   g+=lab("scL1",o.L1)+lab("scL2",o.L2)+lab("scL3",o.L3)+lab("scL4",o.L4);

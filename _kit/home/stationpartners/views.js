@@ -1,7 +1,7 @@
 /* ================= VIEWS (home only: every nav item scrolls to its section on #/) ================= */
 function pfRows(list){return '<ul class="pfr">'+list.map(function(c){var nm=c[5]?'<a class="pfl" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[0])+'</a>':esc(c[0]);
   return '<li><span class="lab tg"><b class="'+(c[2]==="Active"?"on":"")+'">'+esc(c[2])+'</b> · '+esc(c[3])+'</span><h3>'+nm+'</h3><p>'+esc(c[1])+'</p><p class="st">'+esc(c[4])+'</p></li>'}).join("")+'</ul>'}
-function ppl(list,cls){return '<ul class="ppl '+cls+'">'+list.map(function(p){return '<li><div class="pf"><img src="'+PH[p.ph]+'" alt="Portrait of '+esc(p.name)+'" loading="lazy" decoding="async"></div><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></li>'}).join("")+'</ul>'}
+function ppl(list,cls){return '<ul class="ppl '+cls+'">'+list.map(function(p){return '<li><figure class="pc"><div class="pf"><img src="'+PH[p.ph]+'" alt="Portrait of '+esc(p.name)+'" decoding="async"></div><figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></figcaption></figure></li>'}).join("")+'</ul>'}
 function nwRows(list){return '<ul class="nwr">'+list.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><span class="lab ty">'+esc(n[1])+'</span><h3>'+esc(n[2])+'</h3>'+ARRX+'</a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+

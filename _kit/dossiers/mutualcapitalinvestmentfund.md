@@ -23,3 +23,6 @@ Home-only concept site at /mutualcapitalinvestmentfund/ (src _kit/src/mutualcapi
 - Hero: painted dawn view of the Susquehanna valley from the rocks above Wyalusing (ridges, mist, silver river bend, spruces), logo blues. No pro photography on the original (stock money banner only).
 - Story: a Pennsylvania bank barn raised in four steps (foundation = capital, 45% institutional cap in blue; frame = minority growth capital; siding + quartered window = admitted asset / quarterly valuation; silo, vane, sunrise = patient partner).
 - Palette: logo #005088 / #0072ab / #231f20 sampled from the live logo PNG.
+
+## Hero rephoto (2026-11-20)
+- The painted Wyalusing Rocks / Susquehanna dawn scene is removed (client: painted scenes look unprofessional). (a) The firm's site has no usable photography. (b) Real photograph of a Susquehanna bend through farmed floodplain and wooded ridges, Pennsylvania, from a high overlook: Foto Phanatic on Unsplash, Unsplash License (free, not Unsplash+): https://unsplash.com/photos/oQf2-KqYEwM (image photo-1595190490656-8e3037da0d3c). Unsplash tags it Pennsylvania only; the exact spot is not stated, so no copy claims it is Wyalusing. Cropped 16:10 toward the lower frame, saturation 0.8, 14% blend to the ink #0a1a2b, shipped as mutualcapitalinvestmentfund/hero.jpg; slow Ken Burns, river right, ink scrim over the headline side, phone band.

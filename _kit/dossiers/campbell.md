@@ -28,6 +28,6 @@ Home-only concept site (HOME_BRIEF), src `_kit/src/campbell.src.html` assembled 
 ## Design
 - Palette from the logo and live site: logo royal blue #042197 (accD, light-page buttons), site sky blue → accL #8fd3ff, brightened logo blue #1f45d6 for dark-ground buttons, navy ink #07102c.
 - Fonts: Poppins (their site's face) for UI/labels; Newsreader for display.
-- Hero: the Cape Florida Lighthouse on Key Biscayne at dawn, palms and sea grape, lantern turning, bay reflection, pelicans (stock video only on their site, no real photography of places → illustrated subject per DG).
+- Hero (rephoto 2026-11-20, replaces the painted Cape Florida Lighthouse canvas): real photo of downtown Miami across Biscayne Bay at night, the MacArthur Causeway in front, taken from the Venetian Causeway. Unsplash, Rolando Yera, https://unsplash.com/photos/l5Flo7mEs0U (Unsplash License, free, not Unsplash+; CDN https://images.unsplash.com/photo-1669815503102-7c417112b3eb, 5421x3614). Saturation eased, shadows graded toward the ink #07102c, saved as campbell/hero.jpg (2400px); slow Ken Burns drift, towers right of centre, ink scrim over the headline side, phone band fading into the ink. Their own site has only a stock marina drone video and screenshot headshots, so (a) was not possible.
 - Story: engraved elevation of a lighthouse built course by course: allocation plan → bond ladder (1–20 yr) → stock courses → lantern lit (daily reconciliation, 24/7).
 - No performance figures or testimonials (letters mention "fabulous results"; not quoted).

@@ -27,3 +27,6 @@ Web searches for the company, product, founder and patents found nothing else (n
 - Hero (HOME_BRIEF update option b): Pexels photo 1629833, close-up of a child's eye (https://www.pexels.com/photo/close-up-photo-of-kid-s-eye-1629833/, Pexels licence), graded warmer/lower to the ink, hero.webp; eye right of ~60%, deep ink wash over the headline side; slow Ken Burns. No company photography exists.
 - Story: one engraved front view of a child's glasses; patch + magnet → clip-on sensor with dual magnetometers → Bluetooth to base station → secure cloud to parents and clinicians. Placement of parts is schematic (the abstract does not specify).
 - Nav items open build-out pages via _kit/lib/buildout.js; Contact scrolls to the contact block.
+
+## Gates (2026-11-20)
+smoke, reveal 1440/390, anim 1440/390, clip 1440/390, overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo, buildout-test (8 nav clicks): OK. hero-audit: cold home load OK; it reports "no title" for the scroll-only #/<section> routes, as it does on Averto (not applicable to home-only).

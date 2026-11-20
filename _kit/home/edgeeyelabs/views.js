@@ -58,7 +58,7 @@ function cta(){
    '<p class="sub" data-r>For clinical collaboration, partnership or investment in AmblyoGo, get in touch with the Edge Eye Labs team.</p>'+
    '<div class="act" data-r><a class="btn solid" href="'+WEB+'" target="_blank" rel="noopener">Contact Edge Eye Labs '+ARR+'</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Headquarters</span><p data-r>Edge Eye Labs, Inc.<br>San Francisco, California</p></div>'+
+    '<div><span class="lab" data-r>Headquarters</span><p data-r><span class="bl">Edge Eye Labs, Inc.</span><span class="bl">San Francisco, California</span></p></div>'+
     '<div><span class="lab" data-r>Product</span><p data-r>AmblyoGo occlusion dose monitor</p></div>'+
     '<div><span class="lab" data-r>Web</span><p data-r><a class="ul" href="'+WEB+'" target="_blank" rel="noopener">edgeeyelabs.com</a></p></div>'+
    '</div>'+

@@ -32,6 +32,6 @@ Home-only concept site (HOME_BRIEF), src `_kit/src/bluestone-nh.src.html` assemb
 
 ## Design
 - Palette from the logo banner (pixel-sampled): royal blue #3044b5 → --accD; logo disc periwinkle #afb6e2 → --acc; ground deepened to navy #0a0f2e; pages cool mist #eef1f7 (from their ripple background #becbdb family).
-- Hero: blue-hour moonrise over a lone mountain and a still New Hampshire lake, the moon being the logo's pale disc over its horizon line; ripples spread across the reflection (their site's ripple motif).
+- Hero (rephoto 2026-11-20, replaces the painted moonrise canvas): real photo of the view from the summit ledges of Mount Monadnock (Jaffrey, NH), the landmark of the Monadnock Region around Keene. Pexels, John Cronin, https://www.pexels.com/photo/scenic-view-from-mount-monadnock-jaffrey-39051421/ (Pexels License; CDN https://images.pexels.com/photos/39051421/pexels-photo-39051421.jpeg, 5184x3456). Cropped, desaturated and graded toward the ink #0a0f2e with a periwinkle tint, saved as bluestone-nh/hero.jpg (2400px); slow Ken Burns drift, ledges right of centre, ink scrim over the headline side, phone band fading into the ink. The firm's own site has no usable photography (headshots, logo banner, stock ripple).
 - Story: an engraved stone cairn — foundation (Investment Policy) → five stones (asset classes) → stippled (many securities) → leans and is set back on its plumb line (rebalancing, annual review).
 - No performance figures or testimonials (none published).

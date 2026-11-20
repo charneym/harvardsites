@@ -1582,7 +1582,7 @@ var field=(function(){
     var U=mob?Math.min(h*.42,w*.92):h;
     /* the photo's frame: right of the copy column on desktop, the full top band on phones */
     var rx=mob?0:Math.round(Math.min(w*.66,Math.max(side+cw*.44,h1r()+48))),rw=w-rx,rh=mob?U*1.04:h; /* the photo starts past the H1 line ends, so the lit window never sits behind the headline at any width */
-    return {mob:mob,side:side,cw:cw,U:U,rx:rx,rw:rw,rh:rh};
+    return {mob:mob,side:side,cw:cw,U:U,rx:rx,rw:rw,rh:rh,hr:mob?0:h1r()};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
@@ -1595,15 +1595,22 @@ var field=(function(){
     if(ok){
       var rx=G.rx,rw=G.rw,rh=G.rh,iw=img.naturalWidth,ih=img.naturalHeight;
       /* Ken Burns: a very slow push in and drift toward the door, eased back and forth over ~48s */
-      var k=.5-.5*Math.cos(t*Math.PI*2/48),sc=Math.max(rw/iw,rh/ih)*(1.03+.06*k)*(1+.035*(1-e));
-      var dw=iw*sc,dh=ih*sc,fx=G.mob?.5:.66,fy=G.mob?.48:.5;
-      var x=rx+(rw-dw)*fx-k*rw*.014,y=(rh-dh)*fy-k*rh*.008;
-      c.save();c.beginPath();c.rect(rx,0,rw,rh);c.clip();c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.restore();c.globalAlpha=1;
-      /* a light navy wash over the whole photo */
-      c.fillStyle="rgba(14,26,36,.16)";c.fillRect(rx,0,rw,rh);
+      var k=.5-.5*Math.cos(t*Math.PI*2/48);
+      if(G.mob){var sc=Math.max(rw/iw,rh/ih)*(1.03+.06*k)*(1+.035*(1-e));
+        var dw=iw*sc,dh=ih*sc,x=rx+(rw-dw)*.5-k*rw*.014,y=(rh-dh)*.48-k*rh*.008;
+        c.save();c.beginPath();c.rect(rx,0,rw,rh);c.clip();c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.restore();c.globalAlpha=1;
+        c.fillStyle="rgba(14,26,36,.16)";c.fillRect(rx,0,rw,rh)}
       if(!G.mob){
-        /* the photo's left edge feathers into the ink; the copy column stays clean */
-        var fe=c.createLinearGradient(rx,0,rx+rw*.34,0);fe.addColorStop(0,"rgba(14,26,36,1)");fe.addColorStop(.45,"rgba(14,26,36,.62)");fe.addColorStop(1,"rgba(14,26,36,0)");c.fillStyle=fe;c.fillRect(rx-1,0,rw*.34+1,h);
+        /* DO: the whole shopfront (its lit windows span 0.09-0.91 of the photo) is fitted into the open area right of the H1
+           and centred there at 62-75% of the width, never cut by the edge; the photo's edges dissolve into the ink (DJ) */
+        var L=Math.max(G.hr+Math.max(56,w*.035),w*.47),R=w-Math.max(40,w*.035),cx=Math.min(Math.max((L+R)/2,w*.62),w*.75),half=Math.min(cx-L,R-cx);
+        var sc=Math.min(2*half/(iw*.82),h*.86/ih)*(1+.03*k),dw=iw*sc,dh=ih*sc,x=cx-dw*.5,y=h*.54-dh*.55;
+        c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;c.fillStyle="rgba(14,26,36,.16)";c.fillRect(x,y,dw,dh);
+        var ez=function(g,a0,a1,b1,b0){[[a0,0],[a0+(a1-a0)*.3,.12],[a0+(a1-a0)*.65,.55],[a1,1],[b1,1],[b1+(b0-b1)*.35,.55],[b1+(b0-b1)*.7,.12],[b0,0]].forEach(function(q){g.addColorStop(Math.min(1,Math.max(0,q[0])),"rgba(0,0,0,"+q[1]+")")});return g};
+        c.globalCompositeOperation="destination-in";
+        c.fillStyle=ez(c.createLinearGradient(x,0,x+dw,0),0,.08,.92,1);c.fillRect(0,0,w,h);
+        c.fillStyle=ez(c.createLinearGradient(0,y,0,y+dh),0,.2,.86,1);c.fillRect(0,0,w,h);
+        c.globalCompositeOperation="destination-over";c.fillStyle="#0e1a24";c.fillRect(0,0,w,h);c.globalCompositeOperation="source-over";
         var tv=c.createLinearGradient(0,0,0,h*.24);tv.addColorStop(0,"rgba(9,19,27,.62)");tv.addColorStop(1,"rgba(9,19,27,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.24);
         var bv=c.createLinearGradient(0,h*.66,0,h);bv.addColorStop(0,"rgba(14,26,36,0)");bv.addColorStop(1,"rgba(14,26,36,.78)");c.fillStyle=bv;c.fillRect(0,h*.66,w,h*.34);
       }else{

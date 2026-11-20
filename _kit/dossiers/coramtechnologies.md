@@ -53,9 +53,15 @@ Note: RePORTER also lists an unrelated "CORAM TECHNOLOGIES" in Niles, IL (thromb
 - Concept palette: ink #0d1416 (logo charcoal, teal-tinted), bone #f3f5f4, accent #00adbb, deep accent #007a85 on light.
   Fonts: Newsreader (display), Instrument Sans (text), Ubuntu (logo redraw and footer wordmark, closest to the logo face).
 
-## Hero
-- Option (c) of the 2026-11-20 brief: a crafted render of the subject. The firm's only photograph is the cluttered lab snapshot
-  (the bad-site evidence), so (a) would downgrade it; Unsplash search was not reachable (auth required). Scene: the
-  MRI-conditional defibrillator on its cart beside an MRI scanner, pads on the table, cable across the floor; ray-marched
-  offline with _kit/home/coramtechnologies/render.py (numpy SDF), graded to the logo teal. The canvas adds a slow Ken Burns
-  drift and a live ECG sweep on the defibrillator's screen. No pointer response.
+## Hero (rev2, coordinator review 2026-11-20)
+- Option (b) of the 2026-11-20 brief: a real photograph of a modern MRI suite (scanner bore and table, empty clean room, no
+  people). Pexels, photo by MART PRODUCTION, free Pexels licence:
+  https://www.pexels.com/photo/technology-hospital-medicine-indoors-7089017/
+  (downloaded from https://images.pexels.com/photos/7089017/pexels-photo-7089017.jpeg?w=2400). Graded offline to the logo
+  charcoal/teal (duotone, vignette); the manufacturer's small "MAGNETOM ESSENZA" wordmark is blurred out. On desktop the
+  photo starts at 20% of the width and fades into the ink behind the headline (bore at ~80%); slow Ken Burns drift; a thin
+  teal ECG trace sweeps along the lower edge. No pointer response.
+- Unsplash's MRI results were all Unsplash+ (paid licence), so not used. Pexels candidates 7089013/7089625 (other angles),
+  7089402 (patient visible) and 13176450 (a branded CT scanner) were rejected.
+- rev1 (superseded): an offline ray-marched render (render.py, kept in _kit/home/coramtechnologies); the coordinator found it
+  read as clay/toy models.

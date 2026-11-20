@@ -31,7 +31,7 @@ Client login: https://wealth.emaplan.com/ema/SignIn?ema%2fria%2flevinfundinggrpl
 Logo (wp-content/uploads/2016/02/Levin-FG.png): grey "LEVIN" #818285 / #bcbdc0 thin sans + orange box #fcb040 "FUNDING GROUP", "True Wealth Management" script. Concept palette: ink #16151a, bone #f5f1ea, accent #fcb040 (dark #94570a on light).
 
 ## Concept build
-Hero: Sonoran Desert dusk below the Santa Catalina Mountains (alpenglow, orange afterglow, rim-lit saguaro, circling hawk, stars). Story: engraved mountain elevation with a trail = their "financial roadmap" (Discovery, Design, Decisions, Results).
+Hero (rev2): Sonoran Desert dusk below the Santa Catalina Mountains — three layered ranges (pale far range, Catalina massif with lit west faces, spur ridges and canyon shadows, dark foothills), desert floor with receding scrub, washes and ocotillo; hero saguaro and neighbour modelled with ribs, lit spines, slight lean, swelling elbows, rim light on the west side only; hawk, stars.
 
 ## Bad-site evidence
 Revolution slider hero with garbled overlapping text ("AND DISCOVER WHAT MAKES US DIFFERENT" in dark caps run over the wheat photo), clashing orange highlight boxes, stock wheat photo, "Login / Register · 0 items · $0.00" WooCommerce cart in the header, "Copyright © 2017", typos ("Assset Protection", "hompage", "technicial"), stale links to levinfunding.wpengine.com.

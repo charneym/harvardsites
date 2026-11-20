@@ -252,10 +252,42 @@ var field=(function(){
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
   /* the Catalinas: a broad massif with a rocky, saw-toothed crest (fixed seed so it always reads as the same range) */
-  function crest(x,base,amp,seed){var R=rng(seed),p=[];for(var k=0;k<6;k++)p.push(R()*6.28);var u=x/w;
-    var env=.35+.65*Math.pow(Math.sin(Math.PI*Math.min(1,Math.max(0,(u+.12)/1.18))),.8);
-    var n=.55*Math.sin(u*5.1+p[0])+.25*Math.sin(u*11.3+p[1])+.12*Math.sin(u*23.7+p[2])+.08*Math.abs(Math.sin(u*61+p[3]));
-    return base-amp*env*(.72+.28*n)}
+  /* rugged crest: a broad massif envelope with fractal value noise; ridged octaves give irregular rocky teeth */
+  var VN={};function vnoise(seed,x){var T=VN[seed];if(!T){T=[];var R=rng(seed*13+7);for(var i=0;i<512;i++)T.push(R());VN[seed]=T}var i0=Math.floor(x),f=x-i0,a=T[((i0%512)+512)%512],b=T[(((i0+1)%512)+512)%512];f=f*f*(3-2*f);return a+(b-a)*f}
+  function crest(x,base,amp,seed,cx,spread){var u=x/w,env=Math.exp(-Math.pow((u-cx)/spread,2)),k=x/Math.max(w,900)*1000;
+    var n=.55*vnoise(seed,k/260)+.25*vnoise(seed+1,k/110)+.12*(1-Math.abs(2*vnoise(seed+2,k/48)-1))+.06*(1-Math.abs(2*vnoise(seed+3,k/19)-1))+.03*vnoise(seed+4,k/7);
+    return base-amp*(.2+.8*env)*(.45+.75*n)}
+  /* one range with real form: west faces lit by the afterglow, east faces and canyons in shadow, spur ridges
+     falling from every summit. light: from the left (west), warm. */
+  function range(l,o){var S=G.S,base=o.base,step=2,xs=[],ys=[];
+    for(var x=-6;x<=w+8;x+=step){xs.push(x);ys.push(crest(x,base,o.amp,o.seed,o.cx,o.sp))}
+    var bot=o.bot;l.save();l.beginPath();l.moveTo(-6,bot);for(var i=0;i<xs.length;i++)l.lineTo(xs[i],ys[i]);l.lineTo(w+8,bot);l.closePath();
+    var bg=l.createLinearGradient(0,base-o.amp,0,bot);bg.addColorStop(0,o.c0);bg.addColorStop(1,o.c1);l.fillStyle=bg;l.fill();l.clip();
+    /* broad shading by smoothed crest slope: west-facing slopes in light, east-facing in shadow */
+    var sm2=[];for(var j=0;j<xs.length;j++){var a0=Math.max(0,j-16),b0=Math.min(xs.length-1,j+16);sm2.push((ys[a0]-ys[b0])/(xs[b0]-xs[a0]))}
+    for(var j=1;j<xs.length;j++){var lt=Math.max(-1,Math.min(1,sm2[j]*2.2));
+      var col=lt>0?"rgba("+o.lit+","+(lt*o.la).toFixed(3)+")":"rgba("+o.sh+","+(-lt*o.sa).toFixed(3)+")";
+      var fh=Math.min((bot-ys[j])*.42,G.S*.09);var fg=l.createLinearGradient(0,ys[j],0,ys[j]+fh);fg.addColorStop(0,col);fg.addColorStop(1,lt>0?"rgba("+o.lit+",0)":"rgba("+o.sh+",0)");
+      l.fillStyle=fg;l.fillRect(xs[j-1]-.3,ys[j],step+.6,fh)}
+    /* spur ridges and canyons: from each summit a lit west flank and a shadowed east gully run down to the foot */
+    var R=rng(o.seed+5);
+    var W2=Math.round(w*.045/step),last=-1e9;
+    for(var k=W2;k<xs.length-W2;k++){var pk=true;for(var z=k-W2;z<=k+W2;z++)if(ys[z]<ys[k]){pk=false;break}if(!pk||xs[k]-last<w*.06)continue;last=xs[k];
+      var px=xs[k],py=ys[k],dh=bot-py;if(dh<S*.03)continue;var lean=(R()-.3)*.5,jx=function(t){return (R()-.5)*dh*.05*t};
+      /* the spur's spine as a wandering line, a shadowed gully east of it, a lit flank west of it */
+      var sp=[[px,py]],sw=[],se=[];for(var t=1;t<=7;t++){var f=t/7,lx=sp[t-1][0]+dh/7*(lean+(R()-.5)*.5),ly=py+dh*f;sp.push([lx,ly])}
+      for(var t2=0;t2<sp.length;t2++){var f2=t2/7,wd=dh*(.04+.42*f2)*(.7+R()*.5);se.push([sp[t2][0]+wd,sp[t2][1]+dh*.03*f2+(R()-.5)*dh*.03]);sw.push([sp[t2][0]-wd*.8,sp[t2][1]+(R()-.5)*dh*.03])}
+      l.beginPath();sp.forEach(function(q,i){i?l.lineTo(q[0],q[1]):l.moveTo(q[0],q[1])});for(var i2=se.length-1;i2>=0;i2--)l.lineTo(se[i2][0],se[i2][1]);l.closePath();
+      var sg=l.createLinearGradient(px,py,px,bot);sg.addColorStop(0,"rgba("+o.sh+","+(o.sa*.75).toFixed(3)+")");sg.addColorStop(.8,"rgba("+o.sh+",0)");l.fillStyle=sg;l.fill();
+      l.beginPath();sp.forEach(function(q,i){i?l.lineTo(q[0],q[1]):l.moveTo(q[0],q[1])});for(var i3=sw.length-1;i3>=0;i3--)l.lineTo(sw[i3][0],sw[i3][1]);l.closePath();
+      var lg=l.createLinearGradient(px,py,px,bot);lg.addColorStop(0,"rgba("+o.lit+","+(o.la*.5).toFixed(3)+")");lg.addColorStop(.7,"rgba("+o.lit+",0)");l.fillStyle=lg;l.fill();
+    }
+    /* atmospheric haze pooling at the foot of the range */
+    var hz2=l.createLinearGradient(0,base,0,bot);hz2.addColorStop(0,"rgba("+o.haze+",0)");hz2.addColorStop(1,"rgba("+o.haze+","+o.ha+")");l.fillStyle=hz2;l.fillRect(0,base-o.amp,w,bot-base+o.amp);
+    l.restore();
+    /* warm light only on the west-facing stretches of the crest */
+    if(o.rim){l.save();l.lineWidth=1;for(var m=1;m<xs.length;m++){var s2=(ys[m-1]-ys[m])/step;if(s2<=.05)continue;l.strokeStyle="rgba(255,196,160,"+Math.min(.55,s2*.6).toFixed(3)+")";l.beginPath();l.moveTo(xs[m-1],ys[m-1]+.6);l.lineTo(xs[m],ys[m]+.6);l.stroke()}l.restore()}
+  }
   function build(){
     var S=G.S,hz=G.hz,A=mk(S+2),g=A[1];oSky=A[0];
     /* afterglow sky: night overhead to a band of the firm's orange on the western horizon */
@@ -263,63 +295,98 @@ var field=(function(){
     sky.addColorStop(0,"#101126");sky.addColorStop(.32,"#252244");sky.addColorStop(.6,"#5e3d5a");sky.addColorStop(.8,"#b05e4c");sky.addColorStop(.93,"#ec9548");sky.addColorStop(1,"#fcb862");
     g.fillStyle=sky;g.fillRect(0,0,w,S+2);
     var gl=g.createRadialGradient(G.gx,hz,0,G.gx,hz,w*.55);gl.addColorStop(0,"rgba(255,196,110,.42)");gl.addColorStop(.4,"rgba(236,140,80,.14)");gl.addColorStop(1,"rgba(236,140,80,0)");g.fillStyle=gl;g.fillRect(0,0,w,S+2);
-    /* long thin clouds lit pink from below */
     var R=rng(11);for(var k=0;k<(G.mob?5:9);k++){var cy=hz*(.3+R()*.45),cx=R()*w,cwid=w*(.12+R()*.22),ch=S*(.004+R()*.006),a=.08+.12*R();
       g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(250,170,150,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(250,170,150,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
     var B=mk(S+2),l=B[1];oLand=B[0];
-    /* far range: hazy violet */
-    ridge(l,hz+S*.01,S*.2,31,["#6e4a68","#5a3e5c"],.0);
-    /* the Catalinas: alpenglow on the faces, ravines in shadow */
-    var base=hz+S*.06,amp=S*.24;
-    l.save();l.beginPath();l.moveTo(-4,S+2);for(var x=-4;x<=w+6;x+=3)l.lineTo(x,crest(x,base,amp,57));l.lineTo(w+6,S+2);l.closePath();
-    var mg=l.createLinearGradient(0,base-amp,0,base+S*.06);mg.addColorStop(0,"#b0687a");mg.addColorStop(.45,"#8a4d63");mg.addColorStop(1,"#4a2f40");l.fillStyle=mg;l.fill();l.clip();
-    /* light from the afterglow side, shadow toward the east */
-    var sg=l.createLinearGradient(0,0,w,0);sg.addColorStop(0,"rgba(255,170,150,.10)");sg.addColorStop(.45,"rgba(255,170,150,0)");sg.addColorStop(1,"rgba(30,16,30,.32)");l.fillStyle=sg;l.fillRect(0,0,w,S+2);
-    /* gullies: thin shadowed creases running down and out from notches in the crest */
-    var Rr=rng(91);l.lineCap="round";for(var q=0;q<(G.mob?12:26);q++){var rx=Rr()*w,top=crest(rx,base,amp,57)+2,len=S*(.05+Rr()*.12),dir=Rr()<.5?-1:1;
-      l.strokeStyle="rgba(46,24,44,"+(.1+Rr()*.12).toFixed(3)+")";l.lineWidth=.8+Rr()*1;l.beginPath();l.moveTo(rx,top);l.quadraticCurveTo(rx+dir*len*.15,top+len*.5,rx+dir*len*.45,top+len);l.stroke()}
-    /* warm light along the crest */
-    l.strokeStyle="rgba(255,190,150,.5)";l.lineWidth=1.2;l.beginPath();for(var x2=-4;x2<=w+6;x2+=3){var y2=crest(x2,base,amp,57)+.8;x2===-4?l.moveTo(x2,y2):l.lineTo(x2,y2)}l.stroke();
-    l.restore();
-    /* foothills and bajada falling toward the city, already in shadow */
-    ridge(l,hz+S*.2,S*.06,73,["#3a2733","#2a1f27"],.0);
-    var fl=l.createLinearGradient(0,hz+S*.2,0,S);fl.addColorStop(0,"#2a2026");fl.addColorStop(.5,"#1d1719");fl.addColorStop(1,"#141216");
-    l.fillStyle=fl;l.beginPath();l.moveTo(-4,S+2);for(var x3=-4;x3<=w+6;x3+=6)l.lineTo(x3,hz+S*.25+Math.sin(x3/(w*.19))*S*.008);l.lineTo(w+6,S+2);l.closePath();l.fill();
-    /* desert floor: creosote, prickly pear, distant saguaros */
-    var Rd=rng(203),gy=function(x){return hz+S*.25+Math.sin(x/(w*.19))*S*.008};
-    for(var d=0;d<(G.mob?40:110);d++){var dx=Rd()*w,depth=Rd(),dy=gy(dx)+depth*(S-gy(dx))*.9,ds=S*(.006+.022*depth);
-      l.fillStyle="rgba(12,10,12,"+(.55+.4*depth).toFixed(3)+")";bush(l,dx,dy,ds,Rd)}
-    for(var p=0;p<(G.mob?3:7);p++){var px=Rd()*w,pd=.3+Rd()*.6,py=gy(px)+pd*(S-gy(px))*.8;l.fillStyle="#110e11";pear(l,px,py,S*(.012+.02*pd),Rd)}
+    var flo=hz+S*.25;
+    /* three ranges, far to near: the Rincons/Tortolitas pale in the haze, the Catalina massif in alpenglow, the dark front foothills */
+    range(l,{base:hz+S*.0,amp:S*.13,seed:23,cx:.2,sp:.7,bot:flo,c0:"#8d6a86",c1:"#7a5b78",lit:"255,200,190",la:.16,sh:"70,48,80",sa:.18,haze:"176,128,140",ha:.5,rim:false});
+    range(l,{base:hz+S*.08,amp:S*.27,seed:57,cx:.55,sp:.42,bot:flo,c0:"#a5607a",c1:"#6a3e58",lit:"255,186,160",la:.42,sh:"46,22,44",sa:.5,haze:"150,90,100",ha:.42,rim:true});
+    range(l,{base:hz+S*.2,amp:S*.08,seed:73,cx:.3,sp:.6,bot:flo+S*.04,c0:"#4a3040",c1:"#2c2029",lit:"240,150,120",la:.22,sh:"18,10,18",sa:.5,haze:"60,40,48",ha:.35,rim:true});
+    /* desert floor with depth: warm haze at the foot of the range, darkening toward the viewer */
+    var gy=function(x){return flo+Math.sin(x/(w*.19))*S*.006};
+    var fl=l.createLinearGradient(0,flo-S*.01,0,S);fl.addColorStop(0,"#4a3236");fl.addColorStop(.18,"#2e2228");fl.addColorStop(.55,"#1b1619");fl.addColorStop(1,"#131115");
+    l.fillStyle=fl;l.beginPath();l.moveTo(-4,S+2);for(var x3=-4;x3<=w+6;x3+=6)l.lineTo(x3,gy(x3));l.lineTo(w+6,S+2);l.closePath();l.fill();
+    /* dry washes catching the last light, receding */
+    var Rw=rng(401);l.lineCap="round";for(var q=0;q<(G.mob?3:6);q++){var wy=flo+S*(.03+Rw()*.12),wx=Rw()*w,wl=w*(.08+Rw()*.18),dep=(wy-flo)/(S-flo);
+      l.strokeStyle="rgba(200,130,100,"+(.12*(1-dep)).toFixed(3)+")";l.lineWidth=.8+dep*2;l.beginPath();l.moveTo(wx,wy);l.bezierCurveTo(wx+wl*.3,wy+S*.006,wx+wl*.6,wy-S*.005,wx+wl,wy+S*.004);l.stroke()}
+    /* scrub in rows of depth: tiny and hazy far, larger and darker near */
+    var Rd=rng(203);
+    for(var d=0;d<(G.mob?70:190);d++){var depth=Math.pow(Rd(),1.4),dx=Rd()*w,dy=gy(dx)+depth*(S-gy(dx))*.92,ds=S*(.003+.02*depth);
+      var hzA=1-depth;l.fillStyle="rgb("+Math.round(16+46*hzA)+","+Math.round(12+28*hzA)+","+Math.round(16+30*hzA)+")";bush(l,dx,dy,ds,Rd);
+      if(depth>.35&&Rd()<.5){l.fillStyle="rgba(240,150,100,"+(.1*depth).toFixed(3)+")";l.beginPath();l.ellipse(dx-ds*.5,dy-ds*.35,ds*.35,ds*.18,0,0,Math.PI*2);l.fill()}}
+    for(var p=0;p<(G.mob?3:7);p++){var px=Rd()*w,pd=.4+Rd()*.5,py=gy(px)+pd*(S-gy(px))*.85;l.fillStyle="#110e11";pear(l,px,py,S*(.012+.02*pd),Rd)}
+    /* ocotillo: thin whips fanning from a point */
+    for(var oc=0;oc<(G.mob?2:5);oc++){var ox=Rd()*w,od=.3+Rd()*.6,oy=gy(ox)+od*(S-gy(ox))*.8,oh=S*(.04+.07*od);l.strokeStyle="rgba(14,11,14,.9)";l.lineWidth=Math.max(.8,1.4*od);
+      for(var wv=0;wv<9;wv++){var an=-Math.PI/2+(wv-4)*.11+(Rd()-.5)*.06;l.beginPath();l.moveTo(ox,oy);l.quadraticCurveTo(ox+Math.cos(an)*oh*.5,oy+Math.sin(an)*oh*.5,ox+Math.cos(an)*oh+(wv-4)*oh*.02,oy+Math.sin(an)*oh);l.stroke()}}
+    /* distant saguaros: small, hazed by distance */
     var Rs=rng(317),far=G.mob?9:22;
     for(var s=0;s<far;s++){var sx=Rs()*w,sd=Rs()*.55,sy=gy(sx)+sd*(S-gy(sx))*.6+S*.004,sh=S*(.035+.08*sd)*(.7+Rs()*.5);
-      if(!G.mob&&sx>G.side+G.cw*.62&&sx<G.side+G.cw*.92&&sd>.3)continue;
-      l.fillStyle="rgba(14,11,14,"+(.7+.3*sd).toFixed(3)+")";saguaro(l,sx,sy,sh,Rs,false)}
-    /* the hero saguaro, rim-lit by the afterglow */
+      if(!G.mob&&sx>G.side+G.cw*.6&&sx<G.side+G.cw*.92&&sd>.25)continue;
+      var hzb=1-sd;l.fillStyle="rgb("+Math.round(16+40*hzb)+","+Math.round(12+24*hzb)+","+Math.round(16+28*hzb)+")";saguaro(l,sx,sy,sh,Rs,0)}
+    /* the hero saguaro and its smaller neighbour, rim-lit on the sunset (west) side */
     var hx=G.mob?w*.8:G.side+G.cw*.78,hy=S*(G.mob?.98:.97),hh=S*(G.mob?.62:.64);
-    l.fillStyle="#0e0c0f";saguaro(l,hx,hy,hh,rng(5),true);
-    var hx2=G.mob?w*.6:G.side+G.cw*.66,hh2=hh*.42;l.fillStyle="#120f12";saguaro(l,hx2,S*(G.mob?.93:.9),hh2,rng(9),false);
-    /* ground shadow fading to the page */
-    var fg=l.createLinearGradient(0,S*.8,0,S+2);fg.addColorStop(0,"rgba(22,21,26,0)");fg.addColorStop(1,"rgba(22,21,26,.9)");l.fillStyle=fg;l.fillRect(0,S*.8,w,S*.2+2);
+    saguaro(l,G.mob?w*.6:G.side+G.cw*.655,S*(G.mob?.93:.905),hh*.44,rng(9),2);
+    saguaro(l,hx,hy,hh,rng(5),1);
+    var fg=l.createLinearGradient(0,S*.82,0,S+2);fg.addColorStop(0,"rgba(22,21,26,0)");fg.addColorStop(1,"rgba(22,21,26,.9)");l.fillStyle=fg;l.fillRect(0,S*.82,w,S*.18+2);
     STARS=[];var Rt=rng(61);for(var t=0;t<(G.mob?40:110);t++)STARS.push([Rt()*w,Math.pow(Rt(),1.6)*hz*.62,.4+Rt()*1.1,Rt()*6.28,.3+Rt()*.7]);
   }
-  function ridge(g,base,amp,seed,cols){g.beginPath();g.moveTo(-4,G.S+2);for(var x=-4;x<=w+6;x+=4)g.lineTo(x,crest(x*1.3+seed*7,base,amp,seed));g.lineTo(w+6,G.S+2);g.closePath();
-    var gr=g.createLinearGradient(0,base-amp,0,base+amp*.4);gr.addColorStop(0,cols[0]);gr.addColorStop(1,cols[1]);g.fillStyle=gr;g.fill()}
   function bush(g,x,y,s,R){g.beginPath();for(var k=0;k<5;k++){var bx=x+(R()-.5)*s*1.6,by=y-R()*s*.5,br=s*(.35+R()*.4);g.moveTo(bx+br,by);g.ellipse(bx,by,br,br*.7,0,0,Math.PI*2)}g.fill()}
   function pear(g,x,y,s,R){var pads=[[0,0,1,0],[-.7,-.9,.8,-.5],[.6,-1,.85,.4],[.1,-1.8,.7,.1],[-1.3,-.3,.7,-.9]];g.beginPath();
     pads.forEach(function(p){g.moveTo(x+p[0]*s+s*p[2]*.62,y+p[1]*s-s*.5);g.ellipse(x+p[0]*s,y+p[1]*s-s*.5,s*p[2]*.62,s*p[2]*.82,p[3],0,Math.PI*2)});g.fill()}
-  /* saguaro: a trunk and arms drawn as thick round-capped strokes that curve out and up; rim=true adds the warm
-     edge light (the silhouette drawn warm, then dark offset away from the glow) and fine ribs */
-  function saguaro(g,x,base,H,R,rim){
-    var tw=H*(rim?.074:.08),arms=[],n=rim?3:(R()<.25?0:R()<.6?1:2);
-    if(rim)arms=[[-1,.40,.17,.30],[1,.50,.15,.26],[-1,.62,.11,.14]];
-    else for(var k=0;k<n;k++)arms.push([k%2?1:-1,.36+R()*.26,.12+R()*.08,.16+R()*.16]);
-    function shape(dx,dy){g.beginPath();g.moveTo(x+dx,base+dy);g.lineTo(x+dx,base-H+tw/2+dy);
-      arms.forEach(function(a){var d=a[0],ay=base-H*a[1]+dy,out=H*a[2],up=H*a[3],ex=x+dx+d*out;
-        g.moveTo(x+dx,ay);g.bezierCurveTo(x+dx+d*out*.55,ay+out*.12,ex,ay-out*.05,ex,ay-out*.55);g.lineTo(ex,ay-up)})}
-    g.save();g.lineCap="round";g.lineJoin="round";var col=g.fillStyle;
-    if(rim){g.strokeStyle="rgba(255,178,104,.95)";shape(0,0);g.lineWidth=tw;g.stroke();g.strokeStyle=col;shape(Math.max(1.6,tw*.07),Math.max(.8,tw*.03));g.lineWidth=tw*.985;g.stroke()}
-    else{g.strokeStyle=col;shape(0,0);g.lineWidth=tw;g.stroke()}
-    if(rim){g.strokeStyle="rgba(255,190,130,.08)";g.lineWidth=1;g.lineCap="butt";for(var r=1;r<5;r++){var rx=x-tw/2+tw*r/5+1.5;g.beginPath();g.moveTo(rx,base-H+tw*.9);g.lineTo(rx,base);g.stroke()}}
+  /* a limb of a saguaro as a tube along a centreline: [x,y] points, thickness per point. returns the outline
+     (left edge down the limb, rounded crown, right edge back) plus per-point normals for ribs. */
+  function tube(pts,th){var L=[],Rt=[],N=[];for(var i=0;i<pts.length;i++){var a=pts[Math.max(0,i-1)],b=pts[Math.min(pts.length-1,i+1)],dx=b[0]-a[0],dy=b[1]-a[1],d=Math.hypot(dx,dy)||1,nx=-dy/d,ny=dx/d;
+      N.push([nx,ny]);L.push([pts[i][0]+nx*th[i]/2,pts[i][1]+ny*th[i]/2]);Rt.push([pts[i][0]-nx*th[i]/2,pts[i][1]-ny*th[i]/2])}
+    var e=pts.length-1,tp=pts[e],r=th[e]/2,ta=Math.atan2(N[e][1],N[e][0]),cap=[];for(var c=0;c<=10;c++){var an=ta-Math.PI*c/10;cap.push([tp[0]+Math.cos(an)*r*1.0,tp[1]+Math.sin(an)*r*1.0])}
+    return {L:L,R:Rt,cap:cap,N:N,pts:pts,th:th}}
+  function bez(p0,p1,p2,p3,n){var o=[];for(var i=0;i<=n;i++){var t=i/n,u=1-t;o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]])}return o}
+  function outline(g,T){g.moveTo(T.R[0][0],T.R[0][1]);for(var i=1;i<T.R.length;i++)g.lineTo(T.R[i][0],T.R[i][1]);for(var c=0;c<T.cap.length;c++)g.lineTo(T.cap[c][0],T.cap[c][1]);for(var j=T.L.length-1;j>=0;j--)g.lineTo(T.L[j][0],T.L[j][1]);g.closePath()}
+  /* saguaro. mode 0: distant silhouette (current fillStyle). mode 1/2: hero and neighbour, fully modelled:
+     irregular ribbed limbs with a slight lean, elbows that swell where the arm turns up, rim light and spines
+     on the west (sunset) side only. */
+  function saguaro(g,x,base,H,R,mode){
+    var tw=H*(mode?.082:.08),lean=mode===1?-.035:mode===2?.03:(R()-.5)*.04,limbs=[];
+    var tp=[];for(var i=0;i<=24;i++){var t=i/24;tp.push([x+lean*H*t*t+Math.sin(t*5+H)*tw*.03,base-H*t])}
+    var tt=tp.map(function(p,i){var t=i/24;return tw*(1.02-.08*t+.04*Math.sin(t*9))});limbs.push(tube(tp,tt));
+    var arms=mode===1?[[-1,.36,.2,.36,1.0],[1,.47,.17,.3,.92],[-1,.6,.12,.17,.82],[1,.7,.09,.1,.75]]:mode===2?[[1,.42,.2,.3,.95],[-1,.55,.15,.2,.85]]:[];
+    if(!mode){var n=R()<.25?0:R()<.6?1:2;for(var k=0;k<n;k++)arms.push([k%2?1:-1,.36+R()*.26,.12+R()*.08,.16+R()*.16,.85])}
+    arms.forEach(function(a){var d=a[0],t0=a[1],o=H*a[2],up=H*a[3],j=tp[Math.round(t0*24)],sx=j[0],sy=j[1];
+      var c1=bez([sx,sy],[sx+d*o*.55,sy+o*.18],[sx+d*o,sy+o*.05],[sx+d*o,sy-o*.55],10),c2=[];
+      for(var q=1;q<=8;q++){var t=q/8;c2.push([sx+d*o+d*Math.sin(t*2.4)*o*.06,sy-o*.55-(up-o*.55)*t])}
+      var cl=c1.concat(c2),ath=tw*a[4]*.78;
+      var th=cl.map(function(p,i){var f=i/(cl.length-1);return ath*(.78+.32*Math.exp(-Math.pow((f-.38)/.16,2))+.04*Math.sin(f*11))});
+      th[0]=th[1]=tw*.62;limbs.push(tube(cl,th))});
+    if(!mode){g.beginPath();limbs.forEach(function(T){outline(g,T)});g.fill();return}
+    g.save();
+    /* one silhouette, one fill: no seams where arms meet the trunk */
+    var all=new Path2D();limbs.forEach(function(T){var P=new Path2D();var f=function(q){return q};P.moveTo(T.R[0][0],T.R[0][1]);T.R.forEach(function(q){P.lineTo(q[0],q[1])});T.cap.forEach(function(q){P.lineTo(q[0],q[1])});for(var i=T.L.length-1;i>=0;i--)P.lineTo(T.L[i][0],T.L[i][1]);P.closePath();all.addPath(P)});
+    g.fillStyle="#120d10";g.fill(all,"nonzero");
+    /* light from the west and a little above: per point, the side whose normal faces the light is lit */
+    function litN(T,i){var n=T.N[i],d=-n[0]-.45*n[1];return d>=0?[n[0],n[1]]:[-n[0],-n[1]]}
+    function facing(n){return Math.max(0,-n[0]*.9-n[1]*.45)}
+    g.save();g.clip(all,"nonzero");g.lineCap="round";
+    function st0(T,ti){if(!ti)return 0;for(var i=0;i<T.pts.length;i++)if(Math.abs(T.pts[i][0]-T.pts[0][0])>tw*.5+T.th[i]*.1)return i;return 0}
+    limbs.forEach(function(T,ti){var s0=st0(T,ti);
+      /* soft warm flank */
+      for(var i=Math.max(1,s0);i<T.pts.length;i++){var n=litN(T,i),f=facing(n),p=T.pts[i],q=T.pts[i-1],r=T.th[i]/2;if(f<=0)continue;
+        var gx0=p[0]+n[0]*r,gy0=p[1]+n[1]*r,gr=g.createLinearGradient(gx0,gy0,p[0]-n[0]*r*.2,p[1]-n[1]*r*.2);gr.addColorStop(0,"rgba(150,72,56,"+(.34*f).toFixed(3)+")");gr.addColorStop(1,"rgba(150,72,56,0)");
+        g.strokeStyle=gr;g.lineWidth=T.th[i]*1.02;g.beginPath();g.moveTo(q[0],q[1]);g.lineTo(p[0],p[1]);g.stroke()}
+      /* ribs: pleats crowding toward the edges of the cylinder; warm on the lit half */
+      var nr=ti===0?12:8;for(var r=1;r<nr;r++){var off=Math.cos(Math.PI*r/nr)*.47;
+        g.lineWidth=Math.max(.6,tw*.02);g.beginPath();var lit=0;
+        for(var i=s0;i<T.pts.length;i++){var n=litN(T,i);lit+=facing(n);var px=T.pts[i][0]+n[0]*T.th[i]*off,py=T.pts[i][1]+n[1]*T.th[i]*off;i>s0?g.lineTo(px,py):g.moveTo(px,py)}
+        lit/=T.pts.length;g.strokeStyle=off>0?"rgba(255,160,110,"+((.06+.3*off)*lit*1.4).toFixed(3)+")":"rgba(0,0,0,.35)";g.stroke()}
+    });
+    g.restore();
+    /* rim light and spines along the lit edge, strength by how squarely it faces the afterglow */
+    limbs.forEach(function(T,ti){var Rsp=rng(77+ti*31),sl=Math.max(2,tw*.075),s0=st0(T,ti);
+      for(var i=Math.max(1,s0+1);i<T.pts.length;i++){var n=litN(T,i),n0=litN(T,i-1),f=facing(n);if(f<.05)continue;
+        var ax=T.pts[i-1][0]+n0[0]*T.th[i-1]/2,ay=T.pts[i-1][1]+n0[1]*T.th[i-1]/2,bx=T.pts[i][0]+n[0]*T.th[i]/2,by=T.pts[i][1]+n[1]*T.th[i]/2;
+        g.strokeStyle="rgba(255,"+Math.round(150+50*f)+","+Math.round(90+40*f)+","+(.25+.7*f).toFixed(3)+")";g.lineWidth=Math.max(1.1,tw*.045*f);g.beginPath();g.moveTo(ax,ay);g.lineTo(bx,by);g.stroke();
+        g.lineWidth=Math.max(.5,tw*.011);for(var m=0;m<(mode===1?3:2);m++){var t=Rsp(),sx=ax+(bx-ax)*t,sy=ay+(by-ay)*t,an=Math.atan2(n[1],n[0])+(Rsp()-.5)*1.3,ln=sl*(.5+Rsp()*.9);
+          g.strokeStyle="rgba(255,216,170,"+((.3+Rsp()*.5)*f).toFixed(3)+")";g.beginPath();g.moveTo(sx,sy);g.lineTo(sx+Math.cos(an)*ln,sy+Math.sin(an)*ln);g.stroke()}}
+      var c=T.cap[5];for(var z=0;z<9;z++){var a2=-Math.PI/2+(z-4)*.28-.2;g.strokeStyle="rgba(255,214,160,.45)";g.lineWidth=Math.max(.5,tw*.011);g.beginPath();g.moveTo(c[0],c[1]+1);g.lineTo(c[0]+Math.cos(a2)*sl*1.1,c[1]+1+Math.sin(a2)*sl*1.1);g.stroke()}});
     g.restore();
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}

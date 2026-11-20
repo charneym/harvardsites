@@ -9,7 +9,7 @@ var field=(function(){
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="data:image/webp;base64,__HERO__";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   /* right edge of the hero text (H1 + lede), measured from the DOM about once a second (QA-2 framing) */
-  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var r=document.createRange();r.selectNodeContents(L[i]);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}TXc=m}catch(_){}}return TXc}
+  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var tw=document.createTreeWalker(L[i],4),n;while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;var r=document.createRange();r.selectNodeContents(n);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}}TXc=m}catch(_){}}return TXc}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.46,w*1.0):h;
@@ -30,9 +30,18 @@ var field=(function(){
       var dw=iw*sc,dh=ih*sc,fx=G.mob?1:.6,fy=G.mob?.42:.5;
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
       /* wide screens: the block's left face (~57% across the render) moves out from behind the H1/lede, capped so the specimen's tail (~96%) stays in frame; the strip opened at the left is ink (QA-2) */
-      if(!G.mob)x+=Math.max(0,Math.min(TXR()+36-(x+dw*.57),w+20-(x+dw*1)));
+      if(!G.mob){
+        /* desktop (QA-2 R2): the block and specimen (x .57-.97 of the render) sit whole in the open area right of the measured H1/lede,
+           centred there with room at both sides; the render shrinks if it must, and its edges feather into the ground */
+        var L0=TXR()+90,R0=w-Math.max(90,w*.06),fit=(R0-L0)/.44;
+        if(dw>fit){dh*=fit/dw;dw=fit}
+        x=(L0+R0)/2-.77*dw;y=(h-dh)*.5-k*h*.01;
+      }
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       if(x>0){c.fillStyle="#11143a";c.fillRect(0,0,x+1,h);var fe=c.createLinearGradient(x,0,x+200,0);fe.addColorStop(0,"rgba(17,20,58,1)");fe.addColorStop(1,"rgba(17,20,58,0)");c.fillStyle=fe;c.fillRect(x,0,200,h)}
+      if(!G.mob&&y>0){var fy1=c.createLinearGradient(0,y,0,y+140);fy1.addColorStop(0,"rgba(17,20,58,1)");fy1.addColorStop(1,"rgba(17,20,58,0)");c.fillStyle="#11143a";c.fillRect(0,0,w,y+1);c.fillStyle=fy1;c.fillRect(0,y,w,140)}
+      if(!G.mob&&y+dh<h){var fy2=c.createLinearGradient(0,y+dh-140,0,y+dh);fy2.addColorStop(0,"rgba(17,20,58,0)");fy2.addColorStop(1,"rgba(17,20,58,1)");c.fillStyle=fy2;c.fillRect(0,y+dh-140,w,140);c.fillStyle="#11143a";c.fillRect(0,y+dh-1,w,h-y-dh+2)}
+      if(!G.mob&&x+dw<w){var fx2=c.createLinearGradient(x+dw-120,0,x+dw,0);fx2.addColorStop(0,"rgba(17,20,58,0)");fx2.addColorStop(1,"rgba(17,20,58,1)");c.fillStyle=fx2;c.fillRect(x+dw-120,0,120,h);c.fillStyle="#11143a";c.fillRect(x+dw-1,0,w-x-dw+2,h)}
       c.globalAlpha=1;
       /* scrims: navy wash, the headline side darkest, the base deepening into the page */
       c.fillStyle="rgba(17,20,58,.08)";c.fillRect(0,0,w,bh);

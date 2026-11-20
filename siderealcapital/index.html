@@ -1573,7 +1573,10 @@ var field=(function(){
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.0):h;
-    return {mob:mob,side:side,cw:cw,U:U,bh:mob?U:h};
+    /* measured end of the headline/lede text, so the bright band and the scrim are placed against the real copy (DI) */
+    var te=side+cw*.6,hh=$(".hero .hero-h"),hl=$(".hero-foot p");
+    [hh,hl].forEach(function(el){if(!el)return;var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n;while(n=tw.nextNode()){if(!n.textContent.trim())continue;var rg=document.createRange();rg.selectNodeContents(n);[].forEach.call(rg.getClientRects(),function(r){if(r.width)te=Math.max(te,r.right)})}});
+    return {mob:mob,side:side,cw:cw,U:U,bh:mob?U:h,te:te,tk:!!hh};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0,INK="#0a1530",SR="8,16,38";
@@ -1584,6 +1587,7 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=INK;c.fillRect(0,0,w,h);
     if(ok){
+      if(!G.tk)G=geo();
       var bw=w,bh=G.bh,iw=img.naturalWidth,ih=img.naturalHeight;
       /* Ken Burns: a very slow push in and drift toward the subject, eased back and forth over ~60s */
       var k=.5-.5*Math.cos(t*Math.PI*2/60),sc=Math.max(bw/iw,bh/ih)*(1.03+.06*k)*(1+.04*(1-e))*(G.mob?1:1);
@@ -1591,11 +1595,17 @@ var field=(function(){
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.008;
       x=Math.min(0,Math.max(bw-dw,x));y=Math.min(0,Math.max(bh-dh,y)); /* the drift never opens a gap at an edge (DJ) */
       /* wide screens: shift the art right so its feather midpoint never sits left of ~0.9 of the content (DI); the canvas left of it is ink */
-      if(!G.mob)x+=Math.max(0,G.side+G.cw*0.9-(x+dw*0.671));
+      if(!G.mob){
+        /* desktop: the galactic core (x .675, y .45 of the photo) sits ~74% across, the band's bright edge (x .6) at least ~90px
+           right of the measured headline end, the photo's right edge flush with the viewport; top/bottom/left are feathered into ink */
+        var cx=Math.max(w*.74,G.te+120);dw=Math.max(w*1.0,(w-cx)/.325,h*1.55);dw=Math.min(dw,(cx-G.te-90)/.075);dw=Math.max(dw,(w-cx)/.325);
+        dw*=1+.03*k;dh=dw*ih/iw;x=cx-dw*.675-k*w*.004;y=Math.min(h*.5-dh*.42,h*.95-dh*.86)-k*h*.006;
+      }
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      if(!G.mob&&y>0){var fg=c.createLinearGradient(0,y,0,y+dh*.34);fg.addColorStop(0,INK);fg.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=fg;c.fillRect(0,y-1,w,dh*.34+1)} /* the photo's top edge feathers into the ink, no seam (DJ) */
       if(!G.mob){
         /* ink scrim over the headline and lede side (0 to ~55%), a light top wash under the nav, the base deepening */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.6,0);lv.addColorStop(0,"rgba("+SR+",.9)");lv.addColorStop(.6,"rgba("+SR+",.62)");lv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var L=Math.max(G.side+G.cw*.6,G.te+160),lv=c.createLinearGradient(0,0,L,0);lv.addColorStop(0,"rgba("+SR+",.9)");lv.addColorStop(Math.min(.9,(G.te+20)/L),"rgba("+SR+",.62)");lv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
         var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba("+SR+",.5)");tv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
         var bv=c.createLinearGradient(0,h*.6,0,h);bv.addColorStop(0,"rgba("+SR+",0)");bv.addColorStop(1,"rgba("+SR+",.78)");c.fillStyle=bv;c.fillRect(0,h*.6,w,h*.4);
       }else{
@@ -1609,7 +1619,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,60)});
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[w*0.62,G.bh*.42]:[w/2,h/2]}};
 })();/*</R:field>*/

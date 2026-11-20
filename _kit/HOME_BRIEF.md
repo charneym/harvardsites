@@ -69,3 +69,6 @@ Then stop.
    (b) A high-quality real photograph of the firm's actual place or subject from Unsplash or Pexels only. Their licences allow commercial use without attribution; no Wikimedia, no Getty, no AI images. Download it into the site folder, grade it, and record the source URL in the dossier.
    (c) Only for science, mechanism or product subjects (biotech, medtech): a crafted render of the real object or mechanism, like /aivocode/, /nanoscope-instruments/ or /craniosure/.
    No painted landscapes, silhouettes or illustrated skylines for PE or wealth firms unless (a) and (b) are impossible.
+
+## UPDATE 2026-11-20 (b): build-out pages v2 (binding)
+Do NOT write your own #/more router. Add "buildout" to @libs (and to your assemble.py); the shared _kit/lib/buildout.js now runs the full-site route wipe and builds a real sub-page from your own home sections (sub-page hero from the section heading/intro, the cloned section content, then the concept note). Make sure each nav item's target section has a clear heading and intro, and use the site's SECS map / data-to links so the module can find them. See PRINCIPLES DK.

@@ -908,7 +908,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    slow ripples, the sun sinking a little) with no pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,RIV=null,GL=[],RIP=[];
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,oFore=null,RIV=null,GL=[],RIP=[];
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
@@ -923,13 +923,28 @@ var field=(function(){
   function ridge(k,x){var R=rng(11+k*29),p1=R()*6.28,p2=R()*6.28,p3=R()*6.28,wl=w*(.16+.08*k)+120;
     var n=.5+.5*(.6*Math.sin(x/wl+p1)+.28*Math.sin(x/(wl*.43)+p2)+.12*Math.sin(x/(wl*.17)+p3));
     return G.hz-G.S*(k?.034:.05)*(.35+.65*n)}
-  /* Pinnacle Mountain: a steep cone with concave flanks, a knobbly rock summit, and a lower shoulder on its east side */
-  function mtn(x){var t=(x-G.mx)/G.mW;if(t<-1||t>1.35)return G.hz+4;
-    var a=Math.abs(t),f=t<0?Math.pow(1-a,1.55):(t<1?Math.pow(1-a,1.75):0);
-    if(f>.82)f=.82+(f-.82)*.42-(a<.03?0:0);
-    var sh=t>.25?.19*Math.exp(-Math.pow((t-.72)/.3,2)):0;
-    var kn=.006*Math.sin(t*47)*(1-a)+.004*Math.sin(t*131+1)*(1-a);
-    return G.hz+G.S*.006-G.mh*1.12*(Math.max(f,sh)+kn)}
+  /* value noise for rugged edges */
+  var VN=(function(){var R=rng(71),a=[];for(var i=0;i<1024;i++)a.push(R());return a})();
+  function vn(x){var i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return VN[(i%1024+1024)%1024]*(1-u)+VN[((i+1)%1024+1024)%1024]*u}
+  function fbm(x){return .5*vn(x)+.27*vn(x*2.1+11)+.15*vn(x*4.3+23)+.08*vn(x*8.9+41)}
+  var HT=(function(){var a=new Float32Array(65536),st=0x9e3779b9;for(var i=0;i<65536;i++){st=(st+0x6D2B79F5)|0;var t=Math.imul(st^(st>>>15),1|st);t=(t+Math.imul(t^(t>>>7),61|t))^t;a[i]=((t^(t>>>14))>>>0)/4294967296}return a})();
+  function crownAt(x,y,c){var gx=x/c,gy=y/c,ix=Math.floor(gx),iy=Math.floor(gy),best=9,bx=0,by=0;
+    for(var j=-1;j<=1;j++)for(var i=-1;i<=1;i++){var h=((ix+i)&255)+(((iy+j)&255)<<8),cx=ix+i+.15+.7*HT[h],cy=iy+j+.15+.7*HT[(h+7919)&65535],dx=gx-cx,dy=gy-cy,rr=.55+.25*HT[(h+104729)&65535],d=Math.hypot(dx,dy*1.15)/rr;
+      if(d<best){best=d;bx=dx/rr;by=dy/rr}}return [best,bx,by]}
+  function vn2(x,y){var i=Math.floor(x),j=Math.floor(y),fx=x-i,fy=y-j,u=fx*fx*(3-2*fx),v=fy*fy*(3-2*fy),i0=i&255,j0=j&255,i1=(i+1)&255,j1=(j+1)&255;
+    var a=HT[i0+(j0<<8)],b=HT[i1+(j0<<8)],c=HT[i0+(j1<<8)],d=HT[i1+(j1<<8)];return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v}
+  /* Pinnacle Mountain as seen from the east, from the river: the summit sits east of centre. The east (left) flank is a
+     steep, slightly concave rock face; the west (right) flank falls in a convex shoulder to a long lower spur. The top is a
+     ragged crown of bare sandstone boulders. */
+  function mtnBase(t){
+    if(t<-1||t>1.45)return -.02;
+    if(t<0){var a=-t;return Math.pow(1-a,1.85)*(1+.1*Math.sin(a*3.1))-.03*Math.exp(-Math.pow((a-.1)/.05,2))}
+    var f=Math.pow(Math.max(0,1-t/1.15),1.12);
+    var sh=.4*Math.exp(-Math.pow((t-.6)/.26,2))+.15*Math.exp(-Math.pow((t-1.1)/.22,2));
+    return Math.max(f*(1-.12*sm(t/.4)),sh*(1-sm((t-1.1)/.35)))}
+  function mtn(x){var t=(x-G.mx)/G.mW;if(t<-1||t>1.45)return G.hz+4;
+    var b=mtnBase(t),rug=(fbm(x/(G.mW*.035))-.5)*.035*b+(fbm(x/(G.mW*.012)+7)-.5)*.02*Math.max(0,b-.72)*4;
+    return G.hz+G.S*.006-G.mh*1.02*(b+rug)}
   /* the river: a wide reach below the mountain; our near shore curves away, low on the left and deep on the right */
   function shore(x){var u=G.mob?x/w:(x-G.side-G.cw*.28)/(G.cw*.62),b=G.S-G.hz;
     return G.hz+b*(G.mob?(.34+.4*sm(u)):(.07+.36*sm(u)))+b*.025*Math.sin(x*.011+1.3)+b*.012*Math.sin(x*.037)}
@@ -947,17 +962,47 @@ var field=(function(){
     /* far ridges, warmed where the sun is */
     [["#8a6f8a",0],["#5d557c",1]].forEach(function(r){l.fillStyle=r[0];l.beginPath();l.moveTo(-4,hz+3);for(var x=-4;x<=w+6;x+=4)l.lineTo(x,ridge(r[1],x));l.lineTo(w+6,hz+3);l.closePath();l.fill();
       l.save();l.globalCompositeOperation="source-atop";var sw=l.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,w*.4);sw.addColorStop(0,"rgba(255,206,140,.42)");sw.addColorStop(1,"rgba(255,206,140,0)");l.fillStyle=sw;l.fillRect(0,0,w,hz+4);l.restore()});
-    /* the mountain: shaded west face, sunlit east edge, a rim of light along the summit */
-    var mp=new Path2D();mp.moveTo(G.mx-G.mW-4,hz+6);for(var x2=G.mx-G.mW;x2<=G.mx+G.mW*1.35;x2+=2)mp.lineTo(x2,mtn(x2));mp.lineTo(G.mx+G.mW*1.35,hz+6);mp.closePath();
-    var mg=l.createLinearGradient(G.mx-G.mW,0,G.mx+G.mW,0);mg.addColorStop(0,"#141c44");mg.addColorStop(.5,"#252b58");mg.addColorStop(1,"#4a3f62");
-    l.fillStyle=mg;l.fill(mp);
-    l.save();l.clip(mp);var vg=l.createLinearGradient(0,hz-G.mh,0,hz);vg.addColorStop(0,"rgba(255,255,255,0)");vg.addColorStop(1,"rgba(206,170,160,.18)");l.fillStyle=vg;l.fillRect(0,hz-G.mh-4,w,G.mh+10);
-      /* forest texture on the slopes */
-      var Rf=rng(19);for(var q=0;q<(G.mob?900:2600);q++){var fx=G.mx-G.mW+Rf()*G.mW*2.3,top=mtn(fx),fy=top+Math.pow(Rf(),.8)*(hz-top);if(fy<top+1.5)continue;var lit=(fx-G.mx)/G.mW;l.fillStyle=Rf()<.5?"rgba(8,12,34,"+(.14+.1*Rf()).toFixed(3)+")":"rgba(210,160,140,"+(Math.max(0,lit)*.12).toFixed(3)+")";l.beginPath();l.arc(fx,fy,(G.mob?.5:.8)+Rf()*(G.mob?.7:1.1),0,6.28);l.fill()}
-    l.restore();
-    l.save();l.strokeStyle="rgba(255,212,150,.55)";l.lineWidth=1.2;l.beginPath();var first=true;for(var x3=G.mx-G.mW*.08;x3<=G.mx+G.mW*1.2;x3+=2){var y3=mtn(x3);first?l.moveTo(x3,y3):l.lineTo(x3,y3);first=false}l.stroke();l.restore();
+    /* the mountain, shaded pixel by pixel. Its surface is a cone (normal swings from east to west across it) cut by
+       ridges and gullies running down the fall line; the low sun in the west (right) grazes the west face warm while the
+       east face falls into cool shadow. Bare sandstone above a ragged treeline, a fine forest texture below it, and
+       atmospheric haze thickening toward the foot. */
+    var mL=Math.floor(G.mx-G.mW-2),mR=Math.ceil(G.mx+G.mW*1.45+2),smx=G.mx,smy=hz;
+    for(var xs=mL;xs<=mR;xs+=1){var ys=mtn(xs);if(ys<smy){smy=ys;smx=xs}}
+    var md=dpr,MW=Math.ceil((mR-mL)*md),MT=Math.floor(smy-2),MH=Math.ceil((hz+3-MT)*md),mc=document.createElement("canvas");mc.width=MW;mc.height=MH;
+    var mx2=mc.getContext("2d"),id=mx2.createImageData(MW,MH),D=id.data,PR=[];for(var px=0;px<MW;px++)PR.push(mtn(mL+px/md));
+    var sc=G.mW/260,LX=.93,LZ=.3,LN=Math.hypot(LX,LZ);LX/=LN;LZ/=LN;
+    for(var py=0;py<MH;py++){var y=MT+py/md,depth=(y-smy)/(hz-smy);
+      /* the cone's half-width at this height, for the base normal */
+      for(px=0;px<MW;px++){var x=mL+px/md,top=PR[px];if(y<top)continue;
+        var u=(x-smx)/(G.mW*(.12+1.05*Math.max(0,depth))),cn=Math.max(-1,Math.min(1,u));
+        /* gullies and spurs: noise stretched down the fall line, sheared outward from the summit */
+        var gx=(x-(x-smx)*.35*depth)/(sc*15),gy=y/(sc*60);
+        var e=.08,n0=vn2(gx,gy)*.7+vn2(gx*2.1+5,gy*1.8+3)*.3,n1=vn2(gx+e,gy)*.7+vn2((gx+e)*2.1+5,gy*1.8+3)*.3,gk=depth<.35?.16:.16-.1*sm((depth-.35)/.3);
+        var nx=cn*.95+(n1-n0)/e*gk,nz=Math.sqrt(Math.max(.05,1-nx*nx));var ln=Math.hypot(nx,nz);nx/=ln;nz/=ln;
+        var dif=Math.pow(Math.max(0,nx*LX+nz*LZ),1.6),tl=.2+.13*fbm(x/(G.mW*.06)+5)+(top-smy)/(hz-smy)*.4,rock=1-sm((depth-tl)/.05);
+        var r,g,b;
+        var st=vn2(x/(sc*1.6),y/(sc*7))*.6+vn2(x/(sc*.7),y/(sc*.9))*.4,rk=.65+.6*st;
+        var rr=(34+170*dif*rk)*(1-.35*Math.max(0,-cn)),rg=(32+112*dif*rk)*(1-.35*Math.max(0,-cn)),rb=(62+70*dif*rk)*(1-.3*Math.max(0,-cn));
+        /* forest: crown-sized pits and tops */
+        /* crowns: nearest jittered cell centre gives a round dome per tree; each dome is lit on its sunward side */
+        var cc=crownAt(x-mL,y-MT,sc*2.3),dome=Math.max(0,1-cc[0]),side=.55+.45*Math.max(-1,Math.min(1,cc[1]*.9-cc[2]*.5)),tex=(.5+.55*dome*side)*(.72+.45*vn2((x-mL)/(sc*22),(y-MT)/(sc*14))),pit=.72+.28*sm(dome*2.2);
+        var shd=1-.5*Math.max(0,-cn);var fr=(16+140*dif*tex+8*dome)*pit*shd,fg=(21+80*dif*tex+7*dome)*pit*shd,fb=(46+40*dif*tex+12*dome)*pit*shd;
+        var r=fr+(rr-fr)*rock,g=fg+(rg-fg)*rock,b=fb+(rb-fb)*rock;
+        /* haze: thin at the top, heavier at the foot, warmer toward the sun */
+        var hzk=.04+.26*Math.pow(Math.max(0,depth),1.8),wk=Math.max(0,1-Math.hypot(x-G.sx,y-G.sy)/(G.mW*2.2));
+        r=r*(1-hzk)+(128+80*wk)*hzk;g=g*(1-hzk)+(100+56*wk)*hzk;b=b*(1-hzk)+(132+6*wk)*hzk;
+        var o=(py*MW+px)*4,ea=Math.min(1,(y-top)*md+.35);D[o]=r;D[o+1]=g;D[o+2]=b;D[o+3]=255*ea}}
+    mx2.putImageData(id,0,0);l.drawImage(mc,mL,MT,MW/md,MH/md);
+    /* rim light along the west skyline */
+    l.save();var rimg=l.createLinearGradient(smx,0,mR,0);rimg.addColorStop(0,"rgba(255,214,160,.6)");rimg.addColorStop(.6,"rgba(255,214,160,.28)");rimg.addColorStop(1,"rgba(255,214,160,0)");
+    l.strokeStyle=rimg;l.lineWidth=1.1;l.beginPath();for(var x3=smx;x3<=mR;x3+=1.5){var y3=mtn(x3)+.6;x3===smx?l.moveTo(x3,y3):l.lineTo(x3,y3)}l.stroke();l.restore();
+    /* valley mist at the mountain's foot */
+    var Rm=rng(109);for(var mq=0;mq<(G.mob?4:8);mq++){var mxm=mL+Rm()*(mR-mL),mw2=G.mW*(.35+Rm()*.5),mh2=G.S*(.008+Rm()*.01);l.save();l.translate(mxm,hz-G.S*(.004+Rm()*.012));l.scale(1,mh2/mw2);var mg2=l.createRadialGradient(0,0,0,0,0,mw2);mg2.addColorStop(0,"rgba(220,180,175,.2)");mg2.addColorStop(1,"rgba(220,180,175,0)");l.fillStyle=mg2;l.beginPath();l.arc(0,0,mw2,0,6.28);l.fill();l.restore()}
     /* the far bank: a dark line of trees at the water */
-    l.fillStyle="#141b40";l.beginPath();l.moveTo(-4,hz+S*.03);var Rt=rng(23);for(var x4=-4;x4<=w+6;x4+=3){l.lineTo(x4,hz-S*.004-S*.012*Math.abs(Math.sin(x4*.07+Rt()*.6))*(.5+Rt()*.5))}l.lineTo(w+6,hz+S*.03);l.closePath();l.fill();
+    var Rt=rng(23),fbp=new Path2D();fbp.rect(-4,hz-S*.002,w+10,S*.034);
+    for(var x4=-4;x4<=w+6;){var cr=S*(.003+Rt()*.005)*(G.mob?.8:1),ch2=cr*(.55+Rt()*.5);fbp.moveTo(x4+cr,hz-ch2*.2);fbp.ellipse(x4,hz-ch2*.2,cr,ch2,0,0,6.28);x4+=cr*(.5+Rt()*.6)}
+    l.fillStyle="#141b40";l.fill(fbp);
+    l.save();l.clip(fbp);var fbg=l.createLinearGradient(0,hz-S*.02,0,hz);fbg.addColorStop(0,"rgba(120,100,140,.25)");fbg.addColorStop(1,"rgba(120,100,140,0)");l.fillStyle=fbg;l.fillRect(0,hz-S*.02,w,S*.02);l.restore();
     /* the near land below the horizon */
     var lg=l.createLinearGradient(0,hz,0,S);lg.addColorStop(0,"#121a3e");lg.addColorStop(.5,"#0c1534");lg.addColorStop(1,G.mob?"#081633":"#071230");l.fillStyle=lg;l.fillRect(0,hz+S*.004,w,S-hz+2);
     /* the river, carrying the sky */
@@ -977,17 +1022,40 @@ var field=(function(){
     /* soft light along our shore */
     var ss=l.createLinearGradient(0,0,w,0);ss.addColorStop(0,"rgba(240,200,140,0)");ss.addColorStop(G.mob?.2:.5,"rgba(240,200,140,0)");ss.addColorStop(G.mob?.6:.75,"rgba(240,200,140,.28)");l.strokeStyle=ss;l.lineWidth=1;l.beginPath();SH.forEach(function(p,k2){k2?l.lineTo(p[0],p[1]):l.moveTo(p[0],p[1])});l.stroke();
     /* our side: a meadow catching the last light, then a near wood of oaks and pines along the bottom (desktop; phones keep a clear band) */
-    if(!G.mob){
+    oFore=null;if(!G.mob){
       var md=l.createRadialGradient(G.sx,hz,0,G.sx,hz,w*.6);md.addColorStop(0,"rgba(190,140,110,.16)");md.addColorStop(1,"rgba(190,140,110,0)");l.fillStyle=md;l.fillRect(0,hz,w,S-hz);
-      var Rk=rng(31);
+      var Rk=rng(31);var FB=mk(S+2);oFore=FB[0];var l0=l;l=FB[1];
       var edge=function(x){var u=(x-G.side)/G.cw;return S*(.93-.12*sm((u-.45)/.5))+S*.012*Math.sin(x*.02)};
-      l.fillStyle="#060c25";l.beginPath();l.moveTo(-4,S+4);for(var x7=-4;x7<=w+6;x7+=3)l.lineTo(x7,edge(x7));l.lineTo(w+6,S+4);l.closePath();l.fill();
-      /* rounded oak crowns and a few pines on the wood's edge */
-      for(var q2=0;q2<120;q2++){var tx=Rk()*w,u2=(tx-G.side)/G.cw,ty=edge(tx)+S*.01,big=.4+.6*sm((u2-.35)/.55),tr=S*(.012+Rk()*.022)*(.5+big);
-        if(Rk()<.22){var ph=tr*3.2;l.beginPath();l.moveTo(tx,ty-ph);l.lineTo(tx+tr*.55,ty);l.lineTo(tx-tr*.55,ty);l.closePath();l.fill()}
-        else{l.beginPath();l.arc(tx,ty-tr*.9,tr,0,6.28);l.arc(tx-tr*.75,ty-tr*.4,tr*.8,0,6.28);l.arc(tx+tr*.75,ty-tr*.35,tr*.82,0,6.28);l.fill()}}
-      /* the sunset just touching the tops of the nearest crowns */
-      l.save();l.globalCompositeOperation="source-atop";var rim=l.createRadialGradient(G.sx,hz,0,G.sx,hz,w*.55);rim.addColorStop(0,"rgba(255,190,120,.10)");rim.addColorStop(1,"rgba(255,190,120,0)");l.fillStyle=rim;l.fillRect(0,S*.7,w,S*.3);l.restore();
+      var sunAt=function(x,y){return Math.max(0,1-Math.hypot(x-G.sx,(y-hz)*1.6)/(w*.6))};
+      /* foliage is built from many small leaf clumps, so every crown has a ragged, real edge. Backlit by the low sun, the
+         crowns are near-silhouettes; only their sun-facing fringe catches a thin warm rim. */
+      function crown(clumps,sk){var p=new Path2D();clumps.forEach(function(c){p.moveTo(c[0]+c[2],c[1]);p.arc(c[0],c[1],c[2],0,6.28)});
+        if(sk>.03){l.fillStyle="rgba(250,190,124,"+(.1+.45*sk).toFixed(3)+")";l.fill(p);l.save();l.translate(-.9,.6)}
+        l.fillStyle="#060b22";l.fill(p);if(sk>.03)l.restore();
+        /* inner volume: faint cool light on the upper lobes, deeper shade beneath */
+        l.save();l.clip(p);var cy0=clumps.reduce(function(a,c){return Math.min(a,c[1])},1e9),cy1=clumps.reduce(function(a,c){return Math.max(a,c[1])},-1e9);
+        var vg=l.createLinearGradient(0,cy0,0,cy1);vg.addColorStop(0,"rgba(70,70,110,"+(.12+.12*sk).toFixed(3)+")");vg.addColorStop(1,"rgba(0,0,0,.25)");l.fillStyle=vg;l.fillRect(-10,cy0-20,w+20,cy1-cy0+40);l.restore()}
+      function blob(out,cx,cy,rx,ry,n,R2,cs){for(var i=0;i<n;i++){var a=R2()*6.28,d=Math.sqrt(R2());out.push([cx+Math.cos(a)*rx*d,cy+Math.sin(a)*ry*d,cs*(.5+R2()*.7)])}}
+      /* a broad white oak: short trunk, spreading limbs, a crown of several foliage masses */
+      function oak(x,y,s){var R2=rng(Math.floor(x*13+y*7)),sk=sunAt(x,y),cl=[];
+        l.strokeStyle="#050a20";l.lineCap="round";l.lineWidth=s*.07;l.beginPath();l.moveTo(x,y);l.quadraticCurveTo(x-s*.02,y-s*.3,x+s*.01,y-s*.45);l.stroke();
+        l.lineWidth=s*.03;[[-1,.5],[1,.48],[-.5,.62],[.55,.66]].forEach(function(b){l.beginPath();l.moveTo(x,y-s*.38);l.quadraticCurveTo(x+b[0]*s*.2,y-s*b[1],x+b[0]*s*.5,y-s*(b[1]+.1));l.stroke()});
+        var nm=5+Math.floor(R2()*3);for(var k=0;k<nm;k++){var a=Math.PI*(1.08+.84*k/(nm-1))+(R2()-.5)*.3,d=s*(.3+.12*R2());
+          blob(cl,x+Math.cos(a)*d*1.3,y-s*.66+Math.sin(a)*d*.6,s*(.2+.08*R2()),s*(.15+.06*R2()),Math.round(50*(s/40)+30),R2,Math.max(1.2,s*.03))}
+        blob(cl,x,y-s*.72,s*.32,s*.2,Math.round(60*(s/40)+30),R2,Math.max(1.2,s*.034));crown(cl,sk)}
+      /* a shortleaf pine: tall clean trunk, a few irregular needle clumps on short limbs near the top */
+      function pine(x,y,s){var R2=rng(Math.floor(x*17+y*3)),sk=sunAt(x,y),H=s*1.5,cl=[];
+        l.strokeStyle="#050a20";l.lineWidth=Math.max(1,s*.03);l.beginPath();l.moveTo(x,y);l.quadraticCurveTo(x+s*.04,y-H*.5,x+s*.02,y-H);l.stroke();
+        var nc=4+Math.floor(R2()*2);for(var i=0;i<nc;i++){var v=i/(nc-1),cy=y-H*(.55+.45*v),sd=(i%2?1:-1)*(R2()<.25?-1:1),off=s*(.06+.12*R2())*(1-v*.5)*sd;
+          l.lineWidth=Math.max(.8,s*.015);l.beginPath();l.moveTo(x+s*.02*v,cy+s*.02);l.lineTo(x+off,cy);l.stroke();
+          blob(cl,x+off,cy,s*(.17-.07*v)*(.8+.4*R2()),s*(.04+.015*R2()),Math.round(14*(s/40)+10),R2,Math.max(1,s*.022));blob(cl,x+off*1.6,cy+s*.02,s*.06,s*.025,6,R2,Math.max(1,s*.018))}
+        blob(cl,x+s*.02,y-H*1.02,s*.05,s*.06,8,R2,Math.max(1.2,s*.03));crown(cl,sk)}
+      /* the wood: a dark mass whose top is built of real crowns */
+      l.fillStyle="#060c25";l.beginPath();l.moveTo(-4,S+4);for(var x7=-4;x7<=w+6;x7+=3)l.lineTo(x7,edge(x7)+S*.03);l.lineTo(w+6,S+4);l.closePath();l.fill();
+      var TR=[];for(var q2=0;q2<30;q2++){var tx=Rk()*w,u2=(tx-G.side)/G.cw,big=.3+.7*sm((u2-.35)/.55),ts=S*(.05+Rk()*.045)*(.55+big);TR.push([tx,edge(tx)+S*.035+Rk()*S*.04,ts,Rk()<.3])}
+      TR.sort(function(a,b){return a[1]-b[1]});TR.forEach(function(t){t[3]?pine(t[0],t[1],t[2]):oak(t[0],t[1],t[2])});
+      /* the nearest group, at the right, larger and against the light */
+      pine(G.side+G.cw*.85,S*1.03,S*.13);oak(G.side+G.cw*.96,S*1.07,S*.21);l=l0;
     }
     if(G.mob){var fg=l.createLinearGradient(0,S*.8,0,S);fg.addColorStop(0,"rgba(8,22,51,0)");fg.addColorStop(1,"rgba(8,22,51,1)");l.fillStyle=fg;l.fillRect(0,S*.8,w,S*.2+2)}
     /* glitter: short strokes on the sun's path down the water */
@@ -1019,6 +1087,7 @@ var field=(function(){
     for(var i=0;i<GL.length;i++){var g=GL[i],tw=.5+.5*Math.sin(t*g[4]*1.6+g[3]),a2=Math.pow(tw,3)*.9*(1-(g[1]-hz)/(S-hz)*.5);if(a2<.03)continue;
       c.strokeStyle="rgba(255,226,160,"+a2.toFixed(3)+")";c.lineWidth=G.mob?1:1.3;c.beginPath();c.moveTo(g[0]-g[2]/2,g[1]);c.lineTo(g[0]+g[2]/2,g[1]);c.stroke()}
     c.restore();
+    if(oFore){c.setTransform(1,0,0,1,0,0);c.drawImage(oFore,0,0);c.setTransform(dpr,0,0,dpr,0,0)}
     c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});

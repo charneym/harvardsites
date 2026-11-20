@@ -1,4 +1,4 @@
-var FONTS=['300 1em "Cormorant Garamond"','400 1em "Cormorant Garamond"','italic 400 1em "Cormorant Garamond"','500 1em "Cormorant Garamond"','400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"','700 1em "Montserrat"'];
+var FONTS=['300 1em "Spectral"','italic 300 1em "Spectral"','400 1em "Spectral"','italic 400 1em "Spectral"','400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"','700 1em "Montserrat"'];
 var WEB="https://adaxtra.com/";
 var MAIL="presse@adaxtra.com";
 var MAP="https://www.google.com/maps/search/?api=1&query=18+quai+de+la+Rap%C3%A9e+75012+Paris";

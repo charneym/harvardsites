@@ -1038,12 +1038,15 @@ var field=(function(){
   var BG="#170c0b";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function h1R(){var e=document.getElementById("pageTitle"),m=0;if(!e)return 0;var tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),n,r=document.createRange();while(n=tw.nextNode()){r.selectNodeContents(n);var q=r.getClientRects();for(var k=0;k<q.length;k++)if(q[k].width>0)m=Math.max(m,q[k].right)}return m}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the skin block's centre sits at about (0.5, 0.5) of the render */
     var ih=mob?Math.min(U*1.04,(U-96)/.8):Math.min(h*.98,cw*.8),iw=ih*(2240/2400);
     var kx=mob?w*.5:side+cw*.79,ky=mob?(84+U-12)/2:h*.53;
+    /* QA R2: on desktop the block (~82% of the render's width) fits whole between the H1's measured end and the right margin, centred in that open area */
+    if(!mob){var L=(h1R()||side+cw*.45)+40,Rr=w-side*.6,bwM=(Rr-L)/(.82*1.04);if(iw>bwM){iw=bwM;ih=iw/(2240/2400)}kx=Math.min(Math.max((L+Rr)/2,w*.62),w*.75);kx=Math.min(kx,Rr-.41*iw*1.04);kx=Math.max(kx,L+.41*iw*1.04)}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -1079,7 +1082,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,400)});setTimeout(size,2500);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/

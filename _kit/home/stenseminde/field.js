@@ -1,13 +1,14 @@
-/* ================= HERO FIELD: a real photograph of a North Jutland wood at golden hour: low sun across moss and a
-   footpath between the trunks at Hals, in Aalborg Municipality, Stenseminde's home ground (Aleksandra Kovacic,
-   unsplash.com/photos/tH75PVj1i2c, Unsplash License; source recorded in the dossier). Graded at load toward the logo's
-   ink and the wreath's olive gold, drawn cover-fit with a slow Ken Burns drift and a soft breathing of the low sun.
-   No pointer response (CZ). On phones the photo is a band above the text (CW). ================= */
+/* ================= HERO FIELD: a real photograph of a Nordic beech wood in warm light: tall, smooth grey beech trunks,
+   last year's copper leaf litter and a low sun bursting through the canopy, at Söderåsen National Park, Skåne (Henrik
+   Kindströmmer, unsplash.com/photos/4DB8MzCqDIA, Unsplash License; source recorded in the dossier). Beech is the leaf in
+   Stenseminde's wreath. Mirrored so the sun sits clear of the headline, graded at load toward the logo's ink and the
+   wreath's olive gold, drawn cover-fit with a slow Ken Burns drift and a soft breathing of the sunburst. No pointer
+   response (CZ). On phones the photo is a band above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,IMG=null,oPh=null,oGrain=null;
-  /* focal point in the photo (fractions): where the path meets the sunlit moss */
-  var LAMP=[.52,.62],FX=.6;
+  /* focal point in the (mirrored) photo, as fractions: the sunburst through the canopy */
+  var LAMP=[.57,.22],FX=.57;
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
@@ -16,7 +17,7 @@ var field=(function(){
   function grade(){
     /* one graded copy: a touch less saturated, greens pulled toward the wreath's olive, shadows toward the logo's ink */
     var iw=IMG.naturalWidth,ih=IMG.naturalHeight,A=mk(iw,ih),g=A[1];
-    g.filter="saturate(.8) contrast(1.05) brightness(.92)";g.drawImage(IMG,0,0);g.filter="none";
+    g.filter="saturate(.8) contrast(1.05) brightness(.92)";g.save();g.translate(iw,0);g.scale(-1,1);g.drawImage(IMG,0,0);g.restore();g.filter="none";
     g.globalCompositeOperation="soft-light";var wm=g.createLinearGradient(0,0,0,ih);wm.addColorStop(0,"rgba(40,42,30,.45)");wm.addColorStop(.6,"rgba(205,191,136,.32)");wm.addColorStop(1,"rgba(20,21,15,.6)");g.fillStyle=wm;g.fillRect(0,0,iw,ih);
     g.globalCompositeOperation="multiply";g.fillStyle="rgba(226,218,196,1)";g.fillRect(0,0,iw,ih);
     g.globalCompositeOperation="source-over";oPh=A[0];
@@ -28,7 +29,7 @@ var field=(function(){
   function place(t){
     /* cover-fit into the hero (desktop) or the top band (phones), with a slow drift and zoom */
     var iw=oPh.width,ih=oPh.height,W=w,H=G.band;
-    var k=Math.max(W/iw,H/ih)*(1.06+.035*Math.sin(t*.05)),dw=iw*k,dh=ih*k;
+    var k=Math.max(W/iw,H/ih)*((G.mob?1.06:1.3)+.035*Math.sin(t*.05)),dw=iw*k,dh=ih*k;
     var fx=G.mob?.66:FX,dx=Math.min(0,Math.max(W-dw,W*(G.mob?.5:.78)-fx*dw))+Math.sin(t*.037)*W*.008,dy=Math.min(0,Math.max(H-dh,(H-dh)*.55))+Math.cos(t*.031)*H*.006;
     return [dx,dy,dw,dh];
   }
@@ -42,7 +43,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.globalAlpha=1;c.fillStyle="#14150f";c.fillRect(0,0,w,h);
     if(oPh){var P=place(t);c.globalAlpha=e;c.drawImage(oPh,P[0],P[1],P[2],P[3]);
       /* the low sun, breathing softly through the trunks (upper right of the frame) */
-      var sx=P[0]+.78*P[2],sy=P[1]+.12*P[3],R=Math.max(w,G.band)*.55,fl=.8+.2*Math.sin(t*.35);
+      var sx=P[0]+LAMP[0]*P[2],sy=P[1]+LAMP[1]*P[3],R=Math.max(w,G.band)*.55,fl=.8+.2*Math.sin(t*.35);
       c.globalCompositeOperation="lighter";var lg=c.createRadialGradient(sx,sy,0,sx,sy,R);lg.addColorStop(0,"rgba(255,232,170,"+(.16*fl).toFixed(3)+")");lg.addColorStop(.4,"rgba(205,191,136,"+(.06*fl).toFixed(3)+")");lg.addColorStop(1,"rgba(205,191,136,0)");
       c.fillStyle=lg;c.fillRect(0,0,w,G.mob?G.band:h);c.globalCompositeOperation="source-over";
       c.globalAlpha=e*.9;c.drawImage(oGrain,0,0,w,h);c.globalAlpha=e;

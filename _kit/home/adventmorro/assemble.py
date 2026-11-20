@@ -18,5 +18,6 @@ for name, f in REG.items():
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+import re as _bo; src = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', src, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 (K / 'src/adventmorro.src.html').write_text(src)
 print('wrote src/adventmorro.src.html', len(src))

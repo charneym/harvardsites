@@ -26,7 +26,8 @@
 - Unedited theme filler on the live Approach page: "How to Start Emission Claim Today ... Transmax is the world's driving worldwide coordinations supplier".
 - Approach page return counters render as "0 %" for every company; typo "Granite Hills Gorup"; "Acquisition Piepline" on River Riders; two different phone numbers; stock Unsplash image files (nathan-langer-...-unsplash).
 
-## Hero / story
-- Hero: painted rail line at dusk (canvas): single track running out to the rounded ridges of the NJ Highlands, rails catching the afterglow, telegraph poles, a colour-light signal at clear (green), valley lights and mist. Navy sky from logo navy #083757; logo blue #2491eb as accent. No skyline, no pointer motion.
-- Story: engraved station elevation. Invest = station (platform company) lit; Partner = people on the platform + signal at clear; Build = locomotive with two add-on cars pulls in.
+## Hero / story (rev2, HOME_BRIEF update 2026-11-20)
+- Hero photo: the iron-and-glass train shed that Station Partners itself uses on its site (stationpartners.com/wp-content/uploads/2022/10/nathan-langer-0mFbBH8_-hQ-unsplash-scaled.jpg). Original: Unsplash, photo by Nathan Langer, https://unsplash.com/photos/0mFbBH8_-hQ (Unsplash licence). Cropped to include the arched end window, graded offline to a navy duotone from the logo navy, saved as stationpartners/hero.jpg; slow Ken Burns drift (~50s), left scrim keeps the H1 side quiet. Replaces the rev1 painted rail-line canvas.
+- Build-out pages: Approach, Criteria, Investments, Team and Media in the nav (and footer) open #/more/<item> with the brief's copy; Contact still scrolls to the contact block.
+- Story: engraved station elevation. Invest = the station (platform company) lit; Partner = people on the platform + signal at clear; Build = a locomotive with two add-on cars pulls in.
 - Logo: their own white SVG logo inlined in the header.

@@ -94,7 +94,8 @@ R["scenecss"] = '''/* story (pinned, one continuous scene) */
 .scene text.t.s{fill:rgba(var(--boner),.45)}
 .scene svg.mob text{font-size:22px;letter-spacing:.06em}.scene svg.mob .neat{display:none}.scene svg.mob text.a{font-size:26px}
 .scene svg.mob text.t,.scene svg.mob text.t.c{font-size:23px;letter-spacing:.04em}
-.scene svg.mob .tb{display:none}'''
+.scene svg.mob .tb{display:none}
+@media (max-width:1024px){.scene .tb{display:none}}'''
 
 R["seen"] = '<script>try{if(sessionStorage.getItem("nsph-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}</script>'
 
@@ -366,7 +367,7 @@ function scene(){
   g+='<path class="skh" d="'+band+'"/><path class="sk sD" d="'+so+'"/><path class="sk sD" d="'+si+'"/>';
   g+='<path class="cx sD" d="'+ctx+'"/><path class="gy sD" d="'+sul+'"/><path class="wm" d="'+wm+'"/>';
   g+='<path class="mid sD" d="'+mid+cc+stem+'"/><path class="vn" d="'+vent(-1)+'"/><path class="vn" d="'+vent(1)+'"/>';
-  g+='<g class="tb"><path class="tbl" d="M548 494h228v52h-228Z M548 520h228"/><text x="558" y="512" class="t">CORONAL SECTION · SCHEMATIC</text><text x="558" y="538" class="t s">NEUROSPHERIC</text></g>';
+  if(innerWidth>1024)g+='<g class="tb"><path class="tbl" d="M548 494h228v52h-228Z M548 520h228"/><text x="558" y="512" class="t">CORONAL SECTION · SCHEMATIC</text><text x="558" y="538" class="t s">NEUROSPHERIC</text></g>';
   g+='</g>';
   /* 1 the target, deep and medial, below the ventricle */
   g+='<g id="sc1"><circle class="tgr dr" cx="'+TX+'" cy="'+TY+'" r="28"/><circle class="tg" cx="'+TX+'" cy="'+TY+'" r="14"/><path class="tgx dr" d="M'+(TX-22)+' '+TY+'h44M'+TX+' '+(TY-22)+'v44"/>'+

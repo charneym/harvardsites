@@ -12,7 +12,7 @@ function vHome(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Finding liver cancer</span><span class="l">early, in a simple</span><span class="l"><em>blood sample.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>ImCare Biotech develops Seravue®, a blood test built on LC-SPIK, a protein specific to liver cancer, for earlier detection of hepatocellular carcinoma.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/pipeline">Our pipeline '+ARR+'</a><a class="btn" href="#/technology">How Seravue® works</a></div></div>'+
-   '<span class="lab cap">Blood samples · photograph, National Cancer Institute</span>'+
+   '<span class="lab cap">Centrifuged blood samples · illustrative render</span>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+

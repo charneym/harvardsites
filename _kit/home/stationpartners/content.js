@@ -5,10 +5,10 @@ var MAIL="info@stationpartners.com";
 var MAP="https://www.google.com/maps/search/?api=1&query=161+Madison+Avenue+Suite+315+Morristown+NJ+07960";
 /* investment criteria, from the firm's About Us, Home and Approach pages */
 var CRIT=[["Company size","Profitable U.S. businesses with annual revenue of up to $40 million."],
- ["Investment type","Control investments, in support of management teams operating established lower-middle market businesses."],
+ ["Investment type","Control investments, in support of management teams."],
  ["Transactions","Buyouts, recapitalizations and growth investments, with equity alignment from our management partners."],
- ["Potential","Businesses with the potential for immediate organic or acquisitive growth."],
- ["Partners","Sellers, managers and operators who are exceptional in their abilities, experienced in their industry and invested in the future of their business."],
+ ["Potential","Immediate organic or acquisitive growth potential."],
+ ["Partners","Exceptional, experienced managers and operators, invested in their business."],
  ["Industries","Industry agnostic, with a focus on the target industries below."]];
 var IND=["Business & consumer services","Value-added distribution","Niche manufacturing","Retail services","Franchisors","Specialty finance","Healthcare services","Industrial services","Educational services"];
 /* portfolio, from the firm's Investments pages: [name, description, status, year, transaction, url] */

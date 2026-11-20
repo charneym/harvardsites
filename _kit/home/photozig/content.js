@@ -18,7 +18,7 @@ var PUBS=[
  ["2007","Improving the quality of life for caregivers and care recipients with personalized video channels","Clinical Gerontologist"]];
 /* RePORTER lists Bruno Kajiyama, CEO, as principal investigator on every Photozig award. Text-only masthead (CI/CL). */
 var TEAM=[
- {g:"Leadership",name:"Bruno Kajiyama",title:"Chief Executive Officer",sum:"Principal investigator on Photozig’s NIH SBIR awards since 2004, from LifeZig to CaringGPT, and first author of the team’s 2018 randomized clinical trial in Alzheimer’s & Dementia."}];
+ {g:"Leadership",name:"Bruno Kajiyama",title:"Chief Executive Officer",sum:"Principal investigator on Photozig’s NIH SBIR awards since 2004, from LifeZig to CaringGPT."}];
 /* news: only items with a working link. [date, headline, source, url] */
 var NEWS=[
  ["September 2025","Photozig receives an NIA SBIR award to develop CaringGPT, a Generative AI assistant for dementia caregivers","NIH RePORTER",RP+"11256494"],

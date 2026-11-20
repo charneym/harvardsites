@@ -16,7 +16,7 @@ function memScene(o){
   /* ---- step 1: three protocol sheets ---- */
   var SH=[["COPING WITH","CAREGIVING"],["BEHAVIORAL","ACTIVATION"],["MINDFULNESS","PRACTICE"]];
   g+='<g id="scSheets">';
-  SH.forEach(function(t,k){var y=54+k*150,a=.02+k*.05,b=a+.14;
+  SH.forEach(function(t,k){var y=54+k*150,a=-.3+k*.02,b=a+.1; /* step 1 art is drawn in with the stage itself (b), so the stage is never blank */
     g+='<g class="sh"'+A(a,b)+'>';
     g+='<path class="sk dr" d="M24 '+y+'H234V'+(y+126)+'H24Z"/>';
     g+='<path class="sk2 dr" d="M31 '+(y-7)+'H241V'+(y+119)+'"/>';
@@ -26,7 +26,7 @@ function memScene(o){
     g+='</g>';});
   g+='</g>';
   /* ---- the phone, on screen throughout ---- */
-  g+='<g id="scPhone"'+A(0,.2)+'><path class="sk dr" d="M318 44H442Q458 44 458 60V476Q458 492 442 492H318Q302 492 302 476V60Q302 44 318 44Z"/>';
+  g+='<g id="scPhone"'+A(-.3,-.2)+'><path class="sk dr" d="M318 44H442Q458 44 458 60V476Q458 492 442 492H318Q302 492 302 476V60Q302 44 318 44Z"/>';
   g+='<path class="sk2 dr" d="M314 70H446V462H314Z"/><path class="sk dr" d="M364 57H396"/><circle class="sk" cx="380" cy="478" r="6"/></g>';
   /* ---- step 2: flows from the sheets into the phone, then the modules on its screen ---- */
   g+='<g id="scFlow">';
@@ -38,7 +38,7 @@ function memScene(o){
   MOD.forEach(function(m,k){var y=118+k*84,a=.44+k*.035,b=a+.1;
     g+='<g class="md"'+A(a,b)+'><path class="sk dr" d="M326 '+y+'H434V'+(y+66)+'H326Z"/>';
     g+='<circle class="'+(k===0?"fa":"sa")+'" cx="344" cy="'+(y+22)+'" r="8"/>';
-    g+='<text class="m" x="360" y="'+(y+27)+'">'+m+'</text>';
+    g+=mob?'<path class="sk2 dr" d="M360 '+(y+19)+'H420M360 '+(y+27)+'H404"/>':'<text class="m" x="360" y="'+(y+27)+'">'+m+'</text>'; /* phones: too small to read, so plain lines */
     g+='<path class="sk2 dr" d="M336 '+(y+46)+'H424"/><path class="sa dr" d="M336 '+(y+46)+'H'+(336+88*(.25+k*.2)).toFixed(0)+'"/></g>';});
   g+='</g>';
   /* ---- step 3: caregivers randomized into two arms; then the app stores ---- */
@@ -72,7 +72,7 @@ function storyDraw(svg){
   return function(p,b){
     if(!svg.isConnected)return;
     if(b!==lastB){lastB=b;base.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-b)).toFixed(1)});baseT.forEach(function(t){op(t,b)})}
-    all.forEach(function(E){var v=seg(p,E.a,E.b);
+    all.forEach(function(E){var v=E.a<0?b:seg(p,E.a,E.b);
       E.dr.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1)});
       op(E.el,b*Math.min(1,v*2.2))});
     var dIn=seg(p,.68,.76),sp=seg(p,.74,.86);

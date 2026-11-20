@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v20 (coordinator review of home-only batch, 2026-11-20)
 
+**DP. A hero photo is never a pasted panel, and never touches the headline.** Coordinator review (imcarebiotech, omnecoil): a photo dropped in as a feathered rectangle that fills the right half reads as a pasted box, and it was soft, washed by a flat duotone, and butted against the H1. Leave at least 100px between the measured H1/lede end and the first visible pixel of the subject. Show the subject whole inside the right content margin, at or below the source's native resolution (sharp, never upscaled). Use a long eased radial/edge mask so no box edge is perceptible at any width. Keep tonal depth (no flat single-hue wash). If no sharp photo fits that space, use a crafted render of the product or mechanism instead.
+
 **DO. Hero subject composed in the open area, fully in frame.** Client (GarMark at 1920): "the tower should be a bit more left". At 1280-1920+ the photo/render subject sits centred in the space right of the text (~62-75% of the width), never cut by the right edge or the nav, never darkened into near-black; the scrim lives only behind the text. Check 1920x1080, 1920x930, 1440, 1280.
 
 **DN. No empty columns beside a statement.** Client: an off-centre 66% statement and then a label-left/statement-right split both read as "way too much white space". The statement and the stats share the row on desktop: statement left (~60%, readable 45-75 char lines, never giant), stats stacked in a column on the right. Never a lone statement with an empty column, never a full-width wall of display type.

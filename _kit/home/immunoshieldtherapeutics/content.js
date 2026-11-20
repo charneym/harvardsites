@@ -17,8 +17,8 @@ var NEWS=[
  ["4 Nov 2024","ASU startup pioneers breakthroughs in cell therapy","ASU News","https://news.asu.edu/20241104-science-and-technology-asu-startup-pioneers-breakthroughs-cell-therapy"],
  ["4 Aug 2023","SBIR Phase I: islet dosing and loading density in injection-molded macroencapsulation devices","NIH RePORTER",RPT+"10716174"]];
 var TEAM=[
- {g:"Founders",name:"Jessica Weaver",title:"Founder",sum:"Assistant professor of biomedical engineering, School of Biological and Health Systems Engineering, Arizona State University."},
+ {g:"Founders",name:"Jessica Weaver",title:"Founder",sum:"Assistant professor of biomedical engineering, Arizona State University."},
  {g:"Founders",name:"Oren Snir",title:"Co-founder",sum:"Principal investigator, with Jessica Weaver, on the NIH SBIR Phase I award."},
- {g:"Founders",name:"Matthew Becker",title:"Chief Technology Officer",sum:"Contact principal investigator on the NIH SBIR Phase II award; postdoctoral research scholar at Arizona State University."},
- {g:"NIH Phase II",name:"Norma S. Kenyon",title:"Principal investigator",sum:"Principal investigator, with Matthew Becker, on the non-human primate macroencapsulation study."}];
+ {g:"Founders",name:"Matthew Becker",title:"Chief Technology Officer",sum:"Contact principal investigator, NIH SBIR Phase II; ASU postdoctoral scholar."},
+ {g:"NIH Phase II",name:"Norma S. Kenyon",title:"Principal investigator",sum:"With Matthew Becker, on the non-human primate study."}];
 var SHEETS=[];

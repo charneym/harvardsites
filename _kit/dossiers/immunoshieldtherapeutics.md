@@ -28,3 +28,6 @@ The firm's own lab photo (AZBio member spotlight inline image, https://s11759.pc
 
 ## Lead
 Matthew Becker, Chief Technology Officer and contact PI on the NIH Phase II award. Greeting: "Dear Dr. Becker" (ASU describes him as a postdoctoral research scholar). Best email: info@immunoshieldtherapeutics.com (no personal address published).
+
+## Gates (2026-11-20)
+smoke, reveal/anim/clip 1440+390, overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo OK; hero-audit cold load OK (sub-route "no title" lines are section scrolls on a home-only page); buildout-test OK (8 nav clicks); Contact scrolls to #contact at 1440 and 390; story frames checked by eye at 1440 and 390.

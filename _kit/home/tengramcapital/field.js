@@ -10,11 +10,12 @@ var field=(function(){
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.jpg";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var g=document.createRange();g.selectNodeContents(e);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}catch(_){}return r}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.42,w*.92):h;
     /* the photo's frame: right of the copy column on desktop, the full top band on phones */
-    var rx=mob?0:Math.round(side+cw*.44),rw=w-rx,rh=mob?U*1.04:h;
+    var rx=mob?0:Math.round(Math.min(w*.66,Math.max(side+cw*.44,h1r()+48))),rw=w-rx,rh=mob?U*1.04:h; /* the photo starts past the H1 line ends, so the lit window never sits behind the headline at any width */
     return {mob:mob,side:side,cw:cw,U:U,rx:rx,rw:rw,rh:rh};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -50,7 +51,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();setTimeout(size,900);setTimeout(size,2600);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.rx+G.rw*.5,G.rh*.5]:[w/2,h/2]}};
 })();

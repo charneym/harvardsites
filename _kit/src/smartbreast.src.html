@@ -1073,14 +1073,17 @@ var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   var BG="#120a16",AR=1400/2200,LX=.71,LY=.275;   /* LX/LY: the lesion's centre in the graded image */
-  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
+  /* desktop (DO): the scan is centred in the open area instead of pinned to the right edge, so its chest-wall side is faded
+     out with an alpha mask (src) and dissolves into the bloom; phones keep the original image */
+  var src=img;
+  img.decoding="async";img.onload=function(){try{var oc=document.createElement("canvas");oc.width=img.naturalWidth;oc.height=img.naturalHeight;var ox=oc.getContext("2d");ox.drawImage(img,0,0);ox.globalCompositeOperation="destination-in";var mg=ox.createLinearGradient(oc.width*.62,0,oc.width,0);mg.addColorStop(0,"rgba(0,0,0,1)");mg.addColorStop(1,"rgba(0,0,0,0)");ox.fillStyle=mg;ox.fillRect(0,0,oc.width,oc.height);src=oc}catch(er){}ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.52,w*1.1):h;
     var ih,iw,x,y;
     if(mob){ih=Math.max(U*1.18,(w*.62)/AR);iw=ih*AR;x=w-iw*.98;y=58+(U-58)*.5-ih*.4}
-    else{ih=Math.max(h*1.06,Math.min(cw*.62,w*.44)/AR*.98);iw=ih*AR;x=w-iw*.985;y=h*.5-ih*.47}
+    else{ih=h*.98;iw=ih*AR;x=w*.68-iw*.6;y=h*.5-ih*.47} /* the breast mass (~0.6 of the image) centred at ~68% of the width, the lesion clear of the nav */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,x:x,y:y,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -1101,7 +1104,7 @@ var field=(function(){
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
       ag.addColorStop(0,"rgba(58,30,70,"+(.42*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(34,18,42,"+(.24*e).toFixed(3)+")");ag.addColorStop(1,"rgba(18,10,22,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
+      c.globalAlpha=e;c.drawImage(G.mob?img:src,x,y,dw,dh);
       /* the tracer uptake: a soft lilac glow breathing over the lesion */
       var pu=.5+.5*Math.sin(t*Math.PI*2/7),lx=x+dw*LX,ly=y+dh*LY,lr=dw*(.3+.04*pu);
       var rg=c.createRadialGradient(lx,ly,0,lx,ly,lr);rg.addColorStop(0,"rgba(232,196,220,"+(.07+.07*pu).toFixed(3)+")");rg.addColorStop(.5,"rgba(215,163,202,"+(.03+.03*pu).toFixed(3)+")");rg.addColorStop(1,"rgba(215,163,202,0)");

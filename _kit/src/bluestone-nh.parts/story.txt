@@ -1,0 +1,73 @@
+/* the story scene (BL/BY/DB): ONE cairn of stones on a lakeside granite ledge, drawn in fine engraved line, built the way
+   Bluestone builds a portfolio. Step 1 the broad foundation stone draws in: your Investment Policy, with what it rests on.
+   Step 2 five stones stack on it, one per asset class. Step 3 each stone fills with a fine grain of many small marks: a
+   large number of securities in every class. Step 4 the water swells, the stack leans off its plumb line, and is set
+   back square on it: rebalancing to the target mix, and the annual review. */
+function stoneD(cx,cy,a,b,seed){var R=rng(seed),ph=R()*6.28,ph2=R()*6.28,pts=[],n=56;
+  for(var i=0;i<n;i++){var th=i/n*6.2832,co=Math.cos(th),si=Math.sin(th),ex=2.5,rf=Math.pow(Math.pow(Math.abs(co),ex)+Math.pow(Math.abs(si),ex),-1/ex);
+    rf*=1+.035*Math.sin(3*th+ph)+.02*Math.sin(5*th+ph2);var yy=si*b*rf;if(si>0)yy*=.86;pts.push([cx+co*a*rf,cy+yy])}
+  return 'M'+pts.map(function(p){return p[0].toFixed(1)+' '+p[1].toFixed(1)}).join('L')+'Z'}
+function scGeo(mob){var S=mob?1:1.4,base=mob?420:462;
+  var ST=[[150,24,0],[104,27,-6],[89,25,8],[73,23,-5],[56,20,6],[37,17,-2]],y=base,out=[];
+  ST.forEach(function(s,i){var a=s[0]*S,b=s[1]*S;y-=b*(i?0.92:1);out.push({cx:400+s[2]*S,cy:y,a:a,b:b});y-=b*.92});
+  return {S:S,base:base,st:out,top:y,lx:mob?128:200}}
+function lab(x,y,lines,anc,cls,lh){var dy=-(lines.length-1)*lh/2;return '<text x="'+x.toFixed(1)+'" y="'+(y+dy+4).toFixed(1)+'" text-anchor="'+anc+'"'+(cls?' class="'+cls+'"':'')+'>'+lines.map(function(l,i){return '<tspan x="'+x.toFixed(1)+'"'+(i?' dy="'+lh+'"':'')+'>'+l+'</tspan>'}).join('')+'</text>'}
+function scene(){
+  var mob=MOBILE(),g=scGeo(mob),st=g.st,f=function(n){return n.toFixed(1)},lh=mob?18:15;
+  var out=mob?'<svg class="mob" viewBox="130 34 540 470" aria-hidden="true">':'<svg viewBox="40 24 720 512" aria-hidden="true">';
+  /* the granite ledge and the lake below it */
+  var b0=g.base,lx0=mob?150:120,lx1=mob?650:680;
+  out+='<path class="gl" d="M'+lx0+' '+(b0+4)+'C'+(lx0+80)+' '+(b0-4)+' '+(lx1-150)+' '+(b0-2)+' '+lx1+' '+(b0+6)+'"/>';
+  out+='<path class="gt" d="M'+(lx0+40)+' '+(b0+12)+'C'+(lx0+120)+' '+(b0+8)+' 300 '+(b0+16)+' 380 '+(b0+12)+'M430 '+(b0+14)+'C500 '+(b0+10)+' '+(lx1-80)+' '+(b0+16)+' '+(lx1-30)+' '+(b0+12)+'"/>';
+  var wl='';for(var i=0;i<4;i++){var wy=b0+26+i*12,ins=60+i*28;wl+='<path class="wv" d="M'+(lx0+ins)+' '+wy+'Q'+((lx0+lx1)/2)+' '+(wy-3)+' '+(lx1-ins)+' '+wy+'"/>'}
+  out+='<g id="scW">'+wl+'</g>';
+  /* the plumb line (step 4) */
+  out+='<g id="scPl"><path class="ghost" d="M400 '+f(st[0].cy-st[0].b)+'V'+f(g.top-26)+'"/>'+lab(400,g.top-40,['TARGET MIX'],'middle','w',lh)+'</g>';
+  /* the stones, each with its engraved contour and a grain of many small marks (step 3) */
+  var sp='',gp='';
+  st.forEach(function(s,k){var d=stoneD(s.cx,s.cy,s.a,s.b,11+k*7);
+    var Rg=rng(29+k*5),dots='',n=k?Math.round(s.a*s.b*(mob?.07:.045)):0;
+    for(var j=0;j<n;j++){var th=Rg()*6.283,r=Math.sqrt(Rg())*.8,x=s.cx+Math.cos(th)*s.a*r,y=s.cy+Math.sin(th)*s.b*r*.82;dots+='<circle cx="'+f(x)+'" cy="'+f(y)+'" r="'+(.8+Rg()*.7).toFixed(2)+'"/>'}
+    sp+='<g class="sn" data-k="'+k+'"><path class="sf" d="'+d+'"/><g class="sg">'+dots+'</g><path class="so" d="'+d+'"/>'+
+      '<path class="gt sc" d="M'+f(s.cx-s.a*.62)+' '+f(s.cy-s.b*.38)+'Q'+f(s.cx)+' '+f(s.cy-s.b*.78)+' '+f(s.cx+s.a*.55)+' '+f(s.cy-s.b*.42)+'"/></g>'});
+  out+='<g id="scStack">'+sp+'</g>';
+  /* step 1: the foundation's name and what it rests on */
+  var f0=st[0];out+='<g id="scL0">'+lab(400,f0.cy,['YOUR INVESTMENT POLICY'],'middle','w',lh)+'</g>';
+  var L1=[[['CIRCUMSTANCES','& NEEDS'],-1,f0.cy-(mob?118:112)],[['INVESTMENT','PERIOD'],-1,f0.cy-(mob?54:52)],[['RETURN','OBJECTIVES'],1,f0.cy-(mob?118:112)],[['RISK','TOLERANCE'],1,f0.cy-(mob?54:52)]];
+  out+='<g id="scL1">'+L1.map(function(l){var ex=400+l[1]*(f0.a*.55),tx=400+l[1]*g.lx;
+    return '<g><path class="ldr" d="M'+f(tx-l[1]*(-8))+' '+f(l[2])+'L'+f(ex)+' '+f(f0.cy-f0.b-2)+'"/><circle class="dot" cx="'+f(ex)+'" cy="'+f(f0.cy-f0.b-2)+'" r="2.6"/>'+lab(tx-l[1]*(-14),l[2],l[0],l[1]<0?'end':'start','',lh)+'</g>'}).join('')+'</g>';
+  /* step 2: one label per asset class, alternating sides */
+  var AN=[['INVESTMENT-GRADE','BONDS'],['U.S. STOCKS'],['INTERNATIONAL','STOCKS'],['REITS'],['CASH']];
+  out+='<g id="scL2">'+st.slice(1).map(function(s,i){var sd=i%2?-1:1,ex=s.cx+sd*(s.a+6),tx=400+sd*g.lx;
+    return '<g><path class="ldr" d="M'+f(ex)+' '+f(s.cy)+'H'+f(tx)+'"/><circle class="dot" cx="'+f(tx)+'" cy="'+f(s.cy)+'" r="2.6"/>'+lab(tx+sd*12,s.cy,AN[i],sd<0?'end':'start','',lh)+'</g>'}).join('')+'</g>';
+  /* step 3 caption, step 4 captions */
+  out+='<g id="scL3">'+lab(400,mob?58:44,['MANY SECURITIES IN EVERY CLASS'],'middle','w',lh)+'</g>';
+  out+='<g id="scL4">'+lab(400-g.lx,g.top+70,['PERIODIC','REBALANCING'],'end','w',lh)+lab(400+g.lx,g.top+70,['ANNUAL','POLICY REVIEW'],'start','w',lh)+'</g>';
+  return out+'</svg>';
+}
+function storyDraw(svg){
+  var E={sn:$$("#scStack .sn",svg),pl:$("#scPl",svg),w:$$("#scW .wv",svg),l0:$("#scL0",svg),l1:$$("#scL1>g",svg),l2:$$("#scL2>g",svg),l3:$("#scL3",svg),l4:$("#scL4",svg),gl:$$(".gl,svg>.gt",svg)};
+  var ST=E.sn.map(function(g){var o=g.querySelector(".so"),L=o.getTotalLength();o.style.strokeDasharray=L+" "+(L+2);return {g:g,o:o,L:L,f:g.querySelector(".sf"),gr:g.querySelector(".sg"),c:g.querySelector(".sc")}});
+  var mob=svg.classList.contains("mob"),geo=scGeo(mob),pivY=geo.st[0].cy-geo.st[0].b;
+  function op(el,v){var s=v.toFixed(3);if(el._o!==s){el._o=s;el.style.opacity=s}}
+  return function(p,b){
+    if(!svg.isConnected)return;
+    var s1=seg(p,.02,.2),s2=seg(p,.26,.46),s3=seg(p,.52,.72),s4=seg(p,.77,.97);
+    E.gl.forEach(function(g){op(g,b)});
+    /* the swell in step 4 */
+    var sw=Math.sin(seg(s4,0,.6)*Math.PI);
+    E.w.forEach(function(wv,i){op(wv,b*(.5+.5*sw*(i<3?1:.5)));var ty=(-sw*(5-i)*1.6).toFixed(1);if(wv._t!==ty){wv._t=ty;wv.setAttribute("transform","translate(0 "+ty+")")}});
+    /* stones: the foundation in step 1, the five asset classes one by one in step 2 */
+    ST.forEach(function(s,k){var q=k===0?Math.max(seg(s1,0,.5),b):seg(s2,(k-1)*.16,(k-1)*.16+.36),kk=(s.L*(1-q)).toFixed(1);
+      if(s.o._k!==kk){s.o._k=kk;s.o.style.strokeDashoffset=kk}op(s.o,b*(q>0?1:0));op(s.f,b*q*.9);op(s.c,b*seg(q,.6,1));
+      op(s.gr,b*seg(s3,k*.1,.4+k*.1));
+      var lean=k===0?0:-5.5*seg(s4,.08,.38)*(1-seg(s4,.5,.82))*(1+k*.08),dx=k===0?0:(seg(s2,(k-1)*.16,(k-1)*.16+.36)-1)*-0;
+      var tr="rotate("+lean.toFixed(2)+" 400 "+pivY.toFixed(1)+")";if(s.g._tr!==tr){s.g._tr=tr;s.g.setAttribute("transform",tr)}});
+    op(E.l0,b);
+    E.l1.forEach(function(g,i){op(g,b*seg(s1,.5+i*.08,.8+i*.05)*(1-seg(s2,0,.25)))});
+    E.l2.forEach(function(g,i){op(g,b*seg(s2,i*.16+.2,i*.16+.42)*(1-seg(s4,0,.12)))});
+    op(E.l3,b*seg(s3,.35,.75)*(1-seg(s4,0,.15)));
+    op(E.pl,b*seg(s4,.02,.2));
+    op(E.l4,b*seg(s4,.72,.95));
+  };
+}

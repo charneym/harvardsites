@@ -1,0 +1,104 @@
+/* ================= VIEWS (home only: every nav item scrolls to its section on this page) ================= */
+var SECS={approach:"story",philosophy:"s-philosophy",services:"s-services",clients:"s-clients",team:"s-team",contact:"s-contact"};
+function secKey(h){var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);return p.length===1&&SECS[p[0]]?p[0]:null}
+function toSec(k){var el=document.getElementById(SECS[k]);if(!el)return;if(el.parentElement&&el.parentElement.classList.contains("pin-spacer"))el=el.parentElement;
+  var y=Math.round(el.getBoundingClientRect().top+window.scrollY);if(lenis)lenis.scrollTo(y,{duration:1.4,force:true});else window.scrollTo({top:y,behavior:RM?"auto":"smooth"})}
+document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var k=secKey(a.getAttribute("href"));if(!k)return;
+  e.preventDefault();e.stopImmediatePropagation();var open=document.body.classList.contains("menu-open");if(open)closeMenu();setTimeout(function(){toSec(k)},open?380:0)},true);
+addEventListener("hashchange",function(e){var k=secKey(location.hash);if(!k||curKey!=="home")return;e.stopImmediatePropagation();try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/";toSec(k)});
+function aims(list){return '<ul class="aims">'+list.map(function(a){return '<li><span>'+esc(a)+'</span></li>'}).join("")+'</ul>'}
+function services(){return '<ol class="svc">'+SERVICES.map(function(s,i){return '<li><span class="lab n">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p></li>'}).join("")+'</ol>'}
+function people(){return '<div class="duo">'+PEOPLE.map(function(p){return '<article class="per">'+
+  '<div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" width="571" height="800" onerror="this.parentNode.classList.add(\'noph\')"></div>'+
+  '<div class="pi"><h3>'+esc(p.name)+'</h3><span class="cr">'+esc(p.cred)+'</span><p class="ttl">'+esc(p.title)+'</p>'+
+  '<p class="bio">'+esc(p.bio)+'</p><p class="bio2">'+esc(p.more)+'</p>'+
+  '<div class="lk"><a class="ul" href="mailto:'+p.mail+'">'+p.mail+'</a></div></div></article>'}).join("")+'</div>'}
+function vHome(){
+  return ''+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<span class="lab eyebrow" data-r>Wealth management · Keene, New Hampshire<span class="nomob"> · Since 2005</span></span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Simplifying</span><span class="l">financial</span><span class="l"><em>complexities.</em></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Bluestone takes an integrated approach to wealth management, so you can streamline much or all of your financial decision-making through a single advisor, and enhance the quality of your life.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/contact">Contact us '+ARR+'</a><a class="btn" href="#/approach">How we work</a></div></div>'+
+  '</section>'+
+
+  '<section class="sec mani dark" data-theme="dark"><div class="wrap">'+
+   '<div class="mani-in"><span class="lab kick" data-r>Trust · Discretion · Integrity</span>'+
+   '<p class="txt" id="mani">Our clients are at the center of our business. It is a privilege to be trusted with your private financial information, and we build our relationship with you on <em>a foundation of trust.</em></p></div>'+
+   '<div class="stats">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2005</span><span class="k">Founded in Keene, New Hampshire; registered with the SEC since 2007</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$273M</span><span class="k">Client assets managed, all on a discretionary basis, as of December 31, 2025</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><span class="k">Principals who own and operate the firm: a CFP® professional and a CFA® charterholder and CPA</span></div>'+
+   '</div></div></section>'+
+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How we work with clients</span><h2 class="d3">Built to stay <em>in balance.</em></h2>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Policy</span><span>Allocate</span><span>Implement</span><span>Rebalance</span></div>'+
+    '<div class="steps">'+
+     '<article class="step on"><h2>It begins with your Investment Policy.</h2><p>The first step is your Investment Policy Statement, built on a mutual understanding of your financial circumstances, future needs, investment period, return objectives and risk tolerance.</p></article>'+
+     '<article class="step"><h2>Five asset classes, one mix for you.</h2><p>Guided by your policy, we allocate across U.S. stocks, international stocks, investment-grade bonds, REITs and cash, to capture as much return as possible for the risk you can comfortably bear.</p></article>'+
+     '<article class="step"><h2>Broad, structured, low-cost.</h2><p>Instead of trying to pick winners, structured passive management holds a large number of securities in each class, removing single-company risk and trading carefully to reduce costs and taxes.</p></article>'+
+     '<article class="step"><h2>Kept in balance, every year.</h2><p>When markets move, we rebalance to bring each class back within its target range, so decisions stay rational rather than emotional. And we review your policy with you annually.</p></article>'+
+    '</div></div>'+
+   '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" id="s-philosophy" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Investment approach</span><h2 class="d2 split">Let time be your <em>ally.</em></h2></div><p data-r>In an increasingly complex world, our approach is simple and straightforward: a cumulative return over your investment period commensurate with the risk you feel you can comfortably bear.</p></div>'+
+   '<div class="kits"><div><span class="lab kick" data-r>What we believe</span>'+aims(BELIEVE)+'</div><div><span class="lab kick" data-r>How we put it to work</span>'+aims(IMPLEMENT)+'</div></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark2" id="s-services" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>What we do</span><h2 class="d2 split">Your financial <em>alter-ego.</em></h2></div><p data-r>A fully personalized approach to wealth management, for clients who would rather devote their time and intelligence to other activities, knowing their decisions are implemented in an intelligent and trustworthy fashion.</p></div>'+
+   services()+
+  '</div></section>'+
+
+  '<section class="sec light" id="s-clients" data-theme="light"><div class="wrap">'+
+   '<div class="two"><div><span class="lab kick" data-r>Who we serve</span><h2 class="d2 split">Over a <em>lifetime.</em></h2>'+
+    '<p class="muted" data-r style="margin-top:28px;max-width:40ch">Bluestone aims to work with its clients over their lifetimes to achieve their financial goals. We place a premium on timely responsiveness, discretion, empathy, prudence and privacy.</p></div>'+
+   '<dl class="facts">'+
+    '<div><dt class="lab">Clients</dt><dd>Individuals and high-net-worth individuals, trusts, estates and charitable organizations, served nationally from Keene.</dd></div>'+
+    '<div><dt class="lab">Fees</dt><dd>Based on the assets we manage, up to 1% a year of each managed account’s market value, billed quarterly in advance. Fees are negotiable.</dd></div>'+
+    '<div><dt class="lab">Minimum</dt><dd>Generally a relationship of $2,500,000, which may be waived or reduced at Bluestone’s discretion.</dd></div>'+
+    '<div><dt class="lab">Reporting</dt><dd>A detailed report every quarter: values, allocation, positions, cost and income, with time-weighted returns. Monthly statements come directly from your custodian.</dd></div>'+
+    '<div><dt class="lab">Standard</dt><dd>A fiduciary, with a duty of loyalty, fairness and good faith to every client. We meet with you at least annually.</dd></div>'+
+   '</dl></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" id="s-team" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Advisors</span><h2 class="d2 split">Two principals, <em>one standard.</em></h2></div><p data-r>Bluestone is owned and operated by its two principals. Our top priority is the quality of the client-advisor relationship.</p></div>'+
+   people()+
+  '</div></section>'+
+  cta();
+}
+function cta(){
+  return '<section class="sec light cta" id="s-contact" data-theme="light"><div class="wrap">'+
+   '<span class="lab kick" data-r>Contact us</span>'+
+   '<h2 class="big split">Start a <em>conversation.</em></h2>'+
+   '<p class="sub" data-r>Get in touch if you would like to know more about Bluestone’s services. We treat all correspondence as private and confidential.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Bluestone '+ARR+'</a><a class="btn" href="'+TELH+'">'+TEL+'</a></div>'+
+   '<div class="offices">'+
+    '<div><span class="lab">Office</span><h3>Keene, New Hampshire</h3><p>67 Winter Street<br>Keene, NH 03431</p><p><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
+    '<div><span class="lab">Advisors</span><h3>Write to us directly</h3><p>Elizabeth Catlin<br><a class="ul" href="mailto:elizabeth@bluestoneNH.com">elizabeth@bluestoneNH.com</a></p><p>Christine Clinton<br><a class="ul" href="mailto:christine@bluestoneNH.com">christine@bluestoneNH.com</a></p></div>'+
+    '<div><span class="lab">Disclosure documents</span><ul class="docs">'+
+     '<li><a class="dl" href="'+ADV+'" target="_blank" rel="noopener"><span>Form ADV Part 2A &amp; 2B brochure<small>Effective January 29, 2026 · PDF</small></span>'+ARRX+'</a></li>'+
+     '<li><a class="dl" href="'+CRS+'" target="_blank" rel="noopener"><span>Client Relationship Summary, Form CRS<small>PDF · adviserinfo.sec.gov</small></span>'+ARRX+'</a></li>'+
+     '<li><a class="dl" href="'+IAPD+'" target="_blank" rel="noopener"><span>SEC adviser record<small>CRD 137959 · adviserinfo.sec.gov</small></span>'+ARRX+'</a></li>'+
+    '</ul></div>'+
+   '</div>'+
+  '</div></section>';
+}
+function v404(){return vHome()}
+function footer(){
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
+   '<div class="c"><span class="lab">Office</span>67 Winter Street<br>Keene, NH 03431<br><a class="ul" href="'+TELH+'">'+TEL+'</a></div>'+
+   '<div class="c"><span class="lab">Email</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="mailto:elizabeth@bluestoneNH.com">Elizabeth Catlin</a><br><a class="ul" href="mailto:christine@bluestoneNH.com">Christine Clinton</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">How we work</a><br><a class="ul" href="#/philosophy">Investing</a><br><a class="ul" href="#/services">What we do</a><br><a class="ul" href="#/clients">Who we serve</a><br><a class="ul" href="#/team">Advisors</a></div>'+
+   '<div class="c"><span class="lab">Disclosures</span><a class="ul" href="'+ADV+'" target="_blank" rel="noopener">Form ADV brochure</a><br><a class="ul" href="'+CRS+'" target="_blank" rel="noopener">Form CRS</a><br><a class="ul" href="'+IAPD+'" target="_blank" rel="noopener">SEC adviser record</a></div>'+
+  '</div><svg class="bigsvg" viewBox="0 0 640 44" aria-hidden="true"><text x="320" y="38" text-anchor="middle" style="font-family:\'Jost\',system-ui,sans-serif;font-weight:400;font-size:50px;letter-spacing:.16em">BLUESTONE</text></svg>'+
+  '<p class="disc">Bluestone Wealth Management LLC is a registered investment adviser located in the State of New Hampshire. Different types of investments involve varying degrees of risk, and it should not be assumed that future performance of any specific investment or strategy will be profitable.</p>'+
+  '<div class="legal"><span class="lab">© 2026 Bluestone Wealth Management LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+}
+
+/* ================= ROUTER: one view; section paths resolve to home and scroll ================= */
+function route(h){return {k:"home",v:vHome,t:"Bluestone Wealth Management — Wealth management in Keene, New Hampshire",x:"Home"}}

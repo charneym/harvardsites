@@ -1,0 +1,126 @@
+/* ================= HERO FIELD: blue hour over a still New Hampshire lake. A lone granite mountain stands beyond a
+   spruce shoreline; a full moon, the pale disc of Bluestone's own logo, has risen beside the summit, and the whole scene
+   lies mirrored in the water. Every so often a stone drops into the lake and a ring of ripples spreads across the
+   reflection (the ripple of their own site, done properly). It animates on its own, with no pointer response (CZ). ================= */
+function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oUp=null,oWater=null,ST=[],MI=[],DROPS=[];
+  function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function geo(){
+    var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
+    var U=mob?Math.round(h*.47):h;
+    var hz=mob?U*.64:h*.62;
+    var pk=mob?w*.5:side+cw*.7,ph=mob?U*.3:Math.min(h*.31,cw*.2),pw=mob?w*.62:Math.min(cw*.42,h*.9);
+    var mr=mob?U*.06:Math.min(h*.062,cw*.045);
+    return {mob:mob,side:side,cw:cw,U:U,hz:hz,pk:pk,ph:ph,pw:pw,mx:pk+(mob?w*.27:pw*.62),my:hz-ph*(mob?1.02:1.16),mr:mr};
+  }
+  function mk(H2){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H2*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
+  /* the mountain's skyline: a broad isolated dome, a long shoulder to the left, a rocky crown */
+  function mtn(x){var u=(x-G.pk)/G.pw,a=Math.abs(u<0?u/1.3:u/.9),y=Math.exp(-Math.pow(a,1.45)*3.4);
+    y+=.16*Math.exp(-Math.pow((u+.6)/.22,2))+.07*Math.exp(-Math.pow((u-.45)/.13,2));
+    var cr=Math.exp(-Math.pow(u/.12,2));
+    y+=(.012*Math.sin(x*.07)+.008*Math.sin(x*.19+1))*(1-cr*.5)+.018*cr*Math.sin(x*.23+.5)+.006*cr*Math.sin(x*.71);
+    return G.hz-G.ph*y/1.02}
+  function build(){
+    var hz=G.hz,U=G.U,A=mk(hz+2),g=A[1];oUp=A[0];
+    /* sky: night navy overhead, their royal blue, then the logo's periwinkle glow along the horizon */
+    var sky=g.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#050822");sky.addColorStop(.28,"#0c1446");sky.addColorStop(.55,"#1c2b7c");sky.addColorStop(.78,"#3a4aa6");sky.addColorStop(.92,"#7b86c8");sky.addColorStop(1,"#a9b1df");
+    g.fillStyle=sky;g.fillRect(0,0,w,hz+2);
+    /* moon glow */
+    var mg=g.createRadialGradient(G.mx,G.my,0,G.mx,G.my,G.mr*9);mg.addColorStop(0,"rgba(214,220,248,.42)");mg.addColorStop(.18,"rgba(175,182,226,.2)");mg.addColorStop(.5,"rgba(120,132,200,.07)");mg.addColorStop(1,"rgba(120,132,200,0)");
+    g.fillStyle=mg;g.fillRect(0,0,w,hz);
+    /* stars, fewer near the moon */
+    ST=[];var Rs=rng(3),n=G.mob?50:140;for(var s=0;s<n;s++){var sx=Rs()*w,sy=Math.pow(Rs(),1.6)*hz*.62,dm=Math.hypot(sx-G.mx,sy-G.my)/(G.mr*6);if(dm<1)continue;ST.push([sx,sy,.35+Rs()*.85,Rs()*6.28,.4+Rs()*1.2,1-sy/(hz*.62)])}
+    /* the moon: a soft, slightly mottled disc */
+    var md=g.createRadialGradient(G.mx-G.mr*.3,G.my-G.mr*.3,G.mr*.1,G.mx,G.my,G.mr);md.addColorStop(0,"#f3f4fd");md.addColorStop(.7,"#dfe3f7");md.addColorStop(1,"#c9cfef");
+    g.fillStyle=md;g.beginPath();g.arc(G.mx,G.my,G.mr,0,Math.PI*2);g.fill();
+    var Rm=rng(9);g.save();g.beginPath();g.arc(G.mx,G.my,G.mr,0,Math.PI*2);g.clip();
+    for(var k=0;k<9;k++){var a=Rm()*6.28,r=Rm()*G.mr*.7,cr=G.mr*(.12+Rm()*.28);var cg=g.createRadialGradient(G.mx+Math.cos(a)*r,G.my+Math.sin(a)*r,0,G.mx+Math.cos(a)*r,G.my+Math.sin(a)*r,cr);cg.addColorStop(0,"rgba(150,160,210,.2)");cg.addColorStop(1,"rgba(150,160,210,0)");g.fillStyle=cg;g.fillRect(G.mx-G.mr,G.my-G.mr,G.mr*2,G.mr*2)}
+    g.restore();
+    /* thin lit clouds across the lower sky */
+    var Rc=rng(5);for(var i=0;i<4;i++){var cy=hz*(.5+Rc()*.32),cx=Rc()*w,cwid=w*(.12+Rc()*.18),ca=.035+Rc()*.04;
+      g.save();g.translate(cx,cy);g.scale(1,(U*.02)/cwid);var cl=g.createRadialGradient(0,0,0,0,0,cwid);cl.addColorStop(0,"rgba(200,206,240,"+ca.toFixed(3)+")");cl.addColorStop(1,"rgba(200,206,240,0)");g.fillStyle=cl;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
+    /* distant hills in the haze */
+    function ridge(y0,amp,f,col,seed){g.fillStyle=col;g.beginPath();g.moveTo(0,hz+2);for(var x=0;x<=w+6;x+=6){var y=y0-amp*(.5+.5*Math.sin(x*f+seed))-amp*.45*Math.sin(x*f*2.7+seed*2);g.lineTo(x,y)}g.lineTo(w,hz+2);g.closePath();g.fill()}
+    ridge(hz-U*.012,U*.028,.0042,"#6873b8",2);
+    ridge(hz-U*.004,U*.02,.006,"#4a56a0",7);
+    /* the mountain: moonlit on the right, its gullies and rock bands drawn as fine engraved strokes */
+    var mt=g.createLinearGradient(0,hz-G.ph,0,hz);mt.addColorStop(0,"#34428f");mt.addColorStop(.6,"#26306f");mt.addColorStop(1,"#1d2660");
+    g.fillStyle=mt;g.beginPath();g.moveTo(0,hz+2);for(var x2=0;x2<=w+4;x2+=3)g.lineTo(x2,mtn(x2));g.lineTo(w,hz+2);g.closePath();g.fill();
+    g.save();g.beginPath();g.moveTo(0,hz+2);for(var x3=0;x3<=w+4;x3+=3)g.lineTo(x3,mtn(x3));g.lineTo(w,hz+2);g.closePath();g.clip();
+    var lt=g.createLinearGradient(G.pk-G.pw*.1,0,G.pk+G.pw*.9,0);lt.addColorStop(0,"rgba(175,182,226,0)");lt.addColorStop(.35,"rgba(175,182,226,.2)");lt.addColorStop(1,"rgba(175,182,226,.05)");g.fillStyle=lt;g.fillRect(0,0,w,hz);
+    var Rg=rng(17);g.lineCap="round";
+    for(var q=0;q<(G.mob?60:130);q++){var gx=G.pk+(Rg()-.5)*G.pw*1.9,top=mtn(gx);if(hz-top<G.ph*.14)continue;var y0=top+(hz-top)*Rg()*.35,len=(hz-top)*(.08+Rg()*.22),sl=(mtn(gx+4)-mtn(gx-4))/8,dx=sl*len*1.6,lit=gx>G.pk;
+      g.strokeStyle=lit?"rgba(200,206,240,"+(.04+Rg()*.07).toFixed(3)+")":"rgba(8,12,40,"+(.08+Rg()*.1).toFixed(3)+")";g.lineWidth=.5+Rg()*.7;
+      g.beginPath();g.moveTo(gx,y0+2);g.quadraticCurveTo(gx+dx*.5+(Rg()-.5)*3,y0+len*.5,gx+dx,y0+len);g.stroke()}
+    /* soft modelling: the moonlit flank brighter toward the ridge, the far flank in shadow */
+    var sh=g.createLinearGradient(G.pk-G.pw*.2,0,G.pk+G.pw,0);sh.addColorStop(0,"rgba(190,198,240,0)");sh.addColorStop(.3,"rgba(190,198,240,.09)");sh.addColorStop(1,"rgba(190,198,240,.03)");
+    g.fillStyle=sh;g.fillRect(0,0,w,hz);
+    var sd=g.createLinearGradient(G.pk-G.pw*.9,0,G.pk,0);sd.addColorStop(0,"rgba(8,12,40,.28)");sd.addColorStop(1,"rgba(8,12,40,0)");g.fillStyle=sd;g.fillRect(0,0,G.pk,hz);
+    /* bare granite crown catches the moonlight */
+    for(var cxp=G.pk-G.pw*.1;cxp<G.pk+G.pw*.14;cxp+=1.5){var ty=mtn(cxp),k2=1-Math.abs(cxp-G.pk)/(G.pw*.14);g.fillStyle="rgba(214,220,248,"+(k2*(.08+.07*Math.sin(cxp*.31))).toFixed(3)+")";g.fillRect(cxp,ty+.5,1.2,G.ph*.035*(.4+.6*Math.abs(Math.sin(cxp*.13))))}
+    g.restore();
+    /* valley mist at the mountain's foot */
+    var vm=g.createLinearGradient(0,hz-U*.07,0,hz);vm.addColorStop(0,"rgba(169,177,223,0)");vm.addColorStop(1,"rgba(169,177,223,.32)");g.fillStyle=vm;g.fillRect(0,hz-U*.07,w,U*.07+2);
+    /* the near shore: a band of spruce and fir, dark against the mist */
+    var Rt=rng(23);g.fillStyle="#0a1036";g.beginPath();g.moveTo(0,hz+2);var bandH=U*.013,tx=0;
+    while(tx<w+10){var cl=Math.max(0,Math.sin(tx*.0055+1.3))*Math.max(0,Math.sin(tx*.013+.4)),th=bandH*(.5+Rt()*.9)*(.55+1.5*cl),tw=th*(.3+Rt()*.14);
+      g.lineTo(tx,hz-bandH*.35);g.lineTo(tx+tw*.5,hz-bandH*.35-th);g.lineTo(tx+tw,hz-bandH*.35);tx+=tw*(.55+Rt()*.5)}
+    g.lineTo(w,hz+2);g.closePath();g.fill();
+    g.fillStyle="#0a1036";g.fillRect(0,hz-bandH*.4,w,bandH*.4+2);
+    /* water: a darkened, slightly blue-shifted copy of the sky for the deep foreground */
+    var wb=G.mob?U:h,B=mk(wb-hz+2),wg=B[1];oWater=B[0];
+    var wat=wg.createLinearGradient(0,0,0,wb-hz);wat.addColorStop(0,"rgba(10,15,46,.18)");wat.addColorStop(.35,"rgba(10,15,46,.5)");wat.addColorStop(1,"rgba(7,10,34,.92)");
+    wg.fillStyle=wat;wg.fillRect(0,0,w,wb-hz+2);
+    /* mist wisps over the water */
+    MI=[];var Rw=rng(41);for(var mI=0;mI<(G.mob?4:7);mI++)MI.push([Rw(),Rw()*.4,(.12+Rw()*.2),.04+Rw()*.06,Rw()*6.28]);
+    DROPS=[];var Rd=rng(71);for(var d=0;d<3;d++)DROPS.push([G.mob?w*(.3+Rd()*.4):G.side+G.cw*(.48+Rd()*.4),.18+Rd()*.42,d/3,9+Rd()*3]);
+  }
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  var lastF=0;
+  function frame(once){
+    var now=performance.now();
+    if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    var t=RM?9:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
+    var hz=G.hz,U=G.U,wb=G.mob?U:h,W=cv.width,HZ=Math.round(hz*dpr),depth=wb-hz;
+    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,W,cv.height);c.globalAlpha=e;
+    c.drawImage(oUp,0,0);
+    c.setTransform(dpr,0,0,dpr,0,0);
+    for(var i=0;i<ST.length;i++){var s=ST[i],a=s[5]*(.45+.55*Math.sin(t*s[4]+s[3]))*.75;if(a<.05)continue;c.fillStyle="rgba(232,236,255,"+a.toFixed(3)+")";c.fillRect(s[0],s[1],s[2],s[2])}
+    /* the reflection: the scene above the waterline, mirrored strip by strip, each strip swaying a little with the swell;
+       an expanding ring from each dropped stone bends the strips it crosses */
+    c.setTransform(1,0,0,1,0,0);
+    var step=2*dpr,rows=Math.ceil(depth*dpr/step),swell=RM?0:1,DR=[];
+    for(var k=0;k<DROPS.length;k++){var D=DROPS[k],life=((t/D[3])+D[2])%1;DR.push([D[0],hz+depth*D[1],life])}
+    for(var r=0;r<rows;r++){var yd=r*step,yy=yd/dpr,fr=yy/depth,sy=HZ-yd*(1+fr*.35)-step;if(sy<0)break;
+      var dx=swell*(Math.sin(yy*.21+t*1.3)*(.4+fr*3.2)+Math.sin(yy*.057-t*.7)*(.3+fr*2))*dpr;
+      for(var q=0;q<DR.length;q++){var p=DR[q],R=p[2]*Math.min(w,900)*.5,ry=R*.16,dy=Math.abs(HZ/dpr+yy-p[1]);if(dy<ry+6&&p[2]>0){var band=Math.max(0,1-Math.abs(dy-ry*.9)/9);dx+=Math.sin(dy*.8-t*6)*band*(1-p[2])*5*dpr}}
+      c.drawImage(oUp,0,sy,W,step,dx,HZ+yd,W,step)}
+    c.drawImage(oWater,0,HZ);
+    c.setTransform(dpr,0,0,dpr,0,0);
+    /* the moon's path on the water: flickering glints */
+    var mx=G.mx;c.globalCompositeOperation="lighter";
+    for(var gI=0;gI<(G.mob?18:34);gI++){var gy=hz+depth*(.03+.62*Math.pow((gI+.5)/(G.mob?18:34),1.25)),sp=G.mr*(.6+((gy-hz)/depth)*2.4),fl=Math.max(0,Math.sin(t*(1.6+gI%5*.37)+gI*2.3));
+      var gx=mx+Math.sin(gI*12.9898)*sp,gw=G.mr*(.25+.5*((gI*7)%5)/5),ga=fl*fl*.32*(1-(gy-hz)/depth*.6);if(ga<.02)continue;
+      c.fillStyle="rgba(214,220,248,"+ga.toFixed(3)+")";c.fillRect(gx-gw/2,gy,gw,1.2)}
+    c.globalCompositeOperation="source-over";
+    /* ripple rings */
+    for(var q2=0;q2<DR.length;q2++){var P=DR[q2],L=P[2],R2=L*Math.min(w,900)*.5;if(L<.01)continue;var al=Math.pow(1-L,1.6)*.5;
+      for(var ring=0;ring<3;ring++){var rr=R2-ring*G.mr*.32;if(rr<=1)continue;c.strokeStyle="rgba(195,201,238,"+(al*(1-ring*.3)).toFixed(3)+")";c.lineWidth=1;c.beginPath();c.ellipse(P[0],P[1],rr,rr*.16,0,0,Math.PI*2);c.stroke()}}
+    /* mist drifting over the water */
+    for(var m=0;m<MI.length;m++){var M=MI[m],mxp=((M[0]+t*.004*(1+m*.3))%1.4-.2)*w,myp=hz+depth*M[1]*.5+U*.01,mw=w*M[2];
+      c.save();c.translate(mxp,myp);c.scale(1,(U*.012)/mw);var mg=c.createRadialGradient(0,0,0,0,0,mw);mg.addColorStop(0,"rgba(175,182,226,"+(M[3]*(.7+.3*Math.sin(t*.3+M[4]))).toFixed(3)+")");mg.addColorStop(1,"rgba(175,182,226,0)");c.fillStyle=mg;c.beginPath();c.arc(0,0,mw,0,Math.PI*2);c.fill();c.restore()}
+    /* a thin bright line where the water meets the shore */
+    c.fillStyle="rgba(169,177,223,.22)";c.fillRect(0,hz,w,1);
+    c.globalAlpha=1;
+    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  var rzT,lw=0;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(function(){var nw=document.documentElement.clientWidth||innerWidth;if(G&&G.mob&&nw===lw&&Math.abs(innerHeight-h)<140)return;lw=nw;size()},120)});size();lw=w;
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.pk,G.hz]:[w/2,h/2]}};
+})();

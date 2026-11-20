@@ -10,6 +10,8 @@ var field=(function(){
   var BG="#0a0c0f";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="data:image/webp;base64,__HERO__";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  /* right edge of the hero text (H1 + lede), from its text nodes, about once a second (QA-2) */
+  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var tw=document.createTreeWalker(L[i],4),n;while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;var r=document.createRange();r.selectNodeContents(n);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}}TXc=m}catch(_){}}return TXc}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.45,w*1.0):h;
@@ -17,7 +19,9 @@ var field=(function(){
     /* desktop: the disc sits between ~126px (clear headroom under the nav, QA-2) and 30px above the fold, so it is never cut at the top */
     var D=mob?Math.min(U-96,w*1.02):Math.min(h-156,cw*.6),iw=D/.96,ih=iw*(1606/1500);
     var kx=mob?w-.40*iw:w-.40*iw,ky=mob?(70+U)/2+4:Math.max(126+D*.52,h*.53);
-    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,D:D,bh:mob?U:h};
+    var tx=0;if(!mob){ /* desktop (QA-2 R2): the whole disc, centred in the open area right of the measured H1/lede (centre at most ~74% of the width), room on both sides */
+      tx=TXR();var L=Math.max(tx,side+cw*.4)+64,R=Math.min(w-64,2*w*.74-L);D=Math.min(h-156,(R-L)/1.08);iw=D/.96;ih=iw*(1606/1500);kx=(L+R)/2;ky=Math.max(126+D*.54,h*.53)}
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,D:D,bh:mob?U:h,tx:tx};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
@@ -29,6 +33,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
     if(ok){
       /* a very slow breath: push in ~4% and drift a touch over ~46s, eased back and forth */
+      if(!G.mob&&Math.abs(TXR()-G.tx)>2)G=geo(); /* re-centre once the hero text has its final width */
       var k=.5-.5*Math.cos(t*Math.PI*2/46),sc=(1+.04*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.527,y=G.ky-dh*.523-k*G.ih*.01-SP.v*G.ih*.06;
       c.save();c.beginPath();c.arc(x+dw*.527,y+dh*.523,dw*.482,0,Math.PI*2);c.clip();

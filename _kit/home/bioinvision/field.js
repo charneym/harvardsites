@@ -8,6 +8,8 @@ var field=(function(){
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="data:image/webp;base64,__HERO__";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  /* right edge of the hero text (H1 + lede), measured from the DOM about once a second (QA-2 framing) */
+  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var r=document.createRange();r.selectNodeContents(L[i]);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}TXc=m}catch(_){}}return TXc}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.46,w*1.0):h;
@@ -27,10 +29,15 @@ var field=(function(){
       var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*(1.04+.07*k)*(1+.04*(1-e));
       var dw=iw*sc,dh=ih*sc,fx=G.mob?1:.6,fy=G.mob?.42:.5;
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* wide screens: the block's left face (~57% across the render) moves out from behind the H1/lede, capped so the specimen's tail (~96%) stays in frame; the strip opened at the left is ink (QA-2) */
+      if(!G.mob)x+=Math.max(0,Math.min(TXR()+36-(x+dw*.57),w+20-(x+dw*1)));
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
+      if(x>0){c.fillStyle="#11143a";c.fillRect(0,0,x+1,h);var fe=c.createLinearGradient(x,0,x+200,0);fe.addColorStop(0,"rgba(17,20,58,1)");fe.addColorStop(1,"rgba(17,20,58,0)");c.fillStyle=fe;c.fillRect(x,0,200,h)}
+      c.globalAlpha=1;
       /* scrims: navy wash, the headline side darkest, the base deepening into the page */
       c.fillStyle="rgba(17,20,58,.08)";c.fillRect(0,0,w,bh);
       if(!G.mob){
+        var TE=Math.max(w*.3,TXR()+140),tg2=c.createLinearGradient(0,0,TE,0);tg2.addColorStop(0,"rgba(10,12,34,.45)");tg2.addColorStop((TE-140)/TE,"rgba(10,12,34,.45)");tg2.addColorStop(1,"rgba(10,12,34,0)");c.fillStyle=tg2;c.fillRect(0,0,TE,h); /* text scrim to the measured end of the H1/lede */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.62,0);lv.addColorStop(0,"rgba(10,12,34,.7)");lv.addColorStop(.55,"rgba(10,12,34,.35)");lv.addColorStop(1,"rgba(10,12,34,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
         var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(10,12,34,.55)");tv.addColorStop(1,"rgba(10,12,34,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
         var bv=c.createLinearGradient(0,h*.62,0,h);bv.addColorStop(0,"rgba(10,12,34,0)");bv.addColorStop(1,"rgba(10,12,34,.7)");c.fillStyle=bv;c.fillRect(0,h*.62,w,h*.38);

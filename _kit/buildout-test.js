@@ -11,8 +11,8 @@ const { chromium } = require('playwright'); const path = require('path');
     if (!items || !items.length) { bad.push(`${w}: no build-out nav items`); await p.close(); continue; }
     const mobile = w < 900;
     for (const it of items) {
-      if (mobile) { await p.click('#burger'); await p.waitForTimeout(1000); await p.click(`#mm a[href="${it.href}"]`); }
-      else { await p.evaluate(() => window.scrollTo(0, 1700)); await p.waitForTimeout(300); await p.evaluate(() => window.scrollTo(0, 1500)); await p.waitForTimeout(700); await p.click(`#hdr nav a[href="${it.href}"]`); }
+      if (mobile) { await p.click('#burger'); await p.waitForTimeout(1000); await p.locator('#mm a', { hasText: new RegExp('^\\s*' + it.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$') }).first().click(); }
+      else { await p.evaluate(() => window.scrollTo(0, 1700)); await p.waitForTimeout(300); await p.evaluate(() => window.scrollTo(0, 1500)); await p.waitForTimeout(700); await p.locator('#hdr nav a', { hasText: new RegExp('^\\s*' + it.label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$') }).first().click(); }
       await p.waitForTimeout(2300);
       const st = await p.evaluate(() => { const bo = document.getElementById('bo'); const r = bo && bo.getBoundingClientRect();
         return { hash: location.hash, on: !!(bo && bo.classList.contains('on') && r.height > 300), h1: (document.getElementById('boTitle') || {}).textContent || '',

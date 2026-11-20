@@ -55,12 +55,13 @@ var CSS=
 function slug(s){return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
 function label(a){var t=(a.getAttribute("data-label")||a.textContent||"").replace(/\s+/g," ").trim();return t}
-function isContact(a){var h=a.getAttribute("href")||"",t=label(a);return /contact/i.test(h)||/^(contact|kontakt|contacto|contatti|contactez)/i.test(t)||/^mailto:|^tel:/i.test(h)}
+var TA=["data-to","data-go","data-sec"];function tgt(a){for(var i=0;i<TA.length;i++){var v=a.getAttribute(TA[i]);if(v)return TA[i]+"="+v}return ""}
+function isContact(a){var h=a.getAttribute("href")||"",t=label(a);return /contact/i.test(h+" "+tgt(a))||/^(contact|kontakt|contacto|contatti|contactez)/i.test(t)||/^mailto:|^tel:/i.test(h)}
 /* the primary nav items: header nav links and the mobile menu list; Home, Contact and anything off-site are excluded */
 function navAnchors(){var out=[];Array.prototype.forEach.call(D.querySelectorAll("#hdr nav a[href^='#'], .hdr nav a[href^='#'], #mm a[href^='#']"),function(a){
-  var h=a.getAttribute("href");if(!h||h==="#"||h==="#/"||h==="#main"||/^#\/more\//.test(h))return;if(a.classList.contains("brand")||isContact(a)||h==="#hero"||h==="#top"||/^(home|start|accueil|inicio|startseite)$/i.test(label(a)))return;if(!label(a))return;out.push(a)});return out}
+  var h=a.getAttribute("href"),to=tgt(a);if(!h||h==="#"||(h==="#/"&&!to)||h==="#main"||/^#\/more\//.test(h))return;if(a.classList.contains("brand")||isContact(a)||h==="#hero"||h==="#top"||/^(home|start|accueil|inicio|startseite)$/i.test(label(a)))return;if(!label(a))return;out.push(a)});return out}
 function isNavItem(a){return navAnchors().indexOf(a)>=0}
-function items(){var seen={},list=[];navAnchors().forEach(function(a){var t=label(a),s=slug(t);if(!s||seen[s])return;seen[s]=1;list.push({slug:s,label:t,href:a.getAttribute("href")})});return list}
+function items(){var seen={},list=[];navAnchors().forEach(function(a){var t=label(a),s=slug(t);if(!s||seen[s])return;seen[s]=1;list.push({slug:s,label:t,href:a.getAttribute("href"),to:tgt(a)})});return list}
 function findItem(s){var l=items();for(var i=0;i<l.length;i++)if(l[i].slug===s)return l[i];return null}
 function moreSlug(h){var m=/^#\/more\/([^/?#]+)\/?$/.exec(h||"");return m?decodeURIComponent(m[1]):null}
 
@@ -83,7 +84,7 @@ function build(it){style();
     '<h1 class="d2 bo-h" id="boTitle" tabindex="-1" data-bo-r>'+h+'</h1>'+
     '<p class="bo-p" data-bo-r>'+esc(L.body)+'</p>'+
     '<div class="bo-act" data-bo-r><a class="btn solid" href="#/" data-bo-home>'+esc(L.back)+' '+ARR+'</a>'+
-    '<a class="bo-keep" href="'+esc(it.href)+'" data-bo-keep>'+esc(L.keep)+'</a></div></div>'+
+    '<a class="bo-keep" href="'+esc(it.href)+'" data-bo-keep'+(it.to?' data-bo-to="'+esc(it.to)+'"':'')+'>'+esc(L.keep)+'</a></div></div>'+
     '<div class="lab bo-foot" data-bo-r><span>'+esc(site)+'</span><span>'+String(idx+1).padStart(2,"0")+' / '+String(l.length).padStart(2,"0")+' · '+esc(it.label)+'</span></div></section>';
   var f=cloneFooter();if(f)bo.appendChild(f);
   bo.scrollTop=0}
@@ -99,8 +100,11 @@ function current(it){navAnchors().forEach(function(a){if(it&&slug(label(a))===it
 function closeMenu(cb){if(!D.body.classList.contains("menu-open")){cb();return}var b=D.getElementById("burger");if(b)b.click();setTimeout(cb,420)}
 function curtain(mid,done){var xc=D.getElementById("xc"),g=window.gsap;
   if(RM||!g||!xc){mid();if(done)done();return}
-  g.killTweensOf(xc);var tl=g.timeline({onComplete:function(){g.set(xc,{yPercent:101});if(done)done()}});
-  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.6,ease:"power3.inOut"}).call(mid).to(xc,{yPercent:-101,duration:.6,ease:"power3.inOut"},"+=.08")}
+  /* the swap must never wait on frames: on a slow device (or a busy page) GSAP lag-smoothing can stretch the wipe, so timers guarantee both halves */
+  var m=0,d=0;function runMid(){if(m)return;m=1;mid()}function fin(){if(d)return;d=1;runMid();g.killTweensOf(xc);g.set(xc,{yPercent:101});if(done)done()}
+  g.killTweensOf(xc);var tl=g.timeline({onComplete:fin});
+  tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.6,ease:"power3.inOut"}).call(runMid).to(xc,{yPercent:-101,duration:.6,ease:"power3.inOut"},"+=.08");
+  setTimeout(runMid,750);setTimeout(function(){if(!d){tl.kill();fin()}},1700)}
 function reveal(){var g=window.gsap;if(RM||!g||!bo)return;var els=bo.querySelectorAll("[data-bo-r]");g.fromTo(els,{y:22,opacity:0},{y:0,opacity:1,duration:.9,ease:"power3.out",stagger:.07,delay:.32,clearProps:"transform,opacity"})}
 function show(it){if(baseTitle===null)baseTitle=D.title;cur=it;
   curtain(function(){
@@ -117,22 +121,22 @@ function hide(after){
   },after)}
 /* leave the build-out page through history so the browser stack stays [home, more]; then run cb on home */
 function leave(cb){leaving=cb||function(){};if(deep&&history.length<2){history.replaceState(null,"","#/");onHash()}else history.back()}
-function replay(href){var a=null;Array.prototype.some.call(D.querySelectorAll("#hdr nav a[href], .hdr nav a[href], #view a[href]"),function(x){if(x.getAttribute("href")===href){a=x;return true}});
+function replay(href,to){var a=null;Array.prototype.some.call(D.querySelectorAll("#hdr nav a[href], .hdr nav a[href], #view a[href]"),function(x){if(x.getAttribute("href")===href&&(!to||tgt(x)===to)){a=x;return true}});
   bypass=true;try{if(a)a.click();else location.hash=href}finally{bypass=false}}
 
 /* clicks: capture on window so this runs before the site's own (document-level) handlers */
 window.addEventListener("click",function(e){if(bypass||e.defaultPrevented||e.button>0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
   var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");
   if(open&&bo&&bo.contains(a)){
-    if(a.hasAttribute("data-bo-home")){e.preventDefault();e.stopPropagation();leave();return}
-    if(a.hasAttribute("data-bo-keep")){e.preventDefault();e.stopPropagation();leave(function(){replay(h)});return}
-    if(h.charAt(0)==="#"){e.preventDefault();e.stopPropagation();var mo=moreSlug(h);if(mo){var it=findItem(mo);if(it&&(!cur||it.slug!==cur.slug)){history.replaceState(null,"",h);show(it)}return}leave(h==="#/"||h==="#main"?null:function(){replay(h)});return}
+    if(a.hasAttribute("data-bo-home")){e.preventDefault();e.stopImmediatePropagation();leave();return}
+    if(a.hasAttribute("data-bo-keep")){e.preventDefault();e.stopImmediatePropagation();leave(function(){replay(h,a.getAttribute("data-bo-to"))});return}
+    if(h.charAt(0)==="#"){e.preventDefault();e.stopImmediatePropagation();var mo=moreSlug(h);if(mo){var it=findItem(mo);if(it&&(!cur||it.slug!==cur.slug)){history.replaceState(null,"",h);show(it)}return}leave(h==="#/"||h==="#main"?null:function(){replay(h)});return}
     return}
   if(h.charAt(0)!=="#")return;
-  if(isNavItem(a)){e.preventDefault();e.stopPropagation();var it2=findItem(slug(label(a)));if(!it2)return;var to="#/more/"+it2.slug;
+  if(isNavItem(a)){e.preventDefault();e.stopImmediatePropagation();var it2=findItem(slug(label(a)));if(!it2)return;var to="#/more/"+it2.slug;
     closeMenu(function(){if(open){if(cur&&cur.slug===it2.slug)return;history.replaceState(null,"",to);show(it2)}else{history.pushState(null,"",to);show(it2)}});return}
   if(open){/* header brand / Contact / Home while the build-out page is up: go home first, then let the site handle it */
-    e.preventDefault();e.stopPropagation();closeMenu(function(){leave(h==="#/"||h==="#main"?null:function(){replay(h)})})}
+    e.preventDefault();e.stopImmediatePropagation();closeMenu(function(){leave(h==="#/"||h==="#main"?null:function(){replay(h)})})}
 },true);
 
 /* history: this listener is registered before the site's router, so #/more/* never reaches it */

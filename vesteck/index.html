@@ -1635,13 +1635,21 @@ var field=(function(){
       var k=.5-.5*Math.cos(t*Math.PI*2/48),sc=Math.max(bw/iw,bh/ih)*(1.03+.06*k)*(1+.035*(1-e));
       var dw=iw*sc,dh=ih*sc,fx=G.mob?.5:.55,fy=G.mob?.3:.38;
       var x=x0+(bw-dw)*fx+k*bw*.01,y=(bh-dh)*fy-k*bh*.008;
+      if(!G.mob){
+        /* desktop (DO): the whole photograph, fitted and centred at ~0.68 of the width so both surgeons sit in the open area
+           with air on both sides; every edge feathers into the ink (DJ) */
+        sc=Math.min(h/ih,w*.62/iw)*(1+.03*k)*(1+.035*(1-e));dw=iw*sc;dh=ih*sc;x=w*.68-dw*.55;y=Math.max(0,(h-dh)*.6);x0=x;bw=dw;
+      }
       c.save();c.beginPath();c.rect(x0,0,bw,bh);c.clip();c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.restore();c.globalAlpha=1;
       c.fillStyle="rgba(12,34,56,.16)";c.fillRect(x0,0,bw,bh);
       if(!G.mob){
-        /* feather: the photograph's left edge dissolves into the ink well before the headline column ends */
-        var fw=bw*.46,lv=c.createLinearGradient(x0,0,x0+fw,0);
+        /* feather: the photograph's left edge dissolves into the ink well before the headline column ends; right, top and bottom too */
+        var fw=dw*.42,lv=c.createLinearGradient(x,0,x+fw,0);
         lv.addColorStop(0,"rgba(12,34,56,1)");lv.addColorStop(.35,"rgba(12,34,56,.78)");lv.addColorStop(.7,"rgba(12,34,56,.3)");lv.addColorStop(1,"rgba(12,34,56,0)");
-        c.fillStyle=lv;c.fillRect(x0-1,0,fw+1,h);
+        c.fillStyle=lv;c.fillRect(x-1,0,fw+1,h);
+        var rw=dw*.14,rv=c.createLinearGradient(x+dw-rw,0,x+dw,0);rv.addColorStop(0,"rgba(12,34,56,0)");rv.addColorStop(1,"rgba(12,34,56,1)");c.fillStyle=rv;c.fillRect(x+dw-rw,0,rw+1,h);
+        var th=dh*.12,tg=c.createLinearGradient(0,y,0,y+th);tg.addColorStop(0,"rgba(12,34,56,1)");tg.addColorStop(1,"rgba(12,34,56,0)");c.fillStyle=tg;c.fillRect(x,y-1,dw,th+1);
+        c.fillStyle="#0c2238";c.fillRect(x+dw,0,w,h);if(y>0)c.fillRect(0,0,w,y);
         var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(8,24,42,.6)");tv.addColorStop(1,"rgba(8,24,42,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
         var bv=c.createLinearGradient(0,h*.6,0,h);bv.addColorStop(0,"rgba(12,34,56,0)");bv.addColorStop(1,"rgba(12,34,56,.78)");c.fillStyle=bv;c.fillRect(0,h*.6,w,h*.4);
       }else{

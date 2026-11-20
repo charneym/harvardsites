@@ -70,7 +70,7 @@ function footer(){
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/philosophy">Philosophy</a><br><a class="ul" href="#/approach">Approach</a><br><a class="ul" href="#/services">Services</a><br><a class="ul" href="#/clients">Clients</a><br><a class="ul" href="#/team">Team</a></div>'+
    '<div class="c"><span class="lab">Disclosures</span><a class="ul" href="'+CRS+'" target="_blank" rel="noopener">Form CRS</a><br><a class="ul" href="'+BRO+'" target="_blank" rel="noopener">Form ADV Part 2A</a><br><a class="ul" href="'+ADV+'" target="_blank" rel="noopener">SEC adviser record</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Libre Caslon Text\',Georgia,serif;font-weight:400;font-size:62px;letter-spacing:.12em">LEDGEWOOD</text></svg>'+
-  '<div class="legal"><span class="lab">© 2026 Ledgewood Wealth Advisors, LLC · SEC-registered investment adviser</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+  '<div class="legal"><span class="lab">© 2026 Ledgewood Wealth Advisors, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
 /* ================= ROUTER: one route; #/<section> scrolls to that section ================= */

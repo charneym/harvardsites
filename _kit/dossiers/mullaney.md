@@ -40,7 +40,8 @@
 - Concept: warm ink #1d1517 base, bone #f4ede3, acc #b74e4d, accL #e0958c (on dark), accD #9b3f3e (on light).
 
 ## Hero
-- Arrigoni Bridge (Middletown–Portland, 1938, twin steel through-arches over the Connecticut River) at dusk, painted on canvas in their rose/terracotta palette. Their office is on Main St, Middletown, beside the river; the founder spent ~40 years on Riverfront Recapture (Connecticut River). Original site uses a dated Hartford skyline photo (low-res), so a painted single subject per DG.
+- REPHOTO 2026-11-20 (HOME_BRIEF update 2026-11-20 part 2; client: painted scenes look unprofessional). The painted Arrigoni Bridge scene is removed. (a) The firm's own site has no usable photography (only a dated low-res Hartford skyline banner and small headshots). (b) No free Unsplash/Pexels photo of Middletown or the Arrigoni Bridge exists, so the hero is a real photograph of the Connecticut River, the river the office sits on: an old rust-red truss railroad bridge on stone piers at Enfield, CT, autumn. Photo by Stephanie on Pexels (Pexels License, free): https://www.pexels.com/photo/historic-railroad-bridge-over-the-connecticut-river-39388290/ (3898x2594). Cropped to 16:10 toward the bridge, saturation 0.85, 8% blend to the ink #1d1517, shipped as mullaney/hero.jpg. Canvas field with a slow Ken Burns drift, subject right, ink scrim over the headline side, phone band fading into the ink. No copy claims the photo shows Middletown.
+- (superseded) Arrigoni Bridge (Middletown–Portland, 1938, twin steel through-arches over the Connecticut River) at dusk, painted on canvas in their rose/terracotta palette. Their office is on Main St, Middletown, beside the river; the founder spent ~40 years on Riverfront Recapture (Connecticut River). Original site uses a dated Hartford skyline photo (low-res), so a painted single subject per DG.
 
 ## Photos (BJ)
 - Used: tony.jpg, fran.jpg, Jessica (200px, small but used at card size ≤ 220px), no sheets.

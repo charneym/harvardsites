@@ -458,7 +458,7 @@ EXTRA = r'''
 .cta .offs{margin-top:0;grid-template-columns:1fr 1fr}
 .cta .offs>div:last-child{grid-column:1/-1}
 .cta .act .btn.solid{text-transform:none}
-@media (max-width:640px){.cta .offs{grid-template-columns:1fr}}
+@media (max-width:640px){.cta .offs{grid-template-columns:1fr}.hero-h{font-size:clamp(34px,10.4vw,64px)}}
 @media (max-width:860px){.story-r{height:50vh;height:50svh}.scene svg.mob text{font-size:12px;letter-spacing:.08em}.fieldbg{background:var(--ink)}}
 '''
 src = src.replace('</style>\n</head>', EXTRA + '</style>\n</head>', 1)

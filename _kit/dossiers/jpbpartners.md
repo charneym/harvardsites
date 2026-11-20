@@ -27,6 +27,11 @@
 - Underlined bold link labels, double-rule header lines; PE page URL slug is "/private-equit"; typos ("Asprin", "classing", "Houilhan Lokey", "85,00 sq ft"); team grid misaligns names with bios; firm email is a gmail address.
 
 ## Hero / story
-- Hero: Chesapeake screwpile cottage lighthouse at first light (Maryland landmark type), canvas, navy sky from logo blue #045184, bay reflection, lantern glow, skipjack and gulls. Not a skyline.
+- Hero (superseded 2026-11-20, see below): Chesapeake screwpile cottage lighthouse at first light (Maryland landmark type), canvas, navy sky from logo blue #045184, bay reflection, lantern glow, skipjack and gulls. Not a skyline.
 - Story: engraved street elevation, one store -> three locations; steps Strategy (dashed add-on plan), Structure (frames, footings), Systems (rooftop HVAC units, shared supply line), People (lit windows, awnings, signs, people, service van).
 - Palette: #045184 (logo/site blue), #a0a09f (logo grey), sampled from live site CSS.
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted lighthouse canvas removed. Their site's imagery is AI-generated/stock (no own photography).
+- Photo: "City Skyline During Night Time", Pexels photo 10770456 (free licence): https://www.pexels.com/photo/city-skyline-during-night-time-10770456/ (Baltimore Inner Harbor at night).
+- Graded into jpbpartners/hero.webp (navy ink #071a2b, cool steel tint, lights desaturated), slow Ken Burns, skyline right of ~45% under the ink scrim.

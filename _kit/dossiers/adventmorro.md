@@ -34,3 +34,7 @@ Home-only concept site (HOME_BRIEF format), assembled from the firelight engine 
 3. Home counters render "0 + Puerto Ricans Employed", "$0 million Median Investment Size", "0 Successful Cases" twice; newsletter shows raw shortcode "[mc4wp_form id="215"]".
 4. Home contradicts itself: "employ nearly 8,000 people" vs "employ over 3,000 people" in the next paragraph.
 5. Stray grey placeholder blocks, ©2022 footer, news last posted 2021, authored by "Dev Advent".
+
+## Hero (rev2, HOME_BRIEF update 2026-11-20 part 2, real photography)
+- Option (b): the firm's own site has no usable photography. Chait Goli, "Historic guard tower with ocean view" (a garita, the stone sentry box of the Old San Juan fortifications and the mark in Advent-Morro's logo, on the sea wall above the Atlantic), location San Juan, Puerto Rico, Pexels License (free): https://www.pexels.com/photo/fortress-wall-with-a-view-of-the-sea-15261778/ (downloaded from https://images.pexels.com/photos/15261778/pexels-photo-15261778.jpeg?w=2600).
+- Graded by _kit/home/adventmorro/grade.py toward the charcoal ink #191c23 (warm stone, sea muted, sky darkened under the nav), right of ~36% with feathered left/bottom edges, shifted further right on wide screens so the sky stays clear of the H1; slow Ken Burns drift; ink scrim on the text side; phones: garita in the top band. The rev1 painted golden-hour garita canvas was removed per the client (painted scenes look unprofessional).

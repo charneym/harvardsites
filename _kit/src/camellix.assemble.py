@@ -542,5 +542,6 @@ for k, v in R.items():
 left = [k for k in re.findall(r"<R:([a-z0-9]+)>", out) if k not in R]
 if left:
     print("kept from firelight:", sorted(set(left)))
+import re as _bo; out = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', out, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 (HERE / "camellix.src.html").write_text(out)
 print("wrote", HERE / "camellix.src.html", len(out))

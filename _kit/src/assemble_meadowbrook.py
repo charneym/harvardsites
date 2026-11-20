@@ -16,6 +16,7 @@ for n, body in rep.items():
         done += k
     if done != 1: raise SystemExit('region %s matched %d times' % (n, done))
 assert 'Firelight' not in src.split('<script>')[0] or True
+import re as _bo; src = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', src, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 (HERE / 'meadowbrook.src.html').write_text(src)
 left = [w for w in ['firelight', 'Firelight', 'FIRELIGHT', 'Fort Lauderdale'] if w in src]
 print('wrote meadowbrook.src.html', len(src), 'leftover:', left)

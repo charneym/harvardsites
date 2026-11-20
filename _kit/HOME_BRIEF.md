@@ -72,3 +72,6 @@ Then stop.
 
 ## UPDATE 2026-11-20 (b): build-out pages v2 (binding)
 Do NOT write your own #/more router. Add "buildout" to @libs (and to your assemble.py); the shared _kit/lib/buildout.js now runs the full-site route wipe and builds a real sub-page from your own home sections (sub-page hero from the section heading/intro, the cloned section content, then the concept note). Make sure each nav item's target section has a clear heading and intro, and use the site's SECS map / data-to links so the module can find them. See PRINCIPLES DK.
+
+## UPDATE 2026-11-20 (c): new gate
+Also run `node _kit/loader-contrast-audit.js <slug>` (no loader text under 3:1). Scope every loader class under #pre; never reuse a short class name (.pc, .pt) for two components.

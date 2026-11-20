@@ -1108,7 +1108,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    own (water, drifting mist, the last stars), with no pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oTop=null,ST=[],GL=[],MI=[];
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oTop=null,oFg=null,ST=[],GL=[],MI=[];
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
@@ -1123,13 +1123,11 @@ var field=(function(){
   /* the ledge profile, left to right: a rounded granite nose out of the water, a shoulder, then the long glaciated crown
      running off the right edge; smoothed so it reads as weathered rock, not masonry */
   function ledgePts(){
-    var S=G.S,x=G.lx,hz=G.hz,R=rng(11),C=[[x-S*.12,hz+2],[x-S*.02,hz-S*.03],[x+S*.06,hz-S*.2],[x+S*.12,hz-S*.36],[x+S*.22,hz-S*.46],[x+S*.34,hz-S*.5],
-      [x+S*.46,hz-S*.58],[x+S*.62,hz-S*.66],[x+S*.82,hz-S*.7]];
-    var lx=x+S*.82;for(var k=1;lx<w+S*.3;k++){lx=x+S*.82+k*S*.22;C.push([lx,hz-S*(.7+.035*Math.sin(k*1.9)+R()*.025)])}
-    var P=[];for(var i=0;i<C.length-1;i++){var p0=C[Math.max(i-1,0)],p1=C[i],p2=C[i+1],p3=C[Math.min(i+2,C.length-1)];
-      for(var t=0;t<1;t+=.125){var t2=t*t,t3=t2*t;P.push([.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
-        .5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)])}}
-    P.push(C[C.length-1]);P.push([w+20,hz+2]);return P}
+    var S=G.S,x=G.lx,hz=G.hz,R=rng(11);
+    var D=[[-.14,.0],[-.09,-.05],[-.02,-.09],[.0,-.1],[.03,-.25],[.11,-.27],[.13,-.39],[.25,-.42],[.27,-.5],[.41,-.53],[.44,-.61],[.6,-.64],[.63,-.7],[.84,-.72]];
+    var K=D.map(function(d){return [x+d[0]*S,hz+d[1]*S]});
+    var lx=x+S*.84;for(var k=1;lx<w+S*.3;k++){lx=x+S*.84+k*S*.2;var up=k%2?.03:0;K.push([lx-S*.02,hz-S*(.72+up+R()*.02)]);K.push([lx,hz-S*(.74+up+R()*.02)])}
+    K[0][1]=hz+2;G.K=K;var P=K.slice();P.push([w+20,hz+2]);return P}
   function path(g,P){g.beginPath();P.forEach(function(p,k){k?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])});g.closePath()}
   function build(){
     var hz=G.hz,U=G.U,S=G.S,A=mk(hz+4),g=A[1];oTop=A[0];
@@ -1148,67 +1146,80 @@ var field=(function(){
     hill(hz,U*.07,"rgba(96,104,150,.42)",3);
     hill(hz,U*.04,"rgba(64,72,118,.55)",5);
     trees(hz,U*.018,"#2a3360",9,G.lx);
-    /* the granite ledge */
+    /* the granite ledge: stepped blocks split by vertical joints and sheet partings */
     var P=ledgePts(),x=G.lx;
-    var lg=g.createLinearGradient(x-S*.1,0,x+S*1.3,0);lg.addColorStop(0,"#525b84");lg.addColorStop(.25,"#363f69");lg.addColorStop(.7,"#222a52");lg.addColorStop(1,"#1a2147");
+    var lg=g.createLinearGradient(x,hz-S*.75,x+S*.6,hz);lg.addColorStop(0,"#2f375f");lg.addColorStop(.5,"#212849");lg.addColorStop(1,"#151b38");
     g.fillStyle=lg;path(g,P);g.fill();
     g.save();path(g,P);g.clip();
-    /* dawn on the rounded west faces, shadow pooling toward the water */
-    var dl=g.createRadialGradient(x+S*.05,hz-S*.32,0,x+S*.05,hz-S*.32,S*.55);dl.addColorStop(0,"rgba(226,220,230,.34)");dl.addColorStop(1,"rgba(226,220,230,0)");g.fillStyle=dl;g.fillRect(x-S*.2,hz-S,S*1.2,S);
-    var d2=g.createRadialGradient(x+S*.5,hz-S*.6,0,x+S*.5,hz-S*.6,S*.4);d2.addColorStop(0,"rgba(214,210,226,.16)");d2.addColorStop(1,"rgba(214,210,226,0)");g.fillStyle=d2;g.fillRect(x,hz-S,S*1.2,S);
-    var vs=g.createLinearGradient(0,hz-S*.7,0,hz);vs.addColorStop(0,"rgba(10,14,34,0)");vs.addColorStop(.6,"rgba(10,14,34,.18)");vs.addColorStop(1,"rgba(10,14,34,.62)");g.fillStyle=vs;g.fillRect(x-S*.2,hz-S,w,S+4);
-    /* sheet joints: curved partings that follow the crown, as glaciated granite does */
-    var Rf=rng(31);g.lineCap="round";
-    for(var sj=0;sj<5;sj++){var dd=S*(.07+sj*.085),from=2+Math.floor(Rf()*6),to=P.length-2-Math.floor(Rf()*20);
-      g.strokeStyle="rgba(8,12,30,"+(.5-sj*.06).toFixed(2)+")";g.lineWidth=Math.max(.8,S*.0045);g.beginPath();var on=false;
-      for(var q=from;q<to;q++){var pp=P[q],yy=pp[1]+dd+Math.sin(q*.6+sj)*S*.006;if(pp[0]<x-S*.04+dd*.5){continue}
-        if(Rf()<.06){on=false;continue}on?g.lineTo(pp[0],yy):g.moveTo(pp[0],yy);on=true}
-      g.stroke();
-      g.strokeStyle="rgba(220,216,232,"+(.14-sj*.02).toFixed(2)+")";g.lineWidth=Math.max(.6,S*.0025);g.beginPath();on=false;
-      for(var q2=from;q2<to;q2++){var p2=P[q2],y2=p2[1]+dd-S*.006+Math.sin(q2*.6+sj)*S*.006;if(p2[0]<x-S*.04+dd*.5)continue;on?g.lineTo(p2[0],y2):g.moveTo(p2[0],y2);on=true}g.stroke()}
-    /* a few vertical cracks, each with a lit lip */
-    for(var j=0;j<(G.mob?3:5);j++){var fx=x+S*(.3+Rf()*1.2),top=crownY(P,fx)+S*.03,len=S*(.12+Rf()*.22),bend=(Rf()-.5)*S*.04;
-      g.strokeStyle="rgba(8,12,30,.38)";g.lineWidth=Math.max(.8,S*.004);g.beginPath();g.moveTo(fx,top);g.quadraticCurveTo(fx+bend,top+len*.5,fx+bend*.4,top+len);g.stroke();
-      g.strokeStyle="rgba(220,216,232,.12)";g.lineWidth=Math.max(.6,S*.0025);g.beginPath();g.moveTo(fx-S*.006,top);g.quadraticCurveTo(fx+bend-S*.006,top+len*.5,fx+bend*.4-S*.006,top+len);g.stroke()}
-    /* lichen and weathering: soft dark blotches */
-    for(var lb=0;lb<(G.mob?10:24);lb++){var bx=x+S*(Rf()*1.6),by=crownY(P,bx)+S*(.06+Rf()*.5),br=S*(.02+Rf()*.05);var bg=g.createRadialGradient(bx,by,0,bx,by,br);bg.addColorStop(0,"rgba(10,14,34,.22)");bg.addColorStop(1,"rgba(10,14,34,0)");g.fillStyle=bg;g.fillRect(bx-br,by-br,br*2,br*2)}
+    var Rf=rng(31),K=G.K;
+    for(var i2=0;i2<K.length-1;i2++){var p0=K[i2],p1=K[i2+1],dx=p1[0]-p0[0],dy=p1[1]-p0[1],steep=Math.abs(dy)>Math.abs(dx)*.9;
+      if(steep){/* a west face turned to the dawn: lit plane, fading downward */
+        var fg=g.createLinearGradient(p0[0],p1[1],p0[0]+S*.06,p0[1]+S*.2);fg.addColorStop(0,"rgba(206,204,222,.5)");fg.addColorStop(.5,"rgba(150,154,190,.22)");fg.addColorStop(1,"rgba(120,126,170,.04)");
+        g.fillStyle=fg;g.beginPath();g.moveTo(p0[0],p0[1]);g.lineTo(p1[0],p1[1]);g.lineTo(p1[0]+S*.05,p1[1]+S*.02);g.lineTo(p0[0]+S*.04+S*.02,Math.min(hz,p0[1]+S*.22));g.lineTo(p0[0]-S*.01,Math.min(hz,p0[1]+S*.22));g.closePath();g.fill()}
+      else{/* a top plane: thin lit band, then the shadowed front of the block below it */
+        g.fillStyle="rgba(196,196,220,.26)";g.beginPath();g.moveTo(p0[0],p0[1]);g.lineTo(p1[0],p1[1]);g.lineTo(p1[0],p1[1]+S*.022);g.lineTo(p0[0]+S*.02,p0[1]+S*.026);g.closePath();g.fill();
+        /* irregular blocks: each slab between joints has its own tone, joints of uneven length and angle */
+        var cuts=[p0[0]],cx2=p0[0];while(true){cx2+=S*(.06+Rf()*.12);if(cx2>p1[0]-S*.03)break;cuts.push(cx2)}cuts.push(p1[0]);
+        for(var cb=0;cb<cuts.length-1;cb++){var c0=cuts[cb],c1=cuts[cb+1],ty0=p0[1]+dy*((c0-p0[0])/dx),bh=S*(.12+Rf()*.32),tone=Rf();
+          g.fillStyle=tone<.5?"rgba(170,174,206,"+(.04+tone*.12).toFixed(3)+")":"rgba(6,9,24,"+((tone-.5)*.3).toFixed(3)+")";g.beginPath();g.moveTo(c0,ty0+S*.02);g.lineTo(c1,ty0+S*.02+dy*((c1-c0)/dx));g.lineTo(c1+(Rf()-.5)*S*.02,ty0+bh);g.lineTo(c0,ty0+bh*(.8+Rf()*.3));g.closePath();g.fill();
+          if(cb>0){var jl=S*(.06+Rf()*.36),ang=(Rf()-.5)*S*.05;g.strokeStyle="rgba(6,9,24,.62)";g.lineWidth=Math.max(1,S*.006);g.beginPath();g.moveTo(c0,ty0+S*.01);g.lineTo(c0+ang*.4,ty0+jl*.5);g.lineTo(c0+ang,ty0+jl);g.stroke();
+            g.strokeStyle="rgba(206,204,222,.14)";g.lineWidth=Math.max(.6,S*.003);g.beginPath();g.moveTo(c0-S*.006,ty0+S*.012);g.lineTo(c0-S*.006+ang*.4,ty0+jl*.45);g.stroke()}
+          /* an occasional diagonal fracture across the slab */
+          if(Rf()<.35){var fx0=c0+(c1-c0)*Rf(),fy0=ty0+S*(.05+Rf()*.12);g.strokeStyle="rgba(6,9,24,.45)";g.lineWidth=Math.max(.8,S*.004);g.beginPath();g.moveTo(fx0,fy0);g.lineTo(fx0+(c1-c0)*.5*(Rf()<.5?-1:1),fy0+S*(.04+Rf()*.06));g.stroke()}}
+        /* lichen and water streaks running down from the lip */
+        for(var lk=0;lk<Math.max(2,dx/(S*.05));lk++){var lx2=p0[0]+Rf()*dx,ly2=p0[1]+S*.02,ll=S*(.08+Rf()*.25),lw2=S*(.006+Rf()*.014),lgr=g.createLinearGradient(0,ly2,0,ly2+ll);lgr.addColorStop(0,"rgba(6,9,24,.34)");lgr.addColorStop(1,"rgba(6,9,24,0)");g.fillStyle=lgr;g.fillRect(lx2,ly2,lw2,ll)}}}
+    /* granular speckle */
+    for(var sp=0;sp<(G.mob?600:1800);sp++){var spx=x+Rf()*(w-x),spy=hz-Rf()*S*.75;g.fillStyle=Rf()<.5?"rgba(220,220,236,.07)":"rgba(4,6,20,.16)";g.fillRect(spx,spy,1,1)}
+    var vs=g.createLinearGradient(0,hz-S*.3,0,hz);vs.addColorStop(0,"rgba(8,12,30,0)");vs.addColorStop(1,"rgba(8,12,30,.55)");g.fillStyle=vs;g.fillRect(x-S*.2,hz-S*.3,w,S*.3+4);
     g.restore();
-    /* a rim of light along the crown */
-    g.strokeStyle="rgba(236,226,214,.5)";g.lineWidth=Math.max(.7,S*.004);g.beginPath();var rimEnd=P.length*.55|0;for(var r=1;r<rimEnd;r++){r>1?g.lineTo(P[r][0],P[r][1]):g.moveTo(P[r][0],P[r][1])}g.stroke();
-    /* blueberry and juniper scrub on the crown */
-    var Rs=rng(41);g.fillStyle="#141a38";for(var s=0;s<(G.mob?14:30);s++){var sx=x+S*(.18+Rs()*1.7),sy=crownY(P,sx)+2,sr=S*(.01+Rs()*.018);g.beginPath();g.ellipse(sx,sy,sr*1.8,sr,0,Math.PI,0);g.fill()}
-    /* eastern white pines: tall, open, wind-flagged, tiers of needle tufts */
-    var pines=G.mob?[[.3,.8,-.02,0],[.56,1.12,.02,1],[.8,.7,-.03,0],[1.05,1.0,.03,1]]:[[.26,.78,-.03,0],[.44,1.14,.01,1],[.6,.66,.03,0],[.86,1.24,-.02,1],[1.08,.86,.02,0],[1.3,1.06,-.02,1],[1.56,.8,.03,0]];
-    pines.forEach(function(p,k){var px=x+S*p[0];if(px>w+S*.25)return;pine(g,px,crownY(P,px)+4,S*.6*p[1],p[2],101+k*17,p[3])});
+    /* rim of dawn along the lips */
+    g.strokeStyle="rgba(240,228,214,.55)";g.lineWidth=Math.max(.8,S*.004);g.beginPath();for(var r=0;r<K.length*.6;r++){r?g.lineTo(K[r][0],K[r][1]):g.moveTo(K[r][0],K[r][1])}g.stroke();
+    /* talus: fallen blocks heaped at the waterline */
+    var Rb=rng(53);for(var tb=0;tb<(G.mob?16:34);tb++){var u=Rb(),bx=x-S*.18+u*S*(G.mob?.9:1.3),br=S*(.014+Rb()*.035)*(1.2-u*.5),by=hz+br*.3-Rb()*S*.035;boulder(g,bx,by,br,Rb)}
+    /* scrub on the crown */
+    var Rs=rng(41);g.fillStyle="#121834";for(var s2=0;s2<(G.mob?14:30);s2++){var sx=x+S*(.12+Rs()*1.7),sy2=crownY(P,sx)+2,sr=S*(.01+Rs()*.016);g.beginPath();g.ellipse(sx,sy2,sr*1.8,sr,0,Math.PI,0);g.fill()}
+    /* eastern white pines */
+    var pines=G.mob?[[.2,.72,-.03,1],[.48,1.08,.04,1],[.74,.66,.02,0],[1.0,.96,.05,1]]:[[.18,.7,-.03,1],[.4,1.1,.05,1],[.58,.62,.02,0],[.84,1.2,.06,1],[1.08,.84,.03,0],[1.32,1.04,.05,1],[1.58,.78,.02,0]];
+    pines.forEach(function(p,k){var px=x+S*p[0];if(px>w+S*.25)return;pine(g,px,crownY(P,px)+4,S*.55*p[1],p[2],101+k*17,p[3])});
+    /* the near shore, for the foreground layer: dark rocks and marsh grass along the bottom edge */
+    var FG=mk(h+2);oFg=FG[0];var f=FG[1],wb=G.mob?U*1.05:h,fy=G.mob?wb:h,Rn=rng(77);
+    var gx0=G.mob?w*.5:G.side+G.cw*.5;
+    f.fillStyle="#0a1028";f.beginPath();f.moveTo(gx0-S*.2,fy+2);for(var nx=gx0-S*.2;nx<=w+4;nx+=4){f.lineTo(nx,fy-S*(.03+.07*sm((nx-gx0)/(S*.7)))-Math.sin(nx*.02)*S*.008)}f.lineTo(w+4,fy+2);f.closePath();f.fill();
+    /* dawn along the top of the near bank, and a wet reflection band below it */
+    f.strokeStyle="rgba(206,202,222,.28)";f.lineWidth=Math.max(.8,S*.004);f.beginPath();for(var nx2=gx0-S*.15;nx2<=w+4;nx2+=4){var ny2=fy-S*(.03+.07*sm((nx2-gx0)/(S*.7)))-Math.sin(nx2*.02)*S*.008;nx2>gx0-S*.15?f.lineTo(nx2,ny2):f.moveTo(nx2,ny2)}f.stroke();
+    for(var nb=0;nb<(G.mob?4:7);nb++){var rx=gx0+S*(.1+Rn()*1.4),rr=S*(.03+Rn()*.05);if(rx>w)continue;boulder(f,rx,fy-S*.06,rr,Rn)}
+    f.lineCap="round";for(var gr=0;gr<(G.mob?160:420);gr++){var bxx=gx0-S*.1+Rn()*(w-gx0+S*.1),hh=S*(.06+Rn()*.16)*sm((bxx-gx0+S*.1)/(S*.5)),lean=(Rn()-.3)*.5;if(hh<2)continue;
+      f.strokeStyle=Rn()<.38?"rgba(196,190,204,.55)":"rgba(10,14,34,.95)";f.lineWidth=Math.max(.6,S*.0028);f.beginPath();f.moveTo(bxx,fy-S*.03*sm((bxx-gx0)/(S*.7))-S*.01);f.quadraticCurveTo(bxx+lean*hh*.3,fy-hh*.6,bxx+lean*hh,fy-hh);f.stroke()}
     ST=[];var Rt=rng(3),n=G.mob?24:70;for(var t=0;t<n;t++){var syy=Math.pow(Rt(),1.6)*hz*.4;ST.push([Rt()*w,syy,.3+Rt()*.8,Rt()*6.28,.4+Rt()*1.2,1-syy/(hz*.4)])}
     GL=[];var Rg=rng(19);for(var gq=0;gq<(G.mob?30:70);gq++)GL.push([Rg(),Rg(),Rg()*6.28,.5+Rg()]);
-    MI=[];var Rm=rng(23);for(var m=0;m<(G.mob?4:7);m++)MI.push([Rm(),Rm(),.4+Rm()*.6,.3+Rm()*.7]);
+    MI=[];var Rm=rng(23);for(var m=0;m<(G.mob?6:11);m++)MI.push([Rm(),Rm(),.4+Rm()*.6,.3+Rm()*.7]);
   }
+  function boulder(g,x,y,r,R){var n=6+Math.floor(R()*3),pts=[];for(var i=0;i<n;i++){var a=Math.PI+i/(n-1)*Math.PI,rr=r*(.75+R()*.4);pts.push([x+Math.cos(a)*rr*1.3,y+Math.sin(a)*rr*(.7+R()*.2)])}
+    var bg=g.createLinearGradient(x-r,y-r,x+r,y);bg.addColorStop(0,"#3e4670");bg.addColorStop(.45,"#1e2548");bg.addColorStop(1,"#0d1229");g.fillStyle=bg;g.beginPath();g.moveTo(x+r*1.3,y+r*.15);pts.reverse().forEach(function(p){g.lineTo(p[0],p[1])});g.lineTo(x-r*1.3,y+r*.15);g.closePath();g.fill();
+    g.strokeStyle="rgba(232,224,220,.18)";g.lineWidth=Math.max(.6,r*.04);g.beginPath();var q=pts.slice().reverse();q.slice(0,Math.ceil(n*.55)).forEach(function(p,k){k?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1])});g.stroke()}
   function crownY(P,px){for(var k=1;k<P.length-1;k++){if(P[k][0]<=px&&P[k+1][0]>=px){var u=(px-P[k][0])/(P[k+1][0]-P[k][0]||1);return P[k][1]+(P[k+1][1]-P[k][1])*u}}return G.hz-G.S*.7}
-  /* a tuft of needles: many short strokes fanned from a twig, denser at the centre, flat on the underside */
-  function tuft(g,x,y,rw,rh,R){
-    g.beginPath();var n=Math.max(10,rw*1.4|0);
-    for(var i=0;i<n;i++){var u=(R()-.5)*2,ox=x+u*rw,oy=y+(R()-.6)*rh*(1-Math.abs(u)*.5),L=rh*(.5+R()*.6),a=-Math.PI/2+u*.9+(R()-.5)*.6;
-      g.moveTo(ox,oy+rh*.3);g.lineTo(ox+Math.cos(a)*L,oy+Math.sin(a)*L)}
-    g.stroke();
-    g.beginPath();g.ellipse(x,y,rw*.92,rh*.5,0,0,Math.PI*2);g.fill()}
+  /* a soft plume of needles: overlapping flattened masses, rim-lit on the dawn (left, upper) side */
+  function plume(g,x,y,rw,rh,R,rim){
+    var n=6+Math.floor(R()*5),B=[];for(var i=0;i<n;i++){var ox=(R()-.5)*2;B.push([x+ox*rw,y+(R()-.6)*rh*(1-Math.abs(ox)*.5),rw*(.22+R()*.3),rh*(.35+R()*.35)])}
+    if(rim){g.fillStyle="rgba(222,214,214,.3)";B.forEach(function(b){g.beginPath();g.ellipse(b[0]-b[2]*.12,b[1]-b[3]*.3,b[2],b[3],0,0,Math.PI*2);g.fill()})}
+    g.fillStyle="#0c1128";B.forEach(function(b){g.beginPath();g.ellipse(b[0],b[1],b[2],b[3],0,0,Math.PI*2);g.fill()});
+    /* needle fringe on the edges */
+    g.strokeStyle="#0c1128";g.lineWidth=Math.max(.5,rh*.06);g.beginPath();for(var k=0;k<n*5;k++){var b2=B[k%n],an=R()*Math.PI*2,ex=b2[0]+Math.cos(an)*b2[2],ey=b2[1]+Math.sin(an)*b2[3];g.moveTo(ex,ey);g.lineTo(ex+Math.cos(an)*rh*.5,ey+Math.sin(an)*rh*.4)}g.stroke()}
   function pine(g,x,y,H,lean,seed,flag){
-    var R=rng(seed),tx=x+H*lean,tw=Math.max(1.2,H*.016),col="#0d1229";
-    g.strokeStyle=col;g.fillStyle=col;g.lineCap="round";
-    g.lineWidth=tw;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+H*lean*.4,y-H*.5,tx,y-H);g.stroke();
-    g.lineWidth=tw*.55;g.beginPath();g.moveTo(tx,y-H);g.lineTo(tx+H*.006,y-H*1.04);g.stroke();
-    var tiers=5+Math.floor(R()*3),wind=flag?1:(R()<.5?1:-1);
-    for(var i=0;i<tiers;i++){var u=.34+i/tiers*.66;if(R()<.14&&i>0&&i<tiers-1)continue;
-      var cy=y-H*u,cx=x+H*lean*u,reach=H*(.3*(1-u)+.08)*(.7+R()*.5);
-      [1,-1].forEach(function(sd){var d=sd*wind,len=reach*(sd>0?1:(flag?.25:.6));if(len<H*.04)return;
-        /* limb, rising a little toward the tip */
-        g.lineWidth=Math.max(.8,tw*.45);g.beginPath();g.moveTo(cx,cy);g.quadraticCurveTo(cx+d*len*.5,cy+H*.006,cx+d*len,cy-len*.12);g.stroke();
-        g.lineWidth=Math.max(.5,H*.0028);
-        var nt=Math.max(2,Math.round(len/(H*.045)));for(var k=0;k<nt;k++){var v=(k+.6)/nt,tx2=cx+d*len*v,ty2=cy-len*.12*v*v+H*.004;tuft(g,tx2,ty2-H*.012,H*(.03+.018*(1-v))*(.8+R()*.5),H*(.018+.008*(1-v)),R)}})}
-    /* the crown: a small flat tuft cap */
-    g.lineWidth=Math.max(.5,H*.0028);tuft(g,tx,y-H*1.0,H*.035,H*.02,R);
-    /* first light catching the tops of the tufts */
-    g.save();g.globalCompositeOperation="source-atop";var lt=g.createLinearGradient(0,y-H*1.05,0,y-H*1.05+H*.04);g.restore();
+    var R=rng(seed),col="#0c1128",tw=Math.max(1.4,H*.018);
+    /* trunk: leaning, with a slight dog-leg */
+    var mx=x+H*lean*.35+H*.02*(R()-.5),tx=x+H*lean,ty=y-H;
+    g.strokeStyle=col;g.lineCap="round";g.lineWidth=tw;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(mx,y-H*.55,tx,ty);g.stroke();
+    function tp(u){var a=1-u;return [a*a*x+2*a*u*mx+u*u*tx,a*a*y+2*a*u*(y-H*.55)+u*u*ty]}
+    /* white pine habit: a long bare bole, then a few wide, widely spaced tiers swept to leeward, needles massed at the branch ends */
+    var tiers=[.5,.62,.73,.83,.92].filter(function(u,i){return i===4||R()>.22});
+    tiers.forEach(function(u,i){var P0=tp(u),reachL=H*(.34*(1-u)+.1)*(.75+R()*.55),reachW=reachL*(flag?.22:.55)*(.5+R()*.7),droop=H*.012;
+      [[1,reachL],[-1,reachW]].forEach(function(sd){var d=sd[0],L=sd[1];if(L<H*.05)return;
+        g.strokeStyle=col;g.lineWidth=Math.max(.8,tw*.42);var ex=P0[0]+d*L,ey=P0[1]-L*.14;g.beginPath();g.moveTo(P0[0],P0[1]);g.quadraticCurveTo(P0[0]+d*L*.55,P0[1]+droop,ex,ey);g.stroke();
+        var np=1+Math.floor(R()*2)+(L>H*.18?1:0);for(var k=0;k<np;k++){var v=1-k*(.22+R()*.12),px=P0[0]+d*L*v,py=P0[1]+droop*v*(1-v)*4-L*.14*v*v-H*.012;
+          plume(g,px-d*H*.02,py,H*(.055+R()*.035),H*(.02+R()*.01),R,true)}})});
+    /* the crown: a broad flat-topped plume, leaning with the wind */
+    plume(g,tx+H*.03,ty+H*.01,H*.07,H*.03,R,true);
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
   var lastF=0;
@@ -1224,19 +1235,22 @@ var field=(function(){
     /* the river */
     var wg=c.createLinearGradient(0,hz,0,wb);wg.addColorStop(0,"#5d6592");wg.addColorStop(.12,"#323c6c");wg.addColorStop(.6,"#18204a");wg.addColorStop(1,"#0e1530");
     c.fillStyle=wg;c.fillRect(0,hz,w,wb-hz+2);
-    var RH=Math.min(hz,wb-hz),sw=Math.round(w*dpr);c.globalAlpha=e*.5;
+    var RH=Math.min(hz,wb-hz),sw=Math.round(w*dpr);c.globalAlpha=e*.62;
     for(var y=0;y<RH;y+=2){var k=y/RH,off=Math.sin(y*.12+t*1.2)*(.5+k*4.5)+Math.sin(y*.041-t*.6)*(k*2.6),sy=Math.max(0,Math.round((hz-y-2)*dpr));
       c.drawImage(oTop,0,sy,sw,Math.max(1,Math.round(2*dpr)),off,hz+y,w,2.2)}
     c.globalAlpha=e;
-    var dkn=c.createLinearGradient(0,hz,0,wb);dkn.addColorStop(0,"rgba(14,21,48,.1)");dkn.addColorStop(.5,"rgba(14,21,48,.46)");dkn.addColorStop(1,"rgba(14,21,48,.86)");c.fillStyle=dkn;c.fillRect(0,hz,w,wb-hz+2);
+    var dkn=c.createLinearGradient(0,hz,0,wb);dkn.addColorStop(0,"rgba(14,21,48,.1)");dkn.addColorStop(.5,"rgba(14,21,48,.32)");dkn.addColorStop(1,"rgba(14,21,48,.6)");c.fillStyle=dkn;c.fillRect(0,hz,w,wb-hz+2);
     /* a bright seam of light on the water under the dawn */
     c.globalCompositeOperation="lighter";
     for(var q=0;q<GL.length;q++){var gq=GL[q],gy=hz+Math.pow(gq[1],1.6)*(wb-hz)*.8+2,spread=S*(.4+gq[1]*1.4),gx=G.sun+(gq[0]-.5)*spread*2,ga=(.5+.5*Math.sin(t*gq[3]*1.6+gq[2]))*(1-gq[1])*.2,gl=4+S*.05*(1-gq[1]);
       c.fillStyle="rgba(255,236,206,"+ga.toFixed(3)+")";c.fillRect(gx+Math.sin(t*.5+gq[2])*6,gy,gl,1)}
     c.globalCompositeOperation="source-over";
     /* morning mist drifting low over the water and the foot of the ledge */
-    for(var m=0;m<MI.length;m++){var mi=MI[m],mx=((mi[0]*w*1.4+t*(6+mi[3]*8))%(w*1.4))-w*.2,my=hz-S*.02+mi[1]*S*.08,mw=w*(.18+mi[2]*.2),mh=S*.05;
-      c.save();c.translate(mx,my);c.scale(1,mh/mw);var mg=c.createRadialGradient(0,0,0,0,0,mw);mg.addColorStop(0,"rgba(214,218,236,"+(.09*mi[2]).toFixed(3)+")");mg.addColorStop(1,"rgba(214,218,236,0)");c.fillStyle=mg;c.beginPath();c.arc(0,0,mw,0,Math.PI*2);c.fill();c.restore()}
+    for(var m=0;m<MI.length;m++){var mi=MI[m],mx=((mi[0]*w*1.4+t*(6+mi[3]*8))%(w*1.4))-w*.2,my=hz-S*.02+Math.pow(mi[1],1.3)*(wb-hz)*.85,mw=w*(.18+mi[2]*.2),mh=S*.05;
+      c.save();c.translate(mx,my);c.scale(1,mh/mw);var mg=c.createRadialGradient(0,0,0,0,0,mw);mg.addColorStop(0,"rgba(214,218,236,"+(.16*mi[2]).toFixed(3)+")");mg.addColorStop(1,"rgba(214,218,236,0)");c.fillStyle=mg;c.beginPath();c.arc(0,0,mw,0,Math.PI*2);c.fill();c.restore()}
+    /* ripple lines across the lower water */
+    c.strokeStyle="rgba(200,206,236,.06)";c.lineWidth=1;c.beginPath();for(var rl=0;rl<(G.mob?14:30);rl++){var rk=(rl+.5)/(G.mob?14:30),ry=hz+(wb-hz)*(.2+rk*.75),rx=((rl*197.3+t*(4+rl%3*2))%(w*1.2))-w*.1,rw=w*(.04+.1*rk);c.moveTo(rx,ry);c.lineTo(rx+rw,ry)}c.stroke();
+    c.drawImage(oFg,0,0,w,h+2);
     if(!G.mob){var lv=c.createLinearGradient(0,0,G.side+G.cw*.5,0);lv.addColorStop(0,"rgba(10,15,36,.5)");lv.addColorStop(1,"rgba(10,15,36,0)");c.fillStyle=lv;c.fillRect(0,0,w,h)}
     c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

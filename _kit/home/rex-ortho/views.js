@@ -18,7 +18,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Lead indication · proximal femoral fractures</span>'+
-   '<h2 class="txt" id="mani">In hip-fracture patients with poor-quality bone or severe fractures, a screw that loses its hold means revision surgery. <b class="w0">The REX Screw expands inside the bone to hold it, and can still be removed.</b> <em>Fixation strength, inside the existing workflow.</em></h2></div>'+
+   '<h2 class="txt" id="mani">In hip-fracture patients with poor-quality bone or severe fractures, a screw that loses its hold means revision surgery. <b class="w0">The REX Screw expands inside the bone to hold it, and can still be removed.</b></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">6–10%</span><span class="k">Cut-out occurrence in unstable hip fractures</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">40%</span><span class="k">Of patients don’t return to their presurgical mobility</span></div>'+
@@ -59,7 +59,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Surgeons, partners and investors</span>'+
-   '<h2 class="big split">Help shape the future of <em>orthopaedic surgery.</em></h2>'+
+   '<h2 class="big split">Shape the future <em>of orthopaedics.</em></h2>'+
    '<p class="sub" data-r>For partnerships, investment or careers, write to the REX Ortho team in Subiaco, Perth.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a></div>'+
    '<div class="cinfo">'+

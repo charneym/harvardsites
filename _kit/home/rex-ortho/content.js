@@ -12,13 +12,13 @@ var PRODUCTS=[
  ["In development","L-REX Screw","The second indication, currently under development: the REX Screw for the lumbar spine.","https://rexortho.com/products/"],
  ["Platform","Future indications","A platform technology: the removable, expandable screw was developed to address unmet clinical needs caused by poor screw fixation strength, across orthopaedics.","https://rexortho.com/products/"]];
 var TEAM=[
- {g:"Management",name:"Ian Brown",title:"Chief Executive Officer",sum:"Entrepreneur-in-Residence at INSEAD and a facilitator of CSIRO’s ON Accelerate program; MBA, Fellow of the AICD. Also Executive Chair."},
- {g:"Management",name:"Dr Intan Oldakowska",title:"Co-Founder, Chief Scientific Officer",sum:"Biomedical engineer and research associate at Curtin; named inventor on four patents; overall winner of the 2018 Curtinnovation Award for the REX Screw."},
- {g:"Management",name:"Dr Matt Oldakowski",title:"Co-Founder, Chief Technical Officer",sum:"Medical device entrepreneur and educator; Stanford Biodesign Global Faculty Training Fellow (2018), founder of Perth Biodesign, Director of Biodesign Australia."},
- {g:"Management",name:"Philip Procter",title:"Head of Business Development",sum:"35 years in orthopaedic device R&D, marketing and business development; adjunct professor directing applied biomaterials research at Uppsala University."},
- {g:"Board",name:"Lucas Kong",title:"Non-Executive Director",sum:"Director of UOA (Australia) and Kong Clan Group, investing patient capital from pre-seed through to IPO."},
- {g:"Board",name:"Rohan McDougall",title:"Non-Executive Director",sum:"Director of Commercialisation at Curtin University since 2008; 10+ years as a director and chair of technology start-ups."},
- {g:"Board",name:"Dr Richard Hopkins",title:"Non-Executive Director",sum:"20+ years leading public biotechnology companies; former CEO of PharmAust; author on 30+ publications and inventor on 15 patents and applications."},
+ {g:"Management",name:"Ian Brown",title:"Chief Executive Officer",sum:"Executive Chair; Entrepreneur-in-Residence at INSEAD and a facilitator of CSIRO’s ON Accelerate program."},
+ {g:"Management",name:"Dr Intan Oldakowska",title:"Co-Founder, Chief Scientific Officer",sum:"Biomedical engineer at Curtin, inventor on four patents; won the 2018 Curtinnovation Award for the REX Screw."},
+ {g:"Management",name:"Dr Matt Oldakowski",title:"Co-Founder, Chief Technical Officer",sum:"Medtech entrepreneur; 2018 Stanford Biodesign Global Faculty Fellow and founder of Perth Biodesign."},
+ {g:"Management",name:"Philip Procter",title:"Head of Business Development",sum:"35 years in orthopaedic device R&D and business development; adjunct professor at Uppsala University."},
+ {g:"Board",name:"Lucas Kong",title:"Non-Executive Director",sum:"Director of UOA (Australia) and Kong Clan Group, investing from pre-seed through to IPO."},
+ {g:"Board",name:"Rohan McDougall",title:"Non-Executive Director",sum:"Director of Commercialisation at Curtin University since 2008."},
+ {g:"Board",name:"Dr Richard Hopkins",title:"Non-Executive Director",sum:"20+ years leading public biotechnology companies; former CEO of PharmAust."},
  {g:"Clinical advisors",name:"Philip Hardcastle",title:"Spinal Surgeon",sum:""},
  {g:"Clinical advisors",name:"Gabriel Lee",title:"Neurosurgeon (& Spine)",sum:""}];
 var PARTNERS=["Curtin University","The University of Western Australia","Murdoch University","Uppsala University","Royal Perth Hospital","St John of God","4Medical","Perth Biodesign"];

@@ -2,12 +2,12 @@
    part of the REX Screw story as REX Ortho describes it (rexortho.com home and about; Curtin thesis abstract, espace.curtin.edu.au
    20.500.11937/94391): a proximal femoral fracture in poor-quality bone; the screw placed through the neck into the femoral head
    within the existing workflow; expansion inside the head for fixation strength; and removal, the expansion reversed. Schematic. */
-var HC=[500,182],HR=104,S0=[196,414],ANG=-33.2;
+var HC=[544,165],HR=104,S0=[196,414],ANG=-33.2;
 var FEM='M204 560L200 440C196 380 168 300 178 232C184 196 206 180 234 186C262 192 286 214 322 222C360 230 392 214 414 178'+
   'C430 150 446 112 470 92A104 104 0 1 1 560 268C520 278 470 300 432 330C400 356 372 392 352 430C340 456 330 500 322 560Z';
 function lead(x,y){var a=ANG*Math.PI/180,c=Math.cos(a),s=Math.sin(a);return 'M'+(S0[0]+x*c-y*s).toFixed(1)+' '+(S0[1]+x*s+y*c).toFixed(1)}
 function scene(){
-  var mob=MOBILE(),LX=mob?600:618;
+  var mob=MOBILE(),LX=mob?650:668;
   var g='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 800 560" aria-hidden="true">';
   g+='<defs><pattern id="rxTb" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(33)"><circle cx="3" cy="3" r="1.05" fill="rgba(243,245,247,.22)"/><circle cx="8.5" cy="8" r=".7" fill="rgba(243,245,247,.14)"/></pattern></defs>';
   g+='<g id="scBase"><rect class="neat" x=".5" y=".5" width="799" height="559"/>';
@@ -18,7 +18,7 @@ function scene(){
   g+='</g>';
   /* 1 the fracture: a break across the trochanteric region */
   g+='<g id="sc1"><path class="frc dr" d="M240 192L258 230L250 262L278 296L272 330L302 354L316 386"/>'+
-     '<path class="ld2 dr" d="M'+(HC[0]+HR*.72).toFixed(0)+' '+(HC[1]-HR*.7).toFixed(0)+'L'+(LX-40)+' 96H'+(LX-8)+'"/><text x="'+LX+'" y="100" class="t c">FEMORAL HEAD</text>'+
+     '<path class="ld2 dr" d="M'+(HC[0]+HR*.72).toFixed(0)+' '+(HC[1]-HR*.7).toFixed(0)+'L'+(LX-60)+' 70H'+(LX-8)+'"/><text x="'+LX+'" y="74" class="t c">FEMORAL HEAD</text>'+
      '<path class="ld2 dr" d="M302 354L'+(LX-60)+' 410H'+(LX-8)+'"/><text x="'+LX+'" y="414" class="t c">FRACTURE</text>'+
      '<text x="40" y="60" class="a">THE FRACTURE</text></g>';
   /* 2 the screw, closed, through the lateral cortex and the neck into the head */

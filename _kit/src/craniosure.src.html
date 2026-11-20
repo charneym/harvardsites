@@ -893,122 +893,103 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* CranioSure hero: an infant skull in side view, drawn as an engraved anatomical plate. Separate cranial plates with
-   the radiating spicules of their ossification centres, open sutures and fontanelles, the small infant face below.
-   SKULL.paint(g) draws it into a 1000-unit box (x 150..930, y 95..840). SKULL.outline is the vault contour. */
+/*<R:field>*//* CranioSure hero: a sleeping infant in soft profile, swaddled in a blanket. Gentle painted skin, a closed eye, a small
+   ear, fine hair; a faint suture overlay inside the head outline. SKULL.paint(g) draws it into a 1000-unit box
+   (x 150..930, y 95..845); SKULL.outline is the contour of the head that the hero traces (forehead over the crown to the nape). */
 var SKULL=(function(){
-  var NAVY="11,20,81",CY="39,235,255",BL="32,130,255";
+  var CY="39,235,255";
   function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
-  function cr(P,n){var o=[];for(var i=0;i<P.length-1;i++){var p0=P[Math.max(0,i-1)],p1=P[i],p2=P[i+1],p3=P[Math.min(P.length-1,i+2)];
+  function cr(P,n,closed){var o=[],L=P.length,M=closed?L:L-1;for(var i=0;i<M;i++){
+      var p0=P[closed?(i-1+L)%L:Math.max(0,i-1)],p1=P[i],p2=P[(i+1)%L],p3=P[closed?(i+2)%L:Math.min(L-1,i+2)];
       for(var k=0;k<n;k++){var t=k/n,t2=t*t,t3=t2*t;
         o.push([.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
                 .5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)])}}
-    o.push(P[P.length-1]);return o}
-  function bez(o,a,b,c,d,n){for(var i=1;i<=n;i++){var t=i/n,u=1-t;o.push([u*u*u*a[0]+3*u*u*t*b[0]+3*u*t*t*c[0]+t*t*t*d[0],u*u*u*a[1]+3*u*u*t*b[1]+3*u*t*t*c[1]+t*t*t*d[1]])}}
-  /* the vault, nasion first, clockwise over the top */
-  var V=[[205,520]];
-  bez(V,[205,520],[188,478],[166,420],[174,350],24);
-  bez(V,[174,350],[182,262],[240,182],[334,146],30);
-  bez(V,[334,146],[434,104],[586,98],[694,138],40);
-  bez(V,[694,138],[804,178],[884,262],[908,372],34);
-  bez(V,[908,372],[930,466],[904,566],[852,624],30);
-  bez(V,[852,624],[812,668],[762,690],[706,690],18);
-  var OUT=V.slice();             /* the visible contour the hero traces */
-  bez(V,[706,690],[640,690],[470,664],[372,640],20);
-  bez(V,[372,640],[300,622],[226,580],[205,520],16);
-  /* sutures (dense, slightly serrated) */
-  function serr(P,amp,seed){var r=rng(seed);return P.map(function(p,i){if(i===0||i===P.length-1)return p;var a=amp*((i%2?1:-1)*.6+(r()-.5)*.8);return [p[0]+a,p[1]+a*.4]})}
-  var COR=serr(cr([[374,134],[364,250],[352,380],[346,532]],14),1.6,3);
-  var LAM=serr(cr([[798,188],[842,300],[832,432],[762,606]],14),2.2,5);
-  var SQU=serr(cr([[346,532],[392,470],[484,446],[574,450],[664,472],[732,532],[762,606]],10),1.2,7);
-  var SPH=cr([[346,532],[358,586],[374,630]],8);
+    if(!closed)o.push(P[L-1]);return o}
   function poly(g,P){g.beginPath();g.moveTo(P[0][0],P[0][1]);for(var i=1;i<P.length;i++)g.lineTo(P[i][0],P[i][1]);g.closePath()}
   function path(g,P){g.beginPath();g.moveTo(P[0][0],P[0][1]);for(var i=1;i<P.length;i++)g.lineTo(P[i][0],P[i][1])}
-  function rev(P){return P.slice().reverse()}
-  var PL={
-    frontal:{P:[[0,0],[380,0]].concat(COR).concat([[372,640],[0,640]]),c:[236,318],R:240},
-    parietal:{P:[[382,-60],[800,-60]].concat(LAM).concat(rev(SQU)).concat(rev(COR)),c:[566,296],R:330},
-    occipital:{P:[[800,-60],[1000,-60],[1000,900],[770,900]].concat(rev(LAM)),c:[872,470],R:220},
-    temporal:{P:SQU.concat([[770,900],[374,900]]).concat(rev(SPH)),c:[566,566],R:170},
-    sphenoid:{P:SPH.concat([[300,660],[290,520]]),c:[330,590],R:70}
-  };
-  function plate(g,k,r){var p=PL[k];g.save();poly(g,V);g.clip();poly(g,p.P);g.clip();
-    var gr=g.createRadialGradient(330,250,10,470,380,620);gr.addColorStop(0,"#f2f6fd");gr.addColorStop(.35,"#d5dff1");gr.addColorStop(.62,"#94a6d0");gr.addColorStop(.86,"#41508f");gr.addColorStop(1,"#1d2766");
-    g.fillStyle=gr;g.fillRect(0,0,1000,1000);
-    /* radiating spicules from the ossification centre: faint near the centre, stronger toward the sutures */
-    var n=k==="parietal"?260:k==="frontal"?200:k==="occipital"?150:k==="temporal"?120:50;
-    g.lineCap="round";
-    for(var i=0;i<n;i++){var a=i/n*6.283+(r()-.5)*.03,L=p.R*(.75+.5*r()),seg=14,x=p.c[0],y=p.c[1],ph=r()*6;
-      for(var s=1;s<=seg;s++){var u=s/seg,aa=a+.05*Math.sin(u*5+ph),nx=p.c[0]+Math.cos(aa)*L*u,ny=p.c[1]+Math.sin(aa)*L*u;
-        g.strokeStyle="rgba("+NAVY+","+(.03+.2*u*u).toFixed(3)+")";g.lineWidth=.7+.5*u;g.beginPath();g.moveTo(x,y);g.lineTo(nx,ny);g.stroke();x=nx;y=ny}}
-    /* the ossification centre itself: a soft boss */
-    var bo=g.createRadialGradient(p.c[0]-p.R*.08,p.c[1]-p.R*.1,0,p.c[0],p.c[1],p.R*.42);bo.addColorStop(0,"rgba(255,255,255,.35)");bo.addColorStop(1,"rgba(255,255,255,0)");g.fillStyle=bo;g.fillRect(0,0,1000,1000);
-    g.restore()}
-  function suture(g,P,w){g.save();poly(g,V);g.clip();g.lineJoin="round";g.lineCap="round";
-    path(g,P);g.strokeStyle="rgba(8,14,58,.92)";g.lineWidth=w;g.stroke();
-    path(g,P);g.strokeStyle="rgba("+CY+",.32)";g.lineWidth=.9;g.stroke();g.restore()}
-  function font(g,P){g.save();poly(g,V);g.clip();poly(g,P);
-    var c0=P.reduce(function(a,p){return [a[0]+p[0]/P.length,a[1]+p[1]/P.length]},[0,0]);
-    var f=g.createRadialGradient(c0[0],c0[1],0,c0[0],c0[1],30);f.addColorStop(0,"rgba(58,78,150,.9)");f.addColorStop(1,"rgba(22,34,100,.9)");g.fillStyle=f;g.fill();
-    g.clip();g.strokeStyle="rgba(200,215,245,.14)";g.lineWidth=.7;for(var i=-40;i<40;i+=4){g.beginPath();g.moveTo(c0[0]+i,c0[1]-40);g.lineTo(c0[0]+i+14,c0[1]+40);g.stroke()}
-    g.restore();g.save();poly(g,V);g.clip();poly(g,P);g.strokeStyle="rgba(8,14,58,.8)";g.lineWidth=1.6;g.lineJoin="round";g.stroke();g.restore()}
+  /* the head, face to the left: crown and nape first, then the profile from brow to chin, under the jaw into the swaddle */
+  var TOP=[[240,424],[228,356],[240,286],[274,222],[330,172],[408,140],[498,126],[588,132],[668,156],[738,200],[788,262],[814,336],[816,414],[800,488],[768,552],[728,600]];
+  var FACE=[[700,650],[560,690],[420,690],[320,676],[276,660],[256,640],[246,626],[252,610],[240,598],[246,584],[234,570],[242,556],[236,546],[220,536],[214,520],[228,504],[244,492],[246,476],[236,452],[240,424]];
+  var HEAD=cr(TOP.concat(FACE),8,true);
+  var OUT=cr(TOP,10,false);
   function paint(g){
-    var r=rng(11);
-    /* cast shadow under the skull */
-    g.save();g.translate(560,836);g.scale(1,.12);var sh=g.createRadialGradient(0,0,10,0,0,380);sh.addColorStop(0,"rgba(3,6,30,.6)");sh.addColorStop(1,"rgba(3,6,30,0)");g.fillStyle=sh;g.fillRect(-380,-380,760,760);g.restore();
-    ["occipital","temporal","sphenoid","parietal","frontal"].forEach(function(k){plate(g,k,r)});
-    /* form shading: the far side of the vault turns away from the light */
-    g.save();poly(g,V);g.clip();
-    var sd=g.createLinearGradient(330,180,860,700);sd.addColorStop(0,"rgba("+NAVY+",0)");sd.addColorStop(.5,"rgba("+NAVY+",.1)");sd.addColorStop(1,"rgba("+NAVY+",.7)");g.fillStyle=sd;g.fillRect(0,0,1000,1000);
-    var rf=g.createRadialGradient(900,560,10,880,560,200);rf.addColorStop(0,"rgba("+CY+",.16)");rf.addColorStop(1,"rgba("+CY+",0)");g.fillStyle=rf;g.fillRect(600,300,400,400);
-    /* engraved hatching along the lower curve of the vault */
-    g.strokeStyle="rgba("+NAVY+",.16)";g.lineWidth=.8;
-    for(var h=0;h<46;h++){var y=430+h*6.2;g.beginPath();g.moveTo(560,y);g.bezierCurveTo(700,y-30-h*.6,860,y-90,940,y-170);g.stroke()}
+    var r=rng(7);
+    /* soft shadow pooled on the blanket under the head */
+    g.save();g.translate(540,690);g.scale(1,.3);var sh=g.createRadialGradient(0,0,10,0,0,360);sh.addColorStop(0,"rgba(3,6,30,.55)");sh.addColorStop(1,"rgba(3,6,30,0)");g.fillStyle=sh;g.fillRect(-360,-360,720,720);g.restore();
+    /* --- the head --- */
+    g.save();poly(g,HEAD);
+    var sk=g.createRadialGradient(380,300,20,470,420,470);sk.addColorStop(0,"#f7e9df");sk.addColorStop(.38,"#ecd3c3");sk.addColorStop(.7,"#cfa996");sk.addColorStop(1,"#8f6f73");
+    g.fillStyle=sk;g.fill();g.clip();
+    /* cool grade from the navy room: the far side turns blue */
+    var cg=g.createLinearGradient(330,230,820,640);cg.addColorStop(0,"rgba(11,20,81,0)");cg.addColorStop(.55,"rgba(11,20,81,.12)");cg.addColorStop(1,"rgba(11,20,81,.55)");g.fillStyle=cg;g.fillRect(0,0,1000,1000);
+    /* round cheek, warm and soft */
+    var ck=g.createRadialGradient(330,566,0,330,566,90);ck.addColorStop(0,"rgba(232,150,140,.42)");ck.addColorStop(1,"rgba(232,150,140,0)");g.fillStyle=ck;g.fillRect(200,460,260,220);
+    var ch=g.createRadialGradient(318,540,0,318,540,46);ch.addColorStop(0,"rgba(255,248,242,.5)");ch.addColorStop(1,"rgba(255,248,242,0)");g.fillStyle=ch;g.fillRect(260,480,120,120);
+    /* forehead highlight */
+    var fh=g.createRadialGradient(330,290,0,330,290,140);fh.addColorStop(0,"rgba(255,250,246,.55)");fh.addColorStop(1,"rgba(255,250,246,0)");g.fillStyle=fh;g.fillRect(180,140,320,320);
+    /* jaw and neck shadow */
+    var jw=g.createLinearGradient(0,600,0,690);jw.addColorStop(0,"rgba(90,60,70,0)");jw.addColorStop(1,"rgba(60,40,60,.4)");g.fillStyle=jw;g.fillRect(250,600,500,100);
+    /* faint suture overlay: the plates under the scalp */
+    g.setLineDash([5,7]);g.lineCap="round";g.strokeStyle="rgba("+CY+",.28)";g.lineWidth=1.3;
+    path(g,cr([[392,142],[380,240],[372,350],[380,430]],8,false));g.stroke();
+    path(g,cr([[742,204],[770,300],[756,410],[708,500]],8,false));g.stroke();
+    path(g,cr([[380,430],[440,400],[540,392],[630,410],[708,500]],8,false));g.stroke();
+    g.setLineDash([]);
+    g.fillStyle="rgba("+CY+",.08)";g.strokeStyle="rgba("+CY+",.3)";g.lineWidth=1;g.beginPath();g.moveTo(372,136);g.lineTo(398,126);g.lineTo(420,140);g.lineTo(396,156);g.closePath();g.fill();g.stroke();
+    /* fine hair over the crown and back */
+    g.lineCap="round";
+    for(var i=0;i<340;i++){var a=-2.75+r()*2.6,rr=.82+r()*.17,cx=520,cy=430,x=cx+Math.cos(a)*300*rr,y=cy+Math.sin(a)*300*rr*.98,L=8+r()*16,d=a+1.75+(r()-.5)*.5;
+      if(x<300&&y>280)continue;
+      g.strokeStyle="rgba(120,86,70,"+(.05+r()*.1).toFixed(3)+")";g.lineWidth=.7+r()*.6;g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+Math.cos(d)*L*.5+3,y+Math.sin(d)*L*.5,x+Math.cos(d)*L,y+Math.sin(d)*L);g.stroke()}
     g.restore();
-    suture(g,COR,5.5);suture(g,LAM,6);suture(g,SQU,4.2);suture(g,SPH,3.2);
-    /* fontanelles: anterior (top), posterior, sphenoid (pterion) and mastoid (asterion) */
-    font(g,cr([[338,146],[358,130],[376,124],[396,126],[414,134],[396,150],[380,166],[368,172],[352,160],[338,146]],5));
-    font(g,cr([[784,178],[800,180],[814,190],[806,200],[798,206],[790,194],[784,178]],5));
-    font(g,cr([[332,526],[346,516],[360,524],[362,542],[348,550],[334,542],[332,526]],5));
-    font(g,cr([[746,600],[762,590],[778,600],[778,618],[762,626],[748,616],[746,600]],5));
-    /* --- the face: small under the infant vault --- */
-    function sm(P){return cr(P,10)}
-    /* the mandible: one piece, a low body, an open angle; the coronoid tucks under the arch, the condyle sits before the ear */
-    var MD=sm([[206,722],[198,764],[206,796],[234,814],[296,816],[360,806],[420,790],[452,778],[490,742],[520,706],[540,690],[546,672],[564,672],[566,690],[548,700],[528,702],[506,690],[488,662],[474,658],[466,676],[460,704],[448,722],[410,722],[340,720],[270,718],[226,718],[206,722]]);
-    g.save();poly(g,MD);var mg=g.createLinearGradient(210,720,470,830);mg.addColorStop(0,"#e9eef9");mg.addColorStop(.6,"#93a5d3");mg.addColorStop(1,"#2c3a7c");g.fillStyle=mg;g.fill();g.clip();
-    for(var m=0;m<56;m++){var mx=200+m*5.4;g.strokeStyle="rgba("+NAVY+",.09)";g.lineWidth=.7;g.beginPath();g.moveTo(mx,744);g.quadraticCurveTo(mx+8,790,mx+2,830);g.stroke()}
-    var mf=g.createRadialGradient(232,770,0,232,770,8);mf.addColorStop(0,"rgba(8,16,62,.85)");mf.addColorStop(1,"rgba(8,16,62,0)");g.fillStyle=mf;g.fillRect(222,760,20,20);
-    g.restore();g.strokeStyle="rgba("+NAVY+",.5)";g.lineWidth=1;poly(g,MD);g.stroke();
-    g.strokeStyle="rgba(240,245,255,.5)";g.lineWidth=1.1;g.beginPath();g.moveTo(206,794);g.quadraticCurveTo(240,816,300,814);g.stroke();
-    /* maxilla and cheek */
-    var MX=sm([[205,520],[192,552],[176,590],[172,604],[186,618],[198,646],[178,668],[176,694],[186,716],[214,728],[262,732],[318,728],[364,712],[404,690],[430,664],[392,642],[326,628],[272,600],[226,572],[205,520]]);
-    g.save();poly(g,MX);var fg=g.createRadialGradient(232,600,8,300,660,220);fg.addColorStop(0,"#eef3fb");fg.addColorStop(.55,"#b4c2e2");fg.addColorStop(1,"#4a5a9a");g.fillStyle=fg;g.fill();g.clip();
-    for(var q=0;q<70;q++){var a2=-.2+q/70*1.9,L2=190;g.strokeStyle="rgba("+NAVY+","+(.04+.08*(q%3===0)).toFixed(3)+")";g.lineWidth=.7;g.beginPath();g.moveTo(288,640);g.lineTo(288+Math.cos(a2+1.2)*L2,640+Math.sin(a2+1.2)*L2);g.stroke()}
-    g.restore();g.strokeStyle="rgba("+NAVY+",.45)";g.lineWidth=1;poly(g,MX);g.stroke();
-    /* zygomatic arch: a slender bridge from the cheekbone back to the ear */
-    var ZA=sm([[290,628],[352,640],[430,646],[506,648],[566,656],[572,672],[506,666],[432,666],[356,662],[300,654],[290,628]]);
-    g.save();poly(g,ZA);var zg=g.createLinearGradient(0,630,0,672);zg.addColorStop(0,"#f1f5fc");zg.addColorStop(.6,"#a8b7dc");zg.addColorStop(1,"#43529a");g.fillStyle=zg;g.fill();g.restore();
-    g.strokeStyle="rgba("+NAVY+",.5)";g.lineWidth=1;poly(g,ZA);g.stroke();
-    /* the orbit, large in an infant */
-    g.save();g.beginPath();g.ellipse(258,562,50,58,-.1,0,6.283);var og=g.createRadialGradient(272,572,4,258,562,60);og.addColorStop(0,"#040928");og.addColorStop(.72,"#0a1448");og.addColorStop(1,"#3a4a8e");g.fillStyle=og;g.fill();
-    g.strokeStyle="rgba(244,247,255,.85)";g.lineWidth=2.4;g.beginPath();g.ellipse(258,562,50,58,-.1,-2.1,.9);g.stroke();
-    g.strokeStyle="rgba("+NAVY+",.55)";g.lineWidth=1;g.beginPath();g.ellipse(258,562,50,58,-.1,.9,4.2);g.stroke();
-    g.strokeStyle="rgba(160,178,220,.35)";g.lineWidth=1;g.beginPath();g.ellipse(262,566,36,44,-.1,-1.6,.4);g.stroke();g.restore();
-    /* nasal aperture under the nasal bone */
-    g.save();g.beginPath();g.moveTo(184,616);g.bezierCurveTo(204,624,214,650,196,668);g.bezierCurveTo(186,654,180,634,184,616);var ng=g.createLinearGradient(184,616,204,668);ng.addColorStop(0,"#050b33");ng.addColorStop(1,"#18246a");g.fillStyle=ng;g.fill();g.restore();
-    g.strokeStyle="rgba(244,247,255,.6)";g.lineWidth=1.2;g.beginPath();g.moveTo(206,524);g.quadraticCurveTo(188,566,174,600);g.stroke();
-    /* ear canal, with the mastoid behind it */
-    g.save();g.beginPath();g.ellipse(612,674,14,17,.2,0,6.283);var eg=g.createRadialGradient(614,676,1,612,674,17);eg.addColorStop(0,"#03061f");eg.addColorStop(1,"#1a2668");g.fillStyle=eg;g.fill();g.strokeStyle="rgba(244,247,255,.55)";g.lineWidth=1.2;g.stroke();g.restore();
-    g.save();g.beginPath();g.moveTo(640,686);g.bezierCurveTo(646,716,676,730,690,712);g.bezierCurveTo(700,700,700,690,700,686);g.closePath();var ms=g.createLinearGradient(0,686,0,730);ms.addColorStop(0,"#8d9fcf");ms.addColorStop(1,"#2a387a");g.fillStyle=ms;g.fill();g.strokeStyle="rgba("+NAVY+",.5)";g.lineWidth=1;g.stroke();g.restore();
-    /* rim light: cool cyan along the back of the vault, warm white on the brow */
-    g.save();g.lineJoin="round";path(g,OUT);g.strokeStyle="rgba(240,245,255,.55)";g.lineWidth=1.4;g.stroke();
-    var rl=g.createLinearGradient(560,120,930,640);rl.addColorStop(0,"rgba("+CY+",0)");rl.addColorStop(.35,"rgba("+CY+",.75)");rl.addColorStop(1,"rgba("+BL+",.4)");
-    path(g,OUT);g.strokeStyle=rl;g.lineWidth=2.4;g.stroke();g.restore();
+    /* soft edge of the skin */
+    g.save();poly(g,HEAD);g.strokeStyle="rgba(120,80,84,.35)";g.lineWidth=1.2;g.stroke();g.restore();
+    /* --- face details --- */
+    /* eyebrow, barely there */
+    g.strokeStyle="rgba(120,86,80,.28)";g.lineWidth=3;g.lineCap="round";g.beginPath();g.moveTo(272,440);g.quadraticCurveTo(300,428,334,436);g.stroke();
+    /* the closed eye: a soft lid crease, the lash line curving down, short lashes */
+    g.strokeStyle="rgba(130,90,90,.35)";g.lineWidth=1.6;g.beginPath();g.moveTo(276,468);g.quadraticCurveTo(302,456,330,466);g.stroke();
+    g.strokeStyle="rgba(70,44,48,.85)";g.lineWidth=2.4;g.beginPath();g.moveTo(272,478);g.quadraticCurveTo(300,494,334,480);g.stroke();
+    g.lineWidth=1.3;for(var l=0;l<8;l++){var u=.12+l*.11,lx=272+62*u,ly=478+16*4*u*(1-u)*.9;g.beginPath();g.moveTo(lx,ly);g.lineTo(lx-5,ly+8);g.stroke()}
+    /* nostril and the line of the mouth */
+    g.fillStyle="rgba(120,70,72,.45)";g.beginPath();g.ellipse(232,532,7,4,.4,0,6.283);g.fill();
+    g.strokeStyle="rgba(150,80,84,.55)";g.lineWidth=2;g.beginPath();g.moveTo(244,584);g.quadraticCurveTo(256,587,268,583);g.stroke();
+    var lp=g.createRadialGradient(248,576,0,248,580,16);lp.addColorStop(0,"rgba(214,120,120,.5)");lp.addColorStop(1,"rgba(214,120,120,0)");g.fillStyle=lp;g.fillRect(228,560,40,40);
+    /* the ear: helix, antihelix and lobe, softly shaded */
+    g.save();g.translate(520,492);g.rotate(.12);
+    g.beginPath();g.moveTo(-6,-52);g.bezierCurveTo(30,-60,46,-22,40,8);g.bezierCurveTo(36,36,20,56,0,60);g.bezierCurveTo(-14,62,-22,50,-18,40);g.bezierCurveTo(-10,24,-16,-10,-24,-30);g.bezierCurveTo(-26,-44,-18,-50,-6,-52);g.closePath();
+    var eg=g.createRadialGradient(-6,-4,4,6,0,64);eg.addColorStop(0,"#e7c6b6");eg.addColorStop(.7,"#d4a896");eg.addColorStop(1,"#a77d78");g.fillStyle=eg;g.fill();
+    g.strokeStyle="rgba(120,74,76,.55)";g.lineWidth=1.6;g.stroke();
+    g.strokeStyle="rgba(120,74,76,.5)";g.lineWidth=1.8;g.beginPath();g.moveTo(-8,-38);g.bezierCurveTo(18,-42,28,-12,22,10);g.bezierCurveTo(18,26,8,36,-2,40);g.stroke();
+    g.fillStyle="rgba(110,64,70,.4)";g.beginPath();g.ellipse(-2,8,9,12,0,0,6.283);g.fill();
+    g.strokeStyle="rgba(255,240,232,.5)";g.lineWidth=1.4;g.beginPath();g.moveTo(-2,-50);g.bezierCurveTo(24,-54,38,-26,36,0);g.stroke();
+    g.restore();
+    /* --- the swaddle: a soft blanket in the logo blues, folded around the neck --- */
+    var B1=cr([[150,900],[170,760],[230,700],[300,676],[400,694],[520,700],[640,676],[740,632],[830,640],[910,700],[950,800],[960,920]],10,false);
+    g.save();poly(g,B1);var bg=g.createLinearGradient(200,660,760,900);bg.addColorStop(0,"#3a6fd8");bg.addColorStop(.45,"#2552b8");bg.addColorStop(1,"#14246e");g.fillStyle=bg;g.fill();g.clip();
+    /* knit texture and long soft folds */
+    for(var k=0;k<90;k++){var yy=680+k*3.2;g.strokeStyle="rgba(255,255,255,"+(.025+.02*(k%2)).toFixed(3)+")";g.lineWidth=1;g.beginPath();g.moveTo(140,yy+60);g.bezierCurveTo(380,yy-30,640,yy+40,970,yy-50);g.stroke()}
+    [[260,760,520,700,880,760,.22],[220,840,520,770,900,830,.18]].forEach(function(f){var fg=g.createLinearGradient(0,f[1]-30,0,f[1]+30);fg.addColorStop(0,"rgba(8,14,60,0)");fg.addColorStop(.5,"rgba(8,14,60,"+f[6]+")");fg.addColorStop(1,"rgba(8,14,60,0)");
+      g.strokeStyle=fg;g.lineWidth=40;g.beginPath();g.moveTo(f[0],f[1]);g.quadraticCurveTo(f[2],f[3],f[4],f[5]);g.stroke()});
+    g.restore();
+    /* the top fold of the blanket catches the light */
+    g.save();path(g,cr([[230,700],[300,676],[400,694],[520,700],[640,676],[740,632],[830,640]],10,false));g.strokeStyle="rgba(170,205,255,.75)";g.lineWidth=2.4;g.lineCap="round";g.stroke();g.restore();
+    /* a second fold lapping over the shoulder */
+    var B2=cr([[560,700],[660,682],[760,660],[850,684],[900,740],[880,800],[790,780],[680,750],[600,730]],10,true);
+    g.save();poly(g,B2);var b2=g.createLinearGradient(600,660,880,800);b2.addColorStop(0,"#3466d0");b2.addColorStop(1,"#1a3088");g.fillStyle=b2;g.fill();
+    g.strokeStyle="rgba(170,205,255,.3)";g.lineWidth=1.2;g.stroke();g.restore();
+    /* the blanket dissolves into the dark below */
+    g.save();g.globalCompositeOperation="destination-out";var fo=g.createLinearGradient(0,770,0,868);fo.addColorStop(0,"rgba(0,0,0,0)");fo.addColorStop(1,"rgba(0,0,0,1)");g.fillStyle=fo;g.fillRect(0,770,1000,300);
+    var fs=g.createLinearGradient(150,0,250,0);fs.addColorStop(0,"rgba(0,0,0,1)");fs.addColorStop(1,"rgba(0,0,0,0)");g.fillStyle=fs;g.fillRect(100,640,150,400);
+    var fr=g.createLinearGradient(860,0,950,0);fr.addColorStop(0,"rgba(0,0,0,0)");fr.addColorStop(1,"rgba(0,0,0,1)");g.fillStyle=fr;g.fillRect(860,640,200,400);g.restore();
+    /* rim light: cool cyan along the crown and the back of the head */
+    g.save();g.lineJoin="round";var rl=g.createLinearGradient(420,120,820,600);rl.addColorStop(0,"rgba("+CY+",0)");rl.addColorStop(.4,"rgba("+CY+",.6)");rl.addColorStop(1,"rgba(32,130,255,.35)");
+    path(g,OUT);g.strokeStyle=rl;g.lineWidth=2.6;g.stroke();g.restore();
   }
   return {paint:paint,outline:OUT,box:[150,95,930,845]};
 })();
 
-/* ================= HERO FIELD: the infant skull, pre-painted once per size; each frame composites it with a slow
+/* ================= HERO FIELD: the sleeping infant, pre-painted once per size; each frame composites it with a slow
    float and a cyan point tracing the contour of the vault, as the app reads the head shape. No pointer response (CZ). */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;

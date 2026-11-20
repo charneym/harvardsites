@@ -5,7 +5,7 @@ import re, pathlib, base64
 HERE = pathlib.Path(__file__).resolve().parent
 IMG = HERE / "craniosure-img"
 SRC = (HERE / "firelight.src.html").read_text()
-SKULL = (HERE / "craniosure.skull.js").read_text()
+SKULL = (HERE / "craniosure.infant.js").read_text()
 def b64(name, mime):
     return "data:%s;base64,%s" % (mime, base64.b64encode((IMG / name).read_bytes()).decode())
 MARK = b64("mark.png", "image/png")
@@ -285,7 +285,7 @@ function v404(){return vHome()}
 function route(h){return {k:"home",v:vHome,t:"CranioSure — Earlier answers on infant head shape",x:"Home"}}'''
 
 R["field"] = SKULL + r'''
-/* ================= HERO FIELD: the infant skull, pre-painted once per size; each frame composites it with a slow
+/* ================= HERO FIELD: the sleeping infant, pre-painted once per size; each frame composites it with a slow
    float and a cyan point tracing the contour of the vault, as the app reads the head shape. No pointer response (CZ). */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;

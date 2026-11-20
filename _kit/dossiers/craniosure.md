@@ -44,6 +44,10 @@ D2P SEED grant announced 2025-07-08 (surgery.wisc.edu); CDL-Wisconsin 2025 gradu
 - Services are four icon titles with no explanation; no explanation of how the app works.
 - Newest news item is the CDL 2025 graduation; the July 2025 D2P grant is not on the site. The govsbizplancontest.com news link 404s.
 
+## Hero (rev2, coordinator review)
+A sleeping, swaddled infant in soft profile (painted skin, closed eye, ear, fine hair) on a blanket in the logo blues, with a faint
+suture overlay inside the head; the cyan point traces the head contour. Replaced the first version's bare infant skull (too clinical).
+
 ## Palette (logo pixel sample, site CSS)
 logo #0b1451 (wordmark navy) → --ink base; #2082ff → --acc (buttons); #24b7ff → --accL; #27ebff → hero contour trace (--cy);
 #c5050c (logo red segment) → the fused suture in the story only. Neutrals: cool paper #f4f7fc.

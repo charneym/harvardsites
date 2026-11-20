@@ -523,5 +523,6 @@ s = s[:i] + CSS + s[i:]
 # sanity: no firelight leftovers in visible content
 left = [m.start() for m in re.finditer(r'(?i)firelight|flc-pre|rick@', s)]
 out = os.path.join(ROOT, 'oliver.src.html')
+import re as _bo; s = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', s, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 open(out, 'w', encoding='utf8').write(s)
 print('wrote', out, len(s), 'leftovers:', [s[max(0,p-40):p+30].replace('\n',' ') for p in left][:8])

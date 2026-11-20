@@ -18,6 +18,7 @@ for name, f in REG.items():
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
 src = src.replace('<html lang="en">','<html lang="fr">',1)
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/*
 src = src.replace('>Skip to content<','>Aller au contenu<')
 src = src.replace('$("#burgerLab").textContent="Close"','$("#burgerLab").textContent="Fermer"')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'

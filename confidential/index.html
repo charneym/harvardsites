@@ -1031,7 +1031,8 @@ function items(){var seen={},list=[];navAnchors().forEach(function(a){var t=labe
 function findItem(s){var l=items();for(var i=0;i<l.length;i++)if(l[i].slug===s)return l[i];return null}
 function moreSlug(h){var m=/^#\/more\/([^/?#]+)\/?$/.exec(h||"");return m?decodeURIComponent(m[1]):null}
 
-var bo=null,open=false,cur=null,baseTitle=null,leaving=null,bypass=false,deep=false;
+/* open = the page is on screen; want = where routing is headed (set the moment a change starts, so clicks mid-wipe route correctly) */
+var SEQ=0,want=false,bo=null,open=false,cur=null,baseTitle=null,leaving=null,bypass=false,deep=false;
 function style(){if(D.getElementById("bo-css"))return;var s=D.createElement("style");s.id="bo-css";s.textContent=CSS;(D.head||DE).appendChild(s)}
 function cloneFooter(){var f=D.querySelector("#view .ftr, #view footer, main footer");if(!f)return null;var c=f.cloneNode(true);
   Array.prototype.forEach.call(c.querySelectorAll("[id]"),function(e){e.removeAttribute("id")});c.removeAttribute("id");
@@ -1065,20 +1066,20 @@ function hdrLock(on){var h=D.getElementById("hdr")||D.querySelector(".hdr");if(!
 function current(it){navAnchors().forEach(function(a){if(it&&slug(label(a))===it.slug)a.setAttribute("aria-current","page");else if(a.getAttribute("aria-current")==="page")a.removeAttribute("aria-current")})}
 function closeMenu(cb){if(!D.body.classList.contains("menu-open")){cb();return}var b=D.getElementById("burger");if(b)b.click();setTimeout(cb,420)}
 function curtain(mid,done){var xc=D.getElementById("xc"),g=window.gsap;
-  if(RM||!g||!xc){mid();if(done)done();return}
+  if(RM||!g||!xc){++SEQ;mid();if(done)done();return}
   /* the swap must never wait on frames: on a slow device (or a busy page) GSAP lag-smoothing can stretch the wipe, so timers guarantee both halves */
-  var m=0,d=0;function runMid(){if(m)return;m=1;mid()}function fin(){if(d)return;d=1;runMid();g.killTweensOf(xc);g.set(xc,{yPercent:101});if(done)done()}
+  var my=++SEQ,m=0,d=0;function runMid(){if(m)return;m=1;if(my===SEQ)mid()}function fin(){if(d)return;d=1;runMid();g.killTweensOf(xc);g.set(xc,{yPercent:101});if(done)done()}
   g.killTweensOf(xc);var tl=g.timeline({onComplete:fin});
   tl.fromTo(xc,{yPercent:101},{yPercent:0,duration:.6,ease:"power3.inOut"}).call(runMid).to(xc,{yPercent:-101,duration:.6,ease:"power3.inOut"},"+=.08");
   setTimeout(runMid,750);setTimeout(function(){if(!d){tl.kill();fin()}},1700)}
 function reveal(){var g=window.gsap;if(RM||!g||!bo)return;var els=bo.querySelectorAll("[data-bo-r]");g.fromTo(els,{y:22,opacity:0},{y:0,opacity:1,duration:.9,ease:"power3.out",stagger:.07,delay:.32,clearProps:"transform,opacity"})}
-function show(it){if(baseTitle===null)baseTitle=D.title;cur=it;
+function show(it){if(baseTitle===null)baseTitle=D.title;cur=it;want=true;
   curtain(function(){
     toTop();try{if(LN)LN.stop()}catch(e){}
     build(it);unmarkEcho();markEcho();bo.classList.add("on");open=true;DE.classList.add("bo-open");hdrLock(true);current(it);
     D.title=it.label+" — "+baseTitle.split(/\s[—–|]\s/)[0];var lv=D.getElementById("live");if(lv)lv.textContent=it.label+" page";
     var t=D.getElementById("boTitle");if(t)t.focus({preventScroll:true});reveal()})}
-function hide(after){
+function hide(after){want=false;
   curtain(function(){
     if(bo){bo.classList.remove("on");bo.innerHTML=""}unmarkEcho();open=false;cur=null;DE.classList.remove("bo-open");hdrLock(false);current(null);
     if(baseTitle!==null)D.title=baseTitle;
@@ -1100,18 +1101,18 @@ window.addEventListener("click",function(e){if(bypass||e.defaultPrevented||e.but
     return}
   if(h.charAt(0)!=="#")return;
   if(isNavItem(a)){e.preventDefault();e.stopImmediatePropagation();var it2=findItem(slug(label(a)));if(!it2)return;var to="#/more/"+it2.slug;
-    closeMenu(function(){if(open){if(cur&&cur.slug===it2.slug)return;history.replaceState(null,"",to);show(it2)}else{history.pushState(null,"",to);show(it2)}});return}
-  if(open){/* header brand / Contact / Home while the build-out page is up: go home first, then let the site handle it */
+    closeMenu(function(){if(want){if(cur&&cur.slug===it2.slug)return;history.replaceState(null,"",to);show(it2)}else{history.pushState(null,"",to);show(it2)}});return}
+  if(want){/* header brand / Contact / Home while the build-out page is up: go home first, then let the site handle it */
     e.preventDefault();e.stopImmediatePropagation();closeMenu(function(){leave(h==="#/"||h==="#main"?null:function(){replay(h)})})}
 },true);
 
 /* history: this listener is registered before the site's router, so #/more/* never reaches it */
 function onHash(e){var s=moreSlug(location.hash);
-  if(s){if(e)e.stopImmediatePropagation();var it=findItem(s);if(!it){history.replaceState(null,"","#/");if(open)hide();return}if(!open||!cur||cur.slug!==it.slug)show(it);return}
-  if(open){if(e)e.stopImmediatePropagation();var cb=leaving;leaving=null;hide(function(){if(cb)cb()})}}
+  if(s){if(e)e.stopImmediatePropagation();var it=findItem(s);if(!it){history.replaceState(null,"","#/");if(want)hide();return}if(!want||!cur||cur.slug!==it.slug)show(it);return}
+  if(want){if(e)e.stopImmediatePropagation();var cb=leaving;leaving=null;hide(function(){if(cb)cb()})}}
 window.addEventListener("hashchange",onHash);
-window.addEventListener("popstate",function(e){if(moreSlug(location.hash)||open)e.stopImmediatePropagation()});
-addEventListener("keydown",function(e){if(open&&e.key==="Escape"&&!D.body.classList.contains("menu-open"))leave()});
+window.addEventListener("popstate",function(e){if(moreSlug(location.hash)||want)e.stopImmediatePropagation()});
+addEventListener("keydown",function(e){if(want&&e.key==="Escape"&&!D.body.classList.contains("menu-open"))leave()});
 
 /* deep link (#/more/x on first load): the site boots on home, then the page opens over it with home beneath it in history */
 var first=moreSlug(location.hash);

@@ -73,7 +73,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#0a2547 0%,#3d6390 40%,#c9b6ae 62%,#1b3556 66%,#06182e 100%)}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#06182e}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -898,175 +898,59 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: Mount Rainier at first light, seen across Puget Sound from Seattle.
-   Alpenglow on the snowfields, glaciers and cleavers, forested foothills in blue haze, a lenticular cloud forming over the
-   summit, and a green-and-white ferry crossing the water below, all mirrored in the Sound. Animates on its own (cloud
-   drift, water, ferry); no pointer response (CZ). ================= */
+/*<R:field>*//* ================= HERO FIELD: real photography (HOME_BRIEF update 2026-11-20 part 2). Downtown Seattle at dusk with Mount Rainier
+   behind it (Memorial Day 2026): a photograph by Jose Moreno on Unsplash (unsplash.com/photos/AaCdUPmXXPQ, Unsplash License).
+   The firm is at Two Union Square, downtown Seattle; its own site has no usable photography. Replaces the earlier painted
+   Rainier-across-the-Sound scene.
+   Graded offline toward the palette and drawn with a slow Ken Burns drift. The subject sits right of centre and an ink scrim
+   keeps the headline side quiet (DI); the photo is full-bleed, so no edge falls inside the viewport (DJ). On phones it sits in
+   the top band and fades into the ink. No pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oMtn=null,oTop=null,CL=[],SPK=[];
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false,INK="#06182e",S="4,16,32";
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.jpg";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.max(230,h*.36):h;
-    var hz=mob?U*.72:h*.665, my=mob?U*.27:h*.27, mx=mob?w*.58:side+cw*.79;
-    var Hm=hz-my, R=mob?Math.max(w*.8,Hm*2.8):Hm*2.2;
-    return {mob:mob,side:side,cw:cw,U:U,hz:hz,my:my,mx:mx,Hm:Hm,R:R,wb:mob?U:h,FS:mob?Math.max(7,U*.034):Math.max(9,h*.017)};
+    var U=mob?Math.min(h*.46,w*1.0):h;
+    return {mob:mob,side:side,cw:cw,U:U,bh:mob?U*1.06:h};
   }
-  /* Rainier's profile: a broad shield with a flattened summit dome, Liberty Cap on the left shoulder and the sharp tooth
-     of Little Tahoma on the right flank. f(u) in 0..1, u = -1..1 across the base. */
-  function noise(u,k){return Math.sin(u*37+k)*.5+Math.sin(u*83+k*2.1)*.3+Math.sin(u*171+k*.7)*.2}
-  function prof(u){var a=Math.abs(u);if(a>=1)return 0;
-    var f=Math.exp(-Math.pow(a/.4,2.2))+.14*Math.pow(1-a,2);
-    f+=.045*Math.exp(-Math.pow((u+.16)/.045,2))-.012*Math.exp(-Math.pow((u+.08)/.03,2));
-    f+=.075*Math.exp(-Math.pow((u-.3)/.022,2))*(1-.3*Math.abs(u-.3)/.02);
-    f+=.006*noise(u,1)*(1-a);
-    return Math.min(1,f/1.14)}
-  function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  function ridge(g,y0,amp,seed,col,treeH,step){var R=rng(seed);g.fillStyle=col;g.beginPath();g.moveTo(-4,G.hz+2);
-    for(var x=-4;x<=w+8;x+=step){var yy=y0+amp*(Math.sin(x*.0042+seed)*.6+Math.sin(x*.011+seed*2)*.3+Math.sin(x*.029+seed*3)*.1);
-      var th=treeH*(.45+R()*.75);g.lineTo(x,yy);g.lineTo(x+step*.5,yy-th);g.lineTo(x+step,yy)}
-    g.lineTo(w+8,G.hz+2);g.closePath();g.fill()}
-  function build(){
-    var hz=G.hz,my=G.my,mx=G.mx,Hm=G.Hm,R=G.R;
-    /* dawn sky: deep navy overhead to a pale apricot band on the horizon */
-    var A=mk(hz+2),g=A[1];oSky=A[0];
-    var sky=g.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#081d3a");sky.addColorStop(.3,"#173a63");sky.addColorStop(.58,"#4e739d");sky.addColorStop(.78,"#a5adbe");sky.addColorStop(.9,"#e2c4ad");sky.addColorStop(1,"#efd2b4");
-    g.fillStyle=sky;g.fillRect(0,0,w,hz+2);
-    var glow=g.createRadialGradient(w*.12,hz,0,w*.12,hz,w*.6);glow.addColorStop(0,"rgba(255,214,170,.35)");glow.addColorStop(1,"rgba(255,214,170,0)");g.fillStyle=glow;g.fillRect(0,0,w,hz+2);
-    var Rs=rng(5);for(var i=0;i<(G.mob?22:46);i++){var sy=Math.pow(Rs(),2)*hz*.3;g.fillStyle="rgba(230,236,255,"+(.15+Rs()*.4)*(1-sy/(hz*.3))+")";g.fillRect(Rs()*w,sy,1,1)}
-    /* the mountain, on its own layer */
-    var B=mk(hz+2),m=B[1];oMtn=B[0];
-    function Y(u){return hz-Hm*prof(u)}
-    var x0=Math.max(-10,mx-R),x1=Math.min(w+10,mx+R),stp=G.mob?1.5:2;
-    function path(){m.beginPath();m.moveTo(x0,hz+2);for(var x=x0;x<=x1;x+=stp)m.lineTo(x,Y((x-mx)/R));m.lineTo(x1,hz+2);m.closePath()}
-    path();var rock=m.createLinearGradient(0,my,0,hz);rock.addColorStop(0,"#5d7494");rock.addColorStop(.5,"#3e5677");rock.addColorStop(1,"#5f7896");m.fillStyle=rock;m.fill();
-    m.save();path();m.clip();
-    /* the upper mountain under permanent snow: a ragged snowline, a little higher on the flanks */
-    function snowF(u){return .33+.1*Math.abs(u)+.03*noise(u,4)+.008*noise(u*3.1,2)}
-    function SY(u){return hz-Hm*Math.min(prof(u),snowF(u))}
-    m.beginPath();for(var x=x0;x<=x1;x+=stp){var u=(x-mx)/R;m.lineTo(x,SY(u))}
-    for(var x=x1;x>=x0;x-=stp){var u2=(x-mx)/R;m.lineTo(x,Y(u2)-2)}m.closePath();
-    var sn=m.createLinearGradient(mx-R*.5,0,mx+R*.5,0);sn.addColorStop(0,"#ffe1cc");sn.addColorStop(.36,"#fbe6da");sn.addColorStop(.5,"#e6dfe9");sn.addColorStop(.6,"#b7c1d8");sn.addColorStop(1,"#8796b6");
-    m.fillStyle=sn;m.fill();
-    var GLS=[[-.42,-.6,.045],[-.255,-.37,.04],[-.105,-.15,.045],[.05,.075,.04],[.2,.3,.036],[.37,.53,.042]];
-    /* glaciers: clean tongues flowing out of the snowfield past the snowline, crossed by crevasse bands */
-
-    GLS.forEach(function(g2,gi){var xs=mx+R*g2[0],ys=SY(g2[0])-Hm*.06,xe=mx+R*g2[1],ye=hz-Hm*(.07+.035*(gi%3)),hw=R*g2[2],N=20,L2=[],R2=[];
-      for(var q=0;q<=N;q++){var t=q/N,cx=xs+(xe-xs)*t,cy=ys+(ye-ys)*t,ww=hw*(1-.6*t)*(1+.06*Math.sin(t*9+gi));L2.push([cx-ww,cy]);R2.push([cx+ww,cy])}
-      m.beginPath();m.moveTo(L2[0][0],L2[0][1]);L2.forEach(function(p){m.lineTo(p[0],p[1])});var lw2=R2[N][0]-L2[N][0];
-      m.quadraticCurveTo((L2[N][0]+R2[N][0])/2,L2[N][1]+lw2*.7,R2[N][0],R2[N][1]);for(var q2=N;q2>=0;q2--)m.lineTo(R2[q2][0],R2[q2][1]);m.closePath();
-      m.fillStyle=sn;m.fill();
-      m.lineWidth=.9;m.strokeStyle="rgba(46,58,82,.5)";[L2,R2].forEach(function(E2){m.beginPath();var on=false;E2.forEach(function(p){if(p[1]>SY((p[0]-mx)/R)+2){on?m.lineTo(p[0],p[1]):m.moveTo(p[0],p[1]);on=true}});m.stroke()});
-      for(var t=.3;t<.9;t+=.09){var qi=Math.round(t*N),l=L2[qi],r=R2[qi],sag=(r[0]-l[0])*.22;
-        m.beginPath();m.moveTo(l[0]+1,l[1]);m.quadraticCurveTo((l[0]+r[0])/2,l[1]+sag,r[0]-1,r[1]);m.strokeStyle="rgba(64,88,132,.32)";m.lineWidth=.8;m.stroke();
-        m.beginPath();m.moveTo(l[0]+1,l[1]-1.2);m.quadraticCurveTo((l[0]+r[0])/2,l[1]+sag-1.2,r[0]-1,r[1]-1.2);m.strokeStyle="rgba(255,246,238,.3)";m.lineWidth=.6;m.stroke()}});
-    /* light from the east (left): the far flank falls into cool shadow */
-    var sh=m.createLinearGradient(mx-R*.08,0,mx+R*.6,0);sh.addColorStop(0,"rgba(48,70,110,0)");sh.addColorStop(1,"rgba(48,70,110,.5)");m.fillStyle=sh;m.fillRect(mx-R*.08,my-10,R,Hm+12);
-    var Rc=rng(41),RD=[-.5,-.33,-.18,-.03,.13,.27,.47,-.6,.58];
-    /* cleavers: rock ridges running down from the summit dome between the glaciers */
-    var CV=RD.map(function(us,i){var a=Math.abs(us),dir=us<0?-1:1,ys=Y(us)+Hm*(.07+.05*a+Rc()*.04),ye=hz-Hm*(.14+Rc()*.08),xs=mx+R*us,xe=mx+R*(us+dir*(.08+a*.45)),bw=(Rc()-.5)*R*.04,P=[];
-      for(var q=0;q<=24;q++){var t=q/24,xx=xs+(xe-xs)*Math.pow(t,1.15)+bw*Math.sin(t*Math.PI)+Math.sin(t*19+i)*Hm*.004;P.push([xx,ys+(ye-ys)*t,t])}return P});
-    [[-.24,.2,.12],[-.08,.16,.1],[.08,.2,.11],[.36,.18,.12],[-.4,.24,.1]].forEach(function(b2,j){var us=b2[0],dir=us<0?-1:1,ys=Y(us)+Hm*b2[1],ye=ys+Hm*b2[2],xs=mx+R*us,xe=xs+dir*R*.03,P=[];
-      for(var q=0;q<=12;q++){var t=q/12;P.push([xs+(xe-xs)*t+Math.sin(t*11+j)*Hm*.003,ys+(ye-ys)*t,t*.55])}CV.push(P)});
-    /* facets: the west side of every ridge falls into soft shadow, the east side catches the alpenglow */
-    m.save();m.filter="blur("+(G.mob?3:7)+"px)";
-    CV.forEach(function(P){m.beginPath();P.forEach(function(p,q){q?m.lineTo(p[0],p[1]):m.moveTo(p[0],p[1])});
-      for(var q=P.length-1;q>=0;q--){var p=P[q];m.lineTo(p[0]+Hm*(.03+.12*p[2]),p[1]+Hm*.015)}m.closePath();
-      m.fillStyle="rgba(60,82,124,.2)";m.fill();
-      m.beginPath();P.forEach(function(p,q){q?m.lineTo(p[0],p[1]):m.moveTo(p[0],p[1])});for(var q=P.length-1;q>=0;q--){var p=P[q];m.lineTo(p[0]-Hm*(.02+.06*p[2]),p[1])}m.closePath();
-      m.fillStyle="rgba(255,228,210,.16)";m.fill()});m.restore();
-    /* crevasse fields where the glaciers break over steps in the snowfield */
-    var Rv=rng(57);GLS.forEach(function(g2){var u0=g2[0],xc=mx+R*u0,yb=SY(u0);for(var c2=0;c2<(G.mob?4:8);c2++){var yy=yb-Hm*(.04+Rv()*.2),ww=R*(.012+Rv()*.025),xx=xc+(Rv()-.5)*R*.05;
-      m.beginPath();m.moveTo(xx-ww,yy);m.quadraticCurveTo(xx,yy+ww*.18,xx+ww,yy-ww*.05);m.strokeStyle="rgba(70,92,136,.4)";m.lineWidth=.8;m.stroke();
-      m.beginPath();m.moveTo(xx-ww,yy-1.1);m.quadraticCurveTo(xx,yy+ww*.18-1.1,xx+ww,yy-ww*.05-1.1);m.strokeStyle="rgba(255,248,242,.45)";m.lineWidth=.6;m.stroke()}});
-    /* Little Tahoma: the dark rock tooth on the east flank */
-    var tx=mx+R*.3,ty=Y(.3);m.beginPath();m.moveTo(tx-R*.004,ty+2);m.lineTo(tx-R*.02,ty+Hm*.06);m.lineTo(tx-R*.004,ty+Hm*.05);m.lineTo(tx+R*.012,ty+Hm*.075);m.lineTo(tx+R*.004,ty+2);m.closePath();
-    var tg2=m.createLinearGradient(tx-R*.03,0,tx+R*.022,0);tg2.addColorStop(0,"#7c6a7c");tg2.addColorStop(.5,"#3f4964");tg2.addColorStop(1,"#26314a");m.fillStyle=tg2;m.fill();
-    /* the cleavers: wedges of dark rock splitting the snowfield, narrow at the top and widening as they descend,
-       each lit warm on its east side and cold on its west */
-    CV.forEach(function(P,ci){var Lp=[],Rp=[];P.forEach(function(p){var t=p[2],wt=Hm*(.003+.06*Math.pow(t,1.25))*(ci%2?.8:1.1);Lp.push([p[0]-wt*.35,p[1]]);Rp.push([p[0]+wt*.65,p[1]])});
-      m.beginPath();Lp.forEach(function(p,q){q?m.lineTo(p[0],p[1]):m.moveTo(p[0],p[1])});for(var q=Rp.length-1;q>=0;q--)m.lineTo(Rp[q][0],Rp[q][1]);m.closePath();
-      var e=P[P.length-1],rg=m.createLinearGradient(Lp[Lp.length-1][0],0,Rp[Rp.length-1][0],0);var wl=P[0][0]<mx+R*.05;rg.addColorStop(0,wl?"#8a7282":"#5a6078");rg.addColorStop(.35,wl?"#4f5670":"#3a4560");rg.addColorStop(1,"#232f46");m.fillStyle=rg;m.fill();
-      m.beginPath();Lp.forEach(function(p,q){q?m.lineTo(p[0],p[1]):m.moveTo(p[0],p[1])});m.strokeStyle=P[0][0]<mx+R*.05?"rgba(255,214,190,.45)":"rgba(220,226,240,.25)";m.lineWidth=.8;m.stroke();
-      /* snow ledges across the rock */
-      for(var q=4;q<P.length-2;q+=3){var l=Lp[q],r=Rp[q];m.beginPath();m.moveTo(l[0],l[1]);m.lineTo(r[0],r[1]+Hm*.006);m.strokeStyle="rgba(236,230,238,.35)";m.lineWidth=.8;m.stroke()}});
-    /* the summit dome: Columbia Crest's crater rim, Liberty Cap's lit cornice on the left shoulder */
-    m.strokeStyle="rgba(255,250,244,.7)";m.lineWidth=1.1;m.beginPath();m.ellipse(mx+R*.015,Y(.015)+Hm*.035,R*.045,Hm*.012,0,Math.PI*1.05,Math.PI*1.95);m.stroke();
-    m.strokeStyle="rgba(120,130,160,.45)";m.beginPath();m.ellipse(mx+R*.015,Y(.015)+Hm*.04,R*.04,Hm*.01,0,Math.PI*.1,Math.PI*.9);m.stroke();
-    m.strokeStyle="rgba(255,236,220,.65)";m.lineWidth=1;m.beginPath();for(var x=mx-R*.22;x<=mx-R*.1;x+=2){var uu=(x-mx)/R;x===mx-R*.22?m.moveTo(x,Y(uu)+2):m.lineTo(x,Y(uu)+2)}m.stroke();
-    /* fine snow texture */
-    var Rt=rng(77);for(var k2=0;k2<(G.mob?160:520);k2++){var u3=(Rt()-.5)*1.2,x3=mx+u3*R,y3=Y(u3)+Rt()*Hm*.4;m.fillStyle=Rt()<.5?"rgba(70,92,130,.12)":"rgba(255,248,240,.18)";m.fillRect(x3,y3,1+Rt()*2,1)}
-    /* atmospheric haze toward the base */
-    var hzG=m.createLinearGradient(0,my+Hm*.45,0,hz);hzG.addColorStop(0,"rgba(176,186,206,0)");hzG.addColorStop(1,"rgba(176,186,206,.75)");m.fillStyle=hzG;m.fillRect(0,my,w,Hm+4);
-    m.restore();
-    if(!G.mob){m.save();m.globalCompositeOperation="destination-out";var fx0=G.side+G.cw*.36,fx1=G.side+G.cw*.56,fg=m.createLinearGradient(fx0,0,fx1,0);fg.addColorStop(0,"rgba(0,0,0,1)");fg.addColorStop(1,"rgba(0,0,0,0)");m.fillStyle=fg;m.fillRect(0,0,fx1,hz+2);m.restore()}
-    /* forested foothills in receding blue layers */
-    var th=G.mob?3:5;
-    ridge(m,hz-Hm*.11,Hm*.03,3,"rgba(104,128,162,.9)",th*.7,G.mob?4:6);
-    ridge(m,hz-Hm*.065,Hm*.025,7,"#3f5d82",th,G.mob?4:6);
-    ridge(m,hz-Hm*.03,Hm*.014,13,"#1b3557",th*1.3,G.mob?5:7);
-    m.fillStyle="#122a49";m.fillRect(0,hz-Hm*.012,w,Hm*.012+2);
-    /* drifting cloud banks */
-    CL=[];var Rk=rng(19);for(var i2=0;i2<(G.mob?4:7);i2++)CL.push([Rk()*w,my+Rk()*Hm*.55,w*(.08+Rk()*.14),.07+Rk()*.1,(Rk()<.5?-1:1)*(2+Rk()*4)]);
-    var T=mk(hz+2),tg=T[1];oTop=T[0];tg.setTransform(1,0,0,1,0,0);tg.drawImage(oSky,0,0);tg.drawImage(oMtn,0,0);
-    SPK=[];var Rp=rng(23);for(var j=0;j<(G.mob?40:110);j++)SPK.push([Rp(),Math.pow(Rp(),1.4),Rp()*6.28,.5+Rp()*1.6]);
-  }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
-  function ferry(x,y,s,a){/* a Washington State ferry: white hull and decks, green trim, the wheelhouses at both ends */
-    c.save();c.globalAlpha*=a;var L=s*6.5;
-    c.fillStyle="#e9eef2";c.beginPath();c.moveTo(x-L/2,y-s*.5);c.lineTo(x+L/2,y-s*.5);c.lineTo(x+L/2-s*.35,y);c.lineTo(x-L/2+s*.35,y);c.closePath();c.fill();
-    c.fillStyle="#2c6b52";c.fillRect(x-L/2+s*.1,y-s*.62,L-s*.2,s*.14);
-    c.fillStyle="#f1f4f6";c.fillRect(x-L*.4,y-s*1.15,L*.8,s*.55);c.fillRect(x-L*.3,y-s*1.55,L*.6,s*.42);
-    c.fillRect(x-L*.4,y-s*1.9,s*.7,s*.38);c.fillRect(x+L*.4-s*.7,y-s*1.9,s*.7,s*.38);
-    c.fillStyle="#2c6b52";c.fillRect(x-s*.22,y-s*2.25,s*.44,s*.72);
-    c.fillStyle="rgba(28,44,70,.75)";for(var i=0;i<11;i++)c.fillRect(x-L*.37+i*L*.069,y-s*1.0,L*.04,s*.17);
-    c.restore()}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
+  function lg(x0,y0,x1,y1,st){var g=c.createLinearGradient(x0,y0,x1,y1);for(var i=0;i<st.length;i++)g.addColorStop(st[i][0],"rgba("+S+","+st[i][1]+")");return g}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?9:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var hz=G.hz,my=G.my,mx=G.mx,Hm=G.Hm,wb=G.wb,FS=G.FS;
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* cloud banks behind the mountain */
-    for(var i=0;i<CL.length;i++){var k=CL[i],cx=((k[0]+t*k[4])%(w+k[2]*2)+w+k[2]*2)%(w+k[2]*2)-k[2];
-      c.save();c.translate(cx,k[1]);c.scale(1,.14);var cg=c.createRadialGradient(0,0,0,0,0,k[2]);cg.addColorStop(0,"rgba(255,232,220,"+k[3]+")");cg.addColorStop(1,"rgba(255,232,220,0)");c.fillStyle=cg;c.beginPath();c.arc(0,0,k[2],0,Math.PI*2);c.fill();c.restore()}
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oMtn,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* the lenticular cap forming over the summit, slowly breathing */
-    var lw=G.R*.2,lh=Hm*.04,ly=my-Hm*.035;
-    for(var l=0;l<3;l++){var br=.5+.5*Math.sin(t*.25+l*1.3),sc=1-l*.22;c.save();c.translate(mx+Math.sin(t*.07)*lw*.05,ly-l*lh*.55);c.scale(1,lh/lw*.9);
-      var lg=c.createRadialGradient(0,0,lw*sc*.2,0,0,lw*sc);lg.addColorStop(0,"rgba(255,226,214,"+(.17+.07*br)*(1-l*.25)+")");lg.addColorStop(.7,"rgba(250,214,206,"+(.07+.03*br)+")");lg.addColorStop(1,"rgba(250,214,206,0)");
-      c.fillStyle=lg;c.beginPath();c.arc(0,0,lw*sc,0,Math.PI*2);c.fill();c.restore()}
-    /* Puget Sound */
-    var wg=c.createLinearGradient(0,hz,0,wb);wg.addColorStop(0,"#566e8e");wg.addColorStop(.18,"#2b486c");wg.addColorStop(.6,"#11294a");wg.addColorStop(1,"#06182e");
-    c.fillStyle=wg;c.fillRect(0,hz,w,wb-hz+2);
-    /* the reflection: mirrored slices of the scene above, rippled */
-    var D=wb-hz,step=G.mob?2:3;c.save();
-    for(var y=hz+1;y<wb;y+=step){var d=(y-hz)/D,src=hz-(y-hz)*1.05;if(src<my-Hm*.15)break;
-      var dx=Math.sin(y*.11+t*1.4)*(1+d*7)+Math.sin(y*.031-t*.6)*d*4;c.globalAlpha=e*(.5*(1-d)*(1-d)+.02);
-      c.drawImage(oTop,0,Math.round(src*dpr),oTop.width,Math.round(step*dpr),dx,y,w,step)}
-    c.restore();c.globalAlpha=e;
-    /* light on the water: sparkles under the bright eastern sky */
-    for(var p=0;p<SPK.length;p++){var q=SPK[p],sx=q[0]*w,sy=hz+3+q[1]*D*.9,a=(.5+.5*Math.sin(t*q[3]+q[2]))*(1-q[1])*(.55-.35*Math.abs(q[0]-.3));if(a<.04)continue;
-      c.fillStyle="rgba(255,236,214,"+(a*.7).toFixed(3)+")";c.fillRect(sx,sy,(3+q[1]*14)*(1-q[1]*.3),1)}
-    /* the ferry, crossing slowly; its wake and reflection */
-    var span=w+FS*14,fx=w+FS*7-((t*FS*.55+span*.35)%span),fy=hz+D*(G.mob?.32:.2);
-    c.strokeStyle="rgba(240,246,250,.35)";c.lineWidth=1;c.beginPath();c.moveTo(fx+FS*3.2,fy-1);c.lineTo(fx+FS*12,fy+FS*.5);c.moveTo(fx+FS*3.2,fy+1);c.lineTo(fx+FS*12,fy-FS*.25);c.stroke();
-    c.save();c.translate(0,fy*2);c.scale(1,-1);ferry(fx,fy,FS,.22);c.restore();
-    ferry(fx,fy,FS,1);
-    c.globalAlpha=1;
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=INK;c.fillRect(0,0,w,h);
+    if(ok){
+      var bw=w,bh=G.bh,iw=img.naturalWidth,ih=img.naturalHeight;
+      /* Ken Burns: a very slow push in and drift, eased back and forth over ~50s */
+      var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*((G.mob?1.5:1.18)+.07*k)*(1+.04*(1-e));
+      var dw=iw*sc,dh=ih*sc,fx=G.mob?.62:.05,fy=G.mob?.8:.6;
+      var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      c.fillStyle="rgba("+S+",.12)";c.fillRect(0,0,w,bh);
+      if(!G.mob){
+        /* the headline side (0 to ~55%) stays deep ink; the photo opens up to the right */
+        c.fillStyle=lg(0,0,G.side+G.cw*.74,0,[[0,.93],[.5,.86],[.78,.42],[1,0]]);c.fillRect(0,0,w,h);
+        c.fillStyle=lg(0,0,0,h*.22,[[0,.55],[1,0]]);c.fillRect(0,0,w,h*.22);
+        c.fillStyle=lg(0,h*.6,0,h,[[0,0],[1,.75]]);c.fillRect(0,h*.6,w,h*.4);
+      }else{
+        c.fillStyle=lg(0,0,0,bh*.3,[[0,.6],[1,0]]);c.fillRect(0,0,w,bh*.3);
+        c.fillStyle=lg(0,bh*.5,0,bh,[[0,0],[1,1]]);c.fillRect(0,bh*.5,w,bh*.5+1);
+        c.fillStyle=INK;c.fillRect(0,bh,w,h-bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.mx,G.my+G.Hm*.3]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[w*.68,G.bh*.5]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v20 (coordinator review of home-only batch, 2026-11-20)
 
+**DK. Build-out pages look like the real sub-page.** Client: "shouldnt the transition pages still have the text and stuff on the transition page that it used to have? ... it shows what theyd get and we already have template for that." A nav click on a home-only site runs the full-site route transition into a real sub-page (sub-page hero with eyebrow, H1 and lede, then the matching home section's own content), and ends with the concept note ("I'd build out this page and the rest of the site..."). Never a bare notice page. Implemented once in _kit/lib/buildout.js.
+
 **DJ. Hero art never shows a seam.** Rendered or photographed hero art must feather into the page ink on every edge that falls inside the viewport (or fill the canvas with the art's own ground colour). A visible rectangle edge (vertical or horizontal) makes it read as a pasted box. Seen on cg-scientific and enyxtherapeutics. Check at 1440, 1920 and 390.
 
 **DI. Nothing bright or busy behind the H1 or lede.** Place the subject right of ~45-50% width (shift or crop the photo, fit the render) and/or use a strong ink scrim over 0-55%. Sunlit clouds, lit coils, lens plates or a white lab coat behind the headline all failed review (waconacapital, dotyscientific, steaminstrumentsinc). A crafted render must look like a real material object; clay/toy shading fails (coramtechnologies), so use a real Unsplash/Pexels photo of the subject instead.

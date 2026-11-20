@@ -38,3 +38,6 @@ Contact: info@sierrabiopharma.com (site /contact, "Davis, California").
 
 ## Bad-site evidence
 Webs template site (2019), 4 thin pages, stock mountain photo, translucent grey caption box, Oswald-condensed nav pill, no news, no pipeline, no investors, "Copyright © All Rights Reserved" without name/year, contact form only.
+
+## Hero rephoto (2026-11-20)
+- The painted Sierra Nevada sunrise is removed (client: painted scenes look unprofessional). (a) The company's site has only a stock mountain photo. (b) Real light micrograph of skeletal muscle fibres (the tissue whose acetylcholine receptors are attacked in myasthenia gravis): 'Muscle Tissue: Skeletal Muscle Fibers', Bioscience Image Library by Fayette Reynolds on Unsplash, Unsplash License (free, not Unsplash+): https://unsplash.com/photos/ZHIwUItZpaU (image photo-1716833322946-090dbd23adea). The brightfield H&E image is cropped 16:10, inverted and duotoned into the logo teal (#071a1f to #1e6b7a to #bfeef5) so the striated fibres and nuclei read light on the dark ground; shipped as sierra-biopharma/hero.jpg. Not Sierra's own tissue or data; no copy claims it is. Slow Ken Burns, fibres right, ink scrim over the headline side, phone band.

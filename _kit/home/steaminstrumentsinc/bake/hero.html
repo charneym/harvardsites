@@ -1,0 +1,76 @@
+<!doctype html><html><body style="margin:0;background:#0d1013">
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const W=+P.get('w')||1600,H=+P.get('h')||900;
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(r.domElement);
+const s=new THREE.Scene();s.background=new THREE.Color(0x0d1013);
+const pm=new THREE.PMREMGenerator(r);s.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;s.environmentIntensity=.75;
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||26,W/H,.1,100);
+const cp=(P.get('cam')||'-5.2,2.0,8.2').split(',').map(Number),ct=(P.get('tgt')||'0.6,0,0').split(',').map(Number);
+cam.position.set(...cp);cam.lookAt(...ct);
+const steel=new THREE.MeshPhysicalMaterial({color:0xc4c8ce,metalness:1,roughness:.2,clearcoat:.3,side:THREE.DoubleSide});
+const steelD=new THREE.MeshPhysicalMaterial({color:0x8d939b,metalness:1,roughness:.34,side:THREE.DoubleSide});
+const cer=new THREE.MeshPhysicalMaterial({color:0xece8df,metalness:0,roughness:.42,clearcoat:.4,clearcoatRoughness:.3});
+const mcp=new THREE.MeshPhysicalMaterial({color:0x101418,metalness:.3,roughness:.28,clearcoat:1,clearcoatRoughness:.1});
+const X=(g)=>{g.rotateZ(-Math.PI/2);return g};// lathe axis y -> x
+// ring electrode: annulus with rounded lips (lathe)
+function ring(Ro,Ri,t){const pts=[];const n=12,h=t/2;
+  pts.push(new THREE.Vector2(Ri,-h));
+  for(let i=0;i<=n;i++){const a=-Math.PI/2+Math.PI*i/n;pts.push(new THREE.Vector2(Ro-h+h*Math.cos(a),h*Math.sin(a)))}
+  pts.push(new THREE.Vector2(Ri,h));
+  for(let i=1;i<n;i++){const a=Math.PI/2+Math.PI*i/n;pts.push(new THREE.Vector2(Ri+h*.7*Math.cos(a)*-1*-1+0,h*Math.sin(a)).setX(Ri-h*.7*Math.abs(Math.cos(a))*0+ (h*.7)*Math.cos(a)))}
+  pts.push(new THREE.Vector2(Ri,-h));
+  return X(new THREE.LatheGeometry(pts.reverse(),180))}
+const RX=[-1.9,-1.05,-.2,.65,1.5];const RO=[1.45,1.6,1.6,1.6,1.45],RI=[.58,.72,.82,.72,.62];
+RX.forEach((x,i)=>{const m=new THREE.Mesh(ring(RO[i],RI[i],i==2?.26:.16),i%2?steelD:steel);m.position.x=x;s.add(m)});
+// ceramic spacer rods through the stack (3 at 120deg)
+for(let k=0;k<3;k++){const a=k*2*Math.PI/3+.5;const g=X(new THREE.CylinderGeometry(.06,.06,3.9,40));const m=new THREE.Mesh(g,cer);m.position.set(-.2,Math.cos(a)*1.18,Math.sin(a)*1.3);s.add(m);
+  for(let j=0;j<RX.length-1;j++){const sg=X(new THREE.CylinderGeometry(.1,.1,.69,40));const sm=new THREE.Mesh(sg,cer);sm.position.set((RX[j]+RX[j+1])/2,Math.cos(a)*1.3,Math.sin(a)*1.3);s.add(sm)}}
+// specimen: fine needle on a holder, pointing +x
+const TIP=-3.55;
+{const g=X(new THREE.CylinderGeometry(.004,.13,1.1,64));const m=new THREE.Mesh(g,steel);m.position.x=TIP-.55;s.add(m);
+ const h=X(new THREE.CylinderGeometry(.22,.22,.9,64));const hm=new THREE.Mesh(h,steelD);hm.position.x=TIP-1.5;s.add(hm);
+ const c=X(new THREE.CylinderGeometry(.3,.3,.18,64));const cm=new THREE.Mesh(c,steel);cm.position.x=TIP-1.05;s.add(cm);}
+// extraction aperture: a small cone electrode just in front of the tip
+{const pts=[new THREE.Vector2(.07,0),new THREE.Vector2(.1,0),new THREE.Vector2(.55,.42),new THREE.Vector2(.62,.42),new THREE.Vector2(.62,.5),new THREE.Vector2(.5,.5),new THREE.Vector2(.07,.02)];
+ const g=X(new THREE.LatheGeometry(pts,120));const m=new THREE.Mesh(g,steel);m.rotation.y=Math.PI;m.position.x=TIP+.12+.5;s.add(m);}
+// detector: MCP disc in a flange
+const DX=4.9;
+{const f=new THREE.Mesh(ring(1.95,1.45,.3),steel);f.position.x=DX;s.add(f);
+ const d=new THREE.Mesh(X(new THREE.CylinderGeometry(1.5,1.5,.08,160)),mcp);d.position.x=DX+.04;s.add(d);
+ const b=new THREE.Mesh(X(new THREE.CylinderGeometry(1.7,1.7,.5,160)),steelD);b.position.x=DX+.36;s.add(b);}
+// ion trajectories: diverge from the tip, collimated by the lens, projected stigmatically onto the detector
+const COL=[0xff5a4a,0x9fd65a,0x3aa6ee];const add=new THREE.Group();s.add(add);
+function path(a,phi,amax){const pts=[];const rB=.5*a/amax+.02;const rD=1.32*a/amax;// radius at lens entrance, at detector
+  for(let i=0;i<=140;i++){const x=TIP+.02+(DX-TIP-.02)*i/140;let rad;const x1=-2.2,x2=1.2;
+    if(x<x1){rad=rB*Math.pow((x-TIP)/(x1-TIP),.85)}else if(x<x2){const u=(x-x1)/(x2-x1);const m0=rB*.85/(x1-TIP),m1=(rD-rB*1.15)/(DX-x2);const p0=rB,p1=rB*1.15;const h00=2*u**3-3*u**2+1,h10=u**3-2*u**2+u,h01=-2*u**3+3*u**2,h11=u**3-u**2;rad=h00*p0+h10*m0*(x2-x1)+h01*p1+h11*m1*(x2-x1)}
+    else{rad=rB*1.15+(rD-rB*1.15)*(x-x2)/(DX-x2)}
+    pts.push(new THREE.Vector3(x,rad*Math.cos(phi),rad*Math.sin(phi)))}return new THREE.CatmullRomCurve3(pts)}
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const hits=[];
+const gc=document.createElement('canvas');gc.width=gc.height=128;{const g=gc.getContext('2d');const rg=g.createRadialGradient(64,64,0,64,64,64);rg.addColorStop(0,'rgba(255,255,255,1)');rg.addColorStop(.25,'rgba(255,255,255,.45)');rg.addColorStop(.6,'rgba(255,255,255,.1)');rg.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=rg;g.fillRect(0,0,128,128)}
+const GT=new THREE.CanvasTexture(gc);
+function halo(col,size,op){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:GT,color:col,transparent:true,opacity:op,blending:THREE.AdditiveBlending,depthWrite:false}));sp.scale.set(size,size,1);return sp}
+for(let k=0;k<56;k++){const a=Math.sqrt(rnd())*1,phi=rnd()*Math.PI*2,ci=k%3;const cv=path(a,phi,1);
+  const core=new THREE.Mesh(new THREE.TubeGeometry(cv,200,.0045,6),new THREE.MeshBasicMaterial({color:COL[ci],transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false}));add.add(core);
+  const glow=new THREE.Mesh(new THREE.TubeGeometry(cv,200,.02,8),new THREE.MeshBasicMaterial({color:COL[ci],transparent:true,opacity:.07,blending:THREE.AdditiveBlending,depthWrite:false}));add.add(glow);
+  // ion packets: heavier ions lag (time of flight)
+  const tpos=[.86,.74,.63][ci]-rnd()*.03;const pp=cv.getPoint(tpos);
+  const sp=new THREE.Mesh(new THREE.SphereGeometry(.022,16,12),new THREE.MeshBasicMaterial({color:0xffffff}));sp.position.copy(pp);add.add(sp);
+  const sg=halo(COL[ci],.22,.55);sg.position.copy(pp);add.add(sg);
+  hits.push([cv.getPoint(1),ci])}
+// image spots on the detector face, plus a faint phosphor field
+hits.forEach(([p,ci])=>{const m=new THREE.Mesh(new THREE.CircleGeometry(.028,24),new THREE.MeshBasicMaterial({color:COL[ci],transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}));m.position.set(DX-.005,p.y,p.z);m.rotation.y=-Math.PI/2;add.add(m);
+  const g=halo(COL[ci],.34,.5);g.position.set(DX-.02,p.y,p.z);add.add(g)});
+// glow at the tip apex
+{const g=new THREE.Mesh(new THREE.SphereGeometry(.035,24,16),new THREE.MeshBasicMaterial({color:0xfff2e0,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}));g.position.x=TIP;s.add(g);
+ const g2=halo(0x9fd0ff,.9,.55);g2.position.x=TIP;s.add(g2);}
+// lights: a soft key from upper left, a cool blue rim from behind, a warm fill low
+const k=new THREE.DirectionalLight(0xfff4ea,2.2);k.position.set(-4,6,6);s.add(k);
+const rim=new THREE.DirectionalLight(0x5aa8ff,2.4);rim.position.set(6,2,-6);s.add(rim);
+const fl=new THREE.PointLight(0x3aa6ee,6,8,1.6);fl.position.set(-.2,0,0);s.add(fl);
+r.render(s,cam);window.DONE=1;
+</script></body></html>

@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v20 (coordinator review of home-only batch, 2026-11-20)
 
+**DN. No empty columns beside a statement.** Client: an off-centre 66% statement and then a label-left/statement-right split both read as "way too much white space". The big statement spans the full grid width on desktop (eyebrow above it), sized to run 3-5 lines; never park it in part of the row with nothing beside it.
+
 **DM. The loading screen is the first impression: every word on it must read.** Client: Objective Bio's loader showed "Biology in" near-white on white ("that's the first impression the CEO gets"). Cause: the loader's .pc class collided with the product-card .pc rule (white background). Never reuse a short class name for two components; scope loader classes under #pre. Gate: _kit/loader-contrast-audit.js (no loader text under 3:1) on every build.
 
 **DL. Fill the screen sensibly at every width; nothing overlaps.** Client (finatem at ~1920): "too narrow and leave way too much white space ... maybe their text should be smaller on smaller dimensions?" Containers widen at large screens (to ~1600px at >=1800), statement blocks align to the grid instead of floating as a narrow off-centre column, display type scales down gently at 1024-1366 and on phones, and stat numerals always fit their column (no "€ 10–50 Mio23"). Check 1280/1440/1920/2560/390.

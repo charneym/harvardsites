@@ -74,7 +74,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#2c2a4c}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#2c2a4c,#2c2a4c)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -686,7 +686,7 @@ em{line-height:0}
 @media (max-width:860px){.pfr li,.pfr.re li{grid-template-columns:1fr;row-gap:6px}.pfr .tg,.pfr p{padding-top:0}}
 /* team: refined text-only list, four columns */
 .tm{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gap);border-top:1px solid var(--hairD)}
-.tm>li{display:flex;flex-direction:column;gap:5px;padding:18px 0 20px;border-bottom:1px solid var(--hairD)}
+.tm>.pp{display:flex;flex-direction:column;gap:5px;padding:18px 0 20px;border-bottom:1px solid var(--hairD)}
 .tm .nm{font-family:var(--disp);font-size:clamp(20px,1.6vw,24px);line-height:1.2;letter-spacing:-.01em}
 .tm .rl{font-size:13.5px;line-height:1.4;color:var(--stoneD)}
 @media (max-width:1024px){.tm{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -741,7 +741,7 @@ em{line-height:0}
 .past .note{margin:0;font-size:14.5px;color:var(--stone)}
 /* team: two people with their record */
 .tm{grid-template-columns:repeat(2,minmax(0,1fr))!important}
-.tm>li{padding:24px 0 28px;gap:8px}
+.tm>.pp{padding:24px 0 28px;gap:8px}
 .tm .bio{list-style:none;margin:10px 0 6px;padding:0;max-width:52ch}
 .tm .bio li{position:relative;padding-left:16px;font-size:15px;line-height:1.55;color:var(--stoneD);margin:0 0 6px}
 .tm .bio li::before{content:"";position:absolute;left:0;top:.72em;width:7px;height:1px;background:var(--acc)}
@@ -753,6 +753,11 @@ em{line-height:0}
 .more .act{display:flex;flex-wrap:wrap;align-items:center;gap:22px 30px;margin-top:clamp(30px,3.4vw,48px)}
 .more .more-k{font:600 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(var(--boner),.78);padding:12px 0}
 .more .more-k:hover{color:var(--accL)}
+/* masthead metrics (CL): compact people rows and criteria rows */
+.tm>.pp{padding:16px 0 18px!important}
+.tm .bio{margin:6px 0 4px}
+.tm .bio li{margin:0 0 3px;font-size:14.5px}
+#criteria .facts>div{padding-top:14px;padding-bottom:14px}
 </style>
 </head>
 </head>
@@ -896,7 +901,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 /*<R:views>*//* ================= VIEWS (home only: every nav item scrolls to its section on #/) ================= */
 function pfRows(list){return '<ul class="pfr">'+list.map(function(c){var sub=c[2]!=="Plattform";return '<li class="'+(sub?'sub':'pl')+'"><span class="lab tg">'+esc(c[2])+'</span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p></li>'}).join("")+'</ul>'}
 function newsRows(list){return '<ul class="pfr nw">'+list.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab tg">'+esc(n[0])+'</span><h3>'+esc(n[2])+'</h3><p>'+esc(n[1])+' <span class="ar" aria-hidden="true">↗</span></p></a></li>'}).join("")+'</ul>'}
-function team(){return '<ul class="tm">'+TEAM.map(function(p){return '<li><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><ul class="bio">'+p.bio.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul><a class="ul ml" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></li>'}).join("")+'</ul>'}
+function team(){return '<div class="tm">'+TEAM.map(function(p){return '<div class="pp"><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><ul class="bio">'+p.bio.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul><a class="ul ml" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -936,7 +941,7 @@ function vHome(){
   '<section class="sec light" id="criteria" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Suchprofil</span><h2 class="d2 split">Was wir <em>suchen.</em></h2></div><p data-r>Unser Rahmen für die wesentlichen Beteiligungskriterien: ein überzeugendes Unternehmensprofil mit Hauptsitz in der Schweiz.</p></div>'+
    '<dl class="facts">'+CRIT.map(function(a){return '<div><dt class="lab">'+esc(a[0])+'</dt><dd>'+esc(a[1])+'</dd></div>'}).join("")+'</dl>'+
-   '<div class="sol"><div class="shead sm"><div><span class="lab kick" data-r>Lösungen</span><h3 class="d3 split">Beteiligungspartnerschaft <em>mit Substanz.</em></h3></div></div>'+
+   '<div class="sol"><div class="shead sm"><div><span class="lab kick" data-r>Lösungen</span><h3 class="d3 split">Partnerschaft <em>mit Substanz.</em></h3></div></div>'+
    '<ol class="solg">'+SOL.map(function(a,i){return '<li><span class="lab n">0'+(i+1)+'</span><h4>'+esc(a[0])+'</h4><p>'+esc(a[1])+'</p></li>'}).join("")+'</ol></div>'+
   '</div></section>'+
 
@@ -947,7 +952,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Jahrzehnte im <em>Beteiligungsgeschäft.</em></h2></div><p data-r>Der Kontivia-Gründer Alexander Krebs war bei der aktiven Begleitung von Beteiligungen in den Verwaltungsräten zahlreicher bekannter Schweizer Unternehmen tätig.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Jahrzehnte <em>Erfahrung.</em></h2></div><p data-r>Der Kontivia-Gründer Alexander Krebs war bei der aktiven Begleitung von Beteiligungen in den Verwaltungsräten zahlreicher bekannter Schweizer Unternehmen tätig.</p></div>'+
    team()+
   '</div></section>'+
 

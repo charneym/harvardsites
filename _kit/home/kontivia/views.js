@@ -1,7 +1,7 @@
 /* ================= VIEWS (home only: every nav item scrolls to its section on #/) ================= */
 function pfRows(list){return '<ul class="pfr">'+list.map(function(c){var sub=c[2]!=="Plattform";return '<li class="'+(sub?'sub':'pl')+'"><span class="lab tg">'+esc(c[2])+'</span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p></li>'}).join("")+'</ul>'}
 function newsRows(list){return '<ul class="pfr nw">'+list.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab tg">'+esc(n[0])+'</span><h3>'+esc(n[2])+'</h3><p>'+esc(n[1])+' <span class="ar" aria-hidden="true">↗</span></p></a></li>'}).join("")+'</ul>'}
-function team(){return '<ul class="tm">'+TEAM.map(function(p){return '<li><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><ul class="bio">'+p.bio.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul><a class="ul ml" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></li>'}).join("")+'</ul>'}
+function team(){return '<div class="tm">'+TEAM.map(function(p){return '<div class="pp"><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><ul class="bio">'+p.bio.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul><a class="ul ml" href="mailto:'+p.mail+'">'+esc(p.mail)+'</a></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -41,7 +41,7 @@ function vHome(){
   '<section class="sec light" id="criteria" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Suchprofil</span><h2 class="d2 split">Was wir <em>suchen.</em></h2></div><p data-r>Unser Rahmen für die wesentlichen Beteiligungskriterien: ein überzeugendes Unternehmensprofil mit Hauptsitz in der Schweiz.</p></div>'+
    '<dl class="facts">'+CRIT.map(function(a){return '<div><dt class="lab">'+esc(a[0])+'</dt><dd>'+esc(a[1])+'</dd></div>'}).join("")+'</dl>'+
-   '<div class="sol"><div class="shead sm"><div><span class="lab kick" data-r>Lösungen</span><h3 class="d3 split">Beteiligungspartnerschaft <em>mit Substanz.</em></h3></div></div>'+
+   '<div class="sol"><div class="shead sm"><div><span class="lab kick" data-r>Lösungen</span><h3 class="d3 split">Partnerschaft <em>mit Substanz.</em></h3></div></div>'+
    '<ol class="solg">'+SOL.map(function(a,i){return '<li><span class="lab n">0'+(i+1)+'</span><h4>'+esc(a[0])+'</h4><p>'+esc(a[1])+'</p></li>'}).join("")+'</ol></div>'+
   '</div></section>'+
 
@@ -52,7 +52,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Jahrzehnte im <em>Beteiligungsgeschäft.</em></h2></div><p data-r>Der Kontivia-Gründer Alexander Krebs war bei der aktiven Begleitung von Beteiligungen in den Verwaltungsräten zahlreicher bekannter Schweizer Unternehmen tätig.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Jahrzehnte <em>Erfahrung.</em></h2></div><p data-r>Der Kontivia-Gründer Alexander Krebs war bei der aktiven Begleitung von Beteiligungen in den Verwaltungsräten zahlreicher bekannter Schweizer Unternehmen tätig.</p></div>'+
    team()+
   '</div></section>'+
 

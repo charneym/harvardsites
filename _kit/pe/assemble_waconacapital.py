@@ -41,7 +41,7 @@ reg('root', ''':root{
   --sec:clamp(112px,14vh,200px);
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
 }''')
-reg('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#1b2b30 0%,#3b5455 30%,#9a9d84 52%,#4c645c 62%,#1d2d27 78%,#121a16 100%)}
+reg('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#5a5240 0%,#b49a6a 34%,#d8c69c 46%,#8a8670 60%,#2e3328 82%,#121a16 100%)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}''')
 reg('logocss', '''.brand{display:flex;align-items:center;gap:11px;height:56px;color:var(--bone)}
@@ -65,11 +65,11 @@ reg('pre', '''<div id="pre" aria-hidden="true">
 ARRS = '<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>'
 reg('brand', '<a href="#/" class="brand" id="brand" aria-label="Wacona Capital, home">' + MARK + '<span class="wt"><b>WACONA</b><small>CAPITAL</small></span></a>')
 reg('navmenu', '''<nav class="nav" aria-label="Primary">
-    <a class="nl ul" href="#/approach">Approach</a>
-    <a class="nl ul" href="#/criteria">Criteria</a>
-    <a class="nl ul" href="#/portfolio">Portfolio</a>
-    <a class="nl ul" href="#/team">Team</a>
-    <a class="nl ul" href="#/news">News</a>
+    <a class="nl ul" href="#/more/approach">Approach</a>
+    <a class="nl ul" href="#/more/criteria">Criteria</a>
+    <a class="nl ul" href="#/more/portfolio">Portfolio</a>
+    <a class="nl ul" href="#/more/team">Team</a>
+    <a class="nl ul" href="#/more/news">News</a>
     <a class="btn" href="#/contact">Contact ''' + ARRS + '''</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
   </nav>
@@ -78,11 +78,11 @@ reg('navmenu', '''<nav class="nav" aria-label="Primary">
 <div class="mm" id="mm" aria-hidden="true" data-lenis-prevent>
   <ol>
     <li><a href="#/">Home</a></li>
-    <li><a href="#/approach">Approach</a></li>
-    <li><a href="#/criteria">Criteria</a></li>
-    <li><a href="#/portfolio">Portfolio</a></li>
-    <li><a href="#/team">Team</a></li>
-    <li><a href="#/news">News</a></li>
+    <li><a href="#/more/approach">Approach</a></li>
+    <li><a href="#/more/criteria">Criteria</a></li>
+    <li><a href="#/more/portfolio">Portfolio</a></li>
+    <li><a href="#/more/team">Team</a></li>
+    <li><a href="#/more/news">News</a></li>
     <li><a href="#/contact">Contact</a></li>
   </ol>
   <div class="mmf">
@@ -119,7 +119,9 @@ var NEWS=[
 reg('views', r'''/* ================= VIEWS (home only; nav items scroll to sections) ================= */
 var SECS={approach:"story",criteria:"s-criteria",portfolio:"s-portfolio",team:"s-team",news:"s-news",contact:"s-contact"};
 document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var k=a.getAttribute("href").slice(2);if(!SECS[k])return;
-  e.preventDefault();e.stopImmediatePropagation();var el=document.getElementById(SECS[k]);if(!el)return;
+  e.preventDefault();e.stopImmediatePropagation();
+  if(typeof curKey!=="undefined"&&curKey!=="home"){navByClick=true;location.hash="#/";(function wait(n){if(curKey==="home"&&!busy){setTimeout(function(){var el=document.getElementById(SECS[k]);if(!el)return;var t=el.parentElement&&el.parentElement.classList.contains("pin-spacer")?el.parentElement:el;var y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-(k==="approach"?0:64));if(lenis)lenis.scrollTo(y,{duration:1.4});else window.scrollTo(0,y)},350);return}if(n<200)setTimeout(function(){wait(n+1)},50)})(0);return}
+  var el=document.getElementById(SECS[k]);if(!el)return;
   var inMenu=document.body.classList.contains("menu-open");if(inMenu)closeMenu();
   function jump(){var t=el.parentElement&&el.parentElement.classList.contains("pin-spacer")?el.parentElement:el;var y=Math.max(0,t.getBoundingClientRect().top+window.scrollY-(k==="approach"?0:64));
     if(lenis)lenis.scrollTo(y,{duration:1.5});else window.scrollTo({top:y,behavior:RM?"auto":"smooth"})}
@@ -208,126 +210,59 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Office</span>300 West Main Street, Suite 201<br>Charlottesville, VA 22903</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="tel:'+TEL+'">'+TELT+'</a><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">Approach</a><br><a class="ul" href="#/criteria">Criteria</a><br><a class="ul" href="#/portfolio">Portfolio</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/more/approach">Approach</a><br><a class="ul" href="#/more/criteria">Criteria</a><br><a class="ul" href="#/more/portfolio">Portfolio</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/news">News</a></div>'+
    '<div class="c"><span class="lab">Focus</span>Founder and family owned businesses in the lower middle market, $20 million to $100 million.</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 640 50" aria-hidden="true"><text x="320" y="41" text-anchor="middle" style="font-family:\'Josefin Sans\',sans-serif;font-weight:600;font-size:46px;letter-spacing:.14em">WACONA CAPITAL</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Wacona Capital, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
-function route(h){return {k:"home",v:vHome,t:"Wacona Capital — Lower middle-market private equity, Charlottesville, Virginia",x:"Home"}}''')
+var MORE={approach:"Approach",criteria:"Criteria",portfolio:"Portfolio",team:"Team",news:"News"};
+function vMore(k){
+  return '<section class="ph-head more" data-field data-theme="dark">'+
+   '<span class="lab eyebrow">Concept preview</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+MORE[k]+', <em>built out.</em></h1>'+
+   '<p class="intro" data-r>This is a concept for the home page. If you like the direction, I’d build out this page and the rest of the site in the same style, with your team, portfolio and news, and handle the move from your current site. Reply to the email this link came in, and we can take it from there.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/">Back to the home page '+ARR+'</a><a class="more-k ul" href="#/'+k+'">Or keep scrolling the concept</a></div>'+
+  '</section>';
+}
+function route(h){var m=/^#\/more\/([a-z]+)$/.exec(h||"");if(m&&MORE[m[1]]){var k=m[1];return {k:"more-"+k,v:function(){return vMore(k)},t:MORE[k]+" — Wacona Capital",x:MORE[k]}}
+  return {k:"home",v:vHome,t:"Wacona Capital — Lower middle-market private equity, Charlottesville, Virginia",x:"Home"}}''')
 
-# ---------------- hero field: the Blue Ridge at first light, seen from Albemarle County ----------------
-reg('field', r'''/* ================= HERO FIELD: the Blue Ridge at first light, as seen from the farmland west of Charlottesville.
-   Six ridgelines step back into haze (atmospheric perspective), each nearer ridge carrying a painterly canopy of thousands
-   of small leaf dabs lit from the rising sun; valley fog lies in the hollows between them, and a dark hardwood tree line
-   closes the foreground. It moves on its own (the fog drifts, the sun's glow breathes), with no pointer response (CZ). ================= */
+# ---------------- hero field: real photograph (Unsplash, licence allows commercial use without attribution) ----------------
+import base64
+HERO = base64.b64encode(open(os.path.join(K, 'home', 'waconacapital', 'hero.webp'), 'rb').read()).decode()
+reg('field', r"""/* ================= HERO FIELD: a real photograph of the Blue Ridge at sunrise over a sea of valley fog, from
+   Shenandoah National Park (Taylor Wright, unsplash.com/photos/U90aRaMeBjE; source recorded in the dossier). Graded to the
+   firm's forest/sage palette at build time, drawn cover-fit with a slow Ken Burns drift and a softly breathing sun.
+   No pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oBack=null,oFront=null,oNear=null,oFogA=null,oFogB=null;
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},img=new Image(),ok=false;
+  var FX=.55,FY=.39;
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  function noise(seed){var R=rng(seed),P=[];for(var i=0;i<1024;i++)P.push(R());return function(x){var i=Math.floor(x),f=x-i,u=f*f*(3-2*f);return P[i&1023]*(1-u)+P[(i+1)&1023]*u}}
-  function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]}
-  function rgb(a,al){return "rgba("+(a[0]|0)+","+(a[1]|0)+","+(a[2]|0)+","+(al==null?1:al)+")"}
-  function geo(){
-    var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var hz=mob?h*.2:h*.56,U=mob?h*.44:Math.max(h,w*.62);
-    return {mob:mob,side:side,cw:cw,hz:hz,U:U,sx:mob?w*.68:side+cw*.74,sy:hz-U*.035,R:U*(mob?.03:.022)};
-  }
-  function mk(W){var o=document.createElement("canvas");o.width=Math.round((W||w)*dpr);o.height=Math.round(h*dpr);var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  /* ridge k: [base y (U units from horizon), amplitude, wavelength (px), seed, far colour, near-foot colour] */
-  var HAZE=[201,196,170],LAY=[
-    [-.03,.1,380,11,[134,153,156],[182,185,166]],
-    [ .01,.085,300,23,[104,128,130],[160,166,148]],
-    [ .05,.1,330,37,[80,105,103],[132,142,124]],
-    [ .095,.09,260,41,[57,81,74],[104,116,98]],
-    [ .15,.11,300,53,[38,58,50],[70,84,68]],
-    [ .215,.09,240,67,[24,38,32],[42,54,44]]
-  ];
-  function ridgeY(k,x){var L=LAY[k],n=L[6],U=G.U,wl=L[2]*(G.mob?.7:1);
-    var v=.55*n(x/wl)+.3*n(x/(wl*.45)+40)+.15*n(x/(wl*.18)+90);
-    /* the Blue Ridge reads as long, soft-shouldered ridges: flatten the tops a little */
-    v=Math.pow(v,1.25);return G.hz+L[0]*U-L[1]*U*v}
-  function build(){
-    var U=G.U,hz=G.hz,A=mk(),g=A[1];oSky=A[0];
-    LAY.forEach(function(L){L[6]=noise(L[3])});
-    /* dawn sky: cool slate-green overhead, warming through sage to a pale gold band on the horizon */
-    var sky=g.createLinearGradient(0,0,0,hz);
-    sky.addColorStop(0,"#16252a");sky.addColorStop(.35,"#2c4447");sky.addColorStop(.62,"#62766c");sky.addColorStop(.82,"#b3ae8c");sky.addColorStop(.95,"#e6cf9e");sky.addColorStop(1,"#f0dcae");
-    g.fillStyle=sky;g.fillRect(0,0,w,h);
-    var gl=g.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,U*.75);gl.addColorStop(0,"rgba(255,232,180,.55)");gl.addColorStop(.25,"rgba(240,206,150,.22)");gl.addColorStop(1,"rgba(240,206,150,0)");
-    g.fillStyle=gl;g.fillRect(0,0,w,h);
-    /* long thin clouds lit from beneath */
-    var R=rng(7);for(var k=0;k<(G.mob?6:12);k++){var cy=hz-U*(.06+R()*.3),cx=R()*w,cwid=w*(.1+R()*.22),ch=U*(.004+R()*.008),near=1-Math.min(1,Math.abs(cx-G.sx)/(w*.6)),a=.05+.16*near*(1-(hz-cy)/(U*.4));
-      g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(246,218,170,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(246,218,170,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
-    oBack=paint(0,3);oFront=paint(3,6);
-    /* the foreground: a dark hardwood tree line with a few tall pines, rim-lit on the sun side, above a sloping meadow */
-    var NC=mk();oNear=NC[0];var tg=NC[1],Rt=rng(91),base=hz+U*.265,tl=[];
-    for(var x=-20;x<w+30;){var r=U*(.016+Rt()*.02),pine=Rt()<.12;tl.push([x,base-U*(.01+Rt()*.026)-r*.6,r,pine]);x+=r*(pine?.8:1.25)}
-    var mg=tg.createLinearGradient(0,base,0,h);mg.addColorStop(0,"#1a2820");mg.addColorStop(.35,"#16231c");mg.addColorStop(1,"#0f1813");tg.fillStyle=mg;tg.fillRect(0,base,w,h-base+2);
-    /* meadow: sun-warmed slope with mown bands curving toward the light, and fine grass strokes */
-    tg.save();var ml=tg.createRadialGradient(G.sx,base,0,G.sx,base,w*.6);ml.addColorStop(0,"rgba(196,176,118,.22)");ml.addColorStop(1,"rgba(196,176,118,0)");tg.fillStyle=ml;tg.fillRect(0,base,w,h-base+2);
-    for(var b2=0;b2<9;b2++){var by=base+(h-base)*(.08+b2*.11);tg.strokeStyle="rgba(150,160,110,"+(.035+.012*(b2%2)).toFixed(3)+")";tg.lineWidth=(h-base)*.035;tg.beginPath();tg.moveTo(-10,by+(h-base)*.08);tg.quadraticCurveTo(w*.5,by-(h-base)*.05,w+10,by+(h-base)*.02);tg.stroke()}
-    var Rg=rng(31);tg.lineCap="round";for(var q=0;q<(G.mob?260:620);q++){var gx=Rg()*w,gb=base+(h-base)*(.15+Rg()*.9),gh=U*(.008+Rg()*.02)*(.5+(gb-base)/(h-base)),lean=(Rg()-.5)*gh*.7,lit=Math.max(0,1-Math.abs(gx-G.sx)/(w*.6));
-      tg.strokeStyle=Rg()<.7?"rgba(8,14,10,.75)":"rgba(206,186,126,"+(.08+.2*lit).toFixed(3)+")";tg.lineWidth=.6+Rg()*.8;tg.beginPath();tg.moveTo(gx,gb);tg.quadraticCurveTo(gx+lean*.3,gb-gh*.6,gx+lean,gb-gh);tg.stroke()}
-    var sh=tg.createLinearGradient(0,base,0,base+U*.03);sh.addColorStop(0,"rgba(8,14,10,.8)");sh.addColorStop(1,"rgba(8,14,10,0)");tg.fillStyle=sh;tg.fillRect(0,base,w,U*.03);
-    tg.restore();
-    /* split-rail fence along the meadow, right of the text */
-    var fx0=G.mob?w*.05:G.side+G.cw*.48,fx1=w+20,fy0=base+(h-base)*.42,fy1=base+(h-base)*.3;tg.strokeStyle="#0b130f";tg.lineCap="round";
-    for(var fp=fx0;fp<fx1;fp+=U*.09){var tt=(fp-fx0)/(fx1-fx0),py=fy0+(fy1-fy0)*tt,ph=U*.05*(1-tt*.3);tg.lineWidth=Math.max(1.5,U*.005);tg.beginPath();tg.moveTo(fp,py);tg.lineTo(fp,py-ph);tg.stroke();
-      if(fp+U*.09<fx1){var nx=fp+U*.09,ny=fy0+(fy1-fy0)*((nx-fx0)/(fx1-fx0)),nh=U*.05*(1-((nx-fx0)/(fx1-fx0))*.3);tg.lineWidth=Math.max(1.2,U*.0035);[.35,.75].forEach(function(r){tg.beginPath();tg.moveTo(fp,py-ph*r);tg.lineTo(nx,ny-nh*r+U*.004);tg.stroke()})}}
-    tg.fillStyle="#0d1612";
-    tl.forEach(function(t){if(t[3]){tg.beginPath();tg.moveTo(t[0],t[1]-t[2]*2.4);tg.lineTo(t[0]+t[2]*.7,base+2);tg.lineTo(t[0]-t[2]*.7,base+2);tg.closePath();tg.fill();return}
-      for(var q=0;q<22;q++){var an=Rt()*6.283,rd=Math.sqrt(Rt())*t[2]*.85;tg.beginPath();tg.arc(t[0]+Math.cos(an)*rd,t[1]+Math.sin(an)*rd*.75,t[2]*(.18+Rt()*.26),0,Math.PI*2);tg.fill()}
-      tg.fillRect(t[0]-t[2]*.8,t[1]+t[2]*.2,t[2]*1.6,base-t[1]+2)});
-    /* the sun warms the crowns facing it */
-    tg.save();tg.globalCompositeOperation="source-atop";var tw=tg.createRadialGradient(G.sx,base-U*.03,0,G.sx,base-U*.03,w*.45);tw.addColorStop(0,"rgba(214,190,128,.2)");tw.addColorStop(1,"rgba(214,190,128,0)");tg.fillStyle=tw;tg.fillRect(0,base-U*.12,w,U*.14);tg.restore();
-    /* low fog sheets (drawn wider than the screen so they can drift) */
-    oFogA=fog(hz+U*.08,U*.05,17,.45);oFogB=fog(hz+U*.215,U*.05,29,.36);
-  }
-  function paint(k0,k1){
-    var A=mk(),g=A[1],U=G.U,hz=G.hz,Rd=rng(100+k0);
-    for(var k=k0;k<k1;k++){var L=LAY[k],top=hz+L[0]*U-L[1]*U,foot=hz+L[0]*U+U*.08,step=2,T=mk(),lg=T[1];
-      function shape(){lg.beginPath();lg.moveTo(-4,h+2);for(var x=-4;x<=w+6;x+=step)lg.lineTo(x,ridgeY(k,x));lg.lineTo(w+6,h+2);lg.closePath()}
-      var grd=lg.createLinearGradient(0,top,0,foot);grd.addColorStop(0,rgb(L[4]));grd.addColorStop(.55,rgb(mix(L[4],L[5],.45)));grd.addColorStop(1,rgb(L[5]));
-      lg.fillStyle=grd;shape();lg.fill();
-      lg.save();lg.globalCompositeOperation="source-atop";
-      /* canopy: soft leaf dabs on the nearer ridges, larger with nearness; tops catch the sun */
-      if(k>=2){var n=k-1,sz=.7+n*.55,dens=G.mob?.6:1;
-        for(var x3=0;x3<w;x3+=3/dens){var ry=ridgeY(k,x3),dep=U*.07;for(var j=0;j<2+n;j++){var yy=ry+Math.pow(Rd(),1.5)*dep,dl=(yy-ry)/dep,s=sz*(1+Rd()*1.2),v=(Rd()-.5)*.09;
-          var col=mix(L[4],L[5],dl*.45);col=[col[0]*(1+v),col[1]*(1+v),col[2]*(1+v)];lg.fillStyle=rgb(col,.7);lg.beginPath();lg.ellipse(x3+(Rd()-.5)*3,yy,s*1.3,s,0,0,Math.PI*2);lg.fill();
-          if(Rd()<.25&&dl<.4){var near=Math.max(0,1-Math.abs(x3-G.sx)/(w*.6));lg.fillStyle="rgba(232,208,156,"+((.03+.1*near)*(1-dl)).toFixed(3)+")";lg.beginPath();lg.ellipse(x3+s*.3,yy-s*.4,s*.8,s*.45,0,0,Math.PI*2);lg.fill()}}}
-        /* mottling: large soft patches of shade and light, so each ridge reads as forested terrain, not a cut-out */
-        for(var f=0;f<(G.mob?14:28);f++){var fx=Rd()*w,fy=ridgeY(k,fx)+U*.01+Rd()*U*.06,fr=U*(.03+Rd()*.05),dk=Rd()<.6,mg2=lg.createRadialGradient(fx,fy,0,fx,fy,fr);mg2.addColorStop(0,dk?"rgba(10,20,16,.16)":"rgba(220,206,160,.07)");mg2.addColorStop(1,"rgba(10,20,16,0)");lg.fillStyle=mg2;lg.save();lg.translate(fx,fy);lg.scale(1.8,.6);lg.translate(-fx,-fy);lg.fillRect(fx-fr,fy-fr,fr*2,fr*2);lg.restore()}}
-      /* sunlight across the ridge (fading with nearness), and haze lifting off its foot */
-      var sw=lg.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,U*.95);sw.addColorStop(0,"rgba(255,222,164,"+(.34-.05*k).toFixed(3)+")");sw.addColorStop(1,"rgba(255,222,164,0)");lg.fillStyle=sw;lg.fillRect(0,0,w,h);
-      var hzG=lg.createLinearGradient(0,foot-U*.06,0,foot+U*.02);hzG.addColorStop(0,rgb(HAZE,0));hzG.addColorStop(1,rgb(HAZE,.42-.06*k));lg.fillStyle=hzG;lg.fillRect(0,foot-U*.06,w,h);
-      lg.restore();
-      g.setTransform(1,0,0,1,0,0);g.drawImage(T[0],0,0);g.setTransform(dpr,0,0,dpr,0,0)}
-    return A[0];
-  }
-  function fog(y,th,seed,al){var W=w*1.3,A=mk(W),g=A[1],R=rng(seed);
-    for(var i=0;i<(G.mob?18:36);i++){var x=R()*W,yy=y+(R()-.5)*th,rw=w*(.08+R()*.16),rh=th*(.25+R()*.4);g.save();g.translate(x,yy);g.scale(1,rh/rw);var fg=g.createRadialGradient(0,0,0,0,0,rw);fg.addColorStop(0,"rgba(214,212,192,"+(al*(.35+R()*.4)).toFixed(3)+")");fg.addColorStop(1,"rgba(214,212,192,0)");g.fillStyle=fg;g.beginPath();g.arc(0,0,rw,0,Math.PI*2);g.fill();g.restore()}
-    return A[0]}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  img.onload=function(){ok=true;frame(true)};img.src="data:image/webp;base64,__HERO__";
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?20:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    if(!ok)return;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* the sun, just clearing the far ridge; its glow breathes slowly and it settles a touch as you scroll */
-    var pulse=.9+.1*Math.sin(t*.5),sx=G.sx,sy=G.sy+SP.v*G.U*.03;
-    c.globalCompositeOperation="lighter";
-    var hg=c.createRadialGradient(sx,sy,G.R*.5,sx,sy,G.R*9);hg.addColorStop(0,"rgba(255,222,160,"+(.32*pulse).toFixed(3)+")");hg.addColorStop(1,"rgba(255,200,130,0)");c.fillStyle=hg;c.fillRect(sx-G.R*9,sy-G.R*9,G.R*18,G.R*18);
+    var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
+    /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(w/iw,H/ih)*(1.04+.05*k)*(1+.03*SP.v);
+    var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
+    var x=w*(mob?.5:.62)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.012),y=H*.42-fy+SP.v*H*.04;
+    x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
+    c.drawImage(img,x,y,dw,dh);
+    /* the sun breathes */
+    var sx=x+fx,sy=y+fy,R=Math.min(w,H)*.12,pulse=.85+.15*Math.sin(t*.5);
+    c.globalCompositeOperation="lighter";var g=c.createRadialGradient(sx,sy,0,sx,sy,R);g.addColorStop(0,"rgba(255,236,190,"+(.1*pulse).toFixed(3)+")");g.addColorStop(1,"rgba(255,226,170,0)");c.fillStyle=g;c.fillRect(sx-R,sy-R,R*2,R*2);
     c.globalCompositeOperation="source-over";
-    var dg=c.createRadialGradient(sx,sy-G.R*.2,0,sx,sy,G.R);dg.addColorStop(0,"#fff8e4");dg.addColorStop(.7,"#ffeab8");dg.addColorStop(1,"#f6d58e");c.fillStyle=dg;c.beginPath();c.arc(sx,sy,G.R,0,Math.PI*2);c.fill();
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oBack,0,0);
-    var dA=RM?0:Math.sin(t*.035)*w*.06-w*.15,dB=RM?0:Math.sin(t*.025+2)*w*.08-w*.15;
-    c.drawImage(oFogA,dA*dpr,0);
-    c.drawImage(oFront,0,0);
-    c.globalAlpha=e*.85;c.drawImage(oFogB,dB*dpr,0);c.globalAlpha=e;c.drawImage(oNear,0,0);c.globalAlpha=1;
+    /* fade into the page ink below the photo on phones */
+    if(mob){var fg=c.createLinearGradient(0,H*.7,0,H);fg.addColorStop(0,"rgba(18,26,22,0)");fg.addColorStop(1,"rgba(18,26,22,1)");c.fillStyle=fg;c.fillRect(0,H*.7-1,w,H*.3+2);c.fillStyle="#121a16";c.fillRect(0,H-1,w,h-H+2)}
+    c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
@@ -335,8 +270,8 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.sx,G.sy]:[w/2,h/2]}};
-})();''')
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return [w*.62,h*.42]}};
+})();""".replace("__HERO__", HERO))
 
 # ---------------- story: an engraved Blue Ridge panorama with a trail: partner / plan / grow ----------------
 reg('story', r'''/* the story scene: the same ridges as the hero, engraved in fine line. A faint ghost of the whole view is always there.
@@ -533,6 +468,10 @@ EXTRA = r'''
 .tm1 details[open] summary::after{transform:rotate(45deg)}
 .tm1 details p{font-size:15px;line-height:1.65;color:var(--stone);margin:0 0 14px;max-width:62ch}
 @media (max-width:860px){.tm1{grid-template-columns:1fr;row-gap:28px}.kv>div{grid-template-columns:1fr;gap:4px}}
+.more .intro{font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:rgba(var(--boner),.86)}
+.more .act{display:flex;flex-wrap:wrap;align-items:center;gap:22px 30px;margin-top:clamp(30px,3.4vw,48px)}
+.more .more-k{font:600 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(var(--boner),.78);padding:12px 0}
+.more .more-k:hover{color:var(--accL)}
 .cta .cx{margin-top:clamp(56px,6vw,96px);padding-top:clamp(28px,3vw,40px);border-top:1px solid var(--hairD)}
 .cta .addr h3{margin-top:12px}
 .cta>.wrap>.cx{grid-column:1/-1}

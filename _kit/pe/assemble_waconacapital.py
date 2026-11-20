@@ -260,6 +260,9 @@ var field=(function(){
     var sx=x+fx,sy=y+fy,R=Math.min(w,H)*.12,pulse=.85+.15*Math.sin(t*.5);
     c.globalCompositeOperation="lighter";var g=c.createRadialGradient(sx,sy,0,sx,sy,R);g.addColorStop(0,"rgba(255,236,190,"+(.1*pulse).toFixed(3)+")");g.addColorStop(1,"rgba(255,226,170,0)");c.fillStyle=g;c.fillRect(sx-R,sy-R,R*2,R*2);
     c.globalCompositeOperation="source-over";
+    /* legibility: a dark forest scrim from the left behind the copy, and a band behind the header; the sunrise stays warm on the right */
+    if(!mob){var lg=c.createLinearGradient(0,0,w,0);lg.addColorStop(0,"rgba(14,22,18,.9)");lg.addColorStop(.3,"rgba(14,22,18,.78)");lg.addColorStop(.48,"rgba(14,22,18,.48)");lg.addColorStop(.62,"rgba(14,22,18,.14)");lg.addColorStop(.75,"rgba(14,22,18,0)");c.fillStyle=lg;c.fillRect(0,0,w,H)}
+    var tb=c.createLinearGradient(0,0,0,mob?120:170);tb.addColorStop(0,"rgba(14,22,18,.78)");tb.addColorStop(1,"rgba(14,22,18,0)");c.fillStyle=tb;c.fillRect(0,0,w,mob?120:170);
     /* fade into the page ink below the photo on phones */
     if(mob){var fg=c.createLinearGradient(0,H*.7,0,H);fg.addColorStop(0,"rgba(18,26,22,0)");fg.addColorStop(1,"rgba(18,26,22,1)");c.fillStyle=fg;c.fillRect(0,H*.7-1,w,H*.3+2);c.fillStyle="#121a16";c.fillRect(0,H-1,w,h-H+2)}
     c.globalAlpha=1;

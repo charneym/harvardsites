@@ -41,7 +41,7 @@ function vHome(){
 
   '<section class="sec light" id="criteria" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Investitionskriterien</span><h2 class="d2 split">Der kleinere Mittelstand, <em>im Fokus.</em></h2></div><p data-r>Als unabhängige Beteiligungsgesellschaft investieren wir über Mehrheitsbeteiligungen in Unternehmen mit Geschäftsaktivitäten bzw. Know-how in Deutschland, Österreich und der Schweiz.</p></div>'+
-   '<dl class="facts">'+CRIT.map(function(a){return '<div><dt class="lab">'+esc(a[0])+'</dt><dd>'+esc(a[1])+'</dd></div>'}).join("")+'</dl>'+
+   '<dl class="facts kgrid">'+CRIT.map(function(a){return '<div><dt class="lab">'+esc(a[0])+'</dt><dd>'+esc(a[1])+'</dd></div>'}).join("")+'</dl>'+
   '</div></section>'+
 
   '<section class="sec dark" id="portfolio" data-theme="dark"><div class="wrap">'+
@@ -79,24 +79,39 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Büro</span>Rathausplatz 12<br>61348 Bad Homburg v.d.H.</div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="mailto:'+MAIL+'">E-Mail</a><br><a class="ul" href="tel:'+TELH+'">Telefon</a></div>'+
-   '<div class="c"><span class="lab">Übersicht</span><a class="ul" href="#/approach">Ansatz</a><br><a class="ul" href="#/criteria">Kriterien</a><br><a class="ul" href="#/portfolio">Portfolio</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">Aktuelles</a></div>'+
+   '<div class="c"><span class="lab">Übersicht</span><a class="ul" href="#/more/approach">Ansatz</a><br><a class="ul" href="#/more/criteria">Kriterien</a><br><a class="ul" href="#/more/portfolio">Portfolio</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/news">Aktuelles</a></div>'+
    '<div class="c"><span class="lab">Nachhaltigkeit</span><a class="ul" href="https://finatem.com/esg/" target="_blank" rel="noopener">ESG-Offenlegungen</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Cinzel\',Georgia,serif;font-weight:400;font-size:58px;letter-spacing:.2em">FINATEM</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Finatem Beteiligungsgesellschaft</span><span class="lab">Konzept-Website</span><a class="lab ul" href="#main" id="toTop">Nach oben ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
+/* ================= BUILD-OUT PAGES (HOME_BRIEF update 2026-11-20): every nav item but Contact opens #/more/<item> ================= */
+var MORE={approach:["Ansatz","approach"],criteria:["Kriterien","criteria"],portfolio:["Portfolio","portfolio"],team:["Team","team"],news:["Aktuelles","news"]};
+function vMore(id){var m=MORE[id];
+  return '<section class="ph-head more" data-field data-theme="dark"><span class="lab eyebrow">Konzeptvorschau</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+esc(m[0])+', <em>ausgearbeitet.</em></h1>'+
+   '<p class="lede intro" data-r>Dies ist ein Konzept für die Startseite. Wenn Ihnen die Richtung gefällt, würde ich diese Seite und den Rest der Website im selben Stil ausarbeiten, mit Ihrem Team, Ihrem Portfolio und Ihren Meldungen, und den Umzug von Ihrer bisherigen Website übernehmen. Antworten Sie einfach auf die E-Mail, mit der Sie diesen Link erhalten haben, dann besprechen wir alles Weitere.</p>'+
+   '<div class="act more-act" data-r><a class="btn solid" href="#/">Zurück zur Startseite '+ARR+'</a></div>'+
+   '<a class="ul more-lk" data-r href="#/'+m[1]+'">Oder das Konzept weiter ansehen</a></section>';
+}
+
+/* ================= ROUTER: #/ is the home page; #/<section> scrolls to that section; #/more/<item> is a build-out page ================= */
 var SECS={about:"about",approach:"story",criteria:"criteria",portfolio:"portfolio",team:"team",news:"news",contact:"contact"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(p[0]==="more"&&MORE[p[1]])return {k:"more-"+p[1],v:function(){return vMore(p[1])},t:MORE[p[1]][0]+" — Finatem",x:MORE[p[1]][0]};
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Finatem — Eigenkapital für den Mittelstand, Bad Homburg v.d.H.",x:"Start"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
-addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+/* on the home page, section links scroll in place */
+addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a||curKey!=="home")return;var r=route(a.getAttribute("href"));if(r.k!=="home"||!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
-  try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+  try{history.replaceState(null,"",location.hash==="#/"?"#/":"#/")}catch(x){}prevHash="#/"});
+/* arriving at a section from a build-out page (or a cold link): wait for the home view, then jump to the section */
+function secAfter(sec){var n=0;(function wait(){if(++n>80)return;var lk=document.documentElement.style.overflow==="hidden"||curKey!=="home"||busy||!document.getElementById(sec);if(lk){setTimeout(wait,120);return}
+  setTimeout(function(){secGo(sec,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},250)})()}
+addEventListener("hashchange",function(){var r=route(location.hash);if(curKey!=="home"&&r.k==="home"&&r.sec)secAfter(r.sec)});
+(function(){var r=route(location.hash);if(r.k==="home"&&r.sec)secAfter(r.sec)})();

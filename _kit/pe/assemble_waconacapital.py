@@ -208,12 +208,12 @@ function cta(){
 }
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
-   '<div class="c"><span class="lab">Office</span>300 West Main Street, Suite 201<br>Charlottesville, VA 22903</div>'+
-   '<div class="c"><span class="lab">Contact</span><a class="ul" href="tel:'+TEL+'">'+TELT+'</a><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/more/approach">Approach</a><br><a class="ul" href="#/more/criteria">Criteria</a><br><a class="ul" href="#/more/portfolio">Portfolio</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/news">News</a></div>'+
-   '<div class="c"><span class="lab">Focus</span>Founder and family owned businesses in the lower middle market, $20 million to $100 million.</div>'+
-  '</div><svg class="bigsvg" viewBox="0 0 640 50" aria-hidden="true"><text x="320" y="41" text-anchor="middle" style="font-family:\'Josefin Sans\',sans-serif;font-weight:600;font-size:46px;letter-spacing:.14em">WACONA CAPITAL</text></svg>'+
-  '<div class="legal"><span class="lab">© 2026 Wacona Capital, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+   '<div class="c" data-r><span class="lab">Office</span>300 West Main Street, Suite 201<br>Charlottesville, VA 22903</div>'+
+   '<div class="c" data-r><span class="lab">Contact</span><a class="ul" href="tel:'+TEL+'">'+TELT+'</a><br><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
+   '<div class="c" data-r><span class="lab">Explore</span><a class="ul" href="#/more/approach">Approach</a><br><a class="ul" href="#/more/criteria">Criteria</a><br><a class="ul" href="#/more/portfolio">Portfolio</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/news">News</a></div>'+
+   '<div class="c" data-r><span class="lab">Focus</span>Founder and family owned businesses in the lower middle market, $20 million to $100 million.</div>'+
+  '</div><svg class="bigsvg" data-r viewBox="0 0 640 50" aria-hidden="true"><text x="320" y="41" text-anchor="middle" style="font-family:\'Josefin Sans\',sans-serif;font-weight:600;font-size:46px;letter-spacing:.14em">WACONA CAPITAL</text></svg>'+
+  '<div class="legal" data-r><span class="lab">© 2026 Wacona Capital, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 var MORE={approach:"Approach",criteria:"Criteria",portfolio:"Portfolio",team:"Team",news:"News"};
 function vMore(k){
@@ -222,7 +222,7 @@ function vMore(k){
    '<h1 class="d1" id="pageTitle" tabindex="-1">'+MORE[k]+', <em>built out.</em></h1>'+
    '<p class="intro" data-r>This is a concept for the home page. If you like the direction, I’d build out this page and the rest of the site in the same style, with your team, portfolio and news, and handle the move from your current site. Reply to the email this link came in, and we can take it from there.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/">Back to the home page '+ARR+'</a><a class="more-k ul" href="#/'+k+'">Or keep scrolling the concept</a></div>'+
-  '</section>';
+  '</section>'+cta();
 }
 function route(h){var m=/^#\/more\/([a-z]+)$/.exec(h||"");if(m&&MORE[m[1]]){var k=m[1];return {k:"more-"+k,v:function(){return vMore(k)},t:MORE[k]+" — Wacona Capital",x:MORE[k]}}
   return {k:"home",v:vHome,t:"Wacona Capital — Lower middle-market private equity, Charlottesville, Virginia",x:"Home"}}''')

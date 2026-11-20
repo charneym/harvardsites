@@ -1054,16 +1054,20 @@ var field=(function(){
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   var BG="#0b1516";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
+  function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
+  /* DO: the open area right of the H1; its centre is held at 62-75% of the width and the subject is sized to fit with room both sides */
+  var HR=0;function OA(){var L=Math.max(HR+Math.max(56,w*.035),w*.47),R=w-Math.max(48,w*.045),cx=Math.min(Math.max((L+R)/2,w*.62),w*.75);return {cx:cx,half:Math.min(cx-L,R-cx)}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the skin block's centre sits at about (0.5, 0.5) of the render */
-    var ih=mob?Math.min(U*1.04,(U-124)/.8):Math.min(h*.98,cw*.8),iw=ih*(1200/1300);
-    var kx=mob?w*.5:side+cw*.79,ky=mob?(108+U-12)/2:h*.585; /* QA: phones get a smaller core set lower, so its rim clears the header by ~30px */  /* rev2: the core sits lower, so its top rim is not crowded by the header */
+    var A=mob?null:OA();  /* the core spans ~76% of the render's width (0.11-0.87) and 92% of its height */
+    var ih=mob?Math.min(U*1.04,(U-124)/.8):Math.min(h*.86,2*A.half/(.76*(1200/1300))),iw=ih*(1200/1300);
+    var kx=mob?w*.5:A.cx+iw*.01,ky=mob?(108+U-12)/2:h*.54; /* QA: phones get a smaller core set lower, so its rim clears the header by ~30px */  /* rev2: the core sits lower, so its top rim is not crowded by the header */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;HR=h1r();cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
@@ -1102,7 +1106,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();setTimeout(size,900);setTimeout(size,2600);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/

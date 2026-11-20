@@ -39,3 +39,7 @@ Home-only concept site (Italian), assembled by _kit/home/fp-equity-partners/asse
 - No photography or imagery anywhere; every page is text on a dated WordPress theme ("fnp4biz", WP 6.2, jQuery migrate).
 - Portfolio page is a long wall of text; the team's emails are hidden behind JavaScript obfuscation and sit on the old fp4biz.com domain.
 - Footer says only "Tutti i diritti riservati" with no year; the theme and assets are still named for the predecessor F&P4BIZ.
+
+## Hero photo (client update 2026-11-20: real photography first)
+- The firm's site has no photography of its own, so the hero uses option (b): Daniel Kirby (@dsk_), "a canal with buildings along it", Navigli, Milan: https://unsplash.com/photos/a-canal-with-buildings-along-it-smCqxgrMeNY. CDN: https://images.unsplash.com/photo-1668784290849-aa5acd24edcd. Unsplash License (free, commercial use, no attribution required). Graded toward the firm's navy: _kit/home/fp-equity-partners/hero.webp. The earlier painted brick-works hero was replaced per the update.
+- Nav items (except Contatti) open Italian build-out pages at #/more/<item> (modello, criteri, portafoglio, team, media).

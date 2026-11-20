@@ -81,24 +81,39 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Sede</span>Via Alberto da Giussano 15<br>20145 Milano</div>'+
    '<div class="c"><span class="lab">Contatti</span><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="mailto:'+MAIL+'">Email</a></div>'+
-   '<div class="c"><span class="lab">Esplora</span><a class="ul" href="#/approach">Il modello</a><br><a class="ul" href="#/criteria">Criteri</a><br><a class="ul" href="#/portfolio">Portafoglio</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">Media</a></div>'+
+   '<div class="c"><span class="lab">Esplora</span><a class="ul" href="#/more/modello">Il modello</a><br><a class="ul" href="#/more/criteri">Criteri</a><br><a class="ul" href="#/more/portafoglio">Portafoglio</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/media">Media</a></div>'+
    '<div class="c"><span class="lab">Network</span>Partner di RTZ,<br>associazione professionale</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Spectral\',Georgia,serif;font-weight:400;font-size:58px;letter-spacing:.01em">F&amp;P EQUITY PARTNERS</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 F&amp;P Equity Partners</span><span class="lab">Sito concept</span><a class="lab ul" href="#main" id="toTop">Torna su ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
-var SECS={about:"about",approach:"story",criteria:"criteria",portfolio:"portfolio",team:"team",news:"news",contact:"contact"};
+/* ================= BUILD-OUT PAGES (client update 2026-11-20): each nav item except Contatti opens #/more/<item> ================= */
+var MORE={modello:["Il modello","sviluppato","modello"],criteri:["Criteri","sviluppati","criteri"],portafoglio:["Portafoglio","sviluppato","portafoglio"],team:["Team","sviluppato","team"],media:["Media","sviluppati","media"]};
+function vMore(id){var m=MORE[id];
+  return '<section class="ph-head more" data-field data-theme="dark"><span class="lab eyebrow">Anteprima del concept</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+esc(m[0])+', <em>'+m[1]+'.</em></h1>'+
+   '<p class="lede intro" data-r>Questo è un concept della home page. Se la direzione vi piace, svilupperei questa pagina e il resto del sito nello stesso stile, con il vostro team, il portafoglio e le news, e mi occuperei del passaggio dal sito attuale. Rispondete all’email con cui avete ricevuto questo link e partiamo da lì.</p>'+
+   '<div class="act more-act" data-r><a class="btn solid" href="#/">Torna alla home page '+ARR+'</a></div>'+
+   '<a class="ul more-lk" data-r href="#/'+m[2]+'">Oppure continua a scorrere il concept</a></section>';
+}
+
+/* ================= ROUTER: #/ is the home page; #/<section> scrolls to that section; #/more/<item> is a build-out page ================= */
+var SECS={about:"about",modello:"story",approach:"story",criteri:"criteria",criteria:"criteria",portafoglio:"portfolio",portfolio:"portfolio",team:"team",media:"news",news:"news",contatti:"contact",contact:"contact"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(p[0]==="more"&&MORE[p[1]])return {k:"more-"+p[1],v:function(){return vMore(p[1])},t:MORE[p[1]][0]+" — F&P Equity Partners",x:MORE[p[1]][0]};
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"F&P Equity Partners — Private equity e club deal, Milano",x:"Home"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
-addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+/* on the home page, section links scroll in place */
+addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a||curKey!=="home")return;var r=route(a.getAttribute("href"));if(r.k!=="home"||!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+/* arriving at a section from a build-out page (or a cold link): wait for the home view, then jump to the section */
+function secAfter(sec){var n=0;(function wait(){if(++n>80)return;var lk=document.documentElement.style.overflow==="hidden"||curKey!=="home"||busy||!document.getElementById(sec);if(lk){setTimeout(wait,120);return}
+  setTimeout(function(){secGo(sec,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},250)})()}
+addEventListener("hashchange",function(){var r=route(location.hash);if(curKey!=="home"&&r.k==="home"&&r.sec)secAfter(r.sec)});
+(function(){var r=route(location.hash);if(r.k==="home"&&r.sec)secAfter(r.sec)})();

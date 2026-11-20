@@ -6,7 +6,7 @@ var MAP="https://www.google.com/maps/search/?api=1&query=161+Madison+Avenue+Suit
 /* investment criteria, from the firm's About Us, Home and Approach pages */
 var CRIT=[["Company size","Profitable U.S. businesses with annual revenue of up to $40 million."],
  ["Investment type","Control investments, in support of management teams."],
- ["Transactions","Buyouts, recapitalizations and growth investments, with equity alignment from our management partners."],
+ ["Transactions","Buyouts, recapitalizations and growth investments."],
  ["Potential","Immediate organic or acquisitive growth potential."],
  ["Partners","Exceptional, experienced managers and operators, invested in their business."],
  ["Industries","Industry agnostic, with a focus on the target industries below."]];

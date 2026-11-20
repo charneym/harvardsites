@@ -236,62 +236,78 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var S=mob?Math.min(h*.36,w*.8):h;
     var hz=S*(mob?.66:.63),lb=S*(mob?.84:.85);
-    var px=mob?w*.6:side+cw*.7,ap=S*(mob?.24:.16);
+    var px=mob?w*.497:w*.688,ap=S*(mob?.284:.16);
     return {mob:mob,side:side,cw:cw,S:S,hz:hz,lb:lb,px:px,ap:ap};
   }
   function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  /* the range: a sum of peaks, the main summit right of centre */
-  function peaks(){var U=G.mob?w*.9:G.cw,px=G.px,H=G.hz-G.ap;
-    return [[px,H,U*.30,U*.25],[px-U*.24,H*.66,U*.2,U*.17],[px+U*.2,H*.74,U*.16,U*.2],[px+U*.42,H*.5,U*.2,U*.25],[px-U*.55,H*.42,U*.28,U*.22],[px-U*.9,H*.34,U*.3,U*.3],[px-U*.08,H*.78,U*.2,U*.12],[px+U*.1,H*.8,U*.1,U*.22],[px-U*.32,H*.52,U*.16,U*.18],[px+U*.3,H*.58,U*.16,U*.14]]}
-  var PK=null;
-  function fr(x){var a=0,f=1/(G.mob?60:110),am=1,k;for(k=0;k<5;k++){a+=am*Math.sin(x*f+k*1.7+Math.sin(x*f*.37+k));f*=2.13;am*=.5}return a}
-  function ridge(x){var m=0,i,p,u,v;for(i=0;i<PK.length;i++){p=PK[i];u=x<p[0]?(p[0]-x)/p[2]:(x-p[0])/p[3];if(u<1){v=p[1]*(.62*Math.pow(1-u,1.55)+.38*Math.pow(1-u,.9)*(1-u));if(v>m)m=v}}
-    return G.hz-m-m*.05*fr(x)-G.S*.012}
+  /* the range: a jagged Beartooth-style massif from control summits and saddles (x as a share of the width,
+     height as a share of the scene), roughened by midpoint displacement into crisp ridgelines */
+  function XF(f){return G.mob?w*(f-.36)/.66:w*f}
+  var CTRL=[[.36,.0,0],[.40,.03,0],[.47,.1,0],[.515,.16,1],[.548,.115,0],[.60,.33,1],[.632,.235,0],[.66,.3,0],[.688,.47,2],[.712,.385,0],[.735,.335,0],[.758,.275,0],[.80,.415,1],[.828,.315,0],[.852,.285,0],[.885,.345,1],[.922,.225,0],[.958,.275,1],[1.0,.165,0],[1.08,.12,0]];
+  var FARC=[[.36,.04],[.45,.17],[.5,.12],[.56,.24],[.62,.19],[.66,.27],[.74,.2],[.78,.29],[.84,.22],[.9,.28],[.95,.2],[1.08,.22]];
+  function md(a,b,r,d,R,out){if(d===0){out.push(b);return}var m=[(a[0]+b[0])/2+(R()-.5)*r*.3,(a[1]+b[1])/2+(R()-.5)*r];md(a,m,r*.55,d-1,R,out);md(m,b,r*.55,d-1,R,out)}
+  function jagged(P,rough,depth,seed,idx){var R=rng(seed),out=[P[0]];if(idx)idx.push(0);for(var i=1;i<P.length;i++){var L=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);md(P[i-1],P[i],L*rough,depth,R,out);if(idx)idx.push(out.length-1)}return out}
   function hill(x){return G.hz-G.S*(.028+.018*(.5+.5*Math.sin(x/(w*.11)+1.7))+.012*(.5+.5*Math.sin(x/(w*.037)+.3)))}
   function spruce(g,x,y,hh){var wd=hh*.2;g.beginPath();g.moveTo(x,y-hh);for(var k=1;k<=6;k++){var yy=y-hh+hh*k/6.4,ww=wd*(.18+.82*k/6);g.lineTo(x+ww,yy);g.lineTo(x+ww*.3,yy-hh*.025)}
     g.lineTo(x+wd*.08,y);g.lineTo(x-wd*.08,y);for(var k2=6;k2>=1;k2--){var yy2=y-hh+hh*k2/6.4,ww2=wd*(.18+.82*k2/6);g.lineTo(x-ww2*.3,yy2-hh*.025);g.lineTo(x-ww2,yy2)}g.closePath();g.fill()}
   function build(){
-    var S=G.S,hz=G.hz,lb=G.lb,x,i,k;PK=peaks();
+    var S=G.S,hz=G.hz,lb=G.lb,x,i,k;
     /* sky: indigo overhead, lavender, then a cream band of alpenglow on the horizon */
     var A=mk(S+2),g=A[1];oSky=A[0];
     var sky=g.createLinearGradient(0,0,0,hz);
     sky.addColorStop(0,"#1b1a4c");sky.addColorStop(.28,"#3a3878");sky.addColorStop(.55,"#7b74a6");sky.addColorStop(.8,"#c7b9c4");sky.addColorStop(1,"#eee3d8");
     g.fillStyle=sky;g.fillRect(0,0,w,S+2);
-    var gl=g.createRadialGradient(G.mob?w*.15:G.side,hz*.92,0,G.mob?w*.15:G.side,hz*.92,w*.6);gl.addColorStop(0,"rgba(246,232,220,.5)");gl.addColorStop(1,"rgba(246,232,220,0)");g.fillStyle=gl;g.fillRect(0,0,w,S+2);
+    var gl=g.createRadialGradient(G.mob?w*.15:G.side,hz*.92,0,G.mob?w*.15:G.side,hz*.92,w*.6);gl.addColorStop(0,"rgba(246,232,220,.22)");gl.addColorStop(1,"rgba(246,232,220,0)");g.fillStyle=gl;g.fillRect(0,0,w,S+2);
     /* the range */
-    var B=mk(S+2),l=B[1];oLand=B[0];
-    var pts=[];for(x=-6;x<=w+6;x+=2)pts.push([x,ridge(x)]);
-    function sil(){l.beginPath();l.moveTo(-6,hz+2);for(var q=0;q<pts.length;q++)l.lineTo(pts[q][0],pts[q][1]);l.lineTo(w+6,hz+2);l.closePath()}
-    sil();var rk=l.createLinearGradient(0,G.ap,0,hz);rk.addColorStop(0,"#8c86a6");rk.addColorStop(.45,"#625d86");rk.addColorStop(1,"#4b4774");l.fillStyle=rk;l.fill();
+    var B=mk(S+2),l=B[1];oLand=B[0];var HS=G.mob?.8:1;
+    function poly(P,close){l.beginPath();l.moveTo(P[0][0],P[0][1]);for(var q=1;q<P.length;q++)l.lineTo(P[q][0],P[q][1]);if(close!==false){l.lineTo(P[P.length-1][0],hz+2);l.lineTo(P[0][0],hz+2);l.closePath()}}
+    /* far range: paler and hazier, behind */
+    var FP=jagged(FARC.map(function(c){return [XF(c[0]),hz-S*c[1]*HS]}),.13,5,7);
+    poly(FP);var fg0=l.createLinearGradient(0,hz-S*.3*HS,0,hz);fg0.addColorStop(0,"#9b93b6");fg0.addColorStop(1,"#b9adc2");l.fillStyle=fg0;l.fill();
+    l.save();poly(FP);l.clip();var Rf0=rng(11),fsl=[];for(x=-10;x<=w+10;x+=w/50)fsl.push([x,hz-S*(.19+.02*Math.sin(x*.013))*HS+(Rf0()-.5)*S*.025]);
+    l.beginPath();l.moveTo(-10,0);fsl.forEach(function(q){l.lineTo(q[0],q[1])});l.lineTo(w+10,0);l.closePath();l.fillStyle="rgba(222,214,230,.75)";l.fill();l.restore();
+    /* main range */
+    var IDX=[],CP=CTRL.map(function(c){return [XF(c[0]),hz-S*c[1]*HS]});CP[0][1]=hz+2;CP[CP.length-1][1]=hz-S*.1*HS;
+    var RG=jagged(CP,.15,5,19,IDX);
+    function sil(){poly(RG)}
+    /* lit west faces: from the saddle before each summit up the ridge to the summit, then down a jagged spur to the valley */
+    var LIT=[],RIM=[];
+    CTRL.forEach(function(c,i){if(!c[2])return;var j=i-1;while(j>0&&!(CTRL[j][1]<CTRL[j-1][1]&&CTRL[j][1]<=CTRL[j+1][1]))j--;
+      var P=CP[i],dp=hz-P[1],sp=jagged([P,[P[0]+dp*.12,P[1]+dp*.42],[P[0]+dp*.3,hz+2]],.16,4,40+i);
+      var L=RG.slice(IDX[j],IDX[i]+1).concat(sp.slice(1));L.push([CP[j][0],hz+2]);LIT.push(L);RIM.push(RG.slice(IDX[j],IDX[i]+1))});
+    var SN=[],Rs=rng(23);for(x=-10;x<=w+10;x+=w/60)SN.push([x,hz-S*(.2+.025*Math.sin(x*.011+1)+.018*Math.sin(x*.031))*HS+(Rs()-.5)*S*.035]);
+    /* couloirs from the notches, ribs of rock from the crest, ledges on the faces: fixed shapes, painted twice (shade, then lit) */
+    var COU=[],RIB=[],LED=[],Rc2=rng(31);
+    CTRL.forEach(function(c,i){if(i>0&&i<CTRL.length-1&&c[1]<CTRL[i-1][1]&&c[1]<=CTRL[i+1][1]){var cx=CP[i][0],top=CP[i][1]+S*.01,len=(hz-top)*(.45+Rc2()*.2),wd=S*.012;
+      COU.push(jagged([[cx-wd,top],[cx+wd*.2+len*.05,top+len*.6],[cx+len*.1,top+len]],.08,3,60+i).concat(jagged([[cx+len*.1,top+len],[cx+wd*.9+len*.06,top+len*.55],[cx+wd,top]],.08,3,80+i).slice(1)))}});
+    for(k=0;k<(G.mob?8:18);k++){var ri=Math.floor(Rc2()*(RG.length-2))+1,r0=RG[ri];if(hz-r0[1]<S*.16)continue;var rl=(hz-r0[1])*(.18+Rc2()*.22),rw=S*(.003+Rc2()*.004),rd=rl*(.25+Rc2()*.3);
+      RIB.push([[r0[0]-rw,r0[1]+1],[r0[0]+rw,r0[1]+1],[r0[0]+rd*.55+rw*.6,r0[1]+rl*.5],[r0[0]+rd,r0[1]+rl]])}
+    /* tongues of snow running down gullies from the snowline */
+    for(k=0;k<(G.mob?5:11);k++){var tx=XF(.5+Rc2()*.52),ty=hz-S*HS*(.2+.025*Math.sin(tx*.011+1))-S*.01,tl=S*HS*(.04+Rc2()*.07),tw=S*(.006+Rc2()*.008),td=tl*(.15+Rc2()*.3);
+      LED.push(jagged([[tx-tw,ty],[tx-tw*.3+td*.5,ty+tl*.55],[tx+td,ty+tl]],.06,2,120+k).concat(jagged([[tx+td,ty+tl],[tx+tw*.5+td*.45,ty+tl*.5],[tx+tw,ty]],.06,2,140+k).slice(1)))}
+    function shape(P){l.beginPath();l.moveTo(P[0][0],P[0][1]);for(var q=1;q<P.length;q++)l.lineTo(P[q][0],P[q][1]);l.closePath();l.fill()}
+    function paint(r0c,r1c,s0c,s1c){
+      var rk=l.createLinearGradient(0,hz-S*.47*HS,0,hz);rk.addColorStop(0,r0c);rk.addColorStop(1,r1c);l.fillStyle=rk;l.fillRect(-10,0,w+20,hz+4);
+      var sn=l.createLinearGradient(0,hz-S*.47*HS,0,hz);sn.addColorStop(0,s0c);sn.addColorStop(1,s1c);
+      l.fillStyle=sn;l.beginPath();l.moveTo(-10,0);SN.forEach(function(q){l.lineTo(q[0],q[1])});l.lineTo(w+10,0);l.closePath();l.fill();
+      COU.forEach(shape);LED.forEach(shape);l.fillStyle=rk;RIB.forEach(shape)}
     l.save();sil();l.clip();
-    /* snow: everything above a ragged snowline, lavender in shade */
-    var R=rng(19),sl=G.ap+(hz-G.ap)*.46;
-    l.beginPath();l.moveTo(-6,0);for(x=-6;x<=w+6;x+=6){var dd=Math.abs(x-G.px)/(G.mob?w:G.cw);l.lineTo(x,sl+dd*(hz-G.ap)*.18+Math.sin(x*.05)*S*.012+(R()-.5)*S*.02)}l.lineTo(w+6,0);l.closePath();
-    var sn=l.createLinearGradient(0,G.ap,0,sl+S*.06);sn.addColorStop(0,"#dcd8ea");sn.addColorStop(1,"#a9a3c4");l.fillStyle=sn;l.fill();
-    /* couloirs: short tapered snow streaks and rock ribs */
-    for(k=0;k<(G.mob?26:60);k++){var sx=G.px+(R()-.5)*(G.mob?w*.9:G.cw*.95),sy=ridge(sx)+S*.012,len=(hz-sy)*(.12+R()*.3),ang=(R()-.5)*.4;
-      var snow=R()<.5;l.strokeStyle=snow?"rgba(226,222,238,"+(.1+R()*.16).toFixed(2)+")":"rgba(74,70,108,"+(.1+R()*.14).toFixed(2)+")";l.lineWidth=.8+R()*1.1;
-      l.beginPath();l.moveTo(sx,sy);l.quadraticCurveTo(sx+Math.sin(ang)*len*.3,sy+len*.5,sx+Math.sin(ang)*len*.5,sy+len);l.stroke()}
-    /* light from the west: smoothed slope of the crest decides lit (rising) and shaded (falling) faces */
-    var sl2=[],W2=G.mob?8:16;for(i=0;i<pts.length;i++){var acc=0,nn=0;for(var j2=Math.max(1,i-W2);j2<Math.min(pts.length-1,i+W2);j2++){acc+=pts[j2+1][1]-pts[j2-1][1];nn++}sl2.push(nn?acc/nn:0)}
-    for(i=0;i<pts.length;i++){var sv=sl2[i],dep=(hz-pts[i][1])*.7,yy=pts[i][1];if(dep<2)continue;
-      if(sv<0){var a1=Math.tanh(-sv/3);l.globalCompositeOperation="screen";var fg=l.createLinearGradient(0,yy,0,yy+dep);fg.addColorStop(0,"rgba(250,228,216,"+(.55*a1).toFixed(3)+")");fg.addColorStop(1,"rgba(250,228,216,0)");l.fillStyle=fg}
-      else{var a2=Math.tanh(sv/3);l.globalCompositeOperation="source-over";var sg=l.createLinearGradient(0,yy,0,yy+dep);sg.addColorStop(0,"rgba(40,38,82,"+(.34*a2).toFixed(3)+")");sg.addColorStop(1,"rgba(40,38,82,"+(.12*a2).toFixed(3)+")");l.fillStyle=sg}
-      l.fillRect(pts[i][0]-1.1,yy,2.3,dep)}
-    l.globalCompositeOperation="source-over";
-    /* spurs: a soft slanted shadow down the east side of the main summits */
-    l.save();l.filter="blur("+(G.mob?3:6)+"px)";PK.slice(0,4).forEach(function(p){var ax=p[0],ay=ridge(ax),dp=hz-ay;l.fillStyle="rgba(36,34,76,.26)";
-      l.beginPath();l.moveTo(ax+2,ay+dp*.04);l.lineTo(ax+dp*.12,ay+dp*.45);l.lineTo(ax+dp*.2,hz);l.lineTo(ax+p[3]*.9,hz);l.lineTo(ax+p[3]*.5,ay+dp*.4);l.closePath();l.fill()});l.restore();
+    paint("#4d4878","#3a3667","#aaa4ca","#8a84b2");
+    l.save();l.beginPath();LIT.forEach(function(L){l.moveTo(L[0][0],L[0][1]);for(var q=1;q<L.length;q++)l.lineTo(L[q][0],L[q][1]);l.closePath()});l.clip();
+    paint("#8c7f9e","#655b88","#f5ece5","#d8cbd8");l.restore();
     /* haze at the foot of the range */
-    var hzG=l.createLinearGradient(0,hz-S*.16,0,hz);hzG.addColorStop(0,"rgba(199,185,196,0)");hzG.addColorStop(1,"rgba(199,185,196,.62)");l.fillStyle=hzG;l.fillRect(0,hz-S*.16,w,S*.16);
+    var hzG=l.createLinearGradient(0,hz-S*.14,0,hz);hzG.addColorStop(0,"rgba(199,185,196,0)");hzG.addColorStop(1,"rgba(199,185,196,.55)");l.fillStyle=hzG;l.fillRect(0,hz-S*.14,w,S*.14);
     l.restore();
-    /* rim light along the crest */
-    l.strokeStyle="rgba(250,236,226,.5)";l.lineWidth=1;l.beginPath();for(i=0;i<pts.length;i++){var dy2=i<pts.length-1?pts[i+1][1]-pts[i][1]:0;if(dy2<-.4)l.lineTo(pts[i][0],pts[i][1]);else l.moveTo(pts[i][0],pts[i][1])}l.stroke();
+    /* a fine rim of alpenglow along the lit crests */
+    l.strokeStyle="rgba(252,240,232,.7)";l.lineWidth=1;l.lineJoin="round";RIM.forEach(function(P){l.beginPath();l.moveTo(P[0][0],P[0][1]);for(var q=1;q<P.length;q++)l.lineTo(P[q][0],P[q][1]);l.stroke()});
     /* forested foothills and the spruce line on the far shore */
     l.beginPath();l.moveTo(-6,hz+2);for(x=-6;x<=w+6;x+=3)l.lineTo(x,hill(x));l.lineTo(w+6,hz+2);l.closePath();var hg=l.createLinearGradient(0,hz-S*.06,0,hz);hg.addColorStop(0,"#34315e");hg.addColorStop(1,"#23214a");l.fillStyle=hg;l.fill();
     var Rt=rng(61);l.fillStyle="#1d1b43";for(k=0;k<(G.mob?90:220);k++){var tx=Rt()*w,ty=hill(tx)+S*.006,th=S*(G.mob?.035:.03)*(.6+Rt()*.8);spruce(l,tx,ty,th)}
     l.fillStyle="#17163a";for(k=0;k<(G.mob?110:260);k++){var ux=Rt()*w,uh=S*(G.mob?.03:.026)*(.5+Rt()*.9);spruce(l,ux,hz+1,uh)}
     l.fillStyle="#17163a";l.fillRect(0,hz-1,w,3);
+    /* the copy column stays on clean sky and water: the land fades out before it (desktop) */
+    if(!G.mob){l.save();l.setTransform(1,0,0,1,0,0);l.globalCompositeOperation="destination-in";var fx0=(G.side+G.cw*.44)*dpr,fx1=(G.side+G.cw*.6)*dpr,fm=l.createLinearGradient(fx0,0,fx1,0);
+      fm.addColorStop(0,"rgba(0,0,0,0)");fm.addColorStop(1,"rgba(0,0,0,1)");l.fillStyle=fm;l.fillRect(0,0,oLand.width,oLand.height);l.restore()}
     /* what the lake mirrors */
     var C=mk(S+2);oRef=C[0];C[1].setTransform(1,0,0,1,0,0);C[1].drawImage(oSky,0,0);C[1].drawImage(oLand,0,0);
     /* the meadow and the split-rail fence in front */
@@ -335,7 +351,7 @@ var field=(function(){
       c.drawImage(oRef,0,Math.round(sy*d),cv.width,Math.round(2*d),Math.round(dx*d),Math.round((hz+y)*d),cv.width,Math.round(2*d)+1)}
     c.setTransform(dpr,0,0,dpr,0,0);
     var lk=c.createLinearGradient(0,hz,0,lb);lk.addColorStop(0,"rgba(19,18,58,.16)");lk.addColorStop(1,"rgba(19,18,58,.5)");c.fillStyle=lk;c.fillRect(0,hz,w,LH+2);
-    c.fillStyle="rgba(238,227,216,.3)";c.fillRect(0,hz+1,w,1);
+    c.fillStyle="rgba(238,227,216,.3)";c.fillRect(G.mob?0:G.side+G.cw*.52,hz+1,w,1);
     /* glints on the water and mist sliding over it */
     for(k=0;k<GL.length;k++){var Gq=GL[k],gy=hz+LH*(.1+.85*Gq[1]),gw=(6+18*Gq[1])*Gq[2],ga=.1+.14*(.5+.5*Math.sin(t*1.1*Gq[2]+Gq[3])),gx=(Gq[0]+Math.sin(t*.2+Gq[3])*12);
       c.fillStyle="rgba(240,230,222,"+ga.toFixed(3)+")";c.fillRect(gx,gy,gw,1)}

@@ -18,8 +18,8 @@ var CAPS=[
  ["Simulation","Decades of high-fidelity thermo-fluid transport models used to design purification and crystal-growth equipment, and Geant4 Monte Carlo simulation of particles passing through matter to optimise detector modules."],
  ["Test and characterisation","X-ray diffraction for crystal orientation, I-V, C-V and Hall measurement, DLTS and PICTS, FTIR and UV-VIS spectroscopy, full radiation-detector characterisation, and Xtalscope wafer-scale defect mapping."]];
 var TEAM=[
- {g:"Leadership and research",name:"Shariar Motakef",title:"Founder and President",sum:"Founded the company as Cape Simulations in 1992; co-author of CapeSym’s papers on halide semiconductor and scintillator detectors."},
- {g:"Leadership and research",name:"Amlan Datta",title:"Principal investigator, NIH SBIR",sum:"Leads the perovskite direct-conversion X-ray detector programme; lead author of CapeSym’s work on TlBr, perovskite and gallium oxide detectors."}];
+ {g:"Leadership and research",name:"Shariar Motakef",title:"Founder and President",sum:"Founded the company as Cape Simulations in 1992; co-author of CapeSym’s detector papers."},
+ {g:"Leadership and research",name:"Amlan Datta",title:"Principal investigator, NIH SBIR",sum:"Leads the perovskite X-ray detector programme; lead author of CapeSym’s detector papers."}];
 /* news and publications: only items with a working link */
 var NEWS=[
  ["10 Sep 2026","Year two of the NIH NIBIB SBIR Phase II award for high-resolution direct-conversion X-ray detectors for low-dose imaging","NIH RePORTER","https://reporter.nih.gov/project-details/11395276"],

@@ -1035,7 +1035,7 @@ A.eventCallback=function(t,cb,pr){if(typeof cb==='function'){var f=cb;cb=functio
 <script>/* LAYOUT FIT (coordinator phase 2, 2026-11-20; client on /finatem/ at ~1920: "too narrow and leave way too much white space ... maybe their text should be smaller on smaller dimensions?")
    Shared by every home-only site (bundled with "buildout" in build.js). Runs in <head> order before the site's script, so the CSS is in place before any text is split.
    1. Wide screens: the content container grows from 1320px to ~1600px between 1500 and 2000px of viewport.
-   2. The large serif statement (.mani) sits on the grid (left edge = grid left, ~2/3 width) and scales with the viewport.
+   2. The large serif statement (.mani) spans the full grid width on desktop and scales with the viewport.
    3. Display type eases at 1024-1366 and on phones; the hero H1 stops growing at ~1700px.
       H1 / stat / section-heading sizes are min(site's own size, shared curve), so a site tuned smaller stays smaller.
       The site's own rules (and their @media variants) are read from the CSSOM and mirrored, so per-site tuning keeps working.
@@ -1073,7 +1073,7 @@ function build(){var css=
   /* 2. the statement on the grid, ~2/3 wide, scaling with the viewport */
   ".mani .mani-in{width:auto;max-width:none;margin-left:0;margin-right:0}"+
   ".mani .txt{font-size:clamp(28px, 2.8vw + 6px, 76px)!important;max-width:none;text-wrap:pretty}"+
-  "@media (min-width:1100px){.mani .txt{max-width:none!important;width:100%;font-size:clamp(32px, 2.5vw + 12px, 68px)!important;line-height:1.16}}"+
+  "@media (min-width:1100px){.mani .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:clamp(48px,6vw,140px);align-items:start}.mani .wrap>*{grid-column:1/-1}.mani .wrap>.mani-in{grid-column:1;grid-row:1}.mani .wrap>.stats{grid-column:2;grid-row:1;margin-top:0!important;grid-template-columns:1fr!important;gap:28px!important;align-self:center}.mani .wrap>.stats:has(.stat:nth-child(4)){grid-template-columns:1fr 1fr!important;column-gap:32px!important}.mani .txt{max-width:none!important;font-size:clamp(30px, 1.6vw + 16px, 50px)!important;line-height:1.2}.mani .stats .v{font-size:clamp(36px,1.9vw + 12px,60px)!important}}"+
   /* 3. gentler display type; the hero H1 caps out */
   minRules("html body .hero h1.d1, html body .hero .hero-h",F.h1,CURVE.h1)+
   minRules("html body .ph-head h1.d1",F.ph,CURVE.h1)+

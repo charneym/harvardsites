@@ -32,8 +32,7 @@ R["root"] = r''':root{
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
 }'''
 
-R["fieldbg"] = r'''.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#0b1016 0%,#2b3d50 22%,#8aa6c0 31%,#3a4535 36%,#121815 52%,#0e1418 100%)}
-@media (min-width:861px){.fieldbg{background:linear-gradient(180deg,#0b1016 0%,#16212c 22%,#3a5068 38%,#8aa6c0 52%,#c9d6e6 60%,#4d5a52 63%,#2a3128 78%,#0e1418 100%)}}
+R["fieldbg"] = r'''.fieldbg{position:fixed;inset:0;z-index:0;background:#0e1418}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}'''
 

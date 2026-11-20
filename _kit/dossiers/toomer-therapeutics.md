@@ -50,3 +50,6 @@ Location: Mount Pleasant, SC 29466 (NIH RePORTER org record; no street address i
   ripples in threes echoing the logo's waves.
 - Story: engraved protein surfaces — E2 docks on ARIH1 and passes ubiquitin to hnRNP E1; hnRNP E1 is degraded; an inhibitor
   blocks the E3–E2 interface; hnRNP E1 is spared.
+
+## Hero rephoto (2026-11-20)
+- The painted Lowcountry salt-marsh scene is removed (client: painted scenes look unprofessional). (a) Toomer's site has only a stock microscope photo and two founder headshots. (b) Real confocal image of cancer cells from the National Cancer Institute on Unsplash, Unsplash License (free, not Unsplash+): https://unsplash.com/photos/L7en7Lb-Ovc (image photo-1576086213369-97a306d36557). Per its caption: human colorectal cancer cells treated with a topoisomerase inhibitor plus an ATR kinase inhibitor (Yves Pommier and Rozenn Josse, NCI, 2014); nuclei blue, gamma-H2AX DNA damage red, replication foci green. It is a generic cancer-cell image, not TNBC and not Toomer's data; no copy claims otherwise. Cropped 16:10, saturation 0.7, 6% blend to the ink #0e1418, shipped as toomer-therapeutics/hero.jpg; slow Ken Burns, cells right, ink scrim over the headline side, phone band.

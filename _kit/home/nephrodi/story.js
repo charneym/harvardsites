@@ -65,9 +65,9 @@ function cellScene(o){
   for(i=0;i<9;i++)g+='<path class="drop flow" id="fw'+i+'" d="'+dropD(0,0,7)+'"/>';
   g+='</g>';
   /* ---- step labels (fade with their step) ---- */
-  g+='<g id="lb1"><text class="a" x="'+(bx+14)+'" y="'+(ry+96)+'">V2 RECEPTOR</text><text class="a" x="'+(bx+14)+'" y="'+(ry-34)+'">VASOPRESSIN</text><text class="a" x="'+(ax+16)+'" y="'+(B-8)+'">AQUAPORIN-2</text></g>';
-  g+='<g id="lb2"><text class="a w" x="'+(bx+14)+'" y="'+(ry+96)+'">MUTATED V2R</text><text class="a w" x="18" y="'+(B+64)+'">DILUTE URINE</text></g>';
-  g+='<g id="lb3"><text class="a" x="'+(bx+14)+'" y="'+(T-24)+'">NDI-5001</text><text class="a" x="'+(ax+16)+'" y="'+(B-8)+'">AQUAPORIN-2</text></g>';
+  g+='<g id="lb1"><text class="a" x="'+(o.mob?756:bx+14)+'" y="'+(ry+96)+'"'+(o.mob?' text-anchor="end"':'')+'>V2 RECEPTOR</text><text class="a" x="'+(o.mob?756:bx+14)+'" y="'+(ry-34)+'"'+(o.mob?' text-anchor="end"':'')+'>VASOPRESSIN</text><text class="a" x="'+(ax+16)+'" y="'+(B-8)+'">AQUAPORIN-2</text></g>';
+  g+='<g id="lb2"><text class="a w" x="'+(o.mob?756:bx+14)+'" y="'+(ry+96)+'"'+(o.mob?' text-anchor="end"':'')+'>MUTATED V2R</text><text class="a w" x="18" y="'+(B+64)+'">DILUTE URINE</text></g>';
+  g+='<g id="lb3"><text class="a" x="'+(o.mob?756:bx+14)+'" y="'+(T-24)+'"'+(o.mob?' text-anchor="end"':'')+'>NDI-5001</text><text class="a" x="'+(ax+16)+'" y="'+(B-8)+'">AQUAPORIN-2</text></g>';
   return g+'</svg>';
 }
 function dropD(x,y,r){return 'M'+x+' '+(y-r*1.5)+'C'+(x+r*.5)+' '+(y-r*.7)+' '+(x+r)+' '+(y-r*.1)+' '+(x+r)+' '+(y+r*.35)+'A'+r+' '+r+' 0 0 1 '+(x-r)+' '+(y+r*.35)+'C'+(x-r)+' '+(y-r*.1)+' '+(x-r*.5)+' '+(y-r*.7)+' '+x+' '+(y-r*1.5)+'Z'}

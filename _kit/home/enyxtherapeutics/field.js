@@ -15,7 +15,7 @@ var field=(function(){
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the skin block's centre sits at about (0.5, 0.5) of the render */
     var ih=mob?Math.min(U*1.04,(U-96)/.8):Math.min(h*.98,cw*.8),iw=ih*(1200/1300);
-    var kx=mob?w*.5:side+cw*.79,ky=mob?(84+U-12)/2:h*.53;
+    var kx=mob?w*.5:side+cw*.79,ky=mob?(84+U-12)/2:h*.585;  /* rev2: the core sits lower, so its top rim is not crowded by the header */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -30,6 +30,12 @@ var field=(function(){
       /* a very slow breath: push in ~4% and drift up a touch over ~44s, eased back and forth */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.04*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012-SP.v*G.ih*.06;
+      /* the ambient teal glow, painted across the WHOLE canvas (never inside the image rect alone), so no
+         edge of the baked render can read as a pasted box (coordinator review, rev2) */
+      var ggx=G.mob?w*.5:G.side+G.cw*.72,ggy=G.mob?G.bh*.42:h*.46,ggr=Math.max(w,h)*.78;
+      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
+      ag.addColorStop(0,"rgba(22,46,48,"+(.55*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(16,33,35,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(11,21,22,0)");
+      c.fillStyle=ag;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       /* a faint glow breathing over the topical film */
       var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*.56,py=y+dh*.42,pr=dw*.3;

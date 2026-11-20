@@ -91,6 +91,13 @@ Screenshot: `_kit/sourcing/v2-sheets/11e-enyxtherapeutics.jpg`.
   load-aligned gyroid network, ambient occlusion, soft shadows, bone-ivory albedo with cortical porosity),
   baked to `hero.webp`; the hero canvas gives it a slow Ken Burns breath and no pointer response (CZ). The
   core sits right of 55% with a teal wash across the headline side, so nothing busy sits behind the H1.
+  **rev2 (coordinator review):** the render is saved with an **alpha channel** and no ground of its own, so
+  only the bone composites onto the page and no edge of the image rect can read as a pasted box; the ambient
+  teal glow that used to sit inside the render is now painted by the live canvas across the whole viewport,
+  and the core is seated lower (ky 0.53 → 0.585 of the viewport height) so its top rim is not crowded by the
+  header. Verified by pixel scan at 1440 (no step at the former seams x≈695 and y≈36) and by eye at 1440,
+  1920 and 390. The 16px strip at the extreme right is the reserved scrollbar gutter (`scrollbar-gutter:
+  stable`, rule CT) and behaves identically on the shipped /phusistherapeutics/.
 - **Story (pinned, DB).** One engraved section of trabecular bone over the blood stream, held for all three
   steps: acetaldehyde accumulates → the struts thin and break → one dose of ENX03 is taken up, ALDH2 appears,
   the acetaldehyde clears and the lattice is rebuilt.

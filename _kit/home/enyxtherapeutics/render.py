@@ -127,24 +127,24 @@ depth = np.clip((T[hi] - 4.2) / 2.0, 0, 1)
 col = col * (1 - .35 * depth[:, None]) + teal * .1 * depth[:, None]
 
 img = np.zeros((N, 3))
-# background: ink with a faint teal glow behind the core
-by_, bx_ = (ys / H).reshape(-1), (xs / W).reshape(-1)
-gl = np.exp(-(((bx_ - .55) / .55) ** 2 + ((by_ - .42) / .5) ** 2))
-bg = np.array([10, 17, 18]) / 255 * (1 - gl[:, None]) + np.array([22, 46, 48]) / 255 * gl[:, None]
-img[:] = bg
-# a soft shadow pool on the (unseen) floor under the core
-fl = np.where(D[:, 1] < 0, (Y0 - CAM[1]) / np.minimum(D[:, 1], -1e-6), 1e9)
-FP = CAM + D * fl[:, None]
-rr = np.sqrt(FP[:, 0] ** 2 + FP[:, 2] ** 2)
-pool = np.clip(1 - (rr - .7) / 1.1, 0, 1) ** 2 * (fl < 1e8)
-img = img * (1 - .55 * pool[:, None])
+# background: EXACTLY the page ink, flat and unlit, so the baked image has no ground of its own and its
+# edges cannot read as a pasted box against the page (coordinator review, rev2). Any glow belongs to the
+# live canvas in field.js, which paints it across the whole viewport instead of inside the image rect.
+INK = np.array([11, 21, 22]) / 255
+img[:] = INK     # only ever seen through antialiased edge pixels; the file is saved with an alpha channel
+# no floor shadow: there is no ground plane in the composition, and any pool would tint the flat
+# ink inside the image rect only, which is the box edge this revision removes.
 img[hi] = col
-# filmic tone
-img = img / (1 + img * .35) * 1.3
-img = np.clip(img, 0, 1) ** (1 / 1.05)
-img = np.clip(img + (rng.random((N, 1)) - .5) * .018, 0, 1)
-im = Image.fromarray((img.reshape(H, W, 3) * 255).astype(np.uint8))
-# contact glow on the floor under the core (no floor drawn: a soft shadow pool)
+# filmic tone, on the rendered pixels only (the flat ink background is left exactly as it is)
+lit = img[hi]
+lit = lit / (1 + lit * .35) * 1.3
+img[hi] = np.clip(lit, 0, 1) ** (1 / 1.05)
+img[hi] = np.clip(img[hi] + (rng.random((len(hi), 1)) - .5) * .018, 0, 1)
+# rev2: save with ALPHA — the background is fully transparent, so the page (and the live canvas glow)
+# shows through and no edge of the image rect can ever read as a pasted box.
+alpha = np.zeros(N); alpha[hi] = 1.0
+rgba = np.concatenate([img, alpha[:, None]], 1).reshape(H, W, 4)
+im = Image.fromarray((rgba * 255).astype(np.uint8), 'RGBA')
 if SS != 1: im = im.resize((FW, FH), Image.LANCZOS)
 im.save(OUT)
 print('wrote', OUT)

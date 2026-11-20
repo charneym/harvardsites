@@ -14,8 +14,9 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.45,w*1.0):h;
     /* the field of view's centre is at (0.527, 0.523) of the render; its diameter is 0.96 of the render width */
-    var D=mob?Math.min(U-40,w*1.02):Math.min(h*.98,cw*.6),iw=D/.96,ih=iw*(1606/1500);
-    var kx=mob?w-.40*iw:w-.40*iw,ky=mob?(70+U)/2+4:h*.53;
+    /* desktop: the disc sits between ~126px (clear headroom under the nav, QA-2) and 30px above the fold, so it is never cut at the top */
+    var D=mob?Math.min(U-96,w*1.02):Math.min(h-156,cw*.6),iw=D/.96,ih=iw*(1606/1500);
+    var kx=mob?w-.40*iw:w-.40*iw,ky=mob?(70+U)/2+4:Math.max(126+D*.52,h*.53);
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,D:D,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}

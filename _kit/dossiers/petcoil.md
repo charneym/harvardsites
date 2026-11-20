@@ -35,3 +35,8 @@
 
 ## Photos (BJ)
 - Their site has team headshots for some people only (mixed backgrounds), journal logos and a stock radiology photo: no product or facility photography, hence option (b) and the text-only masthead team list.
+
+## Gates (2026-11-20, final build)
+- smoke, reveal 1440/390, anim 1440/390, clip 1440/390, overlay, masthead (8 rows), mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo, buildout-test (8 nav clicks), fit-audit (5 widths), loader-contrast-audit: OK.
+- hero-audit: "no title found", the same environment-wide result recorded on shipped sites (olmedabio, nephrodi, dotyscientific).
+- Hero checked by eye at 1920x930, 1440x900 and 390 after the loader; story frames at 1440 and 390.

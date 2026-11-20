@@ -1581,12 +1581,17 @@ var field=(function(){
       var k=.5-.5*Math.cos(t*Math.PI*2/60),sc=Math.max(bw/iw,bh/ih)*(1.03+.06*k)*(1+.04*(1-e))*(G.mob?1:1);
       var dw=iw*sc,dh=ih*sc,fx=G.mob?1:1,fy=G.mob?0.5:0.4;
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.008;
-      x=Math.min(0,Math.max(bw-dw,x));y=Math.min(0,Math.max(bh-dh,y)); /* the drift never opens a gap at an edge (DJ) */
-      /* wide screens: shift the art right so its feather midpoint never sits left of ~0.5 of the content (DI); the canvas left of it is ink */
-      if(!G.mob)x+=Math.max(0,G.side+G.cw*0.5-(x+dw*0.49));
+      y=Math.min(0,Math.max(bh-dh,y));
+      if(G.mob)x=Math.min(0,Math.max(bw-dw,x)); /* the drift never opens a gap at an edge (DJ) */
+      /* desktop (DO): the tower (centre ~0.815 of the photo) sits centred at ~0.69 of the viewport, whole, with air both sides;
+         the photo's left is already ink, and its right edge is feathered into ink below, so no seam shows (DJ) */
+      else x=w*.69-dw*.815-k*bw*.006;
       var oy=G.mob?Math.round(bh*.13):0;y+=oy; /* phones: drop the tower below the bar so its crown keeps headroom; the opened top is faded to ink below */
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       if(!G.mob){
+        /* feather the photo's right edge into the ink and fill beyond it (DJ) */
+        var rx=x+dw,rg=c.createLinearGradient(rx-dw*.05,0,rx,0);rg.addColorStop(0,"rgba("+SR+",0)");rg.addColorStop(1,INK);c.fillStyle=rg;c.fillRect(rx-dw*.05,0,dw*.05+1,h);
+        if(rx<w){c.fillStyle=INK;c.fillRect(rx,0,w-rx+1,h)}
         /* ink scrim over the headline and lede side (0 to ~55%), a light top wash under the nav, the base deepening */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.6,0);lv.addColorStop(0,"rgba("+SR+",.9)");lv.addColorStop(.6,"rgba("+SR+",.62)");lv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
         var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba("+SR+",.5)");tv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);

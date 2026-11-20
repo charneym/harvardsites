@@ -6,10 +6,11 @@
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},img=new Image(),ok=false,FOC=[w/2,h/2];
-  var FX=.53,FY=.52;
+  var FX=.53,FY=.52,HR=0;
+  function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var g=document.createRange();g.selectNodeContents(e);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}catch(_){}return r}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   img.onload=function(){ok=true;frame(true)};img.src="data:image/webp;base64,__HERO__";
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;HR=h1r();cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
@@ -19,10 +20,10 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
-    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9)*(1+.04*k)*(1+.03*SP.v);
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.min(Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9),Math.max(w*.6,(w-HR-30)/.66)/iw)*(1+.04*k)*(1+.03*SP.v); /* desktop: the render shrinks (right-anchored, edges feathered) until the chip channel (~36% across hero.webp) starts past the H1 line ends */
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.65)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.56:.6)-fy+SP.v*H*.04;
-    x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
+    if(!mob&&dw<w*1.02)x=w-dw+(RM?0:Math.sin(t*2*Math.PI/70)*w*.006);if(dw>=w)x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
     /* no visible image edge anywhere: ink outside the render, and a 150px feather from every edge that falls inside the frame */
@@ -46,7 +47,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();setTimeout(size,900);setTimeout(size,2600);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(size);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return FOC}};
 })();

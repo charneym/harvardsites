@@ -6,6 +6,8 @@ var field=(function(){
   var IN={v:1},dim=1,dimT=1,SP={v:0},img=new Image(),ok=false,FOC=[w/2,h/2];
   var FX=.44,FY=.5;
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  /* right edge of the hero text (H1 + lede), measured from the DOM about once a second (QA-2 framing) */
+  var TXc=0,TXt=-1e9;function TXR(){var n=performance.now();if(n-TXt>1000){TXt=n;try{var m=0,L=document.querySelectorAll(".hero-h,.hero-foot p");for(var i=0;i<L.length;i++){var r=document.createRange();r.selectNodeContents(L[i]);var q=r.getClientRects();for(var j=0;j<q.length;j++)if(q[j].width>0)m=Math.max(m,q[j].right)}TXc=m}catch(_){}}return TXc}
   img.onload=function(){ok=true;frame(true)};img.src="data:image/webp;base64,__HERO__";
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
   var lastF=0;
@@ -20,7 +22,7 @@ var field=(function(){
     var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(mob?w/iw:w*.7/iw,H/ih)*(mob?1.04:1.03)*(1+.04*k)*(1+.03*SP.v);
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.66)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.58:.6)-fy+SP.v*H*.04;
-    if(!mob)x=w*.33+(RM?0:Math.sin(t*2*Math.PI/70)*w*.008);x=Math.min(mob?0:w*.36,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
+    if(!mob)x=Math.max(w*.33,TXR()+30-dw*.13)+(RM?0:Math.sin(t*2*Math.PI/70)*w*.008);x=Math.min(mob?0:w*.5,Math.max(w-dw,x)); /* the copper (~13% into the photo) starts past the measured end of the H1/lede on wide screens (QA-2) */y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
     /* desktop: the photo sits on the right; its left edge dissolves into the ink, so the coil bank starts at ~45% width */

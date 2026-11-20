@@ -1,0 +1,78 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#0e0b1c}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const W=+(new URLSearchParams(location.search).get('w')||2880),H=+(new URLSearchParams(location.search).get('h')||1800);
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.05;r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);const env=new THREE.Scene();env.background=new THREE.Color(0x07060e);
+function box(w,h,d,c,i,x,y,z,ry){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i)}));m.position.set(x,y,z);if(ry)m.rotation.y=ry;env.add(m)}
+box(14,.2,5,0xfff6ee,4.2,-3,12,2);      /* the big softbox overhead-left */
+box(.2,5,14,0xd58ab8,2.2,14,3,-2);      /* a mauve strip, right */
+box(.2,4,12,0x4458c8,1.6,-14,2.5,-1);   /* a navy strip, left */
+box(26,7,.2,0xf3ecf6,1.5,0,7,-16);      /* a faint back card */
+sc.environment=pm.fromScene(env,0.02).texture;sc.environmentIntensity=1;
+sc.background=new THREE.Color(0x0c0a1a);
+/* ---------- the channel artwork, drawn in 2D at high resolution, mapped onto the chip's mid-plane ---------- */
+const CW=6000,CH=2000;const cv=document.createElement('canvas');cv.width=CW;cv.height=CH;const g=cv.getContext('2d');
+g.clearRect(0,0,CW,CH);
+const BLOOD='#5c0612',BLOODL='#a3202c',STRAW='#efdcae';
+function chan(pts,wd,col){g.strokeStyle=col;g.lineWidth=wd;g.lineCap='round';g.lineJoin='round';g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));g.stroke()}
+/* inlet well at left, a feed channel, a wide separation field, two outlets to the right */
+const yC=1000;
+chan([[520,yC],[1250,yC]],70,BLOOD);
+/* separation field: a long tapered chamber; fine tilted lines (an etched microstructure) over a blood gradient that clears to straw along the top */
+const fx0=1250,fx1=4500,fy0=640,fy1=1360;
+g.save();g.beginPath();g.moveTo(fx0,yC-60);g.lineTo(fx0+260,fy0);g.lineTo(fx1-180,fy0);g.lineTo(fx1,yC-140);g.lineTo(fx1,yC+140);g.lineTo(fx1-180,fy1);g.lineTo(fx0+260,fy1);g.lineTo(fx0,yC+60);g.closePath();
+g.clip();
+let gr=g.createLinearGradient(fx0,0,fx1,0);gr.addColorStop(0,'#5c0612');gr.addColorStop(.6,'#6a0b18');gr.addColorStop(1,'#500510');g.fillStyle=gr;g.fillRect(fx0,fy0,fx1-fx0,fy1-fy0);
+/* the clear stream that forms along the top edge and widens downstream */
+const st=g.createLinearGradient(fx0,0,fx1,0);st.addColorStop(0,'rgba(233,215,168,0)');st.addColorStop(.35,'rgba(233,215,168,.55)');st.addColorStop(1,'rgba(240,226,186,.95)');
+g.fillStyle=st;g.beginPath();g.moveTo(fx0+300,fy0);g.lineTo(fx1,fy0);g.lineTo(fx1,yC-60);g.bezierCurveTo(fx1-800,yC-120,fx0+1200,fy0+160,fx0+300,fy0+20);g.closePath();g.fill();
+/* the etched microstructure: a dense lattice of short tilted strokes */
+g.strokeStyle='rgba(255,236,236,.22)';g.lineWidth=3;
+for(let y=fy0+12;y<fy1;y+=26){for(let x=fx0+((y/26)%4)*7;x<fx1;x+=28){g.beginPath();g.moveTo(x,y);g.lineTo(x+9,y+9);g.stroke()}}
+g.restore();
+/* chamber wall */
+g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=5;g.beginPath();g.moveTo(fx0,yC-60);g.lineTo(fx0+260,fy0);g.lineTo(fx1-180,fy0);g.lineTo(fx1,yC-140);g.lineTo(fx1,yC+140);g.lineTo(fx1-180,fy1);g.lineTo(fx0+260,fy1);g.lineTo(fx0,yC+60);g.closePath();g.stroke();
+/* outlets: the clear PBMC stream up and out, the red waste down and out */
+chan([[fx1,yC-90],[4800,yC-90],[4980,560],[5480,560]],64,STRAW);
+chan([[fx1,yC+90],[4800,yC+90],[4980,1440],[5480,1440]],64,BLOOD);
+/* port rings */
+[[520,yC],[5480,560],[5480,1440]].forEach(p=>{g.strokeStyle='rgba(255,255,255,.4)';g.lineWidth=6;g.beginPath();g.arc(p[0],p[1],150,0,7);g.stroke()});
+/* alignment marks and a moulded legend, like a real moulded part */
+g.fillStyle='rgba(255,255,255,.28)';g.font='600 64px Arial';g.fillText('HEDS',260,1840);g.font='400 46px Arial';g.fillText('IN',470,760);g.fillText('PBMC',5400,340);g.fillText('WASTE',5380,1720);
+[[150,150],[5850,150],[150,1850],[5850,1850]].forEach(p=>{g.fillRect(p[0]-40,p[1]-3,80,6);g.fillRect(p[0]-3,p[1]-40,6,80)});
+const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=16;
+/* ---------- the chip: a clear COP slab, 75 x 25 x 2.6 mm ---------- */
+const S=0.1; /* 1 unit = 10 mm */
+const L=7.5,Wd=2.5,T=.26;
+const chip=new THREE.Group();sc.add(chip);
+const body=new THREE.Mesh(new RoundedBoxGeometry(L,T,Wd,8,.09),new THREE.MeshPhysicalMaterial({color:0xe6ecf7,metalness:0,roughness:.02,transparent:true,opacity:.1,clearcoat:1,clearcoatRoughness:.02,ior:1.53,specularIntensity:1,envMapIntensity:2.6,depthWrite:false}));
+body.castShadow=true;chip.add(body);
+const art=new THREE.Mesh(new THREE.PlaneGeometry(L*.96,Wd*.96),new THREE.MeshStandardMaterial({map:tex,emissiveMap:tex,emissive:0xffffff,emissiveIntensity:.1,transparent:true,roughness:.5,metalness:0,depthWrite:false,envMapIntensity:.2}));
+art.rotation.x=-Math.PI/2;art.position.y=-.02;art.renderOrder=-1;chip.add(art);
+/* ports: three cylindrical wells through the top face with liquid inside */
+function port(u,v,col){const x=(u/CW-.5)*L*.96,z=(v/CH-.5)*Wd*.96;
+  const ring=new THREE.Mesh(new THREE.CylinderGeometry(.17,.17,.12,64,1,true),new THREE.MeshPhysicalMaterial({color:0xdfe6f2,transparent:true,opacity:.28,roughness:.05,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}));ring.position.set(x,T/2+.06,z);chip.add(ring);
+  const liq=new THREE.Mesh(new THREE.CylinderGeometry(.15,.15,.16,64),new THREE.MeshPhysicalMaterial({color:col,roughness:.12,clearcoat:1,clearcoatRoughness:.05,envMapIntensity:.6}));liq.position.set(x,T/2-.0,z);chip.add(liq)}
+port(520,1000,0x6a0c18);port(5480,560,0xe9d7a8);port(5480,1440,0x6a0c18);
+/* ---------- a dark, faintly glossy bench ---------- */
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(80,80),new THREE.MeshPhysicalMaterial({color:0x120e26,roughness:.55,metalness:0,clearcoat:.35,clearcoatRoughness:.4,envMapIntensity:.05}));
+fl.rotation.x=-Math.PI/2;fl.position.y=-T/2-.002;fl.receiveShadow=true;sc.add(fl);
+/* ---------- light: a soft key from top-left, a mauve rim from the back right, a navy fill ---------- */
+const key=new THREE.SpotLight(0xfff1ea,190,40,.36,1,1.4);key.position.set(-3,11,4);key.target=chip;key.castShadow=true;key.shadow.mapSize.set(4096,4096);key.shadow.radius=8;
+Object.assign(key.shadow.camera,{left:-8,right:8,top:8,bottom:-8});sc.add(key);
+const rim=new THREE.SpotLight(0xb06090,70,34,.62,1);rim.position.set(9,4.5,-7);rim.target=chip;sc.add(rim);
+const fill=new THREE.SpotLight(0x3048b0,80,34,.7,1);fill.position.set(-9,3.5,-3);fill.target=chip;sc.add(fill);
+
+chip.rotation.y=-.34;chip.position.set(-.95,0,.15);
+const cam=new THREE.PerspectiveCamera(25,W/H,.1,100);cam.position.set(-1.6,6.6,11.4);cam.lookAt(-1.25,-.3,-.25);
+r.render(sc,cam);r.render(sc,cam);
+window.DONE=true;
+</script></body></html>

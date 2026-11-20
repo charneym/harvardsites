@@ -1609,7 +1609,12 @@ var field=(function(){
       var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*(1.04+.07*k)*(1+.04*(1-e))*(G.mob?1.45:1);
       var dw=iw*sc,dh=ih*sc,fx=G.mob?.5:.5,fy=G.mob?1:.5;
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* desktop (QA R2): the Herzbergturm (~50% across, 59-93% down hero.jpg) is centred at ~68% of the width and shown whole,
+         base included; any band this opens on the left is ink, the photo's edge feathered into it under the scrim */
+      if(!G.mob){x=w*.68-dw*.497-k*bw*.012;x=Math.max(bw-dw,x);y=Math.min(0,bh-dh*.97)-k*bh*.01}
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
+      if(x>0){c.fillStyle="#07223d";c.fillRect(0,0,x+1,bh);var fe=c.createLinearGradient(x,0,x+w*.14,0);fe.addColorStop(0,"rgba(7,34,61,1)");fe.addColorStop(1,"rgba(7,34,61,0)");c.fillStyle=fe;c.fillRect(x,0,w*.14,bh)}
+      c.globalAlpha=1;
       /* scrims: navy wash, the headline side darkest, the base deepening into the page */
       c.fillStyle="rgba(7,34,61,.22)";c.fillRect(0,0,w,bh);
       if(!G.mob){

@@ -1029,8 +1029,17 @@ var field=(function(){
       var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=(G.mob?Math.max(bw/iw,bh/ih):Math.max(bw*.8/iw,bh/ih))*(1.04+.05*k)*(1+.04*(1-e));
       var dw=iw*sc,dh=ih*sc,x,y;
       if(G.mob){x=bw/2-dw*.6-k*bw*.01;y=(bh-dh)*.5-k*bh*.008}
-      else{x=w*.2-k*bw*.012;y=(bh-dh)*.5-k*bh*.008}
+      else{
+        /* desktop (DO): the whole scanner (0.38-0.97 of the photo, ~43% of the width) sits in the open area, its bore (~0.67) at ~0.70 of the width,
+           its right side clear of the edge; any edge of the photo inside the frame feathers into the ink (DJ) */
+        sc=Math.min(h/ih*1.04,w*.72/iw)*(1+.04*k)*(1+.04*(1-e));dw=iw*sc;dh=ih*sc;x=w*.7-dw*.67;y=(bh-dh)*.55-k*bh*.008}
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      if(!G.mob){
+        var rw=dw*.06,rg=c.createLinearGradient(x+dw-rw,0,x+dw,0);rg.addColorStop(0,"rgba(10,16,18,0)");rg.addColorStop(1,"rgba(10,16,18,1)");c.fillStyle=rg;c.fillRect(x+dw-rw,0,rw+1,h);
+        c.fillStyle="#0a1012";if(x+dw<w)c.fillRect(x+dw,0,w,h);
+        if(y>0){var fh=dh*.1,tg=c.createLinearGradient(0,y,0,y+fh);tg.addColorStop(0,"rgba(10,16,18,1)");tg.addColorStop(1,"rgba(10,16,18,0)");c.fillStyle=tg;c.fillRect(0,y-1,w,fh+1);
+          var bg=c.createLinearGradient(0,y+dh-fh,0,y+dh);bg.addColorStop(0,"rgba(10,16,18,0)");bg.addColorStop(1,"rgba(10,16,18,1)");c.fillStyle=bg;c.fillRect(0,y+dh-fh,w,fh+1);
+          c.fillStyle="#0a1012";c.fillRect(0,0,w,y);c.fillRect(0,y+dh,w,h)}}
       if(!G.mob){var lf=c.createLinearGradient(x,0,x+dw*.3,0);lf.addColorStop(0,"rgba(10,16,18,1)");lf.addColorStop(1,"rgba(10,16,18,0)");c.fillStyle=lf;c.fillRect(0,0,x+dw*.3,h);if(x>0){c.fillStyle="#0a1012";c.fillRect(0,0,x+1,h)}}
       /* scrims: navy wash, the headline side darkest, the base deepening into the page */
       c.fillStyle="rgba(10,16,18,.22)";c.fillRect(0,0,w,bh);

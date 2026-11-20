@@ -92,7 +92,7 @@ var MORE={approche:["Approche","approche"],criteres:["Critères","criteres"],par
 function vMore(id){var m=MORE[id];
   return '<section class="ph-head more" data-field data-theme="dark"><span class="lab eyebrow">Aperçu du concept</span>'+
    '<h1 class="d1" id="pageTitle" tabindex="-1">'+esc(m[0])+', <em>en version complète.</em></h1>'+
-   '<p class="lede intro" data-r>Ceci est un concept pour la page d’accueil. Si la direction vous plaît, je développerais cette page et le reste du site dans le même style, avec votre équipe, vos participations et vos actualités, et je m’occuperais de la transition depuis votre site actuel. Répondez simplement à l’e-mail qui contenait ce lien, et nous pourrons en parler.</p>'+
+   '<p class="lede intro" data-r>Ceci est un concept pour la page d’accueil. Si la direction vous plaît, je développerais cette page et le reste du site dans le même style, avec votre équipe, vos participations et vos actualités, et je m’occuperais de la transition depuis votre site actuel. Répondez simplement à l’e\u2011mail qui contenait ce lien, et nous pourrons en parler.</p>'+
    '<div class="act more-act" data-r><a class="btn solid" href="#/">Retour à la page d’accueil '+ARR+'</a></div>'+
    '<a class="ul more-lk" data-r href="#/'+m[1]+'">Ou continuer à parcourir le concept</a></section>';
 }

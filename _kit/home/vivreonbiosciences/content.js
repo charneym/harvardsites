@@ -14,10 +14,10 @@ var PROGS=[
  ["Duchenne muscular dystrophy","Orai1 · NIAMS","An oral Orai1 modulator to limit calcium overload and secondary inflammation in dystrophic muscle, and delay progressive weakening.","10921411"]];
 /* news: NIH award notices, each linking to its NIH RePORTER record */
 var NEWS=[
- ["12 May 2026","NIA funds year two of Vivreon’s late-stage Alzheimer’s award, $1,948,898","NIH RePORTER",RPT+"11370083"],
- ["30 Jul 2025","NIAID SBIR Phase II, year three: VV8220, a gut-selective CRAC channel therapeutic for ulcerative colitis","NIH RePORTER",RPT+"11159849"],
- ["8 Jul 2025","NIDA Fast Track, year three: a novel calcium channel therapeutic for opioid use disorder, $1,097,854","NIH RePORTER",RPT+"11135560"],
- ["20 Jun 2025","NIA late-stage SBIR award of $1,996,385: preclinical characterization of CRAC channel inhibitors for Alzheimer’s disease","NIH RePORTER",RPT+"11068859"],
- ["28 Aug 2024","NIAMS SBIR Phase I: a novel calcium channel therapeutic for dystrophinopathies","NIH RePORTER",RPT+"10921411"]];
+ ["12 May 2026","Year two of the NIA late-stage Alzheimer’s award: $1,948,898","NIH RePORTER",RPT+"11370083"],
+ ["30 Jul 2025","NIAID SBIR Phase II, year three: VV8220 for ulcerative colitis","NIH RePORTER",RPT+"11159849"],
+ ["8 Jul 2025","NIDA Fast Track, year three: opioid use disorder, $1,097,854","NIH RePORTER",RPT+"11135560"],
+ ["20 Jun 2025","NIA late-stage award for Alzheimer’s CRAC inhibitors: $1,996,385","NIH RePORTER",RPT+"11068859"],
+ ["28 Aug 2024","NIAMS SBIR Phase I: a calcium channel therapeutic for Duchenne","NIH RePORTER",RPT+"10921411"]];
 var TEAM=[{g:"Leadership",name:"Milton L. Greenberg, PhD",title:"President",sum:"PhD and postdoctoral training in physiology and biophysics, University of California, Irvine."}];
 var SHEETS=[];

@@ -961,16 +961,17 @@ var field=(function(){
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
     var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(w/iw,H/ih)*(1.04+.05*k)*(1+.03*SP.v);
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
-    var x=w*(mob?.5:.62)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.012),y=H*.42-fy+SP.v*H*.04;
-    x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));
+    var x=w*(mob?.5:.72)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.012),y=H*.42-fy+SP.v*H*.04;
+    x=Math.min(mob?0:w*.2,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y)); /* desktop: the sun is held at ~72% of the width, right of the H1 and its glare off the lede; the photo's left edge then sits inside the scrim, feathered into the ink below */
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
+    if(x>0){c.fillStyle="#0e1612";c.fillRect(0,0,x+1,H);var fe=c.createLinearGradient(x,0,x+w*.14,0);fe.addColorStop(0,"rgba(14,22,18,1)");fe.addColorStop(1,"rgba(14,22,18,0)");c.fillStyle=fe;c.fillRect(x,0,w*.14,H)}
     /* the sun breathes */
     var sx=x+fx,sy=y+fy,R=Math.min(w,H)*.12,pulse=.85+.15*Math.sin(t*.5);
     c.globalCompositeOperation="lighter";var g=c.createRadialGradient(sx,sy,0,sx,sy,R);g.addColorStop(0,"rgba(255,236,190,"+(.1*pulse).toFixed(3)+")");g.addColorStop(1,"rgba(255,226,170,0)");c.fillStyle=g;c.fillRect(sx-R,sy-R,R*2,R*2);
     c.globalCompositeOperation="source-over";
     /* legibility: a dark forest scrim from the left behind the copy, and a band behind the header; the sunrise stays warm on the right */
-    if(!mob){var lg=c.createLinearGradient(0,0,w,0);lg.addColorStop(0,"rgba(14,22,18,.9)");lg.addColorStop(.3,"rgba(14,22,18,.78)");lg.addColorStop(.48,"rgba(14,22,18,.48)");lg.addColorStop(.62,"rgba(14,22,18,.14)");lg.addColorStop(.75,"rgba(14,22,18,0)");c.fillStyle=lg;c.fillRect(0,0,w,H)}
+    if(!mob){var lg=c.createLinearGradient(0,0,w,0);lg.addColorStop(0,"rgba(14,22,18,.9)");lg.addColorStop(.3,"rgba(14,22,18,.78)");lg.addColorStop(.48,"rgba(14,22,18,.62)");lg.addColorStop(.62,"rgba(14,22,18,.22)");lg.addColorStop(.75,"rgba(14,22,18,0)");c.fillStyle=lg;c.fillRect(0,0,w,H)}
     var tb=c.createLinearGradient(0,0,0,mob?120:170);tb.addColorStop(0,"rgba(14,22,18,.78)");tb.addColorStop(1,"rgba(14,22,18,0)");c.fillStyle=tb;c.fillRect(0,0,w,mob?120:170);
     /* fade into the page ink below the photo on phones */
     if(mob){var fg=c.createLinearGradient(0,H*.7,0,H);fg.addColorStop(0,"rgba(18,26,22,0)");fg.addColorStop(1,"rgba(18,26,22,1)");c.fillStyle=fg;c.fillRect(0,H*.7-1,w,H*.3+2);c.fillStyle="#121a16";c.fillRect(0,H-1,w,h-H+2)}
@@ -982,7 +983,7 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return [w*.62,h*.42]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return [w*.72,h*.42]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

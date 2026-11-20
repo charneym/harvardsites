@@ -14,8 +14,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the skin block's centre sits at about (0.5, 0.5) of the render */
-    var ih=mob?Math.min(U*1.04,(U-96)/.8):Math.min(h*.98,cw*.8),iw=ih*(1200/1300);
-    var kx=mob?w*.5:side+cw*.79,ky=mob?(84+U-12)/2:h*.585;  /* rev2: the core sits lower, so its top rim is not crowded by the header */
+    var ih=mob?Math.min(U*1.04,(U-124)/.8):Math.min(h*.98,cw*.8),iw=ih*(1200/1300);
+    var kx=mob?w*.5:side+cw*.79,ky=mob?(108+U-12)/2:h*.585; /* QA: phones get a smaller core set lower, so its rim clears the header by ~30px */  /* rev2: the core sits lower, so its top rim is not crowded by the header */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}

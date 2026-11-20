@@ -85,23 +85,35 @@ function footer(){
    '<div class="c"><span class="lab">Flintholm</span>Filippavej 57<br>5762 Vester Skerninge<br>CVR 33046294</div>'+
    '<div class="c"><span class="lab">Frederiksberg</span>Frederiksberg Allé 18<br>1820 Frederiksberg</div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="mailto:'+MAIL+'">E-mail</a><br><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
-   '<div class="c"><span class="lab">Se også</span><a class="ul" href="#/strategi">Strategi</a><br><a class="ul" href="#/kriterier">Kriterier</a><br><a class="ul" href="#/virksomheder">Virksomheder</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/nyheder">Nyheder</a></div>'+
+   '<div class="c"><span class="lab">Se også</span><a class="ul" href="#/more/strategi">Strategi</a><br><a class="ul" href="#/more/kriterier">Kriterier</a><br><a class="ul" href="#/more/virksomheder">Virksomheder</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/nyheder">Nyheder</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 1000 84" aria-hidden="true"><text x="500" y="62" text-anchor="middle" style="font-family:\'Libre Caslon Text\',Georgia,serif;font-weight:400;font-size:66px;letter-spacing:.06em">DANSK GENERATIONSSKIFTE</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Dansk Generationsskifte A/S</span><span class="lab">Konceptwebsite</span><a class="lab ul" href="#main" id="toTop">Til toppen ↑</a></div></footer>';
 }
 
 /* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
 var SECS={"om-os":"about",strategi:"story",kriterier:"criteria",virksomheder:"portfolio",team:"team",nyheder:"news",kontakt:"contact"};
+var MORE={strategi:"Strategi",kriterier:"Kriterier",virksomheder:"Virksomheder",team:"Team",nyheder:"Nyheder"};
+function vMore(k){
+  return '<section class="ph-head more" data-field data-theme="dark">'+
+   '<span class="lab eyebrow">Konceptforhåndsvisning</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+MORE[k]+', <em>fuldt udbygget.</em></h1>'+
+   '<p class="intro" data-r>Dette er et koncept for forsiden. Hvis I kan lide retningen, bygger jeg denne side og resten af sitet i samme stil, med jeres team, virksomheder og nyheder, og står for flytningen fra jeres nuværende site. Svar på den e-mail, som dette link kom i, så tager vi det derfra.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/">Tilbage til forsiden '+ARR+'</a><a class="more-k ul" href="#/'+k+'">Eller fortsæt med at scrolle i konceptet</a></div>'+
+  '</section>';
+}
 function route(h){
+  var m=/^#\/more\/([a-z-]+)$/.exec(h||"");if(m&&MORE[m[1]]){var k=m[1];return {k:"more-"+k,v:function(){return vMore(k)},sec:null,t:MORE[k]+" — Dansk Generationsskifte",x:MORE[k]}}
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Dansk Generationsskifte — Privat investeringsselskab for generationsskifte i danske virksomheder",x:"Forside"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
+function secAfter(id){var n=0;(function wait(){if(++n>80)return;var lk=curKey!=="home"||document.documentElement.style.overflow==="hidden"||!document.getElementById(id);if(lk){setTimeout(wait,150);return}
+  setTimeout(function(){secGo(id,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},350)})()}
 addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+  if(curKey!=="home"){secAfter(r.sec);return}
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+(function(){var r=route(location.hash);if(r.sec)secAfter(r.sec)})();

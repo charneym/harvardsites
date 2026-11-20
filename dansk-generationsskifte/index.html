@@ -718,6 +718,14 @@ em{line-height:0}
 .nws .src svg{width:16px;height:10px;transition:transform .3s var(--eo)}
 .nws a:hover .src svg{transform:translateX(5px)}
 @media (max-width:860px){.nws a{grid-template-columns:1fr;row-gap:8px}.nws .src{justify-self:start}}
+
+/* build-out pages (#/more/<item>) */
+.more .intro{max-width:56ch;font-size:clamp(17px,1.35vw,20px);line-height:1.6;color:rgba(var(--boner),.86)}
+.more .act{display:flex;flex-wrap:wrap;align-items:center;gap:22px 30px;margin-top:clamp(30px,3.4vw,48px)}
+.more .more-k{font:500 12px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(var(--boner),.78);padding:12px 0}
+.more .more-k:hover{color:var(--accL)}
+/* the firm's own deep green (their site's band colour #13382f) for the news section */
+.sec.dark2{background:#13382f}
 </style>
 </head>
 </head>
@@ -741,11 +749,11 @@ em{line-height:0}
 <header class="hdr" id="hdr">
   <!--<R:brand>--><a href="#/" class="brand" id="brand" aria-label="Dansk Generationsskifte, forside"><span class="wt"><span class="l1">DANSK<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M10 9l13 15-13 15M24 9l13 15-13 15" fill="none" stroke="currentColor" stroke-width="3.4"/></svg></span><span class="l2">GENERATIONSSKIFTE</span></span></a><!--</R:brand>-->
   <!--<R:navmenu>--><nav class="nav" aria-label="Primær">
-    <a class="nl ul" href="#/strategi">Strategi</a>
-    <a class="nl ul" href="#/kriterier">Kriterier</a>
-    <a class="nl ul" href="#/virksomheder">Virksomheder</a>
-    <a class="nl ul" href="#/team">Team</a>
-    <a class="nl ul" href="#/nyheder">Nyheder</a>
+    <a class="nl ul" href="#/more/strategi">Strategi</a>
+    <a class="nl ul" href="#/more/kriterier">Kriterier</a>
+    <a class="nl ul" href="#/more/virksomheder">Virksomheder</a>
+    <a class="nl ul" href="#/more/team">Team</a>
+    <a class="nl ul" href="#/more/nyheder">Nyheder</a>
     <a class="btn" href="#/kontakt">Kontakt <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="mm"><span id="burgerLab">Menu</span><i aria-hidden="true"></i></button>
   </nav>
@@ -754,11 +762,11 @@ em{line-height:0}
 <div class="mm" id="mm" aria-hidden="true" data-lenis-prevent>
   <ol>
     <li><a href="#/">Forside</a></li>
-    <li><a href="#/strategi">Strategi</a></li>
-    <li><a href="#/kriterier">Kriterier</a></li>
-    <li><a href="#/virksomheder">Virksomheder</a></li>
-    <li><a href="#/team">Team</a></li>
-    <li><a href="#/nyheder">Nyheder</a></li>
+    <li><a href="#/more/strategi">Strategi</a></li>
+    <li><a href="#/more/kriterier">Kriterier</a></li>
+    <li><a href="#/more/virksomheder">Virksomheder</a></li>
+    <li><a href="#/more/team">Team</a></li>
+    <li><a href="#/more/nyheder">Nyheder</a></li>
     <li><a href="#/kontakt">Kontakt</a></li>
   </ol>
   <div class="mmf">
@@ -1124,26 +1132,38 @@ function footer(){
    '<div class="c"><span class="lab">Flintholm</span>Filippavej 57<br>5762 Vester Skerninge<br>CVR 33046294</div>'+
    '<div class="c"><span class="lab">Frederiksberg</span>Frederiksberg Allé 18<br>1820 Frederiksberg</div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="mailto:'+MAIL+'">E-mail</a><br><a class="ul" href="'+LI+'" target="_blank" rel="noopener">LinkedIn</a></div>'+
-   '<div class="c"><span class="lab">Se også</span><a class="ul" href="#/strategi">Strategi</a><br><a class="ul" href="#/kriterier">Kriterier</a><br><a class="ul" href="#/virksomheder">Virksomheder</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/nyheder">Nyheder</a></div>'+
+   '<div class="c"><span class="lab">Se også</span><a class="ul" href="#/more/strategi">Strategi</a><br><a class="ul" href="#/more/kriterier">Kriterier</a><br><a class="ul" href="#/more/virksomheder">Virksomheder</a><br><a class="ul" href="#/more/team">Team</a><br><a class="ul" href="#/more/nyheder">Nyheder</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 1000 84" aria-hidden="true"><text x="500" y="62" text-anchor="middle" style="font-family:\'Libre Caslon Text\',Georgia,serif;font-weight:400;font-size:66px;letter-spacing:.06em">DANSK GENERATIONSSKIFTE</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Dansk Generationsskifte A/S</span><span class="lab">Konceptwebsite</span><a class="lab ul" href="#main" id="toTop">Til toppen ↑</a></div></footer>';
 }
 
 /* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
 var SECS={"om-os":"about",strategi:"story",kriterier:"criteria",virksomheder:"portfolio",team:"team",nyheder:"news",kontakt:"contact"};
+var MORE={strategi:"Strategi",kriterier:"Kriterier",virksomheder:"Virksomheder",team:"Team",nyheder:"Nyheder"};
+function vMore(k){
+  return '<section class="ph-head more" data-field data-theme="dark">'+
+   '<span class="lab eyebrow">Konceptforhåndsvisning</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+MORE[k]+', <em>fuldt udbygget.</em></h1>'+
+   '<p class="intro" data-r>Dette er et koncept for forsiden. Hvis I kan lide retningen, bygger jeg denne side og resten af sitet i samme stil, med jeres team, virksomheder og nyheder, og står for flytningen fra jeres nuværende site. Svar på den e-mail, som dette link kom i, så tager vi det derfra.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="#/">Tilbage til forsiden '+ARR+'</a><a class="more-k ul" href="#/'+k+'">Eller fortsæt med at scrolle i konceptet</a></div>'+
+  '</section>';
+}
 function route(h){
+  var m=/^#\/more\/([a-z-]+)$/.exec(h||"");if(m&&MORE[m[1]]){var k=m[1];return {k:"more-"+k,v:function(){return vMore(k)},sec:null,t:MORE[k]+" — Dansk Generationsskifte",x:MORE[k]}}
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Dansk Generationsskifte — Privat investeringsselskab for generationsskifte i danske virksomheder",x:"Forside"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
+function secAfter(id){var n=0;(function wait(){if(++n>80)return;var lk=curKey!=="home"||document.documentElement.style.overflow==="hidden"||!document.getElementById(id);if(lk){setTimeout(wait,150);return}
+  setTimeout(function(){secGo(id,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},350)})()}
 addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+  if(curKey!=="home"){secAfter(r.sec);return}
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();/*</R:views>*/
+(function(){var r=route(location.hash);if(r.sec)secAfter(r.sec)})();/*</R:views>*/
 
 /* ================= ENV ================= */
 var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;

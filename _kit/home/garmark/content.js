@@ -1,0 +1,59 @@
+var FONTS=['500 1em "Cormorant Garamond"','italic 500 1em "Cormorant Garamond"','600 1em "Cormorant Garamond"','400 1em "Hanken Grotesk"','500 1em "Hanken Grotesk"','600 1em "Hanken Grotesk"'];
+var WEB="https://www.garmark.com/";
+var TEL="(203) 325-8500",TELH="tel:+12033258500";
+var TEL2="(772) 794-8960",TELH2="tel:+17727948960";
+var MAIL="spickhardt@garmark.com";
+var PORTAL="https://garmarkpartners.arkpes.com/login";
+var MAP="https://www.google.com/maps/search/?api=1&query=One+Landmark+Square+Suite+400+Stamford+CT+06901";
+var MAP2="https://www.google.com/maps/search/?api=1&query=2770+Indian+River+Blvd+Suite+502+Vero+Beach+FL+32960";
+/* investment criteria, from the firm's Investment Criteria page */
+var CRIT=[["Investment size","$5 million to $30+ million, customized for each transaction."],
+ ["Annual EBITDA","$3 million to $25+ million."],
+ ["Securities","From senior debt to common equity, with a focus primarily on mezzanine debt and structured equity investments."],
+ ["Characteristics","A sustainable value proposition and a defensible market position."],
+ ["Transaction types","Buyouts and acquisitions, refinancings and recapitalizations, restructurings and turnarounds, and growth capital."],
+ ["Industry focus","Manufacturing and industrial, business services, transportation, food and restaurants, consumer, education, energy, healthcare and financial."]];
+/* current investments, as listed on the firm's Representative Investments page */
+var PF=[["Banker Wire", "Founded in 1896 and headquartered in Mukwonago, WI, Banker Wire is a manufacturer of woven and welded wire mesh used in a variety of architectural and industrial applications.", "Industrial"],
+ ["Capital Pump & Equipment", "Capital Pump & Equipment is a specialty pump rental, sales and service provider, serving customers in the municipal, mining, industrial, oil and gas, agriculture and construction end-markets, primarily in the Southwestern U.S.", "Industrial"],
+ ["FCA", "FCA is a designer and manufacturer of customized protective transport packaging solutions for heavy-duty applications.", "Industrial"],
+ ["Phoenix Lighting", "Headquartered in Milwaukee, WI, Phoenix Lighting is a designer and manufacturer of lighting fixtures for rugged and mission-critical environments.", "Industrial"],
+ ["Pro-Vision", "Headquartered in Byron Center, MI, Pro-Vision engineers, manufactures and installs rugged rear vision and video recording systems, body-worn cameras and video management software exclusively for commercial, law enforcement and transit applications.", "Industrial"],
+ ["SV Labs", "Founded in 1978 and headquartered in Watsonville, CA, SV Labs is a co-manufacturer of a wide variety of natural and conventional bath, body, skincare and other products.", "Industrial"],
+ ["Tire Group International", "Headquartered in Miami, Florida, Tire Group International is the largest independent distributor of replacement tires to Latin America and a leading distributor of replacement tires in the United States.", "Industrial"],
+ ["ACT GeoKinetics", "Headquartered in Irvine, CA, ACT GeoKinetics designs, fabricates and installs methane gas and vapor intrusion mitigation systems and other geotechnical and environmental engineering services.", "Business Services"],
+ ["Advanced Solutions International, Inc", "Advanced Solutions International (ASI) is a leading global provider of cloud-based software to associations and non-profits.", "Business Services"],
+ ["ComNet Communications, LLC", "ComNet Communications is a nationwide provider of low-voltage infrastructure services, delivering structured cabling, security systems, and audio-visual solutions to Fortune 100 clients across office, warehouse, factory, data center, and retail environments.", "Business Services"],
+ ["CrossCom National", "Headquartered in Buffalo Grove, IL, CrossCom delivers nationwide IT services and solutions for geographically dispersed multi-unit operators in the retail, automotive, grocery, hospitality, and restaurant industry segments.", "Business Services"],
+ ["ESP Associates Inc", "Headquartered in Fort Mill, SC, ESP Associates provides civil engineering services, surveying and mapping to a variety of private, municipal and federal clients.", "Business Services"],
+ ["Industrial Color Brands", "Industrial Color Brands, Inc. provides creative production services including photo studio and equipment rental, digital photo and video capture and editing services, high-end retouching, CGI (computer generated images), and a patented SaaS digital workflow and work-in-process management tool.", "Business Services"],
+ ["Monetate", "Founded in 2008 and headquartered in Conshohocken, PA, Monetate is a leading provider of personalization software solutions designed to assist brands in creating more tailored digital experiences for their potential customers.", "Business Services"],
+ ["Remedi8", "Headquartered in Lenexa, KS, Remedi8 is a nationwide fire and life safety and containment service provider specializing in preventing the spread of fire, smoke, water, and infection in buildings.", "Business Services"],
+ ["Scott & Associates", "Founded in 2000 and headquartered in Carrollton, TX, Scott & Associates is a multi-state legal recoveries law firm serving the needs of national, state and local financial institutions.", "Business Services"],
+ ["Whitewater Brands", "Founded in 1946 and headquartered in Caldwell, Idaho, Whitewater Brands is a business-to-business omni-channel marketer and distributor of consumable products and equipment primarily used in auto collision shops, mechanical repair shops and dealerships.", "Business Services"],
+ ["Abbiamo Pasta Co.", "Abbiamo Pasta Co. was founded in 2014 and is based in Casselton, North Dakota. The Company specializes in the production of short dry pasta, specifically industry-standard durum semolina products and specialty better-for-you products, for distribution across the U.S. and Canada.", "Consumer"],
+ ["Chalk Couture", "Headquartered in Draper, UT, Chalk is a leading direct-to-consumer DIY craft home decor brand utilizing a direct selling model.", "Consumer"],
+ ["Empire Office", "Established in 1946 and headquartered in New York City, Empire Office, Inc. provides a complete range of products and services including integrated office furniture, custom design, and installation, and serves 36 of top 50 Fortune 500 companies.", "Consumer"],
+ ["Glo Skin Beauty", "Headquartered in Denver, CO, Glo Skin is a manufacturer of mineral-based cosmetics and skincare products marketed to skincare professionals and their clients.", "Consumer"],
+ ["Talkmore Wireless", "Headquartered in St. Petersburg, FL, Talkmore is a Metro by T-Mobile retail partner focused on the prepaid mobile market.", "Consumer"],
+ ["A First Name Basis", "AFNB Home Care is a leading non-medical home health care provider in Louisiana, Mississippi and Arkansas, providing quality personalized service to assist clients, primarily the elderly, to live at home independently.", "Health & Wellness"],
+ ["Discovery Behavioral Health", "Discovery Behavioral Health is a leading behavioral health provider specializing in the treatment of alcohol and drug addiction, eating disorders, and a broad array of mental health conditions. The Company’s nationwide network of facilities provide the full continuum of care, including outpatient, intensive outpatient, partial hospitalization/day treatment, residential treatment, and inpatient detox.", "Health & Wellness"],
+ ["Homestyle Direct", "Founded in 1997, Homestyle is a full-service provider of in-home meal delivery to individuals primarily participating in Medicaid. The Company offers nutritious meals that are tailored to specific health conditions and currently serves members across 24 states.", "Health & Wellness"],
+ ["PDS Management Services, LLC", "PDS Management Services, LLC is a leading Northeast dental practice management company. PDS provides administrative and non-clinical support services to affiliated pediatric dental practices offering comprehensive, multi-specialty dental care.", "Health & Wellness"],
+ ["Salt Dental Partners", "Salt Dental Partners is a doctor-led dental support organization that provides centralized operational support to over 150 pediatric, orthodontic, and general dentistry practices across 20 states.", "Health & Wellness"],
+ ["Finch Paper", "Located in Glens Falls, NY, Finch is a leading producer of specialty opaque printing papers used for commercial printing, book publishing and office applications. The company has been producing paper since 1905 and has a leading share of its segment in the Northeastern U.S. market.", "Building & Forest Products"],
+ ["Winston Plywood & Veneer", "Winston Plywood & Veneer is a manufacturer of specialty and commodity plywood products for industrial and commercial applications.", "Building & Forest Products"]];
+/* exited investments, names only, as listed on the same page */
+var EX=["Allison Marine Holdings", "Anchor Drilling Fluids", "BC Components", "Cleaver-Brooks", "Dutchland", "Heckethorn Manufacturing", "Joan Fabrics", "KODA Distribution Group", "Michigan Seamless Tube", "New Horizons Plastic Recycling", "Penske Transportation Components", "Phoenix Services", "Stant Manufacturing", "Amerijet", "AST Corporation", "ATI Systems International", "Avision Sales Group", "Carey International", "Champion ONE", "Core BTS", "Emtec", "Headway Corporate Resources", "LeylandAlliance", "Pay-O-Matic", "Phoenix Children's Academy", "Satellite Tracking of People", "Smart Tuition", "SmartCare", "SourceLink", "Syncsort Incorporated", "The Stratix Corporation", "Uniscribe Professional Services", "Vitac", "Arena Brands", "Baja Fresh", "Bell Sports", "Buffets", "CAbi", "Crews", "Dover Saddlery", "Earthbound Farm", "Hillsdale Furniture", "Merisant", "Mid-Atlantic Convenience Stores", "NAMCO", "PlayMonster", "PremierXD", "Pure Fishing", "Rock Bottom Restaurants", "Sundance Catalog", "Walker Edison", "West Shore Home", "Whitlock Packaging Corporation", "Athena Brands", "Experimental & Applied Sciences", "FHC Health Systems", "Herbalife", "Milk Specialties Global", "North American Rescue", "The Dermatology Specialists", "Boise", "Forest Resources", "Hoffmaster Group", "MW Windows", "Nudo Products", "Service Partners", "Soundview Paper", "Torrent Resources", "Wood Resources", "Knightsbridge", "MPlus Capital", "Whitney Cash Flow Fund"];
+var TEAM=[
+ {name:"Steven C. Pickhardt",title:"Managing Partner",sum:"With GarMark since the closing of Fund I in 1998; formerly Credit Suisse First Boston and Chemical Bank."},
+ {name:"Robert D. Long",title:"Managing Partner",sum:"Joined full time in 2013; formerly Head of Asset Management at Allied Capital and Ares Capital."},
+ {name:"Andreas J. Skibiel",title:"Partner",sum:"Joined in 2015; formerly a Partner at York Street Capital Partners and at CIT."},
+ {name:"Christopher A. Layden",title:"Partner",sum:"Joined in 2016; co-founder of York Street Capital Partners, formerly Star Mountain Capital."},
+ {name:"Darion Vilajeti",title:"Vice President",sum:"Joined in 2014; formerly underwriting at FGI Finance."},
+ {name:"Travis Hanson",title:"Vice President",sum:"Joined in 2024; formerly an Investment Associate at Mitsui & Co."},
+ {name:"Marc A. Rich",title:"VP Finance and Administration",sum:"Joined in 2016; formerly Controller at Main Street Resources."},
+ {name:"Thiago Vieira",title:"Analyst",sum:"Joined in 2026; formerly an Analyst at Star Mountain Capital."},
+ {name:"Alyssa M. Burdick",title:"Executive Assistant / Office Manager",sum:"Joined in 2020; formerly with Cadent Energy Partners."}];
+var NEWS=[{d:"2025-09-10",s:"Press release",t:"Hudson Glade acquires ComNet Communications, with financing and support from Energy Impact Partners and GarMark Partners",u:"https://www.citybiz.co/article/743185/hudson-glade-acquires-comnet-communications/"}];
+var SHEETS=[];

@@ -19,19 +19,26 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
-    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.max(w/iw,H/ih)*.9*(1+.04*k)*(1+.03*SP.v);
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9)*(1+.04*k)*(1+.03*SP.v);
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.65)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.56:.6)-fy+SP.v*H*.04;
     x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
+    /* no visible image edge anywhere: ink outside the render, and a 150px feather from every edge that falls inside the frame */
+    (function(){var F=150,K="20,17,42",ed=function(x0,y0,x1,y1,rx,ry,rw,rh){var g2=c.createLinearGradient(x0,y0,x1,y1);g2.addColorStop(0,"rgba("+K+",1)");g2.addColorStop(1,"rgba("+K+",0)");c.fillStyle=g2;c.fillRect(rx,ry,rw,rh)};
+      c.fillStyle="rgb("+K+")";
+      if(y>0){c.fillRect(0,0,w,y+1);ed(0,y,0,y+F,0,y,w,F)}
+      if(y+dh<h){c.fillRect(0,y+dh-1,w,h-y-dh+1);ed(0,y+dh,0,y+dh-F,0,y+dh-F,w,F)}
+      if(x>0){c.fillRect(0,0,x+1,h);ed(x,0,x+F,0,x,0,F,h)}
+      if(x+dw<w){c.fillRect(x+dw-1,0,w-x-dw+1,h);ed(x+dw,0,x+dw-F,0,x+dw-F,0,F,h)}})();
     /* a soft band of light travels slowly along the chip, inlet to outlets, in the direction of flow */
     if(!RM){var sx=x+dw*(.16+.72*((t/22)%1)),sg=c.createLinearGradient(sx-dw*.09,0,sx+dw*.09,0);c.globalCompositeOperation="soft-light";
       sg.addColorStop(0,"rgba(236,200,226,0)");sg.addColorStop(.5,"rgba(236,200,226,.22)");sg.addColorStop(1,"rgba(236,200,226,0)");c.fillStyle=sg;c.fillRect(x+dw*.14,y+dh*.3,dw*.78,dh*.44);c.globalCompositeOperation="source-over"}
     if(!mob){var lv=c.createLinearGradient(0,0,w*.62,0);lv.addColorStop(0,"rgba(20,17,42,.84)");lv.addColorStop(.5,"rgba(20,17,42,.55)");lv.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
       var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(20,17,42,.55)");tv.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
       var bv=c.createLinearGradient(0,h*.72,0,h);bv.addColorStop(0,"rgba(20,17,42,0)");bv.addColorStop(1,"rgba(20,17,42,.7)");c.fillStyle=bv;c.fillRect(0,h*.72,w,h*.28)}
-    else{if(y>0){c.fillStyle="#14112a";c.fillRect(0,0,w,y+1);var eg=c.createLinearGradient(0,y,0,y+90);eg.addColorStop(0,"rgba(20,17,42,1)");eg.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=eg;c.fillRect(0,y,w,90)}var tg=c.createLinearGradient(0,0,0,H*.3);tg.addColorStop(0,"rgba(20,17,42,.6)");tg.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=tg;c.fillRect(0,0,w,H*.3);
+    else{var tg=c.createLinearGradient(0,0,0,H*.3);tg.addColorStop(0,"rgba(20,17,42,.6)");tg.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=tg;c.fillRect(0,0,w,H*.3);
       var fg=c.createLinearGradient(0,H*.66,0,H);fg.addColorStop(0,"rgba(20,17,42,0)");fg.addColorStop(1,"rgba(20,17,42,1)");c.fillStyle=fg;c.fillRect(0,H*.66-1,w,H*.34+2);c.fillStyle="#14112a";c.fillRect(0,H-1,w,h-H+2)}
     c.globalAlpha=1;
     if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

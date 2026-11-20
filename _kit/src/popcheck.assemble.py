@@ -32,6 +32,7 @@ rep('.rail span{flex:1;position:relative;padding-top:20px;font-family:var(--mono
 rep('border:1px solid #6a6863;', 'border:1px solid #5f6a88;')
 # extra CSS, last in the cascade
 rep('</style>\n</head>', P['extracss'] + '\n</style>\n</head>')
+import re as _bo; out = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', out, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 open(os.path.join(HERE, 'popcheck.src.html'), 'w', encoding='utf-8').write(out)
 left = [m for m in re.findall(r'(?i)firelight|fort lauderdale|flc-', out)]
 print('wrote popcheck.src.html', len(out), 'leftovers:', left[:10])

@@ -469,5 +469,6 @@ out = out.replace('</style>\n</head>', '.btn.solid{background:var(--accL);border
 for bad in ['Firelight', 'FIRELIGHT', 'firelight', 'flc-']:
     if bad in out:
         i = out.find(bad); print('LEFTOVER', bad, out[max(0, i - 80):i + 40].replace('\n', ' '))
+import re as _bo; out = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', out, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 open(os.path.join(K, 'src/patchclamp.src.html'), 'w').write(out)
 print('wrote src/patchclamp.src.html', len(out))

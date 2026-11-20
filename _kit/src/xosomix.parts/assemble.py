@@ -17,4 +17,5 @@ assert src.count('</style>\n</head>')==1
 src=src.replace('</style>\n</head>',tail+'\n</style>\n</head>')
 src=src.replace('/* ===== Firelight: warm night ground, bone pages, their amber as the accent ===== */','/* ===== base overrides ===== */')
 assert 'irelight' not in src.replace('firelight.src.html',''),[m.start() for m in re.finditer('irelight',src)][:5]
+import re as _bo; src = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', src, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 open(os.path.join(K,'src','xosomix.src.html'),'w',encoding='utf8').write(src);print('assembled',len(src))

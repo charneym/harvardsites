@@ -24,6 +24,6 @@ var TEAM=[
 var NEWS=[
  ["September 2025","NCI awards PHusis a $2.09M SBIR Phase II grant for the clinical evaluation of topical PHT-427 in actinic keratosis","NIH RePORTER",SBIR2],
  ["September 2021","NCI research awards targeting ALDOA in pancreatic cancer and ERK5 in colorectal cancer transfer to PHusis","NIH RePORTER",RP+"10357451"],
- ["July 2014","NCI SBIR award to develop inhibitors of PLEKHA7, a PH-domain protein mutant KRAS needs","NIH RePORTER",RP+"8777034"],
+ ["July 2014","NCI SBIR award to develop PLEKHA7 inhibitors for mutant KRAS cancers","NIH RePORTER",RP+"8777034"],
  ["August 2013","NCI SBIR award to develop CNKSR1 PH-domain inhibitors for mutant KRAS cancers","NIH RePORTER",RP+"8589456"]];
 var SHEETS=[];

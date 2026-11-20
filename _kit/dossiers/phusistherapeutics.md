@@ -28,3 +28,6 @@
 
 ## Hero
 - Crafted render (HOME_BRIEF update 2c): engraved block of human skin (surface relief, stratum corneum, epidermis, dermis with capillary loops, two follicles with sebaceous glands, sweat gland, arteriole/venule, subcutaneous fat) with a topical film whose molecules enter only the stratum corneum. skin.py -> skin.svg -> render.js -> hero.webp (2240x2400). No photography exists on the firm's site beyond three 1024x289 slideshow banners (a micrograph with molecule line art, stock lab glassware); not used (low resolution, BR).
+
+## Gates (2026-11-20, #/)
+smoke OK; reveal 1440/390 OK; anim 1440/390 OK; clip 1440/390 OK; overlay OK (no sheets); masthead OK; mixed OK; polish OK; loader OK; unstyled OK; cramped OK; hoverpad OK; split OK (after moving the pipeline indication out of the h3); balance OK; logo OK; hero-audit cold load OK (its second pass re-visits the same #/ route, which never re-renders on a home-only page, so it reports "no title found"); buildout-test OK (8 nav clicks, 1440 + 390). Hero and every story frame checked by eye at 1440 and 390.

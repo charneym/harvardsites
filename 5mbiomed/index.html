@@ -1616,10 +1616,11 @@ var field=(function(){
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   img.onload=function(){ok=true;if(w)build();if(!running)frame(true)};img.src=PHOTO;
   var AR=1500/1720,FX=.468,FY=.12; /* image h/w; the funnel's position in the photo */
+  var HB=null;function h1B(){return HB}function mH(){var e=document.getElementById("pageTitle");if(!e)return;var tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),n,r=document.createRange(),R=0,T=1e9,B=0;while(n=tw.nextNode()){r.selectNodeContents(n);var q=r.getClientRects();for(var k=0;k<q.length;k++)if(q[k].width>0){R=Math.max(R,q[k].right);T=Math.min(T,q[k].top+scrollY);B=Math.max(B,q[k].bottom+scrollY)}}HB=R?[R,T,B]:null}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861,bh,bw,bx,by,band;
     if(mob){band=Math.max(250,h*.36);bw=Math.max(w*1.2,(band+40)/AR);bh=bw*AR;bx=w*.5-bw*.47;by=Math.max(band-bh*.86,96-bh*FY)}
-    else{band=h;bh=h*1.1;bw=bh/AR;bx=Math.max(side+cw*.3,w-bw*.97,side+w*.62+120-bw*FX);by=Math.max(150,h*.2)-bh*FY}
+    else{band=h;bh=h*.9;bw=bh/AR;bx=w-bw-w*.02;by=Math.max(150,h*.2)-bh*FY} /* QA R2: the whole photograph sits inside the frame (right edge feathered), funnel at ~64-67% of the width */
     /* headroom: the funnel sits clear below the header at every size (~20% down on desktop, under the phone header on mobile) and, on desktop, right of the H1's end, so nothing bright sits behind the headline; the photo's top edge feathers into the ink above it */
     return {mob:mob,side:side,cw:cw,bx:bx,by:by,bw:bw,bh:bh,band:band};
   }
@@ -1638,7 +1639,7 @@ var field=(function(){
     p.globalCompositeOperation="overlay";var fx=G.bw*FX,fy=G.bh*(FY+.03),ag=p.createRadialGradient(fx,fy,0,fx,fy,G.bw*.09);ag.addColorStop(0,"rgba(233,185,73,.8)");ag.addColorStop(1,"rgba(233,185,73,0)");p.fillStyle=ag;p.fillRect(0,0,G.bw,G.bh);
     p.globalCompositeOperation="destination-in";
     var lg=G.mob?p.createLinearGradient(0,0,0,G.bh):p.createLinearGradient(0,0,G.bw,0);
-    if(G.mob){lg.addColorStop(0,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,1)")}else{lg.addColorStop(0,"rgba(0,0,0,0)");lg.addColorStop(.22,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,1)")}
+    if(G.mob){lg.addColorStop(0,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,1)")}else{lg.addColorStop(0,"rgba(0,0,0,0)");lg.addColorStop(.22,"rgba(0,0,0,1)");lg.addColorStop(.88,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,0)")}
     p.fillStyle=lg;p.fillRect(0,0,G.bw,G.bh);var tg=p.createLinearGradient(0,0,0,G.bh*.1);tg.addColorStop(0,"rgba(0,0,0,0)");tg.addColorStop(1,"rgba(0,0,0,1)");p.fillStyle=tg;p.fillRect(0,0,G.bw,G.bh);p.globalCompositeOperation="source-over";
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
@@ -1660,6 +1661,7 @@ var field=(function(){
     }
     c.globalAlpha=e*.9;c.drawImage(oGrain,0,0,w,h);c.globalAlpha=1;
     if(!G.mob){var lv=c.createLinearGradient(0,0,G.side+G.cw*.62,0);lv.addColorStop(0,"rgba(10,28,36,.92)");lv.addColorStop(.62,"rgba(10,28,36,.55)");lv.addColorStop(1,"rgba(10,28,36,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+      var hb=h1B();if(hb){var y0=hb[1]-30,y1=hb[2]+24,hx=c.createLinearGradient(0,0,hb[0]+80,0);hx.addColorStop(0,"rgba(10,28,36,.6)");hx.addColorStop(.8,"rgba(10,28,36,.6)");hx.addColorStop(1,"rgba(10,28,36,0)");var hv=c.createLinearGradient(0,y0-50,0,y1+50);hv.addColorStop(0,"rgba(0,0,0,0)");hv.addColorStop(.2,"rgba(0,0,0,1)");hv.addColorStop(.8,"rgba(0,0,0,1)");hv.addColorStop(1,"rgba(0,0,0,0)");c.save();c.beginPath();c.rect(0,y0-50,hb[0]+80,y1-y0+100);c.clip();c.fillStyle=hx;c.globalAlpha=1;for(var yy=y0-50;yy<y1+50;yy+=4){var a=yy<y0?(yy-(y0-50))/50:yy>y1?1-(yy-y1)/50:1;c.globalAlpha=Math.max(0,Math.min(1,a));c.fillRect(0,yy,hb[0]+80,4)}c.restore();c.globalAlpha=1}
       var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(10,28,36,0)");bv.addColorStop(1,"rgba(10,28,36,.75)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3);
       var tv=c.createLinearGradient(0,0,0,h*.18);tv.addColorStop(0,"rgba(10,28,36,.55)");tv.addColorStop(1,"rgba(10,28,36,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.18)}
     else{var fb=G.band,mg=c.createLinearGradient(0,fb*.62,0,fb);mg.addColorStop(0,"rgba(10,28,36,0)");mg.addColorStop(1,"rgba(10,28,36,1)");c.fillStyle=mg;c.fillRect(0,fb*.62,w,fb*.38);c.fillStyle=INK;c.fillRect(0,fb,w,h-fb);
@@ -1669,7 +1671,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();setTimeout(mH,1500);setTimeout(mH,3500);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(mH,600)});addEventListener("resize",function(){setTimeout(mH,300)});
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.bx+G.bw*FX,G.by+G.bh*.45]:[w/2,h/2]}};
 })();/*</R:field>*/

@@ -79,24 +79,39 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Escritório</span>Praça do Príncipe Real n.º 11, 1.º<br>1250-184 Lisboa</div>'+
    '<div class="c"><span class="lab">Contacto</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="'+AREA+'" target="_blank" rel="noopener">Área Reservada</a></div>'+
-   '<div class="c"><span class="lab">Explorar</span><a class="ul" href="#/abordagem">Abordagem</a><br><a class="ul" href="#/fundos">Fundos</a><br><a class="ul" href="#/participadas">Participadas</a><br><a class="ul" href="#/equipa">Equipa</a><br><a class="ul" href="#/noticias">Notícias</a></div>'+
+   '<div class="c"><span class="lab">Explorar</span><a class="ul" href="#/more/abordagem">Abordagem</a><br><a class="ul" href="#/more/fundos">Fundos</a><br><a class="ul" href="#/more/participadas">Participadas</a><br><a class="ul" href="#/more/equipa">Equipa</a><br><a class="ul" href="#/more/noticias">Notícias</a></div>'+
    '<div class="c"><span class="lab">Regulação</span>Sociedade de capital de risco autorizada e regulada pela CMVM</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Manrope\',Arial,sans-serif;font-weight:700;font-size:64px;letter-spacing:.08em">TOURO</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Touro Capital Partners</span><span class="lab">Website conceptual</span><a class="lab ul" href="#main" id="toTop">Voltar ao topo ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
+/* ================= BUILD-OUT PAGES (HOME_BRIEF update 2026-11-20): every nav item but Contactos opens #/more/<item> ================= */
+var MORE={abordagem:["Abordagem","desenvolvida","abordagem"],fundos:["Fundos","desenvolvidos","fundos"],participadas:["Participadas","desenvolvidas","participadas"],equipa:["Equipa","desenvolvida","equipa"],noticias:["Notícias","desenvolvidas","noticias"]};
+function vMore(id){var m=MORE[id];
+  return '<section class="ph-head more" data-field data-theme="dark"><span class="lab eyebrow">Pré-visualização do conceito</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+esc(m[0])+', <em>'+m[1]+'.</em></h1>'+
+   '<p class="lede intro" data-r>Este é um conceito para a página inicial. Se gostar da direção, desenvolvo esta página e o resto do site no mesmo estilo, com a vossa equipa, participadas e notícias, e trato da migração a partir do site atual. Basta responder ao e-mail em que recebeu este link e seguimos a partir daí.</p>'+
+   '<div class="act more-act" data-r><a class="btn solid" href="#/">Voltar à página inicial '+ARR+'</a></div>'+
+   '<a class="ul more-lk" data-r href="#/'+m[2]+'">Ou continue a explorar o conceito</a></section>';
+}
+
+/* ================= ROUTER: #/ is the home page; #/<section> scrolls to that section; #/more/<item> is a build-out page ================= */
 var SECS={sobre:"sobre",abordagem:"story",fundos:"fundos",participadas:"participadas",equipa:"equipa",noticias:"noticias",contactos:"contactos"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
+  if(p[0]==="more"&&MORE[p[1]])return {k:"more-"+p[1],v:function(){return vMore(p[1])},t:MORE[p[1]][0]+" — Touro Capital Partners",x:MORE[p[1]][0]};
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Touro Capital Partners — Capital de risco, Lisboa",x:"Início"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
-addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+/* on the home page, section links scroll in place */
+addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a||curKey!=="home")return;var r=route(a.getAttribute("href"));if(r.k!=="home"||!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+/* arriving at a section from a build-out page (or a cold link): wait for the home view, then jump to the section */
+function secAfter(sec){var n=0;(function wait(){if(++n>80)return;var lk=document.documentElement.style.overflow==="hidden"||curKey!=="home"||busy||!document.getElementById(sec);if(lk){setTimeout(wait,120);return}
+  setTimeout(function(){secGo(sec,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},250)})()}
+addEventListener("hashchange",function(){var r=route(location.hash);if(curKey!=="home"&&r.k==="home"&&r.sec)secAfter(r.sec)});
+(function(){var r=route(location.hash);if(r.k==="home"&&r.sec)secAfter(r.sec)})();

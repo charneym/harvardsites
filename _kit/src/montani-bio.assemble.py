@@ -125,9 +125,10 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 @media (max-width:860px){.prog-row{grid-template-columns:1fr}}
 /* team: the founders' own photograph beside their entries */
 .tm{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(28px,4vw,72px);align-items:start}
-.tm figure{margin:0;position:relative;overflow:hidden;aspect-ratio:807/534;background:var(--ink3)}
+.tm figure{margin:0}
+.tm .ph{position:relative;overflow:hidden;aspect-ratio:807/534;background:var(--ink3)}
 .tm figure img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.72) contrast(1.03) brightness(.97)}
-.tm figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,51,74,0) 55%,rgba(2,18,29,.35));mix-blend-mode:multiply;pointer-events:none}
+.tm .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,51,74,0) 55%,rgba(2,18,29,.35));mix-blend-mode:multiply;pointer-events:none}
 .tm figcaption{margin-top:14px}
 .ppl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .ppl li{position:relative;border-top:1px solid var(--hair);padding:22px 0 26px}
@@ -196,7 +197,7 @@ var PEOPLE=[
 ];
 var SHEETS=[];var GROUPS=[];
 var NEWS=[
- {d:"2026-06-23",s:"BIO International Convention",t:"Montani Bio presents in the Start-Up Stadium at BIO 2026, San Diego",u:BIO}
+ {d:"2026-06-23",s:"BIO International Convention",t:"Montani Bio presents at BIO 2026 in San Diego",u:BIO}
 ];'''
 
 R["views"] = r'''/* ================= VIEWS (home only: nav items scroll to sections) ================= */
@@ -253,7 +254,7 @@ function vHome(){
   '</div></section>'+
   '<section class="sec dark" id="team" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded by <em>Drs. Lee and Damron.</em></h2></div><p data-r>Driven by a passion to bring forward innovative solutions for human diseases, building a research enterprise of our own.</p></div>'+
-   '<div class="tm"><figure><img src="'+PHOTO+'" alt="Dr. F. Heath Damron and Dr. Katherine Lee, co-founders of Montani Biotechnologies" loading="lazy" width="807" height="534"><figcaption class="lab">F. Heath Damron and Katherine Lee</figcaption></figure>'+ppl()+'</div>'+
+   '<div class="tm"><figure><div class="ph"><img src="'+PHOTO+'" alt="Dr. F. Heath Damron and Dr. Katherine Lee, co-founders of Montani Biotechnologies" loading="lazy" width="807" height="534"></div><figcaption class="lab">F. Heath Damron and Katherine Lee</figcaption></figure>'+ppl()+'</div>'+
   '</div></section>'+
   '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
    '<div class="shead" style="margin-bottom:36px"><h2 class="d3 split">Latest news</h2></div>'+newsRows(NEWS)+

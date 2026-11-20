@@ -30,6 +30,11 @@
 - Independent sponsors: control-equity investor; three IS deals in current fund (Arch Global Precision, Acme Cosmetic Components, EnviroScience). Pays buy-side fees.
 
 ## Build
-- Hero: Terminal Tower (the landmark in their own hero photo) at dusk over the Cuyahoga, canvas-painted; sky from logo green #014e48 to logo khaki #9e9779. Palette sampled from live logo.jpg and overrides422.css (#003d34, #9e9779, #725564).
+- Hero (superseded 2026-11-20, see below): Terminal Tower (the landmark in their own hero photo) at dusk over the Cuyahoga, canvas-painted; sky from logo green #014e48 to logo khaki #9e9779. Palette sampled from live logo.jpg and overrides422.css (#003d34, #9e9779, #725564).
 - Story: engraved elevation of a founder-owned plant that grows: leadership/infrastructure bay, sales road and trucks, add-on plant (their About / Business Owners copy).
 - Fonts: Newsreader, Hanken Grotesk, Cinzel (logo small caps).
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted Terminal Tower canvas removed. Their own hero is a stock skyline with script text baked into a PNG (not their own photography).
+- Photo: "Cleveland Skyline at Night", Pexels photo 26776496 (free licence): https://www.pexels.com/photo/cleveland-skyline-at-night-26776496/ (Terminal Tower, 200 Public Square and the Veterans Memorial Bridge).
+- Graded into kirtlandcapital/hero.webp (green-black ink #0d1f1d, khaki tint, highlights compressed), slow Ken Burns, Terminal Tower at ~80% width under the ink scrim.

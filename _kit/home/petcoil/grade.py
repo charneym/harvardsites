@@ -33,16 +33,25 @@ def scrub(box, dx, dy, pad=30):
     im.paste(src, (x0-pad,y0-pad), m.filter(ImageFilter.GaussianBlur(9)))
 fill((1485, 590, 1650, 652))    # maker wordmark on the cowl
 fill((1172, 490, 1318, 530))    # model name
-crop = im.crop((880, 300, 2420, 1733)).filter(ImageFilter.GaussianBlur(1.1))                       # gantry, bore, table head
+# a wider crop so the mask can fade out on every side inside the photo: gantry housing in the source is x 1125-2327, y 325-1605
+X0, Y0, X1, Y1 = 1000, 200, 2450, 1733
+crop = im.crop((X0, Y0, X1, Y1)).filter(ImageFilter.GaussianBlur(0.9))
 a = np.asarray(crop).astype(np.float32) / 255.
-a = np.clip((a - .08) / .9, 0, 1) ** 1.55                    # deepen mids so the walls sit back
+a = np.clip((a - .06) / .92, 0, 1)
+a = a * a * (3 - 2 * a) * .55 + a ** 1.35 * .45             # an S-curve: deeper shadows, open highlights
 h, w = a.shape
+# tritone with depth: ink shadows, slate-teal mids, cool near-white highlights (the logo teal sits in the low mids)
+stops = [(0, (8, 15, 18)), (.22, (13, 42, 50)), (.45, (38, 92, 102)), (.68, (112, 160, 166)), (.86, (180, 211, 213)), (1, (226, 238, 238))]
+P = [p for p, _ in stops]; C = np.array([c for _, c in stops], dtype=np.float32)
+rgb = np.stack([np.interp(a, P, C[:, k]) for k in range(3)], -1)
+# long eased superellipse mask around the gantry (DP): opaque core, zero well inside every edge of the image
+cx, cy = 1726 - X0, 965 - Y0
+rx, ry = 709., 752.
 yy, xx = np.mgrid[0:h, 0:w]
-cx, cy = .5 * w, .5 * h                                      # vignette centred on the bore
-r = np.sqrt(((xx - cx) / (.62 * w)) ** 2 + ((yy - cy) / (.66 * h)) ** 2)
-a = a * np.clip(1.15 - .85 * r ** 1.7, .08, 1)
-stops = np.array([[0, (11, 20, 23)], [.42, (10, 74, 88)], [.75, (96, 178, 186)], [1, (214, 238, 238)]], dtype=object)
-P = [s[0] for s in stops]; C = np.array([s[1] for s in stops], dtype=np.float32)
-out = np.stack([np.interp(a, P, C[:, k]) for k in range(3)], -1)
-Image.fromarray(out.astype(np.uint8)).save(H / 'hero.webp', quality=86, method=6)
-print('hero.webp', crop.size)
+p = 2.15
+r = (np.abs((xx - cx) / rx) ** p + np.abs((yy - cy) / ry) ** p) ** (1 / p)
+t = np.clip((1 - r) / .52, 0, 1)
+al = t * t * (3 - 2 * t)
+out = np.dstack([rgb, al * 255]).astype(np.uint8)
+Image.fromarray(out, 'RGBA').save(H / 'hero.webp', quality=88, method=6)
+print('hero.webp', crop.size, 'mask centre', (cx / w, cy / h))

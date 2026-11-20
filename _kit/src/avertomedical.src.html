@@ -1009,12 +1009,15 @@ var field=(function(){
   var BG="#141414";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function h1R(){var e=document.getElementById("pageTitle"),m=0;if(!e)return 0;var tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),n,r=document.createRange();while(n=tw.nextNode()){r.selectNodeContents(n);var q=r.getClientRects();for(var i=0;i<q.length;i++)if(q[i].width>0)m=Math.max(m,q[i].right)}return m}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the colon's own centre sits at about (0.5, 0.55) of the render */
-    var ih=mob?U*1.5:Math.min(h*1.02,cw*.82),iw=ih*(2240/2400);
-    var kx=mob?w*.5:side+cw*.73,ky=mob?(84+U-12)/2:h*.53;
+    /* headroom (QA): the whole colon shows below the header at every size; on desktop it sits right of the H1's measured end */
+    var R=h1R()||side+cw*.56;
+    var ih=mob?Math.max(200,(U*.56-70)/.69):Math.min(h*.84,cw*.78,(w-72-R)/.68/(2240/2400)),iw=ih*(2240/2400);
+    var kx=mob?w*.5:Math.max(side+cw*.73,R+48+.34*iw*1.04),ky=mob?74+ih*.74:Math.max(108+ih*1.04*.55,h*.53);
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -1028,7 +1031,7 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~4% and drift up a touch over ~44s, eased back and forth */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.04*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*(G.mob?.58:.5),y=G.ky-dh*(G.mob?.74:.55)-k*G.ih*.012-SP.v*G.ih*.06;
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*(G.mob?.74:.55)-k*G.ih*.012-SP.v*G.ih*.06;
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       /* a faint pulse of light at the anchor */
       var pu=.5+.5*Math.sin(t*Math.PI*2/7),px=x+dw*(1011/1400),py=y+dh*(1038/1500),pr=dw*.12;
@@ -1050,7 +1053,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,400)});setTimeout(size,2500);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/

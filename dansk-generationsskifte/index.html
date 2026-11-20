@@ -657,7 +657,7 @@ em{line-height:0}
 #criteria .facts dd{font-size:clamp(20px,1.7vw,26px)}
 #criteria .facts dt{color:var(--accD)}
 /* portfolio rows (DH: the accent draws across the rule on hover, inside the row) */
-.sub-l{display:block;margin:clamp(48px,5vw,72px) 0 14px;color:var(--accL)}
+.sub-l{display:block;margin:40px 0 12px;color:var(--accL)}
 #portfolio .shead+.sub-l{margin-top:0}
 .sub-l.dk{color:var(--accD);margin-top:0}
 .sub-l.dk.pr{margin-top:clamp(48px,5vw,72px)}
@@ -676,8 +676,7 @@ em{line-height:0}
 @media (max-width:860px){.pfr li{grid-template-columns:1fr;row-gap:6px}.pfr .tg,.pfr p{padding-top:0}.pfr .lk{justify-self:start;padding-top:4px}}
 /* team: the firm's own black-and-white portraits */
 .tgrid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(28px,3vw,48px) var(--gap)}
-.tgrid.lead{grid-template-columns:repeat(4,minmax(0,1fr))}
-.tm figure{margin:0}
+.tgrid figure.tm{margin:0}
 .tm .ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--bone2)}
 .tm .ph img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1) contrast(1.02);transition:transform .9s var(--eo)}
 .tm:hover .ph img{transform:scale(1.03)}
@@ -688,8 +687,8 @@ em{line-height:0}
 .tm:hover figcaption::after{transform:scaleX(1)}
 .tm .nm{font:400 clamp(19px,1.5vw,23px)/1.2 var(--disp);letter-spacing:-.005em;color:var(--ink)}
 .tm .rl{font:400 13.5px/1.4 var(--sans);color:var(--stoneD)}
-@media (max-width:1024px){.tgrid,.tgrid.lead{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:700px){.tgrid,.tgrid.lead{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:1024px) and (min-width:701px){.tgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media (max-width:700px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* contact details under the CTA */
 .cinfo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px var(--gap);margin-top:clamp(64px,7vw,104px);padding-top:28px;border-top:1px solid var(--hairD);grid-column:1/-1}
 .cinfo .lab{display:block;margin-bottom:12px;color:var(--accD)}
@@ -726,6 +725,10 @@ em{line-height:0}
 .more .more-k:hover{color:var(--accL)}
 /* the firm's own deep green (their site's band colour #13382f) for the news section */
 .sec.dark2{background:#13382f}
+.tmore{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:clamp(36px,4vw,56px) 0 0;padding-top:16px;border-top:1px solid var(--hairD)}
+.tmore .lab{color:var(--accD);margin-right:8px}
+.tmore .nm{font:400 clamp(19px,1.5vw,23px)/1.2 var(--disp);color:var(--ink)}
+.tmore .rl{font:400 13.5px/1.4 var(--sans);color:var(--stoneD)}
 </style>
 </head>
 </head>
@@ -1051,10 +1054,11 @@ function pfRows(){return AREAS.map(function(a){return '<span class="lab sub-l" d
   return '<li><span class="lab tg">Investering '+esc(c[4])+'<span class="fd">'+esc(c[5])+'</span></span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><a class="lab ul lk" href="'+c[3]+'" target="_blank" rel="noopener">Besøg '+esc(c[0])+'</a></li>'}).join("")+'</ul>'}).join("")}
 function ini(n){return n.split(" ").filter(function(x,i,a){return i===0||i===a.length-1}).map(function(x){return x[0]}).join("")}
 function team(){
-  function card(p){return '<li class="tm'+(p.lead?' ld':'')+'"><figure>'+(p.img?'<div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" width="600" height="800"></div>':'<div class="ph ni" aria-hidden="true"><span>'+esc(ini(p.name))+'</span></div>')+
-    '<figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></figcaption></figure></li>'}
-  return '<span class="lab sub-l dk" data-r>Partnere og bestyrelse</span><ul class="tgrid lead">'+TEAM.filter(function(p){return p.lead}).map(card).join("")+'</ul>'+
-    '<span class="lab sub-l dk pr" data-r>Team</span><ul class="tgrid">'+TEAM.filter(function(p){return !p.lead}).map(card).join("")+'</ul>'}
+  function card(p){return '<figure class="tm"><div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" width="600" height="800"></div>'+
+    '<figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></figcaption></figure>'}
+  var ph=TEAM.filter(function(p){return p.img}),tx=TEAM.filter(function(p){return !p.img});
+  return '<div class="tgrid">'+ph.map(card).join("")+'</div>'+
+    (tx.length?'<p class="tmore" data-r><span class="lab">Også i teamet</span>'+tx.map(function(p){return '<span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span>'}).join("")+'</p>':'')}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+

@@ -4,10 +4,11 @@ function pfRows(){return AREAS.map(function(a){return '<span class="lab sub-l" d
   return '<li><span class="lab tg">Investering '+esc(c[4])+'<span class="fd">'+esc(c[5])+'</span></span><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p><a class="lab ul lk" href="'+c[3]+'" target="_blank" rel="noopener">Besøg '+esc(c[0])+'</a></li>'}).join("")+'</ul>'}).join("")}
 function ini(n){return n.split(" ").filter(function(x,i,a){return i===0||i===a.length-1}).map(function(x){return x[0]}).join("")}
 function team(){
-  function card(p){return '<li class="tm'+(p.lead?' ld':'')+'"><figure>'+(p.img?'<div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" width="600" height="800"></div>':'<div class="ph ni" aria-hidden="true"><span>'+esc(ini(p.name))+'</span></div>')+
-    '<figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></figcaption></figure></li>'}
-  return '<span class="lab sub-l dk" data-r>Partnere og bestyrelse</span><ul class="tgrid lead">'+TEAM.filter(function(p){return p.lead}).map(card).join("")+'</ul>'+
-    '<span class="lab sub-l dk pr" data-r>Team</span><ul class="tgrid">'+TEAM.filter(function(p){return !p.lead}).map(card).join("")+'</ul>'}
+  function card(p){return '<figure class="tm"><div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" width="600" height="800"></div>'+
+    '<figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span></figcaption></figure>'}
+  var ph=TEAM.filter(function(p){return p.img}),tx=TEAM.filter(function(p){return !p.img});
+  return '<div class="tgrid">'+ph.map(card).join("")+'</div>'+
+    (tx.length?'<p class="tmore" data-r><span class="lab">Også i teamet</span>'+tx.map(function(p){return '<span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span>'}).join("")+'</p>':'')}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+

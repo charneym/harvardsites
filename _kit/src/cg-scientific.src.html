@@ -1034,14 +1034,21 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
-    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.min(Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9),Math.max(w*.55,(w-HR-80)/.74)/iw)*(1+.04*k)*(1+.03*SP.v); /* desktop: the render shrinks (right-anchored, edges feathered) until the chip channel (~36% across hero.webp) starts past the H1 line ends */
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc,CX=w*.5; /* DO: on desktop the chip (78% x 44% of hero.webp) is fitted into the open area right of the H1 and centred there at 62-75% of the width */
+    if(mob)sc=(w/iw)*1.32*(1+.04*k);else{var aL=Math.max(HR+Math.max(56,w*.035),w*.47),aR=w-Math.max(48,w*.045);CX=Math.min(Math.max((aL+aR)/2,w*.62),w*.75);sc=Math.min(2*Math.min(CX-aL,aR-CX)/(iw*.78),h*.46/(ih*.44))*(1+.03*k)}
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
-    var x=w*(mob?.5:.65)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.56:.6)-fy+SP.v*H*.04;
-    if(!mob&&dw<w*1.02)x=w-dw+(RM?0:Math.sin(t*2*Math.PI/70)*w*.006);if(dw>=w)x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
+    var x=(mob?w*.5:CX)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*(mob?.01:.004)),y=H*(mob?.56:.56)-fy+SP.v*H*.04;
+    if(dw>=w)x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
-    /* no visible image edge anywhere: ink outside the render, and a 150px feather from every edge that falls inside the frame */
-    (function(){var F=150,K="20,17,42",ed=function(x0,y0,x1,y1,rx,ry,rw,rh){var g2=c.createLinearGradient(x0,y0,x1,y1);g2.addColorStop(0,"rgba("+K+",1)");g2.addColorStop(1,"rgba("+K+",0)");c.fillStyle=g2;c.fillRect(rx,ry,rw,rh)};
+    /* DJ: no visible image edge anywhere. Desktop: the render is masked with long eased ramps (the bench fades out well before
+       the image edge, the chip itself stays whole), then the page ink is laid underneath. Phones keep the edge feather. */
+    if(!mob){c.globalAlpha=1;var K="20,17,42",ez=function(g,a0,a1,b1,b0){[[a0,0],[a0+(a1-a0)*.3,.12],[a0+(a1-a0)*.65,.55],[a1,1],[b1,1],[b1+(b0-b1)*.35,.55],[b1+(b0-b1)*.7,.12],[b0,0]].forEach(function(q){g.addColorStop(Math.min(1,Math.max(0,q[0])),"rgba(0,0,0,"+q[1]+")")});return g};
+      c.globalCompositeOperation="destination-in";
+      c.fillStyle=ez(c.createLinearGradient(x,0,x+dw,0),.02,.13,.93,1);c.fillRect(0,0,w,h);
+      c.fillStyle=ez(c.createLinearGradient(0,y,0,y+dh),.1,.3,.76,.96);c.fillRect(0,0,w,h);
+      c.globalCompositeOperation="destination-over";c.fillStyle="rgb("+K+")";c.fillRect(0,0,w,h);c.globalCompositeOperation="source-over"}
+    else (function(){var F=150,K="20,17,42",ed=function(x0,y0,x1,y1,rx,ry,rw,rh){var g2=c.createLinearGradient(x0,y0,x1,y1);g2.addColorStop(0,"rgba("+K+",1)");g2.addColorStop(1,"rgba("+K+",0)");c.fillStyle=g2;c.fillRect(rx,ry,rw,rh)};
       c.fillStyle="rgb("+K+")";
       if(y>0){c.fillRect(0,0,w,y+1);ed(0,y,0,y+F,0,y,w,F)}
       if(y+dh<h){c.fillRect(0,y+dh-1,w,h-y-dh+1);ed(0,y+dh,0,y+dh-F,0,y+dh-F,w,F)}
@@ -1050,7 +1057,7 @@ var field=(function(){
     /* a soft band of light travels slowly along the chip, inlet to outlets, in the direction of flow */
     if(!RM){var sx=x+dw*(.16+.72*((t/22)%1)),sg=c.createLinearGradient(sx-dw*.09,0,sx+dw*.09,0);c.globalCompositeOperation="soft-light";
       sg.addColorStop(0,"rgba(236,200,226,0)");sg.addColorStop(.5,"rgba(236,200,226,.22)");sg.addColorStop(1,"rgba(236,200,226,0)");c.fillStyle=sg;c.fillRect(x+dw*.14,y+dh*.3,dw*.78,dh*.44);c.globalCompositeOperation="source-over"}
-    if(!mob){var lv=c.createLinearGradient(0,0,w*.62,0);lv.addColorStop(0,"rgba(20,17,42,.84)");lv.addColorStop(.5,"rgba(20,17,42,.55)");lv.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+    if(!mob){var lv=c.createLinearGradient(0,0,Math.max(HR+60,w*.5),0);lv.addColorStop(0,"rgba(20,17,42,.84)");lv.addColorStop(.5,"rgba(20,17,42,.55)");lv.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
       var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(20,17,42,.55)");tv.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
       var bv=c.createLinearGradient(0,h*.72,0,h);bv.addColorStop(0,"rgba(20,17,42,0)");bv.addColorStop(1,"rgba(20,17,42,.7)");c.fillStyle=bv;c.fillRect(0,h*.72,w,h*.28)}
     else{var tg=c.createLinearGradient(0,0,0,H*.3);tg.addColorStop(0,"rgba(20,17,42,.6)");tg.addColorStop(1,"rgba(20,17,42,0)");c.fillStyle=tg;c.fillRect(0,0,w,H*.3);

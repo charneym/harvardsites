@@ -26,11 +26,11 @@ function scene(){
      '<path class="drop" d="M'+(sx-12)+' '+(sy+14)+'V446M'+(sx+TL[3])+' '+(sy+6)+'V446"/>'+
      '<path class="tbl" d="M540 446H776V550H540Z"/><path class="kb2" d="M552 536H764"/><text x="552" y="466" class="t">INTENSITY ALONG THE COMET</text>'+
      '<path id="prof" class="prof" d="M552 512"/><text x="764" y="496" text-anchor="end" class="a">% DNA IN TAIL</text></g>';
-  g+='<text id="cap1" x="40" y="62" class="a cap">ONE CELL PER WELL</text>';
-  g+='<text id="cap2" x="40" y="62" class="a cap">EXPOSED TO UV</text>';
-  g+='<text id="cap3" x="40" y="62" class="a cap">MEMBRANES LYSED</text>';
-  g+='<text id="cap4" x="40" y="62" class="a cap">ELECTROPHORESIS</text>';
-  g+='<text id="cap5" x="40" y="62" class="a cap">SCORED</text>';
+  g+='<text id="cap1" x="40" y="50" class="a cap">ONE CELL PER WELL</text>';
+  g+='<text id="cap2" x="40" y="50" class="a cap">EXPOSED TO UV</text>';
+  g+='<text id="cap3" x="40" y="50" class="a cap">MEMBRANES LYSED</text>';
+  g+='<text id="cap4" x="40" y="50" class="a cap">ELECTROPHORESIS</text>';
+  g+='<text id="cap5" x="40" y="50" class="a cap">SCORED</text>';
   return g+'</svg>';
 }
 function storyDraw(svg){

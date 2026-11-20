@@ -9,6 +9,6 @@ var PIPE=[
  ["Platform","Additional genes and diseases","Structural variation and methylation","Next","The assay and the analysis tool are designed to expand beyond FSHD: additional target regions, then additional genes and diseases with complex genetic and epigenetic alterations.",AWARD,"NIH RePORTER"]];
 /* the contact principal investigator on the company's NIH award (NIH RePORTER); no company title is published, so none is given */
 var TEAM=[
- {g:"Principal investigator",name:"Yi-Wen Chen, DVM, PhD",title:"Contact PI, NIH NCATS STTR award",sum:"Associate Professor of Pediatrics at the George Washington University and Children’s National Hospital; research on skeletal muscle regeneration and disease, including FSHD."}];
+ {g:"Principal investigator",name:"Yi-Wen Chen, DVM, PhD",title:"Contact PI, NIH NCATS STTR award",sum:"Associate Professor of Pediatrics, George Washington University and Children’s National Hospital; FSHD research."}];
 var NEWS=[];
 var SHEETS=[];

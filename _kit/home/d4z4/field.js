@@ -15,7 +15,7 @@ var field=(function(){
     var U=mob?Math.min(h*.5,w*1.1):h,eb=mob&&document.querySelector(".hero .eyebrow");
     if(eb){var et=eb.getBoundingClientRect().top+(window.scrollY||0);if(et>200)U=Math.min(U,et-16)}
     /* phones get the near-horizontal render (hero-m.webp, same model) so the molecule fills the band above the text */
-    var AR=mob?1510/780:1154/2074,iw=mob?Math.min(w*.94,(U-84)*.96*AR):0,ih=mob?iw/AR:Math.min(h*.84,cw*.3/AR);if(!mob)iw=ih*AR;
+    var AR=mob?1510/780:1154/2074,iw=mob?Math.min(w*.84,(U-84)*.96*AR):0,ih=mob?iw/AR:Math.min(h*.84,cw*.3/AR);if(!mob)iw=ih*AR;
     var kx=mob?w*.5:side+cw*.7,ky=mob?82+(U-82)*.41:h*.545;
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }

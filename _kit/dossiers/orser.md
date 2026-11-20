@@ -37,3 +37,6 @@ Hero (rev2): a jagged Beartooth-style range at alpenglow (crisp ridgelines, lit 
 
 ## Bad-site evidence
 Free site-builder template frozen at "© 2019": blurry 200px JPG logo on a grey box, a translucent grey text box floating over a phone snapshot of a pasture, a fixed 1024px viewport (not mobile-friendly), Form CRS still the June 2020 version, a Yahoo email address, and only four thin pages with no team information.
+
+## Hero rephoto (2026-11-20)
+- The painted alpenglow lake scene is removed (client: painted scenes look unprofessional). (a) The firm's own images are phone snapshots, not usable. (b) Real photograph of snow-capped peaks above the golden prairie outside Bozeman, Montana (fits the firm's Montana identity, former name Bridger Capital Management, and Montana clients): Matthew Lancaster on Unsplash, Unsplash License (free, not Unsplash+): https://unsplash.com/photos/cWFlYyJp2PE (image photo-1608768557474-d4c5651d3230). Cropped 16:10, saturation 0.8, 12% blend to the ink #13123a, shipped as orser/hero.jpg; slow Ken Burns, peaks right of the headline, ink scrim over 0-55%, phone band. No copy claims a specific peak.

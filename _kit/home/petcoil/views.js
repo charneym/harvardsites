@@ -78,7 +78,7 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
    '<div class="c"><span class="lab">Focus</span>Removable PET inserts<br>for simultaneous PET/MRI</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 640 62" aria-hidden="true"><text x="320" y="52" text-anchor="middle" style="font-family:\'Sora\',system-ui,sans-serif;font-weight:500;font-size:66px;letter-spacing:-.02em">PETcoil</text></svg>'+
-  '<div class="legal"><span class="lab">© 2026 PETcoil, Inc.</span><span class="lab">Concept website · Not available for commercial sale</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
+  '<div class="legal"><span class="lab">© 2026 PETcoil, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
 /* ================= ROUTER: one route; #/<section> scrolls to that section ================= */

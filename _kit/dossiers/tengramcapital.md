@@ -30,3 +30,8 @@
 ## Hero / story
 - Hero: downtown Westport across the Saugatuck River at dusk (the view from the firm's Riverside Avenue office): clapboard and brick storefront buildings on a stone bulkhead, shop windows lit, river-walk lamps, a moored boat, the river mirroring the town; layered canvas with haze, glow and grain. Not a skyline (DG). Charter Oak (also Westport) uses an oak; this is a different subject (CX).
 - Story: one engraved shop elevation (display counter, wall shelf, one dropper bottle). Steps = the firm's four investment principles: brand (label, spotlight), risk (dimensions, fill level in section, dashed vetted extensions), management (designer's sketch with swatches, merchant's shelf light), kinetic (extensions made real, a lit line on both shelves).
+
+## Rev 2 / HOME_BRIEF update 2026-11-20 (part 1)
+- Town and trees fade out between 60% and 72% of the width on desktop, so the H1 and lede sit on clean sky and water (coordinator review).
+- Nav items Approach / Criteria / Portfolio / Team / News (header, mobile menu and footer "Explore") open build-out pages at #/more/<item>: eyebrow "Concept preview", H1 "<Item>, built out.", the brief's copy, "Back to the home page" and "Or keep scrolling the concept" (returns home and glides to the section). Contact and the home CTAs still scroll. Browser Back returns home. Tested at 1440 and 390.
+- Part 2 (photography-first hero) not applied in this pass: the coordinator asked for part 1 only. The site has no usable own photography (only a stock suit-jacket slideshow and brand-logo tiles), so (b), an Unsplash/Pexels photo of Westport's Saugatuck riverfront, would be the route if requested.

@@ -19,7 +19,7 @@ function scene(){
   function atom(p,t,l){return '<text x="'+(p[0]+(l?8:0)).toFixed(1)+'" y="'+(p[1]+5).toFixed(1)+'" class="atom" text-anchor="middle">'+t+'</text>'}
   g+='<g id="scBase"><rect class="neat" x=".5" y=".5" width="799" height="559"/>';
   g+='<path class="ld sD" d="M40 366H760"/>';
-  g+='<g class="tb"><path class="tbl" d="M548 16h228v52h-228Z M548 42h228"/><text x="558" y="34" class="t">PLATE I · THE COMBINATION</text><text x="558" y="60" class="t s">LUPVINDOL BIOSCIENCES</text></g>';
+  if(!mob)g+='<g class="tb"><path class="tbl" d="M548 16h228v52h-228Z M548 42h228"/><text x="558" y="34" class="t">PLATE I · THE COMBINATION</text><text x="558" y="60" class="t s">LUPVINDOL BIOSCIENCES</text></g>';
   g+='</g>';
   /* 1 cortisone: rings A, B, C (six) and D (five), 3- and 11-keto, delta-4, 17-OH, the C20 ketone and C21 OH, two angular methyls */
   var b=44,A=[112,278],B=[A[0]+b*S3,A[1]],C=[B[0]+b*S3/2,B[1]-1.5*b];

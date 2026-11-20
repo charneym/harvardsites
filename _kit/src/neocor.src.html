@@ -1060,12 +1060,13 @@ var field=(function(){
   var BG="#071426";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function h1R(){var e=document.getElementById("pageTitle"),m=0;if(!e)return 0;var tw=document.createTreeWalker(e,NodeFilter.SHOW_TEXT),n,r=document.createRange();while(n=tw.nextNode()){r.selectNodeContents(n);var q=r.getClientRects();for(var k=0;k<q.length;k++)if(q[k].width>0)m=Math.max(m,q[k].right)}return m}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the cut face's centre sits at about (0.55, 0.3) of the render; the bundle's left flank at ~0.15 */
     var ih=mob?Math.min(U*1.12,(U-70)/.78):Math.min(h*1.02,cw*.78),iw=ih*(1200/1320);
-    var kx=mob?w*.53:side+cw*.76,ky=mob?(70+U)/2+U*.06:h*.56;  /* kx/ky: the image centre; the cut face then sits upper right, clear of the header */
+    var kx=mob?w*.53:Math.max(side+cw*.76,(h1R()||side+cw*.5)+40+.47*iw*1.04),ky=mob?(70+U)/2+U*.06:h*.56;  /* kx/ky: the image centre; the cut face then sits upper right, clear of the header; on desktop the strands' left edge stays 40px right of the H1's measured end (QA) */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -1107,7 +1108,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,400)});setTimeout(size,2500);
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/

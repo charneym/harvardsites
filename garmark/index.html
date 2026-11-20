@@ -1208,7 +1208,7 @@ var field=(function(){
   function ring(g,cx,cy,r){g.moveTo(cx+r,cy);g.arc(cx,cy,r,0,Math.PI*2)}
   /* one gear, lit neutrally (lighting is applied per frame in world space) */
   function gearSprite(N,m,holes,seed,tone){
-    var rp=m*N/2,ra=rp+m,pad=4,S=2*(ra+pad),A=off(S,S),g=A[1],cx=S/2,cy=S/2,R=rng(seed),k;
+    var rp=m*N/2,ra=rp+m,pad=Math.max(4,m*2),S=2*(ra+pad),A=off(S,S),g=A[1],cx=S/2,cy=S/2,R=rng(seed),k;
     var P=gearPath(g,N,m,cx,cy);
     /* base metal */
     var base=g.createRadialGradient(cx,cy,0,cx,cy,ra);base.addColorStop(0,tone[0]);base.addColorStop(1,tone[1]);
@@ -1248,7 +1248,9 @@ var field=(function(){
     /* the tooth edge itself catches a thin line of light */
     gearPath(g,N,m,cx,cy);g.lineWidth=Math.max(.8,m*.1);g.strokeStyle="rgba(222,234,248,.4)";g.stroke();
     /* silhouette for the cast shadow */
-    var Sh=off(S,S),sg=Sh[1];gearPath(sg,N,m,cx,cy);sg.fillStyle="#000";sg.fill();
+    var St=off(S,S),stg=St[1];gearPath(stg,N,m,cx,cy);stg.fillStyle="#000";stg.fill();
+    /* the cast shadow is blurred once here, never per frame */
+    var Sh=off(S,S),sg=Sh[1];sg.setTransform(1,0,0,1,0,0);sg.filter="blur("+Math.round(m*1.2*dpr)+"px)";sg.drawImage(St[0],0,0);
     var Sd=off(S,S),sd=Sd[1];gearPath(sd,N,m,cx,cy);sd.fillStyle="#0e1f35";sd.fill();sd.lineWidth=Math.max(.8,m*.08);sd.strokeStyle="rgba(150,178,212,.22)";sd.stroke();
     return {cv:A[0],sh:Sh[0],sd:Sd[0],S:S,N:N,m:m,rp:rp,ra:ra};
   }
@@ -1282,7 +1284,7 @@ var field=(function(){
   function drawGear(o,th,e){
     var sp=o.sp,S=sp.S,tg=T[1],tc=T[0],half=S/2;
     /* cast shadow, offset away from the key light */
-    c.save();c.globalAlpha=e*.55;c.filter="blur("+Math.round(G.m*1.2)+"px)";c.translate(o.x-G.m*.9,o.y+G.m*1.4);c.rotate(th);c.drawImage(sp.sh,-half,-half,S,S);c.restore();
+    c.save();c.globalAlpha=e*.55;c.translate(o.x-G.m*.9,o.y+G.m*1.4);c.rotate(th);c.drawImage(sp.sh,-half,-half,S,S);c.restore();
     /* the part's thickness: its side wall, seen below and left of the face */
     var tx=-G.m*.32,ty=G.m*.5;for(var q=3;q>=1;q--){c.save();c.globalAlpha=e;c.translate(o.x+tx*q/3,o.y+ty*q/3);c.rotate(th);c.drawImage(sp.sd,-half,-half,S,S);c.restore()}
     /* the part, then world-fixed lighting laid over it (source-atop keeps it on the metal) */

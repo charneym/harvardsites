@@ -29,7 +29,12 @@ Home-only concept site (HOME_BRIEF), src `_kit/src/ledgewood.src.html` assembled
 - Template advisor-site nav (Client Center / Information / Tools), first-person copy ("my foundation of success").
 ## Design
 - Palette from the logo and header: royal navy #2b3088 (logo), header navy #162248 → ink #0e1530, slate nav #778aa8; cool granite paper #eff0f4; periwinkle light #a7b4e6.
-- Hero: a granite ledge topped with eastern white pines above a tidal river at first light ("Ledgewood"; Exeter sits on the Squamscott).
+- Hero (superseded 2026-11-20, see below): a granite ledge topped with eastern white pines above a tidal river at first light ("Ledgewood"; Exeter sits on the Squamscott).
 - Story: one engraved elevation of the same ledge — today/goals, the Investment Policy route, a cairn of four asset classes, the sun of continuous monitoring with yearly review marks.
 - Insights section omitted: no article links could be verified (site blocked to automated fetches).
 - No performance figures or testimonials.
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted ledge/river canvas removed. Their site's only imagery is a washed-out generic stock photo (no own photography). No free Unsplash/Pexels photo verifiably of Exeter, NH was found (search results were Exeter, England), so a direct subject is used instead and no place is claimed for it.
+- Photo: "Pine Trees Near Body of Water", Pexels photo 629166 (free licence): https://www.pexels.com/photo/pine-trees-near-body-of-water-629166/ (mist over pine woods above still water).
+- Graded into ledgewood/hero.webp (navy ink #0e1530, cool grey tint), slow Ken Burns, right of ~50% under the ink scrim.

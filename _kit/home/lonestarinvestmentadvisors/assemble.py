@@ -17,5 +17,6 @@ for name, f in REG.items():
 # site-specific CSS goes after every template rule
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
+import re as _bo; src = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', src, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 (K / 'src/lonestarinvestmentadvisors.src.html').write_text(src)
 print('wrote src/lonestarinvestmentadvisors.src.html', len(src))

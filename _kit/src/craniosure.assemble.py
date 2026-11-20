@@ -5,7 +5,7 @@ import re, pathlib, base64
 HERE = pathlib.Path(__file__).resolve().parent
 IMG = HERE / "craniosure-img"
 SRC = (HERE / "firelight.src.html").read_text()
-SKULL = (HERE / "craniosure.infant.js").read_text()
+SKULL = (HERE / "craniosure.phone.js").read_text()
 def b64(name, mime):
     return "data:%s;base64,%s" % (mime, base64.b64encode((IMG / name).read_bytes()).decode())
 MARK = b64("mark.png", "image/png")
@@ -285,8 +285,8 @@ function v404(){return vHome()}
 function route(h){return {k:"home",v:vHome,t:"CranioSure — Earlier answers on infant head shape",x:"Home"}}'''
 
 R["field"] = SKULL + r'''
-/* ================= HERO FIELD: the sleeping infant, pre-painted once per size; each frame composites it with a slow
-   float and a cyan point tracing the contour of the vault, as the app reads the head shape. No pointer response (CZ). */
+/* ================= HERO FIELD: the product, a phone on a blanket showing the app, pre-painted once per size; each frame
+   composites it with a slow float and a cyan point running around the on-screen head contour, as the app reads the shape. No pointer response (CZ). */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSk=null,OUTP=null,OUTL=0;
@@ -317,9 +317,9 @@ var field=(function(){
     c.fillStyle=hg;c.fillRect(G.cx-hr*1.4,G.cy-hr*1.4+par,hr*2.8,hr*2.8);
     c.drawImage(oSk,ox+150*s-20,oy+95*s-20,oSk.width/dpr,oSk.height/dpr);
     /* the trace: a cyan point runs over the vault and back, leaving a fading line */
-    var cyc=9,ph=(t%cyc)/cyc,u=ph<.5?sm(ph*2):sm(2-ph*2),dir=ph<.5?1:-1,TL=.16;
+    var CL=!!SKULL.closed,cyc=CL?6:9,ph=(t%cyc)/cyc,u=CL?ph:(ph<.5?sm(ph*2):sm(2-ph*2)),dir=CL?1:(ph<.5?1:-1),TL=CL?.3:.16;
     c.lineCap="round";
-    for(var k=0;k<28;k++){var u0=u-dir*TL*k/28,u1=u-dir*TL*(k+1)/28;if(u0<0||u0>1||u1<0||u1>1)continue;var A=at(u0),B=at(u1);
+    for(var k=0;k<28;k++){var u0=u-dir*TL*k/28,u1=u-dir*TL*(k+1)/28;if(CL){u0=(u0+1)%1;u1=(u1+1)%1;if(u1>u0)continue}if(u0<0||u0>1||u1<0||u1>1)continue;var A=at(u0),B=at(u1);
       c.strokeStyle="rgba(39,235,255,"+(.85*(1-k/28)).toFixed(3)+")";c.lineWidth=2.4*(1-k/40);c.beginPath();c.moveTo(ox+A[0]*s,oy+A[1]*s);c.lineTo(ox+B[0]*s,oy+B[1]*s);c.stroke()}
     var P=at(u),px=ox+P[0]*s,py=oy+P[1]*s,gl=c.createRadialGradient(px,py,0,px,py,18);gl.addColorStop(0,"rgba(39,235,255,.9)");gl.addColorStop(.3,"rgba(39,235,255,.25)");gl.addColorStop(1,"rgba(39,235,255,0)");
     c.fillStyle=gl;c.fillRect(px-18,py-18,36,36);c.fillStyle="#eafcff";c.beginPath();c.arc(px,py,2.6,0,6.283);c.fill();
@@ -330,7 +330,7 @@ var field=(function(){
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){size()});
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.cx,G.cy]:[w/2,h/2]}};
 })();'''

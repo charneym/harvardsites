@@ -44,9 +44,11 @@ D2P SEED grant announced 2025-07-08 (surgery.wisc.edu); CDL-Wisconsin 2025 gradu
 - Services are four icon titles with no explanation; no explanation of how the app works.
 - Newest news item is the CDL 2025 graduation; the July 2025 D2P grant is not on the site. The govsbizplancontest.com news link 404s.
 
-## Hero (rev2, coordinator review)
-A sleeping, swaddled infant in soft profile (painted skin, closed eye, ear, fine hair) on a blanket in the logo blues, with a faint
-suture overlay inside the head; the cyan point traces the head contour. Replaced the first version's bare infant skull (too clinical).
+## Hero (rev3, coordinator review)
+The product: a smartphone resting on a soft blanket in the logo blues, turned slightly (edge, bezel, glare, soft shadow). On screen, the
+app view: a soft-focus top-down photo of an infant's head in silhouette (no facial detail), a faint contour, length/width axes with ticks
+at the extremes, the CranioSure name and an "Evaluation" label (the site's own service name; no result claims). A cyan point loops
+around the on-screen head contour. Replaced rev1 (bare infant skull: too clinical) and rev2 (painted sleeping infant: doll-like).
 
 ## Palette (logo pixel sample, site CSS)
 logo #0b1451 (wordmark navy) → --ink base; #2082ff → --acc (buttons); #24b7ff → --accL; #27ebff → hero contour trace (--cy);

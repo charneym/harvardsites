@@ -38,7 +38,7 @@ reg('root', ''':root{
   --sec:clamp(112px,14vh,200px);
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
 }''')
-reg('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#0b1030 0%,#27306a 36%,#8a6f86 52%,#3a3f66 60%,#141a35 74%,#0d1226 100%)}
+reg('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:#0d1226}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}''')
 reg('logocss', '''.brand{display:flex;align-items:center;gap:12px;height:56px;color:var(--bone)}
@@ -224,93 +224,65 @@ function footer(){
 }
 function route(h){return {k:"home",v:vHome,t:"Gouws Capital — Investment management with risk management and hedging",x:"Home"}}''')
 
-# ---------------- hero field: dawn over the Blue Ridge ----------------
-reg('field', r'''/* ================= HERO FIELD: dawn over the Blue Ridge, west of Charlotte. Layer after layer of ridgelines
-   fading into valley mist, the sun just clearing the far ridge in the firm's gold, pines on the near crest, a few birds
-   crossing. It moves on its own (mist drifts, the sun climbs a little, birds fly) with no pointer response (CZ). ================= */
+# ---------------- hero field: real photograph (rephoto 2026-11-20) ----------------
+reg('field', r'''/* ================= HERO FIELD (HOME_BRIEF update 2026-11-20, option b): a real photograph, uptown Charlotte (the firm's city) at last light, Duke Energy Center and the Ally tower over I-77.
+   Source: "Skyline of Charlotte at Sunset, North Carolina, USA" by Andres Nino on Pexels (watermark cropped out), https://www.pexels.com/photo/skyline-of-charlotte-at-sunset-north-carolina-usa-20018783/ (free licence).
+   Graded in hero.webp to the site's palette: highlights compressed, exposure lowered, shadows pulled to the page ink so the
+   photo melts into it (DJ). It sits right of ~45% on desktop under a deep ink scrim over the headline (DI); a very slow
+   Ken Burns drift, no pointer response (CZ). On phones it sits in the top band and fades into the ink above the text. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,MIST=[],BIRDS=[];
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var BG="#0d1226",K="13,18,38";var IW=2400,IH=1547,EX=.5,EY=.42;
+  function A(a){return "rgba("+K+","+a+")"}
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]}
-  function rgb(a,al){return "rgba("+(a[0]|0)+","+(a[1]|0)+","+(a[2]|0)+","+(al==null?1:al)+")"}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var S=mob?Math.min(h*.36,w*.8):h,hz=S*(mob?.42:.55);
-    return {mob:mob,side:side,cw:cw,S:S,hz:hz,sx:mob?w*.72:side+cw*.72,sy:hz-S*(mob?.03:.03),R:Math.max(10,S*(mob?.05:.042))};
+    var U=mob?Math.min(h*.52,w*1.0):h;
+    var ih=mob?U*1.25:Math.max(h*1.12,w*.62*IH/IW),iw=ih*(IW/IH);
+    if(mob&&iw<w*1.1){iw=w*1.1;ih=iw*IH/IW}
+    var kx=mob?w*.5:w*.72,ky=mob?U*.52:h*.5;
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
-  function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  var N=7,FAR=[146,134,172],NEAR=[10,14,34],HAZE=[206,184,192];
-  function ridgeY(i,x){var f=i/(N-1),S=G.S,hz=G.hz,base=hz+(S-hz)*(.05+.66*Math.pow(f,1.1)),amp=S*(G.mob?(.055+.14*f):(.06+.14*f)),R=rng(101+i*37);
-    var p1=R()*6.28,p2=R()*6.28,p3=R()*6.28,p4=R()*6.28,wl=w*(.1+.22*f)+180;
-    var n=.5+.5*(.52*Math.sin(x/wl+p1)+.28*Math.sin(x/(wl*.47)+p2)+.14*Math.sin(x/(wl*.21)+p3)+.06*Math.sin(x/(wl*.09)+p4));
-    return base-amp*Math.pow(n,1.35)}
-  function build(){
-    var S=G.S,hz=G.hz,A=mk(S+2),g=A[1];oSky=A[0];
-    /* dawn sky: deep navy overhead to a warm gold band on the horizon, brightest behind the sun */
-    var sky=g.createLinearGradient(0,0,0,hz+S*.05);
-    sky.addColorStop(0,"#0a0f2c");sky.addColorStop(.3,"#1b2458");sky.addColorStop(.58,"#4a4a7e");sky.addColorStop(.76,"#9a7c92");sky.addColorStop(.9,"#e0ae7c");sky.addColorStop(1,"#f2cf8e");
-    g.fillStyle=sky;g.fillRect(0,0,w,S+2);
-    var gl=g.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,S*.75);gl.addColorStop(0,"rgba(255,226,160,.55)");gl.addColorStop(.25,"rgba(240,190,120,.22)");gl.addColorStop(1,"rgba(240,190,120,0)");
-    g.fillStyle=gl;g.fillRect(0,0,w,S+2);
-    /* thin high cloud, lit from below */
-    var R=rng(7);for(var k=0;k<(G.mob?5:9);k++){var cy=hz*(.18+R()*.5),cx=R()*w,cwid=w*(.1+R()*.2),ch=S*(.004+R()*.007),near=1-Math.min(1,Math.abs(cx-G.sx)/(w*.6)),a=.05+.12*near;
-      g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(246,206,150,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(246,206,150,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
-    /* the ridges, far to near, each fading into the mist of the valley below it */
-    var B=mk(S+2),l=B[1];oLand=B[0];
-    for(var i=0;i<N;i++){var f=i/(N-1),col=mix(FAR,NEAR,Math.pow(f,.7)),top=hz+(S-hz)*(.05+.66*Math.pow(f,1.1))-S*(G.mob?(.055+.14*f):(.06+.14*f)),
-        nxt=i<N-1?hz+(S-hz)*(.05+.66*Math.pow((i+1)/(N-1),1.1)):S,bot=Math.min(S+2,nxt+S*.02);
-      var gr=l.createLinearGradient(0,top,0,bot);gr.addColorStop(0,rgb(col));gr.addColorStop(.5,rgb(mix(col,HAZE,.1*(1-f*.6))));gr.addColorStop(1,rgb(mix(col,HAZE,.36*(1-f*.7))));
-      l.fillStyle=gr;l.beginPath();l.moveTo(-4,S+2);
-      var R2=rng(300+i);for(var x=-4;x<=w+6;x+=3){var y=ridgeY(i,x)-(i>1?(R2()*S*.0035*f):0);l.lineTo(x,y)}
-      l.lineTo(w+6,S+2);l.closePath();l.fill();
-      /* the warm light of the sun on the far ridges */
-      if(i<4){l.save();l.globalCompositeOperation="source-atop";var sw=l.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,w*(.45-.06*i));sw.addColorStop(0,"rgba(255,214,150,"+(.42-.1*i).toFixed(3)+")");sw.addColorStop(1,"rgba(255,214,150,0)");l.fillStyle=sw;l.fillRect(0,0,w,S+2);l.restore();
-        l.strokeStyle="rgba(255,222,160,"+(.5-.12*i).toFixed(3)+")";l.lineWidth=1;l.beginPath();for(var x2=Math.max(0,G.sx-w*.4);x2<=Math.min(w,G.sx+w*.4);x2+=3){var y2=ridgeY(i,x2),fa=1-Math.abs(x2-G.sx)/(w*.4);x2<=Math.max(0,G.sx-w*.4)?l.moveTo(x2,y2):l.lineTo(x2,y2)}
-        l.save();l.globalCompositeOperation="source-atop";l.stroke();l.restore()}
-      /* pines along the two nearest crests */
-      if(i>=N-2){var Rp=rng(500+i),cnt=G.mob?(i===N-1?16:10):(i===N-1?44:30),ph=S*(i===N-1?(G.mob?.1:.09):(G.mob?.05:.045));l.fillStyle=rgb(col);
-        for(var q=0;q<cnt;q++){var u=Rp(),px=i===N-1?(u<.62?w*(.58+u*.68):w*u*.3):w*Rp(),py=ridgeY(i,px)+ph*.12,hh=ph*(.55+Rp()*.6);if(px>w+10)continue;pine(l,px,py,hh)}}
-    }
-    MIST=[];var Rm=rng(41);for(var m=0;m<(G.mob?7:12);m++){var li=1+(m%(N-2));MIST.push([Rm()*w,li,.4+Rm()*.6,(Rm()-.5)*2,Rm()*6.28])}
-    BIRDS=[];var Rb=rng(77);for(var b=0;b<(G.mob?3:5);b++)BIRDS.push([Rb(),.2+Rb()*.35,.6+Rb()*.5,Rb()*6.28,Rb()*.06]);
-  }
-  function pine(g,x,y,hh){var wd=hh*.34;g.beginPath();g.moveTo(x,y-hh);for(var k=0;k<5;k++){var yy=y-hh+hh*(k+1)/5,ww=wd*(.3+.7*(k+1)/5);g.lineTo(x+ww,yy);g.lineTo(x+ww*.35,yy-hh*.03)}g.lineTo(x+wd*.12,y);g.lineTo(x-wd*.12,y);
-    for(var k2=4;k2>=0;k2--){var yy2=y-hh+hh*(k2+1)/5,ww2=wd*(.3+.7*(k2+1)/5);g.lineTo(x-ww2*.35,yy2-hh*.03);g.lineTo(x-ww2,yy2)}g.closePath();g.fill()}
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?30:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var S=G.S,hz=G.hz;
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* the sun, climbing slowly clear of the far ridge */
-    var rise=sm(t/26)*G.R*.9+SP.v*G.R*.6,sx=G.sx,sy=G.sy+G.R*.55-rise,pulse=.92+.08*Math.sin(t*.7);
-    c.globalCompositeOperation="lighter";
-    var hg=c.createRadialGradient(sx,sy,G.R*.6,sx,sy,G.R*7);hg.addColorStop(0,"rgba(255,214,140,"+(.34*pulse).toFixed(3)+")");hg.addColorStop(1,"rgba(255,190,110,0)");c.fillStyle=hg;c.fillRect(sx-G.R*7,sy-G.R*7,G.R*14,G.R*14);
-    c.globalCompositeOperation="source-over";
-    var dg=c.createRadialGradient(sx,sy-G.R*.2,0,sx,sy,G.R);dg.addColorStop(0,"#fff6dc");dg.addColorStop(.7,"#ffe3a2");dg.addColorStop(1,"#f6c86e");c.fillStyle=dg;c.beginPath();c.arc(sx,sy,G.R,0,Math.PI*2);c.fill();
-    /* birds */
-    c.strokeStyle="rgba(20,22,44,.72)";c.lineCap="round";c.lineJoin="round";
-    for(var b=0;b<BIRDS.length;b++){var B=BIRDS[b],sp=.012*B[2],p=((B[0]-t*sp)%1+1)%1,bx=-30+p*(w+60),by=hz*B[1]+Math.sin(t*.4+B[3])*S*.01,s=(G.mob?3.4:5.2)*(1-B[4]*4),fl=Math.sin(t*5*B[2]+B[3]);
-      c.lineWidth=Math.max(1,s*.28);c.beginPath();c.moveTo(bx-s,by-s*.35*fl);c.quadraticCurveTo(bx-s*.4,by-s*.5*fl-s*.1,bx,by);c.quadraticCurveTo(bx+s*.4,by-s*.5*fl-s*.1,bx+s,by-s*.35*fl);c.stroke()}
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oLand,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* valley mist drifting between the ridges */
-    for(var m=0;m<MIST.length;m++){var M=MIST[m],li=M[1],f=li/(N-1),my=hz+(S-hz)*(.05+.66*Math.pow(f,1.1))+S*.01,mx=((M[0]+t*(5+6*M[2])*(M[3]>0?1:-1))%(w+600)+(w+600))%(w+600)-300,mw=w*(.22+.2*M[2]),mh=S*(.018+.02*f),a=(.1+.06*Math.sin(t*.2+M[4]))*(1-f*.55);
-      c.save();c.translate(mx,my);c.scale(1,mh/mw);var mg=c.createRadialGradient(0,0,0,0,0,mw);mg.addColorStop(0,"rgba(226,212,214,"+a.toFixed(3)+")");mg.addColorStop(1,"rgba(226,212,214,0)");c.fillStyle=mg;c.beginPath();c.arc(0,0,mw,0,Math.PI*2);c.fill();c.restore()}
-    c.globalAlpha=1;
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    if(ok){
+      var k=.5-.5*Math.cos(t*Math.PI*2/46),sc=(1+.045*k)*(1+.035*(1-e));
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*EX-k*G.iw*.012,y=G.ky-dh*EY-SP.v*G.ih*.05;
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      var fe=Math.min(dw*.24,w*.2);
+      if(x>0){c.fillStyle=BG;c.fillRect(0,0,Math.ceil(x)+1,h)}
+      var eg=c.createLinearGradient(x,0,x+fe,0);eg.addColorStop(0,A(1));eg.addColorStop(1,A(0));c.fillStyle=eg;c.fillRect(Math.max(0,x)-1,0,fe+2,h);
+      var xr=x+dw;if(xr<w+fe){var rg=c.createLinearGradient(xr-fe*.7,0,xr,0);rg.addColorStop(0,A(0));rg.addColorStop(1,A(1));c.fillStyle=rg;c.fillRect(xr-fe*.7,0,fe*.7+1,h);if(xr<w){c.fillStyle=BG;c.fillRect(Math.floor(xr)-1,0,w-xr+2,h)}}
+      if(y>0){c.fillStyle=BG;c.fillRect(0,0,w,Math.ceil(y)+1);var tg=c.createLinearGradient(0,y,0,y+dh*.12);tg.addColorStop(0,A(1));tg.addColorStop(1,A(0));c.fillStyle=tg;c.fillRect(0,y-1,w,dh*.12+1)}
+      var yb=y+dh;if(yb<h){c.fillStyle=BG;c.fillRect(0,Math.floor(yb)-1,w,h-yb+2)}
+      var bfe=dh*.12;var bg2=c.createLinearGradient(0,yb-bfe,0,yb);bg2.addColorStop(0,A(0));bg2.addColorStop(1,A(1));c.fillStyle=bg2;c.fillRect(0,yb-bfe,w,bfe+1);
+      if(!G.mob){
+        var rv=c.createLinearGradient(w-Math.max(90,w*.1),0,w,0);rv.addColorStop(0,A(0));rv.addColorStop(1,A(.85));c.fillStyle=rv;c.fillRect(w-Math.max(90,w*.1),0,Math.max(90,w*.1)+1,h);
+        var lv=c.createLinearGradient(0,0,G.side+G.cw*.72,0);lv.addColorStop(0,A(1));lv.addColorStop(.58,A(.94));lv.addColorStop(.82,A(.55));lv.addColorStop(1,A(0));c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.26);tv.addColorStop(0,A(.78));tv.addColorStop(1,A(0));c.fillStyle=tv;c.fillRect(0,0,w,h*.26);
+        var bv=c.createLinearGradient(0,h*.64,0,h);bv.addColorStop(0,A(0));bv.addColorStop(1,A(.94));c.fillStyle=bv;c.fillRect(0,h*.64,w,h*.36+1);
+      }else{
+        var tv2=c.createLinearGradient(0,0,0,G.bh*.3);tv2.addColorStop(0,A(.78));tv2.addColorStop(1,A(0));c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.3);
+        var mv=c.createLinearGradient(0,G.bh*.62,0,G.bh);mv.addColorStop(0,A(0));mv.addColorStop(1,A(1));c.fillStyle=mv;c.fillRect(0,G.bh*.62,w,G.bh*.38+1);
+        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.side+G.cw*.15,G.S*.97]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();''')
 
 # ---------------- story: a chessboard in fine line ----------------

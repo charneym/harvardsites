@@ -31,5 +31,6 @@ src = src.replace('<html lang="en"', '<html lang="de-CH"', 1)
 for a, b in TR:
     assert a in src, a
     src = src.replace(a, b)
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/kontivia.src.html').write_text(src)
 print('wrote src/kontivia.src.html', len(src))

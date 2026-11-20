@@ -21,5 +21,6 @@ for a,b in [('<html lang="en">','<html lang="pt-PT">'),('>Skip to content<','>Sa
              ('var mk=$("#pre .mk path"),L=330;','var mk=$("#pre .mk path"),L=Math.ceil(mk.getTotalLength());')]:
     assert src.count(a)==1,a; src=src.replace(a,b)
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/touro-capital.src.html').write_text(src)
 print('wrote src/touro-capital.src.html', len(src))

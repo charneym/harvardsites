@@ -18,5 +18,6 @@ for name, f in REG.items():
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/stationpartners.src.html').write_text(src)
 print('wrote src/stationpartners.src.html', len(src))

@@ -21,7 +21,7 @@ const { chromium } = require('playwright'); const path = require('path');
           note: !!(bo && bo.querySelector('.bo-note .bo-p') && bo.querySelector('.bo-note [data-bo-home]')), secs: bo ? bo.querySelectorAll('.bo-body > *').length : 0, ph: !!(bo && bo.querySelector('.ph-head.bo-ph')),
           xt: (document.getElementById('xtt') || {}).textContent || '', empty: bo ? [...bo.querySelectorAll('.bo-body h2, .bo-body h3, .bo-body p')].filter(e => getComputedStyle(e).opacity < 0.5 && e.getBoundingClientRect().top < innerHeight - 40 && e.getBoundingClientRect().bottom > 0).length : 0,
           txt: bo ? bo.innerText : '', btnR: (() => { const x = bo && bo.querySelector('.btn'); return x ? getComputedStyle(x).borderRadius : '' })(),
-          ftr: !!(bo && bo.querySelector('.ftr, footer')), mail: bo ? /@|mailto:/.test(bo.innerHTML.replace(/<footer[\s\S]*$/, '')) : false,
+          ftr: !!(bo && bo.querySelector('.ftr, footer')), mail: bo ? [...bo.querySelectorAll('.bo-ph, .bo-note')].some(e => /@|mailto:/.test(e.innerHTML)) : false, // the module's own copy; cloned home sections keep the site's published contacts
           homeY: window.scrollY, hdrOff: (() => { const hd = document.getElementById('hdr'); return hd ? hd.getBoundingClientRect().top < -4 || getComputedStyle(hd).visibility === 'hidden' : true })(), over: document.documentElement.scrollWidth > innerWidth + 1 || (bo && bo.scrollWidth > bo.clientWidth + 1) } });
       const tag = `${w} ${it.label}`;
       if (st.hash !== '#/more/' + it.slug) bad.push(`${tag}: hash ${st.hash}`);

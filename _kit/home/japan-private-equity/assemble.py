@@ -32,5 +32,6 @@ for fam, fn, wt in [('Shippori Mincho', 'ShipporiMincho-Regular.ttf', '400'), ('
     subprocess.check_call(['pyftsubset', str(FD / fn), '--text-file=' + txt, '--flavor=woff2', '--layout-features=*', '--output-file=' + out])
     faces += "@font-face{font-family:'%s';font-style:normal;font-weight:%s;font-display:swap;src:url(data:font/woff2;base64,%s) format('woff2')}\n" % (fam, wt, base64.b64encode(open(out, 'rb').read()).decode())
 src = src.replace('<style>', '<style>\n' + faces, 1)
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/japan-private-equity.src.html').write_text(src)
 print('wrote src/japan-private-equity.src.html', len(src))

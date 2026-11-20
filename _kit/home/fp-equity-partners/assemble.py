@@ -22,5 +22,6 @@ src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
 for a,b in [('<html lang="en">','<html lang="it">'),('>Skip to content<','>Vai al contenuto<'),('textContent="Close"','textContent="Chiudi"')]:
     assert a in src,a; src=src.replace(a,b)
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/fp-equity-partners.src.html').write_text(src)
 print('wrote src/fp-equity-partners.src.html', len(src))

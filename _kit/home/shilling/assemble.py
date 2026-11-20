@@ -20,5 +20,6 @@ src = src.replace('__HERO__', _b.b64encode((H / 'hero.webp').read_bytes()).decod
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/shilling.src.html').write_text(src)
 print('wrote src/shilling.src.html', len(src))

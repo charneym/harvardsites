@@ -21,5 +21,6 @@ assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===
 for a,b in [('<html lang="en">','<html lang="de">'),('>Skip to content<','>Zum Inhalt springen<'),('textContent="Close"','textContent="Schließen"'),('textContent="Menu"','textContent="Menü"'),('>Close</button>','>Schließen</button>'),('aria-label="Previous person">Prev','aria-label="Vorherige Person">Zurück'),('aria-label="Next person">Next','aria-label="Nächste Person">Weiter')]:
     assert a in src, a
     src = src.replace(a, b)
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/finatem.src.html').write_text(src)
 print('wrote src/finatem.src.html', len(src))

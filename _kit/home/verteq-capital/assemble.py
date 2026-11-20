@@ -20,5 +20,6 @@ src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
 src = src.replace('<html lang="en">', '<html lang="it">', 1)
 src = src.replace('textContent="Close"', 'textContent="Chiudi"')
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->',1)  # BUILDOUT v2 owns #/more/* (one implementation: _kit/lib/buildout.js)
 (K / 'src/verteq-capital.src.html').write_text(src)
 print('wrote src/verteq-capital.src.html', len(src))

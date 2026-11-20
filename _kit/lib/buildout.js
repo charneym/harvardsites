@@ -22,6 +22,9 @@ var T={
  nl:{eye:"Conceptvoorbeeld",h:"{item}, uitgewerkt.",body:"Dit is een concept voor de homepage. Als de richting u bevalt, werk ik deze pagina en de rest van de site in dezelfde stijl uit, met uw team, portfolio en nieuws, en verzorg ik de overstap van uw huidige site. Beantwoord de e-mail waarin deze link kwam, dan nemen we het vanaf daar.",back:"Terug naar de homepage",keep:"Of scroll verder door het concept",crumb:"Home"},
  es:{eye:"Vista previa del concepto",h:"{item}, en versión completa.",body:"Este es un concepto para la página de inicio. Si le gusta la dirección, desarrollaría esta página y el resto del sitio con el mismo estilo, con su equipo, su cartera y sus noticias, y me encargaría de la migración desde su sitio actual. Responda al correo en el que llegó este enlace y seguimos desde ahí.",back:"Volver a la página de inicio",keep:"O seguir recorriendo el concepto",crumb:"Inicio"},
  it:{eye:"Anteprima del concept",h:"{item}, in versione completa.",body:"Questo è un concept per la home page. Se la direzione le piace, svilupperei questa pagina e il resto del sito nello stesso stile, con il suo team, il portafoglio e le notizie, e gestirei il passaggio dal sito attuale. Risponda all'e-mail con cui è arrivato questo link e proseguiamo da lì.",back:"Torna alla home page",keep:"Oppure continua a scorrere il concept",crumb:"Home"},
+ da:{eye:"Konceptforhåndsvisning",h:"{item}, fuldt udbygget.",body:"Dette er et koncept for forsiden. Hvis I kan lide retningen, bygger jeg denne side og resten af sitet i samme stil, med jeres team, portefølje og nyheder, og står for flytningen fra jeres nuværende site. Svar på den e-mail, som dette link kom i, så tager vi det derfra.",back:"Tilbage til forsiden",keep:"Eller fortsæt med at scrolle i konceptet",crumb:"Forside"},
+ pt:{eye:"Pré-visualização do conceito",h:"{item}, em versão completa.",body:"Este é um conceito para a página inicial. Se gostar da direção, desenvolvo esta página e o resto do site no mesmo estilo, com a vossa equipa, participadas e notícias, e trato da migração a partir do site atual. Basta responder ao e-mail em que recebeu este link e seguimos a partir daí.",back:"Voltar à página inicial",keep:"Ou continue a explorar o conceito",crumb:"Início"},
+ ja:{eye:"コンセプトプレビュー",h:"「{item}」も、本格構築へ。",body:"これはホームページのコンセプトです。この方向性を気に入っていただけましたら、役員、投資先、ニュースを含め、このページとサイト全体を同じスタイルで構築し、現在のサイトからの移行も対応いたします。このリンクをお送りしたメールにご返信いただければ、そこから進めてまいります。",back:"ホームページに戻る",keep:"このままコンセプトを見る",crumb:"ホーム"},
  sv:{eye:"Konceptförhandsvisning",h:"{item}, i full version.",body:"Det här är ett koncept för startsidan. Om ni gillar riktningen bygger jag ut den här sidan och resten av webbplatsen i samma stil, med ert team, er portfölj och era nyheter, och sköter flytten från er nuvarande webbplats. Svara på mejlet som den här länken kom i, så tar vi det därifrån.",back:"Tillbaka till startsidan",keep:"Eller fortsätt skrolla i konceptet",crumb:"Start"}
 };
 var lang=(DE.getAttribute("lang")||"en").toLowerCase().split("-")[0];
@@ -90,22 +93,28 @@ var TA=["data-to","data-go","data-sec"];function tgt(a){for(var i=0;i<TA.length;
 function isContact(a){var h=a.getAttribute("href")||"",t=label(a);return /contact/i.test(h+" "+tgt(a))||/^(contact|kontakt|contacto|contatti|contactez)/i.test(t)||/^mailto:|^tel:/i.test(h)}
 /* the primary nav items: header nav links and the mobile menu list; Home, Contact and anything off-site are excluded */
 function navAnchors(){var out=[];Array.prototype.forEach.call(D.querySelectorAll("#hdr nav a[href^='#'], .hdr nav a[href^='#'], #mm a[href^='#']"),function(a){
-  var h=a.getAttribute("href"),to=tgt(a);if(!h||h==="#"||(h==="#/"&&!to)||h==="#main")return;if(a.classList.contains("brand")||isContact(a)||h==="#hero"||h==="#top"||/^(home|start|accueil|inicio|startseite|inizio|hem)$/i.test(label(a)))return;if(!label(a))return;out.push(a)});return out}
+  var h=a.getAttribute("href"),to=tgt(a);if(!h||h==="#"||(h==="#/"&&!to)||h==="#main")return;if(a.classList.contains("brand")||isContact(a)||h==="#hero"||h==="#top"||/^(home|start|accueil|inicio|início|startseite|inizio|hem|forside|ホーム|トップ)$/i.test(label(a)))return;if(!label(a))return;out.push(a)});return out}
 function isNavItem(a){return navAnchors().indexOf(a)>=0}
-function items(){var seen={},list=[];navAnchors().forEach(function(a){var t=label(a),s=slug(t);if(!s||seen[s])return;seen[s]=1;list.push({slug:s,label:t,href:a.getAttribute("href"),to:tgt(a)})});return list}
+function hkey(a){var v=tgt(a);if(v)return v.split("=")[1];var h=a.getAttribute("href")||"",m=/^#\/(?:more\/)?([^/?#]+)/.exec(h)||/^#([^/?#]+)/.exec(h);return m?decodeURIComponent(m[1]):""}
+function aslug(a){return slug(label(a))||slug(hkey(a))}
+function items(){var seen={},list=[];navAnchors().forEach(function(a){var t=label(a),s=aslug(a);if(!s||seen[s])return;seen[s]=1;list.push({slug:s,label:t,href:a.getAttribute("href"),to:tgt(a)})});return list}
 function findItem(s){var l=items();for(var i=0;i<l.length;i++)if(l[i].slug===s)return l[i];return null}
 function moreSlug(h){var m=/^#\/more\/([^/?#]+)\/?$/.exec(h||"");return m?decodeURIComponent(m[1]):null}
 
 /* ---------- which home section belongs to a nav item ---------- */
-var SECMAP=null;
+var SECMAP=null,MOREMAP={};
 function secMap(){if(SECMAP)return SECMAP;SECMAP={};
-  Array.prototype.some.call(D.scripts,function(s){var m=/\bSECS\s*=\s*(\{[^{}]*\})/.exec(s.textContent||"");if(!m)return false;try{SECMAP=(new Function("return "+m[1]))()||{}}catch(e){}return true});
+  /* the site's own section maps (SECS, SECID, ...): object literals of key -> section id / data-sec */
+  /* and the old in-template build-out map (MORE = {key: [label, ..., sectionKey]}) */
+  Array.prototype.forEach.call(D.scripts,function(s){var t=s.textContent||"";if(t.indexOf("SEC")<0&&t.indexOf("MORE")<0)return;var re=/\b([A-Z_]*(?:SEC|MORE)[A-Z_]*)\s*=\s*(\{[^{}]*\})/g,m;
+    while((m=re.exec(t))){try{var o=(new Function("return "+m[2]))()||{},more=/MORE/.test(m[1]);for(var k in o){var v=o[k];if(more){if(Array.isArray(v)&&typeof v[v.length-1]==="string"&&!(k in MOREMAP))MOREMAP[k]=v[v.length-1]}else if(typeof v==="string"&&!(k in SECMAP))SECMAP[k]=v}}catch(e){}}});
   if(O.map)for(var k in O.map)SECMAP[k]=O.map[k];return SECMAP}
 function keyOf(it){var v=it.to?it.to.split("=")[1]:"";if(v)return v;var h=it.href||"",m;
   if((m=/^#\/more\/([^/?#]+)/.exec(h)))return decodeURIComponent(m[1]);if((m=/^#\/?([^/?#]+)/.exec(h)))return decodeURIComponent(m[1]);return it.slug}
-function byId(id){if(!id)return null;var e=D.getElementById(id);if(!e)return null;var v=D.getElementById("view")||D.querySelector("main");return v&&v.contains(e)?e:null}
+function byId(id){if(!id)return null;id=String(id).replace(/^#/,"");if(!id)return null;var v=D.getElementById("view")||D.querySelector("main");if(!v)return null;var e=D.getElementById(id);if(e&&v.contains(e))return e;
+  try{e=v.querySelector('[data-sec="'+id+'"],[data-section="'+id+'"]')}catch(x){e=null}return e}
 function topSec(e){/* climb to the direct child of #view (through a pin-spacer) */var v=D.getElementById("view")||D.querySelector("main");while(e&&e.parentElement&&e.parentElement!==v)e=e.parentElement;return e&&e.parentElement===v?e:null}
-function secFor(it){var m=secMap(),k=keyOf(it),cands=[O.map&&O.map[it.slug],m[k],m[it.slug],k,"s-"+k,it.slug,"s-"+it.slug];
+function secFor(it){var m=secMap(),k0=keyOf(it),k=MOREMAP[k0]||k0,cands=[O.map&&O.map[it.slug],m[k],m[k0],m[it.slug],k,"s-"+k,k0,it.slug,"s-"+it.slug];
   for(var i=0;i<cands.length;i++){var e=byId(cands[i]);if(e)return e}return null}
 function unpin(e){return e&&e.classList&&e.classList.contains("pin-spacer")&&e.firstElementChild?e.firstElementChild:e}
 function isHero(e){return e.classList.contains("hero")||e.id==="hero"||e.classList.contains("ph-head")}
@@ -198,6 +207,11 @@ function build(it){style();
   var body=bo.querySelector(".bo-body");parts.forEach(function(p){body.appendChild(p)});
   var f=cloneFooter();if(f)bo.appendChild(f);
   bo.scrollTop=0;rvSetup()}
+/* nothing runs off the page (rule CC): a long word in the hero H1 shrinks to fit, no-wrap labels in cloned content may wrap */
+function fitBo(){if(!bo)return;var W=bo.clientWidth;if(!W)return;
+  for(var pass=0;pass<3&&bo.scrollWidth>W+1;pass++){Array.prototype.forEach.call(bo.querySelectorAll("h1,h2,h3,p,span,em,a,li,dt,dd"),function(e){var r=e.getBoundingClientRect();if(r.right<=W+1)return;
+    var cs=getComputedStyle(e);if(cs.whiteSpace==="nowrap"&&!/^H[1-3]$/.test(e.tagName)){e.style.whiteSpace="normal";return}
+    var h=e.closest("h1,h2,h3")||e;if(h.__fit)return;var fs=parseFloat(getComputedStyle(h).fontSize);var hr=h.getBoundingClientRect();var k=Math.max(.6,(W-4-hr.left)/Math.max(1,r.right-hr.left));if(k<1){h.style.setProperty("font-size",Math.floor(fs*k)+"px","important");h.__fit=1}})}}
 /* sections reveal as a whole when they scroll into the build-out page (rule CM): each block in a section's wrap, same motion, small stagger */
 function rvSetup(){if(IO){IO.disconnect();IO=null}if(RM||!("IntersectionObserver" in window))return;
   var blocks=[];Array.prototype.forEach.call(bo.querySelectorAll(".bo-body > *, .bo-note"),function(s){var w=s.querySelector(":scope > .wrap")||s;Array.prototype.forEach.call(w.children,function(b,i){b.setAttribute("data-bo-rv","0");b.style.transitionDelay=(Math.min(i,5)*.07)+"s";blocks.push(b)})});
@@ -219,7 +233,7 @@ function mute(e){for(var i=0;i<e.children.length;i++){var c=e.children[i];if(isA
 function markEcho(){var hero=D.querySelector("#view .hero, #view [data-field]");if(!hero)return;hero.setAttribute("data-bo-echo","");mute(hero)}
 function unmarkEcho(){Array.prototype.forEach.call(D.querySelectorAll("[data-bo-echo],[data-bo-mute]"),function(e){e.removeAttribute("data-bo-echo");e.removeAttribute("data-bo-mute")})}
 function hdrLock(on){var h=D.getElementById("hdr")||D.querySelector(".hdr");if(!h)return;if(on){h.setAttribute("data-lenis-prevent","");h.classList.remove("hide")}else h.removeAttribute("data-lenis-prevent")}
-function current(it){navAnchors().forEach(function(a){if(it&&slug(label(a))===it.slug)a.setAttribute("aria-current","page");else if(a.getAttribute("aria-current")==="page")a.removeAttribute("aria-current")})}
+function current(it){navAnchors().forEach(function(a){if(it&&aslug(a)===it.slug)a.setAttribute("aria-current","page");else if(a.getAttribute("aria-current")==="page")a.removeAttribute("aria-current")})}
 function closeMenu(cb){if(!D.body.classList.contains("menu-open")){cb();return}var b=D.getElementById("burger");if(b)b.click();setTimeout(cb,420)}
 /* the full-site route transition: the wipe rises, the page name rises letter by letter in the middle, the page swaps under it, the wipe leaves */
 function curtain(mid,done,name){var xc=D.getElementById("xc"),xt=D.getElementById("xt"),tt=D.getElementById("xtt"),g=window.gsap;
@@ -241,7 +255,7 @@ function reveal(){var g=window.gsap;if(RM||!g||!bo)return;var els=bo.querySelect
 function show(it){if(baseTitle===null)baseTitle=D.title;cur=it;want=true;
   curtain(function(){
     toTop();try{if(LN)LN.stop()}catch(e){}
-    build(it);unmarkEcho();markEcho();bo.classList.add("on");open=true;DE.classList.add("bo-open");hdrLock(true);open=true;hdrSolid();current(it);
+    build(it);unmarkEcho();markEcho();bo.classList.add("on");open=true;DE.classList.add("bo-open");hdrLock(true);open=true;hdrSolid();fitBo();setTimeout(fitBo,400);current(it);
     D.title=it.label+" — "+baseTitle.split(/\s[—–|]\s/)[0];var lv=D.getElementById("live");if(lv)lv.textContent=it.label+" page";
     var t=D.getElementById("boTitle");if(t)t.focus({preventScroll:true});reveal()},null,it.label)}
 function hide(after){want=false;
@@ -266,12 +280,12 @@ window.addEventListener("click",function(e){if(bypass||e.defaultPrevented||e.but
     if(a.hasAttribute("data-bo-keep")){e.preventDefault();e.stopImmediatePropagation();leave(function(){replay(h,a.getAttribute("data-bo-to"))});return}
     if(h.charAt(0)==="#"){e.preventDefault();e.stopImmediatePropagation();var mo=moreSlug(h);if(mo){var it=findItem(mo);if(it&&(!cur||it.slug!==cur.slug)){history.replaceState(null,"",h);show(it)}return}
       /* links inside the cloned content / footer: footer nav items open their own page; anything else goes home first, then runs there */
-      var fa=null;items().some(function(x){if(x.href===h&&slug(label(a))===x.slug){fa=x;return true}});if(fa){if(!cur||fa.slug!==cur.slug){history.replaceState(null,"","#/more/"+fa.slug);show(fa)}return}
+      var fa=null;items().some(function(x){if(x.href===h&&aslug(a)===x.slug){fa=x;return true}});if(fa){if(!cur||fa.slug!==cur.slug){history.replaceState(null,"","#/more/"+fa.slug);show(fa)}return}
       leave(h==="#/"||h==="#main"?null:function(){replay(h)});return}
     return}
   if(h.charAt(0)!=="#")return;
   var nav=isNavItem(a);
-  if(nav){e.preventDefault();e.stopImmediatePropagation();var it2=findItem(slug(label(a)));if(!it2)return;var to="#/more/"+it2.slug;
+  if(nav){e.preventDefault();e.stopImmediatePropagation();var it2=findItem(aslug(a));if(!it2)return;var to="#/more/"+it2.slug;
     closeMenu(function(){if(want){if(cur&&cur.slug===it2.slug)return;history.replaceState(null,"",to);show(it2)}else{history.pushState(null,"",to);show(it2)}});return}
   if(want){/* header brand / Contact / Home while the build-out page is up: go home first, then let the site handle it */
     e.preventDefault();e.stopImmediatePropagation();closeMenu(function(){leave(h==="#/"||h==="#main"?null:function(){replay(h)})})}

@@ -37,5 +37,10 @@ Home-only concept site (HOME_BRIEF format), assembled from the firelight engine 
 
 ## Design notes
 - Palette sampled from the live logo and CSS: green #008457/#008658, grey #848486, page greys #ebebeb/#f4f4f4. Ink is an evergreen-black; accent on dark #3dbb8b (a lighter tint of their green for contrast).
-- Hero: rendered terrain, a pyramid-shaped green peak at first light with flanking fells, valley fields, trees, mist and drifting clouds, echoing their three-peak mark and their long-running mountain banner (DG: their only photo is a low-res stock banner, so no real photography to reuse).
+- Hero (superseded 2026-11-20, see below): rendered terrain, a pyramid-shaped green peak at first light with flanking fells, valley fields, trees, mist and drifting clouds, echoing their three-peak mark and their long-running mountain banner (DG: their only photo is a low-res stock banner, so no real photography to reuse).
 - Story: engraved elevation of one peak; plan items surveyed on the left ridge, investments on the right, route climbed to "client goals" with a review loop.
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Rendered peak canvas removed. Their only photo is a low-res stock banner (no own photography).
+- Photo: "Delaware Water Gap at Mount Tammany in Fall", Pexels photo 17810032 (free licence): https://www.pexels.com/photo/delaware-water-gap-at-mount-tammany-in-fall-17810032/ (north-west New Jersey, ~40 miles from Chester).
+- Graded into highpoint/hero.webp (forest ink #0f1915, warm sage tint; rock foreground cropped), slow Ken Burns, river bend right of ~55% under the ink scrim.

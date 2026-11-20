@@ -25,7 +25,7 @@ var field=(function(){
       var bw=w,bh=G.bh,iw=img.naturalWidth,ih=img.naturalHeight;
       /* Ken Burns: a very slow push in and drift toward the Vieille Bourse, eased back and forth over ~50s */
       var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*(1.04+.07*k)*(1+.04*(1-e));
-      var dw=iw*sc,dh=ih*sc,fx=G.mob?.42:.78,fy=G.mob?.7:.62;
+      var dw=iw*sc,dh=ih*sc,fx=G.mob?.42:.78,fy=G.mob?.7:.3; /* desktop: low focal point keeps sky above the Bourse spire so it never crowds the nav on short wide screens */
       var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       /* scrims: navy wash, the headline side darkest, the base deepening into the page */

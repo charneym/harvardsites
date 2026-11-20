@@ -41,3 +41,8 @@ Fanie Gouws, CFA — Founder and Principal (registry: Managing Member). Greeting
 ## Build concept
 - Hero: dawn over the Blue Ridge — layered navy ridgelines, valley mist, gold sun rising (gold/navy brand). Firm in North Carolina; "long-term investment horizon".
 - Story: a fine-line chessboard (their own site uses a chess image; "planning ahead"). Steps: the client (king) / the hedge (defenders close in) / planning ahead (the move prepared before the crisis).
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted Blue Ridge canvas scene removed. Their own site has no usable photography (clip-art world map, chess board).
+- Photo: "Skyline of Charlotte at Sunset, North Carolina, USA" by Andres Nino, Pexels (free licence): https://www.pexels.com/photo/skyline-of-charlotte-at-sunset-north-carolina-usa-20018783/
+- Graded into gouws/hero.webp (navy ink #0d1226, gold-lavender tint; photographer's corner watermark cropped out), slow Ken Burns, right of ~45% under the ink scrim.

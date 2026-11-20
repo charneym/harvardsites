@@ -20,10 +20,14 @@ var field=(function(){
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
     var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(w/iw,H/ih)*(mob?1.0:1.04)*(1+.04*k)*(1+.03*SP.v);
+    /* desktop: fitted to 90% of the width and anchored right, so the first lens plate starts at about half the width and
+       the headline and lede sit on clean ink; the render's own background (#0c1013) fills the rest of the canvas */
+    if(!mob){var gut=Math.min(72,Math.max(16,w*.042)),side=Math.max(gut,(w-1320)/2),fs=Math.min(100,Math.max(40,w*.055)),
+      px=Math.max(w*.49,side+fs*7.9+36),dwT=Math.min(w*.9,(w-px)/.54);sc=(dwT/iw)*(1+.03*k)*(1+.02*SP.v)}
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
-    var x=w*(mob?.5:.555)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.6:.52)-fy+SP.v*H*.04;
-    x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
+    var x=mob?w*.5-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01):w-.975*dw-(RM?0:(.5+.5*Math.sin(t*2*Math.PI/70))*w*.004),y=H*(mob?.6:.52)-fy+SP.v*H*.04;
+    if(mob){x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y))}FOC=[x+fx,y+fy*.8];
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;if(!mob){c.fillStyle="#0c1013";c.fillRect(0,0,w,h)}
     c.drawImage(img,x,y,dw,dh);
     if(!mob){var lv=c.createLinearGradient(0,0,w*.62,0);lv.addColorStop(0,"rgba(14,17,20,.84)");lv.addColorStop(.5,"rgba(14,17,20,.55)");lv.addColorStop(1,"rgba(14,17,20,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
       var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(14,17,20,.55)");tv.addColorStop(1,"rgba(14,17,20,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);

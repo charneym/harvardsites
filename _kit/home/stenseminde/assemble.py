@@ -21,6 +21,11 @@ assert 'Progress' not in src, 'leftover Progress'
 import re as _r
 AS=(H/'assets.js').read_text()
 src = src.replace('%%WRL%%', _r.search(r'WRL="([^"]+)"', AS).group(1)).replace('%%WRR%%', _r.search(r'WRR="([^"]+)"', AS).group(1))
+# shared build-out module (HOME_BRIEF update 2026-11-20), with Danish copy
+BO = '<script>window.BUILDOUT={copy:{eye:"Konceptforhåndsvisning",h:"{item}, udbygget.",body:"Dette er et koncept til forsiden. Hvis I kan lide retningen, bygger jeg denne side og resten af sitet ud i samme stil, med jeres team, portefølje og nyheder, og står for flytningen fra jeres nuværende side. Svar på den e-mail, som dette link kom i, så tager vi den derfra.",back:"Tilbage til forsiden",keep:"Eller fortsæt med at se konceptet",crumb:"Forside"}};</script>\n'
+M = '<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->'
+assert src.count(M) == 1
+src = src.replace(M, BO + '<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->')
 # Danish UI strings in the template
 for a_,b_ in [('<html lang="en">','<html lang="da">'),('Skip to content','Spring til indhold'),('textContent="Close"','textContent="Luk"'),('data-ps-close>Close<','data-ps-close>Luk<')]:
     src = src.replace(a_, b_)

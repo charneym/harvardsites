@@ -1228,7 +1228,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#1d1a24";c.fillRect(0,0,w,h);
     if(ok){
       var iw=img.naturalWidth,ih=img.naturalHeight,k=.5-.5*Math.cos(t*Math.PI*2/56),cx,cy,sc;
-      if(!G.mob){sc=Math.min(G.cw*.56/iw,h*.72/ih);cx=G.side+G.cw*.72;cy=h*.53}
+      if(!G.mob){sc=Math.min(G.cw*.56/iw,h*.72/ih);cx=G.side+G.cw*.72+Math.max(0,G.side-72)*.85;cy=h*.53} /* wide screens: the centred column leaves margin on the right, so the organoid moves into it and clears the headline */
       else{sc=Math.min(w*.84/iw,G.bh*.66/ih);cx=w*.5;cy=G.bh*.58}
       sc*=(1+.035*k)*(1+.05*(1-e));
       var dw=iw*sc,dh=ih*sc,x=cx-dw/2-k*dw*.012,y=cy-dh/2+k*dh*.008-SP.v*h*.04;
@@ -1251,7 +1251,7 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.mob?w/2:G.side+G.cw*.72,G.mob?G.bh*.58:h*.53]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.mob?w/2:G.side+G.cw*.72+Math.max(0,G.side-72)*.85,G.mob?G.bh*.58:h*.53]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

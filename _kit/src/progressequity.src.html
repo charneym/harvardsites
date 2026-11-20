@@ -1006,11 +1006,13 @@ var field=(function(){
       /* wide screens: shift the art right so its feather midpoint never sits left of ~0.5 of the content (DI); the canvas left of it is ink */
       if(!G.mob)x+=Math.max(0,G.side+G.cw*0.5-(x+dw*0.43));
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* desktop: a screen pass lifts the (darkly graded) skyline so it reads clearly at every size; the text side is re-darkened by the scrim below (QA-2 R2) */
+      if(!G.mob){c.save();c.globalCompositeOperation="screen";c.globalAlpha=e*.42;c.drawImage(img,x,y,dw,dh);c.restore()}
       if(!G.mob){
         /* ink scrim over the headline and lede side (0 to ~55%), a light top wash under the nav, the base deepening */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.6,0);lv.addColorStop(0,"rgba("+SR+",.9)");lv.addColorStop(.6,"rgba("+SR+",.62)");lv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
         var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba("+SR+",.5)");tv.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.6,0,h);bv.addColorStop(0,"rgba("+SR+",0)");bv.addColorStop(1,"rgba("+SR+",.78)");c.fillStyle=bv;c.fillRect(0,h*.6,w,h*.4);
+        var bv=c.createLinearGradient(0,h*.6,0,h);bv.addColorStop(0,"rgba("+SR+",0)");bv.addColorStop(1,"rgba("+SR+",.6)");c.fillStyle=bv;c.fillRect(0,h*.6,w,h*.4);
       }else{
         var tv2=c.createLinearGradient(0,0,0,bh*.28);tv2.addColorStop(0,"rgba("+SR+",.6)");tv2.addColorStop(1,"rgba("+SR+",0)");c.fillStyle=tv2;c.fillRect(0,0,w,bh*.28);
         var mv=c.createLinearGradient(0,bh*.62,0,bh);mv.addColorStop(0,"rgba("+SR+",0)");mv.addColorStop(1,INK);c.fillStyle=mv;c.fillRect(0,bh*.62,w,bh*.38+1);

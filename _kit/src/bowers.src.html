@@ -73,7 +73,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#081631 0%,#163463 22%,#0e2140 42%,#0e2140 100%)}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#0e2140}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -897,144 +897,55 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: first light on Lake Tahoe, seen from the east shore at Glenbrook, Nevada, where
-   Bowers Wealth Management keeps its office. Alpenglow on the snow of the Sierra across the lake, the still water
-   holding their reflection, a lone sailboat, mist on the far shore, and the rounded granite boulders and Jeffrey
-   pines of the near shore. It animates on its own (shimmer, drifting mist, the boat), with no pointer response (CZ). ================= */
+/*<R:field>*//* ================= HERO FIELD: real photography (HOME_BRIEF update 2026-11-20, PRINCIPLES DG/DI/DJ). Granite boulders and Jeffrey pines on the shore of Lake Tahoe at sunset, the lake the firm's Glenbrook, Nevada office stands beside (Pexels photo 20763009, Stephen Leonardi, Pexels License).
+   Graded offline toward the site ink and drawn here with a slow Ken Burns drift. A scrim keeps the headline side quiet and
+   the art feathers into the ink on every edge; on phones the photo sits in the top band and fades into the ink. No pointer
+   response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oRef=null,oFg=null,ST=[],GL=[];
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.jpg";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  function noise1(seed){var R=rng(seed),P=[];for(var i=0;i<6;i++)P.push([R()*6.28,.5+R()*1.5]);return function(x){var v=0,a=1,f=1,n=0;for(var i=0;i<P.length;i++){v+=a*Math.sin(x*f*P[i][1]+P[i][0]);n+=a;a*=.55;f*=2.05}return v/n}}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.min(h*.34,w*.74):h;
-    return {mob:mob,side:side,cw:cw,U:U,hz:mob?U*.5:h*.55,bot:mob?U:h,
-      peakX:mob?w*.42:side+cw*.62};
+    var U=mob?Math.min(h*0.46,w*1.05):h;
+    return {mob:mob,side:side,cw:cw,U:U,bh:mob?U*1.06:h};
   }
-  function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  /* ridge heights (px above the horizon) for a range */
-  function ridge(seed,base,amp,peaks,sc){var n=noise1(seed),out=[];for(var x=0;x<=w+4;x+=2){var u=x/w,v=base;
-      for(var k=0;k<peaks.length;k++){var p=peaks[k],d=Math.abs(u-p[0])/p[1];if(d<1)v+=p[2]*Math.pow(1-d,1.35)*(1+.12*(1-d))}
-      var r1=1-Math.abs(n(u*sc)),r2=1-Math.abs(n(u*sc*2.7+4)),r3=n(u*sc*11+9);
-      v+=amp*(r1*.55+r2*.3)+amp*.18*r3*(v/(base+amp+1));out.push(Math.max(0,v))}return out}
-  function fillRidge(g,R,hz,col){g.fillStyle=col;g.beginPath();g.moveTo(0,hz+1);for(var i=0;i<R.length;i++)g.lineTo(i*2,hz-R[i]);g.lineTo(w+4,hz+1);g.closePath();g.fill()}
-  function build(){
-    var hz=G.hz,U=G.U,bot=G.bot,A=mk(hz+2),g=A[1];oSky=A[0];
-    /* the western sky at sunrise, with the sun behind the viewer: deep blue overhead, warming to a pale rose band low down */
-    var sky=g.createLinearGradient(0,0,0,hz);sky.addColorStop(0,"#081631");sky.addColorStop(.35,"#163463");sky.addColorStop(.62,"#3d5f93");sky.addColorStop(.8,"#8a96b8");sky.addColorStop(.9,"#c9a9ad");sky.addColorStop(1,"#d9b6a6");
-    g.fillStyle=sky;g.fillRect(0,0,w,hz+2);
-    var Rc=rng(5);for(var i=0;i<9;i++){var cy=hz*(.18+Rc()*.42),cx=Rc()*w,cwid=w*(.1+Rc()*.2),ch=U*(.004+Rc()*.006),a=.05+Rc()*.08;
-      g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(240,196,178,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(240,196,178,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
-    ST=[];var Rs=rng(3),ns=G.mob?30:80;for(var s=0;s<ns;s++){var sy=Math.pow(Rs(),1.8)*hz*.4;ST.push([Rs()*w,sy,.3+Rs()*.8,Rs()*6.28,.3+Rs()*1.2,1-sy/(hz*.4)])}
-    /* far range: the Sierra crest across the lake, snow lit pink-gold by the first sun */
-    var px=G.peakX/w,H1=U*(G.mob?.3:.25);
-    var far=ridge(7,H1*.3,H1*.2,[[px,.13,H1*.5],[px-.06,.06,H1*.14],[px+.07,.07,H1*.18],[px-.2,.1,H1*.3],[px+.19,.08,H1*.32],[px+.3,.1,H1*.2],[.08,.12,H1*.12]],9);
-    fillRidge(g,far,hz,"#4b6390");
-    /* snow and alpenglow: a smooth snowfield under the crest, brighter on the faces turned to the rising sun, with thin couloirs */
-    var nS=noise1(41),snowLine=H1*.5;
-    for(var j=1;j<far.length-1;j++){var x=j*2,top=far[j];if(top<snowLine*.85)continue;
-      var depth=(top-snowLine*.85)*(.7+.3*nS(x*.008))+H1*.05,y0=hz-top,y1=y0+Math.max(0,Math.min(depth,top*.75));if(y1<=y0+.5)continue;
-      var ja=Math.max(0,j-5),jb=Math.min(far.length-1,j+5),slope=(far[ja]-far[jb])/(jb-ja),lit=Math.max(0,Math.min(1,.55+slope*.5)),sg=g.createLinearGradient(0,y0,0,y1);
-      sg.addColorStop(0,"rgba(253,228,210,"+(.55+.4*lit).toFixed(3)+")");sg.addColorStop(.5,"rgba(232,186,176,"+(.3+.35*lit).toFixed(3)+")");sg.addColorStop(1,"rgba(150,150,190,0)");
-      g.fillStyle=sg;g.fillRect(x,y0,2.2,y1-y0)}
-    var Rq=rng(61);g.strokeStyle="rgba(66,88,132,.45)";g.lineWidth=1;
-    for(var cq=0;cq<(G.mob?14:34);cq++){var qj=1+Math.floor(Rq()*(far.length-2)),qt=far[qj];if(qt<snowLine*1.05)continue;var qx=qj*2,qy=hz-qt+2,ql=(qt-snowLine)*(.3+Rq()*.5),qd=(far[qj-1]-far[qj+1])>0?-1:1;
-      g.beginPath();g.moveTo(qx,qy);g.quadraticCurveTo(qx+qd*ql*.15,qy+ql*.5,qx+qd*ql*.32,qy+ql);g.stroke()}
-    /* a soft rim light on the crest */
-    g.strokeStyle="rgba(255,226,200,.35)";g.lineWidth=1;g.beginPath();for(var k=0;k<far.length;k++){var yy=hz-far[k];k?g.lineTo(k*2,yy):g.moveTo(0,yy)}g.stroke();
-    /* nearer forested ridges of the west and south shore, darker and bluer with distance haze between them */
-    var hz1=g.createLinearGradient(0,hz-H1*.5,0,hz);hz1.addColorStop(0,"rgba(190,170,190,0)");hz1.addColorStop(1,"rgba(190,170,190,.32)");g.fillStyle=hz1;g.fillRect(0,hz-H1*.5,w,H1*.5);
-    var mid=ridge(13,H1*.12,H1*.08,[[px-.32,.16,H1*.18],[.95,.14,H1*.22],[px+.1,.1,H1*.08]],11);
-    fillRidge(g,mid,hz,"#2c426c");
-    g.fillStyle="rgba(20,34,62,.5)";for(var m=0;m<mid.length;m+=2){var mt=mid[m];if(mt<3)continue;var tr=1+((m*7919)%5);g.fillRect(m*2,hz-mt-tr*.6,1.2,tr*.8+1)}
-    var low=ridge(19,H1*.03,H1*.03,[[.02,.08,H1*.07]],15);fillRidge(g,low,hz,"#1f3459");
-    /* the reflection layer: the same ranges mirrored in the still lake, softened */
-    var B=mk(bot-hz+2),r=B[1];oRef=B[0];
-    var lake=r.createLinearGradient(0,0,0,bot-hz);lake.addColorStop(0,"#5a6c96");lake.addColorStop(.06,"#33497a");lake.addColorStop(.35,"#1c3462");lake.addColorStop(.75,"#122a52");lake.addColorStop(1,"#0e2140");
-    r.fillStyle=lake;r.fillRect(0,0,w,bot-hz+2);
-    r.save();r.globalAlpha=.42;r.translate(0,0);r.scale(1,-.62);r.drawImage(oSky,0,-hz*dpr/dpr,w,hz);r.restore();
-    var rf=r.createLinearGradient(0,0,0,(bot-hz)*.7);rf.addColorStop(0,"rgba(14,33,64,0)");rf.addColorStop(1,"rgba(14,33,64,.85)");r.fillStyle=rf;r.fillRect(0,0,w,bot-hz+2);
-    /* near shore: Tahoe's clear water over granite, a dim teal in the shallows */
-    var sh=r.createLinearGradient(0,(bot-hz)*.55,0,bot-hz);sh.addColorStop(0,"rgba(40,110,120,0)");sh.addColorStop(1,"rgba(40,110,120,.28)");r.fillStyle=sh;r.fillRect(w*.42,0,w*.58,bot-hz+2);
-    var Rb=rng(23);for(var q=0;q<(G.mob?5:9);q++){var bx=w*(.5+Rb()*.5),by=(bot-hz)*(.72+Rb()*.26),br=U*(.02+Rb()*.035);
-      r.fillStyle="rgba(120,170,170,"+(.06+Rb()*.06).toFixed(3)+")";r.beginPath();r.ellipse(bx,by,br*1.6,br*.5,0,0,Math.PI*2);r.fill()}
-    GL=[];var Rg=rng(31),ng=G.mob?40:90;for(var l=0;l<ng;l++){var d=Math.pow(Rg(),1.4);GL.push([Rg()*w,d,Rg()*6.28,.3+Rg()*.9,(.04+.16*(1-d))*w*.5])}
-    /* foreground: rounded granite boulders and a Jeffrey pine on the near (east) shore, right of the text */
-    var C=mk(bot+2),f=C[1];oFg=C[0];
-    var sc=G.mob?U*.95:h,R=rng(77);
-    function boulder(cx,cy,rx,ry,seed){var Rr=rng(seed),pts=[],N=26;for(var i=0;i<N;i++){var a=i/N*Math.PI*2,k=1+(Rr()-.5)*.12;var yy=Math.sin(a)*ry*k;if(yy>0)yy*=.35;pts.push([cx+Math.cos(a)*rx*k,cy+yy])}
-      f.beginPath();for(var j2=0;j2<=N;j2++){var p0=pts[j2%N],p1=pts[(j2+1)%N],mx=(p0[0]+p1[0])/2,my=(p0[1]+p1[1])/2;j2?f.quadraticCurveTo(p0[0],p0[1],mx,my):f.moveTo(mx,my)}f.closePath();
-      var gr=f.createLinearGradient(cx-rx,cy-ry,cx+rx*.6,cy+ry*.3);gr.addColorStop(0,"#c7aea0");gr.addColorStop(.25,"#8d8b98");gr.addColorStop(.6,"#3e4a66");gr.addColorStop(1,"#18233c");
-      f.fillStyle=gr;f.fill();f.save();f.clip();
-      for(var s2=0;s2<rx*ry*.05;s2++){var sx=cx+(Rr()-.5)*rx*2,sy=cy+(Rr()-.7)*ry*1.6;f.fillStyle=Rr()<.5?"rgba(12,18,32,.28)":"rgba(240,226,214,.16)";f.fillRect(sx,sy,1+Rr()*1.4,1+Rr()*1.2)}
-      var sd=f.createLinearGradient(cx,cy-ry,cx+rx,cy);sd.addColorStop(0,"rgba(10,20,40,0)");sd.addColorStop(1,"rgba(10,20,40,.55)");f.fillStyle=sd;f.fillRect(cx-rx,cy-ry,rx*2,ry*1.4);
-      f.restore();
-      /* waterline and its soft reflection */
-      f.fillStyle="rgba(14,33,64,.6)";f.beginPath();f.ellipse(cx,cy+ry*.3,rx*1.02,ry*.12,0,0,Math.PI*2);f.fill();
-      f.strokeStyle="rgba(214,222,240,.28)";f.lineWidth=1;f.beginPath();f.moveTo(cx-rx*.95,cy+ry*.26);f.quadraticCurveTo(cx,cy+ry*.4,cx+rx*.95,cy+ry*.26);f.stroke()}
-    function pine(bx,by,H2,lean,seed){var Rp=rng(seed),tw=Math.max(2,H2*.022),tx=bx+lean*H2;
-      f.fillStyle="#060f1f";f.beginPath();f.moveTo(bx-tw*1.4,by);f.lineTo(tx-tw*.3,by-H2);f.lineTo(tx+tw*.3,by-H2);f.lineTo(bx+tw*1.4,by);f.closePath();f.fill();
-      /* Jeffrey pine: open, irregular tiers of tufted branches, longer in the middle, a narrow crown */
-      var tiers=17;for(var i=0;i<tiers;i++){var u=i/(tiers-1),y=by-H2*(.3+.7*u),cx2=bx+lean*H2*(.3+.7*u),len=H2*(.04+.13*Math.sin(Math.PI*Math.min(1,u*1.05+.08)))*(.75+Rp()*.5);
-        for(var sd2=-1;sd2<=1;sd2+=2){if(Rp()<.1)continue;var L2=len*(.7+Rp()*.6),ex=cx2+sd2*L2,ey=y+L2*(.08+Rp()*.12);
-          f.strokeStyle="#060f1f";f.lineWidth=Math.max(1,tw*.45);f.beginPath();f.moveTo(cx2,y);f.quadraticCurveTo(cx2+sd2*L2*.5,y-L2*.06,ex,ey);f.stroke();
-          for(var t2=0;t2<6;t2++){var fu=.15+t2*.17,fx=cx2+sd2*L2*fu,fy=y+L2*(.08*fu),fr=H2*(.026+.016*Rp())*(1.1-fu*.4);
-            f.strokeStyle="#061022";f.lineWidth=Math.max(.7,H2*.0016);f.beginPath();
-            for(var nd=0;nd<26;nd++){var an=-Math.PI/2+(Rp()-.5)*2.6,nl=fr*(.6+Rp()*.7);f.moveTo(fx,fy);f.lineTo(fx+Math.cos(an)*nl*1.3,fy+Math.sin(an)*nl*.8)}f.stroke();
-            f.fillStyle="rgba(6,16,34,.85)";f.beginPath();f.ellipse(fx,fy-fr*.2,fr*.9,fr*.5,0,0,Math.PI*2);f.fill()}}}
-      f.beginPath();f.ellipse(tx,by-H2-H2*.02,H2*.03,H2*.06,0,0,Math.PI*2);f.fill()}
-    if(G.mob){
-      boulder(w*.86,bot-U*.06,U*.24,U*.15,3);boulder(w*.66,bot-U*.02,U*.12,U*.07,9);
-      pine(w*.97,bot-U*.08,U*.9,-.03,4);
-    }else{
-      var bx0=G.side+G.cw;
-      /* the low point of the near shore, with pines, running off the right edge */
-      /* the near shore behind the boulders: a low dark bank the pines grow from */
-      var hg=f.createLinearGradient(0,h*.78,0,h);hg.addColorStop(0,"#0b1934");hg.addColorStop(1,"#081328");f.fillStyle=hg;f.beginPath();f.moveTo(w*.68,h+2);f.bezierCurveTo(w*.74,h*.9,w*.82,h*.84,w*.9,h*.82);f.bezierCurveTo(w*.95,h*.81,w*.98,h*.8,w+4,h*.795);f.lineTo(w+4,h+2);f.closePath();f.fill();
-      pine(w*.885,h*.86,h*.82,-.01,4);pine(Math.min(w-34,bx0+h*.01),h*.85,h*.6,.015,8);pine(w*.8,h*.9,h*.36,-.01,14);
-      boulder(w*.79,h*.9,h*.2,h*.13,3);boulder(w*.95,h*.95,h*.16,h*.12,5);boulder(w*.665,h*.94,h*.09,h*.05,9);boulder(w*.6,h*.985,h*.05,h*.025,11);
-    }
-  }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?6:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var hz=G.hz,bot=G.bot,U=G.U,LH=bot-hz;
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);
-    /* the lake: the mirrored ranges, broken into slow horizontal ripples that grow toward the shore */
-    var rh=Math.max(2,Math.round(2*dpr)),RH=oRef.height;
-    for(var y=0;y<RH;y+=rh){var d=y/RH,off=Math.sin(t*.5+y*.09/dpr)*(1+d*5)*dpr+Math.sin(t*.23+y*.023/dpr)*d*3*dpr;c.drawImage(oRef,0,y,oRef.width,rh,off-12*dpr,hz*dpr+y,oRef.width+24*dpr,rh)}
-    c.setTransform(dpr,0,0,dpr,0,0);
-    for(var i=0;i<ST.length;i++){var s=ST[i],a=s[5]*(.4+.6*Math.sin(t*s[4]+s[3]))*.5;if(a<.05)continue;c.fillStyle="rgba(236,240,255,"+a.toFixed(3)+")";c.fillRect(s[0],s[1],s[2],s[2])}
-    /* glints of rose light on the water, and a calm line along the far shore */
-    for(var l=0;l<GL.length;l++){var g=GL[l],gy=hz+LH*Math.pow(g[1],1.3)*.92+2,gx=((g[0]+t*(4+g[3]*6))%(w+200))-100,ga=(.05+.12*(1-g[1]))*(.5+.5*Math.sin(t*g[3]+g[2]));
-      c.fillStyle="rgba(236,196,190,"+ga.toFixed(3)+")";c.fillRect(gx,gy,g[4]*(.3+.7*(1-g[1])),1)}
-    var hl=c.createLinearGradient(0,0,w,0);hl.addColorStop(0,"rgba(240,214,206,0)");hl.addColorStop(.45,"rgba(240,214,206,.12)");hl.addColorStop(1,"rgba(240,214,206,.16)");c.fillStyle=hl;c.fillRect(0,hz,w,1);
-    /* morning mist along the far shoreline, drifting */
-    for(var m=0;m<3;m++){var mx=((t*(6+m*3)+m*w*.37)%(w*1.6))-w*.3,mw=w*(.35+m*.1),mg=c.createRadialGradient(mx,hz-U*.004,0,mx,hz-U*.004,mw);
-      mg.addColorStop(0,"rgba(214,200,214,.16)");mg.addColorStop(1,"rgba(214,200,214,0)");c.save();c.translate(mx,hz);c.scale(1,.05);c.translate(-mx,-hz);c.fillStyle=mg;c.fillRect(mx-mw,hz-mw,mw*2,mw*2);c.restore()}
-    /* a lone sailboat crossing the lake */
-    var bw=G.mob?U*.05:h*.03,bxp=G.mob?w*.3:G.side+G.cw*(.5+.08*Math.sin(t*.02)),bxx=((bxp-t*2)%(w+200)+w+200)%(w+200)-100,byy=hz+LH*(G.mob?.32:.2),bob=Math.sin(t*1.1)*bw*.03;
-    c.fillStyle="rgba(250,236,226,.9)";c.beginPath();c.moveTo(bxx,byy-bw*1.5+bob);c.lineTo(bxx,byy-bw*.12+bob);c.lineTo(bxx+bw*.7,byy-bw*.12+bob);c.closePath();c.fill();
-    c.fillStyle="rgba(214,206,214,.75)";c.beginPath();c.moveTo(bxx-bw*.06,byy-bw*1.25+bob);c.lineTo(bxx-bw*.06,byy-bw*.16+bob);c.lineTo(bxx-bw*.55,byy-bw*.16+bob);c.closePath();c.fill();
-    c.fillStyle="#13213c";c.fillRect(bxx-bw*.6,byy-bw*.1+bob,bw*1.4,bw*.14);
-    c.fillStyle="rgba(250,236,226,.18)";c.fillRect(bxx,byy+bw*.08,bw*.6,bw*.9);
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oFg,0,0);
-    c.globalAlpha=1;
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#0e2140";c.fillRect(0,0,w,h);
+    if(ok){
+      var bw=w,bh=G.bh,iw=img.naturalWidth,ih=img.naturalHeight;
+      /* Ken Burns: a very slow push in and drift, eased back and forth over ~50s */
+      var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*(1.04+.07*k)*(1+.04*(1-e))*(G.mob?1.4:1);
+      var dw=iw*sc,dh=ih*sc,fx=G.mob?0.78:0.8,fy=G.mob?0.55:0.6;
+      var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* scrims: an ink wash, the headline side darkest, top and base deepening into the page */
+      c.fillStyle="rgba(8,20,42,0.22)";c.fillRect(0,0,w,bh);
+      if(!G.mob){
+        var le=G.side+G.cw*0.76,lv=c.createLinearGradient(0,0,le,0);lv.addColorStop(0,"rgba(8,20,42,0.9)");lv.addColorStop(Math.min(.9,(G.side+G.cw*.36)/le),"rgba(8,20,42,0.738)");lv.addColorStop(1,"rgba(8,20,42,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(8,20,42,0.55)");tv.addColorStop(1,"rgba(8,20,42,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
+        var bv=c.createLinearGradient(0,h*0.62,0,h);bv.addColorStop(0,"rgba(8,20,42,0)");bv.addColorStop(1,"rgba(8,20,42,0.45)");c.fillStyle=bv;c.fillRect(0,h*0.62,w,h*(1-0.62)+1);
+      }else{
+        var tv2=c.createLinearGradient(0,0,0,bh*.3);tv2.addColorStop(0,"rgba(8,20,42,0.6)");tv2.addColorStop(1,"rgba(8,20,42,0)");c.fillStyle=tv2;c.fillRect(0,0,w,bh*.3);
+        var mv=c.createLinearGradient(0,bh*.62,0,bh);mv.addColorStop(0,"rgba(14,33,64,0)");mv.addColorStop(1,"#0e2140");c.fillStyle=mv;c.fillRect(0,bh*.62,w,bh*.38+1);
+        c.fillStyle="#0e2140";c.fillRect(0,bh,w,h-bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT,lw=0;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(function(){var nw=document.documentElement.clientWidth||innerWidth;if(G&&G.mob&&nw===lw&&Math.abs(innerHeight-h)<140)return;lw=nw;size()},120)});size();lw=w;
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.peakX,G.hz]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[w*.68,G.bh*.55]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

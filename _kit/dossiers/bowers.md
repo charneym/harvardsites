@@ -24,6 +24,6 @@ Home-only concept site at /bowers/ (src _kit/src/bowers.src.html, assembled from
 - Form ADV Part 2A annual amendment, January 2026 (filed 01/22/2026 per registry) — https://adviserinfo.sec.gov/firm/summary/145476
 ## Design
 - Palette from live site: masthead blue #16498b/#1d60af, navy heading #1c3664, gold rule #917b4b, pale sky #cbe0f3. Serif wordmark → Cormorant Garamond.
-- Hero: first light on Lake Tahoe from the east shore at Glenbrook (office location): alpenglow on the Sierra, still lake with reflection, sailboat, granite boulders, Jeffrey pines.
+- Hero (rephoto 2026-11-20, replaces the painted Tahoe canvas): real photo of granite boulders and Jeffrey pines on the Lake Tahoe shore at sunset. Pexels, Stephen Leonardi, https://www.pexels.com/photo/lake-tahoe-in-usa-at-sunset-20763009/ (Pexels License; CDN https://images.pexels.com/photos/20763009/pexels-photo-20763009.jpeg, 7203x4804). Saturation eased, shadows graded toward the ink #0e2140, saved as bowers/hero.jpg (2400px); slow Ken Burns drift, pines and boulders right of centre, ink scrim over the headline side, phone band fading into the ink. Their own site has only a stock family photo, so (a) was not possible.
 - Story: engraved mountain whose ridge is the efficient frontier (their masthead motif); risk tolerance → strategy pin → cairn of 4–6 Fidelity funds → quarterly reviews.
 - Bad-site evidence: 2008-era table template, stock happy-family photo, tiny text, link-list "Viewpoints", copyright "2008 - 2026".

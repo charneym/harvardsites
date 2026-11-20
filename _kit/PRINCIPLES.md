@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v20 (coordinator review of home-only batch, 2026-11-20)
 
+**DO. Hero subject composed in the open area, fully in frame.** Client (GarMark at 1920): "the tower should be a bit more left". At 1280-1920+ the photo/render subject sits centred in the space right of the text (~62-75% of the width), never cut by the right edge or the nav, never darkened into near-black; the scrim lives only behind the text. Check 1920x1080, 1920x930, 1440, 1280.
+
 **DN. No empty columns beside a statement.** Client: an off-centre 66% statement and then a label-left/statement-right split both read as "way too much white space". The statement and the stats share the row on desktop: statement left (~60%, readable 45-75 char lines, never giant), stats stacked in a column on the right. Never a lone statement with an empty column, never a full-width wall of display type.
 
 **DM. The loading screen is the first impression: every word on it must read.** Client: Objective Bio's loader showed "Biology in" near-white on white ("that's the first impression the CEO gets"). Cause: the loader's .pc class collided with the product-card .pc rule (white background). Never reuse a short class name for two components; scope loader classes under #pre. Gate: _kit/loader-contrast-audit.js (no loader text under 3:1) on every build.

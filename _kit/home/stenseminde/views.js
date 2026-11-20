@@ -83,24 +83,39 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Selskab</span>Stenseminde Holding ApS<br>Aalborg, Nordjylland</div>'+
    '<div class="c"><span class="lab">CVR-nr.</span><a class="ul" href="'+CVRU+'" target="_blank" rel="noopener">'+CVR+'</a></div>'+
-   '<div class="c"><span class="lab">Udforsk</span><a class="ul" href="#/om">Om os</a><br><a class="ul" href="#/tilgang">Tilgang</a><br><a class="ul" href="#/kriterier">Kriterier</a><br><a class="ul" href="#/investeringer">Investeringer</a><br><a class="ul" href="#/ejer">Ejer</a><br><a class="ul" href="#/nyheder">Nyheder</a></div>'+
+   '<div class="c"><span class="lab">Udforsk</span><a class="ul" href="#/more/tilgang">Tilgang</a><br><a class="ul" href="#/more/kriterier">Kriterier</a><br><a class="ul" href="#/more/investeringer">Investeringer</a><br><a class="ul" href="#/more/ejer">Ejer</a><br><a class="ul" href="#/more/nyheder">Nyheder</a></div>'+
    '<div class="c"><span class="lab">Est.</span>2003</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 76" aria-hidden="true"><text x="450" y="62" text-anchor="middle" style="font-family:\'Libre Caslon Text\',Georgia,serif;font-weight:400;font-size:84px;letter-spacing:.03em">STENSEMINDE</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Stenseminde Holding ApS</span><span class="lab">Konceptwebsite</span><a class="lab ul" href="#main" id="toTop">Til toppen ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
-var SECS={om:"about",about:"about",tilgang:"story",approach:"story",kriterier:"criteria",criteria:"criteria",investeringer:"portfolio",portfolio:"portfolio",ejer:"team",team:"team",nyheder:"news",news:"news",kontakt:"contact",contact:"contact"};
+/* ================= BUILD-OUT PAGES (HOME_BRIEF update 2026-11-20): every nav item but Contact opens #/more/<item> ================= */
+var MORE={tilgang:["Tilgang","tilgang"],kriterier:["Kriterier","kriterier"],investeringer:["Investeringer","investeringer"],ejer:["Ejer","ejer"],nyheder:["Nyheder","nyheder"]};
+function vMore(id){var m=MORE[id];
+  return '<section class="ph-head more" data-field data-theme="dark"><span class="lab eyebrow">Konceptforhåndsvisning</span>'+
+   '<h1 class="d1" id="pageTitle" tabindex="-1">'+esc(m[0])+', <em>fuldt udbygget.</em></h1>'+
+   '<p class="lede intro" data-r>Dette er et koncept for forsiden. Hvis I kan lide retningen, udbygger jeg denne side og resten af sitet i samme stil, med jeres team, investeringer og nyheder, og står for flytningen fra jeres nuværende side. Svar blot på den e-mail, som dette link kom i, så tager vi den derfra.</p>'+
+   '<div class="act more-act" data-r><a class="btn solid" href="#/">Tilbage til forsiden '+ARR+'</a></div>'+
+   '<a class="ul more-lk" data-r href="#/'+m[1]+'">Eller bliv ved med at se konceptet</a></section>';
+}
+
+/* ================= ROUTER: #/ is the home page; #/<section> scrolls to that section; #/more/<item> is a build-out page ================= */
+var SECS={om:"about",about:"about",tilgang:"story",kriterier:"criteria",investeringer:"portfolio",ejer:"team",nyheder:"news",kontakt:"contact",contact:"contact"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
-  return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Stenseminde Holding — Nordjysk familieejet investeringsselskab",x:"Home"};
+  if(p[0]==="more"&&MORE[p[1]])return {k:"more-"+p[1],v:function(){return vMore(p[1])},t:MORE[p[1]][0]+" — Stenseminde Holding",x:MORE[p[1]][0]};
+  return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Stenseminde Holding — Nordjysk familieejet investeringsselskab",x:"Forside"};
 }
 function secEl(id){var el=document.getElementById(id);if(!el)return null;var pa=el.parentElement;return pa&&pa.classList.contains("pin-spacer")?pa:el}
 function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)lenis.scrollTo(el,{offset:0,duration:1.5,force:true});else{var y=el.getBoundingClientRect().top+scrollY;if(lenis)lenis.scrollTo(y,{immediate:true,force:true});scrollTo(0,y)}}
-addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
+/* on the home page, section links scroll in place */
+addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a||curKey!=="home")return;var r=route(a.getAttribute("href"));if(r.k!=="home"||!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
-addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home"||r.k!=="home")return;e.stopImmediatePropagation();
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
-(function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+/* arriving at a section from a build-out page (or a cold link): wait for the home view, then jump to the section */
+function secAfter(sec){var n=0;(function wait(){if(++n>80)return;var lk=document.documentElement.style.overflow==="hidden"||curKey!=="home"||busy||!document.getElementById(sec);if(lk){setTimeout(wait,120);return}
+  setTimeout(function(){secGo(sec,true);try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"},250)})()}
+addEventListener("hashchange",function(){var r=route(location.hash);if(curKey!=="home"&&r.k==="home"&&r.sec)secAfter(r.sec)});
+(function(){var r=route(location.hash);if(r.k==="home"&&r.sec)secAfter(r.sec)})();

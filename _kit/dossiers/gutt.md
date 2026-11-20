@@ -37,3 +37,8 @@ Michael S. Gutt, J.D., LL.M., Founder/Senior Consultant (site), President and Ch
 ## Build concept
 - Hero: an old Southern oak at blue hour on an Atlanta meadow ("city in a forest"): a broad crown lit at the edge by the last light, a distant tree line in haze, stars, and fireflies over the grass. Palette is their navy and slate.
 - Story: a cross-section of that oak in fine line. Listen (the heartwood: objectives, risk tolerance, time horizon), Plan (six rays for the six disciplines), Review (the rings grow to the bark, the outer ring marked in quarters: monitored quarterly, reviewed annually, ongoing since 1986).
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted oak-meadow canvas scene removed. Their site's only imagery is a generic stock night-skyline banner (not their own photography).
+- Photo: "City of Atlanta at Sunset", Pexels photo 11599618 (free licence): https://www.pexels.com/photo/city-of-atlanta-at-sunset-11599618/ (Midtown skyline, One Atlantic Center).
+- Graded into gutt/hero.webp (navy ink #0a1433, muted rose-steel tint; foreground roofs cropped), slow Ken Burns, subject at ~79% width under the ink scrim.

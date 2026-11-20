@@ -73,7 +73,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#081236 0%,#1a2f6a 40%,#5d6f98 58%,#1a2547 66%,#0d1736 80%,#0a1433 100%)}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#0a1433}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -871,119 +871,64 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: an old Southern oak at blue hour on an Atlanta meadow ("the city in a forest").
-   A broad, low-limbed oak stands to the right of the copy; behind it a distant tree line in valley haze and the last pale
-   light on the horizon; stars come out overhead and fireflies drift over the grass. It moves on its own (fireflies,
-   twinkle, drifting haze) with no pointer response (CZ). ================= */
+/*<R:field>*//* ================= HERO FIELD (HOME_BRIEF update 2026-11-20, option b): a real photograph, the Midtown Atlanta skyline at dusk, One Atlantic Center at its centre (the firm's city; office on Peachtree Road).
+   Source: "City of Atlanta at Sunset", Pexels photo 11599618, https://www.pexels.com/photo/city-of-atlanta-at-sunset-11599618/ (free licence).
+   Graded in hero.webp to the site's palette: highlights compressed, exposure lowered, shadows pulled to the page ink so the
+   photo melts into it (DJ). It sits right of ~45% on desktop under a deep ink scrim over the headline (DI); a very slow
+   Ken Burns drift, no pointer response (CZ). On phones it sits in the top band and fades into the ink above the text. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,FLY=[],STARS=[],HAZE=[];
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var BG="#0a1433",K="10,20,51";var IW=2400,IH=1281,EX=.5,EY=.45;
+  function A(a){return "rgba("+K+","+a+")"}
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]}
-  function rgb(a,al){return "rgba("+(a[0]|0)+","+(a[1]|0)+","+(a[2]|0)+","+(al==null?1:al)+")"}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var S=mob?Math.min(h*.37,w*.86):h,hz=S*(mob?.8:.79);
-    var TH=mob?S*.6:Math.min(h*.5,cw*.36),tx=mob?w*.56:side+cw*.79;
-    return {mob:mob,side:side,cw:cw,S:S,hz:hz,TH:TH,tx:tx,ty:hz+S*(mob?.035:.03),gx:mob?w*.3:side+cw*.62};
+    var U=mob?Math.min(h*.52,w*1.0):h;
+    var ih=mob?U*1.25:Math.max(h*1.05,w*.62*IH/IW),iw=ih*(IW/IH);
+    if(mob&&iw<w*1.1){iw=w*1.1;ih=iw*IH/IW}
+    var kx=mob?w*.5:w*.79,ky=mob?U*.55:h*.5;
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
-  function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  function groundY(x){var S=G.S;return G.hz+S*.012*Math.sin(x/(w*.23)+1.3)+S*.008*Math.sin(x/(w*.09)+.4)}
-  function build(){
-    var S=G.S,hz=G.hz,A=mk(S+2),g=A[1];oSky=A[0];
-    /* blue-hour sky: deep navy overhead, the brand's slate blue lower down, a last pale band on the horizon */
-    var sky=g.createLinearGradient(0,0,0,hz);
-    sky.addColorStop(0,"#050c29");sky.addColorStop(.38,"#102463");sky.addColorStop(.66,"#2f4a8a");sky.addColorStop(.84,"#6c7fac");sky.addColorStop(.95,"#a9aec2");sky.addColorStop(1,"#c9bfb6");
-    g.fillStyle=sky;g.fillRect(0,0,w,S+2);
-    var gl=g.createRadialGradient(G.gx,hz,0,G.gx,hz,S*(G.mob?.7:.62));gl.addColorStop(0,"rgba(236,214,186,.5)");gl.addColorStop(.35,"rgba(196,184,190,.18)");gl.addColorStop(1,"rgba(196,184,190,0)");
-    g.fillStyle=gl;g.fillRect(0,0,w,S+2);
-    /* a few long, thin clouds catching the last light */
-    var R=rng(11);for(var k=0;k<(G.mob?4:8);k++){var cy=hz*(.3+R()*.5),cx=R()*w,cwid=w*(.12+R()*.22),ch=S*(.003+R()*.006),a=.05+.09*(cy/hz);
-      g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(214,206,214,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(214,206,214,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
-    var B=mk(S+2),l=B[1];oLand=B[0];
-    /* the distant tree line: Atlanta's canopy, soft in the haze */
-    var Rt=rng(23);[[.026,"#34477b",.45,.012],[.016,"#223463",.85,.004]].forEach(function(L,li){l.fillStyle=L[1];l.globalAlpha=L[2];l.beginPath();l.moveTo(-10,hz+6);
-      var x=-10;while(x<w+20){var big=.5+.5*Math.sin(x/(w*.13)+li*2.1)*Math.sin(x/(w*.051)+1),r=S*L[0]*(.35+Rt()*.75+big*.7),y=hz-S*L[3]-S*.012*big+Rt()*S*.004;l.moveTo(x+r*2,y);l.arc(x+r,y,r,0,Math.PI*2);x+=r*(.45+Rt()*.5)}
-      l.fill();l.fillRect(-10,hz-S*L[3]-2,w+30,S*.03)});l.globalAlpha=1;
-    /* the meadow */
-    var gg=l.createLinearGradient(0,hz-S*.02,0,S);gg.addColorStop(0,"#1b2a52");gg.addColorStop(.25,"#0f1b3d");gg.addColorStop(1,"#0a1433");
-    l.fillStyle=gg;l.beginPath();l.moveTo(-4,S+2);for(var x2=-4;x2<=w+6;x2+=4)l.lineTo(x2,groundY(x2));l.lineTo(w+6,S+2);l.closePath();l.fill();
-    /* a low ground haze along the meadow */
-    var hg=l.createLinearGradient(0,hz-S*.03,0,hz+S*.04);hg.addColorStop(0,"rgba(170,180,206,0)");hg.addColorStop(.5,"rgba(170,180,206,.16)");hg.addColorStop(1,"rgba(170,180,206,0)");l.fillStyle=hg;l.fillRect(0,hz-S*.03,w,S*.07);
-    oak(l);
-    /* grass along the near crest */
-    var Rg=rng(91);l.strokeStyle="#081130";l.lineWidth=1;for(var q=0;q<(G.mob?160:420);q++){var gx=Rg()*w,gy=groundY(gx)+S*.004+Rg()*S*.01,gh=S*(.006+Rg()*.016)*(Math.abs(gx-G.tx)<G.TH*.5?1.4:1);l.beginPath();l.moveTo(gx,gy);l.quadraticCurveTo(gx+gh*.15,gy-gh*.6,gx+gh*(Rg()-.4)*.6,gy-gh);l.stroke()}
-    STARS=[];var Rs=rng(5);for(var s=0;s<(G.mob?40:110);s++){var sy=Math.pow(Rs(),1.6)*hz*.62;STARS.push([Rs()*w,sy,.4+Rs()*.9,Rs()*6.28,.4+Rs()*1.4])}
-    FLY=[];var Rf=rng(61),n=G.mob?14:34;for(var f=0;f<n;f++){var fx=G.mob?Rf()*w:G.side+G.cw*(.48+Rf()*.52);FLY.push([fx,hz+(S-hz)*(.05+Rf()*.6)-(Rf()<.4?G.TH*Rf()*.35:0),Rf()*6.28,.5+Rf()*.9,Rf()*6.28,1.4+Rf()*1.6])}
-    HAZE=[];var Rh=rng(37);for(var m=0;m<(G.mob?4:7);m++)HAZE.push([Rh()*w,.5+Rh()*.5,Rh()<.5?1:-1,Rh()*6.28]);
-  }
-  /* the oak: a short, heavy trunk that parts low into broad limbs, the crown wider than it is tall, foliage in
-     thousands of small leaf clusters lit at their edges by the light low on the horizon */
-  function oak(g){
-    var R=rng(1986),TH=G.TH,X=G.tx,Y=G.ty,segs=[],tips=[];
-    /* the crown envelope: a broad dome, wider than tall */
-    var CX=X,CY=Y-TH*.66,RX=TH*.8,RY=TH*.5;
-    function inside(x,y){var dx=(x-CX)/RX,dy=(y-CY)/(y<CY?RY:RY*1.15);return dx*dx+dy*dy}
-    function grow(x,y,a,len,wd,d){
-      var x2=x+Math.cos(a)*len,y2=y+Math.sin(a)*len,e=inside(x2,y2);
-      if(e>1){var f=.98/Math.sqrt(e);len*=Math.max(.35,f);x2=x+Math.cos(a)*len;y2=y+Math.sin(a)*len}
-      var bend=(R()-.5)*.9,mx=(x+x2)/2+Math.cos(a+Math.PI/2)*len*bend*.22,my=(y+y2)/2+Math.sin(a+Math.PI/2)*len*bend*.22;
-      segs.push([x,y,mx,my,x2,y2,wd,d]);
-      if(d===0||len<TH*.025){tips.push([x2,y2]);return}
-      if(d<=4){tips.push([(x+x2)/2,(y+y2)/2])}
-      var n=d>2&&R()<.45?3:2;for(var k=0;k<n;k++){var sp=(.28+R()*.42)*(k===0?-1:k===1?1:(R()-.5)*1.2),na=a+sp;
-        na=na+(-Math.PI/2-na)*(d>4?.1:.04);
-        grow(x2,y2,na,len*(.66+R()*.18),wd*.64,d-1)}
-      tips.push([x2,y2]);
-    }
-    var trunk=TH*.3,tw=TH*.07;
-    segs.push([X,Y,X-tw*.15,Y-trunk*.5,X+tw*.05,Y-trunk,tw,9]);
-    var limbs=[[-2.7,.55],[-2.35,.52],[-2.0,.48],[-1.7,.45],[-1.4,.46],[-1.08,.5],[-.78,.54],[-.45,.56]];
-    limbs.forEach(function(L){grow(X+tw*.05,Y-trunk-R()*TH*.05,L[0]+(R()-.5)*.12,TH*L[1]*.62,tw*.55,7)});
-    g.fillStyle="#050b20";g.beginPath();g.moveTo(X-tw*1.2,Y+2);g.quadraticCurveTo(X-tw*.55,Y-tw*.2,X-tw*.5,Y-trunk*.45);g.lineTo(X+tw*.5,Y-trunk*.45);g.quadraticCurveTo(X+tw*.55,Y-tw*.2,X+tw*1.25,Y+2);g.closePath();g.fill();
-    g.strokeStyle="#050b20";g.lineCap="round";g.lineJoin="round";
-    segs.forEach(function(s){g.lineWidth=Math.max(.6,s[6]);g.beginPath();g.moveTo(s[0],s[1]);g.quadraticCurveTo(s[2],s[3],s[4],s[5]);g.stroke()});
-    /* foliage: leaf clumps on every twig, lit on the side that faces the last light on the horizon */
-    var LX=G.gx,LY=G.hz,blobs=[],cr=TH*.05,K=G.mob?7:9,lr=TH*(G.mob?.009:.0075);
-    tips.forEach(function(t){var dx=LX-t[0],dy=LY-t[1],dl=Math.hypot(dx,dy)||1;dx/=dl;dy/=dl;var shell=Math.min(1,inside(t[0],t[1]));
-      for(var k=0;k<K;k++){var ang=R()*6.283,rr=cr*Math.sqrt(R()),ox=Math.cos(ang)*rr,oy=Math.sin(ang)*rr*.75,
-        lit=Math.max(0,(ox*dx+oy*dy)/cr)*(.35+.65*shell),f=Math.min(1,lit*.95+R()*.12);blobs.push([t[0]+ox,t[1]+oy,lr*(.7+R()*.9),f,R()*3.14])}});
-    blobs.sort(function(a,b){return a[3]-b[3]});
-    var D=[5,10,30],M=[16,27,60],L=[70,88,128];
-    blobs.forEach(function(b){var col=b[3]<.6?mix(D,M,b[3]/.6):mix(M,L,(b[3]-.6)/.4);g.fillStyle=rgb(col);g.beginPath();g.ellipse(b[0],b[1],b[2],b[2]*.7,b[4],0,Math.PI*2);g.fill()});
-  }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=cv.getBoundingClientRect().width||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?30:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var S=G.S,hz=G.hz;
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* stars coming out */
-    for(var s=0;s<STARS.length;s++){var st=STARS[s],a=(.25+.45*(1-st[1]/(hz*.62)))*(.6+.4*Math.sin(t*st[4]+st[3]))*sm(t/3+.4);c.fillStyle="rgba(232,238,255,"+a.toFixed(3)+")";c.beginPath();c.arc(st[0],st[1],st[2],0,Math.PI*2);c.fill()}
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oLand,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* haze drifting along the meadow */
-    for(var m=0;m<HAZE.length;m++){var H=HAZE[m],mw=w*(.2+.18*H[1]),mx=((H[0]+t*7*H[1]*H[2])%(w+600)+(w+600))%(w+600)-300,my=hz+S*.006,mh=S*.016,al=.08+.04*Math.sin(t*.25+H[3]);
-      c.save();c.translate(mx,my);c.scale(1,mh/mw);var mg=c.createRadialGradient(0,0,0,0,0,mw);mg.addColorStop(0,"rgba(190,198,222,"+al.toFixed(3)+")");mg.addColorStop(1,"rgba(190,198,222,0)");c.fillStyle=mg;c.beginPath();c.arc(0,0,mw,0,Math.PI*2);c.fill();c.restore()}
-    /* fireflies */
-    c.globalCompositeOperation="lighter";
-    for(var f=0;f<FLY.length;f++){var F=FLY[f],fx=F[0]+Math.sin(t*.23*F[3]+F[2])*S*.03,fy=F[1]+Math.sin(t*.31*F[3]+F[4])*S*.018,bl=Math.pow(Math.max(0,Math.sin(t*.9*F[3]+F[2]*2)),3)*sm(t/2-.3);
-      if(G.mob&&fy>S*.98)continue;if(bl<.02)continue;
-      var rr=F[5]*(G.mob?1:1.2),fg=c.createRadialGradient(fx,fy,0,fx,fy,rr*7);fg.addColorStop(0,"rgba(236,232,150,"+(.5*bl).toFixed(3)+")");fg.addColorStop(1,"rgba(236,232,150,0)");c.fillStyle=fg;c.fillRect(fx-rr*7,fy-rr*7,rr*14,rr*14);
-      c.fillStyle="rgba(255,252,200,"+(.95*bl).toFixed(3)+")";c.beginPath();c.arc(fx,fy,rr*.7,0,Math.PI*2);c.fill()}
-    c.globalCompositeOperation="source-over";c.globalAlpha=1;
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    if(ok){
+      var k=.5-.5*Math.cos(t*Math.PI*2/46),sc=(1+.045*k)*(1+.035*(1-e));
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*EX-k*G.iw*.012,y=G.ky-dh*EY-SP.v*G.ih*.05;
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      var fe=Math.min(dw*.24,w*.2);
+      if(x>0){c.fillStyle=BG;c.fillRect(0,0,Math.ceil(x)+1,h)}
+      var eg=c.createLinearGradient(x,0,x+fe,0);eg.addColorStop(0,A(1));eg.addColorStop(1,A(0));c.fillStyle=eg;c.fillRect(Math.max(0,x)-1,0,fe+2,h);
+      var xr=x+dw;if(xr<w+fe){var rg=c.createLinearGradient(xr-fe*.7,0,xr,0);rg.addColorStop(0,A(0));rg.addColorStop(1,A(1));c.fillStyle=rg;c.fillRect(xr-fe*.7,0,fe*.7+1,h);if(xr<w){c.fillStyle=BG;c.fillRect(Math.floor(xr)-1,0,w-xr+2,h)}}
+      if(y>0){c.fillStyle=BG;c.fillRect(0,0,w,Math.ceil(y)+1);var tg=c.createLinearGradient(0,y,0,y+dh*.12);tg.addColorStop(0,A(1));tg.addColorStop(1,A(0));c.fillStyle=tg;c.fillRect(0,y-1,w,dh*.12+1)}
+      var yb=y+dh;if(yb<h){c.fillStyle=BG;c.fillRect(0,Math.floor(yb)-1,w,h-yb+2)}
+      var bfe=dh*.12;var bg2=c.createLinearGradient(0,yb-bfe,0,yb);bg2.addColorStop(0,A(0));bg2.addColorStop(1,A(1));c.fillStyle=bg2;c.fillRect(0,yb-bfe,w,bfe+1);
+      if(!G.mob){
+        var rv=c.createLinearGradient(w-Math.max(90,w*.1),0,w,0);rv.addColorStop(0,A(0));rv.addColorStop(1,A(.85));c.fillStyle=rv;c.fillRect(w-Math.max(90,w*.1),0,Math.max(90,w*.1)+1,h);
+        var lv=c.createLinearGradient(0,0,G.side+G.cw*.72,0);lv.addColorStop(0,A(1));lv.addColorStop(.58,A(.94));lv.addColorStop(.82,A(.55));lv.addColorStop(1,A(0));c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.26);tv.addColorStop(0,A(.78));tv.addColorStop(1,A(0));c.fillStyle=tv;c.fillRect(0,0,w,h*.26);
+        var bv=c.createLinearGradient(0,h*.64,0,h);bv.addColorStop(0,A(0));bv.addColorStop(1,A(.94));c.fillStyle=bv;c.fillRect(0,h*.64,w,h*.36+1);
+      }else{
+        var tv2=c.createLinearGradient(0,0,0,G.bh*.3);tv2.addColorStop(0,A(.78));tv2.addColorStop(1,A(0));c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.3);
+        var mv=c.createLinearGradient(0,G.bh*.62,0,G.bh);mv.addColorStop(0,A(0));mv.addColorStop(1,A(1));c.fillStyle=mv;c.fillRect(0,G.bh*.62,w,G.bh*.38+1);
+        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.tx,G.ty-G.TH*.6]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

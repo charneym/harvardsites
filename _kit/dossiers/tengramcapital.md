@@ -33,5 +33,5 @@
 
 ## Rev 2 / HOME_BRIEF update 2026-11-20 (part 1)
 - Town and trees fade out between 60% and 72% of the width on desktop, so the H1 and lede sit on clean sky and water (coordinator review).
-- Nav items Approach / Criteria / Portfolio / Team / News (header, mobile menu and footer "Explore") open build-out pages at #/more/<item>: eyebrow "Concept preview", H1 "<Item>, built out.", the brief's copy, "Back to the home page" and "Or keep scrolling the concept" (returns home and glides to the section). Contact and the home CTAs still scroll. Browser Back returns home. Tested at 1440 and 390.
+- Nav items Approach / Criteria / Portfolio / Team / News open build-out pages at #/more/<item> via the kit module (_kit/lib/buildout.js, "buildout" added to @libs in assemble.py): eyebrow "Concept preview", H1 "<Item>, built out.", the brief's copy, "Back to the home page" and "Or keep scrolling the concept". Contact and the home CTAs still scroll. Gate: buildout-test.js OK (10 nav clicks, 1440 + 390).
 - Part 2 (photography-first hero) not applied in this pass: the coordinator asked for part 1 only. The site has no usable own photography (only a stock suit-jacket slideshow and brand-logo tiles), so (b), an Unsplash/Pexels photo of Westport's Saugatuck riverfront, would be the route if requested.

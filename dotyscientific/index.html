@@ -1372,16 +1372,18 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
-    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(w/iw,H/ih)*(mob?1.04:1.03)*(1+.04*k)*(1+.03*SP.v);
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(mob?w/iw:w*.7/iw,H/ih)*(mob?1.04:1.03)*(1+.04*k)*(1+.03*SP.v);
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.66)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.58:.6)-fy+SP.v*H*.04;
-    x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
+    if(!mob)x=w*.33+(RM?0:Math.sin(t*2*Math.PI/70)*w*.008);x=Math.min(mob?0:w*.36,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
+    /* desktop: the photo sits on the right; its left edge dissolves into the ink, so the coil bank starts at ~45% width */
+    if(!mob&&x>0){c.fillStyle="#121614";c.fillRect(0,0,Math.ceil(x)+1,h);var ef=c.createLinearGradient(x,0,x+dw*.22,0);ef.addColorStop(0,"rgba(18,22,20,1)");ef.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=ef;c.fillRect(x,0,dw*.22+1,h)}
     /* a soft band of light travels slowly along the copper, as if a lamp were moved across the bench */
     if(!RM){var sx=x+dw*(.08+.84*((t/26)%1)),sg=c.createLinearGradient(sx-dw*.09,0,sx+dw*.09,0);c.globalCompositeOperation="soft-light";
       sg.addColorStop(0,"rgba(255,214,170,0)");sg.addColorStop(.5,"rgba(255,214,170,.32)");sg.addColorStop(1,"rgba(255,214,170,0)");c.fillStyle=sg;c.fillRect(x+dw*.06,y+dh*.16,dw*.66,dh*.7);c.globalCompositeOperation="source-over"}
-    if(!mob){var lv=c.createLinearGradient(0,0,w*.62,0);lv.addColorStop(0,"rgba(18,22,20,.84)");lv.addColorStop(.5,"rgba(18,22,20,.55)");lv.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+    if(!mob){var lv=c.createLinearGradient(0,0,w*.7,0);lv.addColorStop(0,"rgba(18,22,20,.96)");lv.addColorStop(.6,"rgba(18,22,20,.86)");lv.addColorStop(.8,"rgba(18,22,20,.45)");lv.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
       var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(18,22,20,.55)");tv.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
       var bv=c.createLinearGradient(0,h*.72,0,h);bv.addColorStop(0,"rgba(18,22,20,0)");bv.addColorStop(1,"rgba(18,22,20,.7)");c.fillStyle=bv;c.fillRect(0,h*.72,w,h*.28)}
     else{var tg=c.createLinearGradient(0,0,0,H*.3);tg.addColorStop(0,"rgba(18,22,20,.6)");tg.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=tg;c.fillRect(0,0,w,H*.3);

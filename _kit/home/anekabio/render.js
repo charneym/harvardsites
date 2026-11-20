@@ -54,7 +54,7 @@ const out=await p.evaluate(({W,H,SEED})=>{
  c.filter='blur(14px)';c.drawImage(N,0,0);c.filter='none';
  /* neighbouring neurons, out of focus */
  neuron(W*.14,H*.78,.62,16,.4);neuron(W*.97,H*.86,.6,18,.36);neuron(W*.36,H*1.18,.55,20,.3);
- const polys=neuron(W*.665,H*.76,.98,0,1,true,.84);
+ const polys=neuron(W*.72,H*.74,.98,0,1,true,.7);
  {const B=document.createElement('canvas');B.width=W;B.height=H;const bc=B.getContext('2d');for(let i=0;i<110;i++){bc.fillStyle='rgba(170,220,130,'+RR(.04,.14)+')';bc.beginPath();bc.arc(RR(0,W),RR(0,H),RR(2,9),0,7);bc.fill()}c.filter='blur(6px)';c.drawImage(B,0,0);c.filter='none'}
  c.globalCompositeOperation='source-over';
  const id=c.getImageData(0,0,W,H),d=id.data;for(let i=0;i<d.length;i+=4){const n=(R()-.5)*7;d[i]+=n;d[i+1]+=n;d[i+2]+=n}c.putImageData(id,0,0);

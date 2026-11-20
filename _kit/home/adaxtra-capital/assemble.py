@@ -14,6 +14,9 @@ for name, f in REG.items():
     new, n = pat.subn(lambda m: m.group(1) + part(f) + m.group(3), src)
     assert n == 1, (name, n)
     src = new
+# HOME_BRIEF update 2026-11-20 part 1: the kit's build-out pages for nav items
+assert src.count('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->')==1
+src=src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->','<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->')
 # site-specific CSS goes after every template rule
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')

@@ -1606,11 +1606,23 @@ var field=(function(){
     var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=Math.max(mob?w/iw:w*.7/iw,H/ih)*(mob?1.04:1.03)*(1+.04*k)*(1+.03*SP.v);
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.66)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.58:.6)-fy+SP.v*H*.04;
-    if(!mob)x=Math.max(w*.33,TXR()+30-dw*.13)+(RM?0:Math.sin(t*2*Math.PI/70)*w*.008);x=Math.min(mob?0:w*.5,Math.max(w-dw,x)); /* the copper (~13% into the photo) starts past the measured end of the H1/lede on wide screens (QA-2) */y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];
+    if(!mob){x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));}else{x=Math.min(0,Math.max(w-dw,x));y=Math.min(0,Math.max(H-dh,y));}
+    if(!mob){
+      /* desktop (QA-2 R2): the whole steel frame (x .04-.84, y .12-.93 of the photo) sits between ~100px past the measured H1/lede end
+         and the right content margin, below the nav and above the fold; the photo scales down to fit and its left edge feathers into the ground */
+      var CR=w-Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2);try{var he=document.querySelector(".hero");if(he){var hr=he.getBoundingClientRect(),hp=parseFloat(getComputedStyle(he).paddingRight)||0;if(hr.width>0)CR=hr.right-hp}}catch(_){}
+      var L0=TXR()+100,T0=110,B0=h-60,s2=Math.min((CR-L0)/(.80*iw),(B0-T0)/(.81*ih))/(1+.04*k)*(1+.04*k);
+      dw=iw*s2;dh=ih*s2;x=L0-.04*dw+(CR-L0-.80*dw)/2+(RM?0:Math.sin(t*2*Math.PI/70)*4);y=T0-.12*dh+(B0-T0-.81*dh)/2;
+    }
+    FOC=[x+fx,y+fy*.8];
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.globalAlpha=e;
     c.drawImage(img,x,y,dw,dh);
     /* desktop: the photo sits on the right; its left edge dissolves into the ink, so the coil bank starts at ~45% width */
-    if(!mob&&x>0){c.fillStyle="#121614";c.fillRect(0,0,Math.ceil(x)+1,h);var ef=c.createLinearGradient(x,0,x+dw*.22,0);ef.addColorStop(0,"rgba(18,22,20,1)");ef.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=ef;c.fillRect(x,0,dw*.22+1,h)}
+    if(!mob){var G0="#121614";c.fillStyle=G0;c.fillRect(0,0,Math.ceil(x)+1,h);
+      var ef=c.createLinearGradient(x,0,x+dw*.1,0);ef.addColorStop(0,"rgba(18,22,20,1)");ef.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=ef;c.fillRect(x,0,dw*.1+1,h);
+      var er=c.createLinearGradient(x+dw*.8,0,x+dw*.9,0);er.addColorStop(0,"rgba(18,22,20,0)");er.addColorStop(1,"rgba(18,22,20,1)");c.fillStyle=er;c.fillRect(x+dw*.8,0,dw*.1+1,h);c.fillStyle=G0;c.fillRect(x+dw*.9,0,w,h);
+      var et=c.createLinearGradient(0,y,0,y+dh*.11);et.addColorStop(0,"rgba(18,22,20,1)");et.addColorStop(1,"rgba(18,22,20,0)");c.fillStyle=G0;c.fillRect(0,0,w,Math.max(0,y)+1);c.fillStyle=et;c.fillRect(0,y,w,dh*.11);
+      var eb=c.createLinearGradient(0,y+dh*.94,0,y+dh);eb.addColorStop(0,"rgba(18,22,20,0)");eb.addColorStop(1,"rgba(18,22,20,1)");c.fillStyle=eb;c.fillRect(0,y+dh*.94,w,dh*.06+1);c.fillStyle=G0;c.fillRect(0,y+dh-1,w,h)}
     /* a soft band of light travels slowly along the copper, as if a lamp were moved across the bench */
     if(!RM){var sx=x+dw*(.08+.84*((t/26)%1)),sg=c.createLinearGradient(sx-dw*.09,0,sx+dw*.09,0);c.globalCompositeOperation="soft-light";
       sg.addColorStop(0,"rgba(255,214,170,0)");sg.addColorStop(.5,"rgba(255,214,170,.32)");sg.addColorStop(1,"rgba(255,214,170,0)");c.fillStyle=sg;c.fillRect(x+dw*.06,y+dh*.16,dw*.66,dh*.7);c.globalCompositeOperation="source-over"}

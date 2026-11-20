@@ -1050,8 +1050,9 @@ var field=(function(){
   var AR=1500/1720,FX=.468,FY=.12; /* image h/w; the funnel's position in the photo */
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861,bh,bw,bx,by,band;
-    if(mob){band=Math.max(250,h*.36);bw=Math.max(w*1.2,(band+40)/AR);bh=bw*AR;bx=w*.5-bw*.47;by=band-bh*.86}
-    else{band=h;bh=h*1.1;bw=bh/AR;bx=Math.max(side+cw*.3,w-bw*.97);by=-h*.05}
+    if(mob){band=Math.max(250,h*.36);bw=Math.max(w*1.2,(band+40)/AR);bh=bw*AR;bx=w*.5-bw*.47;by=Math.max(band-bh*.86,96-bh*FY)}
+    else{band=h;bh=h*1.1;bw=bh/AR;bx=Math.max(side+cw*.3,w-bw*.97,side+w*.62+120-bw*FX);by=Math.max(150,h*.2)-bh*FY}
+    /* headroom: the funnel sits clear below the header at every size (~20% down on desktop, under the phone header on mobile) and, on desktop, right of the H1's end, so nothing bright sits behind the headline; the photo's top edge feathers into the ink above it */
     return {mob:mob,side:side,cw:cw,bx:bx,by:by,bw:bw,bh:bh,band:band};
   }
   function mk(W,H){var o=document.createElement("canvas");o.width=Math.max(1,Math.round(W*dpr));o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
@@ -1070,7 +1071,7 @@ var field=(function(){
     p.globalCompositeOperation="destination-in";
     var lg=G.mob?p.createLinearGradient(0,0,0,G.bh):p.createLinearGradient(0,0,G.bw,0);
     if(G.mob){lg.addColorStop(0,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,1)")}else{lg.addColorStop(0,"rgba(0,0,0,0)");lg.addColorStop(.22,"rgba(0,0,0,1)");lg.addColorStop(1,"rgba(0,0,0,1)")}
-    p.fillStyle=lg;p.fillRect(0,0,G.bw,G.bh);p.globalCompositeOperation="source-over";
+    p.fillStyle=lg;p.fillRect(0,0,G.bw,G.bh);var tg=p.createLinearGradient(0,0,0,G.bh*.1);tg.addColorStop(0,"rgba(0,0,0,0)");tg.addColorStop(1,"rgba(0,0,0,1)");p.fillStyle=tg;p.fillRect(0,0,G.bw,G.bh);p.globalCompositeOperation="source-over";
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
   function frame(once){

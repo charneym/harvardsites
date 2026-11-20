@@ -2,7 +2,13 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
-# v19 (latest; client review of batch 2026-11c, Blackford Capital)
+# v20 (coordinator review of home-only batch, 2026-11-20)
+
+**DJ. Hero art never shows a seam.** Rendered or photographed hero art must feather into the page ink on every edge that falls inside the viewport (or fill the canvas with the art's own ground colour). A visible rectangle edge (vertical or horizontal) makes it read as a pasted box. Seen on cg-scientific and enyxtherapeutics. Check at 1440, 1920 and 390.
+
+**DI. Nothing bright or busy behind the H1 or lede.** Place the subject right of ~45-50% width (shift or crop the photo, fit the render) and/or use a strong ink scrim over 0-55%. Sunlit clouds, lit coils, lens plates or a white lab coat behind the headline all failed review (waconacapital, dotyscientific, steaminstrumentsinc). A crafted render must look like a real material object; clay/toy shading fails (coramtechnologies), so use a real Unsplash/Pexels photo of the subject instead.
+
+# v19 ( client review of batch 2026-11c, Blackford Capital)
 
 **DH. Portfolio rows animate their rule on hover.** Client: "going forward I like it when on hover over portfolio companies there's a bit of a hover animation on the line." Every portfolio/holdings row (and similar list rows) has a divider line that animates on hover: e.g. the accent colour draws across the rule left-to-right (~0.4s ease-out) and retracts on leave. Keep it inside the row bounds (rule 16).
 

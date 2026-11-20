@@ -57,3 +57,15 @@ To skip, send the coordinator "SKIPPED: <slug> — reason" and stop.
 - bad-site evidence
 
 Then stop.
+
+## UPDATE 2026-11-20 (client, binding; overrides anything above)
+1. **Nav items open a "build-out" page, not a scroll.** Every nav item except Contact (Approach / Portfolio / Team / News / Technology / Pipeline etc.) opens a short in-site page at #/more/<item> in the same design (header, footer, palette, type). It shows the item's name as the title and this copy (translated for non-English sites):
+   eyebrow: "Concept preview"
+   H1: "<Item>, built out."
+   body: "This is a concept for the home page. If you like the direction, I'd build out this page and the rest of the site in the same style, with your team, portfolio and news, and handle the move from your current site. Reply to the email this link came in, and we can take it from there."
+   One button, "Back to the home page", plus a quiet secondary link "Or keep scrolling the concept" that returns to the matching home section. No email address and no personal name. Contact still scrolls to the contact block. The browser back button returns home. Home-page CTAs that say "Our approach" etc. still scroll on the page.
+2. **Hero: real photography first.** The client questions whether painted landscape scenes look professional. Preference order:
+   (a) The firm's own real photography (office, team at work, product, plant), graded to the palette with slow motion such as a subtle Ken Burns drift or parallax.
+   (b) A high-quality real photograph of the firm's actual place or subject from Unsplash or Pexels only. Their licences allow commercial use without attribution; no Wikimedia, no Getty, no AI images. Download it into the site folder, grade it, and record the source URL in the dossier.
+   (c) Only for science, mechanism or product subjects (biotech, medtech): a crafted render of the real object or mechanism, like /aivocode/, /nanoscope-instruments/ or /craniosure/.
+   No painted landscapes, silhouettes or illustrated skylines for PE or wealth firms unless (a) and (b) are impossible.

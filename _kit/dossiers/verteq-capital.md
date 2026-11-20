@@ -29,3 +29,6 @@
 ## Hero / story
 - Hero (DG): the firm's own professional photograph (wp-content/uploads/2023/07/2-Strategy.jpg): the partners in their via Larga meeting room, the Duomo and the San Gottardo bell tower in the window, an Epilate map on the wall. Graded toward the logo navy, ink scrim on the text side, grain, slow drift; on phones a band above the text.
 - Story: one engraved olive tree on a Tuscan hillside (ArteOlio, Maremma). Steps = the five points of "Il nostro approccio distintivo": value (dimensioned potential canopy), focus (central leader, suckers cut), people (scaffold branches), growth by acquisition (a second tree joined at the roots), capital and harvest (olives, crate).
+
+## Build-out pages (HOME_BRIEF update 2026-11-20)
+- Nav items Approccio / Criteri / Portafoglio / Team / News open #/more/<item> (Italian copy: "Anteprima del concept", "<Item>, sviluppato.", "Torna alla home page", "Oppure continua a scorrere il concept"); Contatti scrolls to the contact block. Hero already meets rule 2(a): the firm's own photograph.

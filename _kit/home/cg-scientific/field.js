@@ -7,7 +7,7 @@ var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},img=new Image(),ok=false,FOC=[w/2,h/2];
   var FX=.53,FY=.52,HR=0;
-  function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var g=document.createRange();g.selectNodeContents(e);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}catch(_){}return r}
+  function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   img.onload=function(){ok=true;frame(true)};img.src="data:image/webp;base64,__HERO__";
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;HR=h1r();cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);if(!running)frame(true)}
@@ -20,7 +20,7 @@ var field=(function(){
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     var mob=w<861,iw=img.naturalWidth,ih=img.naturalHeight,H=mob?h*.42:h;
     /* slow drift: a 50s breathing zoom with a gentle sideways travel, settling a touch as you scroll */
-    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.min(Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9),Math.max(w*.6,(w-HR-30)/.66)/iw)*(1+.04*k)*(1+.03*SP.v); /* desktop: the render shrinks (right-anchored, edges feathered) until the chip channel (~36% across hero.webp) starts past the H1 line ends */
+    var k=RM?0:(.5-.5*Math.cos(t*2*Math.PI/50)),sc=mob?(w/iw)*1.32*(1+.04*k):Math.min(Math.max(w/iw*1.02,Math.max(w/iw,H/ih)*.9),Math.max(w*.55,(w-HR-80)/.74)/iw)*(1+.04*k)*(1+.03*SP.v); /* desktop: the render shrinks (right-anchored, edges feathered) until the chip channel (~36% across hero.webp) starts past the H1 line ends */
     var dw=iw*sc,dh=ih*sc,fx=FX*dw,fy=FY*dh;
     var x=w*(mob?.5:.65)-fx+(RM?0:Math.sin(t*2*Math.PI/70)*w*.01),y=H*(mob?.56:.6)-fy+SP.v*H*.04;
     if(!mob&&dw<w*1.02)x=w-dw+(RM?0:Math.sin(t*2*Math.PI/70)*w*.006);if(dw>=w)x=Math.min(0,Math.max(w-dw,x));if(dh>=H)y=Math.min(0,Math.max(H-dh,y));FOC=[x+fx,y+fy*.8];

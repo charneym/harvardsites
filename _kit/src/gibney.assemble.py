@@ -476,5 +476,6 @@ for k, v in P.items():
 src = src.replace("/* ===== Firelight: warm night ground, bone pages, their amber as the accent ===== */", "/* ===== Gibney: slate ground, bone pages, the logo taupe as the accent ===== */")
 left = [src[max(0,m.start()-60):m.start()+40] for m in re.finditer("(?i)firelight|flc-", src)]
 if left: print("WARN leftover:", left)
+import re as _bo; src = _bo.sub(r'<!--@libs(?![^>]*buildout)([^>]*?)\s*-->', lambda m: '<!--@libs' + m.group(1) + ' buildout-->', src, count=1)  # HOME_BRIEF update 1: nav items open build-out pages (_kit/lib/buildout.js)
 (HERE / "gibney.src.html").write_text(src)
 print("wrote", HERE / "gibney.src.html", len(src))

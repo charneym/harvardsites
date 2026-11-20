@@ -50,7 +50,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="programmes" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Programmes and partnerships</span><h2 class="d2 split">From the bench <em>to the clinic.</em></h2></div><p data-r>“Nanocin’s nanotechnology offers enormous potential for significant improvements in drug efficiency and targeted delivery.”</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Programmes and partnerships</span><h2 class="d2 split">From the bench <em>to the clinic.</em></h2></div><p data-r>“Nanocin offers enormous potential for significant improvements in drug efficiency and targeted delivery.”</p></div>'+
    pipe()+
   '</div></section>'+
 

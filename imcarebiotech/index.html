@@ -1482,7 +1482,7 @@ function vHome(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Finding liver cancer</span><span class="l">early, in a simple</span><span class="l"><em>blood sample.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>ImCare Biotech develops Seravue®, a blood test built on LC-SPIK, a protein specific to liver cancer, for earlier detection of hepatocellular carcinoma.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/pipeline">Our pipeline '+ARR+'</a><a class="btn" href="#/technology">How Seravue® works</a></div></div>'+
-   '<span class="lab cap">Blood samples · photograph, National Cancer Institute</span>'+
+   '<span class="lab cap">Centrifuged blood samples · illustrative render</span>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
@@ -1575,16 +1575,16 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD (HOME_BRIEF update, option b): a real photograph of the subject, the National Cancer Institute's
-   "Six blood samples in test tubes" (Unsplash License, https://unsplash.com/photos/white-and-red-plastic-tools-9k4Fglw6eFQ),
-   graded by grade.py: the yellow rack pulled down to plum, the lavender caps kept near the logo lavender, every edge feathered to
-   transparent so the photo closes into the page ink with no seam (DJ). The tubes sit centred right of the text (~70% width, DO)
-   under an ink wash over the headline side (DI); a very slow Ken Burns drift, no pointer response (CZ). On phones the photo sits
-   in the top band and fades into the ink before the text (CW). ================= */
+/*<R:field>*//* ================= HERO FIELD (HOME_BRIEF update option c, rule DP): a crafted render of the real subject, render.js:
+   centrifuged blood collection tubes (serum over a gel separator over packed red cells) with plain lavender caps, lit as a
+   studio product shot on the page's own plum ink, cropped and edge-feathered by post.py so there is no box (DJ).
+   geo() measures the H1/lede right edge and fits the render whole between it + 100px and the right content margin, centred
+   at 68-72% of the width, never drawn above its native pixels. A very slow drift; no pointer response (CZ). On phones it
+   sits in the top band and fades into the ink before the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#140c1c";var IW=2000,IH=1928,EX=.5,EY=.5;
+  var BG="#140c1c";var IW=1061,IH=2039,EX=.5,EY=.5;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   /* the open area right of the measured H1 and lede: the photo is fitted whole between their right edge + 100px and the
@@ -1594,11 +1594,11 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     if(w>=1800){side=Math.max(Math.min(72,w*.042),(w-1600)/2);cw=w-2*side}
     var U=mob?Math.min(h*.52,w*1.0):h;
-    if(mob){var mh=U*1.05,mw=mh*(IW/IH);if(mw<w*1.1){mw=w*1.1;mh=mw*IH/IW}return {mob:true,side:side,cw:cw,U:U,ih:mh,iw:mw,kx:w*.5,ky:U*.5,bh:U}}
+    if(mob){var mh=U*.8,mw=mh*(IW/IH);return {mob:true,side:side,cw:cw,U:U,ih:mh,iw:mw,kx:w*.5,ky:U*.58,bh:U}}
     var L=(textRight()||side+cw*.45)+100,R=side+cw,cx=Math.min(Math.max((L+R)/2,w*.68),w*.72);
     var half=Math.max(80,Math.min(cx-L,R-cx));
     /* the elliptical feather reaches zero at the box edge, so the box is the visible extent; kept clear of the nav */
-    var iw=Math.min(half*2/.85,(h-190)*(IW/IH),IW/Math.min(window.devicePixelRatio||1,2)),ih=iw*IH/IW;
+    var iw=Math.min(half*2,(h-170)*(IW/IH),IW/Math.min(window.devicePixelRatio||1,2)),ih=iw*IH/IW;
     return {mob:false,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:cx,ky:h*.54+20,bh:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();setTimeout(function(){G=geo();if(!running)frame(true)},1200);if(!running)frame(true)}

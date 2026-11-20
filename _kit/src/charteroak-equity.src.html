@@ -73,7 +73,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg,#0b1612 0%,#16302a 38%,#56614a 62%,#2a3a2c 70%,#101d16 84%,#0f1b16 100%)}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#0f1b16}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -984,127 +984,58 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: a great white oak alone in a Connecticut meadow at dusk, the firm's namesake and
-   the leaf in its mark. Broad, low limbs and a wide crown, backlit by the sun setting just behind it over the far hills; light
-   glows through the gaps in the leaves. It moves on its own (the crown breathes in a slow breeze, fireflies rise over the
-   meadow, the sun's glow pulses) with no pointer response (CZ). ================= */
+/*<R:field>*//* ================= HERO FIELD: real photography (HOME_BRIEF update 2026-11-20, PRINCIPLES DG/DI/DJ). A steel shaft being turned on a CNC lathe, the tool at right: precision metal processing, one of the niche industrial sectors the firm invests in (Unsplash, Sven Daniel: unsplash.com/photos/eaanLTG7TCU, Unsplash License).
+   Graded offline toward the site ink and drawn here with a slow Ken Burns drift. A scrim keeps the headline side quiet and
+   the art feathers into the ink on every edge; on phones the photo sits in the top band and fades into the ink. No pointer
+   response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,oSky=null,oLand=null,oTree=null,FLY=[];
-  function rng(s){return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.jpg";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var S=mob?Math.max(250,h*.38):h,T,tx,gy;
-    if(mob){T=Math.min(S*.56,w*.5);tx=w*.55;gy=S*.95}
-    else{T=Math.min(S*.5,cw*.33);tx=side+cw*.67;gy=S*.84}
-    var hz=gy-T*.13;
-    return {mob:mob,side:side,cw:cw,S:S,T:T,tx:tx,gy:gy,hz:hz,sx:tx-T*.3,sy:hz-T*.035,R:T*.05};
+    var U=mob?Math.min(h*0.46,w*1.05):h;
+    return {mob:mob,side:side,cw:cw,U:U,bh:mob?U*1.06:h};
   }
-  function mk(H){var o=document.createElement("canvas");o.width=Math.round(w*dpr);o.height=Math.max(1,Math.round(H*dpr));var g=o.getContext("2d");g.setTransform(dpr,0,0,dpr,0,0);return [o,g]}
-  /* the tree: a short massive trunk, broad near-horizontal lower limbs, a wide rounded crown (white oak habit) */
-  function grow(){
-    var R=rng(1955),T=G.T,tx=G.tx,gy=G.gy,B=[],TIPS=[];
-    function br(x,y,a,len,wd,d){
-      var bend=(R()-.5)*.9,ex=x+Math.cos(a)*len,ey=y+Math.sin(a)*len,mx=x+Math.cos(a+bend*.5)*len*.5,my=y+Math.sin(a+bend*.5)*len*.5;
-      B.push([x,y,mx,my,ex,ey,wd,d]);
-      if(d>=6||len<T*.022){TIPS.push([ex,ey,d]);return}
-      var n=R()<.35?3:2;
-      for(var k=0;k<n;k++){var sp=(k-(n-1)/2)*(.5+R()*.35)+(R()-.5)*.25,na=a+sp;
-        /* keep growth up and out, never hanging below the limb line */
-        if(Math.sin(na)>.25)na=a-.2;na+= (-Math.PI/2-na)*.12;
-        br(ex,ey,na,len*(.62+R()*.22),wd*.66,d+1)}
-    }
-    var top=gy-T*.27;
-    /* limbs: [end x, end y (in T units from the trunk base), start height, width] */
-    var L=[[-.74,-.4,.15,.052],[-.56,-.68,.22,.044],[-.3,-.88,.29,.04],[-.02,-.99,.31,.046],[.28,-.9,.27,.04],[.55,-.72,.2,.044],[.76,-.44,.17,.05]];
-    L.forEach(function(l,i){var sx=tx+(l[0]<0?-1:1)*T*.012,sy=gy-T*l[2],ex=tx+l[0]*T*.62,ey=gy+l[1]*T*.62,a=Math.atan2(ey-sy,ex-sx),len=Math.hypot(ex-sx,ey-sy);
-      B.push([sx,sy,sx+(ex-sx)*.35,sy+(ey-sy)*.75-T*.09*Math.abs(l[0]),ex,ey,T*l[3],0]);
-      br(ex,ey,a+(l[0]<0?.18:-.18)*(Math.abs(l[0])>.5?1:.4),T*.17,T*l[3]*.7,1);
-      br(ex,ey,a+(l[0]<0?-.35:.35),T*.15,T*l[3]*.6,2);
-      /* a side branch from the middle of each limb */
-      br(sx+(ex-sx)*.55,sy+(ey-sy)*.62-T*.05*Math.abs(l[0]),a+(l[0]<0?.55:-.55),T*.13,T*l[3]*.5,2)});
-    return {B:B,TIPS:TIPS,top:top};
-  }
-  function build(){
-    var S=G.S,hz=G.hz,T=G.T,A=mk(S+2),g=A[1];oSky=A[0];
-    /* dusk sky: deep forest-green night overhead to a low warm band on the horizon, brightest behind the tree */
-    var sky=g.createLinearGradient(0,0,0,hz+T*.04);
-    sky.addColorStop(0,"#081310");sky.addColorStop(.32,"#11261f");sky.addColorStop(.6,"#294438");sky.addColorStop(.8,"#6f7656");sky.addColorStop(.93,"#c9a86c");sky.addColorStop(1,"#e8c88a");
-    g.fillStyle=sky;g.fillRect(0,0,w,S+2);
-    var gl=g.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,T*1.4);gl.addColorStop(0,"rgba(255,224,160,.6)");gl.addColorStop(.22,"rgba(236,196,128,.24)");gl.addColorStop(1,"rgba(236,196,128,0)");
-    g.fillStyle=gl;g.fillRect(0,0,w,S+2);
-    /* a few thin clouds lit from below */
-    var R=rng(9);for(var k=0;k<(G.mob?4:8);k++){var cy=hz-(hz*.12+R()*hz*.5),cx=R()*w,cwid=w*(.08+R()*.18),ch=T*(.006+R()*.01),near=1-Math.min(1,Math.abs(cx-G.sx)/(w*.55)),a=.04+.12*near;
-      g.save();g.translate(cx,cy);g.scale(1,ch/cwid);var cg=g.createRadialGradient(0,0,0,0,0,cwid);cg.addColorStop(0,"rgba(240,206,150,"+a.toFixed(3)+")");cg.addColorStop(1,"rgba(240,206,150,0)");g.fillStyle=cg;g.beginPath();g.arc(0,0,cwid,0,Math.PI*2);g.fill();g.restore()}
-    /* land: far wooded hills in haze, then the meadow rolling toward us */
-    var Bc=mk(S+2),l=Bc[1];oLand=Bc[0];
-    function hill(base,amp,wl,seed,col,col2,tree){var Rh=rng(seed),p1=Rh()*6.28,p2=Rh()*6.28;var gr=l.createLinearGradient(0,base-amp,0,S);gr.addColorStop(0,col);gr.addColorStop(1,col2);l.fillStyle=gr;l.beginPath();l.moveTo(-4,S+2);
-      for(var x=-4;x<=w+6;x+=3){var y=base-amp*(.5+.5*(.6*Math.sin(x/wl+p1)+.4*Math.sin(x/(wl*.43)+p2)));if(tree){var tc=T*.035,u=((x%tc)+tc)%tc/tc,ci=Math.floor(x/tc);y-=T*.014*Math.sqrt(Math.max(0,1-(2*u-1)*(2*u-1)))*(.55+.45*Math.sin(ci*1.7+p1))}l.lineTo(x,y)}l.lineTo(w+6,S+2);l.closePath();l.fill()}
-    hill(hz+T*.005,T*.05,w*.16+120,3,"#5d6a52","#46553f",true);
-    hill(hz+T*.035,T*.035,w*.2+140,5,"#334434","#25362a",true);
-    /* the warm light across the far hills */
-    l.save();l.globalCompositeOperation="source-atop";var sw=l.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,T*1.5);sw.addColorStop(0,"rgba(255,214,150,.42)");sw.addColorStop(1,"rgba(255,214,150,0)");l.fillStyle=sw;l.fillRect(0,0,w,S+2);l.restore();
-    hill(G.gy-T*.02,T*.03,w*.3+200,8,"#1a2a1f","#0f1b16",false);
-    /* meadow light, then the grass along the near edge */
-    l.save();l.globalCompositeOperation="source-atop";var mg=l.createRadialGradient(G.sx,G.gy,0,G.sx,G.gy,T*1.1);mg.addColorStop(0,"rgba(214,186,120,.22)");mg.addColorStop(1,"rgba(214,186,120,0)");l.fillStyle=mg;l.fillRect(0,0,w,S+2);l.restore();
-    var Rg=rng(31);l.strokeStyle="rgba(10,20,15,.9)";l.lineCap="round";
-    for(var q=0;q<(G.mob?260:700);q++){var gx=Rg()*w,gb=G.gy+T*(.04+Rg()*.25),gh=T*(.015+Rg()*.035)*(1+(gb-G.gy)/T),lean=(Rg()-.5)*gh*.6;if(gb>S+4)continue;
-      l.lineWidth=.6+Rg()*.9;l.beginPath();l.moveTo(gx,gb);l.quadraticCurveTo(gx+lean*.3,gb-gh*.6,gx+lean,gb-gh);l.stroke()}
-    /* the oak */
-    var Tc=mk(S+2),tg=Tc[1];oTree=Tc[0];var TR=grow(),T2=G.T,tx=G.tx,gy=G.gy,Rl=rng(77);
-    /* shadow pooled under the crown */
-    tg.save();tg.translate(tx+T2*.05,gy+T2*.015);tg.scale(1,.09);var sg=tg.createRadialGradient(0,0,0,0,0,T2*.75);sg.addColorStop(0,"rgba(6,12,9,.7)");sg.addColorStop(1,"rgba(6,12,9,0)");tg.fillStyle=sg;tg.beginPath();tg.arc(0,0,T2*.75,0,Math.PI*2);tg.fill();tg.restore();
-    /* trunk with a flared base */
-    var bw=T2*.09,tw=T2*.05,ty=gy-T2*.27;tg.fillStyle="#0b1410";tg.beginPath();tg.moveTo(tx-bw*1.25,gy+T2*.008);
-    tg.bezierCurveTo(tx-bw*.6,gy-T2*.02,tx-tw*.9,gy-T2*.08,tx-tw*.75,ty);tg.lineTo(tx+tw*.75,ty);tg.bezierCurveTo(tx+tw*.9,gy-T2*.08,tx+bw*.6,gy-T2*.02,tx+bw*1.3,gy+T2*.008);tg.closePath();tg.fill();
-    /* limbs and branches */
-    tg.strokeStyle="#0b1410";tg.lineCap="round";tg.lineJoin="round";
-    TR.B.forEach(function(b){tg.lineWidth=Math.max(.7,b[6]);tg.beginPath();tg.moveTo(b[0],b[1]);tg.quadraticCurveTo(b[2],b[3],b[4],b[5]);tg.stroke()});
-    /* foliage: thousands of small leaf dabs in clumps at the branch ends, leaving sky between the clumps */
-    var D=[];TR.TIPS.forEach(function(p){var n=G.mob?9:16,rr=T2*(.045+Rl()*.03);for(var k=0;k<n;k++){var an=Rl()*6.283,rd=Math.sqrt(Rl())*rr;D.push([p[0]+Math.cos(an)*rd,p[1]+Math.sin(an)*rd*.8-rr*.15,T2*(.007+Rl()*.012),p[0],p[1],rr])}});
-    D.forEach(function(d){var s=Rl();tg.fillStyle=s<.5?"#0c1913":s<.85?"#10221a":"#14291f";tg.beginPath();tg.ellipse(d[0],d[1],d[2]*1.25,d[2],Rl()*3.14,0,Math.PI*2);tg.fill()});
-    /* the sun behind: the crown glows where it is thin, and each clump gets a warm rim on the sun side */
-    tg.save();tg.globalCompositeOperation="source-atop";var lg=tg.createRadialGradient(G.sx,G.sy,0,G.sx,G.sy,T2*.9);lg.addColorStop(0,"rgba(236,198,120,.55)");lg.addColorStop(.35,"rgba(150,150,86,.22)");lg.addColorStop(1,"rgba(120,140,90,0)");tg.fillStyle=lg;tg.fillRect(0,0,w,S+2);
-    D.forEach(function(d){var vx=d[0]-d[3],vy=d[1]-d[4],ux=G.sx-d[3],uy=G.sy-d[4],lu=Math.hypot(ux,uy)||1,dot=(vx*ux+vy*uy)/(lu*d[5]);if(dot<.55||Rl()<.7)return;
-      var near=Math.max(0,1-Math.hypot(d[0]-G.sx,d[1]-G.sy)/(T2*1.3));tg.fillStyle="rgba(200,184,116,"+(.05+.22*near*dot).toFixed(3)+")";tg.beginPath();tg.ellipse(d[0]+ux/lu*d[2]*.4,d[1]+uy/lu*d[2]*.4,d[2]*.6,d[2]*.45,0,0,Math.PI*2);tg.fill()});
-    tg.restore();
-    FLY=[];var Rf=rng(5);for(var f=0;f<(G.mob?9:22);f++)FLY.push([Rf(),Rf(),Rf()*6.28,.5+Rf()*.8,Rf()]);
-  }
-  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();build();if(!running)frame(true)}
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
-    var t=RM?30:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    var S=G.S,T=G.T;
-    c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,cv.width,cv.height);c.globalAlpha=e;
-    c.drawImage(oSky,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* the sun, low behind the tree, its glow breathing slowly */
-    var pulse=.9+.1*Math.sin(t*.6),sx=G.sx,sy=G.sy+SP.v*T*.04;
-    c.globalCompositeOperation="lighter";
-    var hg=c.createRadialGradient(sx,sy,G.R*.5,sx,sy,G.R*8);hg.addColorStop(0,"rgba(255,214,140,"+(.3*pulse).toFixed(3)+")");hg.addColorStop(1,"rgba(255,190,110,0)");c.fillStyle=hg;c.fillRect(sx-G.R*8,sy-G.R*8,G.R*16,G.R*16);
-    c.globalCompositeOperation="source-over";
-    var dg=c.createRadialGradient(sx,sy-G.R*.2,0,sx,sy,G.R);dg.addColorStop(0,"#fff6dc");dg.addColorStop(.7,"#ffe2a6");dg.addColorStop(1,"#f3c77a");c.fillStyle=dg;c.beginPath();c.arc(sx,sy,G.R,0,Math.PI*2);c.fill();
-    c.setTransform(1,0,0,1,0,0);c.drawImage(oLand,0,0);
-    /* the crown sways a little in a slow breeze; the trunk base stays put */
-    var sk=RM?0:(.006*Math.sin(t*.45)+.003*Math.sin(t*1.1+1.3));
-    c.setTransform(1,0,sk,1,-sk*G.gy*dpr,0);c.drawImage(oTree,0,0);c.setTransform(dpr,0,0,dpr,0,0);
-    /* fireflies over the meadow and under the crown */
-    c.globalCompositeOperation="lighter";
-    for(var f=0;f<FLY.length;f++){var F=FLY[f],fx=G.tx+(F[0]-.5)*T*2.1+Math.sin(t*.13*F[3]+F[2])*T*.12,fy=G.gy-T*(.02+F[1]*.42)+Math.sin(t*.21*F[3]+F[2]*2)*T*.05,bl=Math.max(0,Math.sin(t*(.6+F[4]*.7)+F[2]));
-      if(fx<-20||fx>w+20)continue;var fr=T*.018,a=.55*bl*bl;if(a<.02)continue;
-      var fg=c.createRadialGradient(fx,fy,0,fx,fy,fr);fg.addColorStop(0,"rgba(236,240,150,"+a.toFixed(3)+")");fg.addColorStop(.25,"rgba(200,226,120,"+(a*.4).toFixed(3)+")");fg.addColorStop(1,"rgba(160,210,110,0)");c.fillStyle=fg;c.fillRect(fx-fr,fy-fr,fr*2,fr*2)}
-    c.globalCompositeOperation="source-over";c.globalAlpha=1;
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#0f1b16";c.fillRect(0,0,w,h);
+    if(ok){
+      var bw=w,bh=G.bh,iw=img.naturalWidth,ih=img.naturalHeight;
+      /* Ken Burns: a very slow push in and drift, eased back and forth over ~50s */
+      var k=.5-.5*Math.cos(t*Math.PI*2/50),sc=Math.max(bw/iw,bh/ih)*(1.04+.07*k)*(1+.04*(1-e))*(G.mob?1.4:1);
+      var dw=iw*sc,dh=ih*sc,fx=G.mob?0.75:0.8,fy=G.mob?0.5:0.5;
+      var x=(bw-dw)*fx-k*bw*.012,y=(bh-dh)*fy-k*bh*.01;
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* scrims: an ink wash, the headline side darkest, top and base deepening into the page */
+      c.fillStyle="rgba(10,20,16,0.22)";c.fillRect(0,0,w,bh);
+      if(!G.mob){
+        var le=G.side+G.cw*0.85,lv=c.createLinearGradient(0,0,le,0),h0=Math.min(.85,(G.side+G.cw*0.42)/le);
+        /* a long, eased falloff: dark and even under the headline, then a smoothstep to clear (no visible edge) */
+        for(var si=0;si<=10;si++){var u=si/10,pp=h0+(1-h0)*u,aa=u===0?1:1-u*u*(3-2*u);if(si===0)lv.addColorStop(0,"rgba(10,20,16,0.9)");lv.addColorStop(pp,"rgba(10,20,16,"+(0.738*aa).toFixed(3)+")")}
+        c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.22);tv.addColorStop(0,"rgba(10,20,16,0.55)");tv.addColorStop(1,"rgba(10,20,16,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.22);
+        var bv=c.createLinearGradient(0,h*0.62,0,h);bv.addColorStop(0,"rgba(10,20,16,0)");bv.addColorStop(1,"rgba(10,20,16,0.45)");c.fillStyle=bv;c.fillRect(0,h*0.62,w,h*(1-0.62)+1);
+      }else{
+        var tv2=c.createLinearGradient(0,0,0,bh*.3);tv2.addColorStop(0,"rgba(10,20,16,0.6)");tv2.addColorStop(1,"rgba(10,20,16,0)");c.fillStyle=tv2;c.fillRect(0,0,w,bh*.3);
+        var mv=c.createLinearGradient(0,bh*.62,0,bh);mv.addColorStop(0,"rgba(15,27,22,0)");mv.addColorStop(1,"#0f1b16");c.fillStyle=mv;c.fillRect(0,bh*.62,w,bh*.38+1);
+        c.fillStyle="#0f1b16";c.fillRect(0,bh,w,h-bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
-  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  var rzT,lw=0;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(function(){var nw=document.documentElement.clientWidth||innerWidth;if(G&&G.mob&&nw===lw&&Math.abs(innerHeight-h)<140)return;lw=nw;size()},120)});size();lw=w;
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
-    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.tx,G.gy-G.T*.5]:[w/2,h/2]}};
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[w*.68,G.bh*.55]:[w/2,h/2]}};
 })();/*</R:field>*/
 
 var fieldIO=new IntersectionObserver(function(){chkField()},{threshold:[0,.01]});

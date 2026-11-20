@@ -34,6 +34,11 @@ Mapping: logo navy → --ink #0d2341 / --navy #17457c; arrow green → --accL #8
 Brett C. Hixon, CFP® — President and Chief Compliance Officer, primary owner. Greeting "Mr. Hixon" (bio uses "He"). Email brett.hixon@raymondjames.com; phone 305-648-0006.
 
 ## Build concept
-- Hero: a great banyan at dawn (Coral Gables' banyan canopies), sun low behind the pillar roots, royal palms on the horizon; navy/green palette.
+- Hero (superseded 2026-11-20, see below): a great banyan at dawn (Coral Gables' banyan canopies), sun low behind the pillar roots, royal palms on the horizon; navy/green palette.
 - Story: their puzzle metaphor — nine fine-line pieces (Estate, Giving, Taxes, Retirement, Portfolio, Budget, Education, Insurance, Risk) scattered → linked → locked into the logo diamond → the logo's green arrow rises with quarterly ticks.
 - Images unused: inside1/inside2 banners (stock texture strips), image_58 (dated group photo; same people shown via individual headshots).
+
+## Hero photo (rephoto 2026-11-20, HOME_BRIEF update part 2, option b)
+- Painted banyan canvas removed. Their only own photo is a dated, low-quality group snapshot in front of the office sign (not usable as a hero).
+- Photo: "Biltmore Hotel Miami at Night, Illuminated", Pexels photo 30068853 (free licence): https://www.pexels.com/photo/biltmore-hotel-miami-at-night-illuminated-30068853/ (the Biltmore tower, Coral Gables).
+- Graded into kirtland/hero.webp (navy ink #0d2341, warm stone tint; lit palm trunks cropped/scrimmed away), slow Ken Burns, tower at ~76% width under the ink scrim.

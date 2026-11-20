@@ -32,4 +32,5 @@
 - Option (c): crafted render of the real product, `_kit/home/magellan-biomedical/render.py` (numpy tube shading with z-buffer: polished nitinol with a studio environment, clear-coat blue polymer, satin gold tendons), RGBA with the sheath feathered out; placed right of the copy with an ink scrim; slow drift, no pointer response.
 
 ## Build
+- Gates (2026-11-20): smoke, reveal 1440/390, anim 1440/390, clip 1440/390 (390 fixed after shortening team summaries), overlay, masthead, mixed, polish, loader, cramped, hoverpad, split, balance, logo, buildout-test (8 nav clicks) all OK; hero-audit prints "no title found", as it does on the biomatcan and bmseed references.
 - Parts in `_kit/home/magellan-biomedical/`, assembled from firelight regions by `assemble.py` into `_kit/src/magellan-biomedical.src.html`, built with `node _kit/build.js` to `/magellan-biomedical/index.html` (+ hero.webp). Build-out pages via `buildout` in @libs for Technology / Applications / Team / News.

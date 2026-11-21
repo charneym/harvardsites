@@ -13,15 +13,15 @@ var PIPE=[
  ["Inflammatory expansion","Inflammatory bowel disease; lupus vasculitis","Preclinical","IND filings planned 2027","The same molecule, manufacturing process, safety database and companion biomarkers carried into autoimmune and inflammatory disease.",AQ+"our-platform","Pipeline"]];
 /* aqualungtherapeutics.com, About Us. Text-only masthead (CI/CL). */
 var TEAM=[
- {g:"Leadership",name:"Joe G.N. “Skip” Garcia, MD",title:"Founder & Chief Executive Officer",sum:"Pulmonary and critical care physician-scientist; elected member of the National Academy of Medicine; Associate Vice President for Research at the University of Florida; over 650 peer-reviewed publications."},
- {g:"Leadership",name:"Stan Miele, BA",title:"President & Chief Business Officer",sum:"Former Chief Commercial Officer at bioLytical Laboratories and Sucampo Pharmaceuticals, and President of Sucampo Pharma Americas for six years."},
+ {g:"Leadership",name:"Joe G.N. “Skip” Garcia, MD",title:"Founder & Chief Executive Officer",sum:"Pulmonary physician-scientist; National Academy of Medicine; over 650 publications."},
+ {g:"Leadership",name:"Stan Miele, BA",title:"President & Chief Business Officer",sum:"Former CCO of bioLytical and Sucampo; President, Sucampo Pharma Americas."},
  {g:"Leadership",name:"Augustine Choi, MD",title:"Chief Medical Officer (Fractional)",sum:""},
  {g:"Leadership",name:"Shawntela Martinez",title:"Chief Financial Officer (Fractional)",sum:""},
  {g:"Leadership",name:"David Boisvert, PhD",title:"CMC",sum:""},
- {g:"Board of Directors",name:"Joe G.N. “Skip” Garcia, MD",title:"Founder and CEO",sum:"Director, Center for Inflammation Science and Systems Medicine, Herbert Wertheim UF Scripps Institute."},
- {g:"Board of Directors",name:"Don Payan, MD",title:"Director",sum:"Co-founder of Sana and Shinobi; founder and CSO of Rigel and Khepri; inventor on over 90 issued patents."},
- {g:"Board of Directors",name:"Robert Schleimer, PhD",title:"Director",sum:"Professor Emeritus of Medicine and former Chief of Allergy and Immunology, Northwestern; co-founder of Allakos."},
- {g:"Board of Directors",name:"Jackson Streeter, MD",title:"Director",sum:"Partner at Deepworks; founder of PhotoThera and American Veterinary Laser; former CEO of Banyan Biomarkers."}];
+ {g:"Board of Directors",name:"Joe G.N. “Skip” Garcia, MD",title:"Founder and CEO",sum:"Associate Vice President for Research, University of Florida."},
+ {g:"Board of Directors",name:"Don Payan, MD",title:"Director",sum:"Co-founder of Sana and Shinobi; founder and CSO of Rigel and Khepri."},
+ {g:"Board of Directors",name:"Robert Schleimer, PhD",title:"Director",sum:"Professor Emeritus of Medicine, Northwestern; co-founder of Allakos."},
+ {g:"Board of Directors",name:"Jackson Streeter, MD",title:"Director",sum:"Partner at Deepworks; founder of PhotoThera; former CEO, Banyan Biomarkers."}];
 /* news: only items with a working link. [date, headline, source, url] */
 var NEWS=[
  ["October 2026","FDA clears the IND for ALTAR-100, a Phase 1/2 trial of ALT-100 in bone-metastatic prostate cancer at UF Health Cancer Institute","ClinicalTrials.gov",CT+"NCT07917390"],

@@ -10,7 +10,7 @@ function scene(){
   /* base: frame, bench line, title block */
   g+='<g id="scBase"><rect class="neat" x=".5" y=".5" width="799" height="559"/>';
   g+='<path class="wi sD" d="M24 500H776"/><path class="hatch" d="M24 503H776V514H24Z"/>';
-  g+='<g class="tb"><path class="tbl" d="M436 522h340v32h-340Z"/><text x="448" y="544" class="t">SEQUENCE TO NEEDLE · CREOSALUS</text></g>';
+  g+='<g class="tb"><path class="tbl" d="M640 522h136v32h-136Z"/><text x="652" y="544" class="t">CREOSALUS</text></g>';
   g+='</g>';
   /* the chain: 12 residues on a gentle wave, anchored at the left to the resin bead (drawn in step 2) */
   var B=[],RX=112,RY=176;for(var k=0;k<12;k++){var x=RX+64+k*31,y=RY+Math.sin(k*.9)*20;B.push([x,y])}

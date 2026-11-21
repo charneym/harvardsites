@@ -1,0 +1,80 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style></head><body>
+<script type="module">
+import * as THREE from './three.module.js';
+import {RoomEnvironment} from './jsm/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1400,H=+P.get('h')||1200,PR=+P.get('pr')||2,ROT=+(P.get('rot')||0),GEN=+(P.get('gen')||10);
+let s=+(P.get('seed')||7);const R=()=>{s=(s*16807)%2147483647;return (s-1)/2147483646};
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+renderer.setPixelRatio(PR);renderer.setSize(W,H);renderer.setClearColor(0x000000,0);
+renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.0;renderer.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const cam=new THREE.PerspectiveCamera(24,W/H,0.1,100);cam.position.set(0,-0.15,8.2);cam.lookAt(0,-0.15,0);
+/* material: a translucent resin airway cast in the logo red (#ed2b2c), clear-coated */
+const mat=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('col')||'#d8343a'),roughness:.34,metalness:0,clearcoat:1,clearcoatRoughness:.18,
+  sheen:.6,transmission:+(P.get('tr')||0),thickness:.3,ior:1.45,sheenColor:new THREE.Color('#ffb3ad'),sheenRoughness:.5,envMapIntensity:.9});
+scene.add(new THREE.HemisphereLight(0xdfe6ff,0x1a2340,.35));
+const key=new THREE.DirectionalLight(0xfff2ea,2.4);key.position.set(-3,4,5);scene.add(key);
+const rim=new THREE.DirectionalLight(0x7f9fe6,3.2);rim.position.set(4,1.5,-4);scene.add(rim);
+const rim2=new THREE.DirectionalLight(0xffc9c0,1.2);rim2.position.set(-4,-2,-3);scene.add(rim2);
+const grp=new THREE.Group();scene.add(grp);
+const up=new THREE.Vector3(0,1,0);
+const C0=new THREE.Color(P.get('c0')||'#a3121c'),C1=new THREE.Color(P.get('c1')||'#f0757a');
+const geos=[];
+function tube(curve,ra,rb,gen){const nS=gen<3?24:gen<6?10:5,nR=Math.max(8,Math.min(48,Math.round(ra*300)));
+  const fr=curve.computeFrenetFrames(nS,false),pos=[],nor=[],col=[],idx=[];
+  const cA=C0.clone().lerp(C1,Math.min(1,gen/GEN)),cB=C0.clone().lerp(C1,Math.min(1,(gen+1)/GEN));
+  for(let i=0;i<=nS;i++){const u=i/nS,P0=curve.getPointAt(u),r=ra+(rb-ra)*u,N=fr.normals[i],B=fr.binormals[i],c=cA.clone().lerp(cB,u);
+    for(let j=0;j<=nR;j++){const v=j/nR*Math.PI*2,sn=Math.sin(v),cs=-Math.cos(v);
+      const nx=cs*N.x+sn*B.x,ny=cs*N.y+sn*B.y,nz=cs*N.z+sn*B.z;pos.push(P0.x+r*nx,P0.y+r*ny,P0.z+r*nz);nor.push(nx,ny,nz);col.push(c.r,c.g,c.b)}}
+  for(let i=0;i<nS;i++)for(let j=0;j<nR;j++){const a=i*(nR+1)+j,b=(i+1)*(nR+1)+j;idx.push(a,b,a+1,b,b+1,a+1)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('normal',new THREE.Float32BufferAttribute(nor,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.setIndex(idx);grp.add(new THREE.Mesh(g,mat));
+  const sp=new THREE.SphereGeometry(rb,Math.max(8,nR),Math.max(6,Math.round(nR*.6)));const cc=[];for(let k=0;k<sp.attributes.position.count;k++)cc.push(cB.r,cB.g,cB.b);sp.setAttribute('color',new THREE.Float32BufferAttribute(cc,3));
+  const m=new THREE.Mesh(sp,mat);m.position.copy(curve.getPointAt(1));grp.add(m)}
+mat.vertexColors=true;mat.color.set('#ffffff');
+function perp(v){const t=Math.abs(v.y)<.9?new THREE.Vector3(0,1,0):new THREE.Vector3(1,0,0);return new THREE.Vector3().crossVectors(v,t).normalize()}
+const MINP=+(P.get('minp')||14),LR=+(P.get('lr')||.42);
+/* the two lungs as point clouds: tall rounded volumes, flat on the medial side, the left with a cardiac notch */
+function lungPts(side,n){const out=[],sx=side?-1:1;while(out.length<n){const x=(R()*2-1)*1.15,y=(R()*2-1)*1.6,z=(R()*2-1)*.85;
+  const yy=y+(y>0?y*y*.35:0);const q=(x*x)/1.32+(yy*yy)/2.56+(z*z)/.72;if(q>1)continue;
+  const X=sx*(x+1.38);if(Math.abs(X)<.35)continue; if(!side&&X>-.75&&y<-.6&&z>-.1&&Math.abs(X)<.9)continue;
+  out.push(new THREE.Vector3(X,y-.38,z))}return out}
+function centroid(a){const c=new THREE.Vector3();a.forEach(p=>c.add(p));return c.multiplyScalar(1/a.length)}
+let NSEG=0;
+function branch(s0,e0,r,pts,gen,nprev){
+  const dir=new THREE.Vector3().subVectors(e0,s0),L=dir.length();dir.normalize();
+  const bend=perp(dir).applyAxisAngle(dir,R()*6.28).multiplyScalar(L*(gen<2?.02:.06));
+  const curve=new THREE.QuadraticBezierCurve3(s0.clone(),s0.clone().lerp(e0,.5).add(bend),e0.clone());
+  const rEnd=r*.96;tube(curve,r,rEnd,Math.min(gen,GEN));NSEG++;
+  if(pts.length<MINP||gen>16)return;
+  const tdir=new THREE.Vector3().subVectors(e0,curve.getPoint(.85)).normalize();
+  /* the splitting plane contains the parent axis; its normal turns ~90 degrees each generation */
+  let n=nprev.clone().applyAxisAngle(tdir,Math.PI/2+(R()-.5)*.5);n.addScaledVector(tdir,-n.dot(tdir)).normalize();
+  const pr=pts.map(p=>({p,d:new THREE.Vector3().subVectors(p,e0).dot(n)})).sort((a,b)=>a.d-b.d);
+  const k=Math.floor(pr.length/2),A=pr.slice(0,k).map(o=>o.p),B=pr.slice(k).map(o=>o.p);
+  for(const S of [A,B]){if(S.length<2)continue;
+    const c=centroid(S),toC=new THREE.Vector3().subVectors(c,e0);let D=toC.length(),nd=toC.normalize();
+    /* keep branching angles anatomical (at most ~65 degrees off the parent) */
+    const ang=nd.angleTo(tdir),mx=1.13;if(ang>mx){const ax=new THREE.Vector3().crossVectors(tdir,nd).normalize();nd=tdir.clone().applyAxisAngle(ax,mx)}
+    const w=S.length/pts.length,rr=rEnd*Math.pow(w,1/2.7);
+    const LL=Math.max(rr*3.2,D*LR);
+    branch(e0,e0.clone().addScaledVector(nd,LL),rr,S,gen+1,n)}
+}
+const top=new THREE.Vector3(0,1.3,0),car=new THREE.Vector3(0,.42,0);
+const PL=lungPts(0,+(P.get('np')||5000)),PRt=lungPts(1,+(P.get('np')||5000)*1.12);
+/* trachea, then the two main bronchi aimed at each lung (the right steeper and shorter) */
+tube(new THREE.QuadraticBezierCurve3(top,top.clone().lerp(car,.5),car),.15,.145,0);
+const rc=centroid(PRt),lc=centroid(PL);
+const rd=new THREE.Vector3().subVectors(rc,car).normalize(),ld=new THREE.Vector3().subVectors(lc,car).normalize();
+branch(car,car.clone().addScaledVector(rd,.62),.112,PRt,1,new THREE.Vector3(0,0,1));
+branch(car,car.clone().addScaledVector(ld,.82),.1,PL,1,new THREE.Vector3(0,0,1));
+console.log('segments',NSEG);
+grp.rotation.y=ROT;grp.rotation.x=.12;
+grp.updateMatrixWorld(true);const bb=new THREE.Box3().setFromObject(grp),ctr=bb.getCenter(new THREE.Vector3()),sz=bb.getSize(new THREE.Vector3());
+const FIT=+(P.get('fit')||1.06),vf=THREE.MathUtils.degToRad(cam.fov),dist=Math.max(sz.y/2/Math.tan(vf/2),sz.x/2/Math.tan(vf/2)/cam.aspect)*FIT+sz.z/2;
+cam.position.set(ctr.x,ctr.y,ctr.z+dist);cam.lookAt(ctr);cam.updateProjectionMatrix();console.log('size',sz.x.toFixed(2),sz.y.toFixed(2));
+renderer.render(scene,cam);
+window.DONE=true;
+</script></body></html>

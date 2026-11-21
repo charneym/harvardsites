@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* CerFlux hero: a crafted render of the POET / BEST principle (cerflux.com: "miniaturized tic-tac-toe on biopsy tumor tissue ...
+   a different agent in each box"; ChipMux biopsy-on-a-chip). A clear glass chip: an inlet feeds a serpentine channel (the line in
+   the CerFlux logo) into a manifold, which perfuses nine wells in a 3x3 grid, each holding a slice of tumor tissue. Illustrative,
+   not an engineering drawing. Rendered on a transparent ground (real alpha) so the page ink shows through: no box edge (DP/DJ). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||2400),H=+(Q.get('h')||1800);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);const INK=new THREE.Color(0x141313);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=INK;
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.03).texture;sc.environmentIntensity=.85;
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+
+/* tissue texture: an unstained-looking living slice, rosy stroma with denser cell nests (muted, no stain colours) */
+function tissueTex(s){
+  seed=s;const N=512,c=document.createElement('canvas');c.width=c.height=N;const g=c.getContext('2d');
+  const grd=g.createRadialGradient(N/2,N/2,0,N/2,N/2,N/2);grd.addColorStop(0,'#b8726c');grd.addColorStop(.85,'#a35c5a');grd.addColorStop(1,'#874446');
+  g.fillStyle=grd;g.fillRect(0,0,N,N);
+  for(let i=0;i<70;i++){g.strokeStyle=`rgba(${230+rnd()*20|0},${170+rnd()*30|0},${160+rnd()*30|0},${.18+rnd()*.2})`;g.lineWidth=2+rnd()*5;g.beginPath();
+    let x=rnd()*N,y=rnd()*N,a=rnd()*6.28;g.moveTo(x,y);for(let k=0;k<6;k++){a+=(rnd()-.5)*.8;x+=Math.cos(a)*30;y+=Math.sin(a)*30;g.lineTo(x,y)}g.stroke()}
+  for(let n=0;n<9;n++){const cx=rnd()*N,cy=rnd()*N,R=30+rnd()*70;
+    for(let i=0;i<260;i++){const a=rnd()*6.28,d=Math.sqrt(rnd())*R;g.fillStyle=`rgba(${110+rnd()*30|0},${40+rnd()*20|0},${55+rnd()*20|0},${.35+rnd()*.35})`;
+      g.beginPath();g.ellipse(cx+Math.cos(a)*d,cy+Math.sin(a)*d,2+rnd()*2.6,1.6+rnd()*2,rnd()*3,0,6.28);g.fill()}}
+  for(let i=0;i<2600;i++){g.fillStyle=`rgba(${120+rnd()*40|0},${50+rnd()*30|0},${60+rnd()*30|0},${.18+rnd()*.25})`;g.beginPath();g.arc(rnd()*N,rnd()*N,1+rnd()*1.8,0,6.28);g.fill()}
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t;
+}
+
+const chip=new THREE.Group();sc.add(chip);
+const L=9.6,Dp=6.0,T=.62;   /* chip length (x), depth (z), thickness */
+/* glass body */
+const glass=new THREE.MeshPhysicalMaterial({color:0xcfe0dc,roughness:.05,transparent:true,opacity:.07,side:THREE.DoubleSide,depthWrite:false});
+const body=new THREE.Mesh(new RoundedBoxGeometry(L,T,Dp,6,.14),glass);body.renderOrder=5;chip.add(body);
+/* reflection pass: black base, additive, so only the specular / environment highlights land (real glass reads by its reflections) */
+const refl=new THREE.MeshPhysicalMaterial({color:0x000000,roughness:.035,metalness:0,clearcoat:.6,clearcoatRoughness:.06,envMapIntensity:1.45,specularIntensity:.3,
+  transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});
+const bodyR=new THREE.Mesh(new RoundedBoxGeometry(L,T,Dp,6,.14),refl);bodyR.renderOrder=7;chip.add(bodyR);
+/* bright bevel edges: thin lines catch the light the way cut glass does */
+const eg=new THREE.EdgesGeometry(new RoundedBoxGeometry(L,T,Dp,2,.14),30);
+chip.add(new THREE.LineSegments(eg,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.42})));
+/* frosted bonding layer at mid-depth: gives the glass body a readable volume */
+const frost=new THREE.Mesh(new THREE.PlaneGeometry(L-.3,Dp-.3),new THREE.MeshPhysicalMaterial({color:0xdfe6ea,roughness:.55,transparent:true,opacity:.07,depthWrite:false}));
+frost.rotation.x=-Math.PI/2;frost.position.y=-.12;chip.add(frost);
+
+/* medium: CerFlux red (logo #CC1B1F), slightly translucent like dyed liquid */
+const med=new THREE.MeshPhysicalMaterial({color:0xb5171b,roughness:.12,clearcoat:.6,transmission:0,transparent:true,opacity:.92,emissive:0x2a0203,emissiveIntensity:.25});
+const yC=.02,rC=.075;
+function tube(pts,rad=rC){const cu=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(p[0],yC,p[1])),false,'catmullrom',.0);
+  const m=new THREE.Mesh(new THREE.TubeGeometry(cu,Math.max(64,pts.length*24),rad,16,false),med);m.castShadow=true;chip.add(m);return m}
+function polyRound(P,rad){ /* rounded corners for a polyline */
+  const out=[];for(let i=0;i<P.length;i++){const p=P[i];if(i==0||i==P.length-1){out.push(p);continue}
+    const a=P[i-1],b=P[i+1];const da=Math.hypot(p[0]-a[0],p[1]-a[1]),db=Math.hypot(b[0]-p[0],b[1]-p[1]);const k1=Math.min(rad,da/2)/da,k2=Math.min(rad,db/2)/db;
+    const s=[p[0]+(a[0]-p[0])*k1,p[1]+(a[1]-p[1])*k1],e=[p[0]+(b[0]-p[0])*k2,p[1]+(b[1]-p[1])*k2];
+    for(let t=0;t<=8;t++){const u=t/8,x=(1-u)*(1-u)*s[0]+2*u*(1-u)*p[0]+u*u*e[0],y=(1-u)*(1-u)*s[1]+2*u*(1-u)*p[1]+u*u*e[1];out.push([x,y])}}
+  return out}
+function lin(P){const out=[];for(let i=0;i<P.length-1;i++){const a=P[i],b=P[i+1],n=Math.max(2,Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/.08));for(let k=0;k<n;k++)out.push([a[0]+(b[0]-a[0])*k/n,a[1]+(b[1]-a[1])*k/n])}out.push(P[P.length-1]);return out}
+/* inlet port at the left, then a serpentine like the CerFlux logo */
+const x0=-L/2+.75;const P=[[x0,-1.9],[x0+.55,-1.9]];
+let x=x0+.55;for(let i=0;i<5;i++){const zt=i%2?-1.9:1.9;P.push([x,zt]);x+=.42;P.push([x,zt])}
+P.push([x,-1.9]);P.push([x+.5,-1.9]);P.push([x+.5,0]);const xm=x+.95;P.push([xm,0]);
+tube(lin(polyRound(P,.2)));
+/* manifold: one vertical header splitting into three rows; each row runs through its three wells in series, between them, never across a well */
+const xs=[xm+1.0,xm+2.2,xm+3.4],zs=[-1.6,0,1.6],RW=.5,xo=xs[2]+1.0;
+tube(lin(polyRound([[xm,-1.6],[xm,1.6]],.1)));
+zs.forEach(z=>{tube(lin([[xm,z],[xs[0]-RW,z]]),rC*.8);tube(lin([[xs[0]+RW,z],[xs[1]-RW,z]]),rC*.8);tube(lin([[xs[1]+RW,z],[xs[2]-RW,z]]),rC*.8);tube(lin([[xs[2]+RW,z],[xo,z]]),rC*.8)});
+/* collector and outlet port right */
+tube(lin([[xo,-1.6],[xo,1.6]]),rC*.8);
+tube(lin(polyRound([[xo,-1.6],[xo,-2.35],[L/2-.6,-2.35]],.2)),rC*.8);
+/* ports: a ring and a short red column at each end */
+function port(px,pz){const ring=new THREE.Mesh(new THREE.TorusGeometry(.2,.035,16,48),new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.1,transparent:true,opacity:.45,clearcoat:1}));
+  ring.rotation.x=-Math.PI/2;ring.position.set(px,T/2+.005,pz);chip.add(ring);
+  const col=new THREE.Mesh(new THREE.CylinderGeometry(.13,.13,T*.55,32),med);col.position.set(px,yC+T*.25,pz);chip.add(col)}
+port(x0,-1.9);port(L/2-.6,-2.35);
+/* the nine wells, 3x3: a glass wall, a thin red film of medium, and a tissue slice */
+const wallM=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.05,transparent:true,opacity:.28,clearcoat:1,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:1.8});
+let s=11;
+zs.forEach(z=>xs.forEach(xx=>{
+  const R=RW;
+  const wall=new THREE.Mesh(new THREE.CylinderGeometry(R,R,T*.86,64,1,true),wallM);wall.position.set(xx,.02,z);wall.renderOrder=6;chip.add(wall);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(R,.022,12,96),new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.08,transparent:true,opacity:.55,clearcoat:1}));
+  rim.rotation.x=-Math.PI/2;rim.position.set(xx,T/2-.01,z);chip.add(rim);
+  const film=new THREE.Mesh(new THREE.CylinderGeometry(R*.97,R*.97,.05,64),new THREE.MeshPhysicalMaterial({color:0xa8161a,roughness:.15,transparent:true,opacity:.55}));
+  film.position.set(xx,-T*.2,z);chip.add(film);
+  /* tissue slice: an irregular disc with a little thickness */
+  const sh=new THREE.Shape();const n=64;seed=s*97;const ph=rnd()*6,ph2=rnd()*6;
+  for(let i=0;i<=n;i++){const a=i/n*Math.PI*2,rr=R*.74*(1+.07*Math.sin(3*a+ph)+.05*Math.sin(5*a+ph2)+.03*Math.sin(9*a+s));i?sh.lineTo(Math.cos(a)*rr,Math.sin(a)*rr):sh.moveTo(Math.cos(a)*rr,Math.sin(a)*rr)}
+  const tg=new THREE.ExtrudeGeometry(sh,{depth:.06,bevelEnabled:true,bevelThickness:.025,bevelSize:.025,bevelSegments:4,curveSegments:64});
+  const uv=tg.attributes.uv,pos=tg.attributes.position;for(let i=0;i<uv.count;i++)uv.setXY(i,pos.getX(i)/(R*1.6)+.5,pos.getY(i)/(R*1.6)+.5);
+  const tm=new THREE.MeshPhysicalMaterial({map:tissueTex(s),roughness:.5,sheen:.6,sheenColor:new THREE.Color(0xffd9d2),sheenRoughness:.5,clearcoat:.35,clearcoatRoughness:.4});
+  const ts=new THREE.Mesh(tg,tm);ts.rotation.x=-Math.PI/2;ts.rotation.z=rnd()*6;ts.position.set(xx,-T*.17,z);ts.castShadow=true;chip.add(ts);
+  s+=3;
+}));
+/* lights + soft contact shadow on an invisible ground (real alpha) */
+const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(-6,12,7);key.castShadow=true;key.shadow.mapSize.set(4096,4096);
+key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-9;key.shadow.radius=10;key.shadow.blurSamples=24;key.shadow.bias=-.0004;sc.add(key);
+const rim=new THREE.DirectionalLight(0xffe2e0,1.1);rim.position.set(8,4,-9);sc.add(rim);
+sc.add(new THREE.HemisphereLight(0xffffff,0x330808,.35));
+const gnd=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.ShadowMaterial({opacity:.5}));gnd.rotation.x=-Math.PI/2;gnd.position.y=-T/2-.55;gnd.receiveShadow=true;sc.add(gnd);
+chip.rotation.y=+(Q.get('ry')||.52);
+const cam=new THREE.PerspectiveCamera(+(Q.get('fov')||26),W/H,.1,100);
+const el=+(Q.get('el')||.78),dist=+(Q.get('d')||25);cam.position.set(0,Math.sin(el)*dist,Math.cos(el)*dist);cam.lookAt(0,-.2,0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

@@ -125,7 +125,7 @@ def trace(o, d):
         p = o[met] + tmet[met, None] * d[met]
         c = steel(p, nmet[met], d[met])
         # the tube and the collar fade upward into the ink (long ease)
-        f = soft(p[:, 1], COL_Y1 + 0.75, COL_Y1 + 0.08)
+        f = soft(p[:, 1], COL_Y1 + 0.10, COL_Y1 + 0.005)
         col[met] = c * f[:, None] + INK * (1 - f[:, None]); alpha[met] = 1
     g = hitb & ~met
     if not g.any(): return col, alpha, axis_d, axis_y
@@ -231,7 +231,8 @@ yy = (np.arange(H) / H)[:, None]
 fade = (1 - soft(yy, 0.60, 0.97)) * soft(yy, 0.0, 0.10)
 col = col * fade[..., None] + INK * (1 - fade[..., None])
 # tone map (soft shoulder), output with alpha
-col = 1 - np.exp(-col * 1.25); col = col / (1 - np.exp(-1.25 * 1.0)) * 1.0
+TM = lambda v: (1 - np.exp(-v * 1.25)) / (1 - np.exp(-1.25))
+col = np.maximum(TM(col) - TM(INK) + INK, INK * 0)   # tone map, keeping the ink exactly the page ink
 img = np.dstack([np.clip(col, 0, 1), al])
 im = Image.fromarray((img * 255 + .5).astype(np.uint8), 'RGBA')
 if SS > 1: im = im.resize((FW, FH), Image.LANCZOS)

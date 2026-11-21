@@ -1,0 +1,11 @@
+# StemSynergy Therapeutics, Inc. (SSTI) — dossier (home-only build, batch 2026-11f)
+- Site: stemsynergy.com (WordPress, 2014 theme by 323 Design). HQ and R&D: 1951 NW 7th Avenue, Suite 300, Miami, FL 33136. (305) 600-1048. info@stemsynergy.com.
+- Bad-site evidence: obsolete 2000s design: a boxed banner with an outlined, drop-shadowed headline, a grey tab nav bar, clip-art gear graphic; /science-technology/ returns "Page not found".
+- Activity: 2026-09-02 NIH NCI SBIR Phase I 1R43CA310499-01A1, $399,998, "Development of novel WNT inhibitors to treat colorectal cancers" (contact PI Dennis Liang Fei), https://reporter.nih.gov/project-details/11409930. The abstract names the lead SSTB-178, which disrupts beta-catenin/BCL9 binding.
+- NIH RePORTER (org STEMSYNERGY): 24 awards from FY2010 to FY2026, $15,604,884 in total.
+- Press release 2025-03-19 (WP date): now accepting Expanded Access Protocol applications for an upcoming clinical trial in Wnt- and Notch-dependent cancers; contact Anthony Capobianco, Ph.D., President, info@stemsynergy.com.
+- Pipeline (site image Pipeline-052324-2.png, 2024-05): SST-1034 and SST-024 (CK1α activators), SSTB-178 (β-catenin transcriptional complex), SSTN-302 and SSTN-465 (Notch1 ternary complex, types I and II), SSTK-214 (NACK), SSTA-152 (Myc degraders). SSTN-302 and SSTK-214 are exclusively licensed from the University of Miami. SST-024 (pyrvinium) has FDA Orphan Drug Designation for FAP.
+- People (site): founders Anthony J. Capobianco (President; Univ. Miami), Ethan Lee (Vanderbilt), David J. Robbins (Georgetown), William A. Weiss (UCSF); Dennis Fei, Ph.D., Director of Drug Discovery and Development.
+- Palette: logo graphite #686870, silver #b0b0b0, red #e8182f; site steel-blue band #a9c7d1.
+- Hero (HOME_BRIEF update option c): a space-filling render of beta-catenin bound to BCL9 and TCF4, from the crystal structure PDB 2GL7 (RCSB files.rcsb.org/download/2GL7.pdb), rendered by _kit/home/stemsynergy/bc.py (adapted from gammabiotherapeutics/ab.py). Their own photos are 600×400 lab snapshots from 2014 and 2019, too small for a hero. Unsplash search could not be run from this session.
+- Story: Wnt mechanism, from stemsynergy.com/science-and-technology/cancer/wnt-program/ and the 2026 award abstract.

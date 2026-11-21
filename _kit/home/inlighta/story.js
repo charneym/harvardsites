@@ -56,7 +56,7 @@ function scene(){
   /* labels, one set per step (leaders end at the thing they name) */
   g+='<g id="lb1"><text class="a" x="'+(mob?24:40)+'" y="'+(mob?40:44)+'">'+(mob?'ProCA® AGENT':'ProCA® · GADOLINIUM HELD IN THE PROTEIN')+'</text><path class="ldr" d="M'+(mob?60:80)+' '+(mob?52:54)+'L'+(mob?250:300)+' 236"/>'+
      (mob?'':'<text class="t" x="40" y="64">ENGINEERED METAL-BINDING SITES</text>')+'</g>';
-  g+='<g id="lb2"><text class="a" x="'+(mob?776:760)+'" y="'+(mob?96:44)+'" text-anchor="end">'+(mob?'BLOOD POOL':'BLOOD-POOL CONTRAST · ProCA32')+'</text><path class="ldr" d="M'+(mob?700:690)+' '+(mob?108:54)+'L'+(mob?600:560)+' '+(mob?230:214)+'"/>'+
+  g+='<g id="lb2"><text class="a" x="'+(mob?776:760)+'" y="'+(mob?40:44)+'" text-anchor="end">'+(mob?'BLOOD POOL':'BLOOD-POOL CONTRAST · ProCA32')+'</text><path class="ldr" d="M'+(mob?700:690)+' '+(mob?52:54)+'L'+(mob?600:560)+' '+(mob?230:214)+'"/>'+
      (mob?'':'<text class="t" x="760" y="64" text-anchor="end">HIGH RELAXIVITY IN T1 AND T2</text>')+'</g>';
   var n0=NOD[0];
   g+='<g id="lb3"><text class="a" x="'+(mob?24:40)+'" y="'+(mob?548:540)+'">'+(mob?'NODULES UNDER 1 MM':'COLLAGEN-TARGETED · NODULES UNDER 1 MM')+'</text><path class="ldr" d="M'+(mob?80:110)+' '+(mob?526:522)+'L'+(n0[0]-8)+' '+(n0[1]+12)+'"/></g>';

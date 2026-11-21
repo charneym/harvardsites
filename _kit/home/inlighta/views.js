@@ -20,7 +20,7 @@ function vHome(){
    '<h2 class="txt" id="mani">Too many patients are found when disease is already advanced, because today’s scans cannot see it start. InLighta builds contrast agents that let MRI <em>see it sooner.</em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">&lt;0.25&thinsp;mm</span><span class="k">Liver tumors imaged with ProCA32, the company’s blood-pool agent</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">'<div class="stat"><span class="ln2"></span><span class="v">&gt;40×</span>gt;40×</span><span class="k">More sensitive for liver tumors than commonly used, clinically approved agents</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">&gt;40×</span><span class="k">More sensitive for liver tumors than commonly used, clinically approved agents</span></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">18/18</span><span class="k">Lung nodules found by the collagen-targeted agent in a 2026 mouse study, some under 1 mm</span></div>'+
    '</div>'+
    '<div class="plat">'+

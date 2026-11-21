@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* TrAMPoline hero: a crafted render of the cell the company engineers, a T lymphocyte, in the manner of a scanning electron
+   micrograph (a lumpy cell body covered in microvilli, lit from behind so the edges glow), graded to the logo's warm grey and
+   gold. Generic illustration of a T cell, not company data. Rendered with real alpha (no ground) so the page ink shows through. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||2000),H=+(Q.get('h')||2000);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=.9;r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.35;
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+/* smooth 3D value noise */
+const P=[];for(let i=0;i<512;i++)P.push(rnd());
+function h3(x,y,z){let n=(x*73856093^y*19349663^z*83492791)&511;return P[(n+512)%512]}
+function vn(x,y,z){const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z),xf=x-xi,yf=y-yi,zf=z-zi,s=t=>t*t*(3-2*t);const u=s(xf),v=s(yf),w=s(zf);
+  const L=(a,b,t)=>a+(b-a)*t;
+  return L(L(L(h3(xi,yi,zi),h3(xi+1,yi,zi),u),L(h3(xi,yi+1,zi),h3(xi+1,yi+1,zi),u),v),L(L(h3(xi,yi,zi+1),h3(xi+1,yi,zi+1),u),L(h3(xi,yi+1,zi+1),h3(xi+1,yi+1,zi+1),u),v),w)}
+function fbm(x,y,z){return vn(x,y,z)*.55+vn(x*2.1,y*2.1,z*2.1)*.28+vn(x*4.3,y*4.3,z*4.3)*.17}
+function R(p){/* radius of the cell surface in direction p (unit) */
+  return 1+.11*(fbm(p.x*1.3+3,p.y*1.3+1,p.z*1.3+7)-.5)*2+.035*(vn(p.x*7+2,p.y*7,p.z*7+5)-.5)*2+.007*(vn(p.x*19,p.y*19+4,p.z*19)-.5)*2}
+/* cell body */
+let g=new THREE.IcosahedronGeometry(1,96);g.deleteAttribute('normal');g.deleteAttribute('uv');g=mergeVertices(g);
+const pa=g.attributes.position,v=new THREE.Vector3();
+for(let i=0;i<pa.count;i++){v.fromBufferAttribute(pa,i).normalize();const rr=R(v);pa.setXYZ(i,v.x*rr*1.04,v.y*rr*.95,v.z*rr)}
+g.computeVertexNormals();
+const mat=new THREE.MeshPhysicalMaterial({color:0x8f897d,roughness:.75,metalness:0,sheen:.8,sheenRoughness:.45,sheenColor:new THREE.Color(0xe6cf92),clearcoat:.15,clearcoatRoughness:.5});
+/* SEM edge effect: surfaces seen edge-on emit more, faces seen square-on stay darker */
+mat.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>',
+ 'float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.0);outgoingLight=outgoingLight*0.8+vec3(0.93,0.82,0.58)*fr*0.75;\n#include <opaque_fragment>')};
+const body=new THREE.Mesh(g,mat);body.castShadow=body.receiveShadow=true;sc.add(body);
+/* microvilli: short finger-like membrane projections over the whole surface */
+const vmat=mat.clone();vmat.color.set(0xc4bcaa);vmat.onBeforeCompile=mat.onBeforeCompile;
+const N=4200,LENS=[3,5.5,8.5],MV=LENS.map(L=>{const c=new THREE.CapsuleGeometry(1,L,4,8);c.translate(0,L/2,0);
+  const im=new THREE.InstancedMesh(c,vmat,N);im.castShadow=true;im.userData.k=0;return im});
+const m=new THREE.Matrix4(),q=new THREE.Quaternion(),up=new THREE.Vector3(0,1,0),n=new THREE.Vector3(),t=new THREE.Vector3();
+const ga=Math.PI*(3-Math.sqrt(5));
+for(let i=0;i<N;i++){const y=1-2*(i+.5)/N,rad=Math.sqrt(1-y*y),th=ga*i;
+  n.set(Math.cos(th)*rad+(rnd()-.5)*.02,y+(rnd()-.5)*.02,Math.sin(th)*rad+(rnd()-.5)*.02).normalize();
+  const dens=fbm(n.x*2.2+9,n.y*2.2,n.z*2.2+1);if(rnd()>Math.min(1,Math.max(0,(dens-.3)*3.2)))continue;
+  const rr=R(n);const pos=new THREE.Vector3(n.x*rr,n.y*rr*.96,n.z*rr).multiplyScalar(.99);
+  t.set(rnd()-.5,rnd()-.5,rnd()-.5).multiplyScalar(.7);const dir=n.clone().add(t).normalize();
+  q.setFromUnitVectors(up,dir);const s2=.0075+rnd()*.0045,im=MV[Math.floor(rnd()*3)];
+  m.compose(pos,q,new THREE.Vector3(s2,s2,s2));im.setMatrixAt(im.userData.k++,m)}
+MV.forEach(im=>{im.count=im.userData.k;sc.add(im)});
+/* lighting: SEM-like — a soft key from the upper left, strong warm rims from behind so the outline and villi glow */
+const key=new THREE.DirectionalLight(0xfff6e6,1.25);key.position.set(-3,3.2,4);key.castShadow=true;key.shadow.mapSize.set(4096,4096);
+key.shadow.camera.left=key.shadow.camera.bottom=-1.6;key.shadow.camera.right=key.shadow.camera.top=1.6;key.shadow.radius=4;key.shadow.bias=-.0004;sc.add(key);
+const fill=new THREE.DirectionalLight(0xc9d0d6,.35);fill.position.set(4,-1,3);sc.add(fill);
+const rim1=new THREE.DirectionalLight(0xf0d79a,2.4);rim1.position.set(3.5,2.5,-4);sc.add(rim1);
+const rim2=new THREE.DirectionalLight(0xffffff,1.4);rim2.position.set(-3.5,-2,-3.5);sc.add(rim2);
+sc.add(new THREE.HemisphereLight(0x58554e,0x0e0e0d,.35));
+const cam=new THREE.PerspectiveCamera(24,W/H,.1,50);cam.position.set(0,0,7.4);cam.lookAt(0,0,0);
+body.rotation.set(.3,.6,0);MV.forEach(im=>im.rotation.copy(body.rotation));
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

@@ -61,7 +61,7 @@ L = np.clip(L * light + glow, 0, 1)
 L = np.clip(L, 0, 1)
 L = L * L * (3 - 2 * L) * 0.55 + L * 0.45
 
-stops = [(0.00, (7, 16, 19)), (0.30, (20, 44, 52)), (0.55, (55, 104, 110)), (0.78, (134, 176, 176)), (1.00, (232, 241, 238))]
+stops = [(0.00, (10, 21, 23)), (0.30, (22, 46, 54)), (0.55, (55, 104, 110)), (0.78, (134, 176, 176)), (1.00, (232, 241, 238))]
 xs = np.array([s[0] for s in stops])
 rgb = np.stack([np.interp(L, xs, np.array([s[1][c] for s in stops])) for c in range(3)], -1)
 # slate in the lower body (logo's lower lobe colour), very slight
@@ -72,12 +72,15 @@ rgb = rgb * (1 - wt) + slate * wt
 # alpha: long eased superellipse centred on the gantry
 gx, gy = 1500 - cx0, 900 - cy0
 rx, ry = w * 0.56, h * 0.54
-r = (np.abs((xx - gx) / rx) ** 3.2 + np.abs((yy - gy) / ry) ** 3.2) ** (1 / 3.2)
-t = np.clip((1.0 - r) / 0.42, 0, 1)
-alpha = t * t * (3 - 2 * t)
+r = (np.abs((xx - gx) / rx) ** 2.4 + np.abs((yy - gy) / ry) ** 2.4) ** (1 / 2.4)
+t = np.clip((1.02 - r) / 0.6, 0, 1)
+alpha = t * t * t * (t * (t * 6 - 15) + 10)
 # the table runs out of the frame on the left: a longer fade there
-lf = np.clip((xx - w * 0.10) / (w * 0.30), 0, 1)
-alpha *= lf * lf * (3 - 2 * lf)
+lf = np.clip((xx - w * 0.06) / (w * 0.40), 0, 1)
+alpha *= lf * lf * lf * (lf * (lf * 6 - 15) + 10)
+# near the mask edge the colour itself sinks to the page ink (#0a1517), so no faint bright rim survives a x6 boost
+ink = np.array([10, 21, 23], np.float32)
+rgb = ink + (rgb - ink) * (alpha ** 0.7)[..., None]
 outa = np.dstack([np.clip(rgb, 0, 255), alpha * 255]).astype(np.uint8)
 res = Image.fromarray(outa, 'RGBA')
 res = res.resize((int(w * 0.92), int(h * 0.92)), Image.LANCZOS)

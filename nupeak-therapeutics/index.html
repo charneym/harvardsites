@@ -802,7 +802,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .cap svg .f{fill:var(--acc);stroke:none}
 .ev dd{font-size:clamp(18px,1.45vw,22px)}
 /* on phones the story frame takes the art's own aspect, so the drawing fills it edge to edge (DB) */
-@media (max-width:860px){.story-r{height:calc((100vw - 2*var(--gut)) * .685);min-height:210px}}
+@media (max-width:860px){.story-r{height:calc((100vw - 2*var(--gut)) * .592);min-height:200px}}
 /* DF: the hero art behind the footer wordmark is held well below it, with a scrim across the band the letters occupy */
 .ftr .fcv{opacity:.2!important}
 .ftr{isolation:isolate}
@@ -810,7 +810,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ftr .bigsvg::before{content:"";position:absolute;left:-6vw;right:-6vw;top:-14%;bottom:-14%;z-index:-1;background:radial-gradient(70% 70% at 50% 50%,color-mix(in srgb,var(--deep) 94%,transparent) 0%,color-mix(in srgb,var(--deep) 80%,transparent) 62%,transparent 100%)}
 
 /* NuPeak: four steps on the rail; the scene frame takes the drawing's aspect */
-.story-r{height:min(68vh,600px)}
+@media (min-width:1025px){.story-r{height:min(68vh,600px)}}
 .btn.solid,.light .btn.solid{background:var(--accD);border-color:var(--accD);color:#fff}
 /* phones: a taller art band so the whole tree shows above the text (CW, DO) */
 @media (max-width:860px){
@@ -818,6 +818,14 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .hero{padding-top:calc(44svh + 14px)!important}
 }
 .brand .wt b,.brand .wt i{position:relative;z-index:1}
+/* DN: the statement and the stats share one row on desktop (statement left ~60%, stats stacked on the right) */
+@media (min-width:1025px){
+  .mani .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:clamp(48px,6vw,120px);align-items:center}
+  .mani-in{margin:0;width:auto}
+  .mani .stats{margin-top:0;grid-template-columns:1fr;gap:40px}
+  .mani .stat .v{font-size:clamp(44px,3.8vw,72px)}
+}
+.stat p.k{margin:14px 0 0}
 </style>
 </head>
 </head>
@@ -1531,15 +1539,15 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Asthma and COPD remain leading causes of illness and death in the US and worldwide, and no current drug fully corrects what drives them. NuPeak goes after the root cause: <em>inflammation and mucus at their source.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$1.02M</span><span class="k">NIH NHLBI STTR Phase II award, 2025, to take the lead MAPK13 inhibitor toward IND approval</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2009</span><span class="k">The year the drug discovery programme began at Washington University, where it still runs alongside NuPeak</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2012</span><span class="k">NuPeak founded to carry the programme through drug development: safety, toxicology, IND and first trials</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$1.02M</span><p class="k">NIH NHLBI STTR Phase II award, 2025, to take the lead MAPK13 inhibitor toward IND approval</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2009</span><p class="k">The year the drug discovery programme began at Washington University, where it still runs alongside NuPeak</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2012</span><p class="k">NuPeak founded to carry the programme through drug development: safety, toxicology, IND and first trials</p></div>'+
    '</div>'+
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">One kinase, <em>two disease drivers.</em></h2>'+
-    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Target</span><span>Design</span><span>Inhale</span><span>Modify</span></div>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Target</span><span>Design</span><span>Inhale</span><span>Modify</p></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Find the target.</h2><p>In the airway lining, the kinase MAPK13 reprograms basal-epithelial stem cells and drives the two key features of asthma and COPD: airway inflammation and mucus production.</p></article>'+
      '<article class="step"><h2>Design the inhibitor.</h2><p>MAPK13 was overlooked by earlier kinase-inhibitor screens. NuPeak used structure-based drug design to engineer proprietary small molecules for potency, selectivity, binding kinetics and safety.</p></article>'+
@@ -1710,12 +1718,12 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
    structure-based design. Step 3 (Inhale): it becomes a dry powder that falls through the lumen onto the lining.
    Step 4 (Modify): the inhibitor binds at the stem cells, which calm; mucus thins, goblet cells settle, immune cells clear.
    Every element is driven by the scrubbed story progress. The molecule is a generic illustration, not NuPeak's structure. */
-var SCW=760,SCH=520;
+var SCW=760,SCH=450;
 var SR=(function(){var s=4013;return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}})();
 var EPI=(function(){var a=[],n=16,x0=24,x1=736,cw=(x1-x0)/n;
   for(var i=0;i<n;i++){var x=x0+i*cw;a.push({x:x,w:cw,gob:i%3===1,top:190+SR()*4,nu:282+SR()*14})}return a})();
 var STEM=(function(){var a=[];for(var i=1;i<EPI.length;i+=2){a.push({x:EPI[i].x+(SR()-.5)*6,y:344})}return a})();
-var IMM=(function(){var a=[];for(var i=0;i<13;i++){a.push({x:40+i*53+(SR()-.5)*22,y:398+SR()*76,r:8+SR()*4,a:SR()*6.28})}return a})();
+var IMM=(function(){var a=[];for(var i=0;i<13;i++){a.push({x:40+i*53+(SR()-.5)*22,y:386+SR()*40,r:8+SR()*4,a:SR()*6.28})}return a})();
 var PART=(function(){var a=[];for(var i=0;i<46;i++){a.push({x:30+SR()*700,y0:-20-SR()*110,d:SR()*.35,r:1.4+SR()*2})}return a})();
 function f1(n){return (+n).toFixed(1)}
 function cellPath(c,sw){/* a columnar cell; a goblet cell bulges into a cup under the surface */
@@ -1740,7 +1748,7 @@ function molecule(){/* a generic small-molecule kinase-inhibitor scaffold, skele
 function airScene(o){
   var g='',i;
   g+='<svg class="'+(o.mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
-  g+='<defs><clipPath id="aclip"><rect x="24" y="30" width="712" height="476"/></clipPath><radialGradient id="glow"><stop offset="0" stop-color="#ff8582" stop-opacity=".55"/><stop offset="1" stop-color="#ff8582" stop-opacity="0"/></radialGradient></defs>';
+  g+='<defs><clipPath id="aclip"><rect x="24" y="30" width="712" height="404"/></clipPath><radialGradient id="glow"><stop offset="0" stop-color="#ff8582" stop-opacity=".55"/><stop offset="1" stop-color="#ff8582" stop-opacity="0"/></radialGradient></defs>';
   g+='<g id="scBase">';
   g+='<path class="frm sD" d="M24 30H736"/><path class="bm sD" d="M24 362H736"/>';
   g+='<text class="t" x="24" y="18">AIRWAY LUMEN</text>';

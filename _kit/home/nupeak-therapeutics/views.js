@@ -25,15 +25,15 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Asthma and COPD remain leading causes of illness and death in the US and worldwide, and no current drug fully corrects what drives them. NuPeak goes after the root cause: <em>inflammation and mucus at their source.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$1.02M</span><span class="k">NIH NHLBI STTR Phase II award, 2025, to take the lead MAPK13 inhibitor toward IND approval</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2009</span><span class="k">The year the drug discovery programme began at Washington University, where it still runs alongside NuPeak</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2012</span><span class="k">NuPeak founded to carry the programme through drug development: safety, toxicology, IND and first trials</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$1.02M</span><p class="k">NIH NHLBI STTR Phase II award, 2025, to take the lead MAPK13 inhibitor toward IND approval</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2009</span><p class="k">The year the drug discovery programme began at Washington University, where it still runs alongside NuPeak</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2012</span><p class="k">NuPeak founded to carry the programme through drug development: safety, toxicology, IND and first trials</p></div>'+
    '</div>'+
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">One kinase, <em>two disease drivers.</em></h2>'+
-    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Target</span><span>Design</span><span>Inhale</span><span>Modify</span></div>'+
+    '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Target</span><span>Design</span><span>Inhale</span><span>Modify</p></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Find the target.</h2><p>In the airway lining, the kinase MAPK13 reprograms basal-epithelial stem cells and drives the two key features of asthma and COPD: airway inflammation and mucus production.</p></article>'+
      '<article class="step"><h2>Design the inhibitor.</h2><p>MAPK13 was overlooked by earlier kinase-inhibitor screens. NuPeak used structure-based drug design to engineer proprietary small molecules for potency, selectivity, binding kinetics and safety.</p></article>'+

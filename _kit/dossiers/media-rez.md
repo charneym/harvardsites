@@ -30,10 +30,10 @@
 4. Home page: "We're solving insomnia!" in bright green, polar-bear stock photos, red "Drug-free:/Screen-free:/Hassle-free:" lines; the product is never named.
 5. "Behavior Change" page is pasted NIH text; no team page; no explanation of how the product works.
 
-## Hero
-Unsplash photo-1605648916361-9bc12ad6a569 by Ivan Bandura (https://unsplash.com/photos/lZCHy8PLyyo), a smart speaker glowing on black,
-Unsplash licence. Re-graded to the logo's blue→green; radially feathered into its own black ground. Shown as the device category
-(screen-free smart speaker); copy never names a brand or implies a partnership.
+## Hero (v2, coordinator review)
+v1 used an Unsplash photo of an Apple HomePod mini; replaced because a recognisable product implies an unverified platform or
+partnership. v2 is a crafted render (`_kit/home/media-rez/render.py`, ray-marched SDF in numpy) of a generic, unbranded fabric
+puck speaker with a matte cap and a status light ring in the logo's blue→green, on a transparent ground (alpha 0 at every edge).
 
 ## Palette
 From their logo (green sphere banded blue/black): green #4e9247, blue #1688da, slate #3a5d75 sampled from mediarez.com.

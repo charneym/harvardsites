@@ -1,11 +1,11 @@
-/* ================= HERO FIELD: a real photograph of the subject (HOME_BRIEF update 2b, preference (b)): a smart speaker
-   glowing in the dark (Unsplash photo-1605648916361-9bc12ad6a569 by Ivan Bandura, https://unsplash.com/photos/lZCHy8PLyyo,
-   Unsplash licence). Media Rez delivers CBT-I through a screen-free, conversational smart speaker at the bedside; its own
-   logo is a striped sphere. The photo is cropped square on the speaker, re-graded by luminance from the page ink through
-   the logo's blue to its green (tonal depth kept; see hero.py), and feathered radially into its own black ground, so no
-   rectangle edge exists at any width (DJ/DP). It breathes slowly (a Ken Burns drift) with no pointer response (CZ), sits
-   whole and centred in the open area right of the text at ~72% of the width (DO/DP), with an ink wash over the text side
-   (DI). On phones it sits in the top band and fades into the ink above the text (CW). ================= */
+/* ================= HERO FIELD: a crafted render of the product (HOME_BRIEF update 2b, preference (c); coordinator review
+   v2): a generic, unbranded bedside smart speaker, the device class Media Rez delivers CBT-I through (NIH RePORTER 11348878:
+   "a screen-free, conversational, AI-driven smart speaker, custom lighting"). A low fabric-wrapped puck with a matte cap and
+   a thin status light ring running from the logo's blue to its green, on a dark surface that catches the ring's glow.
+   Ray-marched in render.py; the ground is fully transparent (alpha 0 at every image edge), so no box edge exists at any
+   width (DJ/DP). It breathes slowly with no pointer response (CZ), sits whole and centred in the open area right of the
+   text at ~72% of the width, well clear of the H1 (DO/DP), with an ink wash over the text side (DI). On phones it sits in
+   the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
@@ -16,8 +16,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-(w>=1800?1600:1320))/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.06):h;
     /* the speaker: whole in frame, centred in the open area right of the text */
-    var d=mob?Math.min((U-80)*.72,cw*.7):Math.min(h*.74,cw*.52);
-    var kx=mob?w*.5:side+cw*.73,ky=mob?70+(U-70)*.33:h*.555;
+    var d=mob?Math.min((U-40)*.9,cw*.95):Math.min(h*.94,cw*.6);
+    var kx=mob?w*.5:side+cw*.73,ky=mob?54+(U-54)*.3:h*.5;
     return {mob:mob,side:side,cw:cw,U:U,ih:d,iw:d,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -38,8 +38,8 @@ var field=(function(){
       ag.addColorStop(0,"rgba(22,58,74,"+(.5*e).toFixed(3)+")");ag.addColorStop(.5,"rgba(14,30,40,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,17,24,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
-      /* a faint cool light moving slowly across the speaker, as if it were talking */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/13),px=x+dw*(.34+.3*pu),py=y+dh*.36,pr=dw*.3;
+      /* a faint glow breathing over the status ring, as if the speaker were talking */
+      var pu=.5+.5*Math.sin(t*Math.PI*2/13),px=x+dw*.5,py=y+dh*.44,pr=dw*.26;
       var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(196,236,226,"+(.035+.035*pu).toFixed(3)+")");rg.addColorStop(1,"rgba(196,236,226,0)");
       c.fillStyle=rg;c.fillRect(px-pr,py-pr,pr*2,pr*2);c.globalAlpha=1;
       if(!G.mob){

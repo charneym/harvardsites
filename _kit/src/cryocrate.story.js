@@ -24,7 +24,7 @@ function scene(){
     var r=2.2+rnd()*2.2;N+='<path class="cn" data-k="'+rnd().toFixed(3)+'" d="'+ccHex(x,y,r,rnd()*1.05)+'"/>'}
   s+='<g id="ccN">'+N+'</g>';
   /* the polymers: wavy chains threading between the ice */
-  var PL='';[[60,90,0],[70,440,1],[400,70,2],[430,470,3],[40,270,4],[470,250,5]].forEach(function(p,k){var x=p[0],y=p[1],d="M"+x+" "+y,a=(k*1.1)%6.28;
+  var PL='';[[60,90,0],[70,440,1],[400,70,2],[430,470,3],[40,270,4],[410,236,5]].forEach(function(p,k){var x=p[0],y=p[1],d="M"+x+" "+y,a=(k*1.1)%6.28;
     for(var j=0;j<9;j++){a+=(rnd()-.5)*1.2;var nx=x+Math.cos(a)*14,ny=y+Math.sin(a)*14;var c1x=x+Math.cos(a+1.2)*10,c1y=y+Math.sin(a+1.2)*10;d+="Q"+c1x.toFixed(1)+" "+c1y.toFixed(1)+" "+nx.toFixed(1)+" "+ny.toFixed(1);x=nx;y=ny}
     PL+='<path class="cp" d="'+d+'"/>'});
   s+='<g id="ccP">'+PL+'</g>';
@@ -75,7 +75,7 @@ function storyDraw(svg){
     E.P.forEach(function(el,k){var L=PLn[k];el.style.strokeDasharray=L.toFixed(1)+" "+L.toFixed(1);el.style.strokeDashoffset=(L*(1-s2)).toFixed(1);el.style.opacity=(1-.5*s4).toFixed(3)});
     E.N.forEach(function(el){var k=+el.getAttribute("data-k");var a=seg(s2,k*.6,k*.6+.4);el.style.opacity=(a*(1-s4)).toFixed(3)});
     /* step 3: the scale cools to -80 and holds */
-    E.S.style.opacity=Math.min(1,s3*1.6)*(1-.6*s4)+"";
+    E.S.style.opacity=(Math.min(1,s3*1.6)*(1-s4)).toFixed(3);
     E.dot.setAttribute("cy",ty(-80*s3).toFixed(1));
     E.NR.style.opacity=(seg(s3,.5,1)*(1-s4)).toFixed(3);
     /* step 4: thawed, intact */

@@ -20,9 +20,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>The need</span>'+
    '<h2 class="txt" id="mani">Cerebral edema, brain swelling from excess fluid, commonly triggers dangerous intracranial pressure after severe TBI. <b class="w0">Evidence is unclear whether draining CSF alone can reduce it.</b> <em>OsmoFlo adds a new approach.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">200,000+</span><span class="k">Hospitalisations from traumatic brain injury in the U.S. each year, with over 60,000 deaths (CDC)</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">10%</span><span class="k">Of severe cases with treatment-resistant intracranial pressure that result in good outcomes (NEJM, 2016)</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$8M</span><span class="k">NIH Small Business Innovation Research grant funding the OsmoFlo clinical programme</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">200,000+</span><p class="k">Hospitalisations from traumatic brain injury in the U.S. each year, with over 60,000 deaths (CDC)</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">10%</span><p class="k">Of severe cases with treatment-resistant intracranial pressure that result in good outcomes (NEJM, 2016)</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$8M</span><p class="k">NIH Small Business Innovation Research grant funding the OsmoFlo clinical programme</p></div>'+
    '</div>'+
    sysRows()+
   '</div></section>'+

@@ -1,6 +1,6 @@
 /* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll) ================= */
 function pipeRows(list){return '<ul class="pfr pipe">'+list.map(function(c){
-  return '<li><span class="lab tg"><b>'+esc(c[2])+'</b><i>'+esc(c[3])+'</i></span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[0])+'</span></h3><p>'+esc(c[4])+'</p><a class="lab ul lk" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+'</a></li>'}).join("")+'</ul>'}
+  return '<li><span class="lab tg"><b>'+esc(c[2])+'</b><i>'+esc(c[3])+'</i></span><div class="pn"><h3>'+esc(c[1])+'</h3><span class="loc">'+esc(c[0])+'</span></div><p>'+esc(c[4])+'</p><a class="lab ul lk" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+'</a></li>'}).join("")+'</ul>'}
 function team(){var gs=[],by={};TEAM.forEach(function(p){if(!by[p.g]){by[p.g]=[];gs.push(p.g)}by[p.g].push(p)});
   return '<div class="mh">'+gs.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g)+'</p><ul class="mh-list">'+by[g].map(function(p){
     return '<li><div class="mh-row"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span><span></span></div></li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
@@ -26,9 +26,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Aggressive cancers rewire how they grow, how they spread and how they hide from the immune system. Current standards of care leave those patients with the greatest unmet needs. Modulation builds <em>first-in-class therapies against those mechanisms.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">3</span><span class="k">Novel first-in-class therapies, targeting nine diseases</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$11.9M</span><span class="k">NIH SBIR, STTR and contract funding across 24 awards since 2012</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2</span><span class="k">Programmes in Phase 1 clinical trials: MTI-301 and MTI-201</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">3</span><p class="k">Novel first-in-class therapies, targeting nine diseases</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$11.9M</span><p class="k">NIH SBIR, STTR and contract funding across 24 awards since 2012</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><p class="k">Programmes in Phase 1 clinical trials: MTI-301 and MTI-201</p></div>'+
    '</div>'+
   '</div></section>'+
 

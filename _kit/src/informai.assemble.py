@@ -118,6 +118,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .stat p.k{margin:0}
 /* products: rows */
 .prd{list-style:none;margin:0;padding:0}
+.prd-grid{display:block}
 .prd-row{display:grid;grid-template-columns:minmax(0,3.4fr) minmax(0,5fr) minmax(0,2.6fr);column-gap:var(--gap);align-items:start;padding:20px 0 22px;border-top:1px solid var(--hairD);position:relative}
 .prd-row:last-child{border-bottom:1px solid var(--hairD)}
 .prd-row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
@@ -144,7 +145,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .rd-row .tag{display:inline-block;font:400 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#fff;background:var(--acc);padding:6px 8px 5px}
 @media (max-width:1100px){.rd-row{grid-template-columns:minmax(0,1fr) minmax(0,3fr);row-gap:12px}.rd-row p{grid-column:2}.rd-row .meta{grid-column:2;flex-direction:row;flex-wrap:wrap;gap:8px 20px}}
 @media (max-width:620px){.rd-row{grid-template-columns:1fr}.rd-row p,.rd-row .meta{grid-column:1}}
-.pils{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px)}
+.pils{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px)}
 .pil{border-top:1px solid var(--hair);padding-top:24px;position:relative}
 .pil::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accL);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .pil:hover::before{transform:scaleX(1)}
@@ -154,7 +155,8 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .pil h3{font-family:var(--disp);font-weight:300;font-size:clamp(22px,1.8vw,30px);line-height:1.12;letter-spacing:-.02em;margin:0 0 14px}
 .pil p{color:var(--stone);font-size:15.5px;margin:0;max-width:38ch}
 .pil .lab{display:block;margin-bottom:14px;color:var(--accL)}
-@media (max-width:900px){.pils{grid-template-columns:1fr;row-gap:40px}}
+@media (max-width:1100px){.pils{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:48px}}
+@media (max-width:620px){.pils{grid-template-columns:1fr;row-gap:40px}}
 /* team: refined text-only */
 .tm{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,96px);align-items:start}
 .tm-p{border-top:1px solid var(--hairD);padding-top:22px;position:relative}
@@ -256,7 +258,7 @@ function prd(){var A=[
   ["TransplantAI","Solid organ transplantation","A donor–recipient informatics platform for nuanced transplant decisions at the point of care. It merges donor and recipient data in real time and gives predictive insight on matching and outcomes, for the hundreds of organ offers each centre reviews every week.",["Funded by NIH and NSF","Multi-outcome risk"],"In development"],
   ["SinusAI","ENT and radiology","AI-assisted detection of sinus disease on CT, with clinician-level accuracy, to speed up ENT and radiology workflows across 11 million annual ENT office visits and 700,000 sinus surgeries in the US.",["AuntMinnie Best of Radiology finalist"],"In development"],
   ["VoluQuant","Organ volumetrics","Automated segmentation, labelling, 3D visualization and per-organ volume measurement of the liver, kidneys, lungs and heart from CT images.",["Funded by NIH"],"In development"]];
-  return '<ul class="prd">'+A.map(function(a){return '<li class="prd-row"><div><h3>'+esc(a[0])+'</h3><span class="nm3">'+esc(a[1])+'</span></div><p>'+esc(a[2])+'</p><div class="meta"><span class="tag">'+esc(a[4])+'</span>'+a[3].map(function(m){return '<span class="lab">'+esc(m)+'</span>'}).join("")+'</div></li>'}).join("")+'</ul>'+
+  return '<ul class="prd prd-grid">'+A.map(function(a){return '<li class="prd-row"><div><h3>'+esc(a[0])+'</h3><span class="nm3">'+esc(a[1])+'</span></div><p>'+esc(a[2])+'</p><div class="meta"><span class="tag">'+esc(a[4])+'</span>'+a[3].map(function(m){return '<span class="lab">'+esc(m)+'</span>'}).join("")+'</div></li>'}).join("")+'</ul>'+
   '<p class="disc">Products in development are not intended to diagnose, treat, cure or prevent any disease.</p>'}
 function rd(){var A=[
   ["2024–","AI tool to optimize organ transplantation outcome","SBIR Fast-Track (Phase I/II) for TransplantAI, addressing organ scarcity, discard and allocation inefficiency. Now in its third year, with a $992,164 award in 2026.",["NIH · NHLBI · R44HL172564","11419808"],"Active"],

@@ -2,6 +2,10 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
+# v21 (coordinator review, 2026-11-21)
+
+**DQ. Every hero is unique to its firm, and the headline never crowds the nav.** Coordinator review (vasculonics): the same NCI T-cell SEM was the hero on three concept sites, and the eyebrow sat right under the nav with an oversized H1. Before choosing a stock/agency photo, grep the repo (`grep -rl <photo-id> */index.html`) and never reuse a hero image another concept already uses; prefer a render of the firm's own molecule, device or mechanism. Keep the H1 at the scale of the reference builds (no more than ~4 lines at 1440) and give the hero text block clear headroom below the nav (eyebrow at least ~90px below the nav bar), vertically centred in the hero at 1440 and 1920.
+
 # v20 (coordinator review of home-only batch, 2026-11-20)
 
 **DP. A hero photo is never a pasted panel, and never touches the headline.** Coordinator review (imcarebiotech, omnecoil): a photo dropped in as a feathered rectangle that fills the right half reads as a pasted box, and it was soft, washed by a flat duotone, and butted against the H1. Leave at least 100px between the measured H1/lede end and the first visible pixel of the subject. Show the subject whole inside the right content margin, at or below the source's native resolution (sharp, never upscaled). Use a long eased radial/edge mask so no box edge is perceptible at any width. Keep tonal depth (no flat single-hue wash). If no sharp photo fits that space, use a crafted render of the product or mechanism instead. Check: a screenshot with luminance boosted x6 shows no straight edge around the image (the image ground must equal the page ink exactly, or be real alpha).

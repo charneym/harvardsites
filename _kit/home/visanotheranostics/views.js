@@ -4,7 +4,7 @@ function progs(){return '<ul class="vpg">'+PROG.map(function(c,i){
 function team(){return '<ul class="vtm">'+TEAM.map(function(p){
   return '<li><div class="tn"><h3>'+esc(p[0])+'</h3><span class="lab rl">'+esc(p[1])+'</span></div><p>'+esc(p[2])+'</p></li>'}).join("")+'</ul>'+
   '<div class="vadv"><span class="lab kick">Clinical advisors</span><p>'+ADV.map(function(a){return '<span>'+esc(a)+'</span>'}).join("")+'<i>Prostate cancer imaging, image-guided procedures and focal therapy</i></p></div>'}
-function news(){return '<ul class="vnw">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
+function news(){return '<ul class="vnw news-list">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+

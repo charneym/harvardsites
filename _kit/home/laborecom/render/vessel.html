@@ -1,0 +1,81 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Laborecom hero: a crafted render of the place the therapy acts, inside a small blood vessel. The vessel's far wall is lined
+   with endothelial cells (cobblestone bulges), red blood cells drift through the lumen, and one white blood cell (a leukocyte,
+   ruffled surface) has stopped on the wall, the moment before it crosses into the tissue. Generic illustration, not company
+   data. Real alpha (no ground); the tube ends dissolve in-shader so no cut edge exists. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeVertices} from 'three/addons/utils/BufferGeometryUtils.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||2000),H=+(Q.get('h')||2000);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.3;
+let seed=+(Q.get('seed')||7);const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const P=[];for(let i=0;i<512;i++)P.push(rnd());
+function h3(x,y,z){let n=(x*73856093^y*19349663^z*83492791)&511;return P[(n+512)%512]}
+function vn(x,y,z){const xi=Math.floor(x),yi=Math.floor(y),zi=Math.floor(z),xf=x-xi,yf=y-yi,zf=z-zi,s=t=>t*t*(3-2*t);const u=s(xf),v=s(yf),w=s(zf);
+  const L=(a,b,t)=>a+(b-a)*t;
+  return L(L(L(h3(xi,yi,zi),h3(xi+1,yi,zi),u),L(h3(xi,yi+1,zi),h3(xi+1,yi+1,zi),u),v),L(L(h3(xi,yi,zi+1),h3(xi+1,yi,zi+1),u),L(h3(xi,yi+1,zi+1),h3(xi+1,yi+1,zi+1),u),v),w)}
+function fbm(x,y,z){return vn(x,y,z)*.55+vn(x*2.1,y*2.1,z*2.1)*.28+vn(x*4.3,y*4.3,z*4.3)*.17}
+/* ---- vessel: a gently curving tube, inner surface only (BackSide), so the near wall is open like a cut-away ---- */
+const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-4.2,-2.3,-1.2),new THREE.Vector3(-1.6,-.7,-.2),new THREE.Vector3(.9,.35,.15),new THREE.Vector3(4.2,2.0,-1.0)]);
+const RAD=1.18,SEG=420,RS=200;
+let tg=new THREE.TubeGeometry(curve,SEG,RAD,RS,false);
+/* endothelial cells: Worley-style cobblestones elongated along the flow */
+const cells=[];for(let i=0;i<1400;i++)cells.push([rnd(),rnd()]);
+const pa=tg.attributes.position,uv=tg.attributes.uv,nn=tg.attributes.normal,v=new THREE.Vector3(),nv=new THREE.Vector3();
+for(let i=0;i<pa.count;i++){const U=uv.getX(i),V=uv.getY(i);
+  const x=U*38,y=V*22;let d1=9,d2=9;const cx=Math.floor(x),cy=Math.floor(y);
+  for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++){const gx=cx+a,gy=((cy+b)%22+22)%22,k=((gx*31+gy*17)%1400+1400)%1400;
+    const px=gx+cells[k][0],py=cy+b+cells[k][1];const dx=(x-px)*.8,dy=(y-py)*1.25,d=Math.sqrt(dx*dx+dy*dy);if(d<d1){d2=d1;d1=d}else if(d<d2)d2=d}
+  const edge=Math.min(1,(d2-d1)*2.2),bump=.055*Math.pow(edge,.6)+.012*(fbm(x*.9,y*.9,3)-.5);
+  v.fromBufferAttribute(pa,i);nv.fromBufferAttribute(nn,i);v.addScaledVector(nv,-bump);pa.setXYZ(i,v.x,v.y,v.z)}
+tg.computeVertexNormals();
+const wall=new THREE.MeshPhysicalMaterial({color:0x5b34b0,roughness:.5,metalness:0,sheen:.7,sheenRoughness:.4,sheenColor:new THREE.Color(0xc9b8ff),side:THREE.BackSide,transparent:true,clearcoat:.35,clearcoatRoughness:.35});
+wall.onBeforeCompile=sh=>{sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec2 vU2;').replace('#include <uv_vertex>','#include <uv_vertex>\nvU2=uv;');
+  sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec2 vU2;').replace('#include <opaque_fragment>',
+  'float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.2);outgoingLight=outgoingLight*0.85+vec3(0.55,0.5,1.0)*fr*0.75;\nfloat endF=smoothstep(0.0,0.30,vU2.x)*smoothstep(1.0,0.70,vU2.x);diffuseColor.a*=endF*endF*(3.0-2.0*endF);\n#include <opaque_fragment>')};
+const tube=new THREE.Mesh(tg,wall);sc.add(tube);
+/* ---- red blood cells: biconcave discs ---- */
+const prof=[];for(let i=0;i<=40;i++){const t=i/40,rr=t*1.0;const th=.5*(.21+2.0*rr*rr-1.12*rr*rr*rr*rr)*Math.sqrt(Math.max(0,1-rr*rr));prof.push(new THREE.Vector2(rr,th))}
+for(let i=40;i>=0;i--){const p=prof[i];prof.push(new THREE.Vector2(p.x,-p.y))}
+const rbcG=new THREE.LatheGeometry(prof.map(p=>new THREE.Vector2(Math.max(p.x,.0001),p.y)),96);rbcG.computeVertexNormals();
+const rbcM=new THREE.MeshPhysicalMaterial({color:0x9c1238,roughness:.55,metalness:0,sheen:.7,sheenColor:new THREE.Color(0xff8aa6),sheenRoughness:.4,clearcoat:.22,clearcoatRoughness:.45});
+rbcM.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>','float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.0);outgoingLight=outgoingLight*0.9+vec3(1.0,0.45,0.55)*fr*0.35;\n#include <opaque_fragment>')};
+const ts=curve.computeFrenetFrames(200,false);
+const placed=[];
+function addRBC(u,ang,rad,s){const i=Math.round(u*200),p=curve.getPointAt(u),N=ts.normals[i],B=ts.binormals[i];
+  const pos=p.clone().addScaledVector(N,Math.cos(ang)*rad).addScaledVector(B,Math.sin(ang)*rad);
+  for(const q of placed)if(q.p.distanceTo(pos)<(q.s+s)*1.05)return false;
+  const m=new THREE.Mesh(rbcG,rbcM);m.position.copy(pos);m.scale.setScalar(s);m.rotation.set(rnd()*6.28,rnd()*6.28,rnd()*6.28);sc.add(m);placed.push({p:pos,s});return true}
+/* the leukocyte, on the lower far wall near the middle */
+const LU=.52,LA=+(Q.get('la')||2.45);
+{const i=Math.round(LU*200),p=curve.getPointAt(LU),N=ts.normals[i],B=ts.binormals[i];
+ const dir=N.clone().multiplyScalar(Math.cos(LA)).addScaledVector(B,Math.sin(LA)).normalize();
+ const LR=.5,pos=p.clone().addScaledVector(dir,RAD-LR*.78);
+ let g=new THREE.IcosahedronGeometry(1,110);g.deleteAttribute('normal');g.deleteAttribute('uv');g=mergeVertices(g);
+ const ga=g.attributes.position,w=new THREE.Vector3();
+ for(let k=0;k<ga.count;k++){w.fromBufferAttribute(ga,k).normalize();
+   const rf=Math.abs(Math.sin(w.x*9+fbm(w.x*2,w.y*2,w.z*2)*7))*Math.abs(Math.sin(w.y*8+w.z*5));
+   const rr=1+.09*(fbm(w.x*1.4+3,w.y*1.4,w.z*1.4)-.5)*2+.05*Math.pow(rf,6)+.025*(vn(w.x*14,w.y*14,w.z*14)-.5);
+   ga.setXYZ(k,w.x*rr,w.y*rr,w.z*rr)}
+ g.computeVertexNormals();
+ const lm=new THREE.MeshPhysicalMaterial({color:0xd9d2ee,roughness:.7,sheen:1,sheenColor:new THREE.Color(0xffffff),sheenRoughness:.45,clearcoat:.2});
+ lm.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>','float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.0);outgoingLight=outgoingLight*0.85+vec3(0.85,0.82,1.0)*fr*0.6;\n#include <opaque_fragment>')};
+ const L=new THREE.Mesh(g,lm);L.position.copy(pos);L.scale.set(LR*1.08,LR*1.08,LR*1.08);
+ L.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.clone().negate());L.scale.multiply(new THREE.Vector3(1,.86,1));sc.add(L);placed.push({p:pos,s:LR*1.1});}
+let n=0,tries=0;while(n<+(Q.get('n')||26)&&tries<4000){tries++;const u=.2+rnd()*.6,a=rnd()*6.283,rr=rnd()*.72;if(addRBC(u,a,rr,.36+rnd()*.06))n++}
+/* lighting */
+const key=new THREE.DirectionalLight(0xfff4f4,1.6);key.position.set(-3,4,6);sc.add(key);
+const fill=new THREE.DirectionalLight(0xb9b0ff,.5);fill.position.set(5,-2,4);sc.add(fill);
+const rim=new THREE.DirectionalLight(0xd2c4ff,1.6);rim.position.set(2,3,-5);sc.add(rim);
+const pl=new THREE.PointLight(0xffe6ee,6,6,1.4);pl.position.copy(curve.getPointAt(.5)).add(new THREE.Vector3(0,.3,.6));sc.add(pl);
+sc.add(new THREE.HemisphereLight(0x5b4a8c,0x120c20,.6));
+const cam=new THREE.PerspectiveCamera(+(Q.get('fov')||30),W/H,.1,60);cam.position.set(+(Q.get('cx')||.4),+(Q.get('cy')||-.2),+(Q.get('cz')||8.6));cam.lookAt(0,0,0);
+sc.rotation.z=+(Q.get('rz')||0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

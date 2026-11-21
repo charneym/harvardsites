@@ -1,0 +1,105 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#0d141a}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Kinetic River hero: a crafted render of the measurement at the heart of flow cytometry. A quartz flow cell (a clear block with a
+   fine square channel) sits on its tapered inlet; the sample core stream carries particles upward in single file; two laser beams
+   (violet 405 nm, blue 488 nm) cross the channel, and the particle in the blue beam fluoresces orange and scatters light forward.
+   Generic illustration of the principle, not a specific instrument. Rendered on the page ink (#0d141a); feathered to real alpha
+   in post (bake), so no box edge exists. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||1800),H=+(Q.get('h')||1440);
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.setClearColor(new THREE.Color('#0d141a'),1);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.05;r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.03).texture;sc.environmentIntensity=+(Q.get('env')||.55);
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const G=new THREE.Group();sc.add(G);
+const BW=1.25,BH=2.7,CH=.16;          /* block width/depth, height; channel width */
+const BY=.35;                           /* block centre y */
+/* ---- quartz block: clear, with fresnel-lit faces and bright polished edges ---- */
+const glassM=new THREE.MeshPhysicalMaterial({color:0x9fb4c2,roughness:.04,metalness:0,transparent:true,opacity:.05,clearcoat:1,clearcoatRoughness:.03,
+  specularIntensity:1,ior:1.46,depthWrite:false,side:THREE.DoubleSide});
+glassM.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>',
+  'float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),3.0);outgoingLight=outgoingLight*0.35+vec3(0.7,0.82,0.92)*fr*0.5;diffuseColor.a=clamp(diffuseColor.a+fr*0.4,0.0,1.0);\n#include <opaque_fragment>')};
+const block=new THREE.Mesh(new RoundedBoxGeometry(BW,BH,BW,6,.07),glassM);block.position.y=BY;block.renderOrder=5;G.add(block);
+/* polished edge glints: thin bright bars along the 12 edges, brighter where the key light falls */
+const edgeM=new THREE.MeshBasicMaterial({color:0xcfe3ef,transparent:true,opacity:.42,blending:THREE.AdditiveBlending,depthWrite:false});
+const eg=[];const hx=BW/2-.03,hy=BH/2-.03;
+for(const sx of[-1,1])for(const sz of[-1,1]){eg.push([[sx*hx,-hy,sz*hx],[sx*hx,hy,sz*hx]])}
+for(const sy of[-1,1]){for(const s of[-1,1]){eg.push([[-hx,sy*hy,s*hx],[hx,sy*hy,s*hx]]);eg.push([[s*hx,sy*hy,-hx],[s*hx,sy*hy,hx]])}}
+for(const [a,b] of eg){const A=new THREE.Vector3(...a),B=new THREE.Vector3(...b),L=A.distanceTo(B);const m=new THREE.Mesh(new THREE.CylinderGeometry(.006,.006,L,8),edgeM);
+  m.position.copy(A).add(B).multiplyScalar(.5);m.position.y+=BY;m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),B.clone().sub(A).normalize());G.add(m)}
+/* the square channel inside */
+const chM=new THREE.MeshPhysicalMaterial({color:0xbfd6e2,roughness:.1,transparent:true,opacity:.1,depthWrite:false,side:THREE.DoubleSide});
+chM.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <opaque_fragment>','float fr=pow(1.0-clamp(abs(dot(normalize(normal),normalize(vViewPosition))),0.0,1.0),2.0);outgoingLight+=vec3(0.6,0.75,0.85)*fr*0.4;diffuseColor.a=clamp(diffuseColor.a+fr*0.3,0.0,1.0);\n#include <opaque_fragment>')};
+const ch=new THREE.Mesh(new THREE.BoxGeometry(CH,BH+.002,CH),chM);ch.position.y=BY;ch.renderOrder=4;G.add(ch);
+/* ---- the inlet: a tapered, brushed steel body below the block (the sheath funnel), fading into the dark ---- */
+const steel=new THREE.MeshPhysicalMaterial({color:0x6f7d86,metalness:1,roughness:.32,clearcoat:.4,transparent:true});
+steel.onBeforeCompile=sh=>{sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying float vY;').replace('#include <begin_vertex>','#include <begin_vertex>\nvY=position.y;');
+  sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying float vY;').replace('#include <opaque_fragment>','float f=smoothstep(-.8,.7,vY);f=f*f;outgoingLight*=f;diffuseColor.a*=f;\n#include <opaque_fragment>')};
+const inl=new THREE.Mesh(new THREE.CylinderGeometry(.62,1.0,1.7,96,1,false),steel);inl.position.y=BY-BH/2-.85-.01;G.add(inl);
+const collar=new THREE.Mesh(new THREE.CylinderGeometry(.84,.84,.14,96),new THREE.MeshPhysicalMaterial({color:0x4e5a62,metalness:1,roughness:.28,clearcoat:.6}));collar.position.y=BY-BH/2-.085;G.add(collar);
+/* ---- core stream: a fine bright filament up the channel ---- */
+const coreM=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:{},
+  vertexShader:'varying vec2 vU;void main(){vU=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',
+  fragmentShader:'varying vec2 vU;void main(){float a=smoothstep(0.0,0.25,vU.y)*smoothstep(1.0,0.8,vU.y);gl_FragColor=vec4(vec3(0.55,0.75,0.9)*0.22*a,1.0);}'});
+const core=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,BH+1.2,12,1,true),coreM);core.position.y=BY-.4;G.add(core);
+/* ---- laser beams: gaussian beams focused to a waist at the stream ---- */
+function beam(y,col,waist,pw){const L=9;const g=new THREE.CylinderGeometry(.5,.5,L,48,200,true);g.rotateZ(Math.PI/2);
+  {const pa=g.attributes.position;for(let i=0;i<pa.count;i++){const x=pa.getX(i),w=waist*Math.sqrt(1+x*x/.5625),f=3.2*w/.5;pa.setY(i,pa.getY(i)*f);pa.setZ(i,pa.getZ(i)*f)}g.computeVertexNormals()}
+  const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,
+    uniforms:{c:{value:new THREE.Color(col)},w0:{value:waist},p:{value:pw}},
+    vertexShader:'varying vec3 vP;varying vec3 vN;varying vec3 vV;varying vec3 vA;void main(){vP=position;vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalMatrix*normal;vA=normalize(normalMatrix*vec3(1.0,0.0,0.0));vV=-mv.xyz;gl_Position=projectionMatrix*mv;}',
+    fragmentShader:`uniform vec3 c;uniform float w0;uniform float p;varying vec3 vP;varying vec3 vN;varying vec3 vV;varying vec3 vA;
+      void main(){float x=vP.x;float zr=.75;float w=w0*sqrt(1.0+(x*x)/(zr*zr));
+        vec3 a=normalize(vA);vec3 vv=normalize(vV-dot(vV,a)*a);vec3 nn=normalize(vN-dot(vN,a)*a);float ndv=abs(dot(nn,vv));float rr=sqrt(max(0.0,1.0-ndv*ndv))*3.2; /* distance from the axis in beam radii */
+        float I=(exp(-6.0*rr*rr)*1.6+exp(-1.2*rr*rr)*0.35+exp(-0.3*rr*rr)*0.06)*(w0/w)*(x>0.0?0.55:1.0);
+        float fadeL=smoothstep(-4.2,-1.4,x);float fadeR=1.0-smoothstep(.8,3.6,x);
+        gl_FragColor=vec4(c*I*p*fadeL*fadeR,1.0);}`});
+  const b=new THREE.Mesh(g,m);b.position.y=y;G.add(b);return b}
+const Y1=BY+.55,Y2=BY-.25;
+beam(Y1,'#2fa6ff',.032,.95);  /* 488 nm */
+beam(Y2,'#7b4dff',.03,.8);  /* 405 nm */
+/* ---- glow sprites ---- */
+function glowTex(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');const g=x.createRadialGradient(128,128,0,128,128,128);
+  g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(.12,'rgba(255,255,255,.55)');g.addColorStop(.35,'rgba(255,255,255,.14)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,256,256);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+const GT=glowTex();
+function glow(p,col,s,o){const m=new THREE.Sprite(new THREE.SpriteMaterial({map:GT,color:new THREE.Color(col),transparent:true,opacity:o,blending:THREE.AdditiveBlending,depthWrite:false,depthTest:false}));m.position.copy(p);m.scale.setScalar(s);G.add(m);return m}
+/* ---- particles in single file ---- */
+const pG=new THREE.SphereGeometry(1,48,32);
+const pM=new THREE.MeshPhysicalMaterial({color:0xcfd8de,roughness:.35,transmission:0,transparent:true,opacity:.9,clearcoat:.5,sheen:.6,sheenColor:new THREE.Color(0xffffff)});
+const ys=[-.95,-.62,-.25,.1,.42,.9,1.3,1.62];
+for(const y of ys){const s=.026+rnd()*.008;const hot=Math.abs(y-Y1)<.02,vio=Math.abs(y-Y2)<.02;
+  let m=pM;if(hot)m=new THREE.MeshStandardMaterial({color:0xffb070,emissive:0xff7a1a,emissiveIntensity:3.2,roughness:.4});
+  else if(vio)m=new THREE.MeshStandardMaterial({color:0xd8c8ff,emissive:0x7a4cff,emissiveIntensity:1.2,roughness:.4});
+  const p=new THREE.Mesh(pG,m);p.position.set(0,y+BY*0,0);p.scale.setScalar(hot?s*1.15:s);G.add(p);
+  if(y>BY-BH/2+.1&&y<BY+BH/2-.1&&!hot&&!vio)glow(p.position,'#b8d4e4',.16,.18)}
+/* interrogation points */
+const P1=new THREE.Vector3(0,Y1,0),P2=new THREE.Vector3(0,Y2,0);
+glow(P1,'#ff8a2a',1.6,.8);glow(P1,'#ff9a3c',.7,.9);glow(P1,'#ffb15c',.32,1);glow(P1,'#ffffff',.12,.9);glow(P1,'#39b6ff',.5,.35);
+glow(P2,'#8a5cff',.7,.45);glow(P2,'#c9b5ff',.18,.7);
+/* forward scatter: a soft cone of light continuing along the blue beam */
+{const g=new THREE.ConeGeometry(.42,2.6,64,40,true);g.rotateZ(Math.PI/2);g.translate(1.3+.02,0,0);
+ const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,uniforms:{},
+  vertexShader:'varying vec3 vP;varying vec3 vN;varying vec3 vV;void main(){vP=position;vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalMatrix*normal;vV=-mv.xyz;gl_Position=projectionMatrix*mv;}',
+  fragmentShader:'varying vec3 vP;varying vec3 vN;varying vec3 vV;void main(){float ndv=abs(dot(normalize(vN),normalize(vV)));float a=pow(ndv,2.5)*(1.0-smoothstep(.2,2.6,vP.x))*smoothstep(0.0,.25,vP.x);gl_FragColor=vec4(vec3(0.45,0.75,1.0)*a*0.14,1.0);}'});
+ const c=new THREE.Mesh(g,m);c.position.copy(P1);G.add(c)}
+/* side-emitted fluorescence: a faint orange fan toward the collection side (towards the viewer, right) */
+{const g=new THREE.ConeGeometry(.75,2.2,64,40,true);g.translate(0,-1.1,0);
+ const m=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,uniforms:{},
+  vertexShader:'varying vec3 vP;varying vec3 vN;varying vec3 vV;void main(){vP=position;vec4 mv=modelViewMatrix*vec4(position,1.0);vN=normalMatrix*normal;vV=-mv.xyz;gl_Position=projectionMatrix*mv;}',
+  fragmentShader:'varying vec3 vP;varying vec3 vN;varying vec3 vV;void main(){float ndv=abs(dot(normalize(vN),normalize(vV)));float t=clamp(-vP.y/2.2,0.0,1.0);float a=pow(ndv,2.0)*(1.0-smoothstep(.08,1.0,t))*smoothstep(0.0,.06,t);gl_FragColor=vec4(vec3(1.0,0.5,0.15)*a*0.3,1.0);}'});
+ const c=new THREE.Mesh(g,m);c.position.copy(P1);c.rotation.z=Math.PI/2*1.0;c.rotation.y=-Math.PI*.62;G.add(c)}
+/* lighting */
+const key=new THREE.DirectionalLight(0xffffff,1.4);key.position.set(-3,5,4);sc.add(key);
+const rim=new THREE.DirectionalLight(0xb7d6ff,1.2);rim.position.set(4,2,-4);sc.add(rim);
+const warm=new THREE.PointLight(0xff8a2a,3.2,3.2,1.6);warm.position.copy(P1);sc.add(warm);
+const cool=new THREE.PointLight(0x39b6ff,1.4,3,1.6);cool.position.set(-.9,Y1,0);sc.add(cool);
+G.rotation.y=+(Q.get('ry')||-.62);G.rotation.x=+(Q.get('rx')||.0);
+const cam=new THREE.PerspectiveCamera(+(Q.get('fov')||26),W/H,.1,60);cam.position.set(0,+(Q.get('cy')||1.6),+(Q.get('cz')||10.2));cam.lookAt(0,+(Q.get('ly')||.05),0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

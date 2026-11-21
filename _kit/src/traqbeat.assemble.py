@@ -33,7 +33,7 @@ R["root"] = r''':root{
 }
 @media (min-width:1800px){:root{--maxw:1600px}}'''
 
-R["fieldbg"] = r'''.fieldbg{position:fixed;inset:0;z-index:0;background:#0a0a0a}
+R["fieldbg"] = r'''.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(#0a0a0a,#0a0a0a)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}'''
 
@@ -93,7 +93,7 @@ ADD = r'''/* ===== Traqbeat additions ===== */
 .bmk-row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accD);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .bmk-row:hover::after{transform:scaleX(1)}
 .bmk-row h3{font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.9vw,32px);line-height:1.1;letter-spacing:-.02em;margin:0}
-.bmk-row h3 .nm3{display:block;margin-top:8px;font:400 11px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
+.bmk-row .nm3{display:block;margin-top:8px;font:400 11px/1.5 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accD)}
 .bmk-row p{margin:0;color:var(--stoneD);font-size:16px;max-width:44ch}
 @media (max-width:1024px){.bmk{grid-template-columns:1fr}}
 @media (max-width:560px){.bmk-row{grid-template-columns:1fr;row-gap:10px}}
@@ -119,14 +119,14 @@ ADD = r'''/* ===== Traqbeat additions ===== */
 .rd-row:hover::after{transform:scaleX(1)}
 .rd-row .yr{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accL)}
 .rd-row h3{font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.9vw,30px);line-height:1.12;letter-spacing:-.01em;margin:0}
-.rd-row h3 .nm3{display:block;margin-top:8px;font:400 13px/1.5 var(--sans);letter-spacing:0;color:var(--stone)}
+.rd-row .nm3{display:block;margin-top:8px;font:400 13px/1.5 var(--sans);letter-spacing:0;color:var(--stone)}
 .rd-row p{margin:0;color:var(--stone);font-size:15.5px;line-height:1.6}
 .rd-row .meta{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .rd-row .meta a{color:var(--bone)}
 .rd-row .tag{display:inline-block;font:500 10.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--acc);padding:6px 8px 5px}
 .rd-row .tag.o{background:var(--org)}
 @media (max-width:1100px){.rd-row{grid-template-columns:minmax(0,1fr) minmax(0,3fr);row-gap:12px}.rd-row p{grid-column:2}.rd-row .meta{grid-column:2;flex-direction:row;flex-wrap:wrap;gap:8px 20px}}
-@media (max-width:620px){.rd-row{grid-template-columns:1fr}.rd-row p,.rd-row .meta,.rd-row h3{grid-column:1}}
+@media (max-width:620px){.rd-row{grid-template-columns:1fr}.rd-row p,.rd-row .meta,.rd-row .rdh{grid-column:1}}
 .sup{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(56px,6vw,96px)}
 .sup div{border-top:1px solid var(--hair);padding-top:16px}
 .sup .lab{display:block;margin-bottom:10px;color:var(--accL)}
@@ -204,7 +204,7 @@ function bmk(){var A=[
   ["Oxygen saturation","SpO₂","Blood oxygen, monitored alongside every other signal."],
   ["Skin temperature","Thermal","Continuous skin temperature from the same sensor core."],
   ["Activity","Tracking and recognition","Movement and activity recognised, to put each vital sign in context."]];
-  return '<ul class="bmk">'+A.map(function(a){return '<li class="bmk-row"><h3>'+esc(a[0])+'<span class="nm3">'+esc(a[1])+'</span></h3><p>'+esc(a[2])+'</p></li>'}).join("")+'</ul>'}
+  return '<ul class="bmk">'+A.map(function(a){return '<li class="bmk-row"><div><h3>'+esc(a[0])+'</h3><span class="nm3">'+esc(a[1])+'</span></div><p>'+esc(a[2])+'</p></li>'}).join("")+'</ul>'}
 function caps(){var C=[
   ["AI risk assessment and alarming","Artificial intelligence turns the continuous record into insights and alerts, for the patient and for the clinician.",'<path d="M4 30H16L21 18L28 42L34 24L38 30H52"/><circle class="a" cx="46" cy="14" r="5"/><path class="a" d="M46 6V2M54 14H58"/>'],
   ["Internet of Medical Things","Wi-Fi, Bluetooth 5.0 and 5G connectivity with low-power components, medical grade and delay tolerant, built for security and trust.",'<path d="M16 38a17 17 0 0 1 0-20M22 33a9 9 0 0 1 0-10M40 18a17 17 0 0 1 0 20M34 23a9 9 0 0 1 0 10"/><circle class="a" cx="28" cy="28" r="3"/>'],
@@ -217,7 +217,7 @@ function rd(){var A=[
   ["Active","ENSURE EMS","A triage management system supporting emergencies","An integrated mass-casualty management and digital triage system, part of the iProcureSecurity pre-commercial procurement.","H2020 iProcureSecurity PCP · 101022061","101022061",1],
   ["Completed","Next-Gen PLEDGE","Next generation personalised edge-AI healthcare","Advanced remote monitoring for early detection of disease symptoms, tested within the TERMINET framework for federated machine learning.","H2020 TERMINET open call · 957406","957406",0],
   ["Completed","CARDIORESPTRAQ","Continuous at-home monitoring for cardiorespiratory patients","A pilot study using the Traqbeat wearable to monitor patients with chronic cardiorespiratory conditions in hospital and at home.","EIT Health RIS Innovation · 2020","",0]];
-  return '<ul class="rd">'+A.map(function(a){var lk=a[5]?'<a class="lab ul" href="'+CD+a[5]+'" target="_blank" rel="noopener">CORDIS ↗</a>':'';return '<li class="rd-row"><span class="yr">'+esc(a[0])+'</span><h3>'+esc(a[1])+'<span class="nm3">'+esc(a[2])+'</span></h3><p>'+esc(a[3])+'</p><div class="meta">'+(a[6]?'<span class="tag">'+(a[0]==="2026–2029"?"New · 2026":"Active")+'</span>':'')+'<span class="lab">'+esc(a[4])+'</span>'+lk+'</div></li>'}).join("")+'</ul>'}
+  return '<ul class="rd">'+A.map(function(a){var lk=a[5]?'<a class="lab ul" href="'+CD+a[5]+'" target="_blank" rel="noopener">CORDIS ↗</a>':'';return '<li class="rd-row"><span class="yr">'+esc(a[0])+'</span><div class="rdh"><h3>'+esc(a[1])+'</h3><span class="nm3">'+esc(a[2])+'</span></div><p>'+esc(a[3])+'</p><div class="meta">'+(a[6]?'<span class="tag">'+(a[0]==="2026–2029"?"New · 2026":"Active")+'</span>':'')+'<span class="lab">'+esc(a[4])+'</span>'+lk+'</div></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+

@@ -11,7 +11,7 @@ function vHome(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Computers that</span><span class="l"><em>converse with cells.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>The Cybercyte System joins in silico synthetic cells to live patch-clamped cells in real time: electronic “transfection” in seconds, not weeks, on the rig you already have.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">How it works '+ARR+'</a><a class="btn" href="#/contact">Arrange a loaner</a></div></div>'+
-   '<p class="lab hcap" data-r>The Cybercyte CIM and V10 dynamic clamp units, as photographed by Cytocybernetics.</p>'+
+   '<p class="lab hcap" data-r>The Cybercyte CIM and V10, rendered after Cytocybernetics’ own product photography.</p>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+

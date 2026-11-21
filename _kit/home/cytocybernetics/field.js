@@ -1,8 +1,10 @@
-/* ================= HERO FIELD: the firm's own photography (HOME_BRIEF update, option a): Cytocybernetics' studio photograph of its
-   Cybercyte CIM and V10 dynamic clamp units (cybercyte.html, the full-system photo), cut from its own transparent background with the
-   cables and third-party computer removed, so it sits on the ink as real alpha with no box edge (DJ/DP). Shown at or below native size,
-   centred in the open area right of the copy and kept >=100px clear of the headline (DO/DP), over a long, soft lavender glow so the
-   dark lid reads; slow drift, no pointer response (CZ). On phones it sits in the top band and fades into the ink. ================= */
+/* ================= HERO FIELD: a crafted render of the real product (HOME_BRIEF update, option c; coordinator review v2): the
+   two-unit Cybercyte stack (CIM on V10) modelled after Cytocybernetics' own product photograph (cybercyte.html): satin-black lid,
+   brushed-aluminium front panels with the CIM's ON/OFF toggle and LED, the V10's clamp-mode and power toggles, five ten-turn dials
+   numbered 1-5 with a toggle under each, the wordmark printed small on the panels. render.py: perspective camera, shaded meshes
+   for every knob and switch, panel art warped onto the faces, 2x supersampled, transparent ground (real alpha, no box edge, DJ/DP).
+   Shown at or below native size, centred in the open area right of the copy at ~69% and kept >=100px clear of the headline (DO/DP),
+   over a long, soft lavender glow; slow drift, no pointer response (CZ). On phones it sits in the top band. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
@@ -25,7 +27,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#120d2a";c.fillRect(0,0,w,h);
     if(ok){
       var iw=img.naturalWidth,ih=img.naturalHeight,k=.5-.5*Math.cos(t*Math.PI*2/56),cx,cy,sc;
-      if(!G.mob){sc=Math.min(1,G.cw*.4/iw,(h-200)*.72/ih);var dw0=iw*sc,tr=TXR();cx=Math.max(w*.69,tr+100+dw0*.53);cx=Math.min(cx,w-G.side-dw0*.52);cy=Math.max(h*.54,96+dh0(ih*sc))}
+      if(!G.mob){sc=Math.min(1,G.cw*.42/iw,(h-210)*.74/ih);var dw0=iw*sc,tr=TXR();cx=Math.max(w*.69,tr+100+dw0*.53);cx=Math.min(cx,w-G.side-dw0*.52);cy=Math.max(h*.54,96+dh0(ih*sc))}
       else{sc=Math.min(1,w*.8/iw,G.bh*.62/ih);cx=w*.5;cy=G.bh*.56}
       sc*=(1-.03*k)*(1+.04*(1-e));
       var dw=iw*sc,dh=ih*sc,x=cx-dw/2,y=cy-dh/2-k*dh*.012-SP.v*h*.04;

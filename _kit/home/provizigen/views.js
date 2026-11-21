@@ -64,9 +64,9 @@ function cta(){
    '<p class="sub" data-r>ProViZiGen is a biotherapeutics company in New York. To talk about HydroGEN, a partnership or an investment, write to us.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a><a class="btn" href="'+NSF+'" target="_blank" rel="noopener">NSF award</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Headquarters</span><p data-r>ProViZiGen LLC<br>New York, New York</p></div>'+
+    '<div><span class="lab" data-r>Headquarters</span><p data-r><span class="bl">ProViZiGen LLC</span><span class="bl">New York, New York</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
-    '<div><span class="lab" data-r>Hours</span><p data-r>Monday to Saturday<br>8:00 am to 5:00 pm</p></div>'+
+    '<div><span class="lab" data-r>Hours</span><p data-r><span class="bl">Monday to Saturday</span><span class="bl">8:00 am to 5:00 pm</span></p></div>'+
    '</div>'+
   '</div></section>';
 }
@@ -74,7 +74,7 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Headquarters</span>ProViZiGen LLC<br>New York, New York</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="https://twitter.com/provizigen" target="_blank" rel="noopener">X</a> · <a class="ul" href="https://www.instagram.com/provizigen/" target="_blank" rel="noopener">Instagram</a></div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="https://twitter.com/provizigen" target="_blank" rel="noopener">X (Twitter)</a> · <a class="ul" href="https://www.instagram.com/provizigen/" target="_blank" rel="noopener">Instagram</a></div>'+
    '<div class="c"><span class="lab">Focus</span>An injectable hydrogel for<br>post-traumatic osteoarthritis</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 640 74" aria-hidden="true"><text x="320" y="60" text-anchor="middle" style="font-family:\'Nunito\',system-ui,sans-serif;font-weight:800;font-size:76px;letter-spacing:0">ProViZiGen</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 ProViZiGen LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';

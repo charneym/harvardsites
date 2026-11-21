@@ -21,10 +21,10 @@ var TEAM=[
 var PARTNERS=["New York University (STTR research institution)","CUNY Advanced Science Research Center · Sensor CAT","National Institutes of Health · NIAMS","U.S. National Science Foundation"];
 /* news: only items with a working link. [date, headline, source, url] */
 var NEWS=[
- ["November 14, 2025","NSF Phase I outcomes: the deimmunized HydroGEN carrier gels at body temperature with low predicted immunogenicity","NSF",NSF],
- ["August 5, 2025","NIAMS continues ProViZiGen’s STTR award for HydroGEN with $158,663 for a second year","NIH RePORTER",RP2],
- ["April 15, 2025","An administrative supplement of $54,999 adds to the HydroGEN STTR project","NIH RePORTER",RPS],
- ["July 24, 2024","ProViZiGen welcomes Dr. Jui Chaugule to lead its team","ProViZiGen on X",XW],
- ["November 30, 2023","NSF awards an STTR Phase I grant, now $295,000, for an injectable biotherapeutic for post-traumatic osteoarthritis","NSF",NSF],
- ["September 25, 2023","NIAMS awards an STTR Phase I grant, “Engineered Biotherapeutic Agent for Treatment of Post-Traumatic Osteoarthritis”","NIH RePORTER",RP1]];
+ ["Nov 14, 2025","NSF Phase I outcomes: a deimmunized HydroGEN carrier that gels at 37 °C","NSF",NSF],
+ ["Aug 5, 2025","NIAMS funds a second STTR year for HydroGEN ($158,663)","NIH RePORTER",RP2],
+ ["Apr 15, 2025","A $54,999 NIH supplement for the HydroGEN STTR project","NIH RePORTER",RPS],
+ ["Jul 24, 2024","ProViZiGen welcomes Dr. Jui Chaugule to lead its team","ProViZiGen on X",XW],
+ ["Nov 30, 2023","NSF STTR Phase I award for an injectable PTOA biotherapeutic","NSF",NSF],
+ ["Sep 25, 2023","NIAMS STTR Phase I award for an engineered PTOA biotherapeutic","NIH RePORTER",RP1]];
 var SHEETS=[];

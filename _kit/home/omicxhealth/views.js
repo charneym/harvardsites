@@ -63,9 +63,9 @@ function cta(){
    '<p class="sub" data-r>OmicXHealth is looking for clinical partners, advisors and investors who share the goal of non-invasive early detection, and keeps an interest list for early access to the test.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Headquarters</span><p data-r>OmicXHealth, Inc.<br>San Ramon, California<br>San Francisco Bay Area</p></div>'+
+    '<div><span class="lab" data-r>Headquarters</span><p data-r><span>OmicXHealth, Inc.</span><br><span>San Ramon, California</span><br><span>San Francisco Bay Area</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
-    '<div><span class="lab" data-r>Validation</span><p data-r>Blinded liver cancer study<br>at UT Southwestern</p></div>'+
+    '<div><span class="lab" data-r>Validation</span><p data-r><span>Blinded liver cancer study</span><br><span>at UT Southwestern</span></p></div>'+
    '</div>'+
   '</div></section>';
 }

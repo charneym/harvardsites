@@ -313,7 +313,7 @@ function vHome(){
    '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split">Our instruments and expertise, <em>at your service.</em></h2></div><p data-r>Beyond instruments, we analyze nanoparticle samples for researchers and bring decades of flow cytometry engineering to clients, counsel and teams.</p></div>'+
    caps()+
   '</div></section>'+
-  '<section class="sec light kr-tm" id="team" data-theme="light"><div class="wrap">'+
+  '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Physicists and engineers <em>who build cytometers.</em></h2></div><p data-r>Kinetic River was founded by Giacomo Vacca, who leads a team in optics, fluidics, electronics and assay science in Mountain View, with advisors in manufacturing, markets and patents.</p></div>'+
    team()+
   '</div></section>'+

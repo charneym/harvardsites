@@ -1,0 +1,21 @@
+var FONTS=['300 1em "Source Serif 4"','italic 300 1em "Source Serif 4"','400 1em "Source Serif 4"','italic 400 1em "Source Serif 4"','300 1em "Jost"','400 1em "Jost"','500 1em "Jost"','600 1em "Jost"'];
+var WEB="https://pharmacoidea.eu/";
+var MAIL="info@pharmacoidea.eu";
+var SALES="sales@pharmacoidea.eu";
+var TECH=WEB+"tech/";
+var CORDIS="https://cordis.europa.eu/project/id/101308627";
+/* technology: pharmacoidea.eu/tech/ (Innovative pharmaceutical research and development). [name, for, tag, detail, link, label] */
+var TEC=[
+ ["Targeted drug delivery","Syndecan-4 · US Patent US8647828B2","Delivery","The earliest branch of in-house development: syndecan-4, a cell-surface proteoglycan, lets proteins and other macromolecules that cannot cross the cell membrane enter the cell, opening the way to nucleic acid and protein-based therapies.",TECH,"Technology"],
+ ["Brain-targeted delivery","Syndecan-3 · EP3911362A1, US20220002433A1","Delivery","A method for the selective brain delivery of high molecular weight drugs, such as proteins and nucleic acids, through syndecan-3.",TECH,"Technology"],
+ ["Gene therapy","ARDAT · Innovative Medicines Initiative","Advanced therapies","Building on its work on the cellular delivery of oligonucleotides and proteins, Pharmacoidea takes part in ARDAT, which reviews adeno-associated virus (AAV) vectors to make gene therapies more effective and safer.",TECH,"Technology"],
+ ["Neurodegenerative diseases","Alzheimer’s, Parkinson’s and Huntington’s disease","Diagnostics · therapy","Pharmacoidea researchers have shown how syndecans contribute to the pathological protein aggregation behind neurodegeneration, and described syndecan-3 as a diagnostic biomarker for Alzheimer’s disease.",TECH,"Technology"],
+ ["Viral infections","Syndecans and SARS-CoV-2 · international patents","Therapy","Many viruses use cell-surface proteoglycans to bind and enter cells. Pharmacoidea developed a patented method that inhibits SARS-CoV-2 infection by blocking the spike protein’s binding to syndecans.",TECH,"Technology"]];
+/* programmes: CORDIS 101308627 and the project pages on pharmacoidea.eu (hu/projektek, our-partners). [title, funder, status, detail, link, label] */
+var PRG=[
+ ["SYNEAD: a syndecan-3 based blood test for early Alzheimer’s diagnosis","Horizon Europe · Widening participation · 101308627","2026–2028","An EU contribution of €484,575 to develop a blood test, built on syndecan-3, that could flag Alzheimer’s disease early, when treatment does the most to preserve quality of life.",CORDIS,"CORDIS"],
+ ["MetaboAD: metabolomic biomarkers of Alzheimer’s disease","ERA-NET · NKFI Fund · 2024-1.2.2-ERA-NET-2024-00013","36 months","An international consortium studies the cerebrospinal fluid and blood plasma of patients at different stages, including prodromal Alzheimer’s, with cohorts from Sweden, Spain and Türkiye. Pharmacoidea carries out the glycomic analyses.",WEB+"hu/2024-1-2-2-era_net-2024-00013/","Project page"],
+ ["Astrocyte models of the extracellular matrix","Hungarian–Turkish consortium · NKFI Fund","Lead · to 2028","Astrocyte models from induced pluripotent stem cells and new bioassays to study how the extracellular matrix changes in neurodegeneration, with HUN-REN BRC Szeged, EnviroSTEM and Hacettepe University.",WEB+"hu/indukalt-pluripotens-ossejtekbol-szarmazo-asztrocita-modellek-az-extracellularis-matrix-patologias-atalakulasanak-vizsgalatara/","Project page"],
+ ["Precision drug carriers for glioblastoma","Hungarian–Chinese consortium · NKFI Fund","To 2028","Dual-targeted carriers that cross the blood-brain barrier and reach glioblastoma cells, combined with PROTAC molecules, with HUN-REN BRC Szeged, Fudan University and Gluetacs Therapeutics.",WEB+"hu/glioblastoma-celzott-kezelesere-szolgalo-precizios-gyogyszerhordozo-rendszerek-fejlesztese/","Project page"],
+ ["IM2PACT and NEUROPA","Innovative Medicines Initiative · EU research funding","European consortia","IM2PACT, 27 partners from academia, industry and SMEs, studies blood-brain barrier targets and transport for brain delivery; NEUROPA combines phytoptogenetics with two-photon laser technology against brain dysfunction.",WEB+"our-partners/","Our partners"]];
+var SHEETS=[];

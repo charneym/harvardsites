@@ -11,7 +11,7 @@ INK = np.array([11, 11, 34], float)
 src, out = sys.argv[1], sys.argv[2]
 im = Image.open(src).convert("RGB")
 W, H = im.size
-box = (int(W*.10), int(H*.235), int(W*.93), int(H*.76))
+box = (0, int(H*.06), int(W*.95), int(H*.82))  # wide crop: the falloff reaches ~0 well before every edge
 im = im.crop(box)
 OW = 1800; OH = round(OW*im.height/im.width)
 im = im.resize((OW, OH), Image.LANCZOS)
@@ -29,19 +29,19 @@ def curve(x):
 col = curve(col)
 ink = INK/255
 # shadows toward ink: blend by darkness
-d = np.clip(1-L/0.35,0,1)**1.4
+d = np.clip(1-L/0.45,0,1)**1.2
 col = col*(1-d) + ink*d
-# radial feather centred on the head/electrode
+# a soft Gaussian falloff centred on the head and electrode (no plateau, so no disc or "porthole" boundary),
+# narrower to the right so the monitor and its bezel fade out gradually instead of ending on a straight line (DJ, DP)
 yy, xx = np.mgrid[0:OH, 0:OW]
-cx, cy = OW*.47, OH*.42
-rx, ry = OW*.50, OH*.56
-r = np.sqrt(((xx-cx)/rx)**2 + ((yy-cy)/ry)**2)
-t = np.clip((r-.42)/(1.0-.42), 0, 1)
-m = 1 - (t*t*(3-2*t))
+cx, cy = OW*.44, OH*.44
+sx = np.where(xx < cx, OW*.22, OW*.155); sy = np.where(yy < cy, OH*.24, OH*.21)
+m = np.exp(-(((xx-cx)/sx)**2 + ((yy-cy)/sy)**2))
+# (no threshold: the Gaussian runs out smoothly, so no boundary forms)
 # and a guaranteed fall to zero alpha well inside every image edge
 ed = np.minimum.reduce([xx/OW, 1-xx/OW, yy/OH, 1-yy/OH])
-ed = np.clip(ed/.16, 0, 1); ed = ed*ed*(3-2*ed)
-m = (m*ed)[..., None]**1.25
+ed = np.clip(ed/.26, 0, 1); ed = ed*ed*(3-2*ed)
+m = (m*ed)[..., None]**.9
 # real alpha: the feather is the alpha channel, so the photo has no ground of its own to mismatch the page ink (DP)
 rgb = np.clip(col*255+np.random.uniform(-.6,.6,col.shape),0,255).astype(np.uint8)
 al = np.clip(m[...,0]*255,0,255).astype(np.uint8)

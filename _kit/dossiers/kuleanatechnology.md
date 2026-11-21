@@ -1,0 +1,12 @@
+# Kuleana Technology (home-only concept, batch 2026-11f)
+- URL: /kuleanatechnology/
+- Original: kuleanatechnology.com (WordPress template: a washed-out stock slider of older couples on beaches, a generic "Welcome to Kuleana Technology" headline, a cookie banner, three pages)
+- HQ: Seattle, WA (NIH RePORTER: Kuleana Technology, Inc., Seattle WA 98101)
+- Lead: Jonathan Himmelfarb, MD, President & CEO (kuleanatechnology.com/team; NKF PR Newswire release, 2022-04-11). Greeting: "Dear Dr. Himmelfarb"
+- Email: jonathan.himmelfarb@mssm.edu (his Icahn Mount Sinai faculty profile; the company publishes no email, only a contact form)
+- Contact PI on the NIH awards: Barry N. Fulkerson (COO)
+- Activity: 2026-11-10, NIDDK SBIR Phase II year-2 award 5R44DK137677-03 ($755,697), https://reporter.nih.gov/project-details/11415788
+- Palette: logo Kuleana-logo_July2021_400px.png, wordmark #040707 → ink #0b0b10; crimson arc #9f2f2a → --acc (#e0726b on dark); indigo arc #322e7b → dialysate / glow; site heading crimson #7c1319 → --accD. Poppins, as their wordmark and site.
+- Hero: a crafted render (render.py, numpy sphere tracing) of a cut hollow-fibre dialyser bundle: blood (crimson) in the lumens, dialysate (indigo) glow between the fibres. No photo used.
+- Story: the dialysate loop (dialyser → POUR TiO2 photo-oxidation cell → clean return), from the RePORTER R41/R44 DK137677 abstracts.
+- Facts: kuleanatechnology.com (home, team, news); RePORTER 10761594 / 11256206 / 11415788; KidneyX Redesign Dialysis Phase 1 winner page; PR Newswire 2022-04-11; KING 5, June 2023.

@@ -827,6 +827,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .qt blockquote{grid-column:2;margin:0;font-family:var(--disp);font-weight:300;font-size:clamp(22px,2vw,32px);line-height:1.32;letter-spacing:-.015em;color:var(--ink);max-width:44ch}
 .qt figcaption{grid-column:2;margin-top:20px;color:var(--accD)}
 @media (max-width:860px){.qt{grid-template-columns:1fr}.qt blockquote,.qt figcaption{grid-column:1}}
+.stat p.k{margin:0}
 </style>
 </head>
 </head>
@@ -1547,9 +1548,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Surgery and radiation, the standard of care for oral cancer, often compromise the oral muscles and salivary glands and can disfigure. Photodynamic therapy treats early oral lesions with a drug and light: no scarring, no tissue removal, no harmful <em>radiation.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">73%</span><span class="k">One-time complete cure rate in the founders\' 30-patient trial for early oral cancers in India</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">50,000</span><span class="k">New cases of oral cancer in the U.S. every year</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">7</span><span class="k">FDA-approved medical indications of photodynamic treatment</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">73%</span><p class="k">One-time complete cure rate in the founders\' 30-patient trial for early oral cancers in India</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">50,000</span><p class="k">New cases of oral cancer in the U.S. every year</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">7</span><p class="k">FDA-approved medical indications of photodynamic treatment</p></div>'+
    '</div>'+
   '</div></section>'+
 
@@ -1601,7 +1602,7 @@ function cta(){
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Headquarters</span><p data-r>Photodynamic Solutions, Inc.<br>465 Waverley Oaks Road, Suite 417<br>Waltham, MA 02452</p></div>'+
     '<div><span class="lab" data-r>Contact</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
-    '<div><span class="lab" data-r>Elsewhere</span><p data-r><a class="ul" href="'+YT+'" target="_blank" rel="noopener">YouTube</a><br><a class="ul" href="'+XT+'" target="_blank" rel="noopener">X</a></p></div>'+
+    '<div><span class="lab" data-r>Elsewhere</span><p data-r><a class="ul" href="'+YT+'" target="_blank" rel="noopener">YouTube</a><br><a class="ul" href="'+XT+'" target="_blank" rel="noopener">X (Twitter)</a></p></div>'+
    '</div>'+
   '</div></section>';
 }
@@ -1653,6 +1654,7 @@ var field=(function(){
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   var BG="#0a1712";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
+  function ease(g,a,rgb){for(var i=0;i<=8;i++){var u=i/8,v=1-u*u*(3-2*u);g.addColorStop(u,"rgba("+rgb+","+(a*v).toFixed(3)+")")}return g}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-(w>=1800?1600:1320))/2),cw=w-2*side,mob=w<861;
@@ -1689,12 +1691,13 @@ var field=(function(){
       c.fillStyle=rg;c.fillRect(px-pr,py-pr,pr*2,pr*2);c.globalCompositeOperation="source-over";c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.6,0);lv.addColorStop(0,"rgba(6,16,12,.92)");lv.addColorStop(.55,"rgba(6,16,12,.5)");lv.addColorStop(1,"rgba(6,16,12,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(6,16,12,.6)");tv.addColorStop(1,"rgba(6,16,12,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(10,23,18,0)");bv.addColorStop(1,"rgba(10,23,18,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
+        /* every wash eases out over a long distance (smoothstep stops), so none ends on a line */
+        c.fillStyle=ease(c.createLinearGradient(0,0,G.side+G.cw*.62,0),.9,"6,16,12");c.fillRect(0,0,w,h);
+        c.fillStyle=ease(c.createLinearGradient(0,0,0,h*.36),.55,"6,16,12");c.fillRect(0,0,w,h*.36);
+        c.fillStyle=ease(c.createLinearGradient(0,h,0,h*.62),.85,"10,23,18");c.fillRect(0,h*.62,w,h*.38+1);
       }else{
-        var tv2=c.createLinearGradient(0,0,0,G.bh*.28);tv2.addColorStop(0,"rgba(6,16,12,.45)");tv2.addColorStop(1,"rgba(6,16,12,0)");c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.28);
-        var mv=c.createLinearGradient(0,G.bh*.62,0,G.bh);mv.addColorStop(0,"rgba(10,23,18,0)");mv.addColorStop(1,"rgba(10,23,18,1)");c.fillStyle=mv;c.fillRect(0,G.bh*.62,w,G.bh*.38+1);
+        c.fillStyle=ease(c.createLinearGradient(0,0,0,G.bh*.3),.45,"6,16,12");c.fillRect(0,0,w,G.bh*.3);
+        c.fillStyle=ease(c.createLinearGradient(0,G.bh,0,G.bh*.55),1,"10,23,18");c.fillRect(0,G.bh*.55,w,G.bh*.45+1);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

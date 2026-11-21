@@ -74,13 +74,13 @@ function storyDraw(svg){
       op(C.el,b*gi*(1-.45*hurt));
     });
     /* the beneficial rods: in from step 1, most fade in BV (the hardy third hold on), all return with the gel */
-    E.rod.forEach(function(R){var gi=cl(seg(p,.04,.2)*1.6-R.b.t*.6);var lost=R.b.keep?0:cl(dis*1.5-R.b.t*.5)*(1-cl(heal*1.5-R.b.t*.5));
+    E.rod.forEach(function(R){var gi=cl(seg(p,0,.1)*1.6-R.b.t*.6);var lost=R.b.keep?0:cl(dis*1.5-R.b.t*.5)*(1-cl(heal*1.5-R.b.t*.5));
       op(R.el,b*gi*(1-lost));});
     /* the harmful cocci: bloom cluster by cluster in BV, fade under the prebiotic gel */
     E.coc.forEach(function(Q){var gi=cl(dis*1.7-Q.c.ci*.08-Q.c.t*.12),out=cl(heal*1.6-Q.c.t*.4);
       Q.el.setAttribute("r",(Q.c.r*(.4+.6*gi)).toFixed(2));op(Q.el,b*gi*(1-out));});
     /* the gel settles from above onto the surface */
     if(E.gel){E.gel.setAttribute("transform","translate(0 "+(-(1-gel)*260).toFixed(1)+")");op(E.gel,b*gel)}
-    op(E.l1,b*seg(p,.08,.16)*(1-seg(p,.28,.34)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.58,.64)));op(E.l3,b*seg(p,.76,.84));
+    op(E.l1,b*seg(p,.02,.08)*(1-seg(p,.28,.34)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.58,.64)));op(E.l3,b*seg(p,.76,.84));
   };
 }

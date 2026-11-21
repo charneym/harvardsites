@@ -806,12 +806,12 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .fdp{position:relative;aspect-ratio:422/580;overflow:hidden;background:var(--bone2);transition:box-shadow .4s var(--eo);--mx:50%;--my:40%}
 .fdp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s var(--eo),clip-path .45s var(--eo)}
 .fdp img.g{filter:grayscale(1) contrast(1.03)}
-.fdp img.c{clip-path:circle(0% at var(--mx) var(--my))}
+.fdp .cl{position:absolute;inset:0;clip-path:circle(0% at var(--mx) var(--my))!important;transition:clip-path .45s var(--eo)}
 .fdp.noimg img{display:none}
 .fdc:hover{transform:translateY(-6px)}
 .fdc:hover .fdp{box-shadow:0 22px 40px -24px rgba(11,21,25,.5)}
 .fdc:hover .fdp img{transform:scale(1.045)}
-.fdc:hover .fdp img.c{clip-path:circle(150% at var(--mx) var(--my))}
+.fdc:hover .fdp .cl{clip-path:circle(150% at var(--mx) var(--my))!important}
 .fdt{padding-top:4px}
 .fdt h3{margin:0 0 8px;font-family:var(--disp);font-weight:400;font-size:clamp(22px,1.8vw,28px);line-height:1.15;letter-spacing:-.012em;color:var(--ink);transition:color .3s var(--eo)}
 .fdc:hover .fdt h3{color:var(--accD)}
@@ -836,6 +836,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .gpub a:hover svg{transform:translateX(4px)}
 .gpub .note-s{grid-column:2;margin:22px 0 0;font-size:13.5px;line-height:1.55;color:var(--stone);max-width:80ch}
 @media (max-width:860px){.gpub{grid-template-columns:1fr;row-gap:18px}.gpub a{grid-template-columns:1fr 18px;row-gap:6px}.gpub a .lab{grid-column:1/-1;padding-top:0}.gpub .note-s{grid-column:1}}
+/* DP: the template scrim's hard linear stops left creases (y=20%, the 86% radial rim) under a x6 luminance boost; ease every stop out */
+@media (min-width:861px){.hero::before{background:radial-gradient(46% 64% at 20% 52%,rgba(var(--inkr),.78) 0%,rgba(var(--inkr),.62) 28%,rgba(var(--inkr),.4) 50%,rgba(var(--inkr),.2) 68%,rgba(var(--inkr),.08) 82%,rgba(var(--inkr),.02) 92%,rgba(var(--inkr),0) 100%),linear-gradient(180deg,rgba(var(--inkr),.3) 0%,rgba(var(--inkr),.19) 8%,rgba(var(--inkr),.1) 16%,rgba(var(--inkr),.04) 25%,rgba(var(--inkr),.01) 33%,rgba(var(--inkr),0) 40%,rgba(var(--inkr),0) 64%,rgba(var(--inkr),.08) 72%,rgba(var(--inkr),.3) 82%,rgba(var(--inkr),.66) 91%,var(--ink) 100%)}}
 </style>
 </head>
 </head>
@@ -1528,7 +1530,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 function pipeRows(list){return '<ul class="pfr pipe">'+list.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[3])+'</b><i>'+esc(c[0])+'</i></span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[2])+'</span></h3><p>'+esc(c[4])+'</p><a class="lab ul lk" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+'</a></li>'}).join("")+'</ul>'}
 function founders(){return '<div class="fdr">'+TEAM.map(function(p){
-  return '<article class="fdc"><div class="fdp"><img class="g" src="'+p.img+'" alt="" loading="lazy" onerror="this.closest(\'.fdp\').classList.add(\'noimg\')"><img class="c" src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.remove()"></div>'+
+  return '<article class="fdc"><div class="fdp"><img class="g" src="'+p.img+'" alt="" loading="lazy" onerror="this.closest(\'.fdp\').classList.add(\'noimg\')"><span class="cl"><img class="c" src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.remove()"></span></div>'+
    '<div class="fdt"><h3>'+esc(p.name)+'</h3><span class="lab">'+esc(p.title)+'</span><p>'+esc(p.sum)+'</p></div></article>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function pubs(){return '<div class="gpub"><span class="lab kick" data-r>Peer-reviewed abstracts</span><ul>'+PUBS.map(function(p){
@@ -1564,7 +1566,7 @@ function vHome(){
     '<div class="steps">'+
      '<article class="step on"><h2>A healthy genital ecosystem.</h2><p>Healthy vaginal cells and a beneficial microbiome protect the surface of the genital tract. That balance is shared between partners, and it matters at every age and stage of life.</p></article>'+
      '<article class="step"><h2>When the balance tips.</h2><p>In bacterial vaginosis, harmful bacteria take over. Through the microbiota–cancer axis, they and viral co-infections such as HPV drive cancer-promoting changes in cells. With current treatments, about 40% of cases come back.</p></article>'+
-     '<article class="step"><h2>A prebiotic gel that restores support.</h2><p>PreBioGyn is a preservative-free prebiotic lubricant. Phase I lab studies established its safety for vaginal cells and the vaginal microbiome, compared with existing BV-relief lubricants. It is for anyone, whatever their HPV vaccination status.</p></article>'+
+     '<article class="step"><h2>Prebiotic support.</h2><p>PreBioGyn is a preservative-free prebiotic lubricant. Phase I lab studies established its safety for vaginal cells and the vaginal microbiome, compared with existing BV-relief lubricants. It is for anyone, whatever their HPV vaccination status.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -1803,14 +1805,14 @@ function storyDraw(svg){
       op(C.el,b*gi*(1-.45*hurt));
     });
     /* the beneficial rods: in from step 1, most fade in BV (the hardy third hold on), all return with the gel */
-    E.rod.forEach(function(R){var gi=cl(seg(p,.04,.2)*1.6-R.b.t*.6);var lost=R.b.keep?0:cl(dis*1.5-R.b.t*.5)*(1-cl(heal*1.5-R.b.t*.5));
+    E.rod.forEach(function(R){var gi=cl(seg(p,0,.1)*1.6-R.b.t*.6);var lost=R.b.keep?0:cl(dis*1.5-R.b.t*.5)*(1-cl(heal*1.5-R.b.t*.5));
       op(R.el,b*gi*(1-lost));});
     /* the harmful cocci: bloom cluster by cluster in BV, fade under the prebiotic gel */
     E.coc.forEach(function(Q){var gi=cl(dis*1.7-Q.c.ci*.08-Q.c.t*.12),out=cl(heal*1.6-Q.c.t*.4);
       Q.el.setAttribute("r",(Q.c.r*(.4+.6*gi)).toFixed(2));op(Q.el,b*gi*(1-out));});
     /* the gel settles from above onto the surface */
     if(E.gel){E.gel.setAttribute("transform","translate(0 "+(-(1-gel)*260).toFixed(1)+")");op(E.gel,b*gel)}
-    op(E.l1,b*seg(p,.08,.16)*(1-seg(p,.28,.34)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.58,.64)));op(E.l3,b*seg(p,.76,.84));
+    op(E.l1,b*seg(p,.02,.08)*(1-seg(p,.28,.34)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.58,.64)));op(E.l3,b*seg(p,.76,.84));
   };
 }/*</R:story>*/
 

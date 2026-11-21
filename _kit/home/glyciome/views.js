@@ -2,7 +2,7 @@
 function pipeRows(list){return '<ul class="pfr pipe">'+list.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[3])+'</b><i>'+esc(c[0])+'</i></span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[2])+'</span></h3><p>'+esc(c[4])+'</p><a class="lab ul lk" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+'</a></li>'}).join("")+'</ul>'}
 function founders(){return '<div class="fdr">'+TEAM.map(function(p){
-  return '<article class="fdc"><div class="fdp"><img class="g" src="'+p.img+'" alt="" loading="lazy" onerror="this.closest(\'.fdp\').classList.add(\'noimg\')"><img class="c" src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.remove()"></div>'+
+  return '<article class="fdc"><div class="fdp"><img class="g" src="'+p.img+'" alt="" loading="lazy" onerror="this.closest(\'.fdp\').classList.add(\'noimg\')"><span class="cl"><img class="c" src="'+p.img+'" alt="'+esc(p.name)+'" loading="lazy" onerror="this.remove()"></span></div>'+
    '<div class="fdt"><h3>'+esc(p.name)+'</h3><span class="lab">'+esc(p.title)+'</span><p>'+esc(p.sum)+'</p></div></article>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function pubs(){return '<div class="gpub"><span class="lab kick" data-r>Peer-reviewed abstracts</span><ul>'+PUBS.map(function(p){
@@ -38,7 +38,7 @@ function vHome(){
     '<div class="steps">'+
      '<article class="step on"><h2>A healthy genital ecosystem.</h2><p>Healthy vaginal cells and a beneficial microbiome protect the surface of the genital tract. That balance is shared between partners, and it matters at every age and stage of life.</p></article>'+
      '<article class="step"><h2>When the balance tips.</h2><p>In bacterial vaginosis, harmful bacteria take over. Through the microbiota–cancer axis, they and viral co-infections such as HPV drive cancer-promoting changes in cells. With current treatments, about 40% of cases come back.</p></article>'+
-     '<article class="step"><h2>A prebiotic gel that restores support.</h2><p>PreBioGyn is a preservative-free prebiotic lubricant. Phase I lab studies established its safety for vaginal cells and the vaginal microbiome, compared with existing BV-relief lubricants. It is for anyone, whatever their HPV vaccination status.</p></article>'+
+     '<article class="step"><h2>Prebiotic support.</h2><p>PreBioGyn is a preservative-free prebiotic lubricant. Phase I lab studies established its safety for vaginal cells and the vaginal microbiome, compared with existing BV-relief lubricants. It is for anyone, whatever their HPV vaccination status.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+

@@ -25,9 +25,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Surgery and radiation, the standard of care for oral cancer, often compromise the oral muscles and salivary glands and can disfigure. Photodynamic therapy treats early oral lesions with a drug and light: no scarring, no tissue removal, no harmful <em>radiation.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">73%</span><span class="k">One-time complete cure rate in the founders\' 30-patient trial for early oral cancers in India</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">50,000</span><span class="k">New cases of oral cancer in the U.S. every year</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">7</span><span class="k">FDA-approved medical indications of photodynamic treatment</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">73%</span><p class="k">One-time complete cure rate in the founders\' 30-patient trial for early oral cancers in India</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">50,000</span><p class="k">New cases of oral cancer in the U.S. every year</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">7</span><p class="k">FDA-approved medical indications of photodynamic treatment</p></div>'+
    '</div>'+
   '</div></section>'+
 

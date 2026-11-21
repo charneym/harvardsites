@@ -1,0 +1,12 @@
+# Eleuthra Photonics (home-only concept, /eleuthraphotonics/)
+- Domain: eleuthraphotonics.com (an HTML frameset that wraps www.eleuthra.co, a WordPress Hestia/ThemeIsle site)
+- HQ: 60 Hazelwood Dr., Champaign, IL 61820 (EnterpriseWorks, UIUC Research Park). A Delaware corporation. Phone +1 (812) 648-3536.
+- Founded 2023; admitted to the I-Start program at EnterpriseWorks (eleuthra.co/team).
+- Lead: Kayvan F. Tehrani, Ph.D., Founder and CEO (eleuthra.co/team); contact PI on the NIH award. Greeting: "Dear Dr. Tehrani".
+- Email: kayvan@eleuthraphotonics.com (the envelope link on eleuthra.co/team). Sales: sales@eleuthra.co.
+- CTO: Adrian R. Liversage, Ph.D.
+- Activity: 2026-09-01, NIH NCI SBIR Phase I 1R43CA310451-01A1, $399,268, "Multi-Scale Nonlinear Optics Label-Free Microscopy for Rapid Prostate Cancer Research and Diagnosis" https://reporter.nih.gov/project-details/11407608
+- Product: Tetraquant(TM), with four channels (2PF FAD 615 nm, 3PF NADH 440 nm, SHG 510 nm, THG 340 nm) from a single excitation laser and a photonic crystal fiber. Services: consultation, contract research, bespoke components.
+- Palette: logo purple #800080 (acc), mark lilac #d9b4e2 (accL), lens-orb amber #f0b01c (laser only), ink #110b13 (from the live site's black ground).
+- Hero: Eleuthra's own merged Tetraquant micrograph of freshly excised mouse pericardial fat (eleuthra.co/wp-content/uploads/2023/11/Picture15.png), shown as a round field of view with real alpha falloff, at native size. Story panel: their merged mouse-muscle image (Picture2.png). Portraits: eleuthra.co/team.
+- Bad-site evidence: (1) the registered domain is a bare frameset to eleuthra.co; (2) schema.org org name and site title are the WordPress default "Just another WordPress site"; (3) a stock Hestia theme with the "Hestia | Developed by ThemeIsle" footer; (4) a "Welcome to" hero over a busy neon micrograph, with text bars pasted across the image; (5) no news, and the 2026 NCI award is not mentioned anywhere; (6) the home page says "5 nonlinear imaging modalities" but the Technology page says 4 channels.

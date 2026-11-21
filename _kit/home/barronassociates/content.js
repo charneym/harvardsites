@@ -1,0 +1,30 @@
+var FONTS=['300 1em "Source Serif 4"','italic 300 1em "Source Serif 4"','400 1em "Source Serif 4"','italic 400 1em "Source Serif 4"','400 1em "IBM Plex Sans"','500 1em "IBM Plex Sans"','600 1em "IBM Plex Sans"'];
+var MAIL="sales@barron-associates.com";
+var BA="https://www.barron-associates.com/";
+var RP="https://reporter.nih.gov/project-details/";
+/* Programmes: every line from barron-associates.com news posts (2025-2026) and NIH RePORTER.
+   [short name, programme, sector, status, detail, link, link label] */
+var PIPE=[
+ ["ADAPT","Acute decompensation avoidance in heart failure","Health care","NIH SBIR Phase I · 2026","A noninvasive measurement of lung-to-finger circulation time, to pick up the changes in cardiovascular function that can signal worsening heart failure. The study evaluates it in hospitalised patients before and after treatment for acute heart failure, toward simple, affordable monitoring in the clinic and at home.",RP+"11309272","NIH RePORTER"],
+ ["RTA","Real-time run-time assurance for advanced autonomy","Aerospace","Air Force Research Lab · 2026","Selected by AFRL Dayton to build a real-time run-time assurance system that lets autonomous capabilities be changed quickly and safely, supporting ongoing autonomy, guidance, navigation and control work and flight testing.",BA+"awards/barron-associates-selected-by-the-air-force-to-develop-real-time-run-time-assurance-for-advanced-autonomy/","Announcement"],
+ ["SoleSaver","Diabetic foot health monitoring","Health care","Pilot study complete · 2026","A sensor-enabled, unobtrusive foot-worn garment that monitors several facets of foot health to prevent diabetic foot ulcers. In the pilot it reached statistical equivalence with a laboratory criterion system (p ≤ 0.01) and a median System Usability Scale score of 85.",BA+"research-updates/barron-associates-completes-pilot-study-of-diabetic-foot-health-monitoring-system/","Research update"],
+ ["STABLE","Computerized dynamic posturography","Health care","Sequential Phase II · 2025","Balance assessment on a compact multi-axis motion platform with a virtual reality headset, shown statistically equivalent to a criterion system. A follow-on Phase II adds functionality and manufacturing readiness; US patent 12434105 was granted in October 2025.",BA+"research-updates/barron-associates-completes-stable-dynamic-posturography-phase-ii-receives-sequential-phase-ii-award-and-is-granted-full-patent/","Research update"],
+ ["KnowPain","Objective assessment of the functional impact of pain","Health care","Phase II clinical study complete · 2025","A wrist-worn instrument for objectively assessing how chronic pain affects function over the course of treatment, where assessment otherwise relies largely on self-report.",BA+"research-updates/barron-associates-pain-assessment-technology-completes-phase-ii-sbir-clinical-study/","Research update"],
+ ["Blood pressure","Continuous, noninvasive blood pressure monitoring","Health care","Validation study complete · 2025","Continuous measurement in place of the static office snapshot, with its documented problems of white-coat hypertension and poor technique.",BA+"research-updates/barron-associates-continuous-non-invasive-blood-pressure-monitor-completes-validation-study/","Research update"]];
+/* barron-associates.com/about/team. Text-only masthead (CI/CL): only two of the four have portraits on the site. */
+var TEAM=[
+ {g:"Leadership",name:"B. Eugene Parker, Jr., PhD",title:"President and Senior Technical Director",sum:"With the company since 1990; fault detection and prognostics, trauma triage and fall monitoring."},
+ {g:"Technical directors",name:"Alec J. Bateman, PhD",title:"Technical Director",sum:"Leads the group on air vehicle safety and assurance of guidance, navigation and control."},
+ {g:"Technical directors",name:"Rick Adams, PhD",title:"Technical Director",sum:"Joined in 2009 after a US Air Force career; stroke rehabilitation and assistive technology."},
+ {g:"Technical directors",name:"Brian Clark",title:"Technical Director",sum:"With the company since 1999; led HeartWing and fall detection, PI on the 2026 ADAPT award."}];
+/* news: only items with a working link. [date, headline, source, url] */
+var NEWS=[
+ ["September 2026","Barron Associates completes pilot study of its diabetic foot health monitoring system","Barron Associates",BA+"research-updates/barron-associates-completes-pilot-study-of-diabetic-foot-health-monitoring-system/"],
+ ["September 2026","Selected by the Air Force to develop real-time run-time assurance for advanced autonomy","Barron Associates",BA+"awards/barron-associates-selected-by-the-air-force-to-develop-real-time-run-time-assurance-for-advanced-autonomy/"],
+ ["August 2026","NIH NHLBI awards a Phase I SBIR grant to study acute decompensation avoidance in heart failure patients ($351,388)","NIH RePORTER",RP+"11309272"],
+ ["October 2025","STABLE dynamic posturography completes Phase II, receives a sequential Phase II award and is granted a full patent","Barron Associates",BA+"research-updates/barron-associates-completes-stable-dynamic-posturography-phase-ii-receives-sequential-phase-ii-award-and-is-granted-full-patent/"],
+ ["September 2025","Pain assessment technology completes its Phase II SBIR clinical study","Barron Associates",BA+"research-updates/barron-associates-pain-assessment-technology-completes-phase-ii-sbir-clinical-study/"],
+ ["June 2025","Full patent granted for an automated olfactory training system","Barron Associates",BA+"research-updates/full-patent-granted-for-automated-olfactory-training-system/"]];
+var SERV=["Control system design","Diagnostics and prognostics","Fixed-base flight simulator facility","Human interface solutions","Modeling and simulation","Prototype device and application development","Signal and data processing","Video game therapy","Wearable sensors for physiologic monitoring","WindSwarm intelligent UAS swarms"];
+var PROD=["ADAPT Toolbox","AIFAC Simulink Toolbox","AURA-Sim","APIMS","FlightSim","HeartWing","NeuroSPARKS","GNOSIS"];
+var SHEETS=[];

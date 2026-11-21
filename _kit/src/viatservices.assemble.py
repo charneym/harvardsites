@@ -75,6 +75,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .scene .rg.r5{stroke:rgba(var(--boner),.34)}
 .scene .tk{stroke:rgba(var(--boner),.4);stroke-width:1}
 .scene .gd{stroke:rgba(var(--boner),.05);stroke-width:1}
+.scene .lmk{transition:opacity .3s}
 .scene .lm{fill:rgba(var(--boner),.06);stroke:rgba(var(--boner),.82);stroke-width:1.3}
 .scene .lm2{fill:none;stroke:rgba(var(--boner),.5);stroke-width:1}
 .scene .me{fill:#101932;stroke:var(--bone);stroke-width:1.4}
@@ -112,6 +113,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .btn,.btn::before,.btn.solid{border-radius:0}
 .stat .v{font-size:clamp(50px,5vw,92px);font-weight:300;letter-spacing:-.04em}
 .stat .v sup{color:var(--accL)}
+.stat p.k{margin:0}
 /* technology: the prototype, in VIAT's own photograph, beside what makes it different */
 .tech{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,96px);align-items:start}
 .tech figure{margin:0;position:relative}
@@ -131,7 +133,7 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 @media (max-width:620px){.diffs li{grid-template-columns:1fr;row-gap:10px}}
 /* assessments (programme rows) */
 .asm{list-style:none;margin:0;padding:0}
-.asm-row{display:grid;grid-template-columns:minmax(0,3.2fr) minmax(0,5fr) minmax(0,2.8fr);column-gap:var(--gap);align-items:start;padding:24px 0 26px;border-top:1px solid var(--hair);position:relative}
+.asm-row{display:grid;grid-template-columns:minmax(0,3.2fr) minmax(0,5fr) minmax(0,2.8fr);column-gap:var(--gap);align-items:start;padding:18px 0 20px;border-top:1px solid var(--hair);position:relative}
 .asm-row:last-child{border-bottom:1px solid var(--hair)}
 .asm-row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accL);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .asm-row:hover::after{transform:scaleX(1)}
@@ -257,9 +259,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why VIAT</span>'+
    '<p class="txt" id="mani">Unlike assessments built on theoretical models, ours are developed from the latest advances in neuroscience: <em>brain mapping, neuroimaging and EEG.</em></p></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$305K</span><span class="k">NSF SBIR Phase I award for the VR spatial orientation assessment, 2025</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">100+</span><span class="k">Research universities served worldwide</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">30+</span><span class="k">Countries where VIAT assessments have been used, for over 10 years</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$305K</span><p class="k">NSF SBIR Phase I award for the VR spatial orientation assessment, 2025</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">100+</span><p class="k">Research universities served worldwide</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">30+</span><p class="k">Countries where VIAT assessments have been used, for over 10 years</p></div>'+
    '</div></div></section>'+
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">The technology · Spatial orientation</span><h2 class="d3">Testing orientation the way the body <em>feels it.</em></h2>'+

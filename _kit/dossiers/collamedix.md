@@ -1,0 +1,9 @@
+# CollaMedix Inc. (slug collamedix, batch 2026-11g)
+- Site: https://collamedixinc.com (default WordPress Twenty Seventeen theme; homepage is a small-text "Company" paragraph with thumbnail headshots, no hero). Domain confirmed: company name, logo, address and team on every page; press-release contact email @collamedixinc.com.
+- HQ: 3303 Carnegie Ave, Cleveland, OH 44115 (contact page; new facility with ISO Class 8 cleanroom, events page, Sept 2024).
+- Lead: Donna Richardson, Founder and Chief Executive Officer. Greeting: Ms. Richardson (no title published; site uses "Donna Richardson").
+- Email: donna@collamedixinc.com; phone 216-338-6412 (press releases Sept 2023 and Dec 2022, PDFs on collamedixinc.com).
+- Activity: NIH NICHD SBIR Phase II 5R44HD102241-04, notice 2025-07-07, $985,797 (https://reporter.nih.gov/project-details/11096040); 5R44HD102241-05, notice 2026-08-31, $933,974 (https://reporter.nih.gov/project-details/11367360). NIAMS Phase I: AlloBrace 10919715 (2024), OsTend 10761321 (2023), CollaLink 10760639 (2023). PI Subba Shankar.
+- Facts used: incorporated June 12, 2018; CWRU electrocompaction (ELAC) patents licensed; founders Richardson (CEO), Shankar (CTO), Akkus (CSO, inventor), Hijaz (CMO); $8M grant funding (NSF, NIH, local); CollaFabric "the only load-bearing pure collagen fabric in existence"; CollaSleeve (rotator cuff, ~500,000 repairs/yr, retear 25-90%), CollaSling (SUI, 50 cm braided scaffold, 14 adult sheep); 100% pure bovine collagen, resorbs 12-18 months (competitive-advantages graphic); hybridized options; partners list; advisory boards (team page); news list (news page).
+- Palette: logo deep blue #0050a0, cyan #00b8e8, helix green #289840; navy ink #071628.
+- Hero: crafted WebGL render (option c) of a CollaFabric braided tube over a suture (CollaSleeve form). Portraits: founders' headshots from collamedixinc.com/team.

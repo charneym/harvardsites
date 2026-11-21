@@ -79,7 +79,7 @@ function cta(){
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Headquarters</span><p data-r>Photodynamic Solutions, Inc.<br>465 Waverley Oaks Road, Suite 417<br>Waltham, MA 02452</p></div>'+
     '<div><span class="lab" data-r>Contact</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
-    '<div><span class="lab" data-r>Elsewhere</span><p data-r><a class="ul" href="'+YT+'" target="_blank" rel="noopener">YouTube</a><br><a class="ul" href="'+XT+'" target="_blank" rel="noopener">X</a></p></div>'+
+    '<div><span class="lab" data-r>Elsewhere</span><p data-r><a class="ul" href="'+YT+'" target="_blank" rel="noopener">YouTube</a><br><a class="ul" href="'+XT+'" target="_blank" rel="noopener">X (Twitter)</a></p></div>'+
    '</div>'+
   '</div></section>';
 }

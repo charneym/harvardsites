@@ -827,9 +827,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .light-bk .cr a:hover{color:var(--acc)}
 .ev .kick{line-height:1.7}
 .hero .hero-h em{color:var(--accL)}
-@media (max-width:860px){.hero{padding-top:calc(39svh + 8px)!important}}
-@media (max-width:860px){.hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 30%,rgba(var(--inkr),.5) 39%,rgba(var(--inkr),.86) 47%,rgba(var(--inkr),.95) 72%,var(--ink) 100%)}}
-@media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(39svh - 70px),transparent calc(39svh - 4px));mask-image:linear-gradient(180deg,#000 0,#000 calc(39svh - 70px),transparent calc(39svh - 4px))}}
+@media (max-width:860px){.hero{padding-top:calc(46svh + 8px)!important}}
+@media (max-width:860px){.hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 40%,rgba(var(--inkr),.5) 46%,rgba(var(--inkr),.86) 52%,rgba(var(--inkr),.95) 72%,var(--ink) 100%)}}
+@media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(46svh - 34px),transparent calc(46svh + 4px));mask-image:linear-gradient(180deg,#000 0,#000 calc(46svh - 34px),transparent calc(46svh + 4px))}}
 .scene text{fill:#d2cde0}.scene text.t{fill:rgba(var(--boner),.62)}.scene text.a{fill:var(--accL)}
 @media (max-width:1024px){.scene text{font-size:15px;letter-spacing:.04em}.scene text.t{font-size:12px;letter-spacing:.06em}}
 
@@ -1657,26 +1657,27 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD: a real photograph of the subject (HOME_BRIEF update 2b): the sun rising over a calm sea
-   horizon, its light laid in a path across the water: 2Morrow's own mark is a sun rising over a horizon. Pexels photo 3845506
-   (Pexels License), 3000px, shown at or below native up to ~1940px wide viewports. Shadows lightly cooled toward the page
-   ink. Full-bleed (no panel edges): the sun sits in the open area right of the text (~70% of the content width) and the
-   headline side lies under a long ink wash (DI). A very slow Ken Burns breath; it moves on its own, so no pointer response
-   (CZ). On phones the sun sits in the top band and the band eases into the ink above the text (CW). ================= */
+/*<R:field>*//* ================= HERO FIELD: a crafted render of their real product (HOME_BRIEF update 2c; coordinator review): two
+   generic, unbranded handsets in perspective showing 2Morrow's actual app screens, taken from the phone images on
+   2morrowinc.com (Salty for Chronic Pain: "Hi Joan / Your Daily Content" and "My Values / Stamps"), the notch and frame of
+   the source mock-ups removed and the screens re-housed. Rendered in Chromium with CSS 3D (render/render.html) and exported
+   with real alpha, 1918x2078, always drawn below native size, so no box edge (DP/DJ). It sits whole in the open area right
+   of the text (~70% of the content width), below the nav, on the plain ink with a very faint warm sunrise glow behind it
+   (their logo). A slow float; it moves on its own, so no pointer response (CZ). On phones it sits in the top band, above the
+   text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#061722",IW=3000,IH=1686,SX=.516,SY=.508;   /* SX/SY: the sun's centre in the photograph */
+  var BG="#061722",IW=1918,IH=2078;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function ez(g,rgb,a0,a1,n){n=n||8;for(var i=0;i<=n;i++){var u=i/n,s=u*u*(3-2*u);g.addColorStop(u,"rgba("+rgb+","+(a0+(a1-a0)*s).toFixed(3)+")")}return g}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
-    var U=mob?Math.min(h*.44,w*.96):h;
-    var kx=mob?w*.5:side+cw*.71,ky=mob?92+(U-92)*.5:h*.5;
-    /* cover: the photo always reaches past every viewport edge from the sun's position, with a margin for the breath */
-    var iw=Math.max(mob?w*2.1:w*1.5,kx/SX*1.06,(w-kx)/(1-SX)*1.06,ky/SY*(IW/IH)*1.06,((mob?U:h)-ky)/(1-SY)*(IW/IH)*1.06);
-    return {mob:mob,side:side,cw:cw,U:U,iw:iw,ih:iw*IH/IW,kx:kx,ky:ky,bh:mob?U:h};
+    var U=mob?Math.min(h*.44,w*.96):h,ih,kx,ky;
+    if(mob){U=h*.46-30;ih=Math.min(U-96,(w-2*side)*IH/IW*.9);kx=w*.5;ky=(96+U)/2}
+    else{ih=Math.min(h*.74,cw*.4*IH/IW,IH/2);kx=side+cw*.7;ky=Math.max(h*.53,92+ih*.52)}
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:ih*IW/IH,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
@@ -1686,21 +1687,16 @@ var field=(function(){
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    /* a very faint warm sunrise glow behind the phones, painted across the whole canvas (never a rect edge) */
+    var gr=Math.max(w,h)*(G.mob?.7:.62),gx=G.kx+G.iw*.05,gy=G.ky+G.ih*.18;
+    var g1=c.createRadialGradient(gx,gy,0,gx,gy,gr);ez(g1,"242,160,40",.17*e,0,14);c.fillStyle=g1;c.fillRect(0,0,w,h);
+    var g2=c.createRadialGradient(gx,gy-G.ih*.3,0,gx,gy-G.ih*.3,gr*.8);ez(g2,"0,136,176",.1*e,0,12);c.fillStyle=g2;c.fillRect(0,0,w,h);
     if(ok){
-      /* a very slow breath around the sun: push in ~3% over ~46s, eased back and forth */
-      var k=.5-.5*Math.cos(t*Math.PI*2/46),sc=(1+.03*k)*(1+.03*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*SX,y=G.ky-dh*SY-SP.v*G.ih*.04;
+      /* a slow float: up and down ~1% of the height over ~9s */
+      var f=Math.sin(t*Math.PI*2/9),sc=1+.03*(1-e);
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw/2,y=G.ky-dh/2+f*G.ih*.01+(1-e)*G.ih*.04-SP.v*G.ih*.05;
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
-      if(!G.mob){
-        /* the headline side stays quiet (DI): a long ink wash from the left, a soft top under the nav, and a base */
-        var lv=ez(c.createLinearGradient(0,0,G.side+G.cw*.6,0),"4,15,23",.94,0,14);c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=ez(c.createLinearGradient(0,0,0,h*.4),"4,15,23",.6,0,12);c.fillStyle=tv;c.fillRect(0,0,w,h);
-        var bv=ez(c.createLinearGradient(0,h*.55,0,h),"6,23,34",0,.92,14);c.fillStyle=bv;c.fillRect(0,0,w,h);
-      }else{
-        var tv2=ez(c.createLinearGradient(0,0,0,G.bh*.34),"4,15,23",.6,0,10);c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.34);
-        var mv=ez(c.createLinearGradient(0,G.bh*.66,0,G.bh),"6,23,34",0,1,12);c.fillStyle=mv;c.fillRect(0,G.bh*.66,w,G.bh*.34+1);
-        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
-      }
+      if(G.mob){var mv=ez(c.createLinearGradient(0,G.bh*.84,0,G.bh),"6,23,34",0,1,10);c.fillStyle=mv;c.fillRect(0,G.bh*.84,w,G.bh*.16+1);c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1)}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});

@@ -11,7 +11,7 @@ var PIPE=[
  ["Glycosaminoglycans","Respiratory","Chronic rhinosinusitis","Drug and diagnostic programs",0,0,"NIH-funded programs for a glycosaminoglycan-based therapeutic and a diagnostic test for eosinophilic chronic rhinosinusitis.",1]];
 /* glycomira.com (Team). Text-only masthead (CI/CL). Summaries only restate the site. */
 var TEAM=[
- {g:"Management team",name:"William P. Tew, Ph.D.",title:"CEO and Chairman of the Board, Director",sum:"Over 40 years in biopharma and device commercialization. Founded Chesapeake Biological Laboratories and Glycosan BioSystems; formerly at Johns Hopkins School of Medicine."},
+ {g:"Management team",name:"William P. Tew, Ph.D.",title:"CEO and Chairman of the Board, Director",sum:"Over 40 years in biopharma commercialization; founded Chesapeake Biological Laboratories and Glycosan BioSystems."},
  {g:"Management team",name:"Kenneth R. North",title:"Chief Financial Officer",sum:"Founding President and CEO of Seattle Bank; later raised $37.5M for Kineta Biotechnology. Leads fundraising."},
  {g:"Management team",name:"Justin R. Savage, Ph.D.",title:"SVP of Operations",sum:"Has directed operations at GlycoMira for 12 years; formerly at Prolexys Pharmaceuticals. PI on SBIR awards totaling over $2M."},
  {g:"Management team",name:"Abby Pulsipher, Ph.D.",title:"VP of Research, Director",sum:"Secured $5.1M in SBIR/STTR awards; oversees the rhinosinusitis programs. University of Utah faculty and Huntsman Cancer Institute member."},

@@ -86,8 +86,8 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk{width:76px;height:76px;overflow:visible}
+#pre .mk path{fill:none;stroke:var(--acc);stroke-width:3.2;stroke-linecap:round}#pre .mk circle{fill:var(--pink)}/* DR: the real mark at brand weight, not a hairline trace */
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -752,7 +752,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M80 18H32a14 14 0 0 0 0 28h32a14 14 0 0 1 0 28H14"/></svg>
+    <svg class="mk" viewBox="0 0 30 30"><path d="M27 4H9.5a5.5 5.5 0 0 0 0 11h12a5.5 5.5 0 0 1 0 11H3"/><circle class="vm-b" cx="27" cy="4" r="2.6"/></svg>
     <div class="wm"><span>VASCULAR RESCUE</span></div>
   </div>
   <span class="lab pl">Automated vascular access · Baltimore, Maryland</span>
@@ -1678,12 +1678,12 @@ function scene(){
   /* trajectory guide and needle (step 2) */
   s+='<path id="vrTr" class="vtr" d="M'+VR_E[0]+' '+VR_E[1]+'L'+VR_T[0]+' '+VR_T[1]+'"/>';
   s+='<path id="vrN" class="vnd" d="M'+VR_E[0]+' '+VR_E[1]+'L'+VR_T[0]+' '+VR_T[1]+'"/>';
-  s+='<g id="vrAng"><path class="vx" d="M'+(VR_T[0]+120)+' '+(VR_T[1]-125)+'A60 60 0 0 1 '+(VR_T[0]+140)+' '+(VR_T[1]-58)+'"/><text class="vac" x="'+(VR_T[0]+150)+'" y="'+(VR_T[1]-82)+'" style="font-size:'+fs+'px">ANGLE · DEPTH</text></g>';
+  s+='<g id="vrAng"><path class="vx" d="M'+(VR_T[0]+120)+' '+(VR_T[1]-125)+'A60 60 0 0 1 '+(VR_T[0]+140)+' '+(VR_T[1]-58)+'"/><text class="vac" x="'+(VR_T[0]+(mob?156:162))+'" y="'+(VR_T[1]-94)+'" style="font-size:'+(mob?fs-4:fs)+'px">ANGLE · DEPTH</text></g>';
   /* puncture flash and Doppler traces (step 3) */
   s+='<g id="vrHit"><circle class="vhit" cx="'+VR_T[0]+'" cy="'+VR_T[1]+'" r="12"/><circle class="vhit2" cx="'+VR_T[0]+'" cy="'+VR_T[1]+'" r="24"/></g>';
   var vw='',aw='';for(var x=0;x<=150;x+=3){vw+=(x?"L":"M")+(400+x)+" "+(470-6*Math.sin(x/150*Math.PI*2)-2).toFixed(1);var ph=(x%50)/50;aw+=(x?"L":"M")+(400+x)+" "+(520-(ph<.18?ph/.18*26:26*Math.exp(-(ph-.18)*7))).toFixed(1)}
-  s+='<g id="vrDop"><rect class="vdp" x="388" y="430" width="174" height="108"/><text x="396" y="448" style="font-size:'+(fs-1)+'px">DOPPLER</text>'+
-    '<path class="vdv" d="'+vw+'"/><path class="vda" d="'+aw+'"/><text class="vac" x="554" y="470" text-anchor="end" style="font-size:'+(fs-1)+'px">VEIN ✓</text></g>';
+  s+='<g id="vrDop"><rect class="vdp" x="388" y="430" width="174" height="108"/>'+(mob?'':'<text x="396" y="448" style="font-size:'+(fs-1)+'px">DOPPLER</text>')+''+
+    '<path class="vdv" d="'+vw+'"/><path class="vda" d="'+aw+'"/><text class="vac" x="554" y="448" text-anchor="end" style="font-size:'+(fs-1)+'px">VEIN ✓</text></g>';
   /* guidewire and sheath (step 4) */
   var wd='M'+VR_T[0]+' '+VR_T[1];for(var wx=VR_T[0]-10;wx>=90;wx-=10)wd+='L'+wx+' '+vrVein(wx).toFixed(1);s+='<path id="vrW" class="vwr" d="'+wd+'"/>';
   s+='<path id="vrSh" class="vsh" d="M'+(VR_E[0]-60)+' '+(VR_E[1]+66)+'L'+VR_T[0]+' '+VR_T[1]+'L'+(VR_T[0]-60)+' '+vrVein(VR_T[0]-60).toFixed(1)+'"/>';
@@ -1695,10 +1695,12 @@ function storyDraw(svg){
   var q=function(id){return $("#"+id,svg)};
   var E={fan:q("vrFan"),x:q("vrX"),tr:q("vrTr"),n:q("vrN"),ang:q("vrAng"),hit:q("vrHit"),dop:q("vrDop"),w:q("vrW"),sh:q("vrSh"),ok:q("vrOk"),vf:q("vrVf"),af:q("vrAf"),vfl:q("vrVflow"),afl:q("vrAflow"),
     cap:[0,1,2,3].map(function(i){return q("vrC"+i)})};
-  var NL=E.n.getTotalLength(),WL=E.w.getTotalLength(),SL=E.sh.getTotalLength();
+  var NL0=E.n.getTotalLength()+1,WL0=E.w.getTotalLength()+1,SL0=E.sh.getTotalLength()+1;
   var t0=performance.now();
   return function(p,b){
     if(!E.n.isConnected)return;
+    /* strokes are non-scaling, so dash lengths are in screen px: scale them or the needle stops short */
+    var m=svg.getScreenCTM(),k=m?Math.hypot(m.a,m.b):1,NL=NL0*k,WL=WL0*k,SL=SL0*k;
     var s1=seg(p,.02,.16),s2=seg(p,.27,.46),s3=seg(p,.53,.68),s4=seg(p,.77,.94);
     svg.style.opacity=(.3+.7*b).toFixed(3);
     var t=(performance.now()-t0)/1000;
@@ -1946,7 +1948,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk path"),L=Math.ceil(mk.getTotalLength())+2;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();

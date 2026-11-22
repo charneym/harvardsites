@@ -228,7 +228,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene text.t{font-size:10.5px;letter-spacing:.14em;fill:rgba(var(--boner),.62)}
 .scene #lb1,.scene #lb2,.scene #lb3,.scene #scRd,.scene #hLab{opacity:0}
 .scene svg.mob text{font-size:24px;letter-spacing:.02em}
-.scene svg.mob text.t{font-size:20px;letter-spacing:.03em}/*</R:scenecss>*/
+.scene svg.mob text.t{font-size:20px;letter-spacing:.03em}
+.scene svg.mob text.a{font-size:22px;letter-spacing:.02em}/*</R:scenecss>*/
 
 /* focus list (industries) */
 .ind{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap);border-top:1px solid var(--hairD)}
@@ -1121,6 +1122,9 @@ var field=(function(){
     oc.fillStyle=sh;oc.fillRect(0,0,S,S);oc.globalCompositeOperation="source-over";
     return S;
   }
+  /* a fine grain over the whole field breaks the 8-bit banding of the long scrims, so no straight contour can show (DP) */
+  var NZ=(function(){var n=document.createElement("canvas");n.width=n.height=128;var x=n.getContext("2d"),d=x.createImageData(128,128),i,v;
+    for(i=0;i<d.data.length;i+=4){v=Math.random()*255|0;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=10}x.putImageData(d,0,0);return c.createPattern(n,"repeat")})();
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
   function frame(once){
@@ -1146,6 +1150,7 @@ var field=(function(){
         var mv=ez(c.createLinearGradient(0,G.bh*.78,0,G.bh),"11,11,13",0,1,10);c.fillStyle=mv;c.fillRect(0,G.bh*.78,w,G.bh*.22+1);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
+      c.setTransform(1,0,0,1,0,0);c.fillStyle=NZ;c.fillRect(0,0,cv.width,cv.height);c.setTransform(dpr,0,0,dpr,0,0);
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});

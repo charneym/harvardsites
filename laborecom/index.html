@@ -91,6 +91,10 @@ h1,h2,h3{text-wrap:balance}
 #pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
+/* DR: the loader shows the real filled mark and the logo lockup (name + descriptor line), never a hairline trace or a wrapping all-caps line */
+#pre .mk{width:96px;height:72px}
+#pre .wm{font:600 clamp(32px,3.6vw,46px)/1.1 var(--disp);letter-spacing:-.01em;margin-right:0;white-space:nowrap}
+#pre .wd{font:400 11px/1 var(--mono);letter-spacing:.24em;margin-right:-.24em;text-transform:uppercase;color:var(--stone);margin-top:-22px;opacity:0}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
@@ -720,8 +724,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M13 58a9 9 0 1 0 18 0a9 9 0 1 0 -18 0M21 40a13 13 0 1 0 26 0a13 13 0 1 0 -26 0M40 36a10 10 0 1 0 20 0a10 10 0 1 0 -20 0M31 58a15 15 0 1 0 30 0a15 15 0 1 0 -30 0M76 20V78"/></svg>
-    <div class="wm"><span>LABORECOM THERAPEUTICS</span></div>
+    <svg class="mk" viewBox="0 0 40 30"><defs><linearGradient id="lbgP" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#6a14e6"/><stop offset="1" stop-color="#8a90ff"/></linearGradient></defs><g fill="url(#lbgP)"><circle cx="6.5" cy="20" r="4.6"/><circle cx="13" cy="10.5" r="7"/><circle cx="21.5" cy="9" r="5.6"/><circle cx="15" cy="20" r="7.4"/><circle cx="22" cy="16.5" r="5.4"/></g><rect x="30" y="1" width="2" height="28" fill="#a99cff"/></svg>
+    <div class="wm"><span>Laborecom</span></div>
+    <div class="wd">Therapeutics</div>
   </div>
   <span class="lab pl">Cardiology &middot; Chicago, Illinois</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1604,8 +1609,8 @@ function scene(){
    '<g id="lbV">'+LB_V.map(function(){return '<g class="lb-vg"><circle class="lb-vs" r="7"/><path class="lb-kn" d="M-4 9l-3 6M4 9l3 6"/></g>'}).join("")+'</g>'+
    '<g id="lbP">'+[0,1].map(function(){return '<g class="lb-pg"><path class="lb-ppl" d="M-15 0H15"/><circle class="lb-pp" cx="-15" r="4.5"/><circle class="lb-pp" cx="-5" r="4.5"/><circle class="lb-pp" cx="5" r="4.5"/><circle class="lb-pp" cx="15" r="4.5"/></g>'}).join("")+'</g>'+
    '<g id="lbW1">'+lbWbc()+'</g><g id="lbW2">'+lbWbc()+'</g>'+
-   '<text class="a" id="lbPL" x="'+(mob?236:250)+'" y="'+(mob?186:184)+'" text-anchor="middle">LBRC-101</text>'+
-   '<text class="a" id="lbVL" x="'+(mob?500:478)+'" y="'+(mob?186:190)+'" text-anchor="middle">LBRC</text>'+
+   '<text class="a" id="lbPL" x="'+(mob?236:250)+'" y="'+(mob?178:184)+'" text-anchor="middle">LBRC-101</text>'+
+   '<text class="a" id="lbVL" x="'+(mob?500:478)+'" y="'+(mob?178:190)+'" text-anchor="middle">LBRC</text>'+
    caps.map(function(t,i){return '<text class="cap" id="lbC'+i+'" x="400" y="'+(mob?534:532)+'" text-anchor="middle">'+t+'</text>'}).join("")+
   '</svg>';
 }
@@ -1864,7 +1869,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,scale:.92,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1873,7 +1878,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.8,ease:"silk"},0).to("#pre .wd",{opacity:1,duration:.6,ease:"power1.out"},.45)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
@@ -1882,7 +1887,7 @@ function preload(){
       var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
         .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)
-        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .to(["#pre .mk","#pre .wd","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
         .add(function(){field.intro(2);field.start()},mob?1.0:.95).fromTo("#field",{filter:"opacity(0)"},{filter:"opacity(1)",duration:1.8,ease:"power2.out",clearProps:"filter"},mob?1.0:.95)
         .add(function(){if(window._heroIn)window._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)

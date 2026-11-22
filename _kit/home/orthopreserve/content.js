@@ -8,7 +8,7 @@ var PIPE=[
  ["2023","NIH SBIR grant awarded","Funded animal studies, long-term durability simulation testing and refinement of the minimally invasive surgical technique.","Complete",1],
  ["2024","FDA Breakthrough Device designation","Granted December 2024 for Defender. It confirms a significant clinical need and streamlines the FDA review pathway.","Complete",1],
  ["2025","FDA TAP Program acceptance","The first orthopedic device accepted into the FDA Total Product Life Cycle Advisory Program, enabling direct collaboration with FDA and other stakeholders.","Complete",1],
- ["2026–27","IDE submission and first-in-human trials","The current seed round will fund the remaining pre-clinical testing required for an Investigational Device Exemption and first-in-human clinical trials, targeted for 2027.","In progress",0]];
+ ["2026–27","IDE and first-in-human trials","The current seed round will fund the remaining pre-clinical testing required for an Investigational Device Exemption and first-in-human clinical trials, targeted for 2027.","In progress",0]];
 /* orthopreserve.com/team. Text-only masthead. */
 var TEAM=[
  {g:"Leadership",name:"Jonathan Schwartz",title:"Chief Executive Officer",sum:"Inventor of the implant, first developed during his graduate work in biomechanical engineering at Georgia Tech; polymer science research and biotech engineering project management."},

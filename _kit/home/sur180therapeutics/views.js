@@ -25,7 +25,7 @@ function vHome(){
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1 in 10</span><p class="k">Women of reproductive age live with endometriosis globally</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">7–10 yrs</span><p class="k">Average diagnostic delay from symptom onset</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">0</span><p class="k">Approved oral treatments that address the disease without affecting fertility</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">None</span><p class="k">Approved oral treatments that address the disease without affecting fertility</p></div>'+
    '</div>'+
   '</div></section>'+
 

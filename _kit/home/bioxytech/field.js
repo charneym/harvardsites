@@ -14,8 +14,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the map fills the render (1100x1200); it stands in the open area right of the text, below the header */
-    var ih=mob?(U-78)*.88:Math.min((h-128)*1.0,cw*.66),iw=ih*(1100/1200);
-    var kx=mob?w*.5:side+cw*.73,ky=mob?78+(U-78)*.5:118+(h-128)*.5;
+    var ih=mob?(U-70)*.92:Math.min((h-128)*1.0,cw*.66),iw=ih*(1100/1200);
+    var kx=mob?w*.56:side+cw*.73,ky=mob?62+(U-70)*.4:118+(h-128)*.5;
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -46,8 +46,8 @@ var field=(function(){
         var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(6,10,13,.6)");tv.addColorStop(1,"rgba(6,10,13,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
         var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(11,16,20,0)");bv.addColorStop(1,"rgba(11,16,20,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
       }else{
-        var tv2=c.createLinearGradient(0,0,0,G.bh*.28);tv2.addColorStop(0,"rgba(6,10,13,.7)");tv2.addColorStop(1,"rgba(6,10,13,0)");c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.28);
-        var mv=c.createLinearGradient(0,G.bh*.62,0,G.bh);mv.addColorStop(0,"rgba(11,16,20,0)");mv.addColorStop(1,"rgba(11,16,20,1)");c.fillStyle=mv;c.fillRect(0,G.bh*.62,w,G.bh*.38+1);
+        var tv2=c.createLinearGradient(0,0,0,G.bh*.2);tv2.addColorStop(0,"rgba(6,10,13,.55)");tv2.addColorStop(1,"rgba(6,10,13,0)");c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.2);
+        var mv=c.createLinearGradient(0,G.bh*.66,0,G.bh);mv.addColorStop(0,"rgba(11,16,20,0)");mv.addColorStop(1,"rgba(11,16,20,1)");c.fillStyle=mv;c.fillRect(0,G.bh*.66,w,G.bh*.34+1);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

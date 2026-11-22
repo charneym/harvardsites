@@ -51,7 +51,7 @@ function eyeScene(o){
   for(i=0;i<4;i++)g+='<path class="en sD" d="M'+(SKX-14+i*3.4)+' '+(SKY-11)+'v22"/>';
   g+='<circle class="wl sD" cx="'+(LZX-6)+'" cy="'+LZY+'" r="4.5"/>';
   g+='<circle class="wl sD" cx="'+(CMX-9)+'" cy="'+CMY+'" r="8"/><circle class="en sD" cx="'+(CMX-9)+'" cy="'+CMY+'" r="3.5"/>';
-  g+=T('t',HX,HY-20,o.mob?'SENSOR':'WEARABLE SENSOR',null,1);
+  g+=T('t',HX,HY-(o.mob?24:20),o.mob?'SENSOR':'WEARABLE SENSOR',null,1);
   g+=T('t',HX+12,SKY+4,'SOUND');
   g+=T('t',HX+12,LZY+4,'LASER');
   g+=T('t',HX+12,CMY+4,'CAMERA');
@@ -67,7 +67,7 @@ function eyeScene(o){
   g+='<path class="wl sD" d="M'+(PX+8)+' '+PY+'h'+(PW-16)+'q8 0 8 8v'+(PH-16)+'q0 8-8 8h-'+(PW-16)+'q-8 0-8-8v-'+(PH-16)+'q0-8 8-8Z"/>';
   g+='<path class="en sD" d="M'+(PX+PW/2-12)+' '+(PY+12)+'h24"/>';
   g+='<path class="wo sD" d="M'+(PX+14)+' '+(PY+PH-46)+'h'+(PW-28)+'M'+(PX+14)+' '+(PY+PH-34)+'h'+(PW-44)+'"/>';
-  g+=T('t',PX+PW/2,PY+PH+28,'PATIENT APP','middle',1);
+  g+=T('t',PX+PW/2,PY+PH+(o.mob?31:28),'PATIENT APP','middle',1);
   g+='</g>';
   /* ---- dynamic: sound wavefronts, the vibrating sclera, beam, return, speckle, trace, packet ---- */
   g+='<g id="scWave">';for(i=0;i<NW;i++)g+='<path class="wv"/>';g+='</g>';
@@ -81,7 +81,7 @@ function eyeScene(o){
   g+='<path id="scRoute" class="am" d="M'+(HX+HW/2)+' '+(HY+HH+28)+'C'+(HX+HW/2)+' '+(SCH-30)+' '+(PX-60)+' '+(PY+PH/2+40)+' '+PX+' '+(PY+PH/2)+'"/>';
   g+='<rect id="scPkt" class="pk" x="-5" y="-5" width="10" height="10"/>';
   g+='<g id="scScr" class="scr"><text class="a" x="'+(PX+PW/2)+'" y="'+(PY+64)+'" text-anchor="middle">IOP</text><text class="t" x="'+(PX+PW/2)+'" y="'+(PY+86)+'" text-anchor="middle">mmHg</text></g>';
-  g+='<g id="scDoc"><text class="a" x="'+(PX+PW/2)+'" y="'+(PY-22)+'" text-anchor="middle">→ SPECIALIST</text></g>';
+  g+='<g id="scDoc">'+(o.mob?'':'<text class="a" x="'+(SCW-16)+'" y="'+(PY-22)+'" text-anchor="end">→ SPECIALIST</text>')+'</g>';
   /* ---- step labels, in the clear band under the scene ---- */
   var ly=SCH-8;
   g+='<g id="lb1"><text class="a" x="20" y="'+ly+'">'+(o.mob?'SOUND SETS THE SCLERA MOVING':'A SOUND WAVE SETS THE SCLERA OSCILLATING')+'</text></g>';
@@ -118,7 +118,7 @@ function storyDraw(svg){
     var fr=Math.floor(p*90);
     E.spk.forEach(function(el,k){var s=SPK[k],tw=.25+.75*Math.abs(Math.sin(s.s+fr*1.7*(1+k%3)));op(el,b*rd*tw)});
     E.tr[0].style.strokeDashoffset=(E.tr[1]*(1-tr)).toFixed(1);op(E.tr[0],b*(tr>0?1:0)*(1-go*.6));
-    op(E.iop,b*seg(p,.56,.62)*(1-go*.6));
+    op(E.iop,b*seg(p,.56,.62)*(svg.classList.contains('mob')?1-seg(p,.64,.7):1-go*.6));
     /* 3. the reading travels to the patient app, and on to the specialist */
     op(E.route,b*go*(1-seg(p,.94,1)*.5)*.8);
     if(RL){var pt=E.route.getPointAtLength(RL*Math.min(1,go*1.15));E.pkt.setAttribute("transform","translate("+pt.x.toFixed(1)+" "+pt.y.toFixed(1)+")")}

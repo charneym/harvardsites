@@ -1,0 +1,26 @@
+# Sharp Biomedical (slug: sharpbiomedical) — HOME-ONLY build, batch 2026-11g
+
+- Site: https://www.sharpbiomedical.com/ (Wix; read 2026-11-22). Bad-site evidence: first screen is the logo above a flat blue block beside one stock nurse-and-patient photo, then a black band; below, two large empty white areas (the Wix "Our Vision" and "Altitude" strips render blank until scrolled/animated), a grid of stock photos (Wix and Unsplash stock), a newsletter box and a footer. The phone number is not a link, the "More" nav item is a dropdown to two near-empty pages (get-to-know-us shows only the footer), and there is no team, news or product imagery.
+- Domain check: the title is "Home | Sharp Biomedical", and the site text names Sharp Biomedical and its device "Altitude by Sharp" (spinal fixation, outpatient). UND Center for Innovation member spotlight (https://www.innovators.net/member-spotlight-sharp-biomedical/) lists the website as sharpbiomedical.com for Dan Newman's company. LinkedIn: "Dan Newman - CEO & Founder @ Sharp Biomedical". No newer domain found.
+- Type: medtech (spinal fixation implant and toolset for outpatient pain clinics). No pathogens, toxins or biodefence.
+- HQ: the October 2026 press release dateline is Fargo, N.D. (the company is North Dakota-backed and UND-founded). The website footer gives 4445 W 77th Street, Edina, MN 55435, phone 612-388-3950; the build uses the website address.
+- Lead: Dan Newman, Founder and CEO (PR Newswire, Pulse 2.0, LinkedIn). A doctoral student at UND (Biomedical Engineering) when he founded the company in 2024. No published pronouns or doctorate, so the greeting is "Dear Dan Newman".
+- Best email: info@sharpbiomedical.com (the only published address, on the site's footer and contact page). No personal address found in the press release, the UND spotlight or search.
+
+## Activity (pre-screen OK)
+- 2026-10-12: pre-seed round closed, led by gener8tor 1889 with several physician angel investors (PR Newswire, https://www.prnewswire.com/news-releases/sharp-biomedical-closes-pre-seed-funding-led-by-gener8tor-to-advance-outpatient-spine-procedures-for-early-to-mid-stage-chronic-pain-302905849.html; Pulse 2.0, https://pulse2.com/sharp-biomedical-closes-pre-seed-funding-led-by-gener8tor-1889-to-advance-outpatient-spine-procedures/; BioSpace and others).
+- Site: "Currently in development, launching Q4 2027".
+
+## Facts used
+- Home (site): "Surgeries should be less painful."; "Intelligent Medical Devices"; "moving procedures out of the hospital, and into the surgery center"; the Our Vision paragraph (minimally invasive, outpatient, shorter recovery, fewer complications, same-day home, same outcomes); Altitude by Sharp, "A revolutionary spinal fixation device", Q4 2027; the four points (1" incision into the interspinous space; implant expansion removes the need for bone dissection; smaller than a quarter, spinal fusion with a compact implant; faster, moderate anesthesia, outpatient surgery setting); info@ email, Edina address, phone.
+- Press release / Pulse 2.0: purpose-built toolset and implant system for manual procedures in outpatient clinics without major capital investment or infrastructure upgrades; early-to-mid-stage chronic pain; less reliance on hospital infrastructure, robotics and long operating times; round funds the development and testing pathway; next: regulatory milestones. Advisor Dr. Danny Neuman, interventional pain specialist, Medical Staff President at Ascentist Healthcare.
+- UND CFI spotlight: founded 2024 by Dan Newman, doctoral student in UND Biomedical Engineering; Runway Accelerator, gBeta Grand Forks; cadaver testing with physician partners across varied anatomies.
+
+## Palette / type
+Logo PNG (wixstatic 46e4e4_55fe28ae...): blue #4b91f1 rounded-square mark with a white chevron, "SHARP / BIOMEDICAL" in a blue serif. Ink deep navy #08101c; accent #2f74d6 (buttons), #6ea7f5 / #8fbaf7 on ink; cool white #f4f6f9. Source Serif 4 (echoes their serif wordmark) and Manrope. The mark is redrawn as SVG (their rounded square kept, as it is their logo).
+
+## Hero
+Option (b): a real Unsplash photograph of a lumbar spine model (two vertebrae, disc, nerve roots), the same Unsplash image Sharp uses on sharpbiomedical.com (served there as wixstatic nsplsh_a1829f581e894211b2e9865be4a9cb05~mv2.jpg, 6000x4000; Wix's "nsplsh_" prefix = Unsplash library, Unsplash licence). Cut from its white wall with a hand-traced matte (home/sharpbiomedical/cut.py: tight feather on the in-focus edges, soft on the out-of-focus processes; dark shelf graded into the ink), output 1099x1145 RGBA, drawn at or below native size with a slow Ken Burns push and a brand-blue glow painted across the whole canvas. Not used by any other concept (grep of the repo). Considered and rejected: NIH 3D Print Exchange lumbar model 3DPX-000331 (CC0; file download 403), Pexels spine X-rays (off-subject).
+
+## Story
+Fine-line lateral view of two lumbar vertebrae, disc, nerve root and skin: 1) a 1-inch incision over the interspinous space and the access path; 2) the implant (drawn as a labelled schematic block, since Sharp has not published its geometry) slides in and expands between the spinous processes, no bone removed; 3) access withdrawn, outpatient / moderate anesthesia / home same day.

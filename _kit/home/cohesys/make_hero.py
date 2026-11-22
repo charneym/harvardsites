@@ -30,7 +30,10 @@ yy,xx=np.mgrid[0:Hh,0:W].astype(np.float32)
 cx,cy=W*.55,Hh*.52
 d=np.sqrt(((xx-cx)/(W*.52))**2+((yy-cy)/(Hh*.52))**2)
 f=np.clip((1.0-d)/0.55,0,1); f=f*f*(3-2*f)
-alpha=key*f
+# and a guaranteed fall to zero at every border of the image, so its rectangle can never show (DP)
+ex=np.clip(np.minimum(xx,W-1-xx)/(W*.16),0,1);ey=np.clip(np.minimum(yy,Hh-1-yy)/(Hh*.16),0,1)
+ex=ex*ex*(3-2*ex);ey=ey*ey*(3-2*ey)
+alpha=key*f*ex*ey
 # grade: lift contrast a touch, warm the bone slightly toward the brand's coral, deepen shadows
 g=np.clip((a-.04)*1.06,0,1)**1.12
 warm=np.array([1.03,.985,.955])

@@ -13,7 +13,7 @@ var PXG=(function(){var R=pxR(9),a=[];PXL.forEach(function(l,k){var n=Math.round
 var PXN=[[372,300,22],[396,440,19],[54,196,20],[318,468,17],[42,372,18]];
 /* PPARα receptors inside the nucleus, and the PLX-200 molecules that find them */
 var PXP=[[520,200],[612,182],[668,262],[536,330],[640,350]];
-var PXM=(function(){var R=pxR(31);return PXP.map(function(p,i){return {sx:-30-R()*60,sy:60+R()*400,tx:p[0]-4,ty:p[1]-22,d:i*.08}})})();
+var PXM=(function(){var R=pxR(31);return PXP.map(function(p,i){return {sx:56+R()*30,sy:150+R()*240,tx:p[0]-4,ty:p[1]-22,d:i*.08}})})();
 function pxMol(){/* gemfibrozil skeleton, schematic: benzene ring, ether, chain, carboxyl */
   return '<path d="M0 -7L6 -3.5V3.5L0 7L-6 3.5V-3.5Z M6 0H11L15 -4L20 0L24 -4L28 0 M28 0L31 4 M28 0L32 -4"/>'}
 function pxNuc(){var d='',d2='',ru='',i;for(i=0;i<=44;i++){var x=NX-110+i*5,y=NY+30+Math.sin(i*.44)*10,y2=NY+30-Math.sin(i*.44)*10;d+=(i?'L':'M')+x+' '+y.toFixed(1);d2+=(i?'L':'M')+x+' '+y2.toFixed(1);if(i%3==0)ru+='M'+x+' '+y.toFixed(1)+'L'+x+' '+y2.toFixed(1)}return [d,d2,ru]}
@@ -21,7 +21,7 @@ function pxScene(o){
   var g='',i;
   g+='<svg class="'+(o.mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
   g+='<g id="scBase">';
-  g+='<path class="cell sD" d="M20 40C180 16 420 12 556 48S744 126 738 260S690 490 518 500S156 506 48 462S10 300 20 40"/>';
+  g+='<path class="cell sD" d="M20 40C180 16 420 12 556 48S744 126 738 260S690 490 518 500S156 506 60 466C22 440 14 150 20 40"/>';
   g+='<ellipse class="nuc sD" cx="'+NX+'" cy="'+NY+'" rx="170" ry="150"/><ellipse class="nuc2 sD" cx="'+NX+'" cy="'+NY+'" rx="160" ry="140"/>';
   for(i=0;i<9;i++){var a=Math.PI*(.62+i*.095),x=NX+Math.cos(a)*165,y=NY+Math.sin(a)*145;g+='<circle class="pore sD" cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="4"/>'}
   var dn=pxNuc();g+='<path class="dna sD" d="'+dn[0]+'"/><path class="dna sD" d="'+dn[1]+'"/><path class="rung sD" d="'+dn[2]+'"/>';

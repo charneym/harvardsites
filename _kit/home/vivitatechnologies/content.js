@@ -18,10 +18,10 @@ var EVID=[
  ["Patented","SPEAR Platform, US 9,220,733; BARE patches, US 9,827,350"]];
 /* the team: vivitatechnologies.com/team. Text-only masthead (CI/CL). */
 var TEAM=[
- {g:"Founders",name:"Maelene L. Wong, PhD",title:"Co-founder and Chief Executive Officer",sum:"Pioneered the ViVita Process as a graduate student. 16 years in cardiovascular tissue engineering; PhD in Biomedical Engineering, UC Davis; BS in Bioengineering, UC Berkeley."},
- {g:"Founders",name:"Leigh G. Griffiths, VetMB, PhD",title:"Co-founder and Chairman",sum:"Runs the cardiovascular surgery program at UC Davis, where his research finds ways past the barriers to transplanting animal-derived tissue scaffolds."},
- {g:"Team",name:"Jim D. Olson, MBA",title:"Corporate Development",sum:"Over 40 years in leadership roles; founded WestShore Management Group. Business Specialist at the UC Davis Engineering Translational Technology Center."},
- {g:"Team",name:"Fabian Lara, MD",title:"Biomaterials Scientist",sum:"MD, Universidad Autónoma de Guadalajara; formerly a Postdoctoral Scholar in UC Davis Pathology and Laboratory Medicine."}];
+ {g:"Founders",name:"Maelene L. Wong, PhD",title:"Co-founder and Chief Executive Officer",sum:"Pioneered the ViVita Process as a graduate student. PhD in Biomedical Engineering, UC Davis."},
+ {g:"Founders",name:"Leigh G. Griffiths, VetMB, PhD",title:"Co-founder and Chairman",sum:"Runs the cardiovascular surgery program at the University of California, Davis."},
+ {g:"Team",name:"Jim D. Olson, MBA",title:"Corporate Development",sum:"Over 40 years in leadership roles; founder of WestShore Management Group."},
+ {g:"Team",name:"Fabian Lara, MD",title:"Biomaterials Scientist",sum:"MD; formerly a Postdoctoral Scholar in UC Davis Pathology and Laboratory Medicine."}];
 /* news: only items with a working link. [date, headline, source, url] */
 var NEWS=[
  ["July 2025","NIH SBIR award: unfixed, xenogeneic extracellular matrix for crimp damage-resistant and regenerative transcatheter heart valve prostheses","NIH",REP+"11185741"],
@@ -29,5 +29,5 @@ var NEWS=[
  ["May 2017","NIH SBIR award: novel xenogeneic extracellular matrix biomaterial for cardiovascular prostheses","NIH",REP+"9254357"],
  ["2016","Startup Month: ViVita Technologies","Comstock’s","https://www.comstocksmag.com/web-only/startup-month-vivita-technologies"],
  ["November 2014","Maelene Wong, co-founder and CEO, ViVita","Sacramento Business Journal","https://www.bizjournals.com/sacramento/print-edition/2014/11/21/maelene-wong-co-founder-and-ceo-vivita.html"],
- ["May 2013","New approach to heart valve replacement wins Big Bang! business competition","UC Davis","https://www.ucdavis.edu/news/new-approach-heart-valve-replacement-wins-big-bang-business-competition"]];
+ ["May 2013","A new approach to heart valve replacement wins the Big Bang! Business Competition","UC Davis","https://www.ucdavis.edu/news/new-approach-heart-valve-replacement-wins-big-bang-business-competition"]];
 var SHEETS=[];

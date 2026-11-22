@@ -23,9 +23,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Our mission</span>'+
    '<h2 class="txt" id="mani">Our founder was inspired to build the Wave cushion after caring for a military veteran near death from infected bed sores, who couldn’t afford the treatment he had been prescribed. Wave makes <em>prevention affordable to all.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">60,000+</span><span class="k">US deaths each year attributed to bed sores, as cited by Wave (2020)</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$500K</span><span class="k">Raised from investors in January 2020 to bring the cushion to market</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2</span><span class="k">Clinical studies authorized by the VHA Innovation Ecosystem</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">60,000+</span><p class="k">US deaths each year attributed to bed sores, as cited by Wave (2020)</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$500K</span><p class="k">Raised from investors in January 2020 to bring the cushion to market</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><p class="k">Clinical studies authorized by the VHA Innovation Ecosystem</p></div>'+
    '</div>'+
   '</div></section>'+
 

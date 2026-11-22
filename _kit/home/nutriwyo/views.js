@@ -63,7 +63,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Pharmacy, pharmacology <em>and wound surgery.</em></h2></div><p data-r>Founded by a board-certified geriatric pharmacist, with a pharmacology professor as co-founder and wound-healing surgeons and large-animal experts as advisors and collaborators.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">From pharmacy <em>to wound surgery.</em></h2></div><p data-r>Founded by a board-certified geriatric pharmacist, with a pharmacology professor as co-founder and wound-healing surgeons and large-animal experts as advisors and collaborators.</p></div>'+
    team()+
    '<div class="plat light-plat">'+
     '<div><span class="lab kick" data-r>Funding</span><p data-r>A Phase I STTR grant from NIH-NIDDK (1R41DK125213) to test the cathepsin K inhibitor in a porcine model of diabetic wound healing.</p></div>'+

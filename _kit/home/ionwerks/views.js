@@ -1,7 +1,7 @@
 /* ================= VIEWS (home only: Technology / Products / Team / News open build-out pages; Contact scrolls) ================= */
 function lines(){return '<ul class="pfr">'+LINES.map(function(c){return '<li><span class="lab tg">'+esc(c[1])+'</span><h3>'+esc(c[0])+'</h3><p>'+esc(c[2])+'</p><a class="lab ul lk" href="'+c[3]+'" target="_blank" rel="noopener">Details</a></li>'}).join("")+'</ul>'}
 function firsts(){return '<ol class="frs">'+FIRSTS.map(function(a){return '<li><span class="y">'+esc(a[0])+'</span><p>'+esc(a[1])+'</p></li>'}).join("")+'</ol>'}
-function sites(){return '<div class="crd"><span class="lab" data-r>Systems designed, delivered and integrated at</span><p data-r>'+SITES.map(function(x){return '<span>'+esc(x)+'</span>'}).join(' <i aria-hidden="true">·</i> ')+'</p></div>'}
+function sites(){return '<div class="crd"><span class="lab" data-r>Systems designed, delivered and integrated at</span><p data-r>'+SITES.map(function(x){return '<span>'+esc(x)+'</span>'}).join(' ')+'</p></div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
@@ -17,9 +17,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Who we are</span>'+
    '<h2 class="txt" id="mani">Since 1986, our engineers and research scientists have designed, delivered and integrated <b class="w0">complete spectrometer systems</b>, from the ion source to the detector <em>and the electronics that time every ion.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">1986</span><span class="k">Founded in Houston by Dr. J. Albert Schultz, for surface analysis</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">26</span><span class="k">Phase I SBIR projects completed, funded by DoD, DOE, NASA, NIH and NSF</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">R&amp;D 100</span><span class="k">Award in 1997, with Argonne, for our MSRI analyzer</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">1986</span><p class="k">Founded in Houston by Dr. J. Albert Schultz, for surface analysis</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">26</span><p class="k">Phase I SBIR projects completed, funded by DoD, DOE, NASA, NIH and NSF</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">R&amp;D 100</span><p class="k">Award in 1997, with Argonne, for our MSRI analyzer</p></div>'+
    '</div>'+
    '<div class="plat">'+
     '<div><span class="lab kick" data-r>Ion beams and sources</span><p data-r>Pulsed alkali beam lines on surface ionization sources, designed and simulated for each vacuum system they attach to.</p></div>'+

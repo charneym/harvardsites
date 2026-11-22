@@ -999,7 +999,7 @@ var PUBS=[
  ["Nature Communications, 2023","Genetic and pharmacologic inhibition of ALDH1A3 as a treatment of β-cell failure","https://doi.org/10.1038/s41467-023-36315-4"],
  ["Exp. Mol. Med., 2024","Reversing pancreatic β-cell dedifferentiation in the treatment of type 2 diabetes","https://www.nature.com/articles/s12276-023-01043-8"]];
 function pubs(){return '<div class="ev pubs"><span class="lab kick" data-r>Publications</span><ul class="pbl">'+PUBS.map(function(p){return '<li data-r><a href="'+p[2]+'" target="_blank" rel="noopener"><span class="lab">'+esc(p[0])+'</span><span class="pt2">'+esc(p[1])+'</span>'+ARR+'</a></li>'}).join("")+'</ul></div>'}
-function buy(){return '<div class="bk"><span class="lab kick" data-r>Backed by</span><p class="cr" data-r><span>Accelerator Life Science Partners</span><i>·</i><span>BioAdvance</span><i>·</i><span>Pier 70 Ventures</span><i>·</i><span>WRF Capital</span><i>·</i><span>New Jersey Health Foundation</span><i>·</i><span>NIH SBIR (NIDDK, NCI)</span><i>·</i><span>Andy Hill CARE Fund</span></p></div>'}
+function buy(){return '<div class="bk"><span class="lab kick" data-r>Backed by</span><p class="cr" data-r><span>Accelerator Life Science Partners</span><i>·</i><span>BioAdvance</span><i>·</i><span>Pier 70 Ventures</span><i>·</i><span>WRF Capital</span><i>·</i><span>7G BioVentures</span><i>·</i><span>New Jersey Health Foundation</span><i>·</i><span>NIH SBIR (NIDDK, NCI)</span><i>·</i><span>Andy Hill CARE Fund</span></p></div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -1024,7 +1024,7 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Stop the signal <em>where it starts.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Source</span><span>Receptor</span><span>Block</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2>Vitamin A, made into a signal.</h2><p>Retinol (vitamin A) enters the cell, and the enzyme ALDH1A3 turns it into retinoic acid, the ligand of the retinoid nuclear receptors. In diabetes and in many cancers, this enzyme is pathogenically active.</p></article>'+
+     '<article class="step on"><h2>Vitamin A becomes a signal.</h2><p>Retinol (vitamin A) enters the cell, and the enzyme ALDH1A3 turns it into retinoic acid, the ligand of the retinoid nuclear receptors. In diabetes and in many cancers, this enzyme is pathogenically active.</p></article>'+
      '<article class="step"><h2>The receptor switches on.</h2><p>Retinoic acid moves into the nucleus and activates the receptors bound to DNA, changing which genes are expressed. In the pancreas, this drives β cell dedifferentiation and failure.</p></article>'+
      '<article class="step"><h2>Blocked at the source.</h2><p>A Kayothera inhibitor occupies the enzyme, so the ligand is never made and the receptors stay quiet. In preclinical models, β cells returned to a functional, mature state.</p></article>'+
     '</div></div>'+
@@ -1194,7 +1194,7 @@ var ENZ={x:214,y:262},PORE={x:384,y:236},REC={x:528,y:300},NUC={x:540,y:272,r:15
 var MOLS=(function(){var s=37,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff},a=[],i;
   for(i=0;i<16;i++){var ang=-1.1+R()*2.2;a.push({sx:44,sy:150+R()*240,mx:120+R()*30,my:ENZ.y+(R()-.5)*120,
     ex:REC.x-34+R()*68,ey:REC.y-30+(R()-.5)*18,ox:(R()-.5)*30,oy:(R()-.5)*26,d:i/16*.62,ang:ang,
-    px:ENZ.x+Math.cos(ang+Math.PI)*62,py:ENZ.y+Math.sin(ang+Math.PI)*46})}return a})();
+    px:ENZ.x+Math.cos(ang+Math.PI)*82,py:ENZ.y+Math.sin(ang+Math.PI)*62})}return a})();
 /* a retinoid glyph: the trimethylcyclohexene ring and its polyene tail (the shape of retinol and retinoic acid) */
 function retinoid(cls,acid){var g='<g class="'+cls+'"><path d="M-14 -4l5 -6h7l4 6l-4 6h-7z"/><path d="M-2 0l5 -4l5 4l5 -4l5 4l5 -4"/>';
   if(acid)g+='<circle cx="25" cy="-4" r="2.6"/>';return g+'</g>'}
@@ -1248,7 +1248,7 @@ function scene(){return cellScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;return [p,L]})};
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),on:$("#scOn",svg),tr:$$("#scOn .tr",svg),inh:$("#scInh",svg),
-    mo:$$(".mo",svg).map(function(el){return {el:el,m:MOLS[+el.getAttribute("data-k")],rl:$(".rl",el),ra:$(".ra",el)}}),
+    mo:$$(".mo",svg).map(function(el){return {el:el,k:el.getAttribute("data-k"),m:MOLS[+el.getAttribute("data-k")],rl:$(".rl",el),ra:$(".ra",el)}}),
     a1:$("#la1",svg),a2:$("#la2",svg),a3:$("#la3",svg),l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
   var lastB=-1;
   function draw(list,v){list.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1)})}
@@ -1264,12 +1264,13 @@ function storyDraw(svg){
     E.mo.forEach(function(M){var m=M.m,u=Math.min(1,Math.max(0,(flow-m.d)/.38)),x,y,r=0,ra=0,rl=0;
       if(u<.5){var w=u/.5,pt=q([m.sx,m.sy],[m.mx,m.my],[ENZ.x-8,ENZ.y],w);x=pt[0];y=pt[1];rl=w<.05?w/.05:1;if(w>.9)rl*=1-(w-.9)/.1}
       else{var w2=(u-.5)/.5,pt2=w2<.5?q([ENZ.x+20,ENZ.y],[300,ENZ.y-30],[PORE.x,PORE.y],w2/.5):q([PORE.x,PORE.y],[REC.x-60,REC.y-70],[m.ex,m.ey],(w2-.5)/.5);
-        x=pt2[0];y=pt2[1];ra=1;r=-12+w2*24}
+        x=pt2[0];y=pt2[1];ra=1-.85*seg(w2,.8,1);r=-12+w2*24}
       /* blocked: no new acid; retinol waits at the enzyme */
-      if(blk>0&&u>=.5){var px=m.px+m.ox*.3,py=m.py+m.oy*.3;x=x+(px-x)*blk;y=y+(py-y)*blk;rl=Math.max(rl,blk*.9);ra*=1-blk}
+      if(blk>0&&u>=.5&&(+M.k)%2===0){var px=m.px+m.ox*.3,py=m.py+m.oy*.3;x=x+(px-x)*blk;y=y+(py-y)*blk;rl=Math.max(rl,blk*.9)}
+      if(blk>0&&u>=.5)ra*=1-blk;
       M.el.setAttribute("transform","translate("+x.toFixed(1)+" "+y.toFixed(1)+") rotate("+r.toFixed(1)+")");
       op(M.rl,b*rl*(u>0?1:0));op(M.ra,b*ra*(1-(blk>0&&u>=.5?blk:0)));});
-    op(E.a1,b*seg(p,.05,.12)*(1-seg(p,.3,.36)));op(E.a2,b*seg(p,.2,.28)*(1-seg(p,.6,.66)));op(E.a3,b*seg(p,.74,.82));
+    op(E.a1,b*seg(p,.04,.1)*(1-seg(p,.22,.27)));op(E.a2,b*seg(p,.28,.34)*(1-seg(p,.6,.66)));op(E.a3,b*seg(p,.74,.82));
     op(E.l1,b*seg(p,.1,.18)*(1-seg(p,.3,.36)));op(E.l2,b*seg(p,.44,.52)*(1-seg(p,.62,.68)));op(E.l3,b*seg(p,.78,.86));
   };
 }/*</R:story>*/

@@ -32,7 +32,7 @@ function vHome(){
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1M</span><p class="k">Meniscus surgeries every year</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">25%</span><p class="k">Of those patients still live with recurring knee pain</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">0</span><p class="k">FDA-approved implants for this population today</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2</span><p class="k">FDA designations: Breakthrough Device and TAP, the first orthopedic device in TAP</p></div>'+
    '</div>'+
   '</div></section>'+
 

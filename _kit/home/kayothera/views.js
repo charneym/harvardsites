@@ -44,7 +44,7 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3">Stop the signal <em>where it starts.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Source</span><span>Receptor</span><span>Block</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2>Vitamin A, made into a signal.</h2><p>Retinol (vitamin A) enters the cell, and the enzyme ALDH1A3 turns it into retinoic acid, the ligand of the retinoid nuclear receptors. In diabetes and in many cancers, this enzyme is pathogenically active.</p></article>'+
+     '<article class="step on"><h2>Vitamin A becomes a signal.</h2><p>Retinol (vitamin A) enters the cell, and the enzyme ALDH1A3 turns it into retinoic acid, the ligand of the retinoid nuclear receptors. In diabetes and in many cancers, this enzyme is pathogenically active.</p></article>'+
      '<article class="step"><h2>The receptor switches on.</h2><p>Retinoic acid moves into the nucleus and activates the receptors bound to DNA, changing which genes are expressed. In the pancreas, this drives β cell dedifferentiation and failure.</p></article>'+
      '<article class="step"><h2>Blocked at the source.</h2><p>A Kayothera inhibitor occupies the enzyme, so the ligand is never made and the receptors stay quiet. In preclinical models, β cells returned to a functional, mature state.</p></article>'+
     '</div></div>'+

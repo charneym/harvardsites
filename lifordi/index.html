@@ -1709,7 +1709,7 @@ function scene(){
   for(i=0;i<60;i++){var a=i*6,p0=pol(R-12,a),p1=pol(R-24,a+2);g+='<path class="hat sD" d="M'+f(p0[0])+' '+f(p0[1])+'L'+f(p1[0])+' '+f(p1[1])+'"/>'}
   g+='<path class="nuc sD" d="M206 318C200 262 246 232 290 240C318 245 330 266 352 262C384 256 404 286 396 322C388 362 344 384 298 380C250 376 210 360 206 318Z"/>';
   g+='<path class="nuc2 sD" d="M222 318C218 274 252 254 288 258C312 261 324 280 348 278C374 276 386 298 380 324C374 352 340 366 300 364C258 362 226 350 222 318Z"/>';
-  [[262,300],[300,292],[336,306],[280,336],[320,342],[352,330],[248,326]].forEach(function(q,k){g+='<path class="chr sD" d="M'+(q[0]-9)+' '+q[1]+'q4 -6 9 0t9 0"/>'});
+  [[240,300],[300,276],[350,304],[280,336],[320,342],[356,330],[248,326]].forEach(function(q,k){g+='<path class="chr sD" d="M'+(q[0]-9)+' '+q[1]+'q4 -6 9 0t9 0"/>'});
   /* organelles: a few engraved mitochondria */
   [[176,228,30],[214,426,-20],[392,416,40]].forEach(function(m){g+='<g transform="translate('+m[0]+' '+m[1]+') rotate('+m[2]+')"><ellipse class="org sD" rx="20" ry="9"/><path class="org2 sD" d="M-14 0q3.5 -6 7 0t7 0t7 0t7 0"/></g>'});
   /* VISTA on the surface */
@@ -1717,14 +1717,14 @@ function scene(){
   var vl=pol(R+30,4);
   g+='<text class="t" x="'+C[0]+'" y="'+(C[1]+R+38)+'" text-anchor="middle">'+(mob?'IMMUNE CELL':'IMMUNE CELL · VISTA+')+'</text>';
   g+='<text class="t" x="'+C[0]+'" y="'+(C[1]+8)+'" text-anchor="middle" id="nlab">NUCLEUS</text>';
-  var vw=mob?18:40;g+='<path class="ldr" d="M'+f(vl[0]+4)+' '+f(vl[1])+'H'+f(vl[0]+4+vw)+'"/><text class="a" x="'+f(vl[0]+10+vw)+'" y="'+f(vl[1]+(mob?8:4))+'">VISTA</text></g>';
+  var vw=mob?18:40;g+='<path class="ldr vst" d="M'+f(vl[0]+4)+' '+f(vl[1])+'H'+f(vl[0]+4+vw)+'"/><text class="a vst" x="'+f(vl[0]+10+vw)+'" y="'+f(vl[1]+(mob?8:4))+'">VISTA</text></g>';
   /* lysosomes (step 2) */
   g+='<g id="lys">';DK.forEach(function(a,k){var q=pol(R-58,a);g+='<circle class="ly" data-k="'+k+'" cx="'+f(q[0])+'" cy="'+f(q[1])+'" r="0"/>'});
   var ql=pol(R-58,-62);g+=mob?'<path class="ldr" d="M'+f(ql[0]+22)+' '+f(ql[1]-22)+'L'+f(ql[0]+60)+' 74"/><text class="a" x="'+f(ql[0]+66)+'" y="80">LYSOSOME</text></g>':'<path class="ldr" d="M'+f(ql[0]+30)+' '+f(ql[1]+12)+'L574 '+f(ql[1]+60)+'"/><text class="a" x="580" y="'+f(ql[1]+64)+'">LYSOSOME · PAYLOAD RELEASED</text></g>';
   /* free glucocorticoid payload, released toward the nucleus (step 2) */
   g+='<g id="fp">';for(i=0;i<24;i++)g+='<circle class="pf" r="2.6"/>';g+='</g>';
   /* the conjugates */
-  g+='<g id="adcs">';DK.forEach(function(a,k){g+=adcG("adc")});g+='<text class="a" id="alab" x="'+(mob?420:560)+'" y="'+(mob?80:70)+'">'+(mob?'LFD-200':'LFD-200 · 8 PAYLOADS')+'</text></g>';
+  g+='<g id="adcs">';DK.forEach(function(a,k){g+=adcG("adc")});g+='<text class="a" id="alab" x="'+(mob?76:560)+'" y="'+(mob?84:70)+'">'+(mob?'LFD-200':'LFD-200 · 8 PAYLOADS')+'</text></g>';
   /* step 3: serum vs tissue, illustrative curves */
   var X0=mob?150:540,Y0=mob?470:430,XW=mob?340:230,YH=mob?300:250;
   g+='<g id="pk"><path class="ax" d="M'+X0+' '+(Y0-YH)+'V'+Y0+'H'+(X0+XW)+'"/>';
@@ -1769,6 +1769,7 @@ function storyDraw(svg){
       op(el,b*Math.min(1,q*5)*(1-s3*.5))});
     /* step 3: the cell recedes, the curves draw */
     op(E.cell,1-(MOBILE()?.8:.45)*s3);
+    $$(".vst",svg).forEach(function(el){op(el,b*(1-seg(p,.66,.72)))});
     op(E.pk,b*s3);draw(E.ax,s3);draw(E.c1,seg(p,.72,.86));draw(E.c2,seg(p,.78,.96));
   };
 }/*</R:story>*/

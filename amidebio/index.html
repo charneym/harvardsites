@@ -1737,7 +1737,7 @@ function scene(){
   g+='<rect class="nb" x="'+GX(0)+'" y="'+f(GY(180))+'" width="664" height="'+f(GY(70)-GY(180))+'"/>';
   g+='<rect class="hz" x="'+GX(0)+'" y="'+f(GY(70))+'" width="664" height="'+f(GY(30)-GY(70))+'" fill="url(#hyg)"/>';
   var grid='';[70,180].forEach(function(v){grid+='M'+GX(0)+' '+f(GY(v))+'H'+GX(8)});g+='<path class="gl sD" d="'+grid+'"/>';
-  var gr2='';[40,100,140,220,260].forEach(function(v){gr2+='M'+GX(0)+' '+f(GY(v))+'H'+GX(8)});g+='<path class="g2 sD" d="'+gr2+'"/>';
+  if(!mob){var gr2='';[40,100,140,220,260].forEach(function(v){gr2+='M'+GX(0)+' '+f(GY(v))+'H'+GX(8)});g+='<path class="g2 sD" d="'+gr2+'"/>';}
   g+='<path class="ax sD" d="M'+GX(0)+' '+f(GY(260))+'V'+f(GY(30))+'H'+GX(8)+'"/>';
   var tk='';for(var t=0;t<=8;t+=2)tk+='M'+f(GX(t))+' '+f(GY(30))+'v8';g+='<path class="ax sD" d="'+tk+'"/>';
   [70,180,260].forEach(function(v){g+='<text class="t" x="'+(GX(0)-12)+'" y="'+f(GY(v)+4)+'" text-anchor="end">'+v+'</text>'});
@@ -1745,7 +1745,7 @@ function scene(){
   g+='<text class="t" x="'+GX(0)+'" y="'+f(GY(260)-16)+'">BLOOD GLUCOSE · mg/dL</text>';
   if(!mob)g+='<text class="t" x="'+GX(8)+'" y="'+f(GY(30)+28)+'" text-anchor="end" dx="0" dy="22">SCHEMATIC, NOT DATA</text>';
   g+='<text class="t nr" x="'+(GX(8)-10)+'" y="'+f(GY(180)+20)+'" text-anchor="end">NORMAL RANGE</text>';
-  g+='<text class="t hy" x="'+(GX(8)-10)+'" y="'+f(GY(30)-12)+'" text-anchor="end">HYPOGLYCEMIA</text>';
+  g+='<text class="t hy" x="'+(GX(0)+12)+'" y="'+f(GY(30)-12)+'">HYPOGLYCEMIA</text>';/* left end of the band: the traces are still high there, the overdose trace ends on the right */
   g+='</g>';
   /* the three traces */
   g+='<g id="scMove">';
@@ -1764,9 +1764,14 @@ function scene(){
      '<path class="br" d="M'+(mx-14)+' '+(my-8)+'v'+(102)+'"/></g>';
   /* labels, one set per step (leaders end at the thing they name) */
   var p1=[GX(5.2),GY(CRV[0](5.2))],p2=[GX(5.6),GY(CRV[1](5.6))],p3=[GX(4.6),GY(CRV[2](4.6))];
-  g+='<g id="lb1"><text class="a" x="'+f(p1[0]-60)+'" y="'+f(p1[1]-56)+'">'+(mob?'BACK IN RANGE':'REGULAR INSULIN · BACK IN RANGE')+'</text><path class="ldr" d="M'+f(p1[0])+' '+f(p1[1]-48)+'V'+f(p1[1]-9)+'"/></g>';
-  g+='<g id="lb2"><text class="a w" x="'+f(GX(2.1))+'" y="'+f(GY(52)+4)+'" text-anchor="end">'+(mob?'NO WARNING':'OVERDOSE · NO WARNING WITH IAH')+'</text><path class="ldr" d="M'+f(GX(2.2))+' '+f(GY(52))+'H'+f(p2[0]-10)+'V'+f(p2[1]-4)+'"/></g>';
-  g+='<g id="lb3"><text class="a" x="'+f(p3[0]-40)+'" y="'+f(p3[1]-44)+'">'+(mob?'LEVELS OFF':'DUAL AGONIST · LEVELS OFF ABOVE 70')+'</text><path class="ldr" d="M'+f(p3[0])+' '+f(p3[1]-36)+'V'+f(p3[1]-9)+'"/></g>';
+  if(mob){/* phone: the chart is short, so each callout sits in the clear band above NORMAL RANGE, leader down to its trace */
+    var LY=318,co=function(id,cls,tx,p){return '<g id="'+id+'"><text class="'+cls+'" x="'+f(p[0])+'" y="'+LY+'" text-anchor="middle">'+tx+'</text><path class="ldr" d="M'+f(p[0])+' '+(LY+12)+'V'+f(p[1]-9)+'"/></g>'};
+    g+=co('lb1','a','BACK IN RANGE',[GX(5.6),GY(CRV[0](5.6))])+co('lb2','a w','NO WARNING',[GX(5.6),GY(CRV[1](5.6))])+co('lb3','a','LEVELS OFF',[GX(5.6),GY(CRV[2](5.6))]);
+  }else{
+  g+='<g id="lb1"><text class="a" x="'+f(p1[0]-60)+'" y="'+f(p1[1]-56)+'">REGULAR INSULIN · BACK IN RANGE</text><path class="ldr" d="M'+f(p1[0])+' '+f(p1[1]-48)+'V'+f(p1[1]-9)+'"/></g>';
+  g+='<g id="lb2"><text class="a w" x="'+f(GX(8)-10)+'" y="'+f(p2[1]-56)+'" text-anchor="end">OVERDOSE · NO WARNING WITH IAH</text><path class="ldr" d="M'+f(p2[0])+' '+f(p2[1]-48)+'V'+f(p2[1]-9)+'"/></g>';
+  g+='<g id="lb3"><text class="a" x="'+f(p3[0]-40)+'" y="'+f(p3[1]-44)+'">DUAL AGONIST · LEVELS OFF ABOVE 70</text><path class="ldr" d="M'+f(p3[0])+' '+f(p3[1]-36)+'V'+f(p3[1]-9)+'"/></g>';
+  }
   return g+'</svg>';
 }
 function storyDraw(svg){
@@ -1776,7 +1781,7 @@ function storyDraw(svg){
   var lastB=-1;
   function draw(list,v){list.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1)})}
   function op(el,v){el.style.opacity=Math.max(0,Math.min(1,v)).toFixed(3)}
-  function trace(k,v,o){var a=E.cv[k];a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1);op(a[0],o);var d=E.dt[k];
+  function trace(k,v,o){var a=E.cv[k];a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1);op(a[0],v>.002?o:0);var d=E.dt[k];
     if(v>.002){var q=a[0].getPointAtLength(a[1]*v);d.setAttribute("cx",q.x.toFixed(1));d.setAttribute("cy",q.y.toFixed(1));op(d,o*(v<.999?1:.0))}else op(d,0)}
   return function(p,b){
     if(!svg.isConnected)return;

@@ -23,9 +23,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why LOX</span>'+
    '<h2 class="txt" id="mani">Lysyl oxidases crosslink the collagen and elastin of the extracellular matrix. In hard-to-treat cancers that stiff, crosslinked tissue drives chemoresistance and metastasis. LoxiGen is building the inhibitors that <em>open it back up.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$2.46M</span><span class="k">National Cancer Institute Fast-Track STTR, 2023–2025, to develop LOX inhibitors for chemotherapy-resistant TNBC</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">70–75%</span><span class="k">Of lung fibrosis patients are high LOX-expressing compared with normal lung, in LoxiGen’s own analyses</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">3</span><span class="k">Therapeutic areas where lysyl oxidase drives disease: cancer, fibrosis and cardiac disease</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$2.46M</span><p class="k">National Cancer Institute Fast-Track STTR, 2023–2025, to develop LOX inhibitors for chemotherapy-resistant TNBC</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">70–75%</span><p class="k">Of lung fibrosis patients are high LOX-expressing compared with normal lung, in LoxiGen’s own analyses</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">3</span><p class="k">Therapeutic areas where lysyl oxidase drives disease: cancer, fibrosis and cardiac disease</p></div>'+
    '</div>'+
   '</div></section>'+
 

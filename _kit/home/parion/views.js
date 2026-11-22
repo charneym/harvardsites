@@ -28,7 +28,7 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">In muco-obstructive lung diseases, mucus becomes too concentrated to clear, and plugs can persist for years, with no therapy dedicated to clearing them. Parion’s answer is to <em>rehydrate the mucus.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">28 days</span><p class="k">Of idrevloride in hypertonic saline significantly improved lung function in the Phase 2 CLEAN-PCD study</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">28</span><p class="k">Days of idrevloride in hypertonic saline to a significant lung-function gain in the Phase 2 CLEAN-PCD study</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">3</span><p class="k">FDA designations for P-1037 in PCD: orphan drug, fast track and rare pediatric disease</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">$2.3M</span><p class="k">In NHLBI SBIR awards since 2024 to take P-1155 toward IND status</p></div>'+
    '</div>'+

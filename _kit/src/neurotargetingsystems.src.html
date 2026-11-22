@@ -202,7 +202,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .scene svg{width:100%;height:100%;overflow:visible}
 .scene .frm{fill:none;stroke:rgba(var(--boner),.22);stroke-width:1}
-.scene .sk{fill:rgba(169,152,255,.05);stroke:rgba(var(--boner),.78);stroke-width:1.4}
+.scene .sk{fill:rgba(169,152,255,.06);fill-opacity:0;stroke:rgba(var(--boner),.78);stroke-width:1.4}
 .scene .sk2{fill:none;stroke:rgba(var(--boner),.3);stroke-width:1}
 .scene .su{fill:none;stroke:rgba(var(--boner),.45);stroke-width:1;stroke-dasharray:3 4}
 .scene .bm{fill:#a998ff}
@@ -1160,11 +1160,11 @@ function crPath(P,closed){var n=P.length,d="M"+P[0][0].toFixed(1)+" "+P[0][1].to
     d+="C"+c1[0].toFixed(1)+" "+c1[1].toFixed(1)+" "+c2[0].toFixed(1)+" "+c2[1].toFixed(1)+" "+p2[0].toFixed(1)+" "+p2[1].toFixed(1)}
   return d+(closed?"Z":"")}
 var SKULL=(function(){
-  var R=[[0,34],[13,38],[21,64],[25,100],[30,128],[62,138],[92,160],[103,194],[96,226],[82,242],[100,266],[116,306],[118,346],[109,386],[90,424],[60,452],[30,466]];
+  var R=[[0,32],[12,36],[19,62],[23,98],[28,124],[58,132],[92,148],[112,180],[110,214],[96,238],[90,256],[97,292],[100,332],[94,374],[79,412],[56,442],[28,460]];
   var L=R.slice().reverse().map(function(p){return [-p[0],p[1]]}).filter(function(p){return p[0]!==0});
-  var all=R.concat([[0,470]],L).map(function(p){return [SKX+p[0],p[1]]});
-  function orb(s){return [[34,140],[66,156],[84,192],[74,224],[46,232],[34,196]].map(function(p){return [SKX+s*p[0],p[1]]})}
-  function inner(k){return R.concat([[0,470]],L).map(function(p){return [SKX+p[0]*k,BRY+(p[1]-BRY)*k]})}
+  var all=R.concat([[0,464]],L).map(function(p){return [SKX+p[0],p[1]]});
+  function orb(s){return [[32,140],[68,152],[94,184],[90,218],[62,228],[38,200]].map(function(p){return [SKX+s*p[0],p[1]]})}
+  function inner(k){return R.concat([[0,464]],L).map(function(p){return [SKX+p[0]*k,BRY+(p[1]-BRY)*k]})}
   return {out:crPath(all,true),in1:crPath(inner(.93),true),oL:crPath(orb(-1),true),oR:crPath(orb(1),true)};
 })();
 var SITES=[{x:SKX-2.5*MM,y:BRY,l:"EEG 1"},{x:SKX+2.5*MM,y:BRY,l:"EEG 2"},{x:SKX+2.5*MM,y:BRY+5*MM,l:"REF"},{x:SKX-2.5*MM,y:BRY+5*MM,l:"GND"}];
@@ -1181,12 +1181,12 @@ function memScene(o){
   g+='<g id="scBase"><path class="frm sD" d="M24 20H736M24 500H736"/>'+lab(24,10,"MOUSE SKULL, DORSAL VIEW · SCHEMATIC")+'</g>';
   /* the skull: outline, an inner engraved contour, orbits, sutures */
   g+='<g id="scSk"><path class="sk sD" d="'+SKULL.out+'"/><path class="sk2 sD" d="'+SKULL.in1+'"/><path class="sk2 sD" d="'+SKULL.oL+'"/><path class="sk2 sD" d="'+SKULL.oR+'"/>'+
-     '<path class="su sD" d="M'+SKX+' 120V452"/><path class="su sD" d="M'+(SKX-94)+' '+(BRY+14)+'Q'+SKX+' '+(BRY-16)+' '+(SKX+94)+' '+(BRY+14)+'"/>'+
-     '<path class="su sD" d="M'+(SKX-104)+' '+(BRY+176)+'Q'+SKX+' '+(BRY+138)+' '+(SKX+104)+' '+(BRY+176)+'"/></g>';
+     '<path class="su sD" d="M'+SKX+' 120V448"/><path class="su sD" d="M'+(SKX-94)+' '+(BRY+14)+'Q'+SKX+' '+(BRY-16)+' '+(SKX+94)+' '+(BRY+14)+'"/>'+
+     '<path class="su sD" d="M'+(SKX-86)+' '+(BRY+176)+'Q'+SKX+' '+(BRY+138)+' '+(SKX+86)+' '+(BRY+176)+'"/></g>';
   g+='<g id="scBr"><circle class="bm" cx="'+SKX+'" cy="'+BRY+'" r="3.2"/>'+lab(SKX+8,BRY-8,"BREGMA","t")+'<circle class="bm" cx="'+SKX+'" cy="'+(BRY+157)+'" r="3.2"/>'+lab(SKX+8,BRY+150,"LAMBDA","t")+'</g>';
   /* step 1: needle sites */
-  g+='<g id="scSites">';SITES.forEach(function(s,k){var lx=s.x<SKX?s.x-14:s.x+14,an=s.x<SKX?"end":"start";
-    g+='<g class="st" data-k="'+k+'"><circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="11"/><circle class="nd" cx="'+s.x+'" cy="'+s.y+'" r="4.2"/>'+lab(lx,s.y+(k<2?-14:22),s.l,"k1",an)+'</g>'});g+='</g>';
+  g+='<g id="scSites">';SITES.forEach(function(s,k){var lx=s.x<SKX?SKX-124:SKX+124,an=s.x<SKX?"end":"start";
+    g+='<g class="st" data-k="'+k+'"><circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="11"/><circle class="nd" cx="'+s.x+'" cy="'+s.y+'" r="4.2"/>'+lab(lx,s.y+6,s.l,"k1",an)+'</g>'});g+='</g>';
   /* step 2: hooks, connector, leads */
   g+='<g id="scFix"><path class="hk sD" d="M'+(SKX-150)+' 300C'+(SKX-128)+' 286 '+(SKX-112)+' 296 '+(SKX-114)+' 316C'+(SKX-116)+' 330 '+(SKX-130)+' 330 '+(SKX-128)+' 318"/>'+
      '<path class="hk sD" d="M'+(SKX+150)+' 300C'+(SKX+128)+' 286 '+(SKX+112)+' 296 '+(SKX+114)+' 316C'+(SKX+116)+' 330 '+(SKX+130)+' 330 '+(SKX+128)+' 318"/>';
@@ -1194,21 +1194,21 @@ function memScene(o){
   g+='<path class="ld sD" d="M'+(SKX-10)+' '+(CON.y+18)+'C'+(SKX-26)+' 400 '+(SKX-40)+' 460 '+(SKX-58)+' 500"/><path class="ld sD" d="M'+(SKX+10)+' '+(CON.y+18)+'C'+(SKX+26)+' 400 '+(SKX+40)+' 460 '+(SKX+58)+' 500"/>';
   g+='<g id="scCon"><rect class="cb" x="'+(CON.x-30)+'" y="'+(CON.y-20)+'" width="60" height="40"/>';
   for(var r=0;r<2;r++)for(var c=0;c<3;c++)g+='<circle class="pin" cx="'+(CON.x-18+c*18)+'" cy="'+(CON.y-9+r*18)+'" r="4.2"/>';
-  g+='</g>'+lab(SKX-150,350,"HOOK","k2","start")+lab(SKX+150,350,"HOOK","k2","end")+lab(SKX+66,494,"EMG LEADS","t")+'</g>';
+  g+='</g>'+lab(SKX-122,282,"HOOK","k2","end")+lab(SKX+122,282,"HOOK","k2","start")+lab(SKX+66,494,"EMG LEADS","t")+'</g>';
   /* step 3: traces */
   g+='<g id="scTr">';
   [["EEG 1",150,16,"eeg",11],["EEG 2",250,16,"eeg",29],["EMG",350,10,"emg",47]].forEach(function(t,k){
     g+='<path class="ax sD" d="M470 '+t[1]+'H736"/><path class="tr sD tr'+k+'" d="'+trace(t[4],t[1],t[2],t[3])+'"/>'+lab(470,t[1]-30,t[0],"k1")});
-  g+='<path class="ax sD" d="M470 420H736"/>'+lab(470,440,"0","t")+lab(736,440,"10 S","t","end")+'</g>';
-  g+='<g id="lb1">'+lab(24,48,"NEEDLES AT PRESET COORDINATES","a")+'</g>';
-  g+='<g id="lb2">'+lab(24,48,"HOOKED, WIRED, FIXED IN COMPOSITE","a")+'</g>';
-  g+='<g id="lb3">'+lab(24,48,"FREELY MOVING EEG / EMG","a")+'</g>';
+  g+='<path class="ax sD" d="M470 420H736"/>'+lab(470,440,"0 S","t")+lab(736,440,"10 S","t","end")+'</g>';
+  g+='<g id="lb1">'+lab(736,52,"NEEDLES AT PRESET COORDINATES","a","end")+'</g>';
+  g+='<g id="lb2">'+lab(736,52,"HOOKED, WIRED, FIXED IN COMPOSITE","a","end")+'</g>';
+  g+='<g id="lb3">'+lab(736,52,"FREELY MOVING EEG / EMG","a","end")+'</g>';
   return g+'</svg>';
 }
 function scene(){return memScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;p.style.strokeDashoffset=L;return [p,L]})};
-  var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),sk:dl("#scSk .sD"),br:$("#scBr",svg),sites:$$(".st",svg),
+  var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),sk:dl("#scSk .sD"),skf:$("#scSk .sk",svg),br:$("#scBr",svg),sites:$$(".st",svg),
     fix:dl("#scFix .sD"),con:$("#scCon",svg),fixT:$$("#scFix text",svg),tr:dl("#scTr .tr"),ax:dl("#scTr .ax"),trT:$$("#scTr text",svg),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
   var lastB=-1;
@@ -1218,7 +1218,7 @@ function storyDraw(svg){
     if(!svg.isConnected)return;
     if(b!==lastB){lastB=b;draw(E.base,b);E.fade.forEach(function(el){el.style.opacity=b.toFixed(3)})}
     var grow=seg(p,0,.16),pl=seg(p,.1,.32),fx=seg(p,.38,.6),rec=seg(p,.66,.94);
-    draw(E.sk,b*grow);op(E.br,b*seg(p,.08,.18));
+    draw(E.sk,b*grow);if(E.skf)E.skf.style.fillOpacity=(seg(p,.1,.2)).toFixed(3);op(E.br,b*seg(p,.08,.18));
     E.sites.forEach(function(el,i){var v=seg(pl,i*.18,i*.18+.4);op(el,b*v);el.style.transform="scale("+(1.6-.6*v).toFixed(3)+")";el.style.transformOrigin=SITES[i].x+"px "+SITES[i].y+"px"});
     draw(E.fix,b*fx);op(E.con,b*seg(fx,.3,.7));E.fixT.forEach(function(el){op(el,b*seg(fx,.5,.9))});
     draw(E.ax,b*seg(rec,0,.3));draw(E.tr,b*seg(rec,.1,1));E.trT.forEach(function(el){op(el,b*seg(rec,0,.3))});

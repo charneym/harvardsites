@@ -38,8 +38,8 @@ function memScene(o){
      '<path class="su sD" d="M'+(SKX-86)+' '+(BRY+176)+'Q'+SKX+' '+(BRY+138)+' '+(SKX+86)+' '+(BRY+176)+'"/></g>';
   g+='<g id="scBr"><circle class="bm" cx="'+SKX+'" cy="'+BRY+'" r="3.2"/>'+lab(SKX+8,BRY-8,"BREGMA","t")+'<circle class="bm" cx="'+SKX+'" cy="'+(BRY+157)+'" r="3.2"/>'+lab(SKX+8,BRY+150,"LAMBDA","t")+'</g>';
   /* step 1: needle sites */
-  g+='<g id="scSites">';SITES.forEach(function(s,k){var lx=s.x<SKX?s.x-14:s.x+14,an=s.x<SKX?"end":"start";
-    g+='<g class="st" data-k="'+k+'"><circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="11"/><circle class="nd" cx="'+s.x+'" cy="'+s.y+'" r="4.2"/>'+lab(lx,s.y+(k<2?-14:22),s.l,"k1",an)+'</g>'});g+='</g>';
+  g+='<g id="scSites">';SITES.forEach(function(s,k){var lx=s.x<SKX?SKX-124:SKX+124,an=s.x<SKX?"end":"start";
+    g+='<g class="st" data-k="'+k+'"><circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="11"/><circle class="nd" cx="'+s.x+'" cy="'+s.y+'" r="4.2"/>'+lab(lx,s.y+6,s.l,"k1",an)+'</g>'});g+='</g>';
   /* step 2: hooks, connector, leads */
   g+='<g id="scFix"><path class="hk sD" d="M'+(SKX-150)+' 300C'+(SKX-128)+' 286 '+(SKX-112)+' 296 '+(SKX-114)+' 316C'+(SKX-116)+' 330 '+(SKX-130)+' 330 '+(SKX-128)+' 318"/>'+
      '<path class="hk sD" d="M'+(SKX+150)+' 300C'+(SKX+128)+' 286 '+(SKX+112)+' 296 '+(SKX+114)+' 316C'+(SKX+116)+' 330 '+(SKX+130)+' 330 '+(SKX+128)+' 318"/>';
@@ -47,15 +47,15 @@ function memScene(o){
   g+='<path class="ld sD" d="M'+(SKX-10)+' '+(CON.y+18)+'C'+(SKX-26)+' 400 '+(SKX-40)+' 460 '+(SKX-58)+' 500"/><path class="ld sD" d="M'+(SKX+10)+' '+(CON.y+18)+'C'+(SKX+26)+' 400 '+(SKX+40)+' 460 '+(SKX+58)+' 500"/>';
   g+='<g id="scCon"><rect class="cb" x="'+(CON.x-30)+'" y="'+(CON.y-20)+'" width="60" height="40"/>';
   for(var r=0;r<2;r++)for(var c=0;c<3;c++)g+='<circle class="pin" cx="'+(CON.x-18+c*18)+'" cy="'+(CON.y-9+r*18)+'" r="4.2"/>';
-  g+='</g>'+lab(SKX-150,350,"HOOK","k2","start")+lab(SKX+150,350,"HOOK","k2","end")+lab(SKX+66,494,"EMG LEADS","t")+'</g>';
+  g+='</g>'+lab(SKX-122,282,"HOOK","k2","end")+lab(SKX+122,282,"HOOK","k2","start")+lab(SKX+66,494,"EMG LEADS","t")+'</g>';
   /* step 3: traces */
   g+='<g id="scTr">';
   [["EEG 1",150,16,"eeg",11],["EEG 2",250,16,"eeg",29],["EMG",350,10,"emg",47]].forEach(function(t,k){
     g+='<path class="ax sD" d="M470 '+t[1]+'H736"/><path class="tr sD tr'+k+'" d="'+trace(t[4],t[1],t[2],t[3])+'"/>'+lab(470,t[1]-30,t[0],"k1")});
   g+='<path class="ax sD" d="M470 420H736"/>'+lab(470,440,"0 S","t")+lab(736,440,"10 S","t","end")+'</g>';
-  g+='<g id="lb1">'+lab(24,48,"NEEDLES AT PRESET COORDINATES","a")+'</g>';
-  g+='<g id="lb2">'+lab(24,48,"HOOKED, WIRED, FIXED IN COMPOSITE","a")+'</g>';
-  g+='<g id="lb3">'+lab(24,48,"FREELY MOVING EEG / EMG","a")+'</g>';
+  g+='<g id="lb1">'+lab(736,52,"NEEDLES AT PRESET COORDINATES","a","end")+'</g>';
+  g+='<g id="lb2">'+lab(736,52,"HOOKED, WIRED, FIXED IN COMPOSITE","a","end")+'</g>';
+  g+='<g id="lb3">'+lab(736,52,"FREELY MOVING EEG / EMG","a","end")+'</g>';
   return g+'</svg>';
 }
 function scene(){return memScene({mob:MOBILE()?1:0})}

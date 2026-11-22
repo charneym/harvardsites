@@ -21,7 +21,7 @@ function boneScene(o){
   g+='<path class="bc sD" d="M60 128C130 126 190 134 236 142M60 270C130 274 190 270 236 262M330 134C420 124 480 128 530 136M330 268C420 276 480 274 560 270"/>';
   g+='<path class="bc sD" d="M560 116C620 92 680 104 706 150C724 190 716 240 690 268"/>';
   for(i=0;i<9;i++){var tx=560+i*16;g+='<path class="tb sD" d="M'+tx+' '+(124+i*2)+'C'+(tx+20)+' 170 '+(tx+6)+' 230 '+(tx+24)+' '+(282-i*2)+'"/>'}
-  g+='<text class="t" x="40" y="80">SHAFT SIDE</text><text class="t" x="600" y="52">FEMORAL HEAD</text>';
+  g+='<text class="t" x="40" y="58">SHAFT SIDE</text><text class="t" x="612" y="352">FEMORAL HEAD</text>';
   g+='</g>';
   /* ---- callus bridging the fracture (step 3) ---- */
   g+='<g id="scCal">';
@@ -31,10 +31,10 @@ function boneScene(o){
   /* ---- screw (outline redrawn every frame), cannula axis, and the straight pin ---- */
   g+='<g id="scScr"><path class="sc" id="scA" d=""/><path class="sc" id="scB" d=""/><path class="sx" id="scX" d=""/>';
   g+='<path class="bar sD" d="M'+(SX0-36)+' '+(SY-26)+'H'+(SX0+150)+'V'+(SY+26)+'H'+(SX0-36)+'Z"/>';
-  g+='<path class="pl sD" d="M'+(SX0-50)+' 70V340"/></g>';
+  g+='<path class="pl sD" d="M'+(SX0-50)+' 76V340"/></g>';
   g+='<path class="pin" id="scPin" d="M'+(SX0-30)+' '+SY+'H'+(SX1-14)+'"/>';
   /* ---- the reading: tip vs pin end ---- */
-  g+='<g id="scGap"><path class="gp" id="gpL" d=""/><text class="a" id="gpT" x="'+(o.mob?SX1-30:SX1-190)+'" y="'+(SY+150)+'">'+(o.mob?'GAP':'TIP MOVES · PIN STAYS')+'</text></g>';
+  g+='<g id="scGap"><path class="gp" id="gpL" d=""/><text class="a" id="gpT" x="'+(o.mob?SX1-170:SX1-260)+'" y="'+(SY+152)+'">'+(o.mob?'GAP':'TIP MOVES · PIN STAYS')+'</text></g>';
   /* ---- load arrow ---- */
   g+='<g id="scLd"><path class="ld" d="M600 8V58M590 46l10 12 10-12"/><text class="t" x="420" y="30">'+(o.mob?'WEIGHT BEARING':'WEIGHT BEARING ON THE HEAD')+'</text></g>';
   /* ---- timeline: weeks after surgery in the ovine study ---- */

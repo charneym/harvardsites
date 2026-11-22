@@ -18,9 +18,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>About Tetraimaging</span>'+
    '<h2 class="txt" id="mani">Founded in St. Louis in 2016, we develop <b class="w0">next-generation imaging systems</b> for radiotherapy and radiography, <em>with strong academic collaborations behind every one.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">66</span><span class="k">Layers of strip ion chambers in the MLSIC, along 19.2 cm water-equivalent depth</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">6,250</span><span class="k">Frames per second: fast enough to measure a FLASH beam spot by spot</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$2M</span><span class="k">NCI SBIR Phase II contract for the FLASH-QA device, 2024 to 2026</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">66</span><p class="k">Layers of strip ion chambers in the MLSIC, along 19.2 cm water-equivalent depth</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">6,250</span><p class="k">Frames per second: fast enough to measure a FLASH beam spot by spot</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$2M</span><p class="k">NCI SBIR Phase II contract for the FLASH-QA device, 2024 to 2026</p></div>'+
    '</div>'+
    '<div class="plat">'+
     '<div><span class="lab kick" data-r>Point-of-care CT</span><p data-r>Tetrahedron beam CT: diagnostic-quality volumetric images from a system compact enough for the ENT or dental clinic.</p></div>'+

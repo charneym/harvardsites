@@ -20,5 +20,5 @@ var NEWS=[
  ["Oct 2025","Three-dimensional proton FLASH dose-rate measurement at high spatiotemporal resolution with the multi-layer strip ionization chamber","Medical Physics",PAPER],
  ["Sep 2024","NCI SBIR Phase II contract: developing the multilayer strip ion chamber device for FLASH radiotherapy QA","NIH RePORTER","https://reporter.nih.gov/project-details/11211392"],
  ["Aug 2022","NIBIB STTR Phase II award: a clinical prototype of tetrahedron beam CT for point-of-care ENT imaging","NIH RePORTER","https://reporter.nih.gov/project-details/10546823"],
- ["Sep 2021","NIDCR STTR award: super-resolution dual-energy dental CT with a distributed x-ray source and photon-counting detector","NIH RePORTER","https://reporter.nih.gov/project-details/10258444"]];
+ ["Sep 2021","NIDCR STTR award: a dental CT with super resolution and dual energy, built on a distributed x-ray source","NIH RePORTER","https://reporter.nih.gov/project-details/10258444"]];
 var SHEETS=[];

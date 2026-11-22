@@ -797,6 +797,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   #field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(40svh - 20px),transparent calc(40svh + 30px))!important;mask-image:linear-gradient(180deg,#000 0,#000 calc(40svh - 20px),transparent calc(40svh + 30px))!important}
   .hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 38%,rgba(var(--inkr),.86) 50%,rgba(var(--inkr),.95) 72%,var(--ink) 100%)!important}
 }
+.scene svg.mob text{font-size:20px;letter-spacing:.02em}
+.scene svg.mob text.t{font-size:13px;letter-spacing:.04em}
 </style>
 </head>
 </head>
@@ -1677,33 +1679,33 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
 function scene(){
   var mob=MOBILE();
   var g='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 800 560" aria-hidden="true">';
-  g+='<defs><clipPath id="zch"><rect x="44" y="207" width="600" height="66"/></clipPath></defs>';
+  g+='<defs><clipPath id="zch"><rect x="44" y="192" width="600" height="106"/></clipPath></defs>';
   g+='<g id="scBase"><rect class="neat" x=".5" y=".5" width="799" height="559"/>';
   /* housing, feed channel, membrane line, permeate chamber, outlets */
-  g+='<path class="sD bl" d="M150 168H610V400H150Z"/>';
-  g+='<path class="sD kb" d="M44 205H150M44 275H150M610 205H690V150M610 275H720V150"/>';
-  g+='<path class="sD kb" d="M164 205H596M164 275H596M164 302H596V386H164Z"/>';
-  g+='<path class="sD kb" d="M610 330H760M610 360H760"/>';
-  g+='<path class="sD ht" d="M150 168L170 188M590 168L610 188M150 400L170 380M590 400L610 380"/>';
-  g+='<text x="44" y="190" class="t">FEED · BIPHASIC</text>';
-  g+='<text x="164" y="430" class="t">ZAIPUT SEPARATOR · SCHEMATIC</text>';
+  g+='<path class="sD bl" d="M150 150H610V450H150Z"/>';
+  g+='<path class="sD kb" d="M44 190H150M44 300H150M610 190H680V122M610 300H730V122"/>';
+  g+='<path class="sD kb" d="M164 190H596M164 300H596M164 336H596V436H164Z"/>';
+  g+='<path class="sD kb" d="M610 370H760M610 400H760"/>';
+  g+='<path class="sD ht" d="M150 150L170 170M590 150L610 170M150 450L170 430M590 450L610 430"/>';
+  g+='<text x="44" y="176" class="t">FEED · BIPHASIC</text>';
+  g+='<text x="164" y="478" class="t">ZAIPUT SEPARATOR · SCHEMATIC</text>';
   g+='</g>';
   /* the stream: alternating organic / aqueous slugs, moved along by the scroll */
-  var sl='';for(var i=0;i<18;i++)sl+='<rect class="'+(i%2?"aq":"og")+'" x="0" y="211" width="40" height="58"/>';
+  var sl='';for(var i=0;i<18;i++)sl+='<rect class="'+(i%2?"aq":"og")+'" x="0" y="194" width="40" height="102"/>';
   g+='<g id="slugs" clip-path="url(#zch)">'+sl+'</g>';
   /* membrane and its pores */
-  var po='';for(var x=170;x<=590;x+=10)po+='M'+x+' 281V295';
-  g+='<path id="mem" class="mem" d="M164 288H596"/>';
-  g+='<g id="sc2"><path class="pore dr" d="'+po+'"/><text x="164" y="458" class="a2">HYDROPHOBIC MEMBRANE, WETTED BY ORGANIC</text></g>';
+  var po='';for(var x=170;x<=590;x+=10)po+='M'+x+' 310V326';
+  g+='<path id="mem" class="mem" d="M164 318H596"/>';
+  g+='<g id="sc2"><path class="pore dr" d="'+po+'"/><text x="164" y="500" class="a2">HYDROPHOBIC MEMBRANE, WETTED BY ORGANIC</text></g>';
   /* step 3: pressure controller on the retentate line, and the differential across the membrane */
-  g+='<g id="sc3"><path class="sD2 dr" d="M664 92H746V150H664Z"/><path class="dia dr" id="dia" d="M668 121Q686 113 705 121T742 121"/>'+
-     '<text x="746" y="80" text-anchor="end" class="a">PRESSURE CONTROLLER</text>';
-  var ar='';for(var k=0;k<5;k++){var ax=210+k*90;ar+='M'+ax+' 240V318M'+(ax-7)+' 308L'+ax+' 320L'+(ax+7)+' 308'}
-  g+='<path class="dp dr" d="'+ar+'"/><text x="44" y="330" class="a">ΔP</text><text x="44" y="350" class="t">BELOW</text><text x="44" y="366" class="t">BREAKTHROUGH</text></g>';
+  g+='<g id="sc3"><path class="sD2 dr" d="M664 64H746V122H664Z"/><path class="dia dr" id="dia" d="M668 93Q686 85 705 93T742 93"/>'+
+     '<text x="650" y="98" text-anchor="end" class="a">PRESSURE CONTROLLER</text>';
+  var ar='';for(var k=0;k<5;k++){var ax=210+k*90;ar+='M'+ax+' 228V350M'+(ax-7)+' 340L'+ax+' 352L'+(ax+7)+' 340'}
+  g+='<path class="dp dr" d="'+ar+'"/><text x="44" y="352" class="a">ΔP</text><text x="44" y="374" class="t">BELOW</text><text x="44" y="390" class="t">BREAKTHROUGH</text></g>';
   /* step 4: the permeate fills and leaves; aqueous leaves through the retentate */
-  g+='<g id="sc4"><rect id="perm" class="permf" x="165" y="303" width="430" height="82"/>'+
-     '<path class="pout dr" d="M612 345H756"/><path class="rout dr" d="M612 240H705V96"/>'+
-     '<text x="760" y="392" text-anchor="end" class="a2">PERMEATE · ORGANIC</text><text x="760" y="490" text-anchor="end" class="a">RETENTATE · AQUEOUS ↑</text></g>';
+  g+='<g id="sc4"><rect id="perm" class="permf" x="165" y="337" width="430" height="98"/>'+
+     '<path class="pout dr" d="M612 385H756"/><path class="rout dr" d="M612 245H705V126"/>'+
+     '<text x="628" y="428" class="a2">PERMEATE</text><text x="628" y="452" class="a2">ORGANIC</text><text x="650" y="138" text-anchor="end" class="a">RETENTATE · AQUEOUS</text></g>';
   /* step captions */
   g+='<text id="cap1" x="40" y="58" class="a">A SEGMENTED BIPHASIC STREAM</text>';
   g+='<text id="cap2" x="40" y="58" class="a">ORGANIC WETS THE PORES</text>';
@@ -1725,7 +1727,7 @@ function storyDraw(svg){
     /* the slugs travel left to right; in step 4 each organic slug drains downward as it crosses the membrane */
     var off=(p*900)%(2*W);E.slg.style.opacity=(b*Math.max(s1,b)).toFixed(3);
     E.sl.forEach(function(r,i){var x=44-2*W+off+i*W;r.setAttribute("x",x.toFixed(1));
-      if(!(i%2)){var f=Math.max(0,Math.min(1,(x+W/2-170)/400))*s4,hh=58*(1-f);r.setAttribute("height",hh.toFixed(1));r.setAttribute("y",(211+58-hh).toFixed(1))}});
+      if(!(i%2)){var f=Math.max(0,Math.min(1,(x+W/2-170)/400))*s4,hh=102*(1-f);r.setAttribute("height",hh.toFixed(1));r.setAttribute("y",(194+102-hh).toFixed(1))}});
     E.mem.style.opacity=b.toFixed(3);E.mem.classList.toggle("wet",s2>.5);
     E.g2.style.opacity=(b*(s2>0?1:0)).toFixed(3);draw(E.d2,s2);
     E.g3.style.opacity=(b*(s3>0?1:0)*(1-.5*s4)).toFixed(3);draw(E.d3,s3);

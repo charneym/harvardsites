@@ -2,6 +2,15 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
+# v22 (client critique, 2026-11-22)
+
+**DR. The loader, the story scene and every animation must be flawless frame by frame. Small breakages lose leads.** Client critique on sent sites: turnerscientific's loader stacked "Turner" one letter per line (a `display:flex;flex-direction:column` wrapper turned each SplitText char into its own row); story labels sat on top of drawn strokes and icons ("ROUND WINDOW" under the drop icon); pharmacoidea's loader logo was a faint, thin, etched-looking outline; biredimaging's drawn white curve stopped short of its end point at top right. Rules:
+1. **Loader wordmark** renders on one line exactly as the logo does (plus its descriptor line if the logo has one) at 1440 and 390 in every frame. Never put SplitText chars inside a flex/grid container; use `display:inline-block` wrappers and `display:block` for a second line.
+2. **Loader logo** is the firm's real mark, crisp and solid at full brand colour/weight, at least ~56px tall, never a hairline-stroked trace, low-opacity ghost, thresholded/"etched" raster or upscaled blurry PNG. If their mark is only a raster, use it at native size or redraw it as clean filled SVG paths.
+3. **No text collides with anything.** No label, caption, number or heading may touch or cross a stroke, icon, dot, curve, image or another text in any frame of the loader, hero or story, at 1440, 1920 and 390. Labels get ≥8px clear space; on phones reposition or drop labels rather than let them collide.
+4. **Every drawn line finishes.** Animated strokes (dash-offset draws, progress curves) must reach their real end points at the end state; check the final frame of each animation, at every width.
+5. **Gate:** run `node _kit/tools/textclash.js SLUG` (flags stacked loader wordmarks and text over graphics, writes crops to /tmp/tc_SLUG) and look at every crop; then look by eye at loader frames (~0.3s, 0.8s, 1.5s) and at every story step at 1440 and 390. Fix everything before reporting.
+
 # v21 (coordinator review, 2026-11-21)
 
 **DQ. Every hero is unique to its firm, and the headline never crowds the nav.** Coordinator review (vasculonics): the same NCI T-cell SEM was the hero on three concept sites, and the eyebrow sat right under the nav with an oversized H1. Before choosing a stock/agency photo, grep the repo (`grep -rl <photo-id> */index.html`) and never reuse a hero image another concept already uses; prefer a render of the firm's own molecule, device or mechanism. Keep the H1 at the scale of the reference builds (no more than ~4 lines at 1440) and give the hero text block clear headroom below the nav (eyebrow at least ~90px below the nav bar), vertically centred in the hero at 1440 and 1920.

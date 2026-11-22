@@ -39,11 +39,11 @@ function enamelScene(o){
   g+='<g id="scLes">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;for(var y=LY0+8;y<LY1;y+=15){if(!inLes(x,y))continue;g+='<path class="fr" d="M'+x+' '+y+'v7"/>'}});
   g+='<ellipse class="lo" cx="'+((LX0+LX1)/2)+'" cy="'+((LY0+LY1)/2)+'" rx="'+((LX1-LX0)/2)+'" ry="'+((LY1-LY0)/2)+'"/></g>';
   /* the same rods, whole again (rebuilt) */
-  g+='<g id="scRep">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;g+='<path class="rp" d="M'+x+' '+(LY0+4)+'L'+x+' '+(LY1+6)+'"/>'});g+='</g>';
+  g+='<g id="scRep">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;g+='<path class="rp" d="'+rodPath(x,LY0+4,LY1+6)+'"/>'});g+='</g>';
   /* micropores through the surface layer */
   g+='<g id="scPor">';PORES.forEach(function(x){g+='<path class="po" d="M'+(x-5)+' '+(SURF-2)+'C'+(x-3)+' '+(SURF+10)+' '+(x+3)+' '+(SURF+10)+' '+(x+5)+' '+(SURF-2)+'"/>'});g+='</g>';
   /* new hydroxyapatite crystals */
-  g+='<g id="scXt">';XT.forEach(function(q,k){g+='<polygon class="xt" data-k="'+k+'" points="'+hexPts(q.r)+'" transform="translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') scale(0)"/>'});g+='</g>';
+  g+='<g id="scXt">';XT.forEach(function(q,k){g+='<polygon class="hxc" data-k="'+k+'" points="'+hexPts(q.r)+'" transform="translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') scale(0)"/>'});g+='</g>';
   /* released ions */
   g+='<g id="scIon">';IONS.forEach(function(m,k){g+='<circle class="'+(m.ph?'ip':'ic2')+'" data-k="'+k+'" r="'+(m.ph?2.6:2.2)+'" cx="0" cy="0"/>'});g+='</g>';
   /* cationic starch particles */
@@ -58,7 +58,7 @@ function scene(){return enamelScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;return [p,L]})};
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),les:$("#scLes",svg),rep:$$("#scRep .rp",svg),por:$$("#scPor .po",svg),
-    xt:$$(".xt",svg).map(function(el){return {el:el,q:XT[+el.getAttribute("data-k")]}}),
+    xt:$$(".hxc",svg).map(function(el){return {el:el,q:XT[+el.getAttribute("data-k")]}}),
     ion:$$("#scIon circle",svg).map(function(el){return {el:el,m:IONS[+el.getAttribute("data-k")]}}),
     pt:$$(".pt2",svg).map(function(el){return {el:el,P:PART[+el.getAttribute("data-k")]}}),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};

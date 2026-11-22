@@ -216,7 +216,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene .lo{fill:rgba(var(--boner),.035);stroke:rgba(var(--boner),.45);stroke-width:1.1;stroke-dasharray:3 5}
 .scene .rp{fill:none;stroke:rgba(var(--boner),.62);stroke-width:1.3;opacity:0}
 .scene .po{fill:none;stroke:var(--accL);stroke-width:1.5;stroke-linecap:round}
-.scene .xt{fill:rgba(244,238,224,.16);stroke:#f4eee0;stroke-width:1.1;opacity:0}
+.scene .hxc{fill:rgba(244,238,224,.16);stroke:#f4eee0;stroke-width:1.1;opacity:0}
 .scene .ip{fill:#7fc241;opacity:0}
 .scene .ic2{fill:#f4eee0;opacity:0}
 .scene .pt2{opacity:0}
@@ -1489,14 +1489,14 @@ var PIPE=[
  ["LumiVision™","AI-enabled intraoral camera","Caries diagnosis","Companion to LumiCare™ rinse","In development","An NIH SBIR-funded camera that pairs targeted nanoparticle contrast with AI-assisted intraoral imaging.",1]];
 /* greenmark.bio (Management Team). Text-only masthead. Summaries only restate the site. */
 var TEAM=[
- {g:"Management team",name:"Steven Bloembergen, Ph.D.",title:"Founder, Chairman and CEO",sum:"Founded GreenMark in 2016; earlier founded EcoSynthetix (TSX: ECO). Inventor on over 25 patent families in biomaterials; Ph.D., University of Waterloo."},
- {g:"Management team",name:"Arash Hakhamian, DDS, FICOI, FIADFE",title:"Chief Dental Officer",sum:"Cosmetic and implant dentist; co-founder and CEO of Dentulu, a teledentistry platform recognized by the American Dental Association."},
- {g:"Management team",name:"Wendy Bloembergen, MD, MS",title:"Vice President Clinical Affairs",sum:"Internist and nephrologist; formerly University of Michigan faculty and investigator on multiple NIH grants. Author of more than 20 peer-reviewed articles."},
- {g:"Management team",name:"Nathan Jones, M.Sc., Ph.D.",title:"Vice President Technology",sum:"Ph.D. in Macromolecular Science and Engineering, University of Michigan, on functionalized polysaccharides. Co-PI on GreenMark’s NIH SBIR awards."}];
+ {g:"Management team",name:"Steven Bloembergen, Ph.D.",title:"Founder, Chairman and CEO",sum:"Founded GreenMark in 2016 after EcoSynthetix (TSX: ECO). Inventor on over 25 biomaterials patent families."},
+ {g:"Management team",name:"Arash Hakhamian, DDS, FICOI, FIADFE",title:"Chief Dental Officer",sum:"Cosmetic and implant dentist; co-founder and CEO of the teledentistry platform Dentulu."},
+ {g:"Management team",name:"Wendy Bloembergen, MD, MS",title:"Vice President Clinical Affairs",sum:"Internist and nephrologist; formerly University of Michigan faculty and NIH-funded investigator."},
+ {g:"Management team",name:"Nathan Jones, M.Sc., Ph.D.",title:"Vice President Technology",sum:"Ph.D., University of Michigan, on functionalized polysaccharides. Co-PI on the NIH SBIR awards."}];
 /* news: only items with a working link (greenmark.bio News & Events). [date, headline, source, url] */
 var NEWS=[
- ["August 2026","GreenMark Biomedical secures follow-on regenerative medicine grant funding","EIN Presswire","https://www.einpresswire.com/article/936733733/greenmark-biomedical-secures-follow-on-regenerative-medicine-grant-funding"],
- ["November 2025","GreenMark Biomedical secures third NIH grant in 2025","EIN Presswire","https://www.einpresswire.com/article/865852185/greenmark-biomedical-secures-third-nih-grant-in-2025"],
+ ["August 2026","GreenMark secures follow-on regenerative medicine grant funding","EIN Presswire","https://www.einpresswire.com/article/936733733/greenmark-biomedical-secures-follow-on-regenerative-medicine-grant-funding"],
+ ["November 2025","GreenMark secures its third NIH grant of 2025","EIN Presswire","https://www.einpresswire.com/article/865852185/greenmark-biomedical-secures-third-nih-grant-in-2025"],
  ["October 2025","Dr. Steven Bloembergen receives the Shils Fund “Excellence in Research” Award","Shils Fund","https://shilsfund.org/shils-fund-celebrates-innovation-and-leadership-in-oral-health-at-nyu-college-of-dentistry/"],
  ["October 2025","The next frontier in prevention is regenerating enamel naturally","RDH Magazine","https://www.rdhmag.com/patient-care/in-office-preventive/article/55323017/the-next-frontier-in-prevention-is-regenerating-enamel-naturally"],
  ["August 2025","A nanoparticle, fluorescence-based rinse for caries activity","International Dental Journal","https://www.sciencedirect.com/science/article/pii/S0020653925000437"]];
@@ -1760,11 +1760,11 @@ function enamelScene(o){
   g+='<g id="scLes">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;for(var y=LY0+8;y<LY1;y+=15){if(!inLes(x,y))continue;g+='<path class="fr" d="M'+x+' '+y+'v7"/>'}});
   g+='<ellipse class="lo" cx="'+((LX0+LX1)/2)+'" cy="'+((LY0+LY1)/2)+'" rx="'+((LX1-LX0)/2)+'" ry="'+((LY1-LY0)/2)+'"/></g>';
   /* the same rods, whole again (rebuilt) */
-  g+='<g id="scRep">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;g+='<path class="rp" d="M'+x+' '+(LY0+4)+'L'+x+' '+(LY1+6)+'"/>'});g+='</g>';
+  g+='<g id="scRep">';RODS.forEach(function(x){if(x<=LX0+4||x>=LX1-4)return;g+='<path class="rp" d="'+rodPath(x,LY0+4,LY1+6)+'"/>'});g+='</g>';
   /* micropores through the surface layer */
   g+='<g id="scPor">';PORES.forEach(function(x){g+='<path class="po" d="M'+(x-5)+' '+(SURF-2)+'C'+(x-3)+' '+(SURF+10)+' '+(x+3)+' '+(SURF+10)+' '+(x+5)+' '+(SURF-2)+'"/>'});g+='</g>';
   /* new hydroxyapatite crystals */
-  g+='<g id="scXt">';XT.forEach(function(q,k){g+='<polygon class="xt" data-k="'+k+'" points="'+hexPts(q.r)+'" transform="translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') scale(0)"/>'});g+='</g>';
+  g+='<g id="scXt">';XT.forEach(function(q,k){g+='<polygon class="hxc" data-k="'+k+'" points="'+hexPts(q.r)+'" transform="translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+') scale(0)"/>'});g+='</g>';
   /* released ions */
   g+='<g id="scIon">';IONS.forEach(function(m,k){g+='<circle class="'+(m.ph?'ip':'ic2')+'" data-k="'+k+'" r="'+(m.ph?2.6:2.2)+'" cx="0" cy="0"/>'});g+='</g>';
   /* cationic starch particles */
@@ -1779,7 +1779,7 @@ function scene(){return enamelScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;return [p,L]})};
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),les:$("#scLes",svg),rep:$$("#scRep .rp",svg),por:$$("#scPor .po",svg),
-    xt:$$(".xt",svg).map(function(el){return {el:el,q:XT[+el.getAttribute("data-k")]}}),
+    xt:$$(".hxc",svg).map(function(el){return {el:el,q:XT[+el.getAttribute("data-k")]}}),
     ion:$$("#scIon circle",svg).map(function(el){return {el:el,m:IONS[+el.getAttribute("data-k")]}}),
     pt:$$(".pt2",svg).map(function(el){return {el:el,P:PART[+el.getAttribute("data-k")]}}),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};

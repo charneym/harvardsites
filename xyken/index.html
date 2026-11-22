@@ -84,9 +84,9 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
-#pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
+#pre .mk{width:104px;height:84px;overflow:visible}
+#pre .mk path{fill:none;stroke:var(--acc);stroke-width:3.4;stroke-linecap:round}#pre .mk .xm-b{stroke:#6ea8d8}
+#pre .wm{font-family:var(--disp);font-weight:400;font-size:clamp(34px,3.4vw,48px);letter-spacing:.01em;white-space:nowrap;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
@@ -727,8 +727,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M14 70C22 36 30 28 40 44S56 70 66 50M58 64C66 46 74 30 84 18"/></svg>
-    <div class="wm"><span>XYKEN</span></div>
+    <svg class="mk" viewBox="0 0 31 25"><path class="xm-a" d="M2 22C5 10 8 7 12 13S18 22 22 15"/><path class="xm-b" d="M18 20C21 14 24 8 29 3"/></svg>
+    <div class="wm"><span>Xyken</span></div>
   </div>
   <span class="lab pl">Mobile 3D imaging · McLean, Virginia</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1691,8 +1691,8 @@ function scene(){
   /* step 3: error ticks along the outline and the callout */
   var T='';var EP=[[240,170,1],[262,300,2],[232,404,1],[300,440,0],[420,436,1],[560,440,0],[648,424,2],[560,392,1],[440,356,0],[348,262,1],[332,130,0]];
   EP.forEach(function(e){T+='<circle class="xe e'+e[2]+'" cx="'+e[0]+'" cy="'+e[1]+'" r="4.2"/>'});
-  s+='<g id="xsErr">'+T+'<path class="xcl" d="M560 392L600 300H700"/><text class="xa" x="700" y="290" text-anchor="end" style="font-size:'+fs+'px">&lt; 0.4 MM</text><text x="700" y="318" text-anchor="end" style="font-size:'+fs+'px">VS GROUND TRUTH</text>'+
-    '<g transform="translate(470 82)"><rect class="xe e0" x="0" y="0" width="14" height="6"/><rect class="xe e1" x="16" y="0" width="14" height="6"/><rect class="xe e2" x="32" y="0" width="14" height="6"/><text x="56" y="7" style="font-size:'+fs+'px">ERROR MAP</text></g></g>';
+  s+='<g id="xsErr">'+T+'<path class="xcl" d="M560 392L588 334H700"/><text class="xa" x="700" y="290" text-anchor="end" style="font-size:'+fs+'px">&lt; 0.4 MM</text><text x="700" y="318" text-anchor="end" style="font-size:'+fs+'px">VS GROUND TRUTH</text>'+
+    '<g class="xleg" transform="translate(470 82)"><rect class="xe e0" x="0" y="0" width="14" height="6"/><rect class="xe e1" x="16" y="0" width="14" height="6"/><rect class="xe e2" x="32" y="0" width="14" height="6"/><text x="56" y="7" style="font-size:'+fs+'px">ERROR MAP</text></g></g>';
   /* step 4: the orthotic it becomes, and the upload */
   s+='<g id="xsOrth"><path id="xsIns" class="xin" d="M246 470C238 486 252 500 290 500L560 498C612 497 646 490 648 478C650 466 620 462 580 462L420 464C380 456 340 458 300 462C268 462 252 462 246 470Z"/>'+
     '<path class="xin2" d="M270 480C300 474 340 472 380 476M440 474C490 470 560 470 610 476"/><text class="xa" x="660" y="492" style="font-size:'+fs+'px">ORTHOTIC</text></g>';
@@ -1727,7 +1727,7 @@ function storyDraw(svg){
     var A1=[300,120+s2*0],A2=[600,430];
     E.fov.setAttribute("d","M"+P[0].toFixed(1)+" "+P[1].toFixed(1)+"L"+A1[0]+" "+A1[1]+"L"+A2[0]+" "+A2[1]+"Z");
     E.fov.style.opacity=(Math.min(1,s1*2)*(1-s3)*.9).toFixed(3);
-    E.err.style.opacity=(s3*(1-.55*s4)).toFixed(3);
+    E.err.style.opacity=(s3*(1-.55*s4)).toFixed(3);var lg=svg.querySelector(".xleg");if(lg)lg.style.opacity=(1-s4).toFixed(3);
     /* step 4: the upload arc and the orthotic */
     var u0=[P[0],P[1]],u1=[690,150];
     E.up.setAttribute("d","M"+u0[0].toFixed(1)+" "+u0[1].toFixed(1)+"Q"+((u0[0]+u1[0])/2).toFixed(1)+" "+(Math.min(u0[1],u1[1])-80).toFixed(1)+" "+u1[0]+" "+u1[1]);
@@ -1962,7 +1962,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1971,7 +1971,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0).fromTo(mk,{opacity:0},{opacity:1,duration:.15},0.02)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

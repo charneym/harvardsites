@@ -1237,7 +1237,7 @@ function storyDraw(svg){
     sl:$$(".sl",svg),pt:$$(".pt",svg).map(function(c){return {el:c,j:+c.getAttribute("data-j"),h:+c.getAttribute("data-h")}}),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
   var lastB=-1;
-  function draw(list,v){list.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1)})}
+  /* Safari measures dashes on vector-effect:non-scaling-stroke paths in screen units, so a dash of getTotalLength() can stop short (the outline left open) or leak a tail while hidden. Fully drawn = no dash; fully hidden = not painted. */function dash(a,v){var s=a[0].style;if(v>=1){s.strokeDasharray="none";s.strokeDashoffset="0";s.visibility=""}else if(v<=0){s.strokeDasharray=a[1]+" "+a[1];s.strokeDashoffset=a[1];s.visibility="hidden"}else{s.strokeDasharray=a[1]+" "+a[1];s.strokeDashoffset=(a[1]*(1-v)).toFixed(1);s.visibility=""}}function draw(list,v){list.forEach(function(a){dash(a,v)})}
   function op(el,v){if(el)el.style.opacity=v.toFixed(3)}
   function cl(x){return x<0?0:x>1?1:x}
   return function(p,b){
@@ -1249,7 +1249,7 @@ function storyDraw(svg){
     op(E.hg,b*warmIn*(1-.6*toModel)*(1-.5*solve));
     E.iso.forEach(function(el,k){op(el,b*cl(warmIn*2.2-k*.25)*(1-.75*toModel)*(1-.6*solve))});
     E.cam.forEach(function(el,k){op(el,b*cl(cams*2.2-k*.3)*(1-.55*toModel))});
-    E.rays.forEach(function(a,k){var v=cl(cams*2-.25-Math.floor(k/1)*.12);a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1);op(a[0],b*(1-.8*toModel))});
+    E.rays.forEach(function(a,k){var v=cl(cams*2-.25-Math.floor(k/1)*.12);dash(a,v);op(a[0],b*(1-.8*toModel))});
     /* step 2: contour slices sweep down the breast, temperature points light along each */
     E.sl.forEach(function(el,j){op(el,b*cl(toModel*2.2-j*.2)*(1-.5*solve))});
     E.pt.forEach(function(P){var v=cl(toModel*2.2-P.j*.2-.1);op(P.el,b*v*(1-.35*solve*(1-P.h)))});

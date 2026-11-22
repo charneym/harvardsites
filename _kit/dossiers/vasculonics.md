@@ -24,8 +24,10 @@
 ## Palette
 - Sampled from the live logo PNG (blob-533801f.png): red #ea1824, blue #3c54a4, white; live site ground #161616. → ink #0a0d1b (blue-black), --acc #ea1824, --accL #ff5a61 (on dark), blue #3c54a4 / #93a6ee. Live face Montserrat → body Montserrat; display Sora 300; mono IBM Plex Mono.
 
-## Hero (update option b)
-- National Cancer Institute on Unsplash, "white and red flower in black background" (actually a pseudo-coloured SEM of an oral squamous cancer cell (white) attacked by two cytotoxic T cells (red)), Unsplash License (free, not Unsplash+): https://unsplash.com/photos/white-and-red-flower-in-black-background-kWAPbD_zaEU — CDN https://images.unsplash.com/photo-1581594355548-aab613ebdb69 (downloaded 2600px). Graded by _kit/home/vasculonics/grade.py: greys gradient-mapped ink→cool grey→bone, T cells mapped to the logo red, padded and radially feathered with real alpha (ground = ink exactly). Ties to VN-1032's enhancement of intratumoral cytotoxic T cells. Caption says what it is and credits NCI; not Vasculonics data.
+## Hero (rev2, coordinator review 2026-11-21: the NCI SEM is already used on modulationtherapeutics/immundnz, so replaced)
+- Option (c): crafted render of the real target. Human AhR PAS-B ligand-binding domain, residues 271-427, chain D of PDB 7ZUB (cryo-EM structure of the indirubin-bound Hsp90-XAP2-AHR complex; Gruszczyk et al., Nat Commun 2022; https://www.rcsb.org/structure/7ZUB). Space-filled heavy atoms (vdW radii) by _kit/home/vasculonics/render_ahr.py: protein in logo blue, residues within 4.5 A of indirubin in logo red, indirubin pale; a cutaway window through the atoms in front of the ligand shows the pocket. Real alpha, no box edge (x6 check). Caption: "illustrative render". VN-1032's own structure is not public; the render shows its target, not the drug.
+- rev2 also: hero H1 reduced (76px at 1920, 63px at 1440, 3 lines) and the copy block centred below the nav; firelight leftovers fixed (phone field brown ground + mask, warm rail/scene label colours).
+- rev1 (replaced): NCI SEM on Unsplash (kWAPbD_zaEU).
 
 ## Story
 - Engraved tumour-microenvironment scene: (1) IDO → kynurenine activates AhR in the cancer cell; (2) AhR drives PD-L1, CD8+ exhaustion and Tregs; (3) VN-1032 (SAhRM) modulates AhR; (4) cytotoxic T cells re-engage, PD-1 combination. Schematic.

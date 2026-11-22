@@ -91,12 +91,17 @@ R["scenecss"] = r'''/* story (pinned, one continuous scene) */
 .scene text.vex{fill:#8c93a7}
 .scene text.cap{fill:var(--accL)}
 /* ===== Vasculonics additions ===== */
+#story .rail span{color:#9aa1b4}#story .rail span.on{color:var(--bone)}
+#story .rail span::before{border-color:#687089}#story .rail span.done::before,#story .rail span.on::before{border-color:var(--accL)}
+#story .scene text{fill:#c9cedb}#story .scene text.xa,#story .scene text.cap{fill:var(--accL)}#story .scene text.vb{fill:var(--bluL)}#story .scene text.vex{fill:#8c93a7}
 .ftr .fcv{display:none}
-@media (max-width:860px){.hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 38%,rgba(var(--inkr),.7) 52%,rgba(var(--inkr),.9) 72%,var(--ink) 100%)}}
-.hero .hero-h{font-size:clamp(40px,4.1vw,84px);letter-spacing:-.04em;line-height:1.08;margin-bottom:.22em;font-weight:300;max-width:12.5ch}
-@media (max-width:1366px) and (min-width:861px){.hero .hero-h{font-size:clamp(40px,4vw,60px)}}
+@media (max-width:860px){.fieldbg{background:#0a0d1b!important}#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 24px),transparent calc(34svh + 6px))!important;mask-image:linear-gradient(180deg,#000 0,#000 calc(34svh - 24px),transparent calc(34svh + 6px))!important}}
+@media (max-width:860px){section.hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0,rgba(var(--inkr),0) 280px,rgba(var(--inkr),.86) 420px,rgba(var(--inkr),.95) 72%,var(--ink) 100%)}}
+.hero .hero-h,#pageTitle.hero-h{font-size:clamp(40px,4.4vw,76px)!important;letter-spacing:-.04em;line-height:1.08;margin-bottom:.22em;font-weight:300;max-width:none}
+.hero{justify-content:center!important;padding-top:clamp(120px,15vh,170px)!important;padding-bottom:clamp(80px,10vh,120px)!important}
+@media (max-width:1366px) and (min-width:861px){.hero .hero-h,#pageTitle.hero-h{font-size:clamp(40px,4.3vw,58px)!important}}
 .d1 em,.d2 em,.d3 em,.big em,.cta .big em,.mani .txt em,.hero .hero-h em{font-style:normal!important}
-@media (max-width:860px){.hero .hero-h{font-size:clamp(36px,10vw,64px)}.hero .hero-h .l{white-space:normal}}
+@media (max-width:860px){.hero .hero-h,#pageTitle.hero-h{font-size:clamp(34px,9.4vw,60px)!important}.hero .hero-h .l{white-space:normal}.hero{justify-content:flex-start!important;padding-top:calc(34svh + 8px)!important}}
 .hero-foot .s{max-width:44ch}
 .hcap{position:absolute;right:var(--side);bottom:clamp(28px,4.4vh,44px);margin:0;max-width:40ch;text-align:right;color:rgba(var(--boner),.62);font-size:10.5px;line-height:1.6;z-index:2}
 @media (max-width:1024px){.hcap{display:none}}
@@ -247,10 +252,10 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Biotechnology · Indianapolis, Indiana<span class="nomob"> · NIH SBIR</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">First-in-class</span><span class="l">medicines for</span><span class="l"><em>immunity and</em></span><span class="l"><em>fibrosis.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">First-in-class</span><span class="l">medicines for</span><span class="l"><em>immunity and fibrosis.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>VN-1032 is an orally active, selective aryl hydrocarbon receptor modulator. It enhances the cytotoxic T cells inside tumours, and modifies disease in preclinical models of pulmonary arterial hypertension and kidney disease.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#story" data-to="story">See how VN-1032 works '+ARR+'</a><a class="btn" href="#pipeline" data-to="pipeline">Our pipeline</a></div></div>'+
-   '<p class="lab hcap" data-r>Scanning electron micrograph: two cytotoxic T cells (red) attacking a cancer cell. Image: National Cancer Institute</p>'+
+   '<p class="lab hcap" data-r>The AhR ligand-binding domain (PAS-B), space-filled from PDB 7ZUB, cut away to show its ligand pocket (red) with indirubin bound. Illustrative render</p>'+
   '</section>'+
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>About Vasculonics</span>'+

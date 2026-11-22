@@ -33,7 +33,7 @@ cookie bar). The English home (/home) has the headline set over the CEO's photo,
 navy where blocks failed to render or are blank; partner logos in mixed treatments.
 
 ## Visuals
-- Hero: crafted render (render.py, numpy sphere tracing): a skin block in cross-section (epidermis, dermis, lobulated fat)
+- Hero: crafted render (render.py, numpy sphere tracing), histology-true after coordinator review: a cut skin block with matte H&E-like colours (lamellated stratum corneum, stratified epidermis with rete ridges, fibrous dermis with vessels, hair follicles and sweat glands, lobulated fat with septa) and a deep cavity wound filled flush by clear translucent gel (MatriFlex in use), refracting the wound bed, with tissue strands at the edges.
   with a deep cavity wound filled flush by clear, faintly blue gel (MatriFlex in use). Alpha PNG -> hero.webp. No stock photo.
 - Story: engraved skin cross-section; inflamed wound -> gel fills and sets -> tissue regrows as gel resorbs, epidermis closes.
 - Palette: live site navy rgb(21,34,69), periwinkle buttons, white rune wordmark (their PNG used as the header logo).

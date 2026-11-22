@@ -1,4 +1,4 @@
-/* ================= HERO FIELD: a crafted render of BioMimir's product in use (HOME_BRIEF update 2c): a block of human skin
+/* ================= HERO FIELD: a crafted render of BioMimir's product in use (HOME_BRIEF update 2c): a histology-true block of human skin
    in cross-section (epidermis, dermis, lobulated fat) whose deep cavity wound is filled flush with a clear, faintly blue
    gel, MatriFlex, their liquid-to-solid bioresorbable skin substitute (biomimir.ca). Ray-marched offline by render.py,
    lit warm with a periwinkle rim from the site's #5b7cc4, baked with alpha to hero.webp; here it breathes in a slow
@@ -13,8 +13,8 @@ var field=(function(){
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?h*.42:h;
-    /* the skin block fills the render (1003x714, AR 1.405); it sits whole in the open area right of the text, below the header */
-    var AR=1003/714,iw=mob?Math.min(w*.86,(U-100)*AR):Math.min(cw*.45,(h-230)*AR),ih=iw/AR;
+    /* the skin block fills the render (964x673, AR 1.43); it sits whole in the open area right of the text, below the header */
+    var AR=964/673,iw=mob?Math.min(w*.86,(U-100)*AR):Math.min(cw*.45,(h-230)*AR),ih=iw/AR;
     var kx=mob?w*.5:side+cw*.73,ky=mob?98+(U-100)*.5:96+(h-96)*.52;
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }

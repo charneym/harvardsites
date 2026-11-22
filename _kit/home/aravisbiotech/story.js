@@ -34,7 +34,7 @@ function boneScene(o){
   g+='<path class="pl sD" d="M'+(SX0-50)+' 70V340"/></g>';
   g+='<path class="pin" id="scPin" d="M'+(SX0-30)+' '+SY+'H'+(SX1-14)+'"/>';
   /* ---- the reading: tip vs pin end ---- */
-  g+='<g id="scGap"><path class="gp" id="gpL" d=""/><text class="a" id="gpT" x="'+(SX1+18)+'" y="'+(SY+30)+'">'+(o.mob?'GAP':'TIP MOVES · PIN STAYS')+'</text></g>';
+  g+='<g id="scGap"><path class="gp" id="gpL" d=""/><text class="a" id="gpT" x="'+(o.mob?SX1-30:SX1-190)+'" y="'+(SY+150)+'">'+(o.mob?'GAP':'TIP MOVES · PIN STAYS')+'</text></g>';
   /* ---- load arrow ---- */
   g+='<g id="scLd"><path class="ld" d="M600 8V58M590 46l10 12 10-12"/><text class="t" x="420" y="30">'+(o.mob?'WEIGHT BEARING':'WEIGHT BEARING ON THE HEAD')+'</text></g>';
   /* ---- timeline: weeks after surgery in the ovine study ---- */

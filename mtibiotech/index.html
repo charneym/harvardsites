@@ -1726,8 +1726,8 @@ var ENZ=[[198,212],[284,250],[368,206],[452,252],[536,210],[612,240]];
 var ROSP=[[150,120],[330,96],[520,104],[640,170],[230,356],[430,364],[600,330]];
 /* each lipid: born at a flare, ends next to its enzyme */
 var LIP=ENZ.map(function(e,i){var r=ROSP[i%ROSP.length];return {s:[r[0]+(i%2?14:-10),r[1]+(r[1]<200?26:-26)],e:[e[0]-2,e[1]-28]}});
-/* each 2-HOBA enters from the left edge of the frame and meets its lipid */
-var HOB=ENZ.map(function(e,i){return {s:[18,130+i*38],e:[e[0]+30,e[1]-34]}});
+/* each 2-HOBA drops in from above its own enzyme and meets its lipid (its own lane, so it never crosses a SIRT3 label) */
+var HOB=ENZ.map(function(e,i){return {s:[e[0]+30,e[1]-94],e:[e[0]+30,e[1]-34]}});
 function lipG(){return '<path class="lp" d="M-17 4L-9 -4L-1 4L7 -4L15 4"/><circle class="lo" cx="-21" cy="6" r="3.4"/><circle class="lo" cx="19" cy="6" r="3.4"/>'}
 function hobG(){var p=[],k;for(k=0;k<6;k++){var a=Math.PI/3*k+Math.PI/6;p.push((11*Math.cos(a)).toFixed(1)+' '+(11*Math.sin(a)).toFixed(1))}
   return '<path class="hx" d="M'+p.join('L')+'Z"/><path class="hb" d="M0 -11V-19M9.5 5.5L16 10L16 18"/><circle class="hd" cx="0" cy="-21" r="2.6"/><circle class="hd" cx="16" cy="20" r="2.6"/>'}
@@ -1765,8 +1765,8 @@ function mitoScene(o){
   g+='<g id="lb3"><text class="a" x="70" y="430">2-HOBA CATCHES THE REACTIVE LIPIDS</text></g>';
   /* a small key */
   g+='<g id="scKey"><path class="ro" transform="translate(78 476) scale(.7)" d="M0 -10L2.6 -2.6L10 0L2.6 2.6L0 10L-2.6 2.6L-10 0L-2.6 -2.6Z"/><text class="t" x="94" y="480">REACTIVE OXYGEN</text>'+
-     '<g class="li" transform="translate(286 476) scale(.75)">'+lipG()+'</g><text class="t" x="308" y="480">REACTIVE LIPID</text>'+
-     '<g class="ho" transform="translate(484 474) scale(.62)">'+hobG()+'</g><text class="t" x="502" y="480">2-HOBA</text></g>';
+     '<g class="li" transform="translate(286 476) scale(.75)">'+lipG()+'</g><text class="t" x="314" y="480">REACTIVE LIPID</text>'+
+     '<g class="ho" transform="translate(484 474) scale(.62)">'+hobG()+'</g><text class="t" x="506" y="480">2-HOBA</text></g>';
   return g+'</svg>';
 }
 function scene(){return mitoScene({mob:MOBILE()?1:0})}

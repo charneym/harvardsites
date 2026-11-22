@@ -20,19 +20,20 @@ rng = np.random.default_rng(7)
 def nrm(v): return v / np.linalg.norm(v, axis=-1, keepdims=True)
 
 # ---------------- layout (world: x along the cochlear spiral, z radial (outer = +z), y up) ----------------
-caps = []          # (base xyz, tip xyz, radius)
+caps = []          # (base xyz, tip xyz, radius, accent)
+ACCROW = [False]
 cells = []         # (x, z, kind) kind 0 = supporting, 1 = OHC, 2 = IHC
 def stereo(base, h, r, lean):
     b = np.array([base[0], 0.0, base[1]]); t = b + np.array([lean[0] * h, h, lean[1] * h])
-    caps.append((b, t, r))
+    caps.append((b, t, r, ACCROW[0]))
 
-NX = 4
+NX = 3
 # inner hair cells: one row in front (toward the camera), nearly straight bundles, tallest row on the outer side
 for i in range(NX):
     cx = (i - (NX - 1) / 2) * 1.0 + 0.1; cz = -1.05
     cells.append((cx, cz - 0.02, 2))
     lean = (rng.normal(0, .015), 0.07)
-    for k, (h, r) in enumerate([(0.44, 0.03), (0.29, 0.027), (0.17, 0.024)]):
+    for k, (h, r) in enumerate([(0.5, 0.024), (0.33, 0.021), (0.2, 0.019)]):
         n = 15 - k
         for j in range(n):
             u = (j - (n - 1) / 2) / ((n - 1) / 2)
@@ -42,18 +43,19 @@ for i in range(NX):
 for row in range(3):
     for i in range(NX):
         cx = (i - (NX - 1) / 2) * 1.0 + (row - 1) * 0.33; cz = 0.05 + row * 0.5
-        cells.append((cx, cz - 0.06, 1))
+        cells.append((cx, cz - 0.06, 1)); ACCROW[0] = (row == 0)
         ang = np.radians(rng.uniform(56, 62)); lean = (rng.normal(0, .02), 0.06)
-        for k, (h, r) in enumerate([(0.25, 0.021), (0.165, 0.019), (0.1, 0.018)]):
-            vx, vz = cx, cz + 0.12 - k * 0.05
-            n = 9 - k
+        for k, (h, r) in enumerate([(0.3, 0.0145), (0.2, 0.0135), (0.12, 0.0125)]):
+            vx, vz = cx, cz + 0.12 - k * 0.042
+            n = 11 - k
             for side in (-1, 1):
                 for j in range(n):
-                    s = j * 0.056
+                    s = j * 0.047
                     if side < 0 and j == 0: s = 0
                     x = vx + side * np.sin(ang) * s; z = vz - np.cos(ang) * s
                     if side > 0 and j == 0: continue
                     stereo((x + rng.normal(0, .003), z + rng.normal(0, .003)), h * (1 - .18 * (s / 0.5)) * rng.uniform(.96, 1.04), r, lean)
+ACCROW[0] = False
 # supporting cells: a jittered lattice between the hair cells (Deiters', pillar and Hensen's heads)
 for gz in np.arange(-1.9, 2.6, 0.26):
     for gx in np.arange(-3.2, 3.2, 0.26):
@@ -64,7 +66,7 @@ CX = np.array([c[0] for c in cells]); CZ = np.array([c[1] for c in cells]); CK =
 
 # ---------------- camera ----------------
 target = np.array([0.0, 0.12, 0.05])
-az, el, dist, fov = np.radians(-14), np.radians(56), 8.1, np.radians(31)
+az, el, dist, fov = np.radians(-14), np.radians(52), 6.1, np.radians(31)
 cam = target + dist * np.array([np.sin(az) * np.cos(el), np.sin(el), -np.cos(az) * np.cos(el)])
 fw = nrm(target - cam); rt = nrm(np.cross(fw, [0, 1.0, 0])); up = np.cross(rt, fw)
 asp = W / H; th = np.tan(fov / 2)
@@ -96,9 +98,9 @@ def surf_h(x, z):
     edge = d2 - d1
     hc = kind > 0
     rad = np.where(hc, 0.36, 0.17)
-    dome = np.where(hc, 0.035, 0.028) * np.clip(1 - (d1 / rad) ** 2, 0, 1)
-    ridge = 0.012 * np.exp(-(edge / 0.012) ** 2)
-    mv = 0.004 * vn(x * 55, z * 55) * (~hc) + 0.0015 * vn(x * 23 + 9, z * 23)
+    dome = np.where(hc, 0.05, 0.03) * np.clip(1 - (d1 / rad) ** 2, 0, 1)
+    ridge = 0.008 * np.exp(-(edge / 0.012) ** 2)
+    mv = 0.006 * vn(x * 75, z * 75) * (~hc) + 0.0015 * vn(x * 23 + 9, z * 23)
     return (dome + ridge + mv).reshape(sh), kind.reshape(sh), edge.reshape(sh)
 valid = (RD[..., 1] < 0) & (tP < 60)
 gx, gz = P[..., 0], P[..., 2]
@@ -110,7 +112,7 @@ NG = nrm(np.stack([-(hx - h0) / e, np.ones_like(h0), -(hz - h0) / e], -1))
 # ambient occlusion of the surface around stereocilia bases: a splatted, blurred base map in xz
 AO_N, AO_X0, AO_X1, AO_Z0, AO_Z1 = 1400, -3.2, 3.2, -2.2, 2.6
 ao = Image.new('L', (AO_N, AO_N), 0); pix = ao.load()
-for b, t, r in caps:
+for b, t, r, _a in caps:
     ix = int((b[0] - AO_X0) / (AO_X1 - AO_X0) * AO_N); iz = int((b[2] - AO_Z0) / (AO_Z1 - AO_Z0) * AO_N)
     for dx in range(-3, 4):
         for dz in range(-3, 4):
@@ -124,8 +126,8 @@ def aos(x, z):
 AOg = 1 - 0.6 * aos(gx, gz)
 
 # ---------------- stereocilia: analytic ray-capsule intersection inside each projected bbox ----------------
-ZB = np.where(valid, tP, np.inf); NB = NG.copy(); HIT = np.zeros((H, W), bool); HF = np.zeros((H, W)); CB = np.zeros((H, W, 2))
-for b, t, r in caps:
+ZB = np.where(valid, tP, np.inf); NB = NG.copy(); HIT = np.zeros((H, W), bool); ACC = np.zeros((H, W), bool); HF = np.zeros((H, W)); CB = np.zeros((H, W, 2))
+for b, t, r, acc in caps:
     pts = [b + np.array(o) for o in [(-r, 0, -r), (r, 0, r)]] + [t + np.array(o) for o in [(-r, r, -r), (r, r, r), (-r, r, r), (r, r, -r)]] + [b + np.array([r, 0, -r]), b + np.array([-r, 0, r])]
     sx, sy = zip(*[project(p) for p in pts])
     x0, x1 = max(int(min(sx)) - 2, 0), min(int(max(sx)) + 3, W); y0, y1 = max(int(min(sy)) - 2, 0), min(int(max(sy)) + 3, H)
@@ -150,7 +152,7 @@ for b, t, r in caps:
     s = np.clip(((p - b) @ ba) / baba, 0, 1)
     cl = b + s[..., None] * ba
     n = nrm(p - cl)
-    zb[win] = tt[win]; NB[y0:y1, x0:x1][win] = n[win]; HIT[y0:y1, x0:x1][win] = True
+    zb[win] = tt[win]; NB[y0:y1, x0:x1][win] = n[win]; HIT[y0:y1, x0:x1][win] = True; ACC[y0:y1, x0:x1][win] = acc
     HF[y0:y1, x0:x1][win] = s[win] * (ba[1] / 0.44)
     CB[y0:y1, x0:x1][win] = np.array([b[0], b[2]])
 
@@ -164,18 +166,18 @@ I = 0.1 + 0.95 * rim + 0.3 * ndl
 # stereocilia: darker toward their base (occluded by neighbours), bright edges and tips
 sAO = 0.42 + 0.58 * np.clip(HF / 0.55, 0, 1) ** 0.6
 tip = np.clip((HF - 0.75) / 0.25, 0, 1) * np.clip(ndl * 1.4, 0, 1)
-I = np.where(HIT, I * sAO * 1.32 + 0.25 * tip * (HF > 0.3), I * AOg * 0.9)
+I = np.where(HIT, I * sAO * 1.35 + 0.25 * tip * (HF > 0.3), I * AOg * 0.82)
 # surface texture: junction ridges catch the beam a little more; hair-cell plates are smoother and slightly darker
 I = np.where(HIT, I, I * np.where(kind > 0, 0.86, 1.0) + 0.05 * np.exp(-(edge / 0.01) ** 2))
 I = np.clip(I, 0, 1.2)
 
 # fade: an elliptical, long-eased falloff in world xz around the patch (subject whole, edges melt into the ink)
 fx = np.where(HIT, CB[..., 0], gx); fz = np.where(HIT, CB[..., 1], gz)
-rr = np.sqrt(((fx - 0.05) / 2.75) ** 2 + ((fz - 0.12) / 1.85) ** 2)
-fade = np.clip(1 - (rr - 0.62) / 0.42, 0, 1); fade = fade * fade * (3 - 2 * fade)
+rr = np.sqrt(((fx - 0.05) / 2.15) ** 2 + ((fz - 0.0) / 1.75) ** 2)
+fade = np.clip(1 - (rr - 0.72) / 0.36, 0, 1); fade = fade * fade * (3 - 2 * fade)
 alpha = np.where(valid | HIT, fade, 0.0)
 # slight depth haze toward the back
-depth = np.clip((ZB - 6.0) / 3.5, 0, 1); I = I * (1 - 0.3 * depth)
+depth = np.clip((ZB - 6.3) / 1.6, 0, 1); I = I * (1 - 0.22 * depth)
 
 # gradient maps: the cell surface in cool navy-plum, the stereocilia in Ting red to a warm pale (tonal depth, not one wash)
 def gmap(v, stops):
@@ -185,13 +187,20 @@ def gmap(v, stops):
         out = np.where(m[..., None], np.array(c0) * (1 - f) + np.array(c1) * f, out)
     return out
 v = np.clip(I, 0, 1.05)
-SURF = [(0.0, (11, 15, 26)), (0.25, (34, 26, 44)), (0.5, (82, 38, 54)), (0.75, (168, 70, 76)), (1.05, (236, 170, 160))]
-CIL = [(0.0, (16, 14, 24)), (0.25, (70, 18, 28)), (0.5, (150, 28, 36)), (0.7, (198, 40, 44)), (0.88, (242, 150, 134)), (1.05, (255, 240, 232))]
-rgb = np.where(HIT[..., None], gmap(v, CIL), gmap(v, SURF))
+SURF = [(0.0, (11, 15, 26)), (0.3, (44, 49, 62)), (0.6, (112, 117, 130)), (0.85, (190, 194, 202)), (1.05, (242, 243, 246))]
+CIL = [(0.0, (14, 17, 26)), (0.3, (62, 67, 80)), (0.55, (138, 143, 156)), (0.8, (212, 215, 222)), (1.05, (252, 252, 253))]
+ACL = [(0.0, (16, 14, 24)), (0.3, (84, 34, 42)), (0.55, (156, 46, 52)), (0.8, (222, 150, 146)), (1.05, (252, 238, 236))]
+rgb = np.where(HIT[..., None], np.where(ACC[..., None], gmap(v, ACL), gmap(v, CIL)), gmap(v, SURF))
 rgba = np.concatenate([rgb / 255, alpha[..., None]], -1)
 im = Image.fromarray((np.clip(rgba, 0, 1) * 255).astype(np.uint8), 'RGBA')
+dm = Image.fromarray((np.clip((ZB - 6.6) / 1.2, 0, 1) * 255).astype(np.uint8), 'L')
+im = Image.composite(im.filter(ImageFilter.GaussianBlur(2.2 * SS)), im, dm)
 if SS != 1: im = im.resize((FW, FH), Image.LANCZOS)
 bb = im.getchannel('A').point(lambda a: 255 if a > 4 else 0).getbbox()
 if bb: m = int(.02 * FW); im = im.crop((max(bb[0] - m, 0), max(bb[1] - m, 0), min(bb[2] + m, FW), min(bb[3] + m, FH)))
+A = np.asarray(im.getchannel('A')).astype(float)
+hh_, ww_ = A.shape; sm_ = lambda t: np.clip(t, 0, 1) ** 2 * (3 - 2 * np.clip(t, 0, 1))
+A = A * (sm_(np.arange(ww_) / (.1 * ww_)) * sm_((ww_ - 1 - np.arange(ww_)) / (.1 * ww_)))[None, :] * (sm_(np.arange(hh_) / (.1 * hh_)) * sm_((hh_ - 1 - np.arange(hh_)) / (.12 * hh_)))[:, None]
+A = np.where(A < 8, 0, A); im.putalpha(Image.fromarray(A.astype(np.uint8)))   # no faint alpha floor that could outline the image rect
 im.save(OUT)
 print('saved', OUT, im.size, 'caps', len(caps))

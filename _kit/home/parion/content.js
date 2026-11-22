@@ -18,11 +18,11 @@ var EVID=[
  ["Designations","FDA orphan drug, fast track and rare pediatric disease designations (2020); orphan designation by the European Commission (2020)"]];
 /* parion.com (Management Team, Board of Directors); Karl Donn's title from the 2023 release. Text-only masthead (CI/CL). */
 var TEAM=[
- {g:"Senior management",name:"Paul Boucher, MBA",title:"President and CEO",sum:"Joined Parion in 2006 and led business development, operations, finance and alliance management before becoming CEO."},
- {g:"Senior management",name:"Karl Donn, PhD",title:"SVP, Drug Development",sum:"Led the discovery program that selected P-1037 and leads its clinical development; formerly VP, Global Project and Portfolio Management at GlaxoSmithKline."},
- {g:"Senior management",name:"Brian Bray, PhD",title:"VP, Chemistry, Manufacturing and Controls",sum:"More than 25 years in pharmaceutical development; responsible for drug substance, drug product and their regulatory documentation."},
- {g:"Board of directors",name:"Richard C. Boucher, MD",title:"Co-Chairman and Founder",sum:"Director of the Marsico Lung Institute and the UNC CF Center at the University of North Carolina at Chapel Hill."},
- {g:"Board of directors",name:"Robert Wills, PhD",title:"Director",sum:"More than three decades in the pharmaceutical industry, including over 25 years at Johnson & Johnson."},
+ {g:"Senior management",name:"Paul Boucher, MBA",title:"President and CEO",sum:"Joined Parion in 2006; previously led its business development, operations and finance."},
+ {g:"Senior management",name:"Karl Donn, PhD",title:"SVP, Drug Development",sum:"Led the discovery program that selected P-1037 and leads its clinical development; formerly at GlaxoSmithKline."},
+ {g:"Senior management",name:"Brian Bray, PhD",title:"VP, Chemistry, Manufacturing and Controls",sum:"Over 25 years in pharmaceutical development; leads drug substance and drug product."},
+ {g:"Board of directors",name:"Richard C. Boucher, MD",title:"Co-Chairman and Founder",sum:"Director of the Marsico Lung Institute and the UNC CF Center, UNC-Chapel Hill."},
+ {g:"Board of directors",name:"Robert Wills, PhD",title:"Director",sum:"Three decades in pharma, including over 25 years at Johnson & Johnson."},
  {g:"Board of directors",name:"Paul Boucher, MBA",title:"President and CEO",sum:""}];
 /* news: only items with a working link. [date, headline, source, url] */
 var NEWS=[

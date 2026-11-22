@@ -668,7 +668,7 @@ em{line-height:0}
 .rail span{color:#a3afb8}.rail span::before{background:var(--ink2);border-color:#5d6a74;border-radius:0}
 @media (max-width:1024px){.scene text{font-size:14px;letter-spacing:.06em}.scene text.t{font-size:9.5px}}
 #pre .wm{font-family:var(--deco);font-weight:300;font-size:clamp(24px,2.8vw,40px);letter-spacing:.16em;margin-right:-.16em;white-space:nowrap;color:var(--bone)}
-#pre .pmk{display:block;width:auto;height:46px;margin:0 auto 22px}
+#pre .pmk{display:block;width:auto;height:clamp(58px,4.6vw,66px);margin:0 auto 22px}
 #pre .wm b{font-weight:600}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
@@ -1772,7 +1772,7 @@ function vesScene(o){
   g+='<ellipse class="lz" cx="'+(LBX+160)+'" cy="'+BMY+'" rx="7" ry="26"/>';
   g+='<path class="wl sD" d="M'+(LBX+186)+' '+(BMY-26)+'q10 26 0 52"/>';
   g+='<g id="kbTune" transform="translate('+(LBX+118)+' '+BMY+')"><path class="wl" d="M0 -24V24"/><path class="wo" d="M-5 -20h10M-5 -12h10M-5 -4h10M-5 4h10M-5 12h10M-5 20h10"/></g>';
-  g+=T('t',LBX,LBY-16,o.mob?'SWEPT LASER':'FREE-SPACE SWEPT LASER',null,1);
+  g+=T('t',LBX,LBY-(o.mob?23:16),o.mob?'SWEPT LASER':'FREE-SPACE SWEPT LASER',null,1);
   /* the wavelength gauge under the laser */
   g+='<path class="wo sD" d="M'+(LBX+8)+' 206H'+(LBX+LBW-8)+'"/>';
   for(i=0;i<=8;i++)g+='<path class="en sD" d="M'+(LBX+8+i*(LBW-16)/8).toFixed(1)+' 201v10"/>';
@@ -1792,14 +1792,14 @@ function vesScene(o){
   g+='<ellipse class="lz" cx="'+(EX-50)+'" cy="'+EY+'" rx="13" ry="28"/>';
   g+='<path class="ret sD" d="M'+retPt(0)[0].toFixed(1)+' '+retPt(0)[1].toFixed(1)+'A'+(ER-7)+' '+(ER-7)+' 0 0 1 '+retPt(NRP-1)[0].toFixed(1)+' '+retPt(NRP-1)[1].toFixed(1)+'"/>';
   g+='<path class="en sD" d="M'+(EX+ER)+' '+(EY-10)+'q22 4 40 0M'+(EX+ER)+' '+(EY+10)+'q22 -4 40 0"/>';
-  g+=T('t',EX,EY-ER-16,'RETINA','middle',1);
+  g+=T('t',EX,EY-ER-(o.mob?24:16),'RETINA','middle',1);
   /* ---- line camera ---- */
   g+='<path class="wl sD" d="M'+(BSX-40)+' '+CMY+'h80v36h-80Z"/>';
   g+='<path class="wo sD" d="M'+(BSX-32)+' '+(CMY+8)+'h64"/>';
   g+=T('t',BSX+52,CMY+24,'LINE CAMERA',null,1);
   /* ---- the cross-section panel ---- */
   g+='<path class="wl sD" d="M'+PX+' '+PY+'h'+PW+'v'+PH+'h-'+PW+'Z"/>';
-  g+=T('t',PX,PY-14,o.mob?'CROSS-SECTION':'ONE LINE · ONE CROSS-SECTION',null,1);
+  g+=T('t',PX,PY-(o.mob?21:14),o.mob?'CROSS-SECTION':'ONE LINE · ONE CROSS-SECTION',null,1);
   g+='</g>';
   /* ---- the beam: laser to splitter, reference arm, sample arm, detection arm ---- */
   g+='<g id="scBeam">';
@@ -2099,7 +2099,7 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:.015},.1)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

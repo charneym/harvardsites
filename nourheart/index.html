@@ -89,6 +89,7 @@ h1,h2,h3{text-wrap:balance}
 #pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
+#pre .mk.lg{width:min(320px,72vw);height:auto;overflow:visible}#pre .wm{display:none}/* DR: the loader shows the real logo (raster, at or below native size); its own wordmark is in the logo */
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
@@ -707,7 +708,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M4 56H30L38 22L50 80L58 56H92"/></svg>
+    <img class="mk lg" src="logo.webp" alt="" width="418" height="138">
     <div class="wm"><span>NOUR HEART</span></div>
   </div>
   <span class="lab pl">Cardiac therapeutics &middot; Vienna, Virginia</span>
@@ -1574,7 +1575,7 @@ function scene(){
   /* phones stack the plate: the heart on top, the clock below it, in a near-square frame (DB, CW) */
   var VB=mob?"0 0 560 870":"0 0 800 500",rf=mob?16:12;
   var HT=mob?' transform="translate(134,112) scale(.95)"':' transform="translate(78,122) scale(1.05)"';
-  var RT=mob?' transform="translate(-441,336) scale(1.2)"':"";
+  var RT=mob?' transform="translate(-441,350) scale(1.2)"':"";
   var caps=["SIX OF EVERY TEN DONOR HEARTS GO UNUSED","TRANSPORT IS LIMITED TO FOUR HOURS",
             "CCrP · KEEPS MAKING ATP UNDER LOW OXYGEN","RAT DONORS · 22 HOURS OF STORAGE, FULL RECOVERY"];
   var s='<svg viewBox="'+VB+'" role="img" aria-label="Lab plate: a donor heart whose energy level drains during cold storage and is held with cyclocreatine phosphate, beside a storage clock from 0 to 24 hours marking the 4-hour transport limit, a 6-hour pig study and 22 hours reached in rat donors">';
@@ -1587,12 +1588,12 @@ function scene(){
   /* contour lines on the muscle, engraved: a few inset copies of the outline */
   [.9,.78].forEach(function(k){s+='<path class="mb2" transform="translate('+(112.5*(1-k)).toFixed(1)+','+(160*(1-k)).toFixed(1)+') scale('+k+')" d="'+NH_HEART+'"/>'});
   s+='<g clip-path="url(#nhClip)"><rect id="nhLvl" x="-10" y="0" width="250" height="320" fill="url(#nhHatch)"/><path id="nhLine" class="lvl" d="M-10 0H240"/></g><path class="cor" d="'+NH_COR+'"/>';
-  s+='<text class="nm2" x="0" y="-92" style="font-size:'+(fs/1.05).toFixed(1)+'px">DONOR HEART</text>';
+  s+='<text class="nm2" x="0" y="'+(mob?-104:-92)+'" style="font-size:'+(fs/1.05).toFixed(1)+'px">DONOR HEART</text>';
   s+='<text id="nhAtp" class="a" x="236" y="160" style="font-size:'+(fs/1.05).toFixed(1)+'px">ATP</text></g></g>';
   /* --- right: ten donor hearts, then the storage clock --- */
   s+='<g id="nhR"'+RT+'>';
   s+='<g id="nhTen">'+nhHearts(430,86,26,10)+'</g>';
-  s+='<text id="nhTenL" x="430" y="70" style="font-size:'+rf+'px">HEARTS FROM TEN ORGAN DONORS</text>';
+  s+='<text id="nhTenL" x="430" y="'+(mob?63:70)+'" style="font-size:'+rf+'px">HEARTS FROM TEN ORGAN DONORS</text>';
   var X0=430,X1=772,Y=330,hx=function(h){return X0+(X1-X0)*h/24};
   s+='<g id="nhClock"><path class="ax" d="M'+X0+' '+Y+'H'+X1+'"/>';
   for(var hh=0;hh<=24;hh+=2)s+='<path class="ax" d="M'+hx(hh)+' '+Y+'V'+(Y+(hh%6?5:10))+'"/>';
@@ -1602,7 +1603,7 @@ function scene(){
   s+='<path id="nhM4" class="mk0" d="M'+hx(4)+' '+(Y-58)+'V'+Y+'"/><text id="nhT4" x="'+(hx(4)+8)+'" y="'+(Y-46)+'" style="font-size:'+rf+'px">4 H LIMIT TODAY</text>';
   s+='<path id="nhB22" class="bar1" d="M'+X0+' '+(Y-96)+'H'+X0+'"/>';
   s+='<path id="nhM6" class="mk1" d="M'+hx(6)+' '+(Y-162)+'V'+(Y-90)+'"/><text id="nhT6" class="a" x="'+(hx(6)+8)+'" y="'+(Y-150)+'" style="font-size:'+rf+'px">6 H · PIG STUDY</text>';
-  s+='<text id="nhT22" class="a" x="'+hx(22)+'" y="'+(Y-110)+'" text-anchor="end" style="font-size:'+rf+'px">22 H · RAT DONORS</text></g>';
+  s+='<text id="nhT22" class="a" x="'+hx(22)+'" y="'+(Y-(mob?118:110))+'" text-anchor="end" style="font-size:'+rf+'px">22 H · RAT DONORS</text></g>';
   s+='</g>';
   caps.forEach(function(t,i){s+='<text class="cap" id="nhC'+i+'" x="'+(mob?280:400)+'" y="'+(mob?858:492)+'" text-anchor="middle" style="font-size:'+cs+'px">'+t+'</text>'});
   return s+"</svg>";
@@ -1860,7 +1861,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");mk.style.clipPath="inset(0% 100% 0% 0%)";
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1869,7 +1870,8 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    mk.style.transition="clip-path 1s cubic-bezier(.65,0,.35,1)";requestAnimationFrame(function(){mk.style.clipPath="inset(0% 0% 0% 0%)"});
+    gsap.timeline()
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

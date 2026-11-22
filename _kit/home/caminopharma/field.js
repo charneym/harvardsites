@@ -1,0 +1,64 @@
+/* ================= HERO FIELD: a crafted render of Camino's real target (HOME_BRIEF update 2c): the full-length human mGlu2
+   receptor pair, bound to glutamate and a positive allosteric modulator, drawn atom by atom from its cryo-EM structure
+   (PDB 7MTR; render script mglu2.py). Protomer A in the logo's orange, protomer B in its magenta, the bound ligands in pale gold;
+   the venus-flytrap domains at the top, the seven-transmembrane bundles at the base. Real alpha on the plum ink, 564x1202,
+   shown at or below native size. Slow drift on its own, no pointer response (CZ). On phones it sits in the top band, whole,
+   and fades into the ink above the text (CW). ================= */
+var field=(function(){
+  var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var BG="#140910";
+  img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
+  function ez(g,rgb,a0,a1,n){n=n||8;for(var i=0;i<=n;i++){var u=i/n,s=u*u*(3-2*u);g.addColorStop(u,"rgba("+rgb+","+(a0+(a1-a0)*s).toFixed(3)+")")}return g}
+  function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
+  function geo(){
+    var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
+    var U=mob?h*.44:h;
+    /* the render is 564x1202 (tall); its visual centre is about (0.5, 0.5) */
+    var ih=mob?Math.min(h*.44-92-78,1202):Math.min(h*.74,1202,cw*.95),iw=ih*(564/1202);
+    var kx=mob?w*.5:side+cw*.72,ky=mob?90+ih/2:h*.54;  /* the molecule's centre, in the open area right of the text */
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
+  }
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
+  var lastF=0;
+  function frame(once){
+    var now=performance.now();
+    if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
+    var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
+    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    if(ok){
+      /* a very slow breath: push in ~4% and drift up a touch over ~44s, eased back and forth */
+      var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.04*k)*(1+.035*(1-e));
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012-SP.v*G.ih*.05;
+      /* a low plum glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
+         render can read as a pasted box (DJ) */
+      var ggx=G.mob?w*.5:G.side+G.cw*.72,ggy=G.mob?G.bh*.4:h*.5,ggr=G.mob?G.bh*.85:Math.max(w,h)*.78;
+      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
+      ez(ag,"70,10,52",(G.mob?.32:.55)*e,0,12);
+      c.fillStyle=ag;c.fillRect(0,0,w,h);
+      var hu=.5+.5*Math.sin(t*Math.PI*2/13),hx=x+dw*.5,hy=y+dh*.3,hr=G.mob?G.bh*.6:Math.max(w,h)*.42;
+      var hg=c.createRadialGradient(hx,hy,0,hx,hy,hr);ez(hg,"150,52,18",(.13+.04*hu)*e,0,12);
+      c.fillStyle=hg;c.fillRect(0,0,w,h);
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
+      c.globalAlpha=1;
+      if(!G.mob){
+        /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
+        var lv=ez(c.createLinearGradient(G.side,0,G.side+G.cw*.56,0),"11,5,9",.9,0,12);c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=ez(c.createLinearGradient(0,0,0,h*.42),"11,5,9",.5,0,12);c.fillStyle=tv;c.fillRect(0,0,w,h);
+        var bv=ez(c.createLinearGradient(0,h*.78,0,h),"20,9,16",0,.6,12);c.fillStyle=bv;c.fillRect(0,0,w,h);
+      }else{
+        var tv2=ez(c.createLinearGradient(0,0,0,G.bh*.3),"11,5,9",.55,0,10);c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.28);
+        var mv=ez(c.createLinearGradient(0,G.bh*.7,0,G.bh),"20,9,16",0,1,14);c.fillStyle=mv;c.fillRect(0,G.bh*.7,w,G.bh*.3+1);
+        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
+      }
+      if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
+    }
+    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+  }
+  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function stop(){running=false;cancelAnimationFrame(raf)}
+  var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+    intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
+})();

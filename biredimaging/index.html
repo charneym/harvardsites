@@ -209,8 +209,8 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .story-r{position:relative;height:min(70vh,640px);align-self:center}
 .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
 .scene svg{width:100%;height:100%;overflow:visible}
-.scene .tb{fill:none;stroke:rgba(var(--boner),.5);stroke-width:1.2;vector-effect:non-scaling-stroke}
-.scene .dm{fill:none;stroke:rgba(var(--boner),.82);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.scene .tb{fill:none;stroke:rgba(var(--boner),.5);stroke-width:calc(1.2px*var(--sk,1))}
+.scene .dm{fill:none;stroke:rgba(var(--boner),.82);stroke-width:calc(1.4px*var(--sk,1))}
 .scene .iso{fill:none;stroke:var(--accL);stroke-width:1.1;vector-effect:non-scaling-stroke;opacity:0}
 .scene .iso[data-k="0"]{stroke:#ffd9dc}
 .scene #tum{fill:var(--acc2);opacity:0}
@@ -219,13 +219,13 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene .cb{fill:var(--ink3);stroke:rgba(var(--boner),.78);stroke-width:1.1;vector-effect:non-scaling-stroke}
 .scene .cl{fill:var(--ink);stroke:rgba(var(--boner),.78);stroke-width:1.1;vector-effect:non-scaling-stroke}
 .scene .cg{stroke:var(--acc2);stroke-width:2;vector-effect:non-scaling-stroke}
-.scene .ray{fill:none;stroke:rgba(var(--boner),.34);stroke-width:1;vector-effect:non-scaling-stroke}
+.scene .ray{fill:none;stroke:rgba(var(--boner),.34);stroke-width:calc(1px*var(--sk,1))}
 .scene .sl{fill:none;stroke:rgba(var(--boner),.3);stroke-width:1;vector-effect:non-scaling-stroke;opacity:0}
 .scene .pt{opacity:0}
-.scene .bk{fill:none;stroke:rgba(255,217,220,.55);stroke-width:1;vector-effect:non-scaling-stroke}
-.scene .xh{fill:none;stroke:rgba(var(--boner),.55);stroke-width:1;vector-effect:non-scaling-stroke}
-.scene .sv{fill:none;stroke:#ffd9dc;stroke-width:1.6;vector-effect:non-scaling-stroke}
-.scene .ld{fill:none;stroke:var(--accL);stroke-width:1;vector-effect:non-scaling-stroke}
+.scene .bk{fill:none;stroke:rgba(255,217,220,.55);stroke-width:calc(1px*var(--sk,1))}
+.scene .xh{fill:none;stroke:rgba(var(--boner),.55);stroke-width:calc(1px*var(--sk,1))}
+.scene .sv{fill:none;stroke:#ffd9dc;stroke-width:calc(1.6px*var(--sk,1))}
+.scene .ld{fill:none;stroke:var(--accL);stroke-width:calc(1px*var(--sk,1))}
 .scene #solT{opacity:0}
 .scene text{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;fill:#d9cfcd}
 .scene text.a{fill:var(--accL);font-weight:600}
@@ -1796,7 +1796,7 @@ function memScene(o){
   return g+'</svg>';
 }
 function scene(){return memScene({mob:MOBILE()?1:0})}
-function storyDraw(svg){
+function storyDraw(svg){/* the drawn lines scale with the SVG (no non-scaling-stroke, which Safari dashes in screen units), so --sk keeps their on-screen width what it was */var sk=function(){var m=svg.getScreenCTM&&svg.getScreenCTM();if(m&&m.a)svg.style.setProperty("--sk",(1/m.a).toFixed(4))};sk();addEventListener("resize",sk);
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;p.style.strokeDashoffset=L;return [p,L]})};
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),sol:dl("#scSol .sD3"),solT:$("#solT",svg),
     hg:$("#hg",svg),iso:$$(".iso",svg),tum:$("#tum",svg),

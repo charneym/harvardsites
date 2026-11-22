@@ -91,7 +91,7 @@ h1,h2,h3{text-wrap:balance}
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
 #pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk path{fill:none}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -667,7 +667,7 @@ em{line-height:0}
 
 
 #pre .wm{font-family:var(--deco);font-weight:400;font-size:clamp(24px,2.8vw,40px);letter-spacing:.34em;margin-right:-.34em;white-space:nowrap}
-#pre .mk{width:64px;height:96px}
+#pre .mk{width:68px;height:102px}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -1669,7 +1669,7 @@ function scene(){
   g+=leaf(Y-22,1)+leaf(Y+22,-1);
   /* the stretch around the entry site, drawn as a line that dips into the cell in step 2 */
   for(k=0;k<6;k++)g+='<circle class="lh dh dO" cx="0" cy="0" r="4.6"/><circle class="lh dh dI" cx="0" cy="0" r="4.6"/>';
-  g+='<text class="t" x="'+(mob?110:60)+'" y="'+(mob?70:86)+'">OUTSIDE THE CELL</text><text class="t" x="'+(mob?110:60)+'" y="'+(Y+86)+'">INSIDE THE CELL</text>';
+  g+='<text class="t" x="'+(mob?110:60)+'" y="'+(mob?70:44)+'">OUTSIDE THE CELL</text><text class="t" x="'+(mob?110:60)+'" y="'+(Y+86)+'">INSIDE THE CELL</text>';
   if(!mob)g+='<text class="bl" x="600" y="'+(Y+86)+'" text-anchor="start">CELL MEMBRANE</text>';
   g+='</g>';
   /* syndecans: core protein, a tail inside, three beaded heparan sulfate chains outside */
@@ -1699,7 +1699,7 @@ function scene(){
   /* step 2: the cargo */
   g+='<g id="cg"><g id="cgo"><circle class="cargo" cx="0" cy="0" r="26"/><path class="cgl" d="M-14 -6C-6 -16 6 -16 14 -6M-14 6C-6 16 6 16 14 6"/></g>';
   g+='<circle id="ves" class="ves" cx="400" cy="'+(Y+120)+'" r="40"/>';
-  g+='<text id="cgt" class="a" x="'+(mob?405:250)+'" y="'+(mob?70:78)+'"'+(mob?' text-anchor="middle"':'')+'>'+(mob?'LARGE DRUG':'CARGO: A PROTEIN OR NUCLEIC ACID')+'</text>';
+  g+='<text id="cgt" class="a" x="'+(mob?405:250)+'" y="'+(mob?70:44)+'"'+(mob?' text-anchor="middle"':'')+'>'+(mob?'LARGE DRUG':'CARGO: A PROTEIN OR NUCLEIC ACID')+'</text>';
   g+='<text id="vst" class="bl" x="460" y="'+(Y+178)+'">'+(mob?'INTO THE CELL':'CARRIED INTO THE CELL')+'</text></g>';
   /* step 3: syndecan-3 lit, a level gauge */
   g+='<g id="dx"><text class="a" x="'+MEM.xs[1]+'" y="'+(Y+122)+'" text-anchor="middle">SYNDECAN-3</text><text class="a" x="'+MEM.xs[3]+'" y="'+(Y+122)+'" text-anchor="middle">SYNDECAN-3</text>';
@@ -1971,7 +1971,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$$("#pre .mk path");mk.forEach(function(p){p.setAttribute("pathLength","1")});gsap.set(mk,{strokeDasharray:"1 1",strokeDashoffset:1});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();

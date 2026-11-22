@@ -21,7 +21,7 @@
 Logo (logo-dots-1.png): three ascending purple dots #7030a0, black lowercase rounded "chorda", spaced purple "PHARMA". Ink #09091a (matches the hero photo's ground), accent #7030a0 / #b996e3, bone #f6f4fa. Comfortaa for the wordmark (rounded lowercase like their logo), Manrope text, Fraunces display.
 
 ## Hero
-Option (b): Pexels photo 9841263, a single red chili pepper on a dark ground (Pexels License): https://www.pexels.com/photo/red-chili-pepper-on-black-surface-9841263/ (image https://images.pexels.com/photos/9841263/pexels-photo-9841263.jpeg). Cut out with real alpha along the pepper, turned 24°, 1500px wide (shown at or below native), slow drift with a faint warm glow. Grepped the repo first: no other concept uses it. Not Chorda's own image; it stands for capsaicin's source.
+Option (c), after coordinator review (the chili photo read as distorted): a crafted ball-and-stick render of capsaicin, Capsadyn's active ingredient, from the PubChem 3D conformer CID 1548943 (_kit/home/chordapharma/capsaicin_cid1548943_3d.sdf), ray-cast by _kit/home/chordapharma/render.py (view 25/-18/22): carbons in the logo purple, oxygens warm coral, nitrogen cool blue, real alpha, 1500x1286, shown at or below native. Grepped the repo first: no other concept renders capsaicin (serentrix uses TRPV1 PDB 5IS0).
 
 ## Story
 Engraved cross-section of skin: overactive nerve endings firing → Capsadyn applied, capsaicin diffuses to the endings → receptors desensitized, firing stops → the trial's 0–10 burn scale (Capsadyn = placebo at 0, 0.1% comparator at 5). Schematic.

@@ -1,8 +1,8 @@
-/* ================= HERO FIELD: a real photograph of the subject (HOME_BRIEF update 2b): a single red chili pepper, the
-   source of capsaicin, Capsadyn's active ingredient. Pexels photo 9841263 (Pexels License), low-key studio light on a dark
-   ground; cut out along the pepper with real alpha (the shadow side falls away into the ink), turned to rise to the right,
-   1500px, never upscaled. It breathes in a slow Ken Burns drift and moves on its own, so no pointer response (CZ). On phones it
-   sits in the top band and fades into the ink above the text (CW). ================= */
+/* ================= HERO FIELD: a crafted render of the mechanism's molecule (HOME_BRIEF update 2c): capsaicin, the active
+   ingredient in Capsadyn, as a ball-and-stick model from the PubChem 3D conformer (CID 1548943): the vanillyl ring with its
+   hydroxyl and methoxy oxygens, the amide, and the fatty tail. Ray-cast offline by render.py (carbons in the logo purple,
+   oxygens in a warm coral, nitrogen a cool blue, key/fill/rim light, real alpha), 1500x1286, shown at or below native size. It
+   breathes in a slow drift and moves on its own, so no pointer response (CZ). On phones it sits in the top band (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
@@ -13,9 +13,9 @@ var field=(function(){
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.44,w*.96):h;
-    /* the pepper runs corner to corner of its 1500x849 cut-out; its visual centre is about (0.52, 0.42) */
-    var iw=mob?Math.min(w*.8,(U-120)*1.6):Math.min(cw*.44,1500,h*1.25),ih=iw*(849/1500);
-    var kx=mob?w*.5:side+cw*.755,ky=mob?92+(U-92)*.48:h*.53;  /* kx/ky: the pepper's centre, in the open area right of the text */
+    /* the molecule fills its cut-out; centre at (0.5, 0.5) */
+    var AR=1500/1286,iw=mob?Math.min(w*.66,(U-110)*AR):Math.min(cw*.4,h*.64*AR,1500),ih=iw/AR;
+    var kx=mob?w*.5:side+cw*.75,ky=mob?98+ih*.5:h*.53;  /* kx/ky: the molecule's centre, in the open area right of the text */
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -29,15 +29,15 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~4% and drift up a touch over ~44s, eased back and forth */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.04*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.52,y=G.ky-dh*.42-k*G.ih*.02-SP.v*G.ih*.06;
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.02-SP.v*G.ih*.06;
       /* a low blue glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
          render can read as a pasted box (DJ) */
       var ggx=G.mob?w*.5:G.side+G.cw*.75,ggy=G.mob?G.bh*.46:h*.5,ggr=Math.max(w,h)*.78;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
       ez(ag,"44,22,72",.5*e,0,12);
       c.fillStyle=ag;c.fillRect(0,0,w,h);
-      var hu=.5+.5*Math.sin(t*Math.PI*2/13),hx=x+dw*.55,hy=y+dh*.4,hr=Math.max(w,h)*.5;
-      var hg=c.createRadialGradient(hx,hy,0,hx,hy,hr);ez(hg,"110,22,36",(.16+.05*hu)*e,0,12);
+      var hu=.5+.5*Math.sin(t*Math.PI*2/13),hx=x+dw*.62,hy=y+dh*.3,hr=Math.max(w,h)*.5;
+      var hg=c.createRadialGradient(hx,hy,0,hx,hy,hr);ez(hg,"120,40,46",(.09+.03*hu)*e,0,12);
       c.fillStyle=hg;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       c.globalAlpha=1;

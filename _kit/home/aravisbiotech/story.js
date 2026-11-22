@@ -40,7 +40,7 @@ function boneScene(o){
   /* ---- timeline: weeks after surgery in the ovine study ---- */
   var x0=40,x1=720,ty=440,wk=function(n){return x0+(x1-x0)*n/10};
   g+='<g id="scTl"><path class="tl" d="M'+x0+' '+ty+'H'+x1+'"/>';
-  for(i=0;i<=10;i++)g+='<path class="tl" d="M'+wk(i)+' '+(ty-5)+'V'+(ty+5)+'"/><text class="t" x="'+(wk(i)-4)+'" y="'+(ty+26)+'">'+i+'</text>';
+  for(i=0;i<=10;i++)g+='<path class="tl" d="M'+wk(i)+' '+(ty-5)+'V'+(ty+5)+'"/>'+(i?'<text class="t" x="'+(wk(i)-4)+'" y="'+(ty+26)+'">'+i+'</text>':'');
   g+='<rect class="lb" id="tlBand" x="'+wk(3)+'" y="'+(ty-9)+'" width="'+(wk(8)-wk(3))+'" height="18"/>';
   g+='<text class="t" x="'+x0+'" y="'+(ty-24)+'">WEEKS AFTER SURGERY</text>';
   g+='<circle class="tm" id="tlM" cx="'+x0+'" cy="'+ty+'" r="6"/></g>';

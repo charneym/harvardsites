@@ -25,7 +25,7 @@ function mmScene(o){
   g+='<g id="scCells">';MMC.forEach(function(c){g+='<circle class="cel" cx="'+c[0].toFixed(1)+'" cy="'+c[1].toFixed(1)+'" r="2.4"/>'});g+='</g>';
   g+='</g>';
   /* the reader, arriving from the right: its body, screen and slot (the near end is in frame) */
-  g+='<defs><linearGradient id="mmFd" x1="0" y1="0" x2="1" y2="0"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="mmMk" maskUnits="userSpaceOnUse" x="560" y="100" width="200" height="400"><rect x="560" y="100" width="200" height="400" fill="url(#mmFd)"/></mask></defs><g id="scRd" mask="url(#mmMk)"><path class="rd" d="'+mmRR(600,150,250,300,34)+'"/><path class="rd2" d="'+mmRR(618,168,214,176,12)+'"/>';
+  g+='<defs><linearGradient id="mmFd" x1="0" y1="0" x2="1" y2="0"><stop offset=".55" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><mask id="mmMk" maskUnits="userSpaceOnUse" x="560" y="100" width="200" height="400"><rect x="560" y="100" width="200" height="400" fill="url(#mmFd)"/></mask></defs><g id="scRd" mask="url(#mmMk)"><path class="rd" d="'+mmRR(600,150,190,300,34)+'"/><path class="rd2" d="'+mmRR(618,168,154,176,12)+'"/>';
   g+='<path class="rd2" d="M600 '+(CY+44)+'H644M600 '+(CY+64)+'H644"/>';
   g+='<g id="scScr"><text class="sc" x="636" y="204">préXclude</text><text class="t" x="636" y="230">sFlt-1 / PlGF</text><path class="sb" d="M636 262H716"/><path class="sbf" id="scBar" d="M636 262H716"/><text class="t" x="636" y="300">RATIO</text></g></g>';
   /* the fingertip and the drop */

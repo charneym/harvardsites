@@ -35,5 +35,5 @@ var NEWS=[
  ["June 2026","NexPlasmaGen featured in Profit Tribune magazine","NexPlasmaGen",NB+"nexplasmagen-featured-in-the-profit-tribune-magazine/"],
  ["June 2026","Presenting at the Global Innovation in Women’s Health Pitch Showcase","NexPlasmaGen",NB+"presenting-at-global-innovation-in-womens-health-pitch-showcase/"],
  ["May 2026","Winner of the TiEQuest 2026 Medtech track pitch competition","NexPlasmaGen",NB+"nexplasmagen-winner-of-tiequest-2026-medtech-track/"],
- ["May 2025","NRC IRAP contribution for a pre-production applicator and in vitro testing","Government of Canada","https://search.open.canada.ca/grants/record/nrc-cnrc,172-2025-2026-Q2-1034054,current"]];
+ ["May 2025","NRC IRAP backs the design of the next CPJ applicator and its in vitro testing","Government of Canada","https://search.open.canada.ca/grants/record/nrc-cnrc,172-2025-2026-Q2-1034054,current"]];
 var SHEETS=[];

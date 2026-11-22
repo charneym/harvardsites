@@ -1,0 +1,98 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Histologics hero: a crafted render of the Soft K-Bride(R) Kylon(R) brush-curette (EIN Presswire, 2025-11-06; histologicswc.com):
+   a slim translucent handle with a ribbed grip and centimetre markings (to 10 cm), a narrow neck, and a fan-shaped head whose
+   broad end carries the Kylon fabric: fenestrated nylon loops cut into micro-hooks that flex under pressure, lift tissue and
+   trap it in the fabric. Hooks are individual instanced tubes (thousands), black nylon with sheen. Illustrative proportions,
+   not an engineering drawing. Real alpha, so the page ink shows through: no box edge (DP/DJ). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||2000),H=+(Q.get('h')||1400);
+const RX=+(Q.get('rx')||-28),RY=+(Q.get('ry')||-38),RZ=+(Q.get('rz')||-24),FOV=+(Q.get('fov')||24),CD=+(Q.get('cd')||46),NH=+(Q.get('nh')||9000);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.05;r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0x000000,0);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.7;
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-8,14,16);sc.add(key);
+const rim=new THREE.DirectionalLight(0x8fc6ff,2.6);rim.position.set(14,6,-12);sc.add(rim);
+const low=new THREE.DirectionalLight(0xffd9c4,.6);low.position.set(4,-12,8);sc.add(low);
+
+/* molded polymer: translucent turquoise like the real device, frosted, with a clearcoat sheen */
+const poly=new THREE.MeshPhysicalMaterial({color:0x12a3cf,roughness:.2,metalness:0,transmission:.3,thickness:.8,ior:1.49,
+  attenuationColor:new THREE.Color(0x0a7fa6),attenuationDistance:.9,clearcoat:.7,clearcoatRoughness:.18,specularIntensity:.8});
+const polyD=poly.clone();polyD.color=new THREE.Color(0x0d86b0);
+const dev=new THREE.Group();
+const T=.42; /* handle thickness (z) */
+function ext(pts,depth,bev){const s=new THREE.Shape();s.moveTo(pts[0][0],pts[0][1]);
+  const cur=new THREE.SplineCurve(pts.map(p=>new THREE.Vector2(p[0],p[1])).concat([new THREE.Vector2(pts[0][0],pts[0][1])]));
+  s.setFromPoints(cur.getPoints(260));
+  const g=new THREE.ExtrudeGeometry(s,{depth:depth-2*bev,bevelEnabled:true,bevelThickness:bev,bevelSize:bev*.9,bevelSegments:5,curveSegments:64});
+  g.translate(0,0,-(depth-2*bev)/2);g.computeVertexNormals();return g}
+/* handle side profile: thin rounded tail, deeper belly carrying the grip ribs, tapering into the neck */
+const HP=[[0,.08],[.6,.22],[4,.33],[9,.36],[12.4,.3],[13.5,.17],[13.5,-.12],[12.3,-.2],[10.6,-.5],[7,-.72],[3,-.66],[.8,-.42],[.05,-.16]];
+dev.add(new THREE.Mesh(ext(HP,T,.07),poly));
+/* grip ribs: molded fins on both faces of the belly */
+{const gs=[];for(let x=1.1;x<10.6;x+=.36){const yb=x<3?-.44-(x-1.1)*.11:x<7?-.66-(x-3)*.015:-.72+(x-7)*.06;
+  const hh=Math.max(.18,.36+(yb+.66)*.5),b=new THREE.BoxGeometry(.11,hh,T+.07,1,1,1);b.translate(x,yb+hh/2+.04,0);gs.push(b)}
+ const rib=new THREE.Mesh(mergeGeometries(gs),polyD);dev.add(rib);}
+/* centimetre markings along the top face (10 cm), a longer tick every 5 */
+{const gs=[];for(let i=0;i<=10;i++){const x=12.9-i*1.0,L=i%5===0?.22:.13,b=new THREE.BoxGeometry(.028,L,.012);b.translate(x,.34-L/2+.0,T/2+.006);gs.push(b)}
+ const tick=new THREE.Mesh(mergeGeometries(gs),new THREE.MeshStandardMaterial({color:0xf2f7fa,roughness:.5}));dev.add(tick);
+ const t2=tick.clone();t2.scale.z=-1;dev.add(t2);}
+/* collar sleeve where the head is bonded to the handle */
+{const g=new THREE.CylinderGeometry(.205,.205,.9,48,1);g.rotateZ(Math.PI/2);g.translate(13.85,.02,0);
+ dev.add(new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({color:0x7fd4ea,roughness:.25,transmission:.35,thickness:.3,clearcoat:.8})));}
+/* head: a fan widening to the working edge */
+const E0=new THREE.Vector2(15.75,1.02),E1=new THREE.Vector2(16.45,-.62);   /* ends of the working edge */
+const HD=[[14.2,.17],[15.0,.6],[15.75,1.02],[16.2,.2],[16.45,-.62],[15.4,-.42],[14.2,-.14]];
+const HT=.34;dev.add(new THREE.Mesh(ext(HD,HT,.05),poly));
+
+/* the Kylon pad: woven nylon wrapped round the working edge (a half-cylinder), and the micro-hooks rising from it */
+const eDir=new THREE.Vector2().subVectors(E1,E0);const eLen=eDir.length();eDir.normalize();
+const eN=new THREE.Vector2(-eDir.y,eDir.x);if(eN.x<0)eN.multiplyScalar(-1);  /* outward normal of the edge (away from the handle) */
+const PR=.26,PW=.24; /* pad radius; how far the pad wraps back onto the faces */
+const curveB=(s)=>{const bow=Math.sin(Math.PI*s)*.07;return new THREE.Vector2(E0.x+eDir.x*eLen*s+eN.x*bow,E0.y+eDir.y*eLen*s+eN.y*bow)};
+function padPoint(s,th){/* th: -PI/2..PI/2 around the edge, 0 = facing straight out */
+  const b=curveB(s),c=new THREE.Vector3(b.x-eN.x*.04,b.y-eN.y*.04,0);
+  const n=new THREE.Vector3(eN.x*Math.cos(th),eN.y*Math.cos(th),Math.sin(th));
+  return [c.clone().addScaledVector(n,PR),n]}
+/* weave texture for the fabric bed */
+function weave(){const N=512,c=document.createElement('canvas');c.width=c.height=N;const g=c.getContext('2d');g.fillStyle='#0d0f12';g.fillRect(0,0,N,N);
+  for(let y=0;y<N;y+=8)for(let x=0;x<N;x+=8){const o=((x+y)/8)%2;g.fillStyle=o?'#24282e':'#16191d';g.fillRect(x+1,y+1,o?6:3,o?3:6)}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(10,3);t.colorSpace=THREE.SRGBColorSpace;return t}
+{const seg=120,ring=40,pos=[],uv=[],idx=[];
+ for(let i=0;i<=seg;i++)for(let j=0;j<=ring;j++){const s=i/seg,th=-Math.PI/2+Math.PI*j/ring;const [p]=padPoint(s,th);
+   /* close the wrap back onto the faces */
+   pos.push(p.x,p.y,p.z);uv.push(s,j/ring)}
+ for(let i=0;i<seg;i++)for(let j=0;j<ring;j++){const a=i*(ring+1)+j,b=a+ring+1;idx.push(a,b,a+1,b,b+1,a+1)}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();
+ dev.add(new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({map:weave(),roughness:.8,sheen:1,sheenColor:new THREE.Color(0x3a4048),sheenRoughness:.5,side:THREE.DoubleSide})));
+ /* side caps: flat fabric where the pad meets the head faces */
+}
+/* one micro-hook: a stem that curls over into an open hook (a cut loop), tube radius ~ a nylon monofilament */
+function hookGeo(h,rr){const pts=[];for(let i=0;i<=6;i++)pts.push(new THREE.Vector3(0,h*i/6,0));
+  for(let i=1;i<=10;i++){const a=Math.PI-i/10*Math.PI*1.18;pts.push(new THREE.Vector3(rr+rr*Math.cos(a),h+rr*Math.sin(a),0))}
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts),24,.0105,6,false)}
+const nylon=new THREE.MeshPhysicalMaterial({color:0x121417,roughness:.38,metalness:0,sheen:1,sheenColor:new THREE.Color(0x6a7480),sheenRoughness:.35,clearcoat:.5,clearcoatRoughness:.25});
+const VARS=[hookGeo(.15,.034),hookGeo(.12,.03),hookGeo(.17,.038)];
+const mats=[];const per=Math.ceil(NH/VARS.length);
+VARS.forEach((g,vi)=>{const im=new THREE.InstancedMesh(g,nylon,per);const m=new THREE.Matrix4(),q=new THREE.Quaternion(),q2=new THREE.Quaternion(),up=new THREE.Vector3(0,1,0);
+  for(let k=0;k<per;k++){const s=rnd(),th=(-1+2*rnd())*Math.PI/2*.96;const [p,n]=padPoint(s,th);
+    /* lean: each hook tilts a little at random, and the curl faces a random direction */
+    const nn=n.clone().add(new THREE.Vector3((rnd()-.5)*.5,(rnd()-.5)*.5,(rnd()-.5)*.5)).normalize();
+    q.setFromUnitVectors(up,nn);q2.setFromAxisAngle(up,rnd()*Math.PI*2);q.multiply(q2);
+    const sc=.8+rnd()*.45;m.compose(p.clone().addScaledVector(n,-.01),q,new THREE.Vector3(sc,sc*(.85+rnd()*.3),sc));im.setMatrixAt(k,m)}
+  dev.add(im)});
+
+/* compose: centre the device, then turn it into a three-quarter view with the head nearest the camera */
+dev.position.x=-8.3;
+const piv=new THREE.Group();piv.add(dev);sc.add(piv);
+piv.rotation.set(THREE.MathUtils.degToRad(RX),THREE.MathUtils.degToRad(RY),THREE.MathUtils.degToRad(RZ),'YXZ');
+const cam=new THREE.PerspectiveCamera(FOV,W/H,.1,200);cam.position.set(0,0,CD);cam.lookAt(0,0,0);
+/* fixed camera distance (sets the perspective: the head nearer, larger); the bake crops to the alpha bounds */
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

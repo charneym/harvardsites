@@ -92,7 +92,6 @@ h1,h2,h3{text-wrap:balance}
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
 #pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -675,6 +674,7 @@ em{line-height:0}
 @media (max-width:1024px){.scene text{font-size:14px;letter-spacing:.06em}.scene text.t{font-size:9.5px}}
 #pre .wm{font-family:var(--deco);font-weight:400;font-size:clamp(30px,3.4vw,48px);letter-spacing:.01em;margin-right:0;white-space:nowrap;color:var(--bone)}
 #pre .wm b{font-weight:500;color:var(--rdL)}
+#pre .mk{width:auto;height:clamp(64px,7vw,84px);overflow:visible}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -870,6 +870,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
+    <svg class="mk" viewBox="0 0 36 44" aria-hidden="true"><defs><linearGradient id="amP" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9dcf0"/><stop offset="1" stop-color="#5e9cc4"/></linearGradient></defs><path d="M18 3c-4.2 0-6.6 3.1-6.6 6.9 0 3.6 2.6 6.3 6.6 6.3s6.6-2.7 6.6-6.3C24.6 6.1 22.2 3 18 3Z" fill="url(#amP)"/><path d="M8.6 20.5C5 22.6 3.4 27 3.4 33.6V41h29.2v-7.4c0-6.6-1.6-11-5.2-13.1-2.6 1.9-5.9 2.9-9.4 2.9s-6.8-1-9.4-2.9Z" fill="url(#amP)" opacity=".9"/><path d="M14.6 27.5c1.2-1.4 2.2-2 3.4-2s2.2.6 3.4 2c1.6 1.9 1.6 5-.2 7.2L18 38l-3.2-3.3c-1.8-2.2-1.8-5.3-.2-7.2Z" fill="#c78fb2"/></svg>
     <div class="wm">Archie<b>MD</b></div>
   </div>
   <span class="lab pl">Medical simulation · Boca Raton</span>
@@ -1795,7 +1796,7 @@ function amScene(o){
   g+='<circle class="tip" id="scTip" r="5" cx="'+NXp+'" cy="'+TIP1+'"/>';
   g+='<g id="lb1"><path class="tg" d="M'+NXp+' '+(SK-16)+'V'+(TIP1+4)+'"/><text class="a" x="'+(NXp-18)+'" y="62" text-anchor="end">ENTRY · 2ND INTERCOSTAL SPACE</text>'+
      '<text class="a" x="428" y="196">ABOVE THE RIB</text><text x="282" y="322" text-anchor="middle">VESSELS · NERVE, BELOW THE RIB</text></g>';
-  g+='<g id="lb2"><text class="a" x="'+PX1+'" y="'+(PP+32)+'" text-anchor="end">LOSS OF RESISTANCE</text></g>';
+  g+='<g id="lb2"><text class="a" x="'+PX1+'" y="'+(VP+42)+'" text-anchor="end">LOSS OF RESISTANCE</text></g>';
   g+='<g id="lb3"><text class="a" x="'+(PX0-22)+'" y="388">✓ LANDMARK FOUND</text><text class="a" x="'+(PX0-22)+'" y="420">✓ ABOVE THE RIB</text><text class="a" x="'+(PX0-22)+'" y="452">✓ PLEURA FELT</text></g>';
   return g+'</svg>';
 }
@@ -2044,7 +2045,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,y:14});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2053,7 +2054,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,y:0,duration:.7,ease:"silk"},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

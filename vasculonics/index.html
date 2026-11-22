@@ -85,8 +85,7 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk{width:76px;height:76px;overflow:visible;display:block}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -731,7 +730,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><circle cx="48" cy="48" r="40"/><path d="M14 46C16 66 30 84 50 86M26 30L44 70L74 24C62 30 54 38 47 52"/></svg>
+    <svg class="mk" viewBox="0 0 32 32"><circle cx="16" cy="16" r="15" fill="#ea1824"/><path d="M3 15C4 23 10 30 17 30C11 26 7 20 6 11Z" fill="#3c54a4"/><path d="M8 10L15 24L26 8C21 10 18 13 15.5 18Z" fill="#fff"/></svg>
     <div class="wm"><span>VASCULONICS</span></div>
   </div>
   <span class="lab pl">Therapeutics for immunity and fibrosis · Indianapolis, Indiana</span>
@@ -1583,19 +1582,19 @@ function scene(){
   s+='<circle class="vn" cx="222" cy="318" r="56"/><g>'+st+'</g>';
   s+='<text x="90" y="112" style="font-size:'+fs+'px">CANCER CELL</text><text x="222" y="392" text-anchor="middle" style="font-size:'+fs+'px">NUCLEUS</text>';
   /* IDO */
-  s+='<g id="vsIdo"><rect class="vido" x="164" y="202" width="22" height="22"/><text x="150" y="196" text-anchor="middle" style="font-size:'+fs+'px">IDO</text></g>';
+  s+='<g id="vsIdo"><rect class="vido" x="164" y="202" width="22" height="22"/><text x="175" y="'+(mob?254:244)+'" text-anchor="middle" style="font-size:'+fs+'px">IDO</text></g>';
   /* PD-L1 stalks on the membrane, facing the T cells */
   var pd='';[-52,-26,0,26,52].forEach(function(dg){var t=dg*Math.PI/180,x1=VC[0]+Math.cos(t)*(VR+3),y1=VC[1]+Math.sin(t)*(VR+3),x2=VC[0]+Math.cos(t)*(VR+18),y2=VC[1]+Math.sin(t)*(VR+18);
     pd+='<path class="vpd" d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+'L'+x2.toFixed(1)+' '+y2.toFixed(1)+'"/><circle class="vpdk" cx="'+x2.toFixed(1)+'" cy="'+y2.toFixed(1)+'" r="4"/>'});
-  s+='<g id="vsPd">'+pd+'<text class="xa" x="372" y="140" style="font-size:'+fs+'px">PD-L1</text></g>';
+  s+='<g id="vsPd">'+pd+'<text class="xa" x="'+(mob?372:372)+'" y="'+(mob?134:140)+'" style="font-size:'+fs+'px">PD-L1</text></g>';
   /* the receptor */
-  s+='<g id="vsAhr" transform="translate('+VAHR[0]+' '+VAHR[1]+')"><path class="vahr" d="M-14 -6A14 14 0 1 0 14 -6L6 -6L6 2L-6 2L-6 -6Z"/><text x="0" y="34" text-anchor="middle" style="font-size:'+fs+'px">AhR</text></g>';
+  s+='<g id="vsAhr" transform="translate('+VAHR[0]+' '+VAHR[1]+')"><path class="vahr" d="M-14 -6A14 14 0 1 0 14 -6L6 -6L6 2L-6 2L-6 -6Z"/><text x="0" y="'+(mob?54:44)+'" text-anchor="middle" style="font-size:'+fs+'px">AhR</text></g>';
   /* kynurenine */
   s+='<g id="vsKyn">'+VKYN.map(function(k,i){return '<path class="vky" data-i="'+i+'" d="M0 -5L5 0L0 5L-5 0Z"/>'}).join("")+'<text id="vsKynT" class="xa" x="96" y="486" style="font-size:'+fs+'px">KYNURENINE</text></g>';
   /* T cells and Tregs */
   s+='<g id="vsT">'+VCD8.map(function(p,i){return '<g class="vcd" transform="translate('+p[0]+' '+p[1]+')"><path class="vcdf" d="'+vBump(0,0,24,2.4,60,i)+'"/><circle class="vcdn" cx="-3" cy="2" r="12"/></g>'}).join("")+
     '<text x="532" y="132" text-anchor="middle" style="font-size:'+fs+'px">CD8⁺ T CELLS</text><text id="vsEx" class="vex" x="532" y="470" text-anchor="middle" style="font-size:'+fs+'px">EXHAUSTED</text><text id="vsEn" class="xa" x="440" y="486" text-anchor="middle" style="font-size:'+fs+'px">ENGAGED</text></g>';
-  s+='<g id="vsTreg">'+VTREG.map(function(p){return '<g transform="translate('+p[0]+' '+p[1]+')"><circle class="vtr" r="20"/><circle class="vtr2" r="14"/></g>'}).join("")+'<text class="vb" x="611" y="310" text-anchor="middle" style="font-size:'+fs+'px">TREGS</text></g>';
+  s+='<g id="vsTreg">'+VTREG.map(function(p){return '<g transform="translate('+p[0]+' '+p[1]+')"><circle class="vtr" r="20"/><circle class="vtr2" r="14"/></g>'}).join("")+'<text class="vb" x="'+(mob?608:611)+'" y="'+(mob?416:310)+'" text-anchor="middle" style="font-size:'+fs+'px">TREGS</text></g>';
   /* VN-1032 */
   var hx='M0 -8L7 -4L7 4L0 8L-7 4L-7 -4Z';
   s+='<g id="vsDrug">'+VDRUG.map(function(){return '<path class="vdr" d="'+hx+'"/>'}).join("")+'<text class="vb" x="470" y="44" text-anchor="end" style="font-size:'+fs+'px">VN-1032</text></g>';
@@ -1857,7 +1856,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,scale:.86,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1866,7 +1865,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.7,ease:"silk"},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

@@ -830,6 +830,10 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .pipe .tg b{color:var(--accL)}
 .pipe .tg i{color:var(--blL)}
 .mh-row .mh-sum:empty{opacity:0}
+/* phones: the scrim starts below the heart, just above the eyebrow, so the subject shows whole (CW keeps the text band clear) */
+@media (max-width:860px){.hero::before{background:linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 36%,rgba(var(--inkr),.9) 43%,rgba(var(--inkr),.95) 72%,var(--ink) 100%)}}
+@media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 38svh,transparent 43svh);mask-image:linear-gradient(180deg,#000 0,#000 38svh,transparent 43svh)}}
+@media (max-width:860px){.fieldbg{background:#07111f}}
 </style>
 </head>
 </head>
@@ -1662,7 +1666,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    top band and the ink takes over before the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false,AR=1177/1302;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false,AR=1177/1303;
   var BG="#07111f";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -1681,8 +1685,9 @@ var field=(function(){
       return {mob:1,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:w*.5,ky:top+ih/2,bh:U};
     }
     var tr=textRight()||side+cw*.46,x0=Math.max(tr+110,side+cw*.5),x1=w-side;
-    var top=hd+Math.max(28,h*.05),bot=h-Math.max(36,h*.06);
-    var ih=Math.max(40,Math.min(bot-top,(x1-x0)/AR,h*.78)),iw=ih*AR;
+    var top=hd+Math.max(28,h*.05),bot=h-Math.max(80,h*.09);
+    /* ~70% of the open area (coordinator review): whole, with clear ink below it and well clear of the H1 */
+    var ih=Math.max(40,Math.min((bot-top)*.78,(x1-x0)/AR*.8,h*.56)),iw=ih*AR;
     /* centre of the open area, pulled toward ~68% of the width when there is room */
     var kx=Math.max(x0+iw/2,Math.min(x1-iw/2,side+cw*.7)),ky=top+(bot-top)/2;
     return {mob:0,side:side,cw:cw,ih:ih,iw:iw,kx:kx,ky:ky,bh:h,x0:x0};
@@ -1713,7 +1718,7 @@ var field=(function(){
         var lv=c.createLinearGradient(0,0,G.x0+60,0);[[0,.5],[.3,.42],[.55,.26],[.75,.12],[.9,.04],[1,0]].forEach(function(q){lv.addColorStop(q[0],"rgba(4,10,19,"+q[1]+")")});c.fillStyle=lv;c.fillRect(0,0,w,h);
         var bv=c.createLinearGradient(0,h*.72,0,h);bv.addColorStop(0,"rgba(7,17,31,0)");bv.addColorStop(1,"rgba(7,17,31,.7)");c.fillStyle=bv;c.fillRect(0,h*.72,w,h*.28+1);
       }else{
-        var mv=c.createLinearGradient(0,G.bh-56,0,G.bh+2);mv.addColorStop(0,"rgba(7,17,31,0)");mv.addColorStop(1,"rgba(7,17,31,1)");c.fillStyle=mv;c.fillRect(0,G.bh-56,w,58);
+        var mv=c.createLinearGradient(0,G.bh-150,0,G.bh+2);[[0,0],[.3,.12],[.55,.4],[.8,.78],[1,1]].forEach(function(q){mv.addColorStop(q[0],"rgba(7,17,31,"+q[1]+")")});c.fillStyle=mv;c.fillRect(0,G.bh-150,w,152);
         c.fillStyle=BG;c.fillRect(0,G.bh+2,w,h-G.bh);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

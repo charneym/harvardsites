@@ -11,7 +11,7 @@ const PAGE=`<!doctype html><html><body style="margin:0;background:transparent">
 import * as THREE from 'three';
 const W=${W},H=${H};
 const rn=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true,premultipliedAlpha:false});
-rn.setPixelRatio(1);rn.setSize(W,H);rn.setClearColor(0x000000,0);rn.toneMapping=THREE.ACESFilmicToneMapping;rn.toneMappingExposure=.9;
+rn.setPixelRatio(1);rn.setSize(W,H);rn.setClearColor(0x000000,0);rn.toneMapping=THREE.ACESFilmicToneMapping;rn.toneMappingExposure=.95;
 rn.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(rn.domElement);
 const sc=new THREE.Scene();
 const pm=new THREE.PMREMGenerator(rn);const env=new THREE.Scene();env.background=new THREE.Color(0x03070d);
@@ -26,14 +26,14 @@ function n3(x,y,z){return Math.sin(x*3.1+y*1.7)*Math.cos(z*2.3-y*.9)*.5+Math.sin
 /* perfusion 0..1 at angle a (0 = anterior), height y (0 apex .. YB base) */
 const DEF_A=.75,DEF_Y=1.05;
 function perf(a,y){
-  let v=.73+.08*n3(Math.cos(a)*2,y,Math.sin(a)*2)+.05*Math.cos(a*2+.7)+.03*n3(Math.cos(a)*5,y*2.4,Math.sin(a)*5);
+  let v=.74+.06*n3(Math.cos(a)*2,y,Math.sin(a)*2)+.04*Math.cos(a*2+.7)+.025*n3(Math.cos(a)*5,y*2.4,Math.sin(a)*5);
   v-=.06*smooth(2.2,3.05,y);                      /* the base reads a little lower, as on real maps */
   let da=Math.atan2(Math.sin(a-DEF_A),Math.cos(a-DEF_A)),dy=y-DEF_Y;
   v-=.42*Math.exp(-(da*da)/(2*.55*.55)-(dy*dy)/(2*.8*.8));
   return Math.max(.05,Math.min(1,v));
 }
 /* nuclear "heat" scale: black - deep red - red - orange - gold - pale yellow - white */
-const ST=[[0,[8,2,4]],[.22,[90,6,10]],[.42,[196,30,18]],[.6,[240,110,20]],[.76,[250,196,30]],[.9,[255,236,140]],[1,[255,252,232]]];
+const ST=[[0,[10,4,6]],[.22,[78,12,14]],[.42,[168,38,22]],[.6,[214,102,28]],[.76,[228,168,44]],[.9,[238,206,112]],[1,[244,228,170]]];
 function heat(t){for(let i=1;i<ST.length;i++){if(t<=ST[i][0]){const a=ST[i-1],b=ST[i],k=(t-a[0])/(b[0]-a[0]);return a[1].map((c,j)=>Math.pow((c+(b[1][j]-c)*k)/255,2.2))}}return ST[ST.length-1][1].map(c=>Math.pow(c/255,2.2))}
 function shellR(y,A,B){const c=3.55,u=(c-y)/B;return A*Math.sqrt(Math.max(0,1-u*u))}
 /* a gentle anatomical asymmetry: the free wall bulges, the septum is flatter */
@@ -50,10 +50,10 @@ function surface(A,B,y0,inner){
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.setIndex(idx);g.computeVertexNormals();return g}
 const heart=new THREE.Group();
 const OA=1.42,OB=3.55,IA=.86,IB=2.85;
-const mOut=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.58,metalness:0,clearcoat:.32,clearcoatRoughness:.3,sheen:.2,sheenColor:new THREE.Color('#ffe0a0'),envMapIntensity:.9});
+const mOut=new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.9,metalness:0,envMapIntensity:.55});
 heart.add(new THREE.Mesh(surface(OA,OB,0,false),mOut));
 /* emissive glow layer: the uptake itself seems to glow, as a SPECT render does */
-const glow=new THREE.Mesh(surface(OA*1.002,OB*1.001,0,false),new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.22,blending:THREE.AdditiveBlending,depthWrite:false}));heart.add(glow);
+const glow=new THREE.Mesh(surface(OA*1.002,OB*1.001,0,false),new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:.1,blending:THREE.AdditiveBlending,depthWrite:false}));heart.add(glow);
 heart.add(new THREE.Mesh(surface(IA,IB,3.55-IB,true),new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.6,side:THREE.DoubleSide,envMapIntensity:.4})));
 /* the cut rim at the base, joining the two walls */
 (function(){const pos=[],col=[],idx=[];for(let i=0;i<=NA;i++){const a=i/NA*Math.PI*2,ro=shellR(YB,OA,OB)*asym(a),ri=shellR(YB,IA,IB)*asym(a),c=heat(perf(a,YB)).map(v=>v*.8);
@@ -62,7 +62,7 @@ heart.add(new THREE.Mesh(surface(IA,IB,3.55-IB,true),new THREE.MeshPhysicalMater
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('color',new THREE.Float32BufferAttribute(col,3));g.setIndex(idx);g.computeVertexNormals();
   heart.add(new THREE.Mesh(g,new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.5,side:THREE.DoubleSide})))})();
 /* coronary arteries on the epicardium, in the logo blue: the LAD down the anterior groove, the circumflex around the base, diagonals */
-const vMat=new THREE.MeshPhysicalMaterial({color:0x1557b0,roughness:.3,metalness:.1,clearcoat:1,clearcoatRoughness:.08,envMapIntensity:1.4});
+const vMat=new THREE.MeshPhysicalMaterial({color:0x1a5aa8,roughness:.6,metalness:0,envMapIntensity:.7});
 function on(a,y,lift){const r=(shellR(y,OA,OB)*asym(a)*(1+.42*rvw(a,y)))+lift;return new THREE.Vector3(Math.sin(a)*r,y,Math.cos(a)*r)}
 function vessel(pts,r0,r1){const cv=new THREE.CatmullRomCurve3(pts);const N=260,g=new THREE.TubeGeometry(cv,N,1,20,false);
   const p=g.attributes.position,c=new THREE.Vector3();
@@ -74,6 +74,19 @@ vessel(Array.from({length:12},(_,k)=>on(AL+.12+k*.22,2.97-k*.03,.035)),.042,.026
 vessel(Array.from({length:8},(_,k)=>on(AL+.08+k*.07,2.6-k*.27,.03)),.03,.016);
 vessel(Array.from({length:8},(_,k)=>on(AL+.18+k*.1,1.9-k*.2,.03)),.028,.014);
 vessel(Array.from({length:7},(_,k)=>on(AL-1.2-k*.05,2.9-k*.3,.03)),.03,.016);
+
+/* the 17-segment model drawn on the surface: rings between basal / mid / apical / apex, and the segment meridians */
+const bMat=new THREE.MeshBasicMaterial({color:0x07111f,transparent:true,opacity:.4});
+function onS(a,y,lift){const r=(shellR(y,OA,OB)*asym(a)*(1+.42*rvw(a,y)))+lift;return new THREE.Vector3(Math.sin(a)*r,y,Math.cos(a)*r)}
+function line(pts,rad,mat,closed){const cv=new THREE.CatmullRomCurve3(pts,closed);heart.add(new THREE.Mesh(new THREE.TubeGeometry(cv,Math.max(64,pts.length*3),rad,6,closed),mat))}
+[2.1,1.2,.45].forEach(y=>line(Array.from({length:180},(_,k)=>onS(k/180*Math.PI*2,y,.012)),.011,bMat,true));
+for(let k=0;k<6;k++){const a=k*Math.PI/3+Math.PI/6;line(Array.from({length:30},(_,i)=>onS(a,1.2+i/29*(3.04-1.2),.012)),.011,bMat,false)}
+for(let k=0;k<4;k++){const a=k*Math.PI/2+Math.PI/4;line(Array.from({length:20},(_,i)=>onS(a,.45+i/19*(1.2-.45),.012)),.011,bMat,false)}
+/* a fine display mesh, as the software's 3D surface view shows */
+(function(){const P=[],NM=48,NR=22;
+  for(let k=0;k<NM;k++){const a=k/NM*Math.PI*2;for(let i=0;i<40;i++){const y0=.12+i/40*(3.04-.12),y1=.12+(i+1)/40*(3.04-.12);P.push(onS(a,y0,.006),onS(a,y1,.006))}}
+  for(let j=0;j<NR;j++){const y=.12+j/(NR-1)*(3.04-.12);for(let k=0;k<120;k++){P.push(onS(k/120*Math.PI*2,y,.006),onS((k+1)/120*Math.PI*2,y,.006))}}
+  const g=new THREE.BufferGeometry().setFromPoints(P);heart.add(new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:0x07111f,transparent:true,opacity:.16})))})();
 /* pose: apex down and toward the viewer's left, base tilted up and away, so the open base just shows */
 heart.position.y=-1.75;const holder=new THREE.Group();holder.add(heart);sc.add(holder);
 holder.rotation.set(.16,0,0);holder.rotateOnWorldAxis(new THREE.Vector3(0,0,1),-.62);holder.rotateOnWorldAxis(new THREE.Vector3(0,1,0),.5);

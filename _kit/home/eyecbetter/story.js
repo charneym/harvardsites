@@ -43,7 +43,7 @@ function eyeScene(o){
   g+='<path class="wl sD" d="M'+on1.join(' ')+'C'+(EX+ER+40)+' '+(+on1[1]+4)+' '+(EX+ER+64)+' '+(+on1[1]+14)+' '+(SCW-24)+' '+(+on1[1]+22)+'"/>';
   g+=T('t',EX-ER-26,EY+106,'CORNEA','end');
   g+=T('t',EX+ER-6,EY-ER+16,'SCLERA','start',1);
-  g+=T('t',SCW-24,EY-48,'OPTIC NERVE','end');
+  g+=T('t',SCW-24,EY-66,'OPTIC NERVE','end');
   g+=T('t',+p0[0]+36,EY+76,'LENS','middle');
   /* ---- the wearable sensor ---- */
   g+='<path class="wl sD" d="M'+HX+' '+HY+'h'+HW+'v'+HH+'h-'+HW+'Z"/>';

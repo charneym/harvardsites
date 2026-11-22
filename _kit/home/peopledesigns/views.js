@@ -1,8 +1,8 @@
 /* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
 function impactRows(list){return '<ul class="pfr pipe">'+list.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[0])+'</b><i>'+esc(c[2])+'</i></span><h3>'+esc(c[1])+'</h3><p>'+esc(c[3])+'</p><a class="lab ul lk" href="'+c[4]+'" target="_blank" rel="noopener">'+esc(c[5])+'</a></li>'}).join("")+'</ul>'}
-function team(){return '<ul class="ptg">'+TEAM.map(function(p){
-  return '<li><figure><div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" width="350" height="466" loading="lazy"></div><figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><span class="sm">'+esc(p.sum)+'</span></figcaption></figure></li>'}).join("")+'</ul>'}
+function team(){return '<div class="ptg">'+TEAM.map(function(p){
+  return '<figure class="pt-t"><div class="ph"><img src="'+p.img+'" alt="'+esc(p.name)+'" width="350" height="466" loading="lazy"></div><figcaption><span class="nm">'+esc(p.name)+'</span><span class="rl">'+esc(p.title)+'</span><span class="sm">'+esc(p.sum)+'</span></figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function caps(){var C=[
   ["Individually tailored messaging","People Designs has been developing and delivering individually tailored health interventions since 1995: each person receives the messages that fit their needs, situation and readiness.",'<circle cx="16" cy="14" r="5"/><path d="M7 30c0-6 4-9 9-9s9 3 9 9"/><path class="a" d="M30 12h20M30 20h14M30 28h18"/><circle class="f" cx="16" cy="44" r="3"/><path d="M24 44h24"/>'],

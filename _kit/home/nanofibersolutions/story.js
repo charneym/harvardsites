@@ -57,7 +57,7 @@ function memScene(o){
   /* the implanted U: artery on the left, vein on the right, the graft as a ribbed inverted U between them */
   var P=uPath();
   g+='<g id="scU">';
-  g+='<text class="t" x="20" y="300">IMPLANTED IN A U · ARTERY TO VEIN</text>';
+  g+='<text class="t" x="20" y="292">IMPLANTED IN A U · ARTERY TO VEIN</text>';
   g+='<path class="gap" d="M'+(UL-UW+1)+' '+(UB+4)+'H'+(UL+UW-1)+'M'+(UR-UW+1)+' '+(UB+4)+'H'+(UR+UW-1)+'"/>';
   g+='<path class="bb sD" d="'+offs(P,UW)+'"/><path class="bb sD" d="'+offs(P,-UW)+'"/>';
   for(i=2;i<P.length-2;i+=2){var a=P[i-1],b=P[i+1],ddx=b[0]-a[0],ddy=b[1]-a[1],LL=Math.hypot(ddx,ddy)||1,nx=-ddy/LL,ny=ddx/LL;

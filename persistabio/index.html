@@ -1750,6 +1750,7 @@ var VT=424,VB=470;                              /* capillary walls */
 var ISL=(function(){var s=7,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff},a=[],i;
   for(i=0;i<9;i++){a.push({x:232+i*52+R()*10,y:252+R()*4,r:15+R()*3});a.push({x:252+i*50+R()*10,y:318-R()*4,r:15+R()*3})}
   return a.filter(function(q){return q.x<682})})();
+var INS=ISL.filter(function(q){return q.y>290&&q.x>330});
 var IMM=[{x:470,y:110},{x:560,y:96},{x:650,y:118},{x:600,y:528},{x:680,y:520}];
 function islet(q,k){ /* an islet: a cluster of cells inside its boundary */
   var g='<g class="isl" data-k="'+k+'" transform="translate('+q.x.toFixed(1)+' '+q.y.toFixed(1)+')"><circle class="ib" r="'+q.r.toFixed(1)+'"/>',i;
@@ -1781,7 +1782,7 @@ function vesScene(o){
   /* ---- the oxygen line ---- */
   g+='<path class="wl sD" d="M'+LX0+' '+(LY-8)+'H'+LX1+'A8 8 0 0 1 '+LX1+' '+(LY+8)+'H'+LX0+'"/>';
   g+=T('t',CX0+10,CT-16,'IMMUNOISOLATING MEMBRANE');
-  g+=T('t',CX0+40,CB+34,o.mob?'ISLETS':'ISLETS AROUND THE OXYGEN LINE',null,1);
+  g+=T('t',CX0+40,CB+34,'ISLETS',null,1);
   /* ---- the capillary below, with a few red cells ---- */
   g+='<path class="wl sD" d="M0 '+VT+'C150 '+(VT-8)+' 300 '+(VT+8)+' 450 '+VT+'S650 '+(VT-6)+' 760 '+(VT+2)+'"/>';
   g+='<path class="wl sD" d="M0 '+VB+'C150 '+(VB-8)+' 300 '+(VB+8)+' 450 '+VB+'S650 '+(VB-6)+' 760 '+(VB+2)+'"/>';
@@ -1822,7 +1823,7 @@ function storyDraw(svg){
     E.isl.forEach(function(el,k){var q=ISL[k],reach=(q.x-CX0)/(LX1-CX0);op(el,b);
       el.classList.toggle("on",(ox*1.25-reach*.9>.25&&sh<.05)||rg>.42)});
     /* 1. water drops into the iEOG; oxygen runs down the line, then out to the islets */
-    E.h2o.forEach(function(el,k){var t=cl(ox*1.6-k*.18);var x=GX0+18+k*20,y=GT-60+t*70;at(el,x,y);op(el,b*(t>0&&t<1?Math.min(1,t*5,(1-t)*5):0))});
+    E.h2o.forEach(function(el,k){var t=cl(ox*1.6-k*.18);var x=GX0+18+k*20,y=GB+64-t*74;at(el,x,y);op(el,b*(t>0&&t<1?Math.min(1,t*5,(1-t)*5):0))});
     E.o2.forEach(function(el,k){var t=cl(ox*1.5-k*.05);
       if(t<=0||sh>.9){op(el,0);return}
       var u=Math.min(1,t/.7),x=GX1+(LX1-12-GX1)*((k/14)*.85+.08)*u+ (1-u)*0,y=LY,side=k%2?1:-1,w=cl((t-.7)/.3);
@@ -1832,8 +1833,8 @@ function storyDraw(svg){
       var y=q.y+(ty-q.y)*(1-Math.pow(1-t,3));at(el,q.x,y);op(el,b*Math.min(1,t*4)*(1-rg));el.classList.toggle("on",t>.95)});
     if(E.mem)E.mem.classList.toggle("on",sh>.62&&rg<.05);
     /* 3. glucose rises from the capillary into the capsule; insulin falls from the islets into the blood */
-    E.glu.forEach(function(el,k){var t=cl(rg*1.6-k*.08),x=240+k*66,y0=VT+22,y1=CB-26;at(el,x,y0+(y1-y0)*t);op(el,b*(t>0?Math.min(1,t*6,(1-t)*8+.2):0))});
-    E.ins.forEach(function(el,k){var t=cl(rg*1.8-.45-k*.05),q=ISL[(k*2+1)%ISL.length],x=q.x,y0=q.y+10,y1=VT+26+(k%3)*6;
+    E.glu.forEach(function(el,k){var t=cl(rg*1.6-k*.08),x=340+k*54,y0=VT+22,y1=CB-26;at(el,x,y0+(y1-y0)*t);op(el,b*(t>0?Math.min(1,t*6,(1-t)*8+.2):0))});
+    E.ins.forEach(function(el,k){var t=cl(rg*1.8-.45-k*.05),q=INS[k%INS.length],x=q.x,y0=q.y+10,y1=VT+26+(k%3)*6;
       at(el,x+Math.sin(k+t*3)*4,y0+(y1-y0)*t);op(el,b*(t>0?Math.min(1,t*6):0))});
     op(E.l1,b*seg(p,.1,.18)*(1-seg(p,.32,.37)));op(E.l2,b*seg(p,.42,.5)*(1-seg(p,.62,.68)));op(E.l3,b*seg(p,.76,.84));
   };

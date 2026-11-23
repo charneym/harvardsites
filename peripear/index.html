@@ -1768,9 +1768,11 @@ function ppScene(o){
   g+='<path class="one sD" d="M'+ppFx(1).toFixed(1)+' '+(top-36)+'V'+(top+4*rh+10)+'"/>';
   g+='<text class="t" x="'+(ppFx(1)-14).toFixed(1)+'" y="'+(top-46)+'" text-anchor="end">FEWER WITH A COMPRESS</text><text class="t" x="'+(ppFx(1)+14).toFixed(1)+'" y="'+(top-46)+'" text-anchor="start">MORE</text>';
   RR.forEach(function(r,k){var y=top+k*rh+30,a=ppFx(r[2]),b=ppFx(r[3]),p=ppFx(r[1]);
+    /* labels never cross the line of no effect: right-aligned left of the CI (and of the line); stacked at the left edge on phones */
+    var lx=mob?20:Math.min(a,ppFx(1))-16,la=mob?"start":"end";
     g+='<g class="fr" data-k="'+k+'"><path class="fci" d="M'+a.toFixed(1)+' '+y+'H'+b.toFixed(1)+'M'+a.toFixed(1)+' '+(y-7)+'v14M'+b.toFixed(1)+' '+(y-7)+'v14"/><rect class="fpt" x="'+(p-7).toFixed(1)+'" y="'+(y-7)+'" width="14" height="14"/>'+
-      '<text class="a" x="'+(r[1]<1?b+16:a-16).toFixed(1)+'" y="'+(y-12)+'" text-anchor="'+(r[1]<1?"start":"end")+'">'+r[0].toUpperCase().replace("THIRD- AND/OR FOURTH-DEGREE","3RD/4TH-DEGREE").replace("SECOND-DEGREE","2ND-DEGREE")+'</text>'+
-      '<text class="t" x="'+(r[1]<1?b+16:a-16).toFixed(1)+'" y="'+(y+14)+'" text-anchor="'+(r[1]<1?"start":"end")+'">'+r[4]+'</text></g>'});
+      '<text class="a" x="'+lx.toFixed(1)+'" y="'+(mob?y-24:y-3)+'" text-anchor="'+la+'">'+r[0].toUpperCase().replace("THIRD- AND/OR FOURTH-DEGREE","3RD/4TH-DEGREE").replace("SECOND-DEGREE","2ND-DEGREE")+'</text>'+
+      '<text class="t" x="'+lx.toFixed(1)+'" y="'+(mob?y+8:y+17)+'" text-anchor="'+la+'">'+r[4]+'</text></g>'});
   g+='</g>';
   g+='<g id="lb2"><text class="t" x="20" y="34">WARM COMPRESS VS NONE · RISK RATIO, 95% CI · SUN ET AL. 2024</text></g>';
   /* --- step 3: the second stage of labour, warmth held steady --- */
@@ -1783,7 +1785,7 @@ function ppScene(o){
   g+='<path class="band2" d="M'+x0+' 250V'+ly+'M'+x1+' 250V'+ly+'"/>';
   for(i=0;i<13;i++){var wx=x0+22+i*44.5,ws='M'+wx+' 236';for(var q=0;q<3;q++){var wy=236-(q+1)*36;ws+='C'+(wx+(q%2?-12:12))+' '+(wy+24)+' '+(wx+(q%2?12:-12))+' '+(wy+12)+' '+wx+' '+wy}g+='<path class="hw" data-i="'+i+'" d="'+ws+'"/>'}
   g+='</g>';
-  g+='<g id="lb3"><text class="t" x="20" y="34">PERIPEAR · EFFICIENT HEAT STORAGE</text><text class="a" x="'+x1+'" y="276" text-anchor="end">CONSISTENT WARMTH, START TO FINISH</text></g>';
+  g+='<g id="lb3"><text class="t" x="20" y="34">PERIPEAR · EFFICIENT HEAT STORAGE</text><text class="a" x="'+(x1-16)+'" y="276" text-anchor="end">CONSISTENT WARMTH, START TO FINISH</text></g>';
   return g+'</svg>';
 }
 function scene(){return ppScene({mob:MOBILE()?1:0})}
@@ -1801,7 +1803,7 @@ function storyDraw(svg){
     /* step 1: steam rises over the basin */
     draw(E.stm,sm2(seg(p,.02,.22)));
     var out1=sm2(seg(p,.30,.40));
-    op(E.basG,b*(1-.82*out1)*(1-sm2(seg(p,.62,.7))));op(E.stmG,b*(1-out1));
+    op(E.basG,b*(1-out1)*(1-sm2(seg(p,.62,.7))));op(E.stmG,b*(1-out1));
     op(E.l1,b*seg(p,.06,.14)*(1-seg(p,.28,.34)));
     /* step 2: the forest plot */
     var in2=seg(p,.36,.46),out2=sm2(seg(p,.64,.72));

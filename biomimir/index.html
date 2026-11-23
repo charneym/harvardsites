@@ -89,10 +89,6 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
-#pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
-#pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
@@ -658,7 +654,7 @@ em{line-height:0}
 @media (max-width:860px){.fieldbg{background:linear-gradient(#0c1430,#0c1430)}}
 .rail span{color:#a3acba}.rail span::before{background:var(--ink2);border-color:#5b6680;border-radius:0}
 @media (max-width:1024px){.scene text{font-size:14px;letter-spacing:.06em}.scene text.t{font-size:9.5px}}
-#pre .wm{font-family:var(--deco);font-weight:800;font-size:clamp(20px,2.4vw,34px);letter-spacing:.34em;margin-right:-.34em;white-space:nowrap}
+#pre .lg{line-height:0}#pre .lg i{display:block;width:min(446px,calc(100vw - 48px));aspect-ratio:446/84;background:url(logo.png) center/contain no-repeat}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -724,7 +720,6 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .nws .src svg{width:16px;height:10px;transition:transform .3s var(--eo)}
 .nws a:hover .src svg{transform:translateX(5px)}
 @media (max-width:860px){.nws a{grid-template-columns:1fr;row-gap:8px}.nws .src{justify-self:start}}
-#pre .mk path{fill:none;stroke:#fff;stroke-width:2.6;stroke-linejoin:miter}
 #pre .pl{color:var(--bone2)}
 .scene svg.mob text{font-size:21px;letter-spacing:.02em}
 .scene svg.mob text.t{font-size:16px;letter-spacing:.05em}
@@ -827,8 +822,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 48 48"><path d="M24 5l7.5 7.5L24 20l-7.5-7.5z"/><path d="M13 20l7.5 7.5L13 35l-7.5-7.5zM35 20l7.5 7.5L35 35l-7.5-7.5z"/><path d="M24 20L13 35M24 20l11 15"/></svg>
-    <div class="wm"><span>BIOMIMIR</span></div>
+    <div class="lg"><i role="img" aria-label="BioMimir"></i></div>
   </div>
   <span class="lab pl">Biomimetic wound fillers · Sherbrooke, QC</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1999,8 +1993,7 @@ function preload(){
     go(true,function(){gsap.to(pre,{opacity:0,duration:.5,ease:"power2.out",onComplete:function(){pre.remove()}});hdrTheme();failsafe()});return}
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
-  var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var wm={chars:[$("#pre .lg i")]};gsap.set(wm.chars,{clipPath:"inset(0 100% 0 0)",opacity:0});$("#pre .pc").style.visibility="visible";
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2009,8 +2002,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+    gsap.timeline().to(wm.chars,{clipPath:"inset(0 0% 0 0)",opacity:1,duration:.9,ease:"flow"},.05)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){
@@ -2018,7 +2010,7 @@ function preload(){
       var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
         .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)
-        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .to(["#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
         .add(function(){field.intro(2);field.start()},mob?1.0:.95).fromTo("#field",{filter:"opacity(0)"},{filter:"opacity(1)",duration:1.8,ease:"power2.out",clearProps:"filter"},mob?1.0:.95)
         .add(function(){if(window._heroIn)window._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)

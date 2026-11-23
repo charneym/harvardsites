@@ -1761,10 +1761,10 @@ function kylonScene(o){
   g+='<g id="scBase">';
   g+='<path class="sk sD" d="M0 '+SURF+'C160 '+(SURF-3)+' 360 '+(SURF+3)+' 600 '+SURF+'"/>';
   g+='<path class="bm sD" d="M0 '+BM+'C50 '+(BM-8)+' 90 '+(BM+8)+' 140 '+BM+'S230 '+(BM-8)+' 280 '+BM+'S370 '+(BM+8)+' 420 '+BM+'S510 '+(BM-8)+' 560 '+BM+'S600 '+(BM+4)+' 600 '+BM+'"/>';
-  for(i=0;i<4;i++){var y=BM+24+i*28;if(i===2)continue;g+='<path class="cg sD" d="M0 '+y+'c40 -7 70 7 110 0s70 -7 110 0 70 7 110 0 70 -7 110 0 70 7 110 0"/>'}
+  for(i=0;i<4;i++){var y=BM+24+i*28;if(i===2)continue;g+='<path class="cg sD" d="'+(o.mob?'M220 '+y+'c40 -7 70 7 110 0s70 7 110 0 70 -7 110 0':i%2?('M110 '+y+'c40 -7 70 7 110 0s70 7 110 0 70 -7 110 0 70 7 110 0'):'M0 '+y+'c40 -7 70 7 110 0s70 -7 110 0 70 7 110 0 70 -7 110 0 70 7 110 0')+'"/>'}
   g+='<path class="vs sD" d="M0 '+(BM+70)+'C160 '+(BM+62)+' 400 '+(BM+78)+' 600 '+(BM+68)+'"/><path class="vs sD" d="M0 '+(BM+94)+'C160 '+(BM+88)+' 400 '+(BM+102)+' 600 '+(BM+92)+'"/>';
-  g+='<text class="t" x="6" y="'+(SURF-12)+'">TISSUE</text>';
-  g+='<text class="t" x="6" y="'+(BM+44)+'">STROMA</text><text class="t" x="6" y="'+(BM+120)+'">CAPILLARY</text>';
+  g+='<text class="t" x="6" y="'+(SURF-(o.mob?15:12))+'">TISSUE</text>';
+  g+='<text class="t" x="6" y="'+(BM+(o.mob?49:44))+'">STROMA</text><text class="t" x="6" y="'+(BM+120)+'">CAPILLARY</text>';
   g+='</g>';
   g+='<g id="scCel">';CELLS.forEach(function(c,k){g+='<g class="cel" data-k="'+k+'"><ellipse class="ce" cx="'+c.x+'" cy="'+c.y+'" rx="'+c.rx+'" ry="'+c.ry+'"/><circle class="cn" cx="'+c.x+'" cy="'+c.y+'" r="3.4"/></g>'});g+='</g>';
   /* the transport vial, with fixative */
@@ -1805,12 +1805,12 @@ function storyDraw(svg){
     E.head.setAttribute("transform","translate("+sx.toFixed(1)+" "+sy.toFixed(1)+") scale("+s.toFixed(3)+")");
     op(E.head,b);
     E.handle.setAttribute("transform","translate("+hx.toFixed(1)+" "+(hy-26-snap*40-drop*60).toFixed(1)+")");
-    op(E.handle,b*(1-sm(seg(p,.8,.9))));
+    op(E.handle,b*(1-sm(seg(p,.78,.85))));
     E.hk.forEach(function(H){H.el.setAttribute("d",hookD(H.h,Math.max(0,flex*(1-up*.7)+Math.sin(rot*Math.PI*4+H.h.x*.03)*.15*(1-up))))});
     E.cel.forEach(function(C){op(C.el,b*(C.c.lift?1-lift:1))});
     E.cf.forEach(function(el,k){op(el,b*sm((lift-k*.03)*1.6))});
     op(E.vial,b*vial);
-    op(E.l1,b*seg(p,.04,.12)*(1-seg(p,.3,.36)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.62,.68)));op(E.l3,b*seg(p,.72,.8));
+    op(E.l1,b*seg(p,.04,.12)*(1-seg(p,.3,.36)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.62,.68)));op(E.l3,b*seg(p,.85,.91));
   };
 }/*</R:story>*/
 

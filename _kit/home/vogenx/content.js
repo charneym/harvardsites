@@ -7,12 +7,12 @@ var VX="https://vogenx.com/";
 var PIPE=[
  ["Mizagliflozin","Post-bariatric hypoglycemia","Oral SGLT1 inhibitor","Phase 2b (EMERGE)","EMERGE (VGX-001-013; NCT07760961), initiated in October 2026: randomized, double-blind and placebo-controlled, in approximately 36 adults at about 10 U.S. sites, comparing 5 mg and 10 mg three times daily with placebo for 28 days.",0,"Clinical",NW,"Newswire"],
  ["Mizagliflozin","Gastroparesis","Oral SGLT1 inhibitor","IND planned, then Phase 2","Vogenx plans to submit an IND for gastroparesis in 2026, followed by a Phase 2 proof-of-concept trial in idiopathic gastroparesis, with change in gastric emptying as the expected primary endpoint.",1,"Planned","",""],
- ["Mizagliflozin","GIP-dependent Cushing&#8217;s syndrome","Oral SGLT1 inhibitor","Under evaluation","Vogenx is also evaluating mizagliflozin as a treatment for this rare metabolic disease.",1,"Evaluation","",""],
+ ["Mizagliflozin","GIP-dependent Cushing’s syndrome","Oral SGLT1 inhibitor","Under evaluation","Vogenx is also evaluating mizagliflozin as a treatment for this rare metabolic disease.",1,"Evaluation","",""],
  ["VGX-2857","Metabolic disease","Investigational drug candidate","Under evaluation","Under evaluation for metabolic disease indications, including weight maintenance after substantial weight loss.",1,"Evaluation","",""]];
 /* Results and milestones, as vogenx.com (Post Bariatric Hypoglycemia) and the 15 October 2026 release state them. */
 var EVID=[
  ["+56% glucose nadir","In study VGX-001-012, mizagliflozin 5 mg and 10 mg TID combined raised the glucose nadir by 56% (+20 mg/dL; p=0.028) compared with placebo during the mixed-meal test, in the subgroup of patients who became hypoglycemic"],
- ["&#8722;64% insulin peak","In the same subgroup the insulin peak fell by 64% (p=0.03) and the glucose peak by 34% (p=0.031)"],
+ ["−64% insulin peak","In the same subgroup the insulin peak fell by 64% (p=0.03) and the glucose peak by 34% (p=0.031)"],
  ["500+ subjects","Mizagliflozin has been administered to more than 500 subjects in 10 clinical studies, well tolerated with no drug-related serious adverse events"],
  ["Nasdaq: VOGX","Vogenx, Inc. is listed on the Nasdaq Capital Market"]];
 /* vogenx.com (Management Team, Board of Directors, Scientific Advisors). Text-only masthead; summaries state only what the site states. */
@@ -25,7 +25,7 @@ var TEAM=[
  {g:"Board of directors",name:"Peter Pieraccini",title:"Director",sum:"Retired President and CEO of ZenBio; founder or co-founder and chief executive of multiple companies. Joined the board in 2022."},
  {g:"Board of directors",name:"Ken Toombs",title:"Director",sum:"Former Global Head of Infosys Consulting and Deputy CEO of Capgemini Consulting; formerly a partner at PricewaterhouseCoopers."},
  {g:"Scientific advisors",name:"C. Ronald Kahn, MD",title:"Joslin Diabetes Center · Harvard Medical School",sum:"Section Head, Integrative Physiology and Metabolism; Mary K. Iacocca Professor of Medicine. SAB member."},
- {g:"Scientific advisors",name:"David A. D&#8217;Alessio, MD",title:"Duke University School of Medicine",sum:"James B. Wyngaarden Distinguished Professor of Medicine, Division of Endocrinology & Metabolism. SAB member."},
+ {g:"Scientific advisors",name:"David A. D’Alessio, MD",title:"Duke University School of Medicine",sum:"James B. Wyngaarden Distinguished Professor of Medicine, Division of Endocrinology & Metabolism. SAB member."},
  {g:"Scientific advisors",name:"Michael Camilleri, MD, DSc",title:"Mayo Clinic",sum:"Division of Gastroenterology and Hepatology. SAB member."},
  {g:"Scientific advisors",name:"Marzieh Salehi, MD",title:"University of Texas, San Antonio",sum:"Professor of Medicine, Endocrinology. SAB member."},
  {g:"Scientific advisors",name:"Tracey McLaughlin, MD",title:"Stanford School of Medicine",sum:"Professor of Medicine, Endocrinology."},

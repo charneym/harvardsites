@@ -8,7 +8,7 @@ function team(){var gs=[],by={};TEAM.forEach(function(p){if(!by[p.g]){by[p.g]=[]
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+n[1]+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function caps(){var C=[
   ["Acts in the gut","Mizagliflozin is minimally absorbed and designed to act locally in the small intestine, where SGLT1 is the primary transporter for dietary glucose. Unlike SGLT2 inhibitors, it does not act systemically in the kidney.",'<path d="M8 20c8-6 12 6 20 0s12-6 20 0"/><path d="M8 36c8-6 12 6 20 0s12-6 20 0"/><circle class="f" cx="28" cy="28" r="3.2"/>'],
-  ["Slower glucose, less GIP","By reducing and delaying glucose absorption after a meal, it lowers postprandial glucose and reduces secretion of insulin and of GIP, which may drive 60&#8211;80% of the postprandial insulin effect.",'<path d="M8 44h40"/><path d="M10 40C18 40 20 14 28 14s10 26 18 26"/><path class="a" d="M10 40c10 0 12-12 18-12s10 12 18 12"/>'],
+  ["Slower glucose, less GIP","By reducing and delaying glucose absorption after a meal, it lowers postprandial glucose and reduces secretion of insulin and of GIP, which may drive 60–80% of the postprandial insulin effect.",'<path d="M8 44h40"/><path d="M10 40C18 40 20 14 28 14s10 26 18 26"/><path class="a" d="M10 40c10 0 12-12 18-12s10 12 18 12"/>'],
   ["A known safety record","More than 500 subjects across 10 clinical studies, in healthy volunteers, people with type 2 diabetes and patients with PBH, well tolerated with no drug-related serious adverse events.",'<path d="M28 7l17 6v13c0 11-7 19-17 23-10-4-17-12-17-23V13z"/><path class="a" d="M20 28l6 6 11-12"/>']];
   return '<div class="caps">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[2]+'</svg><h3 data-r>'+c[0]+'</h3><p data-r>'+c[1]+'</p></div>'}).join("")+'</div>'}
 function evid(){return '<div class="ev"><span class="lab kick" data-r>Results to date</span><div><dl>'+EVID.map(function(e){return '<div><dt class="lab" data-r>'+e[0]+'</dt><dd data-r>'+e[1]+'.</dd></div>'}).join("")+'</dl>'+
@@ -26,7 +26,7 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why PBH</span>'+
    '<h2 class="txt" id="mani">After bariatric surgery, glucose can be absorbed too fast. Insulin overshoots, and blood sugar falls dangerously low. There are no FDA-approved therapies for PBH. <em>Mizagliflozin acts at the start of that chain.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">25&#8211;75%</span><p class="k">Of bariatric surgery patients wearing glucose monitors exhibited PBH in recent studies</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">25–75%</span><p class="k">Of bariatric surgery patients wearing glucose monitors exhibited PBH in recent studies</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">500+</span><p class="k">Subjects have received mizagliflozin across 10 clinical studies</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">5M+</span><p class="k">Estimated individuals with gastroparesis in the United States as of 2024</p></div>'+
    '</div>'+
@@ -49,7 +49,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">One molecule, <em>several metabolic diseases.</em></h2></div><p data-r>Mizagliflozin is in development for post-bariatric hypoglycemia and gastroparesis, debilitating diseases with high unmet need, and is being evaluated in GIP-dependent Cushing&#8217;s syndrome. VGX-2857 follows for metabolic disease.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">One molecule, <em>several metabolic diseases.</em></h2></div><p data-r>Mizagliflozin is in development for post-bariatric hypoglycemia and gastroparesis, debilitating diseases with high unmet need, and is being evaluated in GIP-dependent Cushing’s syndrome. VGX-2857 follows for metabolic disease.</p></div>'+
    pipeRows(PIPE)+
    evid()+
   '</div></section>'+

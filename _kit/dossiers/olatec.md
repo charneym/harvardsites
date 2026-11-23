@@ -1,0 +1,11 @@
+# Olatec Therapeutics (olatec)
+- Domain: olatec.com (company name, logo, management and news on page; contact inquiries@olatec.com; Weebly site, "© 2016 Olatec Therapeutics LLC").
+- HQ: Greater New York area (New York, NY per releases); offices in New York and the Netherlands.
+- Lead: Damaris B. Skouras, Founder, Chairman & CEO (site uses "Ms. Skouras"). Greeting: Dear Ms. Skouras.
+- Email: inquiries@olatec.com (olatec.com/contact-us.html).
+- Activity: 15 Sep 2026 PR Newswire (Williams-Gray to CAB, Haase to Board); 24 Mar 2026 first DAPA-PD patients; 20 Jan 2026 MJFF preclinical data; Jan 2026 J Neuroinflammation paper (PMID 41620763).
+- Bad site: dated Weebly layout, narrow text-heavy home, small stock-like lab photo strip, 2016 copyright.
+- Palette: logo PNG (OLA #114633, TEC #03783f); logo redrawn as SVG paths (_kit/home/olatec/logo.py).
+- Hero: crafted render of dapansutrile (OLT1177), CH3-SO2-CH2-CH2-CN, ball-and-stick, _kit/home/olatec/render.py (no stock photo).
+- Story: NLRP3 inflammasome mechanism from olatec.com/science.html.
+- Facts: olatec.com home, management, trials, lead-compound, science, products, news--events pages.

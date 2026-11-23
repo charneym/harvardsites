@@ -17,7 +17,7 @@ i=s.index('</style>');s=s[:i]+rd('tail.css')+'\n'+s[i:]
 s=re.sub(r'/\*[^*]*(?:N-Zyme|pepsin)[^*]*\*/','',s)
 s=s.replace('nzRise','bmRise0')
 s=s.replace('N-Zyme','Biomotivate').replace('nzyme','biomotivate') if False else s
-s=s.replace('/*<R:nssfix>*/<script>','<!--<R:nssfix>--><script>').replace('</script>/*</R:nssfix>*/','</script><!--</R:nssfix>-->')
+s=s.replace('<script>/*R:nssfix*/','<!--<R:nssfix>--><script>').replace('</script>/*</R:nssfix>*/','</script><!--</R:nssfix>-->')
 out=os.path.join(D,'biomotivate.src.html');open(out,'w').write(s)
 left=[w for w in ['N-Zyme','nzyme','NZYM','pepsin','N&#183;ZYME'] if w in s]
 print('assembled',out,'leftover:',left)

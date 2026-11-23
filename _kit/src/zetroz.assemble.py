@@ -73,7 +73,7 @@ STORYCSS = r'''/* story (pinned, one continuous scene) */
 '''
 
 ADD = r'''/* ===== ZetrOZ additions ===== */
-html body .fieldbg{background:#08121b}
+html body .fieldbg{background:linear-gradient(#08121b,#08121b)}
 html body .rail span{color:#93a2ae}html body .rail span.on{color:var(--bone)}html body .rail span::before{background:var(--ink2);border-color:#5f6f7c}html body .rail span.done::before,html body .rail span.on::before{background:var(--accL);border-color:var(--accL)}
 html body .scene text.zcap{fill:var(--accL)}
 html body .light+.cta{border-top:1px solid rgba(8,18,27,.12)}
@@ -166,13 +166,13 @@ html body .ftr{background:var(--ink)}html body .ftr .fcv{display:none}
 .nw{list-style:none;margin:0;padding:0}
 .nw-row{position:relative;border-top:1px solid var(--hair)}
 .nw-row:last-child{border-bottom:1px solid var(--hair)}
-.nw-row a{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,7fr) minmax(0,2fr);column-gap:var(--gap);align-items:baseline;padding:22px 0 24px;color:var(--bone)}
+.nw-row a{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,7fr) minmax(0,2fr);column-gap:var(--gap);align-items:start;padding:19px 0 21px;color:var(--bone)}
 .nw-row::after{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--accL);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--eo)}
 .nw-row:hover::after{transform:scaleX(1)}
-.nw-row .yr{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accL)}
+.nw-row .yr{padding-top:6px;font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accL)}
 .nw-row h3{font-family:var(--disp);font-weight:400;font-size:clamp(19px,1.55vw,25px);line-height:1.25;letter-spacing:-.01em;margin:0;transition:color .3s var(--eo)}
 .nw-row:hover h3{color:var(--accL)}
-.nw-row .src{justify-self:end;font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--stone);display:flex;gap:10px;align-items:center;transition:transform .35s var(--eo)}
+.nw-row .src{padding-top:6px;justify-self:end;font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--stone);display:flex;gap:10px;align-items:center;transition:transform .35s var(--eo)}
 .nw-row:hover .src{transform:translateX(6px)}
 @media (max-width:760px){.nw-row a{grid-template-columns:1fr;row-gap:8px}.nw-row .src{justify-self:start}}
 /* contact block in the CTA */

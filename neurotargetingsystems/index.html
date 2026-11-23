@@ -226,7 +226,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene text{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;fill:#d3d0e2}
 .scene text.a{fill:var(--accL);font-weight:600}
 .scene text.t{font-size:10.5px;letter-spacing:.14em;fill:rgba(var(--boner),.6)}
-.scene text.k1{fill:#c4b8ff}.scene text.k2{fill:#ff9cc2}
+.scene text.bl{letter-spacing:.06em}.scene text.k1{fill:#c4b8ff}.scene text.k2{fill:#ff9cc2}
 .scene #lb1,.scene #lb2,.scene #lb3,.scene #scBr,.scene .st,.scene #scCon,.scene #scFix text,.scene #scTr text{opacity:0}
 .scene svg.mob text{font-size:19px;letter-spacing:.02em}
 .scene svg.mob text.t{font-size:15px;letter-spacing:.04em}/*</R:scenecss>*/
@@ -1751,7 +1751,7 @@ function memScene(o){
   g+='<g id="scSk"><path class="sk sD" d="'+SKULL.out+'"/><path class="sk2 sD" d="'+SKULL.in1+'"/><path class="sk2 sD" d="'+SKULL.oL+'"/><path class="sk2 sD" d="'+SKULL.oR+'"/>'+
      '<path class="su sD" d="M'+SKX+' 120V448"/><path class="su sD" d="M'+(SKX-94)+' '+(BRY+14)+'Q'+SKX+' '+(BRY-16)+' '+(SKX+94)+' '+(BRY+14)+'"/>'+
      '<path class="su sD" d="M'+(SKX-86)+' '+(BRY+176)+'Q'+SKX+' '+(BRY+138)+' '+(SKX+86)+' '+(BRY+176)+'"/></g>';
-  g+='<g id="scBr"><circle class="bm" cx="'+SKX+'" cy="'+BRY+'" r="3.2"/>'+lab(SKX+8,BRY-8,"BREGMA","t")+'<circle class="bm" cx="'+SKX+'" cy="'+(BRY+157)+'" r="3.2"/>'+lab(SKX+8,BRY+150,"LAMBDA","t")+'</g>';
+  g+='<g id="scBr"><circle class="bm" cx="'+SKX+'" cy="'+BRY+'" r="3.2"/>'+(o.mob?'':lab(SKX+6,BRY-8,"BREGMA","t bl"))+'<circle class="bm" cx="'+SKX+'" cy="'+(BRY+157)+'" r="3.2"/>'+(o.mob?'':lab(SKX+6,BRY+150,"LAMBDA","t bl"))+'</g>';/* DR: no room between the electrode rings for these labels at phone type size */
   /* step 1: needle sites */
   g+='<g id="scSites">';SITES.forEach(function(s,k){var lx=s.x<SKX?SKX-124:SKX+124,an=s.x<SKX?"end":"start";
     g+='<g class="st" data-k="'+k+'"><circle class="ring" cx="'+s.x+'" cy="'+s.y+'" r="11"/><circle class="nd" cx="'+s.x+'" cy="'+s.y+'" r="4.2"/>'+lab(lx,s.y+6,s.l,"k1",an)+'</g>'});g+='</g>';
@@ -1762,11 +1762,11 @@ function memScene(o){
   g+='<path class="ld sD" d="M'+(SKX-10)+' '+(CON.y+18)+'C'+(SKX-26)+' 400 '+(SKX-40)+' 460 '+(SKX-58)+' 500"/><path class="ld sD" d="M'+(SKX+10)+' '+(CON.y+18)+'C'+(SKX+26)+' 400 '+(SKX+40)+' 460 '+(SKX+58)+' 500"/>';
   g+='<g id="scCon"><rect class="cb" x="'+(CON.x-30)+'" y="'+(CON.y-20)+'" width="60" height="40"/>';
   for(var r=0;r<2;r++)for(var c=0;c<3;c++)g+='<circle class="pin" cx="'+(CON.x-18+c*18)+'" cy="'+(CON.y-9+r*18)+'" r="4.2"/>';
-  g+='</g>'+lab(SKX-122,282,"HOOK","k2","end")+lab(SKX+122,282,"HOOK","k2","start")+lab(SKX+66,494,"EMG LEADS","t")+'</g>';
+  g+='</g>'+lab(SKX-122,282,"HOOK","k2","end")+lab(SKX+122,282,"HOOK","k2","start")+lab(SKX+66,480,"EMG LEADS","t")+'</g>';
   /* step 3: traces */
   g+='<g id="scTr">';
   [["EEG 1",150,16,"eeg",11],["EEG 2",250,16,"eeg",29],["EMG",350,10,"emg",47]].forEach(function(t,k){
-    g+='<path class="ax sD" d="M470 '+t[1]+'H736"/><path class="tr sD tr'+k+'" d="'+trace(t[4],t[1],t[2],t[3])+'"/>'+lab(470,t[1]-30,t[0],"k1")});
+    g+='<path class="ax sD" d="M470 '+t[1]+'H736"/><path class="tr sD tr'+k+'" d="'+trace(t[4],t[1],t[2]*(o.mob?.5:1),t[3])+'"/>'+lab(470,t[1]-40,t[0],"k1")});/* DR: labels clear of their trace peaks */
   g+='<path class="ax sD" d="M470 420H736"/>'+lab(470,440,"0 S","t")+lab(736,440,"10 S","t","end")+'</g>';
   g+='<g id="lb1">'+lab(736,52,"NEEDLES AT PRESET COORDINATES","a","end")+'</g>';
   g+='<g id="lb2">'+lab(736,52,"HOOKED, WIRED, FIXED IN COMPOSITE","a","end")+'</g>';
@@ -1776,7 +1776,7 @@ function memScene(o){
 function scene(){return memScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;p.style.strokeDashoffset=L;return [p,L]})};
-  var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),sk:dl("#scSk .sD"),skf:$("#scSk .sk",svg),br:$("#scBr",svg),sites:$$(".st",svg),
+  var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),sk:dl("#scSk .sD"),skf:$("#scSk .sk",svg),br:$("#scBr",svg),brT:$$("#scBr text",svg),sites:$$(".st",svg),
     fix:dl("#scFix .sD"),con:$("#scCon",svg),fixT:$$("#scFix text",svg),tr:dl("#scTr .tr"),ax:dl("#scTr .ax"),trT:$$("#scTr text",svg),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
   var lastB=-1;
@@ -1786,7 +1786,7 @@ function storyDraw(svg){
     if(!svg.isConnected)return;
     if(b!==lastB){lastB=b;draw(E.base,b);E.fade.forEach(function(el){el.style.opacity=b.toFixed(3)})}
     var grow=seg(p,0,.16),pl=seg(p,.1,.32),fx=seg(p,.38,.6),rec=seg(p,.66,.94);
-    draw(E.sk,b*grow);if(E.skf)E.skf.style.fillOpacity=(seg(p,.1,.2)).toFixed(3);op(E.br,b*seg(p,.08,.18));
+    draw(E.sk,b*grow);if(E.skf)E.skf.style.fillOpacity=(seg(p,.1,.2)).toFixed(3);op(E.br,b*seg(p,.08,.18));E.brT.forEach(function(el){op(el,1-seg(fx,0,.2))});/* DR: landmark labels give way before the leads cross them */
     E.sites.forEach(function(el,i){var v=seg(pl,i*.18,i*.18+.4);op(el,b*v);el.style.transform="scale("+(1.6-.6*v).toFixed(3)+")";el.style.transformOrigin=SITES[i].x+"px "+SITES[i].y+"px"});
     draw(E.fix,b*fx);op(E.con,b*seg(fx,.3,.7));E.fixT.forEach(function(el){op(el,b*seg(fx,.5,.9))});
     draw(E.ax,b*seg(rec,0,.3));draw(E.tr,b*seg(rec,.1,1));E.trT.forEach(function(el){op(el,b*seg(rec,0,.3))});

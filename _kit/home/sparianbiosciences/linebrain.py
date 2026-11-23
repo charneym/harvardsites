@@ -1,0 +1,83 @@
+#!/usr/bin/env python3
+"""Story line art for Sparian: the same fsaverage brain as the hero, left hemisphere in pure lateral view (frontal lobe
+to the right), traced as an engraved line drawing: the silhouette plus the sulcal pattern (iso-lines of sulcal depth).
+Writes JS path data (viewBox units) for story.js.  usage: python3 linebrain.py <fsaverage dir> <out.js> <width> <ox> <oy>"""
+import sys, json, numpy as np, nibabel as nib
+from skimage import measure
+D, OUT = sys.argv[1], sys.argv[2]; WV = float(sys.argv[3]); OX = float(sys.argv[4]); OY = float(sys.argv[5])
+g = nib.load(f'{D}/pial_left.gii.gz'); V = g.darrays[0].data.astype(float); F = g.darrays[1].data.astype(np.int64)
+S = nib.load(f'{D}/sulc_left.gii.gz').darrays[0].data.astype(float)
+# lateral view from -x: screen x = +y (anterior right), screen y = -z, depth = +x (camera at -x looks toward +x)
+sx, sy, dz = V[:, 1], -V[:, 2], V[:, 0]
+RW = 1100; sc = RW * .96 / (sx.max() - sx.min()); X = (sx - sx.min()) * sc + RW * .02; Y = (sy - sy.min()) * sc + RW * .02
+RH = int(np.ceil(Y.max() + RW * .02)); W, H = RW, RH
+x0, x1, x2 = X[F[:, 0]], X[F[:, 1]], X[F[:, 2]]; y0, y1, y2 = Y[F[:, 0]], Y[F[:, 1]], Y[F[:, 2]]
+den = (y1 - y2) * (x0 - x2) + (x2 - x1) * (y0 - y2); ti = np.nonzero(np.abs(den) > 1e-9)[0]
+mnx = np.floor(np.minimum(np.minimum(x0, x1), x2)).astype(int); mny = np.floor(np.minimum(np.minimum(y0, y1), y2)).astype(int)
+bw = (np.ceil(np.maximum(np.maximum(x0, x1), x2)) - mnx).astype(int) + 1; bh = (np.ceil(np.maximum(np.maximum(y0, y1), y2)) - mny).astype(int) + 1
+MB = int(max(bw.max(), bh.max())); zb = np.full(W * H, np.inf); sb = np.zeros(W * H)
+for oy in range(MB):
+    ty = ti[oy < bh[ti]]
+    for ox in range(MB):
+        m = ty[ox < bw[ty]]
+        if not len(m): continue
+        px = mnx[m] + ox + .5; py = mny[m] + oy + .5
+        l0 = ((y1[m] - y2[m]) * (px - x2[m]) + (x2[m] - x1[m]) * (py - y2[m])) / den[m]
+        l1 = ((y2[m] - y0[m]) * (px - x2[m]) + (x0[m] - x2[m]) * (py - y2[m])) / den[m]; l2 = 1 - l0 - l1
+        ins = (l0 >= -2e-3) & (l1 >= -2e-3) & (l2 >= -2e-3) & (px >= 0) & (py >= 0) & (px < W) & (py < H)
+        m, l0, l1, l2, px, py = m[ins], l0[ins], l1[ins], l2[ins], px[ins], py[ins]
+        z = l0 * dz[F[m, 0]] + l1 * dz[F[m, 1]] + l2 * dz[F[m, 2]]
+        s = l0 * S[F[m, 0]] + l1 * S[F[m, 1]] + l2 * S[F[m, 2]]
+        idx = py.astype(np.int64) * W + px.astype(np.int64)
+        o = np.lexsort((z, idx)); idx, z, s = idx[o], z[o], s[o]
+        f = np.ones(len(idx), bool); f[1:] = idx[1:] != idx[:-1]; idx, z, s = idx[f], z[f], s[f]
+        w = z < zb[idx]; zb[idx[w]] = z[w]; sb[idx[w]] = s[w]
+mask = np.isfinite(zb).reshape(H, W); sul = sb.reshape(H, W)
+from scipy import ndimage
+mask = ndimage.binary_closing(mask, iterations=3); mask = ndimage.binary_fill_holes(mask)
+sul = ndimage.gaussian_filter(np.where(mask, sul, 0), 2.2)
+k = WV / W
+def path(c, tol=1.3, closed=False):
+    c = measure.approximate_polygon(c, tol)
+    pts = [(OX + p[1] * k, OY + p[0] * k) for p in c]
+    return 'M' + 'L'.join(f'{x:.1f} {y:.1f}' for x, y in pts) + ('Z' if closed else '')
+out = {}
+oc = max(measure.find_contours(mask.astype(float), .5), key=len); out['outline'] = path(oc, 1.0, True)
+inner = ndimage.binary_erosion(mask, iterations=7)
+from skimage.morphology import skeletonize, remove_small_objects
+TH = float(__import__('os').environ.get('TH', '0.05'))
+reg = remove_small_objects((sul > TH) & inner, 120)
+sk = skeletonize(reg)
+# trace the skeleton into polylines: walk from endpoints/junctions along 8-connected chains
+nb = ndimage.convolve(sk.astype(int), np.ones((3, 3), int), mode='constant') - 1
+nb[~sk] = 0
+ys, xs = np.nonzero(sk); P = set(zip(ys.tolist(), xs.tolist()))
+node = {p for p in P if nb[p] != 2}
+seen = set(); chains = []
+def nbrs(p):
+    y, x = p
+    return [(y + dy, x + dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1) if (dy or dx) and (y + dy, x + dx) in P]
+for st in list(node) + list(P):
+    for n0 in nbrs(st):
+        e = (min(st, n0), max(st, n0))
+        if e in seen: continue
+        ch = [st, n0]; seen.add(e); prev, cur = st, n0
+        while cur not in node:
+            nx = [q for q in nbrs(cur) if q != prev and (min(cur, q), max(cur, q)) not in seen]
+            if not nx: break
+            q = nx[0]; seen.add((min(cur, q), max(cur, q))); ch.append(q); prev, cur = cur, q
+        chains.append(np.array(ch, float))
+def chaikin(c, n=2):
+    for _ in range(n):
+        q = .75 * c[:-1] + .25 * c[1:]; r = .25 * c[:-1] + .75 * c[1:]
+        c = np.vstack([c[:1], np.column_stack([q, r]).reshape(-1, 2), c[-1:]])
+    return c
+lines = []
+for c in chains:
+    L = np.sum(np.hypot(*np.diff(c, axis=0).T))
+    if L * k < float(__import__('os').environ.get('MINL', '18')): continue
+    c = measure.approximate_polygon(c, 2.0); c = chaikin(c, 2)
+    lines.append(path(c, .6))
+out['sulci'] = lines; out['w'] = W * k; out['h'] = H * k
+open(OUT, 'w').write('/* generated by linebrain.py from the fsaverage pial surface (left hemisphere, lateral view) */\nvar BRAIN=' + json.dumps(out) + ';\n')
+print('wrote', OUT, len(lines), 'sulcal lines', 'size', W * k, H * k, sum(len(l) for l in lines))

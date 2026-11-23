@@ -917,6 +917,8 @@ html body .bo .bo-ph .d1 em,html body .bo .bo-steps h3 em,html body .bo .bo-note
 .hero .s{max-width:44ch}
 .scene .wmd{stroke:rgba(var(--boner),.48)}
 .scene .wo{stroke:rgba(var(--boner),.3)}
+/* phones: the receptor sits whole in the band above the eyebrow (the mask ends just above the text) */
+@media (max-width:860px){#field{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 calc(37svh - 40px),transparent calc(37svh + 16px));mask-image:linear-gradient(180deg,#000 0,#000 calc(37svh - 40px),transparent calc(37svh + 16px))}}
 </style>
 </head>
 </head>
@@ -1755,8 +1757,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the receptor fills its render: whole, in the open area right of the text (DO/DP) */
-    var iw=mob?Math.min(w*.56,(U-120)*.86*AR):Math.min(cw*.36,h*.68*AR,680),ih=iw/AR;
-    var kx=mob?w*.5:side+cw*.765,ky=mob?108+ih*.5:Math.max(h*.54,110+ih*.5);
+    var iw=mob?Math.min(w*.5,(U-200)*.9*AR):Math.min(cw*.36,h*.68*AR,680),ih=iw/AR;
+    var kx=mob?w*.5:side+cw*.765,ky=mob?84+ih*.5:Math.max(h*.54,110+ih*.5);
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -1775,7 +1777,7 @@ var field=(function(){
          render can read as a pasted box (DJ) */
       var ggx=G.mob?w*.5:G.side+G.cw*.765,ggy=G.mob?G.bh*.42:h*.46,ggr=Math.max(w,h)*.78;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(52,86,170,"+(.5*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(22,44,100,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,27,63,0)");
+      ag.addColorStop(0,"rgba(52,86,170,"+((G.mob?.2:.5)*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(22,44,100,"+((G.mob?.1:.28)*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,27,63,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       /* a faint pale sheen breathing across the receptor */
@@ -1789,7 +1791,7 @@ var field=(function(){
         var bv=c.createLinearGradient(0,h*.5,0,h);[[0,0],[.2,.025],[.4,.1],[.6,.24],[.8,.48],[1,.85]].forEach(function(q){bv.addColorStop(q[0],"rgba(10,27,63,"+q[1]+")")});c.fillStyle=bv;c.fillRect(0,h*.5,w,h*.5+1);
       }else{
         var tv2=c.createLinearGradient(0,0,0,G.bh*.4);[[0,.5],[.25,.22],[.5,.06],[.75,.035],[1,0]].forEach(function(q){tv2.addColorStop(q[0],"rgba(7,19,46,"+q[1]+")")});c.fillStyle=tv2;c.fillRect(0,0,w,G.bh*.4);
-        var mv=c.createLinearGradient(0,G.bh*.74,0,G.bh);[[0,0],[.25,.06],[.5,.25],[.75,.6],[1,1]].forEach(function(q){mv.addColorStop(q[0],"rgba(10,27,63,"+q[1]+")")});c.fillStyle=mv;c.fillRect(0,G.bh*.74,w,G.bh*.26+1);
+        var mv=c.createLinearGradient(0,G.bh*.78,0,G.bh);[[0,0],[.25,.06],[.5,.25],[.75,.6],[1,1]].forEach(function(q){mv.addColorStop(q[0],"rgba(10,27,63,"+q[1]+")")});c.fillStyle=mv;c.fillRect(0,G.bh*.78,w,G.bh*.22+1);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

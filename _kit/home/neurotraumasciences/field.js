@@ -14,8 +14,8 @@ var field=(function(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var U=mob?Math.min(h*.5,w*1.08):h;
     /* the receptor fills its render: whole, in the open area right of the text (DO/DP) */
-    var iw=mob?Math.min(w*.56,(U-150)*.84*AR):Math.min(cw*.36,h*.68*AR,680),ih=iw/AR;
-    var kx=mob?w*.5:side+cw*.765,ky=mob?90+ih*.5:Math.max(h*.54,110+ih*.5);
+    var iw=mob?Math.min(w*.5,(U-200)*.9*AR):Math.min(cw*.36,h*.68*AR,680),ih=iw/AR;
+    var kx=mob?w*.5:side+cw*.765,ky=mob?84+ih*.5:Math.max(h*.54,110+ih*.5);
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -34,7 +34,7 @@ var field=(function(){
          render can read as a pasted box (DJ) */
       var ggx=G.mob?w*.5:G.side+G.cw*.765,ggy=G.mob?G.bh*.42:h*.46,ggr=Math.max(w,h)*.78;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(52,86,170,"+(.5*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(22,44,100,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,27,63,0)");
+      ag.addColorStop(0,"rgba(52,86,170,"+((G.mob?.2:.5)*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(22,44,100,"+((G.mob?.1:.28)*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,27,63,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
       /* a faint pale sheen breathing across the receptor */

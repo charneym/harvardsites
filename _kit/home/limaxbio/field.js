@@ -6,7 +6,7 @@ var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
-  var TR_=0,trN=0;function textR(){if(trN--<=0||!TR_){trN=40;var m=0;["#hero .hero-h","#hero .s","#hero .eyebrow"].forEach(function(q){var el=document.querySelector(q);if(!el)return;var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nd,r=document.createRange();while((nd=tw.nextNode())){if(!nd.nodeValue.trim())continue;r.selectNodeContents(nd);var b=r.getBoundingClientRect();if(b.width&&b.right>m)m=b.right}});if(m)TR_=m}return TR_||w*.5}
+  var TR_=0,trN=0;function textR(){if(trN--<=0||!TR_){trN=40;var m=0;["#hero .hero-h","#hero .s","#hero .eyebrow"].forEach(function(q){var el=document.querySelector(q);if(!el)return;var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nd,r=document.createRange();while((nd=tw.nextNode())){if(!nd.nodeValue.trim())continue;r.selectNodeContents(nd);var b=r.getBoundingClientRect();if(b.width&&b.right>m)m=b.right}});var hr=document.querySelector("#hero .hrule");if(hr){var hb=hr.getBoundingClientRect();if(hb.width&&hb.right>m)m=hb.right}if(m)TR_=m}return TR_||w*.5}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-(w>=1800?1600:1320))/2),cw=w-2*side,mob=w<861;
@@ -23,7 +23,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#020108";c.fillRect(0,0,w,h);
     if(ok){
       var iw=img.naturalWidth,ih=img.naturalHeight,k=.5-.5*Math.cos(t*Math.PI*2/48),cx,cy,sc;
-      if(!G.mob){var tr=textR(),a0=tr+120,a1=w-G.side;cx=Math.max((a0+a1)/2,w*.62);cy=75+(h-75)*.49;sc=Math.min(G.cw*.42/iw,(h-200)*.8/ih,.62,Math.max(60,(a1-a0))/(iw*1.08),Math.max(60,2*(cx-a0))/(iw*1.08))}
+      if(!G.mob){var tr=textR(),a0=tr+100,a1=w-G.side+20;cx=Math.max((a0+a1)/2,w*.62);cy=75+(h-75)*.49;sc=Math.min(G.cw*.57/iw,(h-200)*.8/ih,.72,Math.max(60,(a1-a0))/(iw*.97),Math.max(60,2*(cx-a0))/(iw*.97))}
       else{sc=Math.min(w*.94/iw,G.bh*.7/ih,.5);cx=w*.5;cy=G.bh*.56}
       sc*=(1+.035*k)*(1+.05*(1-e));
       var dw=iw*sc,dh=ih*sc,x=cx-dw/2-k*dw*.012,y=cy-dh/2+k*dh*.008-SP.v*h*.04;

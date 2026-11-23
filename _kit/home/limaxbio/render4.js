@@ -55,8 +55,8 @@ sc.add(new THREE.LineSegments(lg,new THREE.LineBasicMaterial({vertexColors:true,
 const cv=document.createElement('canvas');cv.width=cv.height=128;const x2=cv.getContext('2d');const gr=x2.createRadialGradient(64,64,0,64,64,64);
 gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.08,'rgba(255,255,255,.85)');gr.addColorStop(.22,'rgba(255,255,255,.22)');gr.addColorStop(1,'rgba(255,255,255,0)');x2.fillStyle=gr;x2.fillRect(0,0,128,128);
 const tx=new THREE.CanvasTexture(cv);
-nodes.forEach(n=>{const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,color:grad(n.u).lerp(new THREE.Color(1,1,1),.25).multiplyScalar(.9*dep(n.p)),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
-  s.position.copy(n.p);const k=.10+R()*.10;s.scale.set(k,k,1);sc.add(s)});
+nodes.forEach(n=>{const s=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,color:grad(n.u).lerp(new THREE.Color(1,1,1),.25).multiplyScalar(1.15*dep(n.p)),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false}));
+  s.position.copy(n.p);const k=.12+R()*.11;s.scale.set(k,k,1);sc.add(s)});
 rn.render(sc,cam);
 window.__done=rn.domElement.toDataURL('image/png');
 </script></body></html>`;

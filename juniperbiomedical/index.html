@@ -228,6 +228,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .scene text{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.12em;fill:#cdd8d2}
 .scene text.t{font-size:10.5px;letter-spacing:.14em;fill:rgba(var(--boner),.62)}
 .scene text.a{fill:#7fe0ae}
+.scene text.ko{stroke:#0a251a;stroke-width:7px;stroke-linejoin:round;paint-order:stroke}
 .scene text.a.o{fill:#efb071}
 .scene #sc1,.scene #lb1,.scene #lb2,.scene #imp .impg,.scene #wk,.scene .pu{opacity:0}
 .scene svg.mob text{font-size:17px;letter-spacing:.02em}
@@ -1757,13 +1758,14 @@ function jbScene(o){
   JBT.forEach(function(b){g+='<path class="nv sD" style="stroke-width:'+b.w.toFixed(2)+'px" d="'+b.d+'"/>'});
   /* inner fascicle line on the thicker limbs */
   JBT.forEach(function(b){if(b.w>2.5)g+='<path class="fas sD" d="'+b.d+'"/>'});
-  g+='<text class="t" x="390" y="512">NERVE TRUNK</text>';
   g+='</g>';
   /* step 1: volume conduction from a lead beside the trunk */
   g+='<g id="sc1"><g id="halo">';for(i=0;i<5;i++)g+='<ellipse class="halo" cx="352" cy="478" rx="10" ry="8"/>';g+='</g>';
   g+='<path class="lead" d="M190 560C250 545 320 525 346 484"/>';
   for(i=0;i<4;i++){var tt=.55+i*.13,lx=(1-tt)*(1-tt)*190+2*(1-tt)*tt*300+tt*tt*346,ly=(1-tt)*(1-tt)*560+2*(1-tt)*tt*532+tt*tt*484;g+='<circle class="ctc" cx="'+lx.toFixed(1)+'" cy="'+ly.toFixed(1)+'" r="3.4"/>'}
   g+='</g>';
+  /* trunk label sits above the step-1 halo rings, knocked out from them (DR: no stroke crosses a label) */
+  g+='<g id="ntl">'+(o.mob?'<text class="t ko" x="396" y="500">NERVE</text><text class="t ko" x="396" y="520">TRUNK</text>':'<text class="t ko" x="390" y="512">NERVE TRUNK</text>')+'</g>';
   g+='<g id="lit1">';JBT.forEach(function(b){if(b.dep<=4)g+='<path class="l1" style="stroke-width:'+(b.w+.6).toFixed(2)+'px" d="'+b.d+'"/>'});g+='</g>';
   /* step 2: the micro-implant on the distal target branch */
   g+='<g id="lit2">';JBT.forEach(function(b){if(b.sub)g+='<path class="l2" style="stroke-width:'+(b.w+.8).toFixed(2)+'px" d="'+b.d+'"/>'});g+='</g>';
@@ -1784,7 +1786,7 @@ function jbScene(o){
 function scene(){return jbScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var dl=function(sel){return $$(sel,svg).map(function(p){var L=p.getTotalLength?p.getTotalLength():0;p.style.strokeDasharray=L+" "+L;p.style.strokeDashoffset=L;return [p,L]})};
-  var E={base:dl("#scBase .sD"),fade:$$("#scBase text",svg),l1:dl("#lit1 .l1"),l2:dl("#lit2 .l2"),sc1:$("#sc1",svg),halo:$$("#halo ellipse",svg),
+  var E={base:dl("#scBase .sD"),fade:$$("#scBase text,#ntl text",svg),l1:dl("#lit1 .l1"),l2:dl("#lit2 .l2"),sc1:$("#sc1",svg),halo:$$("#halo ellipse",svg),
     imp:$("#imp .impg",svg),btf:$("#btf",svg),pu:$$("#pul .pu",svg),wk:$("#wk",svg),wd:$$("#wk .wd",svg),b1:$("#lb1",svg),b2:$("#lb2",svg)};
   var tg=$$("#lit2 .l2",svg);
   var lastB=-1;
@@ -2048,7 +2050,7 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:{amount:.2}},.1)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

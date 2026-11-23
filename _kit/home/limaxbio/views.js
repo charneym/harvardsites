@@ -18,7 +18,7 @@ function vHome(){
    '<i class="hrule" aria-hidden="true" data-r></i>'+
    '<div class="hero-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body: to seal leaks, heal tissues and deliver drugs.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
-   '<p class="lab hcap" data-r>A water-clear bead of tough hydrogel, rendered.</p>'+
+   '<p class="lab hcap" data-r>A tough hydrogel adhesive sealing a bleeding cut, rendered.</p>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+

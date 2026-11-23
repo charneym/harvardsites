@@ -1732,9 +1732,10 @@ function tisScene(o){
   TC.forEach(function(c,k){g+='<path class="tf" data-k="'+k+'" d="'+hexD(c.x,c.y,23)+'"/><circle class="nu" cx="'+c.x.toFixed(1)+'" cy="'+c.y.toFixed(1)+'" r="4"/>'});
   g+='</g>';
   /* ---- the hypoxic core outline ---- */
-  g+='<g id="scCore"><ellipse class="co" cx="560" cy="250" rx="150" ry="125"/><text class="a" x="560" y="112" text-anchor="middle">HYPOXIC CORE</text></g>';
+  g+='<g id="scCore"><ellipse class="co" cx="560" cy="250" rx="150" ry="125"/><text class="a" x="560" y="'+(o.mob?18:20)+'" text-anchor="middle">HYPOXIC CORE</text></g>';
   /* ---- red cells in the capillary, and the O2 they shed close by ---- */
-  g+='<g id="scRbc">';
+  /* DR: red cells stay inside the drawn vessel (0-470) so they never cross the CAPILLARY caption */
+  g+='<defs><clipPath id="vclip"><rect x="0" y="0" width="150" height="470"/></clipPath></defs><g id="scRbc" clip-path="url(#vclip)">';
   RBC.forEach(function(r,k){g+='<g class="rb" data-k="'+k+'"><ellipse class="cb" rx="20" ry="11"/><ellipse class="dm" rx="8" ry="4"/></g>'});
   g+='</g><g id="scRo">';
   for(i=0;i<12;i++)g+='<g class="ro" data-k="'+i+'">'+o2()+'</g>';

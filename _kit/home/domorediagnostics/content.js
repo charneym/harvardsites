@@ -23,7 +23,7 @@ var TEAM=[
  ["Sepp De Raedt, PhD","CTO and Co-founder","Central to developing the technology at Oslo University Hospital, work published in The Lancet. PhD, Aarhus University."],
  ["Lao Saal, MD, PhD","Medical Director","Associate Professor and Head of Translational Oncogenomics at Lund University; founder of SAGA Diagnostics. MD and PhD, Columbia University."],
  ["Andreas Berg Storsve, PhD","VP Operations","R&D Director at Aker BioMarine, VP Business Development at Circio (formerly Targovax). PhD, University of Oslo."],
- ["Elisabeth M.J. Klaussen, MSc","Head of Quality and Regulatory","Quality assurance, risk management and regulatory at GE Healthcare, Life Technologies and Medistim. Cand. Scient., University of Oslo."]];
+ ["Elisabeth M.J. Klaussen, MSc","Head of Quality and Regulatory","Quality, risk and regulatory at GE Healthcare, Life Technologies and Medistim. MSc, University of Oslo."]];
 var BOARD=["Tomas Nordheim Alme, MD · Chairman","Øyvind Grotmol, MSc","Yngve Tvedt, MBA","Prof. Knut Liestøl","Ketil F. Widerberg, MBA","Anders Tuv, MBE"];
 var SAB=["Dr. John L. Marshall","Dr. Jeanine Roodhart","Dr. Takayuki Yoshino","Dr. Frank A. Sinicrope","Prof. Marc Peeters","Prof. Marco Novelli","Prof. Hans-Joachim Schmoll"];
 /* news: only items with a working link. [date, headline, source, url] */

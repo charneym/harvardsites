@@ -44,12 +44,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="difference" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>The Rarefied difference</span><h2 class="d2 split">A new way to think about <em>autoimmune disease.</em></h2></div><p data-r>The immune system misfires and attacks the body it is meant to protect. Existing therapies focus downstream, so they are inherently limited, and they compromise safety by creating a risk of infection. Rarefied takes a different path.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>The Rarefied difference</span><h2 class="d2 split">A new way <em>to think.</em></h2></div><p data-r>Autoimmune disease is complex. The immune system misfires and attacks the body it is meant to protect. Existing therapies focus downstream, so they are inherently limited, and they compromise safety by creating a risk of infection. Rarefied takes a different path.</p></div>'+
    caps()+
   '</div></section>'+
 
   '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">The next generation of <em>autoimmune therapies.</em></h2></div><p data-r>Rarefied is building a pipeline around a new approach to rebalancing the immune system, from rheumatoid arthritis and lupus to inflammatory bowel disease and psoriasis, and a rare paediatric disease with no cure.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split">The next <em>generation.</em></h2></div><p data-r>Rarefied is building a pipeline around a new approach to rebalancing the immune system, from rheumatoid arthritis and lupus to inflammatory bowel disease and psoriasis, and a rare paediatric disease with no cure.</p></div>'+
    pipeRows(PIPE)+
    evid()+
   '</div></section>'+

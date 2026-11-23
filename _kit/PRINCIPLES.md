@@ -2,6 +2,10 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
+# v23 (client critique, 2026-11-23)
+
+**DS. The hero must read instantly as one calm, recognisable object.** Client on limaxbio: "the home / top design is kind of weird / odd / offputting". The hero was a rounded glass box full of a chaotic neon wire tangle; it read as tangled cable or a die, not a hydrogel. A visitor should name the subject in under a second. Prefer a single clean form with realistic material (glass, water, metal, tissue) and restrained light over busy abstract wireframes, glowing scribbles or "network" spaghetti. Show internal structure only as subtle texture. If it looks like a screensaver, redo it.
+
 # v22 (client critique, 2026-11-22)
 
 **DR. The loader, the story scene and every animation must be flawless frame by frame. Small breakages lose leads.** Client critique on sent sites: turnerscientific's loader stacked "Turner" one letter per line (a `display:flex;flex-direction:column` wrapper turned each SplitText char into its own row); story labels sat on top of drawn strokes and icons ("ROUND WINDOW" under the drop icon); pharmacoidea's loader logo was a faint, thin, etched-looking outline; biredimaging's drawn white curve stopped short of its end point at top right. Rules:

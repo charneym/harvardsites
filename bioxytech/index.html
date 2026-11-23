@@ -1698,7 +1698,7 @@ var STO=(function(){
   var s=1853245,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff};
   var V=[];
   function grow(x,y,a,w,art,dep,len,out){var pts=[[x,y]],cv=0,L=0,nb=60+R()*50;
-    while(L<len&&x>28&&x<SCW-28&&y>34&&y<SCH-48){cv=cv*.9+(R()-.5)*.05;a+=cv;
+    while(L<len&&x>28&&x<SCW-28&&y>72&&y<SCH-70){cv=cv*.9+(R()-.5)*.05;a+=cv;
       x+=Math.cos(a)*5;y+=Math.sin(a)*5;L+=5;pts.push([x,y]);
       if(L>nb&&dep<2){nb=L+55+R()*60;var sd=R()<.5?-1:1;grow(x,y,a+sd*(.5+R()*.4),w*.62,art,dep+1,len*.55,out)}}
     if(pts.length>3)out.push({p:pts,W:w,art:art,dep:dep,sec:0})}
@@ -1735,6 +1735,10 @@ function storyDraw(svg){
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text, .k1, .k2",svg),disc:$("#scDisc",svg),sw:$("#scSweep",svg),
     v:$$(".vs",svg).map(function(el){var v=STO.V[+el.getAttribute("data-k")],L=el.getTotalLength();el.style.strokeDasharray=L+" "+L;return {el:el,v:v,L:L,last:""}}),
     fl:dl("#scFlag .fl2"),flc:$("#scFlag .fl",svg),l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
+  /* DR: a ground-colour chip behind the step-3 callout so no vessel crosses its text */
+  (function(){var ft=$("#lb3 text.t",svg);if(!ft||!ft.getBBox)return;var bb=ft.getBBox(),r=document.createElementNS("http://www.w3.org/2000/svg","rect");
+    r.setAttribute("x",(bb.x-10).toFixed(1));r.setAttribute("y",(bb.y-6).toFixed(1));r.setAttribute("width",(bb.width+14).toFixed(1));r.setAttribute("height",(bb.height+9).toFixed(1));
+    r.setAttribute("fill","#12191e");ft.parentNode.insertBefore(r,ft)})();
   var lastB=-1;
   /* bone grey -> artery pale iris (190,221,233) / vein blue (79,127,192) -> flagged deep (38,62,120) */
   function mix(a,b,t){return [a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]}

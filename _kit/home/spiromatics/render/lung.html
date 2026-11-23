@@ -1,0 +1,122 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Spiromatics hero: a crafted render of the subject the company quantifies on lung CT: the human airway tree inside the two
+   lungs. Trachea, carina and main bronchi are placed by hand; the bronchial tree is then grown into the two lung volumes by
+   space colonisation (the standard method for plausible branching airways), and calibres follow a pipe model, so the
+   generations taper from the trachea to fine distal airways. The lungs are a faint fresnel shell (marching cubes over the
+   same lung volumes), with the cardiac notch on the left lung. Colours run through the Spiromatics logo gradient
+   (magenta, coral, amber) from the central airways to the periphery. Illustrative anatomy, not patient data.
+   Real alpha, so the page ink shows through: no box edge (DP/DJ). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {MarchingCubes} from 'three/addons/objects/MarchingCubes.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||1600),H=+(Q.get('h')||1800);
+const RY=+(Q.get('ry')||18),RX=+(Q.get('rx')||4),FOV=+(Q.get('fov')||26),CD=+(Q.get('cd')||8.2),NA=+(Q.get('na')||2600);
+let seed=+(Q.get('seed')||7);function rnd(){seed=(seed*16807)%2147483647;return (seed-1)/2147483646}
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=.96;r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0,0);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.55;
+
+/* ---- lung volumes (y up; patient's right lung on the viewer's left). lungF > 0 inside, smooth, for the shell ---- */
+const YB=-1,YA=1.42;
+function lungF(x,y,z){
+  let best=-9;
+  for(const s of [-1,1]){
+    const t=(y-YB)/(YA-YB);if(t<-.1||t>1.02)continue;
+    const tt=Math.min(1,Math.max(0,t));
+    /* frontal profile: widest just above the base, curving in to a rounded apex */
+    const rx=.57*Math.pow(Math.max(0,1-tt),.58)*(1-.1*Math.pow(Math.max(0,.2-tt)/.2,2))*(s<0?1.04:.97)+.002;
+    const notch=(s>0&&t>.06&&t<.55)?.12*Math.sin((t-.06)/.49*Math.PI):0;   /* the cardiac notch on the left lung */
+    const med=.15+notch;
+    const cx=s*(med+rx),rz=rx*.95+.06;
+    const dxw=x-cx,dzw=(z+.03)*rx/rz;
+    const fe=rx-Math.hypot(dxw,dzw);
+    const u=Math.min(1,(dxw*dxw+(z+.03)*(z+.03))/(rx*rx+1e-4));
+    const dome=YB+.3*(1-u)+(s<0?.05:0);                    /* the diaphragm domes up under each base */
+    const fb=y-dome;
+    const f=Math.min(fe,fb);
+    if(f>best)best=f;
+  }
+  return best;
+}
+function lungIn(x,y,z){return lungF(x,y,z)>0?1:0}
+/* attractors */
+const AT=[];while(AT.length<NA){const x=(rnd()*2-1)*1.3,y=YB+rnd()*(YA-YB),z=(rnd()*2-1)*.62;if(lungIn(x,y,z))AT.push(new THREE.Vector3(x,y,z))}
+/* the fixed proximal airways */
+const N=[];function add(p,par,grow){N.push({p:p,par:par,kids:[],grow:grow,r:0});if(par>=0)N[par].kids.push(N.length-1);return N.length-1}
+let i=add(new THREE.Vector3(0,1.78,-.06),-1,false);
+for(let k=1;k<=16;k++)i=add(new THREE.Vector3(0,1.78-k*.07,-.06+k*.002),i,false);
+const car=i;
+function chain(from,to,n,grow){let j=from;const a=N[from].p;for(let k=1;k<=n;k++){const u=k/n;j=add(new THREE.Vector3().lerpVectors(a,to,u).add(new THREE.Vector3(0,-Math.sin(u*Math.PI)*.02,0)),j,grow&&k===n)}return j}
+chain(car,new THREE.Vector3(-.3,.42,-.03),5,true);     /* right main bronchus: shorter and steeper */
+chain(car,new THREE.Vector3(.38,.47,-.03),7,true);      /* left main bronchus: longer and more horizontal */
+/* space colonisation */
+const DI=+(Q.get('di')||.2),DK=+(Q.get('dk')||.075),STEP=.03;
+const alive=AT.map(()=>true);
+for(let it=0;it<260;it++){
+  const G=new Map(),cs=DI;const key=(x,y,z)=>Math.floor(x/cs)+','+Math.floor(y/cs)+','+Math.floor(z/cs);
+  N.forEach((n,k)=>{if(!n.grow)return;const kk=key(n.p.x,n.p.y,n.p.z);if(!G.has(kk))G.set(kk,[]);G.get(kk).push(k)});
+  const dir=new Map();let any=false;
+  for(let a=0;a<AT.length;a++){if(!alive[a])continue;const P=AT[a];const gx=Math.floor(P.x/cs),gy=Math.floor(P.y/cs),gz=Math.floor(P.z/cs);
+    let best=-1,bd=DI*DI;
+    for(let ox=-1;ox<=1;ox++)for(let oy=-1;oy<=1;oy++)for(let oz=-1;oz<=1;oz++){const L=G.get((gx+ox)+','+(gy+oy)+','+(gz+oz));if(!L)continue;
+      for(const k of L){const d=N[k].p.distanceToSquared(P);if(d<bd){bd=d;best=k}}}
+    if(best<0)continue;if(bd<DK*DK){alive[a]=false;continue}
+    const v=P.clone().sub(N[best].p).normalize();if(!dir.has(best))dir.set(best,new THREE.Vector3());dir.get(best).add(v);any=true}
+  if(!any)break;
+  dir.forEach((v,k)=>{if(v.lengthSq()<1e-6)return;const n=N[k];
+    /* keep some momentum from the parent so branches read as airways, not zig-zags */
+    if(n.par>=0){const m=n.p.clone().sub(N[n.par].p).normalize();v.normalize().multiplyScalar(.72).add(m.multiplyScalar(.28))}
+    v.normalize();const p=n.p.clone().addScaledVector(v,STEP);
+    if(!lungIn(p.x,p.y,p.z)&&n.kids.length>0)return;
+    if(n.kids.length>=2)return;
+    add(p,k,true)});
+}
+/* calibres: pipe model from the tips up */
+for(let k=N.length-1;k>=0;k--){const n=N[k];if(!n.kids.length)n.r=.0042;else{let s=0;n.kids.forEach(c=>s+=Math.pow(N[c].r,2.55));n.r=Math.pow(s,1/2.55)}}
+const r0=N[0].r,RT=.068;N.forEach(n=>{n.r=Math.max(.0036,n.r*RT/r0);n.g=n.r});
+/* generations for colour: depth in bifurcations from the trachea */
+N.forEach((n,k)=>{n.d=n.par<0?0:N[n.par].d+(N[n.par].kids.length>1?1:0)});
+const maxD=Math.max(...N.map(n=>n.d));
+const C0=new THREE.Color('#cf1d72'),C1=new THREE.Color('#ff6f86'),C2=new THREE.Color('#ffa36c'),C3=new THREE.Color('#ffc861');
+function col(u){u=Math.min(1,Math.max(0,u));if(u<.4)return C0.clone().lerp(C1,u/.4);if(u<.72)return C1.clone().lerp(C2,(u-.4)/.32);return C2.clone().lerp(C3,(u-.72)/.28)}
+/* tubes: instanced tapered cylinders, plus a sphere at every node so joints stay round */
+const segs=N.map((n,k)=>k).filter(k=>N[k].par>=0);
+const cyl=new THREE.CylinderGeometry(1,1,1,14,1,true);cyl.translate(0,.5,0);
+const mat=new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.42,metalness:0,clearcoat:.45,clearcoatRoughness:.3,sheen:.25,sheenColor:new THREE.Color('#ffc2d8'),emissive:new THREE.Color('#2a0612'),emissiveIntensity:.5});
+const im=new THREE.InstancedMesh(cyl,mat,segs.length);
+const sph=new THREE.SphereGeometry(1,14,10);const im2=new THREE.InstancedMesh(sph,mat,N.length);
+const M=new THREE.Matrix4(),q=new THREE.Quaternion(),up=new THREE.Vector3(0,1,0);
+segs.forEach((k,j)=>{const a=N[N[k].par].p,b=N[k].p;const d=b.clone().sub(a);const L=d.length();q.setFromUnitVectors(up,d.normalize());
+  const rr=(N[k].r+N[N[k].par].r)*.5;M.compose(a,q,new THREE.Vector3(rr,L,rr));im.setMatrixAt(j,M);im.setColorAt(j,col(Math.pow(N[k].d/maxD,.8)))});
+N.forEach((n,j)=>{const rr=n.par>=0?Math.min(n.r,(n.r+N[n.par].r)*.5)*.985:n.r;M.compose(n.p,new THREE.Quaternion(),new THREE.Vector3(rr,rr,rr));im2.setMatrixAt(j,M);im2.setColorAt(j,col(Math.pow(n.d/maxD,.8)))});
+const tree=new THREE.Group();tree.add(im,im2);
+{const tor=new THREE.TorusGeometry(1,.075,8,40);const ring=[];
+ segs.forEach(k=>{const n=N[k];if(n.r<.03)return;const a=N[n.par].p,b=n.p;const d=b.clone().sub(a);const L=d.length();const dn=d.clone().normalize();
+   const qq=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),dn);
+   for(let u=0;u<L;u+=.045){const pp=a.clone().addScaledVector(dn,u);ring.push([pp,qq,n.r*1.012])}});
+ const ti=new THREE.InstancedMesh(tor,mat,ring.length);ring.forEach((R,j)=>{M.compose(R[0],R[1],new THREE.Vector3(R[2],R[2],R[2]));ti.setMatrixAt(j,M);ti.setColorAt(j,C0)});tree.add(ti);}
+/* the lungs: a faint fresnel shell */
+const RES=120;const mc=new MarchingCubes(RES,new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.CustomBlending,blendSrc:THREE.OneFactor,blendDst:THREE.OneFactor,blendSrcAlpha:THREE.OneFactor,blendDstAlpha:THREE.OneFactor,side:THREE.FrontSide,
+  uniforms:{c:{value:new THREE.Color('#ff5c9a')},c2:{value:new THREE.Color('#ffb070')}},
+  vertexShader:'varying vec3 vN;varying vec3 vV;varying float vY;void main(){vec4 mv=modelViewMatrix*vec4(position,1.);vN=normalize(normalMatrix*normal);vV=normalize(-mv.xyz);vY=position.y;gl_Position=projectionMatrix*mv;}',
+  fragmentShader:'uniform vec3 c;uniform vec3 c2;varying vec3 vN;varying vec3 vV;varying float vY;void main(){float f=pow(1.-abs(dot(normalize(vN),vV)),2.6);vec3 k=mix(c,c2,smoothstep(-.6,.7,vY));vec3 o=k*f*.62;gl_FragColor=vec4(o,max(o.r,max(o.g,o.b)));}'}),false,false,200000);
+mc.isolation=.5;
+for(let z=0;z<RES;z++)for(let y=0;y<RES;y++)for(let x=0;x<RES;x++){
+  const X=(x/(RES-1)*2-1)*1.8,Y=(y/(RES-1)*2-1)*1.8,Z=(z/(RES-1)*2-1)*1.8;
+  /* smooth the occupancy a little by sampling a small neighbourhood */
+  const f=lungF(X,Y,Z);mc.field[x+y*RES+z*RES*RES]=Math.min(1,Math.max(0,.5+f*5));
+}
+mc.update();mc.scale.setScalar(1.8);
+const g=new THREE.Group();g.add(mc,tree);sc.add(g);
+g.rotation.set(RX*Math.PI/180,RY*Math.PI/180,0);g.position.y=-.36;
+/* light: a warm key from upper left, a cool-free soft fill, a rim from behind */
+const k1=new THREE.DirectionalLight(0xfff0e8,1.9);k1.position.set(-3,4,5);sc.add(k1);
+const k2=new THREE.DirectionalLight(0xffd6e6,1.1);k2.position.set(4,-1,3);sc.add(k2);
+const k3=new THREE.DirectionalLight(0xffc0a0,2.2);k3.position.set(0,2,-6);sc.add(k3);
+sc.add(new THREE.AmbientLight(0x40202c,.6));
+const cam=new THREE.PerspectiveCamera(FOV,W/H,.1,100);cam.position.set(0,0,CD);cam.lookAt(0,0,0);
+r.render(sc,cam);window.NODES=N.length;window.DONE=true;
+</script></body></html>

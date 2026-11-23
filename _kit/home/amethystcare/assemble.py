@@ -21,7 +21,8 @@ assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
 assert 'WaveClear' not in src and 'waveclear' not in src.replace('amethystcare',''), 'leftover WaveClear text'
-nss=(K / 'lib/nssfix.js').read_text().rstrip('\n')
+import re as _re
+nss=_re.sub(r'/\*</?R:nssfix>\*/','',(K / 'lib/nssfix.js').read_text()).strip()
 assert src.count('</body>') == 1
 src = src.replace('</body>', nss + '\n</body>')
 (K / 'src/amethystcare.src.html').write_text(src)

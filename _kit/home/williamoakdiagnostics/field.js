@@ -41,8 +41,7 @@ var field=(function(){
       var dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.ky-k*G.ih*.01-SP.v*G.ih*.05;
       c.save();c.translate(cx,cy);c.rotate(rt);c.globalAlpha=e;c.drawImage(img,-dw*.5,-dh*.5,dw,dh);c.restore();c.globalAlpha=1;
       if(!G.mob){
-        /* the headline side stays quiet (DI): a long ink wash from the left, eased out well before the reader */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.5,0);lv.addColorStop(0,"rgba(238,237,235,.9)");lv.addColorStop(.55,"rgba(238,237,235,.55)");lv.addColorStop(1,"rgba(238,237,235,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+        /* the headline side is plain ink (DI): the device sits well right of the measured text, so no wash is needed */
       }else{
         var mv=c.createLinearGradient(0,G.bh*.8,0,G.bh);mv.addColorStop(0,"rgba(238,237,235,0)");mv.addColorStop(1,"rgba(238,237,235,1)");c.fillStyle=mv;c.fillRect(0,G.bh*.8,w,G.bh*.2+1);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);

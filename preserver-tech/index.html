@@ -1742,5 +1742,15 @@ function preload(){
 var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
 })();
 </script>
+/*<R:nssfix>*/<script>/* Safari dashes vector-effect:non-scaling-stroke paths in screen units, so a draw-in dash of getTotalLength() stops short of its end point (PRINCIPLES DR4). For every such path that is being dash-drawn, drop non-scaling-stroke and keep its on-screen width by dividing by the CTM scale. Static patterned dashes are left alone. */
+(function(){var done=new WeakSet();
+function sc(el){var m=el.getScreenCTM&&el.getScreenCTM();if(!m)return 1;var s=Math.sqrt(Math.abs(m.a*m.d-m.b*m.c));return s>0?s:1}
+function isDraw(el){var da=el.style.strokeDasharray||el.getAttribute("stroke-dasharray");if(!da||da==="none")return false;var v=String(da).split(/[ ,]+/).map(parseFloat).filter(function(x){return!isNaN(x)});if(!v.length)return false;var L=0;try{L=el.getTotalLength()}catch(e){return false}if(!(L>0))return false;return v[0]>=L*0.9}
+function fix(el){if(done.has(el))return;if(!(el instanceof SVGGeometryElement))return;var cs=getComputedStyle(el);if(cs.vectorEffect!=="non-scaling-stroke")return;if(!isDraw(el))return;done.add(el);var w=parseFloat(cs.strokeWidth)||1;el.__nsw=w;el.style.vectorEffect="none";el.style.strokeWidth=(w/sc(el)).toFixed(4)+"px"}
+function scan(r){(r||document).querySelectorAll("svg path,svg line,svg polyline,svg circle,svg ellipse,svg rect,svg polygon").forEach(fix)}
+function resize(){document.querySelectorAll("svg *").forEach(function(el){if(done.has(el)&&el.__nsw)el.style.strokeWidth=(el.__nsw/sc(el)).toFixed(4)+"px"})}
+new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==="attributes"&&m.target instanceof SVGElement)fix(m.target);else if(m.addedNodes)m.addedNodes.forEach(function(n){if(n.nodeType===1&&n.querySelectorAll)scan(n)})})}).observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["style","stroke-dasharray"]});
+addEventListener("load",function(){scan();setTimeout(scan,1500)});addEventListener("resize",function(){clearTimeout(resize.t);resize.t=setTimeout(resize,120)});})();</script>
+
 </body>
 </html>

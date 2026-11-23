@@ -1766,16 +1766,18 @@ function pxScene(o){
   for(i=0;i<3;i++){var rr=186+i*14;g+='<path class="er sD" d="M'+(NX-rr*Math.cos(.7)).toFixed(1)+' '+(NY-rr*.88*Math.sin(.7)).toFixed(1)+'A'+rr+' '+(rr*.88).toFixed(1)+' 0 0 0 '+(NX-rr*Math.cos(.7)).toFixed(1)+' '+(NY+rr*.88*Math.sin(.7)).toFixed(1)+'"/>'}
   PXL.forEach(function(l){g+='<circle class="lys sD" cx="'+l[0]+'" cy="'+l[1]+'" r="'+l[2]+'"/><circle class="lys2 sD" cx="'+l[0]+'" cy="'+l[1]+'" r="'+(l[2]-5)+'"/>'});
   PXP.forEach(function(p){g+='<g class="rcp" transform="translate('+p[0]+' '+p[1]+')"><path d="M-9 6V-2Q-9 -9 -2 -9H2Q9 -9 9 -2V6"/><path d="M-4 6V0H4V6"/></g>'});
-  g+='<text class="t" x="24" y="'+(SCH-6)+'">NEURON · LYSOSOMES AND STORED MATERIAL</text>';
-  g+='<text class="t" x="'+(NX+150)+'" y="'+(NY-160)+'" text-anchor="end">NUCLEUS · PPARα</text>';
+  /* DR: labels keep clear of the cell membrane, nucleus and lysosomes: neuron label below the cell, nucleus label in the
+     open band under the nucleus, step labels in the clear strip above it (desktop) or under the neuron label (phones) */
+  g+='<text class="t" x="24" y="'+(SCH+16)+'">NEURON · LYSOSOMES AND STORED MATERIAL</text>';
+  g+='<text class="t" x="'+NX+'" y="'+(NY+178)+'" text-anchor="middle">NUCLEUS · PPARα</text>';
   g+='</g>';
   g+='<g id="scGran">';PXG.forEach(function(q){g+='<circle class="gr" cx="'+q.x.toFixed(1)+'" cy="'+q.y.toFixed(1)+'" r="'+q.r.toFixed(1)+'"/>'});g+='</g>';
   g+='<g id="scGene"><path class="gene" d="M'+(NX-60)+' '+(NY+30)+'H'+(NX+20)+'"/><path class="gene" d="M'+(NX+40)+' '+(NY+30)+'H'+(NX+90)+'"/></g>';
   g+='<g id="scRna">';for(i=0;i<6;i++)g+='<path class="rna" d="M0 0q5 -6 10 0t10 0t10 0"/>';g+='</g>';
   g+='<g id="scNew">';PXN.forEach(function(n){g+='<g class="nl" transform="translate('+n[0]+' '+n[1]+')"><circle class="lysN" r="'+n[2]+'"/><circle class="lysN2" r="'+(n[2]-5)+'"/></g>'});g+='</g>';
   g+='<g id="scMol">';PXM.forEach(function(){g+='<g class="ml">'+pxMol()+'</g>'});g+='</g>';
-  var lx=o.mob?24:NX-200,LB=[[lx,80,"PLX-200 BINDS PPAR\u03b1"],[lx,80,"TFEB SWITCHES ON LYSOSOMAL GENES"],[lx,80,"NEW LYSOSOMES CLEAR THE STORAGE"]];
-  LB.forEach(function(l,k){g+='<g id="lb'+(k+1)+'"><text class="a" x="'+l[0]+'" y="'+l[1]+'">'+l[2]+'</text></g>'});
+  var lx=o.mob?24:600,ly=o.mob?SCH+46:96,la=o.mob?'start':'end',LB=[[lx,ly,"PLX-200 BINDS PPAR\u03b1"],[lx,ly,"TFEB SWITCHES ON LYSOSOMAL GENES"],[lx,ly,"NEW LYSOSOMES CLEAR THE STORAGE"]];
+  LB.forEach(function(l,k){g+='<g id="lb'+(k+1)+'"><text class="a" x="'+l[0]+'" y="'+l[1]+'" text-anchor="'+la+'">'+l[2]+'</text></g>'});
   return g+'</svg>';
 }
 function scene(){return pxScene({mob:MOBILE()?1:0})}
@@ -2042,7 +2044,7 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:{amount:.2}},.1)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

@@ -91,7 +91,7 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
+#pre .mk{width:96px;height:96px;overflow:visible}#pre .pc .wm{font-family:var(--deco);font-size:clamp(36px,3.6vw,52px);letter-spacing:.015em;margin-right:0}#pre .wm b{font-weight:600;color:var(--bone)}#pre .wm i{font-weight:500;font-style:normal;letter-spacing:.01em;color:var(--acc2)}
 #pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
@@ -829,8 +829,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 48 48"><path class="r" d="M6 30H42"/><circle class="d" cx="42" cy="30" r="2.6"/></svg>
-    <div class="wm"><span>MITOVATION</span></div>
+    <div class="wm"><span><b>MITO</b><i>vation</i></span></div>
   </div>
   <span class="lab pl">Near-infrared light therapy · Ann Arbor, MI</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1776,7 +1775,7 @@ function memScene(o){
   function wave(sx,sy,ex,ey,lam,amp){var L=Math.hypot(ex-sx,ey-sy),ux=(ex-sx)/L,uy=(ey-sy)/L,n=Math.round(L/3),d='';
     for(var j=0;j<=n;j++){var s=j/n*L,w=Math.sin(s/lam*Math.PI*2)*amp*Math.min(1,s/30,(L-s)/30);d+=(j?'L':'M')+f(sx+ux*s-uy*w)+' '+f(sy+uy*s+ux*w)}return d}
   [[0,750,15],[1,950,21]].forEach(function(B){var b=B[0];
-    for(var j=0;j<3;j++){var sx=46+b*92+j*22,sy=30+j*10-b*4,tx=250+b*96+j*26,ex=tx,ey=MCY-hyO(tx)-6;
+    for(var j=0;j<3;j++){var sx=46+b*92+j*22,sy=30+j*10-b*4+(o.mob?12:4),tx=250+b*96+j*26,ex=tx,ey=MCY-hyO(tx)-6;
       g+='<path class="wv w'+b+' sD4" d="'+wave(sx,sy,ex,ey,B[2]*1.6,5)+'"/>'}
     g+='<text class="a lt" x="'+(40+b*96)+'" y="18">'+B[1]+' NM</text>'});
   g+='</g>';
@@ -2038,7 +2037,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=[];
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2047,7 +2046,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline()
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

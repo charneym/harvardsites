@@ -24,6 +24,6 @@ run logo-audit.js $F "#/"
 run hero-audit.js $F "#/"
 run buildout-test.js $F
 run fit-audit.js $F
-run loader-contrast-audit.js nkabio
+(cd .. && echo "=== loader-contrast" && node _kit/loader-contrast-audit.js nkabio)
 echo "=== ALL DONE"
 run tools/textclash.js nkabio /tmp/claude-0/-home-user-harvardsites/82f9775e-4d01-566b-9311-71709d383091/scratchpad/tc

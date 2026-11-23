@@ -1,0 +1,107 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Senphonix hero: a crafted render of SleeveSense (senphonix.com, Solution page and product image): a soft stretch-mesh
+   sleeve worn on the upper arm, with a flexible serpentine interconnect and round sensor pads, shown on a dark satin
+   display arm (product-shot style). No adhesives or straps: the mesh holds it. Illustrative proportions, not an
+   engineering drawing. Real alpha, so the page ink shows through (DP/DJ). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||1400),H=+(Q.get('h')||1800);
+const RZ=+(Q.get('rz')||-16),RY=+(Q.get('ry')||-14),RX=+(Q.get('rx')||8),FOV=+(Q.get('fov')||20),CD=+(Q.get('cd')||44);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0,0);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.45;
+const key=new THREE.DirectionalLight(0xffffff,2.4);key.position.set(-10,12,16);sc.add(key);
+const rim=new THREE.DirectionalLight(0x5aaeff,4.2);rim.position.set(16,4,-10);sc.add(rim);
+const rim2=new THREE.DirectionalLight(0xf5a040,1.3);rim2.position.set(-16,-2,-8);sc.add(rim2);
+const fill=new THREE.DirectionalLight(0x9fb4ff,.5);fill.position.set(6,-10,10);sc.add(fill);
+
+/* the arm: a swept form along a bent spine (shoulder, upper arm, elbow, forearm). Ends dissolve into the dark (alpha by
+   distance from the sleeve), like a low-key product photograph; the sleeve sits on the upper arm. */
+const SP=new THREE.CatmullRomCurve3([new THREE.Vector3(0.6,13.5,-0.7),new THREE.Vector3(0.2,10,-.2),new THREE.Vector3(0,6,0),new THREE.Vector3(0,2.2,0),
+  new THREE.Vector3(0.05,-1.5,0.2),new THREE.Vector3(0.1,-4.5,0.4)],false,'centripetal');
+const SL=SP.getLength();
+function radAt(u){ /* u: 0 shoulder .. 1 wrist end, profile in arc length */
+  const d=u*SL;const k=(x,c,w)=>Math.exp(-Math.pow((x-c)/w,2));
+  return 1.32+0.42*k(d,2.4,2.2)+0.28*k(d,6.6,2.6)-0.08*k(d,11.6,1.2)+0.12*k(d,14.2,1.4)-0.30*Math.max(0,(d-14)/6)-0.12*Math.max(0,Math.min(1,(d-12.2)/3))}
+const NU=200,NV=360;const FR=SP.computeFrenetFrames(NV,false);
+function frame(i){ /* stable frame: x-axis "side", z-axis "front" via parallel transport from Frenet */
+  return {t:FR.tangents[i],n:FR.normals[i],b:FR.binormals[i]}}
+/* use a fixed reference instead of Frenet (avoids flips): front = +z projected */
+const FRM=[];{let prevN=null;for(let j=0;j<=NV;j++){const t=SP.getTangentAt(j/NV).normalize();let f=new THREE.Vector3(0,0,1);if(prevN)f=prevN.clone();
+  f.sub(t.clone().multiplyScalar(f.dot(t))).normalize();const sd=new THREE.Vector3().crossVectors(t,f).normalize();FRM.push({t,f,sd});prevN=f}}
+function A(th,j){const u=j/NV;const c=SP.getPointAt(u),F=FRM[j];let rr=radAt(u);
+  const d=u*SL;rr+=0.16*Math.exp(-Math.pow((d-7)/2.4,2))*Math.pow(Math.max(0,Math.sin(th)),2);   /* biceps */
+  rr+=0.22*Math.exp(-Math.pow((d-11.4)/0.8,2))*Math.pow(Math.max(0,-Math.sin(th)),4);            /* olecranon */
+  return c.clone().addScaledVector(F.sd,rr*Math.cos(th)).addScaledVector(F.f,rr*Math.sin(th)*0.92)}
+const posA=[],idxA=[];for(let j=0;j<=NV;j++)for(let i=0;i<=NU;i++){const p=A(i/NU*Math.PI*2,j);posA.push(p.x,p.y,p.z)}
+for(let j=0;j<NV;j++)for(let i=0;i<NU;i++){const a=j*(NU+1)+i,b=a+NU+1;idxA.push(a,b,a+1,a+1,b,b+1)}
+const gA=new THREE.BufferGeometry();gA.setAttribute('position',new THREE.Float32BufferAttribute(posA,3));gA.setIndex(idxA);gA.computeVertexNormals();
+const armM=new THREE.MeshPhysicalMaterial({color:0x1d2350,roughness:.52,metalness:0,clearcoat:.3,clearcoatRoughness:.45,sheen:.35,sheenColor:new THREE.Color(0x4a5ab8),transparent:true});
+const FC=new THREE.Vector3();
+armM.onBeforeCompile=sh=>{sh.uniforms.fc={value:FC};sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vW;').replace('#include <worldpos_vertex>','#include <worldpos_vertex>\nvW=(modelMatrix*vec4(transformed,1.0)).xyz;');
+  sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec3 vW;uniform vec3 fc;').replace('#include <dithering_fragment>','#include <dithering_fragment>\nfloat dd=distance(vW,fc);float fa=1.0-smoothstep(3.4,8.2,dd);fa=fa*fa*(3.0-2.0*fa);gl_FragColor*=fa;')};
+const arm=new THREE.Mesh(gA,armM);
+/* surface parameterisation used by the sleeve: th around, y = arc length from the shoulder */
+function J(y){return Math.max(0,Math.min(NV,Math.round(y/SL*NV)))}
+function S0(th,y){const j=y/SL*NV,j0=Math.floor(j),f=j-j0;const a=A(th,Math.max(0,Math.min(NV,j0))),b=A(th,Math.max(0,Math.min(NV,j0+1)));return a.lerp(b,f)}
+function nrm(th,y){const e=1e-3,h=0.01;const a=S0(th+e,y).sub(S0(th-e,y)),b=S0(th,y+h).sub(S0(th,y-h));return b.cross(a).normalize()}
+function S(th,y,off=0){return S0(th,y).addScaledVector(nrm(th,y),off)}
+const grp=new THREE.Group();grp.add(arm);
+
+/* the sleeve: a stretch mesh of fine elastic threads, square cells, slightly wavy as on the real sleeve */
+const yarn=new THREE.MeshPhysicalMaterial({color:0xdfe4f0,roughness:.66,metalness:0,sheen:.6,sheenColor:new THREE.Color(0xffffff)});
+const BY0=5.0,BY1=9.6,NC=30,NR=10;const tubes=[];
+function tube(pts,rr,seg){const c=new THREE.CatmullRomCurve3(pts);return new THREE.TubeGeometry(c,seg||pts.length*3,rr,7,false)}
+for(let k=0;k<=NR;k++){const y0=BY0+(BY1-BY0)*k/NR;const pts=[];const hem=(k==0||k==NR);
+  for(let i=0;i<=240;i++){const th=i/240*Math.PI*2;const y=y0+(hem?0:0.045*Math.sin(th*NC*.5+k*1.3));pts.push(S(th,y,hem?0.045:0.03))}
+  tubes.push(tube(pts,hem?0.042:0.019,480))}
+for(let i=0;i<NC;i++){const th0=i/NC*Math.PI*2;const pts=[];
+  for(let j=0;j<=60;j++){const y=BY0+(BY1-BY0)*j/60;const th=th0+0.03*Math.sin(j/60*Math.PI*NR+i*.9);pts.push(S(th,y,0.034))}
+  tubes.push(tube(pts,0.019,120))}
+grp.add(new THREE.Mesh(mergeGeometries(tubes),yarn));
+
+/* the electronics: a flexible serpentine interconnect (white silicone encapsulation) and round sensor pads.
+   Layout in surface coordinates: s = arc length around the arm from the front, y up the arm. */
+const sil=new THREE.MeshPhysicalMaterial({color:0xf4f6fa,roughness:.3,metalness:0,clearcoat:.6,clearcoatRoughness:.25,sheen:.4,sheenColor:new THREE.Color(0xffffff)});
+const TH0=Math.PI/2+(+(Q.get('th')||0))*Math.PI/180,RS=1.85;
+function surf(s,y,off){return S(TH0+s/RS,y,off)}
+function sweep(path,wd,tk){ /* rounded flat ribbon swept along a surface path [[s,y],...] */
+  const n=path.length,pos=[],idx=[],SEC=[];const NS=14;
+  for(let k=0;k<NS;k++){const a=k/NS*Math.PI*2;SEC.push([Math.cos(a)*wd/2,Math.sin(a)*tk/2+tk/2])}
+  for(let i=0;i<n;i++){const [s,y]=path[i];const p=surf(s,y,0.05),nn=nrm(TH0+s/RS,y);
+    const q=surf(path[Math.min(n-1,i+1)][0],path[Math.min(n-1,i+1)][1],0.05),o=surf(path[Math.max(0,i-1)][0],path[Math.max(0,i-1)][1],0.05);
+    const t=q.sub(o).normalize(),sd=new THREE.Vector3().crossVectors(t,nn).normalize();
+    SEC.forEach(([a,b])=>{const v=p.clone().addScaledVector(sd,a).addScaledVector(nn,b);pos.push(v.x,v.y,v.z)})}
+  for(let i=0;i<n-1;i++)for(let k=0;k<NS;k++){const a=i*NS+k,b=i*NS+(k+1)%NS,c=a+NS,d=b+NS;idx.push(a,c,b,b,c,d)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g}
+function serp(a,b,amp,per,axis){ /* horseshoe meander from a to b along one axis */
+  const L=Math.abs(b-a),N=Math.max(40,Math.round(L/per*60)),out=[];
+  for(let i=0;i<=N;i++){const t=i/N,ph=t*L/per*Math.PI*2;const u=a+(b-a)*t-Math.sign(b-a)*per*0.16*Math.sin(2*ph);const w=amp*Math.sin(ph);out.push(axis=='y'?[w,u]:[u,w])}
+  return out}
+const parts=[];
+const VS=-0.95; /* vertical run, left of centre */
+parts.push(sweep(serp(5.4,9.2,0.17,0.42,'y').map(([w,u])=>[VS+w,u]),0.07,0.035));
+const HY=7.75;const pads=[-0.3,0.32,0.94];const endS=1.42;
+let prev=VS+0.02;
+[...pads,endS].forEach((ps,i)=>{const a=prev+(i==0?0.0:0.17),b=ps-0.17;if(b>a+0.05)parts.push(sweep(serp(a,b,0.075,0.2,'x').map(([u,w])=>[u,HY+w]),0.064,0.032));prev=ps});
+grp.add(new THREE.Mesh(mergeGeometries(parts),sil));
+/* pads: low rounded pucks lying on the surface */
+function puck(rr,h){const pr=[];const b=h*.45;pr.push(new THREE.Vector2(0,0));for(let k=0;k<=8;k++){const a=k/8*Math.PI/2;pr.push(new THREE.Vector2(rr-b+b*Math.sin(a),h-b+b*Math.cos(a)-h+b))}
+  const P=[new THREE.Vector2(0,0),new THREE.Vector2(rr,0)];for(let k=0;k<=10;k++){const a=k/10*Math.PI/2;P.push(new THREE.Vector2(rr-b+b*Math.cos(a),h-b+b*Math.sin(a)))}P.push(new THREE.Vector2(0,h));
+  return new THREE.LatheGeometry(P,64)}
+function place(m,s,y,off){const p=surf(s,y,off),n=nrm(TH0+s/RS,y);m.position.copy(p);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),n);grp.add(m)}
+pads.forEach(ps=>place(new THREE.Mesh(puck(0.235,0.09),sil),ps,HY,0.035));
+/* the end pod and the junction where the runs meet */
+place(new THREE.Mesh(puck(0.13,0.075),sil),endS,HY,0.035);
+place(new THREE.Mesh(puck(0.09,0.06),sil),VS,HY,0.04);
+
+grp.rotation.set(RX*Math.PI/180,RY*Math.PI/180,RZ*Math.PI/180);sc.add(grp);grp.updateMatrixWorld(true);
+const c0=S0(Math.PI/2,7.4);grp.localToWorld(c0);grp.position.sub(c0);grp.updateMatrixWorld(true);FC.copy(grp.localToWorld(S0(Math.PI/2,7.6).add(new THREE.Vector3(0,0,0))));
+const cam=new THREE.PerspectiveCamera(FOV,W/H,.1,400);cam.position.set(0,0,CD);cam.lookAt(0,0,0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

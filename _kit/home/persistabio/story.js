@@ -32,7 +32,7 @@ function vesScene(o){
   g+='<path class="wl sD" d="M0 46C90 38 150 54 240 46S400 36 490 46 650 54 760 44"/>';
   g+='<path class="wo sD" d="M0 66C80 74 140 58 230 66S390 76 480 66 650 58 760 68"/>';
   g+='<path class="en sD" d="M40 82c40 6 70 2 110 6M300 86c50-4 90 4 140 0M560 84c40 4 80-2 150 4"/>';
-  g+=T('t',24,30,'SKIN',null,1);
+  g+=T('t',24,o.mob?26:30,'SKIN',null,1);
   g+=T('t',24,124,'TISSUE UNDER THE SKIN');
   /* ---- the iEOG ---- */
   g+='<path class="wl sD" d="M'+GX0+' '+GT+'H'+GX1+'V'+GB+'H'+GX0+'Z"/>';
@@ -51,7 +51,7 @@ function vesScene(o){
   g+='<path class="wl sD" d="M0 '+VT+'C150 '+(VT-8)+' 300 '+(VT+8)+' 450 '+VT+'S650 '+(VT-6)+' 760 '+(VT+2)+'"/>';
   g+='<path class="wl sD" d="M0 '+VB+'C150 '+(VB-8)+' 300 '+(VB+8)+' 450 '+VB+'S650 '+(VB-6)+' 760 '+(VB+2)+'"/>';
   [70,190,330,470,610,720].forEach(function(x,k){g+='<ellipse class="rbc" cx="'+x+'" cy="'+(VT+23+(k%2?4:-3))+'" rx="13" ry="7"/>'});
-  g+=T('t',24,VB+30,'CAPILLARY',null,1);
+  g+=T('t',24,VB+(o.mob?33:30),'CAPILLARY',null,1);
   g+='</g>';
   /* ---- islets ---- */
   g+='<g id="scIsl">';ISL.forEach(function(q,k){g+=islet(q,k)});g+='</g>';

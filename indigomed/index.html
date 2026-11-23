@@ -668,7 +668,7 @@ em{line-height:0}
 @media (max-width:860px){.fieldbg{background:#0d0b22}}
 .rail span{color:#aab5c6}.rail span::before{background:var(--ink2);border-color:#5e6b80;border-radius:0}
 @media (max-width:1024px){.scene text{font-size:14px;letter-spacing:.06em}.scene text.t{font-size:9.5px}}
-#pre .wm{font-family:var(--deco);font-weight:500;font-size:clamp(34px,3.6vw,52px);letter-spacing:-.01em;white-space:nowrap;color:#b8a6ec}
+#pre .wm{font-family:var(--deco);font-weight:500;font-size:clamp(46px,4.6vw,66px);letter-spacing:-.01em;white-space:nowrap;color:#a48ae0;background:linear-gradient(90deg,#a48ae0,#7f8fe6 55%,#36b2ea);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -1744,14 +1744,16 @@ function seg(p,a,b){var x=(p-a)/(b-a);x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
    sensor's Bluetooth link rises through the skin to a phone outside, where three traces appear. Schematic, not to scale. */
 var SCW=760,SCH=520,SKY=150,DMY=206,CX=330,CY=296;
 function igWave(y0,amp,ph){var d='',i;for(i=0;i<=76;i++){var x=i*10;d+=(i?'L':'M')+x+' '+(y0+Math.sin(i*.42+ph)*amp+Math.sin(i*.13)*amp*.8).toFixed(1)}return d}
+/* keep-clear boxes around the scene labels (DR: nothing within 8px of a label, at desktop and phone type sizes) */
+var IGK=[[470,222,760,258],[CX-180,328,CX+180,370],[58,374,420,412]];function igClear(x,y,rx,ry){return !IGK.some(function(k){return x+rx>k[0]&&x-rx<k[2]&&y+ry>k[1]&&y-ry<k[3]})}
 var IGM=(function(){var s=11,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff},a=[],i,T=["g","k","l"];
   for(i=0;i<400&&a.length<24;i++){var an=R()*Math.PI*2,rr=70+R()*120,x=CX+Math.cos(an)*rr*1.5,y=CY+Math.sin(an)*rr*.62;
     if(x<40||x>720||y<DMY+22||y>372)continue;if(Math.abs(y-CY)<44&&Math.abs(x-CX)<165)continue;if(Math.abs(y-(CY+52))<14&&Math.abs(x-CX)<120)continue;
-    if(a.some(function(b){return Math.hypot(b.x-x,b.y-y)<30}))continue;a.push({x:x,y:y,t:T[a.length%3],r:R()*60})}return a})();
+    if(!igClear(x,y,12,10))continue;if(a.some(function(b){return Math.hypot(b.x-x,b.y-y)<30}))continue;a.push({x:x,y:y,t:T[a.length%3],r:R()*60})}return a})();
 var IGL=(function(){var s=29,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff},a=[],i;
   for(i=0;i<200&&a.length<10;i++){var x=40+R()*680,y=DMY+44+R()*130,r=20+R()*14;
     if(Math.abs(y-CY)<64&&Math.abs(x-CX)<190)continue;if(x>540&&y<DMY+56)continue;
-    if(a.some(function(b){return Math.hypot(b[0]-x,b[1]-y)<b[2]+r+10}))continue;
+    if(!igClear(x,y,r,r*.78))continue;if(a.some(function(b){return Math.hypot(b[0]-x,b[1]-y)<b[2]+r+10}))continue;
     if(IGM.some(function(m){return Math.hypot(m.x-x,m.y-y)<r+12}))continue;a.push([x,y,r])}return a})();
 function igMol(m){var g='<g class="mol '+m.t+'" transform="translate('+m.x.toFixed(1)+' '+m.y.toFixed(1)+') rotate('+m.r.toFixed(0)+')">';
   if(m.t=="g"){var d='',j;for(j=0;j<6;j++){var a=j/6*Math.PI*2;d+=(j?'L':'M')+(Math.cos(a)*7).toFixed(1)+' '+(Math.sin(a)*7).toFixed(1)}g+='<path d="'+d+'Z"/><path d="M7 0h6"/>'}
@@ -1778,7 +1780,7 @@ function igScene(o){
   g+='<text class="t" x="20" y="'+(SKY-16)+'">OUTSIDE THE BODY</text>';
   g+='<text class="t" x="20" y="'+(SKY+36)+'">SKIN</text>';
   g+='<text class="t" x="740" y="'+(DMY+40)+'" text-anchor="end">INTERSTITIAL FLUID</text>';
-  g+='<text class="t" x="'+CX+'" y="'+(CY+52)+'" text-anchor="middle">CMM® SENSOR, IMPLANTED</text>';
+  g+='<text class="t" x="'+CX+'" y="'+(CY+(o.mob?66:52))+'" text-anchor="middle">CMM® SENSOR, IMPLANTED</text>';
   g+='</g>';
   /* step 1: light through the fluid */
   g+='<g id="scLt">';

@@ -673,7 +673,7 @@ em{line-height:0}
 #pre .wm{font-family:var(--disp);font-weight:400;font-style:italic;font-size:clamp(34px,3.6vw,56px);letter-spacing:-.02em;margin-right:0;white-space:nowrap;color:var(--bone)}
 #pre .wm i{font-style:italic}
 #pre .wm b{font-weight:400;font-style:italic;color:var(--accL)}
-#pre .mk{width:110px;height:110px}#pre .mk circle{fill:none;stroke:var(--bone);stroke-width:1.2}#pre .mk circle+circle{stroke:var(--ember)}#pre .mk path{stroke:var(--accL);stroke-width:1.2}
+#pre .mk{width:110px;height:110px}#pre .mk circle{fill:none;stroke:var(--bone);stroke-width:2.6}#pre .mk circle+circle{stroke:var(--ember);fill:var(--ember);fill-opacity:.18}#pre .mk path{stroke:var(--accL);stroke-width:2.2}/* DR: loader motif at brand weight, never a hairline */
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -1738,18 +1738,19 @@ function scene(){
   [0,1].forEach(function(k){g+='<g class="drug" id="dr'+k+'"><circle r="34" fill="url(#aug)"/><path d="'+hex(-9,0,10.4,Math.PI/6)+hex(9,0,10.4,Math.PI/6)+'"/></g>'});
   g+='</g>';
   /* labels, one set per step (leaders end at the thing they name) */
-  var lx=mob?16:322;
-  g+='<g id="lb1"><text class="a" x="'+lx+'" y="'+(mob?60:96)+'">'+(mob?'CAV3.2 CHANNEL':'CAV3.2 T-TYPE CALCIUM CHANNEL')+'</text><path class="ldr" d="M'+(lx-6)+' '+(mob?72:92)+'L'+(C[0]+84)+' '+(C[1]-76)+'"/>'+
-     (mob?'':'<text class="t" x="322" y="116">OVERACTIVE IN INJURED SENSORY NERVES</text>')+'<text class="a" x="'+(C[0]+20)+'" y="328">CA²⁺</text>'+
-     '<text class="a" x="784" y="'+(AF.trY+34)+'" text-anchor="end">'+(mob?'FAST FIRING':'HYPEREXCITABLE FIRING')+'</text></g>';
-  g+='<g id="lb2"><text class="a" x="'+(mob?16:330)+'" y="'+(mob?60:96)+'">'+(mob?'sEH ENZYME':'SOLUBLE EPOXIDE HYDROLASE (sEH)')+'</text>'+
+  /* DR: labels keep 8px+ clear of the channel, ions, sEH and trace at every width; phones set step labels top-right */
+  var lx=330,fy=mob?557:AF.trY+34,ex=mob?' text-anchor="end"':'',tx=mob?784:330;
+  g+='<g id="lb1"><text class="a" x="'+tx+'" y="'+(mob?60:96)+'"'+ex+'>'+(mob?'CAV3.2 CHANNEL':'CAV3.2 T-TYPE CALCIUM CHANNEL')+'</text>'+(mob?'':'<path class="ldr" d="M'+(lx-6)+' 92L'+(C[0]+84)+' '+(C[1]-76)+'"/>')+
+     (mob?'':'<text class="t" x="330" y="116">OVERACTIVE IN INJURED SENSORY NERVES</text>')+'<text class="a" x="'+(C[0]+(mob?44:36))+'" y="328">CA²⁺</text>'+
+     '<text class="a" x="784" y="'+fy+'" text-anchor="end">'+(mob?'FAST FIRING':'HYPEREXCITABLE FIRING')+'</text></g>';
+  g+='<g id="lb2"><text class="a" x="'+tx+'" y="'+(mob?60:96)+'"'+ex+'>'+(mob?'sEH ENZYME':'SOLUBLE EPOXIDE HYDROLASE (sEH)')+'</text>'+
      (mob?'':'<path class="ldr" d="M520 104L'+(AF.enz[0][0]+10)+' '+(AF.enz[0][1]-90)+'"/>')+
-     '<text class="a" x="'+(mob?300:316)+'" y="'+(mob?352:346)+'">EpFA</text>'+(mob?'':'<text class="t" x="316" y="364">ANTI-INFLAMMATORY</text>')+
-     '<text class="a fdl" x="784" y="'+(mob?300:398)+'" text-anchor="end">DIOL</text>'+(mob?'':'<text class="t" x="784" y="416" text-anchor="end">INFLAMMATORY</text>')+'</g>';
-  g+='<g id="lb3"><text class="a gd" x="'+(mob?16:322)+'" y="'+(mob?60:96)+'">'+(mob?'AFA-281, BOTH TARGETS':'AFA-281 · ONE MOLECULE, BOTH TARGETS')+'</text>'+
-     (mob?'':'<text class="t" x="322" y="116">CHANNEL INHIBITED · sEH INHIBITED</text>')+
-     '<text class="a" x="'+(mob?300:316)+'" y="'+(mob?352:346)+'">'+(mob?'EpFA KEPT':'EpFAs PRESERVED')+'</text>'+
-     '<text class="a" x="784" y="'+(AF.trY+34)+'" text-anchor="end">CALMER FIRING</text></g>';
+     '<text class="a" x="'+(mob?272:296)+'" y="'+(mob?400:346)+'">EpFA</text>'+(mob?'':'<text class="t" x="296" y="364">ANTI-INFLAMMATORY</text>')+
+     '<text class="a fdl" x="784" y="'+(mob?267:250)+'" text-anchor="end">DIOL</text>'+(mob?'':'<text class="t" x="784" y="270" text-anchor="end">INFLAMMATORY</text>')+'</g>';
+  g+='<g id="lb3"><text class="a gd" x="'+tx+'" y="'+(mob?60:96)+'"'+ex+'>'+(mob?'AFA-281, BOTH TARGETS':'AFA-281 · ONE MOLECULE, BOTH TARGETS')+'</text>'+
+     (mob?'':'<text class="t" x="330" y="116">CHANNEL INHIBITED · sEH INHIBITED</text>')+
+     '<text class="a" x="'+(mob?236:296)+'" y="'+(mob?404:346)+'">'+(mob?'EpFA KEPT':'EpFAs PRESERVED')+'</text>'+
+     '<text class="a" x="784" y="'+fy+'" text-anchor="end">CALMER FIRING</text></g>';
   return g+'</svg>';
 }
 function storyDraw(svg){

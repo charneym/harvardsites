@@ -91,8 +91,9 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk{width:100px;height:68px;overflow:visible}/* DR: MTI's real dot mark, solid, at brand colour */
+#pre .mk circle{fill:var(--accL)}
+#pre .mk path{fill:none;stroke:var(--accL);stroke-width:2.2;stroke-linecap:round}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -725,8 +726,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .nws .src svg{width:16px;height:10px;transition:transform .3s var(--eo)}
 .nws a:hover .src svg{transform:translateX(5px)}
 @media (max-width:860px){.nws a{grid-template-columns:1fr;row-gap:8px}.nws .src{justify-self:start}}
-#pre .mk path.r{fill:none;stroke:var(--acc);stroke-width:3;stroke-linecap:butt}
-#pre .mk circle.d{fill:var(--accL)}
+
 .scene svg.mob text{font-size:21px;letter-spacing:.02em}
 .scene svg.mob text.t{font-size:16px;letter-spacing:.05em}
 
@@ -836,7 +836,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 48 48"><path class="r" d="M6 30H42"/><circle class="d" cx="42" cy="30" r="2.6"/></svg>
+    <svg class="mk" viewBox="0 0 38 26"><circle cx="9" cy="6" r="1.7"/><circle cx="14" cy="4.5" r="1.7"/><circle cx="19" cy="4" r="1.7"/><circle cx="24" cy="4.5" r="1.7"/><circle cx="6" cy="10.5" r="1.7"/><circle cx="11.5" cy="9.5" r="1.7"/><circle cx="17" cy="9" r="1.7"/><circle cx="22.5" cy="9" r="1.7"/><circle cx="28" cy="9.5" r="1.7"/><circle cx="8.5" cy="14.5" r="1.7"/><circle cx="14" cy="14" r="1.7"/><circle cx="19.5" cy="13.8" r="1.7"/><circle cx="25" cy="14" r="1.7"/><circle cx="30.5" cy="13" r="1.7"/><path d="M2 15c3 7 13 9.5 22 8.5 6-.7 10.5-3.8 12-9"/></svg>
     <div class="wm"><span>MTI BIOTECH</span></div>
   </div>
   <span class="lab pl">Research-driven · Ames, Iowa</span>
@@ -2023,7 +2023,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk path"),L=50;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});gsap.set("#pre .mk circle",{opacity:0,scale:.4,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2032,7 +2032,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0).to("#pre .mk circle",{opacity:1,scale:1,duration:.45,ease:"back.out(2)",stagger:.035},.05)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

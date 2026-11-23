@@ -25,9 +25,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Vision</span>'+
    '<h2 class="txt" id="mani">We are changing the way the world thinks about biomaterials. Nearly 30% of surgical procedures still end in bleeding-related complications; <em>our hydrogels hold to wet, dynamic tissue where sealants and sutures can’t.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2,000<small>J/m²</small></span><span class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">20×</span><span class="k">Stretch, so the gel moves with the tissue it is bonded to</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">&lt;30<small>s</small></span><span class="k">To adhesion, and to stop a haemorrhage</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
    '</div>'+
    '<div class="plat">'+
     '<div class="p1"><span class="pic">'+ICO.seal+'</span><span class="lab kick" data-r>Seal leaks</span><p data-r>HemoMax, our sealant, is built to prevent bleeding complications with unprecedented toughness and wet adhesion.</p></div>'+

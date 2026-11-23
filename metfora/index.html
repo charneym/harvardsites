@@ -670,7 +670,7 @@ em{line-height:0}
 #pre .wm{font-family:var(--sans);font-weight:500;font-size:clamp(30px,3.2vw,46px);letter-spacing:-.02em;margin-right:0;white-space:nowrap;color:var(--bone)}
 #pre .wm b{font-weight:500;color:#f7931e}
 #pre .mk{width:62px!important;height:68px!important}
-#pre .mk path{fill:none!important;stroke:#f5f6f8!important;stroke-width:1.6!important}
+#pre .mk path{fill:none!important;stroke:#f5f6f8!important;stroke-width:2.2!important}
 /* three platforms under the stats */
 .plat{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:clamp(64px,7vw,110px);padding-top:28px;border-top:1px solid var(--hair)}
 .plat .kick{display:block;margin-bottom:14px;color:var(--accL)}
@@ -1753,7 +1753,11 @@ var GX0=486,GX1=736,GY=300,GH=196;
 var PK=(function(){var s=5,R=function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff},a=[],i;
   for(i=0;i<30;i++)a.push({x:GX0+12+R()*(GX1-GX0-24),h:.12+Math.pow(R(),1.8)*.88,w:1.6+R()*2.2});return a.sort(function(p,q){return p.x-q.x})})();
 var SEL=[2,6,9,13,17,21,24,27];
-function trace(){var d="",x;for(x=GX0;x<=GX1;x+=1.5){var y=.02+.012*Math.sin(x*.07);PK.forEach(function(p){var u=(x-p.x)/p.w;y+=p.h*Math.exp(-u*u*.5)});d+=(x===GX0?"M":"L")+x.toFixed(1)+" "+(GY-Math.min(y,1.05)*GH).toFixed(1)}return d}
+/* trace height at x, scaled so the tallest peak tops out just under the axis (DR: no flat, clipped peak tops) */
+function trRaw(x){var y=.02+.012*Math.sin(x*.07);PK.forEach(function(p){var u=(x-p.x)/p.w;y+=p.h*Math.exp(-u*u*.5)});return y}
+var TRK=(function(){var m=0,x;for(x=GX0;x<=GX1;x+=.5)m=Math.max(m,trRaw(x));return .97/m})();
+function trY(x){return trRaw(x)*TRK}
+function trace(){var d="",x;for(x=GX0;x<=GX1;x+=1.5){d+=(x===GX0?"M":"L")+x.toFixed(1)+" "+(GY-trY(x)*GH).toFixed(1)}return d}
 function pathAt(t){/* metabolite route: tube mouth -> column inlet -> coil -> rods -> detector -> trace */
   var P=[[TX+14,TY0+6],[TX+70,44],[CX-90,CY-52],[CX,CY-34],[CX+64,CY-18],[CX-64,CY],[CX+64,CY+18],[CX-30,CY+40],[CX-70,256],[CX+90,256],[GX0-8,256]];
   var n=P.length-1,f=Math.min(n-1e-6,Math.max(0,t*n)),i=Math.floor(f),u=f-i;return [P[i][0]+(P[i+1][0]-P[i][0])*u,P[i][1]+(P[i+1][1]-P[i][1])*u]}
@@ -1790,7 +1794,7 @@ function tubeScene(o){
   /* metabolites (dots) in the plasma and on their way */
   g+='<g id="scMet">';MET.forEach(function(m,k){g+='<circle class="smt" data-k="'+k+'" r="'+m.r.toFixed(1)+'" cx="'+m.x.toFixed(1)+'" cy="'+m.y.toFixed(1)+'"/>'});g+='</g>';
   /* selected peaks and the fingerprint they condense into */
-  g+='<g id="scSel">';SEL.forEach(function(k,j){var p=PK[k],y=GY-Math.min(p.h+.03,1.05)*GH;g+='<g class="ssp" data-j="'+j+'"><circle class="spm" cx="'+p.x.toFixed(1)+'" cy="'+(y-7).toFixed(1)+'" r="3.4"/><path class="spl" d="M'+p.x.toFixed(1)+' '+(y-2).toFixed(1)+'V'+GY+'"/></g>'});g+='</g>';
+  g+='<g id="scSel">';SEL.forEach(function(k,j){var p=PK[k],y=GY-(trY(p.x)+.03)*GH;g+='<g class="ssp" data-j="'+j+'"><circle class="spm" cx="'+p.x.toFixed(1)+'" cy="'+(y-7).toFixed(1)+'" r="3.4"/><path class="spl" d="M'+p.x.toFixed(1)+' '+(y-2).toFixed(1)+'V'+GY+'"/></g>'});g+='</g>';
   var FX0=GX0,FY=372,FW=(GX1-GX0)/SEL.length;
   g+='<g id="scFp">';SEL.forEach(function(k,j){var p=PK[k],bh=8+p.h*44,x=FX0+j*FW+FW*.22;g+='<rect class="sfb" data-j="'+j+'" x="'+x.toFixed(1)+'" y="'+(FY+52-bh).toFixed(1)+'" width="'+(FW*.56).toFixed(1)+'" height="'+bh.toFixed(1)+'"/>'});
   g+='</g>';
@@ -2062,7 +2066,7 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:{amount:.2}},.1)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

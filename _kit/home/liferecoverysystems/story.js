@@ -51,7 +51,7 @@ function storyScene(o){
   g+='<text class="rv" id="rv" x="'+rx+'" y="'+(mob?130:122)+'">37.0°C</text>';
   g+='<text class="t" x="'+(mob?16:30)+'" y="'+(mob?66:64)+'">37°</text><text class="t" x="'+(mob?16:30)+'" y="'+(mob?166:164)+'">33°</text>';
   if(!mob){
-    g+='<text class="t" x="70" y="200">0</text><text class="t" x="318" y="200">40 MIN</text>';
+    g+='<text class="t" x="70" y="200">0 MIN</text><text class="t" x="318" y="200">40 MIN</text>';
     g+='<g id="lSu"><path class="ld" d="M236 238L248 254"/><text class="t" x="168" y="228">THERMOSUIT</text></g>';
     g+='<g id="lWa"><path class="ld" d="M236 238L248 254"/><text class="t a2" x="150" y="228">WATER ON SKIN</text></g>';
     g+='<g id="lPu"><text class="t" x="630" y="224">TSP50 PUMP</text></g>';

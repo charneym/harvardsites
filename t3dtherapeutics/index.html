@@ -749,6 +749,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:760px){.ps-sheet{grid-template-rows:auto minmax(0,1fr)}.ps-col{min-height:0;height:100%;overflow:visible}.ps-body{min-height:0}}
 .thanks svg *{fill:none;stroke:var(--accD);stroke-width:1}
 
+
+/* DR: loader shows the real mark, solid at brand weight */
+#pre .mk.tl{width:auto;height:auto;display:block;font:700 76px/1 'Sora',system-ui,sans-serif;letter-spacing:.01em;color:#4aa0ec}#pre .mk.tl i{font-style:normal;color:var(--grnL)}
 </style>
 </head>
 </head>
@@ -761,8 +764,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M8 22H40M24 22V74M50 22H80L64 44C76 44 84 50 84 60C84 70 76 76 66 76H50"/></svg>
-    <div class="wm"><span>T3D THERAPEUTICS</span></div>
+    <span class="mk tl">T<i>3</i>D</span>
+    <div class="wm"><span>THERAPEUTICS</span></div>
   </div>
   <span class="lab pl">Alzheimer’s disease · Research Triangle Park, NC</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1945,7 +1948,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,scale:.92,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1954,8 +1957,8 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.7,ease:"power2.out"},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:.02},.12)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

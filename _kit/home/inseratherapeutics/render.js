@@ -27,17 +27,17 @@ mat3 rotX(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);
 vec3 tube(vec3 p){p=rotZ(-.16)*p;vec2 c=vec2(p.x,p.z+RR);float ph=atan(c.x,c.y);return vec3(ph*RR,length(c)-RR,p.y);}
 float shell(vec3 p){vec3 t=tube(p);return abs(length(t.yz)-RO)-WT;}
 float clotD(vec3 t){
-  vec3 b=vec3(t.x-.62,t.y,t.z);float d=sdEll(b,vec3(.95,.50,.50));
+  vec3 b=vec3(t.x-.28,t.y,t.z);float d=sdEll(b,vec3(.48,.30,.31));
   /* tail, tapering back into the catheter mouth */
-  float u=clamp((t.x-(ST-.18))/(.62-(ST-.18)),0.,1.);float rr=mix(.10,.36,u*u);
-  float tl=max(length(t.yz-vec2(-.01,.0))-rr,max((ST-.18)-t.x,t.x-.62));
+  float u=clamp((t.x-(ST-.12))/(.28-(ST-.12)),0.,1.);float rr=mix(.09,.22,u*u);
+  float tl=max(length(t.yz-vec2(-.01,.0))-rr,max((ST-.12)-t.x,t.x-.28));
   d=smin(d,tl,.16);
-  d+=(fbm(vec3(t.x*2.2,t.y*3.6,t.z*3.6))-.5)*.13+(vn(vec3(t.x*8.,t.y*9.,t.z*9.))-.5)*.014;
+  d+=(fbm(vec3(t.x*2.6,t.y*4.,t.z*4.))-.5)*.07;
   return d;}
 vec2 inner(vec3 p){vec3 t=tube(p);float r=length(t.yz);
   float cat=max(abs(r-.205)-.034,t.x-ST);
   float lip=max(length(vec2(r-.205,t.x-ST+.0))-.036,-1.);cat=min(cat,lip);
-  float mk=max(r-.243,abs(t.x-(ST-.13))-.055);mk=max(mk,-(r-.17));
+  float mk=max(r-.245,abs(t.x-(ST-.15))-.075);mk=max(mk,-(r-.17));
   float cl=clotD(t)*.8;
   vec2 o=vec2(cat,1.);if(mk<o.x)o=vec2(mk,2.);if(cl<o.x)o=vec2(cl,3.);return o;}
 vec3 nI(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(inner(p+e.xyy).x-inner(p-e.xyy).x,inner(p+e.yxy).x-inner(p-e.yxy).x,inner(p+e.yyx).x-inner(p-e.yyx).x));}
@@ -58,9 +58,9 @@ vec4 trace(vec3 ro,vec3 rd){
       float nl=max(dot(n,L1),0.),wl=max(dot(n,L1)*.5+.5,0.);
       if(di.y<1.5){vec3 alb=vec3(.80,.84,.90);c=alb*(.10+.85*nl)*vec3(1.,.98,.95)+alb*vec3(.35,.5,.75)*max(dot(n,L2),0.)*.35;
         c+=vec3(1.)*ggx(n,v,L1,.22)*.25;float F=.04+.96*pow(1.-max(dot(n,v),0.),5.);c=mix(c,env(reflect(rd,n)),F*.5);}
-      else if(di.y<2.5){vec3 alb=vec3(.85,.55,.30);c=alb*(.12+.8*nl)*.6+alb*env(reflect(rd,n))*.9+vec3(1.,.85,.6)*ggx(n,v,L1,.18)*.6;}
-      else{vec3 alb=vec3(.13,.009,.017);float sss=pow(wl,1.7);c=alb*(.05+.9*sss)+vec3(.35,.02,.03)*max(dot(n,L2),0.)*.25;
-        float F=.03+.97*pow(1.-max(dot(n,v),0.),5.);c+=vec3(1.,.93,.9)*(ggx(n,v,L1,.13)*.42+ggx(n,v,normalize(vec3(-.2,.9,.5)),.09)*.22);c+=env(reflect(rd,n))*F*.6;}
+      else if(di.y<2.5){vec3 alb=vec3(.95,.58,.28);c=alb*(.18+.9*nl)*.8+alb*env(reflect(rd,n))*1.2+vec3(1.,.82,.55)*(ggx(n,v,L1,.16)*1.1+ggx(n,v,normalize(vec3(-.2,.9,.5)),.12)*.6);}
+      else{vec3 alb=vec3(.105,.042,.052);float sss=pow(wl,1.4);c=alb*(.08+.7*sss)+vec3(.10,.12,.18)*max(dot(n,L2),0.)*.20;
+        float F=.03+.97*pow(1.-max(dot(n,v),0.),5.);c+=vec3(.9,.85,.85)*ggx(n,v,L1,.55)*.05;c+=env(reflect(rd,n))*F*.18;}
       c*=.25+.75*fd;acc+=(1.-A)*c*fd;A+=(1.-A)*fd;break;}
     if(ds<.0008){
       vec3 n=nS(p),v=-rd;float fd=fadeS(p);float cs=abs(dot(n,v));float F=.035+.965*pow(1.-cs,5.);

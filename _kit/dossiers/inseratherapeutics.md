@@ -28,7 +28,7 @@ Early-2010s boxed Yahoo-hosted template: cream background, a narrow centred box 
 Sampled from the site screenshot: wordmark indigo #33339a (bold Arial-style sans), tagline rust-orange italic serif, copper rule #cf7720, steel-blue nav and footer band #5492ab, cream ground #e9e8d4. Mapping: indigo → ink #0b0d24 (deep indigo); steel blue → accent #5492ab / light #8fbfd3; copper → marker band and loader tagline #e08f3c / #e8a25a; cream → text #f2f0e4. Type: Arimo 700 for the wordmark (Arial metrics, like their logo), Source Serif 4 italic for the tagline, Archivo for display. Their logo is text only, so header and loader set the wordmark and tagline in those faces (one line).
 
 ## Hero
-Option (c), a crafted render of the mechanism: one translucent artery segment with an aspiration catheter (warm metal marker band at the tip) meeting a dark thrombus. Raymarched offline by _kit/home/inseratherapeutics/render.js (1500×1000, SS3, cropped to 1500×590, edge alpha ramps), real alpha. Unique to this site; no stock photo.
+Option (c), a crafted render of the mechanism: one translucent artery segment with an aspiration catheter (copper marker band at the tip, the focal highlight) meeting a small, matte, muted-maroon thrombus (revised after coordinator review, rule DT: clinical, never visceral). Raymarched offline by _kit/home/inseratherapeutics/render.js (1500×1000, SS3, cropped to 1500×590, edge alpha ramps), real alpha. Unique to this site; no stock photo.
 
 ## Story
 One artery in long section: 1 the catheter is advanced to the clot; 2 a uniform vacuum engages it (trace drops and holds); 3 cyclical vacuum (varied pressure and intervals) draws it in whole; 4 flow restored (blood cells stream). Vacuum trace under the vessel.

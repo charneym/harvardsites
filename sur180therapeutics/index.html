@@ -1770,11 +1770,11 @@ function scene(){
   g+='<g id="pex">';RC.forEach(function(){g+='<path class="pex" d="M-6 0L-3 -5.2H3L6 0L3 5.2H-3Z"/>'});g+='</g>';
   /* labels, one set per step */
   g+='<g id="l1"><path class="ldr" d="M400 54V104"/><text class="a" x="400" y="40" text-anchor="middle">'+(mob?'CRH · STRESS AXIS':'CRH FROM THE STRESS (HPA) AXIS')+'</text>'+
-    '<path class="ldr" d="M654 348L700 316H770"/><text class="a" x="770" y="302" text-anchor="end">'+(mob?'CRHR1':'CRHR1 ON LESIONS')+'</text></g>';
-  g+='<g id="l2"><path class="ldr" d="M566 400L620 486H770"/><text x="770" y="474" text-anchor="end">'+(mob?'PEXACERFONT':'ORAL PEXACERFONT')+'</text>'+
-    '<path class="ldr" d="M654 348L700 316H770"/><text class="a" x="770" y="302" text-anchor="end">'+(mob?'BLOCKED':'RECEPTOR BLOCKED')+'</text></g>';
-  g+='<g id="l3"><path class="ldr" d="M634 252L680 210H770"/><text class="a" x="770" y="196" text-anchor="end">'+(mob?'HORMONES INTACT':'HORMONES · FERTILITY INTACT')+'</text>'+
-    '<path class="ldr" d="M296 324L240 296H34"/><text x="34" y="282">'+(mob?'ADHESIONS ½':'ADHESION SCORES HALVED')+'</text></g>';
+    '<path class="ldr" d="M568 348L622 '+(mob?352:330)+'H770"/><text class="a" x="770" y="'+(mob?340:318)+'" text-anchor="end">'+(mob?'CRHR1':'CRHR1 ON LESIONS')+'</text></g>';
+  g+='<g id="l2">'+(mob?'':'<path class="ldr" d="M640 414L654 406H790"/><text x="790" y="396" text-anchor="end">ORAL PEXACERFONT</text>')+
+    '<path class="ldr" d="M568 348L622 '+(mob?352:330)+'H770"/><text class="a" x="770" y="'+(mob?340:318)+'" text-anchor="end">'+(mob?'BLOCKED':'RECEPTOR BLOCKED')+'</text></g>';
+  g+='<g id="l3"><path class="ldr" d="M630 240L680 162H770"/><text class="a" x="770" y="150" text-anchor="end">'+(mob?'HORMONES INTACT':'HORMONES · FERTILITY INTACT')+'</text>'+
+    '<text x="34" y="430">'+(mob?'ADHESIONS ½':'ADHESION SCORES HALVED')+'</text></g>';
   g+='</svg>';
   return g;
 }
@@ -2032,6 +2032,7 @@ function preload(){
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
   var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var arw=[].slice.call(document.querySelectorAll("#pre .wm .n18 svg path"));arw.forEach(function(q){var l=q.getTotalLength()+1;gsap.set(q,{strokeDasharray:l,strokeDashoffset:l})});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2041,15 +2042,16 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:.015},.15)
+      .to(arw[0],{strokeDashoffset:0,duration:.32,ease:"power2.out"},.84).to(arw[1],{strokeDashoffset:0,duration:.14,ease:"power2.out"},1.14)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
-    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=1.35)||el>=1.5)exit();else requestAnimationFrame(check)})();
     function exit(){
       var mob=MOBILE();
       var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
         .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)
-        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .to(["#pre .mk","#pre .wm svg","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
         .add(function(){field.intro(2);field.start()},mob?1.0:.95).fromTo("#field",{filter:"opacity(0)"},{filter:"opacity(1)",duration:1.8,ease:"power2.out",clearProps:"filter"},mob?1.0:.95)
         .add(function(){if(window._heroIn)window._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)

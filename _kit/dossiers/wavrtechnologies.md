@@ -27,3 +27,6 @@ Option (b): real photograph, "water drop in black background" by A. C. on Unspla
 
 ## Story
 One continuous fine-line system: humid air lanes into a finned high-surface-area exchanger under a desiccant header; the desiccant drains to a thermal still and returns in a loop; freshwater leaves the still into a drop. Step 1 vapour rides in and the fins light; step 2 the desiccant flows to the still, which glows and gives off vapour; step 3 freshwater drips into the drop, which fills, and the return line flows.
+
+## Gates (2026-11-23)
+textclash OK; smoke OK (7 routes); reveal/anim/clip 1440+390 OK; overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo OK; buildout-test OK (8 nav clicks); fit-audit OK (5 widths); loader-contrast OK (no flags). hero-audit reports "title never uncovered" on #/, as it does on shipped nzymebio in this environment (the fixed .fieldbg layer counts as a cover); hero entrance checked by eye at 1920×930, 1440×900 and 390. Hero ×6 luminance check: no box edge; subject ~180px clear of the H1 at 1440.

@@ -88,6 +88,9 @@ h1,h2,h3{text-wrap:balance}
 #pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
+/* DR: the loader shows the real mark (two blue strands, solid at brand weight) and the logo's own one-line wordmark */
+#pre .mk{width:48px;height:66px}#pre .mk path{fill:none;stroke-linecap:round}#pre .mk .im-a{stroke:var(--acc);stroke-width:2.6}#pre .mk .im-b{stroke:#7fd0f4;stroke-width:2.6}#pre .mk .im-r{stroke:var(--acc);stroke-width:1.6}
+#pre .wm{font-family:var(--disp);font-weight:300;font-size:clamp(26px,2.6vw,38px);letter-spacing:.005em;margin-right:0;white-space:nowrap}#pre .wm b{font-weight:300;color:var(--accL)}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
@@ -738,8 +741,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M34 6C34 30 62 32 62 48S34 66 34 90M62 6C62 30 34 32 34 48S62 66 62 90M38 16H58M38 80H58"/></svg>
-    <div class="wm"><span>iNFIXION</span></div>
+    <svg class="mk" viewBox="0 0 22 30"><path class="im-a" d="M5 1C5 8 17 9 17 15S5 22 5 29"/><path class="im-b" d="M17 1C17 8 5 9 5 15S17 22 17 29"/><path class="im-r" d="M7 5H15M8 25H14"/></svg>
+    <div class="wm"><span>iNFixion <b>Bioscience</b></span></div>
   </div>
   <span class="lab pl">NF1 drug discovery · San Diego, California</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1683,18 +1686,19 @@ function scene(){
   s+=arr(X[0],226,262,"ixA3")+arr(X[1],226,262);
   /* row 3: protein */
   function cap(cx,cy,cls,id,lab){return '<g id="'+id+'"><rect class="'+cls+'" x="'+(cx-80)+'" y="'+(cy-24)+'" width="160" height="48"/>'+(lab?'<text class="iw" x="'+cx+'" y="'+(cy+5)+'" text-anchor="middle" style="font-size:'+(mob?15.5:fs)+'px">'+lab+'</text>':'')+'</g>'}
-  s+=cap(X[0]+14,306,"ipg","ixGhost","")+cap(X[0]+14,306,"ipn2","ixP2","")+cap(X[0],292,"ipn","ixP0","NEUROFIBROMIN")+cap(X[1],292,"ipm","ixP1","NON-FUNCTIONAL");
-  s+='<g id="ixLow"><text class="ia" x="'+(X[0]+14)+'" y="352" text-anchor="middle" style="font-size:'+fs+'px">THE MISSING HALF</text></g>';
+  s+='<defs><clipPath id="ixHole"><path clip-rule="evenodd" d="M0 0H600V600H0ZM'+(X[0]-80)+' 268h160v48h-160Z"/></clipPath></defs>';
+  s+='<g clip-path="url(#ixHole)">'+cap(X[0]+14,306,"ipg","ixGhost","")+cap(X[0]+14,306,"ipn2","ixP2","")+'</g>'+cap(X[0],292,"ipn","ixP0","NEUROFIBROMIN")+cap(X[1],292,"ipm","ixP1","NON-FUNCTIONAL");
+  s+='<g id="ixLow"><text class="ia" x="'+(X[0]+14)+'" y="'+(mob?366:352)+'" text-anchor="middle" style="font-size:'+fs+'px">THE MISSING HALF</text></g>';
   /* row 4: the gauge */
   var gc=[300,476],gr=mob?96:104,tk='';
   for(var k=0;k<=20;k++){var a=Math.PI+k/20*Math.PI,r1=gr-(k%5?8:15);tk+='M'+(gc[0]+Math.cos(a)*r1).toFixed(1)+' '+(gc[1]+Math.sin(a)*r1).toFixed(1)+'L'+(gc[0]+Math.cos(a)*gr).toFixed(1)+' '+(gc[1]+Math.sin(a)*gr).toFixed(1)}
   s+='<g id="ixGa"><path class="igA" d="M'+(gc[0]-gr)+' '+gc[1]+'A'+gr+' '+gr+' 0 0 1 '+(gc[0]+gr)+' '+gc[1]+'"/><path class="igT" d="'+tk+'"/>'+
     '<path id="ixArc" class="igF" d="M'+(gc[0]-gr+4)+' '+gc[1]+'A'+(gr-4)+' '+(gr-4)+' 0 0 1 '+(gc[0]+gr-4)+' '+gc[1]+'"/>'+
-    '<text class="it" x="'+(gc[0]-gr-6)+'" y="'+(gc[1]+4)+'" text-anchor="end" style="font-size:'+fs+'px">NONE</text><text class="it" x="'+(gc[0]+gr+6)+'" y="'+(gc[1]+4)+'" style="font-size:'+fs+'px">100%</text>'+
+    '<text class="it" x="'+(gc[0]-gr-(mob?16:6))+'" y="'+(gc[1]+4)+'" text-anchor="end" style="font-size:'+fs+'px">NONE</text><text class="it" x="'+(gc[0]+gr+(mob?16:6))+'" y="'+(gc[1]+4)+'" style="font-size:'+fs+'px">100%</text>'+
     '<g id="ixNd"><path class="ind" d="M0 0L'+(gr-22)+' 0"/><circle class="inc" cx="0" cy="0" r="6"/></g></g>';
   caps.forEach(function(t,i){var parts=t.split(" · ");var body=(mob&&parts.length>1)?'<tspan x="300" dy="0">'+parts[0]+'</tspan><tspan x="300" dy="1.35em">'+parts[1]+'</tspan>':t;
     s+='<text class="cap" id="ixC'+i+'" x="300" y="'+(mob&&parts.length>1?548:(mob?562:562))+'" text-anchor="middle" style="font-size:'+cs+'px">'+body+'</text>'});
-  s+='<text class="it" id="ixL0" x="300" y="'+(gc[1]+30)+'" text-anchor="middle" style="font-size:'+fs+'px">NEUROFIBROMIN · 50%</text><text class="ia" id="ixL1" x="300" y="'+(gc[1]+30)+'" text-anchor="middle" style="font-size:'+fs+'px">NEUROFIBROMIN · NORMAL</text>';
+  s+='<text class="it" id="ixL0" x="300" y="'+(gc[1]+(mob?40:30))+'" text-anchor="middle" style="font-size:'+fs+'px">NEUROFIBROMIN · 50%</text><text class="ia" id="ixL1" x="300" y="'+(gc[1]+(mob?40:30))+'" text-anchor="middle" style="font-size:'+fs+'px">NEUROFIBROMIN · NORMAL</text>';
   return s+'</svg>';
 }
 function storyDraw(svg){
@@ -1954,7 +1958,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=document.querySelectorAll("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();

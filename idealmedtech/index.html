@@ -781,6 +781,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .pfr li:hover .pn h3{color:var(--accL);transform:translateX(6px)}
 
 .hcap sup{font-size:.7em;line-height:0}
+.hcap{transition:filter .25s ease}html.hscroll .hcap{filter:opacity(0)}
 .cta .act .btn.solid{text-transform:none;letter-spacing:.02em}
 .tm .tn{min-width:0;font-family:var(--sans)}
 #pipeline .bk{margin-top:clamp(48px,5vw,76px)}
@@ -1694,10 +1695,10 @@ function gRates(P){
   return {ins:ins,dex:dex};
 }
 function scene(){
-  var mob=MOBILE(),f=function(n){return (+n).toFixed(1)},g='',i,P=gTrace(),R=gRates(P),L1=398,L2=494,LH=52;
+  var mob=MOBILE(),f=function(n){return (+n).toFixed(1)},g='',i,P=gTrace(),R=gRates(P),L1=mob?430:398,L2=mob?548:494,LH=52,LO=mob?22:14,VH=mob?600:560;
   function step(A,base){var d='M'+f(A[0][0])+' '+f(base-A[0][1]*LH);for(var k=1;k<A.length;k++){d+='H'+f(A[k][0])+'V'+f(base-A[k][1]*LH)}return d}
-  g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 800 560" aria-hidden="true">';
-  g+='<defs><clipPath id="gclip"><rect id="gcr" x="0" y="0" width="'+GX.x0+'" height="560"/></clipPath>'+
+  g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 800 '+VH+'" aria-hidden="true">';
+  g+='<defs><clipPath id="gclip"><rect id="gcr" x="0" y="0" width="'+GX.x0+'" height="'+VH+'"/></clipPath>'+
      '<linearGradient id="gband" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9ccb5e" stop-opacity=".05"/><stop offset=".5" stop-color="#9ccb5e" stop-opacity=".16"/><stop offset="1" stop-color="#9ccb5e" stop-opacity=".05"/></linearGradient></defs>';
   /* base: axis, grid at 40-240 mg/dL, the 70 and 180 lines, the lanes' baselines */
   g+='<g id="scBase">';
@@ -1707,7 +1708,7 @@ function scene(){
   g+='<path class="ax sD" d="M'+GX.x0+' '+GX.top+'V'+GX.y0+'"/>';
   for(i=0;i<=24;i+=3){var x=GX.x0+(GX.x1-GX.x0)*i/24;g+='<path class="ax sD" d="M'+f(x)+' '+GX.y0+'v6"/>'}
   g+='<text class="t" x="'+GX.x0+'" y="'+(GX.top-18)+'">'+(mob?'MG/DL':'GLUCOSE · MG/DL')+'</text>';
-  g+='<text class="t" x="'+GX.x1+'" y="'+(GX.y0+26)+'" text-anchor="end">'+(mob?'24 H':'24 HOURS')+'</text>';
+  g+='<text class="t" x="'+GX.x1+'" y="'+(GX.y0+(mob?44:26))+'" text-anchor="end">'+(mob?'24 H':'24 HOURS')+'</text>';
   g+='<path class="lb sD" d="M'+GX.x0+' '+L1+'H'+GX.x1+'"/><path class="lb sD" d="M'+GX.x0+' '+L2+'H'+GX.x1+'"/></g>';
   /* step 2: the prescribed range */
   g+='<g id="band"><rect x="'+GX.x0+'" y="'+f(gy(140))+'" width="'+(GX.x1-GX.x0)+'" height="'+f(gy(100)-gy(140))+'" fill="url(#gband)"/>'+
@@ -1719,12 +1720,12 @@ function scene(){
   g+='</g>';
   /* the latest reading and its label (step 1), the tangent (step 2) */
   g+='<g id="now"><circle class="nw" id="nwc" r="'+(mob?9:7)+'"/><g id="nwlab"><path class="ldr" id="nwl"/><text class="a" id="nwt">'+(mob?'EVERY 5 MIN':'CGM READING · EVERY 5 MIN')+'</text></g></g>';
-  g+='<g id="tan"><path class="tg" id="tgl"/><text class="a" id="tgt" text-anchor="middle">'+(mob?'TREND':'RATE OF CHANGE')+'</text></g>';
+  g+='<g id="tan"><path class="tg" id="tgl"/><text class="a" id="tgt" text-anchor="middle">'+(mob?'':'RATE OF CHANGE')+'</text></g>';
   /* step 3: the two infusion lanes */
   g+='<g id="lanes"><g clip-path="url(#gclip)"><path class="ri" d="'+step(R.ins,L1)+'"/><path class="rx" d="'+step(R.dex,L2)+'"/></g>'+
-     '<text class="li" x="'+GX.x0+'" y="'+(L1-LH-14)+'">'+(mob?'INSULIN':'INSULIN · IV RATE')+'</text>'+
-     '<text class="lx" x="'+GX.x0+'" y="'+(L2-LH-14)+'">'+(mob?'DEXTROSE':'DEXTROSE · IV RATE')+'</text>'+
-     '<text class="t" x="'+GX.x1+'" y="'+(L2+28)+'" text-anchor="end">'+(mob?'RESET EVERY 5–10 MIN':'BOTH RATES RESET EVERY 5–10 MINUTES')+'</text></g>';
+     '<text class="li" x="'+GX.x0+'" y="'+(L1-LH-LO)+'">'+(mob?'INSULIN':'INSULIN · IV RATE')+'</text>'+
+     '<text class="lx" x="'+GX.x0+'" y="'+(L2-LH-LO)+'">'+(mob?'DEXTROSE':'DEXTROSE · IV RATE')+'</text>'+
+     '<text class="t" x="'+GX.x1+'" y="'+(L2+(mob?44:28))+'" text-anchor="end">'+(mob?'RESET EVERY 5–10 MIN':'BOTH RATES RESET EVERY 5–10 MINUTES')+'</text></g>';
   g+='</svg>';
   return g;
 }
@@ -1744,6 +1745,11 @@ function storyDraw(svg){
     E.nwc.setAttribute("cx",x.toFixed(1));E.nwc.setAttribute("cy",y.toFixed(1));
     /* the reading's label sits above the trace, leaning left near the right edge */
     var lx=Math.min(x+24,560),ly=Math.max(30,y-(mob?70:58));
+    /* never let the label sit on a grid line: snap its baseline into the nearest clear band at or above it */
+    (function(){var G=[40,70,100,140,180,240].map(gy).sort(function(a,b){return a-b}),c=mob?22:10,cap=mob?22:11,B=[[cap+4,G[0]-c]],i,best=null;
+      for(i=0;i<G.length-1;i++)B.push([G[i]+c+cap,G[i+1]-c]);
+      B.forEach(function(r){if(r[1]<r[0])return;var v=Math.max(r[0],Math.min(r[1],ly)),d=Math.abs(v-ly)+(v>ly+2?1000:0);if(!best||d<best[1])best=[v,d]});
+      if(best)ly=best[0]})();
     E.nwl.setAttribute("d","M"+x.toFixed(1)+" "+(y-9).toFixed(1)+"L"+(lx-8).toFixed(1)+" "+(ly+8).toFixed(1));
     E.nwt.setAttribute("x",lx.toFixed(1));E.nwt.setAttribute("y",ly.toFixed(1));
     op(E.now,b);op(E.nwlab,1-seg(p,.3,.36));
@@ -2012,5 +2018,6 @@ function preload(){
 var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
 })();
 </script>
+<script>/* the hero caption fades as soon as the page scrolls, so it never crosses the parallaxing render */(function(){var on=false;function u(){var v=scrollY>24;if(v!==on){on=v;document.documentElement.classList.toggle("hscroll",v)}}addEventListener("scroll",u,{passive:true});u()})();</script>
 </body>
 </html>

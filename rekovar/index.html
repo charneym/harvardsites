@@ -809,6 +809,9 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .pfr h3,.nws h3,.bk .cr,.cinfo p{font-weight:300}
 .stat .v{font-weight:300;white-space:nowrap}
 .hero .eyebrow{color:var(--accL)}
+
+/* DR: loader shows the real mark, solid at brand weight */
+#pre .mk{width:auto;height:72px}#pre .wm{display:none}
 </style>
 </head>
 </head>
@@ -821,7 +824,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 120 60"><path d="M2 32H34L42 20L50 44L60 6L70 52L78 32H118"/></svg>
+    <img class="mk" src="logo.webp" alt="" width="640" height="204">
     <div class="wm"><span>RE<b>KOVAR</b></span></div>
   </div>
   <span class="lab pl">Continuous care for newborns · Lake Forest, California</span>
@@ -1981,7 +1984,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,scale:.92,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1990,8 +1993,8 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.7,ease:"power2.out"},0)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:.02},.12)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

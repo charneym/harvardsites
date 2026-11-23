@@ -90,6 +90,10 @@ h1,h2,h3{text-wrap:balance}
 #pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
+/* DR: the loader shows the firm's real logo, the ReNeuroCell wordmark (bold-coloured R, N, C), not a stand-in grid mark */
+#pre .mk{display:none}
+#pre .wm{font:300 clamp(36px,4.2vw,58px)/1.15 'Open Sans',system-ui,sans-serif;letter-spacing:-.005em;margin-right:0;color:#c3ccd4;white-space:nowrap}
+#pre .wm i{font-style:normal;color:var(--accL)}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
 #pre .bar i{position:absolute;inset:0;background:var(--accL);transform-origin:left;transform:scaleX(0)}
 #pre .cnt{position:absolute;right:var(--side);bottom:var(--gut);font-family:var(--disp);font-weight:300;font-size:clamp(54px,6vw,84px);line-height:1;letter-spacing:-.04em;color:var(--bone);font-variant-numeric:tabular-nums lining-nums}
@@ -719,7 +723,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
     <svg class="mk" viewBox="0 0 96 96"><path d="M20 26H76V70H20ZM30 26V70M40 26V70M50 26V70M60 26V70M70 26V70M20 37H76M20 48H76M20 59H76"/></svg>
-    <div class="wm"><span>RENEUROCELL</span></div>
+    <div class="wm"><span><i>R</i>e<i>N</i>euro<i>C</i>ell</span></div>
   </div>
   <span class="lab pl">Neuroimplants · Heraklion, Crete</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1597,8 +1601,10 @@ function scene(){
     '<rect class="rso" x="'+SX+'" y="'+SY+'" width="'+SW+'" height="'+SH+'"/>'+
     '<g id="rnNr">'+nr+'</g><g id="rnCl">'+cells+'</g></g>';
   /* callouts beside the floating implant (steps 1-2) */
-  s+='<g id="rnK1"><path class="rk" d="M378 120H452"/><text class="ra" x="460" y="116" style="font-size:'+fs+'px">PORES</text><text class="rl" x="460" y="134" style="font-size:'+fs+'px">BIOACTIVE</text></g>';
-  s+='<g id="rnK2"><path class="rk" d="M378 196H452"/><text class="rg2" x="460" y="192" style="font-size:'+fs+'px">hiNSCs</text><text class="rl" x="460" y="212" style="font-size:'+fs+'px">OPTIMISED LINEAGE</text></g>';
+  /* DR: second callout line a full line below the first (no touching), and on phones closer in so OPTIMISED LINEAGE fits the plate */
+  var KX=mob?402:460,KL=mob?24:18;
+  s+='<g id="rnK1"><path class="rk" d="M378 120H'+(KX-8)+'"/><text class="ra" x="'+KX+'" y="116" style="font-size:'+fs+'px">PORES</text><text class="rl" x="'+KX+'" y="'+(116+KL)+'" style="font-size:'+fs+'px">BIOACTIVE</text></g>';
+  s+='<g id="rnK2"><path class="rk" d="M378 196H'+(KX-8)+'"/><text class="rg2" x="'+KX+'" y="192" style="font-size:'+fs+'px">hiNSCs</text><text class="rl" x="'+KX+'" y="'+(192+KL)+'" style="font-size:'+fs+'px">OPTIMISED LINEAGE</text></g>';
   s+='<path id="rnDrop" class="rk" d="M320 238V286" style="stroke-dasharray:4 5"/>';
   caps.forEach(function(t,i){s+='<text class="cap" id="rnC'+i+'" x="320" y="'+(mob?548:540)+'" text-anchor="middle" style="font-size:'+cs+'px">'+t+'</text>'});
   return s+'</svg>';
@@ -1620,7 +1626,8 @@ function storyDraw(svg){
     E.les.style.opacity=(1-s3*.85).toFixed(3);
     var n=E.cells.length;
     E.cells.forEach(function(c,i){var o=Math.max(0,Math.min(1,s2*n*1.25-i*1.0));c.style.opacity=o.toFixed(3);c.classList.toggle("nu",s4>.35&&i%2===0)});
-    E.nts.forEach(function(t,i){var L=NL[i],q=Math.max(0,Math.min(1,s4*1.4-i*.04));t.style.strokeDasharray=L.toFixed(1)+" "+L.toFixed(1);t.style.strokeDashoffset=(L*(1-q)).toFixed(1);t.style.opacity=q>0?"1":"0"});
+    var m=svg.getScreenCTM(),kk=m?Math.hypot(m.a,m.b):1;/* non-scaling strokes: dashes are in screen px */
+    E.nts.forEach(function(t,i){var L=NL[i]*kk+1,q=Math.max(0,Math.min(1,s4*1.4-i*.04));t.style.strokeDasharray=L.toFixed(1)+" "+L.toFixed(1);t.style.strokeDashoffset=(L*(1-q)).toFixed(1);t.style.opacity=q>0?"1":"0"});
     var W=[[0,0,.23,.25],[.25,.28,.48,.5],[.5,.53,.73,.75],[.75,.78,2,2]];
     E.cap.forEach(function(el,k){var a2=k===0?1:seg(p,W[k][0],W[k][1]),o=k===3?0:seg(p,W[k][2],W[k][3]);el.style.opacity=(b*a2*(1-o)).toFixed(3)});
   };

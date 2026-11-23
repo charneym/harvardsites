@@ -1,7 +1,7 @@
 /* ================= HERO FIELD: a crafted render of the subject xDot closes (HOME_BRIEF update 2c): a segment of the
    femoral artery, the large-bore access vessel, cut square at both ends so its layered wall and lumen read at once, with
    a single small implant seated on the closed access site on top. Rendered offline by render.py (sphere-traced SDF,
-   wet-tissue shading, soft shadows, AO, a sky-blue rim from the logo, real alpha) to hero.webp; here it breathes in a
+   calm pale blush tissue shading, soft shadows, AO, a sky-blue rim from the logo, real alpha) to hero.webp; here it breathes in a
    very slow drift. It moves on its own, so no pointer response (CZ). On phones it sits in the top band and fades into
    the ink above the text (CW). ================= */
 var field=(function(){

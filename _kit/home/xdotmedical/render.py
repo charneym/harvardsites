@@ -18,7 +18,7 @@ RM, RT, WALL = 7.0, 0.66, 0.17          # bend radius, tube radius (wall centre)
 PA, PB = math.radians(-23), math.radians(23)
 ACC = math.radians(-3)                   # access site angle along the arc
 ALPHA = math.radians(12)                 # implant position round the tube: from the outer bend toward the viewer
-IMP_R, IMP_H = 0.135, 0.032               # implant disc radius / half height
+IMP_R, IMP_H = 0.17, 0.038               # implant disc radius / half height
 
 
 def nrm0(a): a = np.array(a, float); return a / np.linalg.norm(a)
@@ -133,7 +133,7 @@ for kk in range(4):
     ves = np.maximum(ves, line ** 140 * (0.4 + 0.6 * np.sin(w * 0.05 + ph * 3) ** 2))
 Tq = np.cross(Nn, np.array([0.2, 1, 0.3])); Tq /= np.linalg.norm(Tq, axis=1, keepdims=True) + 1e-9
 Bq = np.cross(Nn, Tq)
-Nb = Nn + ((grain - 0.5) * 0.02 + ves * 0.025)[:, None] * Tq * (~isImp)[:, None] + (rng.standard_normal(len(P)) * 0.006)[:, None] * Bq
+Nb = Nn + ((grain - 0.5) * 0.02 + ves * 0.008)[:, None] * Tq * (~isImp)[:, None] + (rng.standard_normal(len(P)) * 0.006)[:, None] * Bq
 Nb /= np.linalg.norm(Nb, axis=1, keepdims=True)
 
 V_ = -dirs[hi]
@@ -160,15 +160,15 @@ for i in range(1, 7):
 ao = np.clip(ao, 0.1, 1) ** 1.25
 
 # albedo
-outer = np.array([0.60, 0.075, 0.095])
+outer = np.array([0.66, 0.53, 0.53])     # pale blush ivory, a calm clinical tissue tone (DT)
 mott = (np.sin(U * 0.045 + 1.3) * np.sin(Vv * 0.09 + 0.4 * np.sin(U * 0.03)) + 0.6 * np.sin(U * 0.11 + Vv * 0.07 + 2.0)) * 0.5
-alb = outer[None] * (1 - 0.05 * (grain - 0.5) - 0.18 * ves + 0.10 * mott)[:, None]
+alb = outer[None] * (1 - 0.03 * (grain - 0.5) - 0.05 * ves + 0.04 * mott)[:, None]
 # cut face: adventitia (outer, paler pink-tan) / media (rose red) / intima (pale, thin)
-cf = np.where(rel[:, None] > 0.45, np.array([0.80, 0.52, 0.48]),
-     np.where(rel[:, None] > -0.72, np.array([0.70, 0.27, 0.28]), np.array([0.90, 0.72, 0.70])))
+cf = np.where(rel[:, None] > 0.45, np.array([0.78, 0.68, 0.66]),
+     np.where(rel[:, None] > -0.72, np.array([0.70, 0.55, 0.55]), np.array([0.86, 0.80, 0.79])))
 alb = np.where(isCut[:, None], cf, alb)
-alb = np.where(isIn[:, None], np.array([0.36, 0.05, 0.06]), alb)
-alb = np.where(isImp[:, None], np.array([0.78, 0.86, 0.92]), alb)
+alb = np.where(isIn[:, None], np.array([0.40, 0.30, 0.31]), alb)
+alb = np.where(isImp[:, None], np.array([0.86, 0.95, 1.0]), alb)
 
 def wrap(n, L, w=0.45): return np.clip((n @ L + w) / (1 + w), 0, 1)
 dk = wrap(Nb, Lk) * sk
@@ -177,16 +177,17 @@ df = wrap(Nb, Lf, .6)
 sky = 0.5 + 0.5 * Nb[:, 1]
 amb = (np.array([0.08, 0.09, 0.12]) * sky[:, None] + np.array([0.04, 0.025, 0.03])) * ao[:, None]
 # tissue translucency: red light bleeding round the terminator
-sss = (np.clip(1 - np.abs(Nn @ Lk), 0, 1) ** 2 * 0.22 * sk)[:, None] * np.array([1.0, 0.25, 0.22]) * (~isImp)[:, None]
+sss = (np.clip(1 - np.abs(Nn @ Lk), 0, 1) ** 2 * 0.22 * sk)[:, None] * np.array([0.55, 0.36, 0.33]) * (~isImp)[:, None]
 col = alb * (dk[:, None] * Ck * (0.55 + 0.45 * ao[:, None]) + drr[:, None] * Cr * ao[:, None] * 0.6 + df[:, None] * Cf * ao[:, None] + wrap(Nb, Lq, .3)[:, None] * Cq * ao[:, None] + amb) + sss * ao[:, None]
 Hk = V_ + Lk; Hk /= np.linalg.norm(Hk, axis=1, keepdims=True)
 ndh = np.clip((Nb * Hk).sum(1), 0, 1)
-wet = np.where(isImp, ndh ** 80 * 1.0 + ndh ** 8 * 0.08, ndh ** 120 * 0.7 + ndh ** 24 * 0.10) * sk
+wet = np.where(isImp, ndh ** 80 * 1.0 + ndh ** 8 * 0.08, ndh ** 40 * 0.10 + ndh ** 10 * 0.04) * sk
 col += wet[:, None] * np.array([1.0, 0.98, 0.96])
 fres = (1 - np.clip((Nb * V_).sum(1), 0, 1)) ** 4
-trans = ((1 - np.clip((Nn * V_).sum(1), 0, 1)) ** 2.5 * 0.16 * (0.4 + 0.6 * sk))[:, None] * np.array([0.9, 0.12, 0.12]) * (~isImp & ~isCut)[:, None]
+trans = ((1 - np.clip((Nn * V_).sum(1), 0, 1)) ** 2.5 * 0.16 * (0.4 + 0.6 * sk))[:, None] * np.array([0.30, 0.22, 0.22]) * (~isImp & ~isCut)[:, None]
 col += trans
-col += (fres * 0.28 * ao)[:, None] * np.array([0.50, 0.78, 0.95])
+col += (fres * 0.34 * ao)[:, None] * np.array([0.50, 0.78, 0.95])
+col += (isImp * (0.16 + 0.3 * fres))[:, None] * np.array([0.55, 0.82, 0.98])
 col = np.clip(col, 0, None)
 col = col / (1 + col * 0.35) * 1.08
 col = np.clip(col, 0, 1) ** (1 / 2.2)

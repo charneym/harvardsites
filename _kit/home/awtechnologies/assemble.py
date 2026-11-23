@@ -1,0 +1,33 @@
+#!/usr/bin/env python3
+"""Assemble the AW Technologies home-only page from firelight.src.html regions (HOME_BRIEF)."""
+import re, pathlib, json, urllib.parse
+H = pathlib.Path(__file__).resolve().parent
+K = H.parent.parent
+src = (K / 'src/firelight.src.html').read_text()
+def part(n): return (H / n).read_text().rstrip('\n')
+REG = {
+ 'meta':'meta.html','fonts':'fonts.txt','root':'root.css','fieldbg':'fieldbg.css','logocss':'logocss.css',
+ 'scenecss':'scenecss.css','seen':'seen.html','pre':'pre.html','brand':'brand.html','navmenu':'navmenu.html',
+ 'xc':'xc.html','site':'site.js','content':'content.js','views':'views.js','field':'field.js','story':'story.js'}
+for name, f in REG.items():
+    pat = re.compile(r'(/\*<R:%s>\*/|<!--<R:%s>-->)(.*?)(/\*</R:%s>\*/|<!--</R:%s>-->)' % ((name,)*4), re.S)
+    new, n = pat.subn(lambda m: m.group(1) + part(f) + m.group(3), src)
+    assert n == 1, (name, n)
+    src = new
+logo = (H / 'logo.svg').read_text().strip().replace('<svg xmlns="http://www.w3.org/2000/svg" ', '<svg ')
+assert src.count('__LOGO__') == 2
+src = src.replace('__LOGO__', logo.replace('awg', 'awgp'), 1).replace('__LOGO__', logo.replace('awg', 'awgh'), 1)
+src = src.replace('var SHEETS=[];', 'var SHEETS=[];\nvar LOGO=' + json.dumps(logo) + ';', 1)
+fav = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 310"><path d="M0 16L238 84L0 192Z" fill="#1c6a73"/><path d="M0 191L422 0L199 301Z" fill="#8ea042"/></svg>'
+src = src.replace('__FAV__', urllib.parse.quote(fav))
+assert src.count('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->') == 1
+src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->', '<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->')
+assert src.count('</style>') == 1
+src = src.replace('</style>', part('extra.css') + '\n</style>')
+assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+nss = (K / 'lib/nssfix.js').read_text()
+assert src.count('</body>') == 1
+nss = re.search(r'<script>.*?</script>', nss, re.S).group(0)
+src = src.replace('</body>', nss + '\n</body>')
+(K / 'src/awtechnologies.src.html').write_text(src)
+print('wrote src/awtechnologies.src.html', len(src))

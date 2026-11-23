@@ -1197,7 +1197,7 @@ function storyInit(view){
   ScrollTrigger.create({trigger:sec,start:"top 75%",end:"top 10%",onUpdate:function(st){if(!svg.isConnected)return;pre=st.progress;scene(lp,pre)},onLeave:function(){if(!svg.isConnected)return;pre=1;scene(lp,1)},onLeaveBack:function(){if(!svg.isConnected)return;pre=0;scene(lp,0)}});
   if(sec.getBoundingClientRect().top<=innerHeight*.1){pre=1;scene(0,1)}
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lp=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.999)));if(p>.15)lastK[0]=1;stepX(p);scene(p,pre)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,onRefresh:function(st){/*story keeps its scrubbed state after ScrollTrigger.refresh (it redrew at step 1)*/tl.progress(st.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
   var sl=$(".story-l",sec);gsap.from($$(".kick, .d3, .rail",sl).concat(kidsOf[0]),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,scrollTrigger:{trigger:sec,start:"top 80%"}});
 }
 function contactInit(view){

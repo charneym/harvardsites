@@ -1802,7 +1802,7 @@ function homeScroll(view){
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p,pre.v)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,onRefresh:function(st){/*story keeps its scrubbed state after ScrollTrigger.refresh (it redrew at step 1)*/tl.progress(st.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
 }
 
 /* ================= HEADER ================= */

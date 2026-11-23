@@ -1560,7 +1560,7 @@ function homeScroll(view){
     if(r.bottom<-50||r.top>innerHeight+50)return;var p=Math.max(0,Math.min(1,-r.top/Math.max(1,r.height-innerHeight)));
     if(Math.abs(p-lastSP)<.0005)return;lastSP=p;story.set(p);prog.style.transform="scaleX("+p+")";setStep(Math.min(4,Math.round(p*4)));stepText(p)}
   gsap.ticker.add(storyTick);
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3.4)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*3.4)},pin:true,animation:tl,onRefresh:function(st){/*story keeps its scrubbed state after ScrollTrigger.refresh (it redrew at step 1)*/tl.progress(st.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true,
     onRefresh:function(){if(story)story.resize()}});
 }
 function contactInit(view){

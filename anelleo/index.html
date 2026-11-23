@@ -1284,7 +1284,7 @@ function storyInit(view){
     for(var k=0;k<2;k++){var el=SH[j][k];if(!el)continue;var e2=k?sm(0,1,en*1.15-.15):en,v=e2*(1-ex),y=(1-e2)*36-ex*30,key=v.toFixed(3)+y.toFixed(1);if(last[j*2+k]===key)continue;last[j*2+k]=key;
       el.style.opacity=v.toFixed(3);el.style.transform="translateY("+y.toFixed(1)+"px)";el.style.visibility=v<.003?"hidden":"visible"}}}
   tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.999)));fx(p);stepX(p);if(scene)scene.set(p)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*(N-.2))},pin:true,animation:tl,onRefresh:function(st){/*story keeps its scrubbed state after ScrollTrigger.refresh (it redrew at step 1)*/tl.progress(st.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
   /* the story heading + rail enter as the section arrives */
   var sl=$(".story-l",sec);gsap.from($$(".kick, .d3, .rail",sl).concat([].slice.call(steps[0].children)).concat(cv?[cv]:[]),{y:24,opacity:0,duration:1,ease:"silk",stagger:.08,scrollTrigger:{trigger:sec,start:"top 80%"}});
 }

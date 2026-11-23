@@ -25,9 +25,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">High-parameter flow cytometry reads many colours from every cell, and every colour needs a dye that its laser can excite. ChromaTwist’s molecules all answer the UV laser, and each gives its light back in a different part of the spectrum: <em>more colours, more choice.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">100+</span><span class="k">Fluorophores made on the platform, emitting from blue to red</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">18</span><span class="k">ChromaTwist dyes placed in the Merck (Sigma-Aldrich) catalogue under a 2021 supply agreement</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">£0.5M</span><span class="k">Innovate UK Smart project, 2024, to raise the brightness and staining indices of the UV dyes</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">100+</span><p class="k">Fluorophores made on the platform, emitting from blue to red</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">18</span><p class="k">ChromaTwist dyes placed in the Merck (Sigma-Aldrich) catalogue under a 2021 supply agreement</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">£0.5M</span><p class="k">Innovate UK Smart project, 2024, to raise the brightness and staining indices of the UV dyes</p></div>'+
    '</div>'+
   '</div></section>'+
 

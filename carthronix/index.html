@@ -1755,11 +1755,14 @@ function kneeScene(o){
   for(i=0;i<9;i++){var x=CX0+34+i*62;g+='<path class="tb sD" d="M'+x+' 30C'+(x+20)+' 66 '+(x-14)+' 104 '+(x+8)+' '+(fBone(x+8)-12).toFixed(0)+'"/>';
     g+='<path class="tb sD" d="M'+(x+10)+' 428C'+(x-8)+' 392 '+(x+22)+' 356 '+(x+2)+' '+(tBone(x+2)+12).toFixed(0)+'"/>'}
   g+='<path class="cp sD" d="M'+(CX0-4)+' 118C'+(CX0-40)+' 190 '+(CX0-40)+' 280 '+(CX0-4)+' 350"/><path class="cp sD" d="M'+(CX1+4)+' 118C'+(CX1+28)+' 190 '+(CX1+28)+' 280 '+(CX1+4)+' 350"/>';
-  g+='<text class="t" x="20" y="70">FEMUR</text>';
-  g+='<text class="t" x="20" y="'+(FY-12)+'">CARTILAGE</text>';
-  g+='<text class="t" x="20" y="'+((FY+TY)/2+5)+'">JOINT SPACE</text>';
-  g+='<text class="t" x="20" y="'+(TY+26)+'">CARTILAGE</text>';
-  g+='<text class="t" x="20" y="400">TIBIA</text>';
+  /* DR: on phones the labels sit tighter to the edge and JOINT SPACE wraps, so none touches the capsule arc;
+     FEMUR steps aside (fades) while the needle passes through its corner */
+  var tx=o.mob?8:20;
+  g+='<text class="t" id="lbF" x="'+tx+'" y="70">FEMUR</text>';
+  g+='<text class="t" x="'+tx+'" y="'+(FY-12)+'">CARTILAGE</text>';
+  g+=o.mob?'<text class="t" x="'+tx+'" y="'+((FY+TY)/2-5)+'">JOINT</text><text class="t" x="'+tx+'" y="'+((FY+TY)/2+15)+'">SPACE</text>':'<text class="t" x="20" y="'+((FY+TY)/2+5)+'">JOINT SPACE</text>';
+  g+='<text class="t" x="'+tx+'" y="'+(TY+26)+'">CARTILAGE</text>';
+  g+='<text class="t" x="'+tx+'" y="400">TIBIA</text>';
   g+='</g>';
   g+='<path id="scFc" class="ct"/><path id="scTc" class="ct"/>';
   g+='<g id="scFis"></g>';
@@ -1810,6 +1813,7 @@ function storyDraw(svg){
     var nx=CX0+110,ny=(FY+TY)/2,a=(1-inj)+out;
     E.nd.setAttribute("transform","translate("+(nx-110*a).toFixed(1)+" "+(ny-110*a).toFixed(1)+")");
     op(E.nd,b*sm(inj*2.5)*(1-out));
+    var lf=svg.querySelector("#lbF");if(lf)lf.style.opacity=(b*(1-sm(inj*2.5)*(1-out))).toFixed(3);
     E.dp.forEach(function(D){var m=D.m,q=sm((spread-m.d*.45)/(1-m.d*.45));
       D.el.setAttribute("cx",(nx+(m.tx-nx)*q).toFixed(1));D.el.setAttribute("cy",(ny+(m.ty-ny)*q).toFixed(1));
       op(D.el,b*sm(spread*4)*(1-gone))});
@@ -2049,7 +2053,7 @@ function preload(){
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
     gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
-      .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
+      .to(wm.chars,{yPercent:0,opacity:1,duration:.6,ease:"silk",stagger:{amount:.2}},.1)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){

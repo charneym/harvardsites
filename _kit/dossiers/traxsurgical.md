@@ -1,0 +1,11 @@
+# Trax Surgical (traxsurgical) — home-only concept, batch 2026-11i
+- Domain: traxsurgical.com (company name, logo, products and "Copyright 2026 Trax Surgical Inc." on page; LinkedIn linkedin.com/company/trax-surgical; FDA 510(k) applicant "Trax Surgical, Inc., Stoughton" on K230946, K250712, K251750). No newer domain found.
+- HQ: Trax Surgical Inc., 75 Mill Street, Stoughton, MA 02072. Phone 781-436-4350 / 800-308-0360.
+- Lead: Shane Shankle, CEO (quoted in ORTHOWORLD, 2026-05-19). No pronouns published → "Dear Shane Shankle". Email: inquires@traxsurgical.com (sic, the only published address, on traxsurgical.com). No personal email found.
+- Activity: 2026-05-19 first REDIFIX implantation, mid-foot reconstruction (https://www.orthoworld.com/first-implantation-of-trax-surgicals-new-suture-anchor/); FDA 510(k) K251750 "Trax EX Anchor" cleared 2026-03-12 (openFDA); K250712 LINKT staple 2025-05-14; site accessibility statement dated August 6, 2026.
+- Bad site: 2010s catalogue layout: crowded two-tier nav bar (8 items, wrapping onto two lines), carousel with clip-art product renders on a swirl background, plain catalogue blocks.
+- Palette: logo navy #213e7d (sampled from their logo webp), nav navy #003882 and the gold "Contact Us" button (live site); ink #0a1633, accent #f2c94c. Fonts: Lato (their site's face; italic 900 for the wordmark) + Archivo display.
+- Logo: their raster logo, reversed to white (logo-w.png, mark-w.png), used at or below native size.
+- Hero: crafted raymarched render (option c) of a gold-anodised cannulated headless compression screw as described on their site (double-lead tip, finer trailing thread, cannulation, star drive); _kit/home/traxsurgical/render.js. No stock photo.
+- Story: the REDIFIX technique from traxsurgical.com/suture-anchors ("drill, drive, and push ... cinch") and ORTHOWORLD's description (guidewire, pilot hole, threaded anchor over the wire, traction on the trailing suture).
+- Sources: traxsurgical.com (home, about-us, suture-anchors, bone-compression-screws, headless/snap-away screws, instrument-kits, clinical-applications, contact-us); orthoworld.com; api.fda.gov 510(k) records.

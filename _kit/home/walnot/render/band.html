@@ -1,0 +1,101 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Walnot hero: a crafted render of the firm's wearable fNIRS headband (NeuroEvidence; walnot.health product photo and
+   npj Digital Medicine 2025 "a multi-channel headband covering key areas of the prefrontal cortex"): a soft knit strap
+   with bound edges and stitching, a slim front sensor housing over the forehead carrying a row of optode windows on its
+   inner face, a control pod with a square button and a status light, and a battery pod at the temple. Illustrative
+   proportions, not an engineering drawing. Real alpha (no box edge). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const Q=new URLSearchParams(location.search);const W=+(Q.get('w')||1600),H=+(Q.get('h')||1200);
+const RX=+(Q.get('rx')||24),RY=+(Q.get('ry')||-32),FOV=+(Q.get('fov')||22),CD=+(Q.get('cd')||78);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});r.setSize(W,H);r.setPixelRatio(1);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(new THREE.Color(Q.get('bg')||'#0e110c'),Q.get('bg')?1:0);
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environmentIntensity=.55;
+const key=new THREE.DirectionalLight(0xfff4e6,3.0);key.position.set(-14,22,18);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-20,right:20,top:20,bottom:-20});key.shadow.bias=-.0004;key.shadow.radius=6;sc.add(key);
+const rim=new THREE.DirectionalLight(0xdfe8c8,2.6);rim.position.set(18,8,-16);sc.add(rim);
+const rim2=new THREE.DirectionalLight(0xd8e2ff,1.8);rim2.position.set(-18,4,-14);sc.add(rim2);
+const low=new THREE.DirectionalLight(0xffe2cc,.35);low.position.set(2,-14,10);sc.add(low);
+
+/* knit texture, drawn procedurally: fine courses of V-shaped stitches, as a bump + roughness map */
+function knitTex(){const c=document.createElement('canvas');c.width=1024;c.height=128;const g=c.getContext('2d');
+  g.fillStyle='#777';g.fillRect(0,0,1024,128);
+  for(let y=0;y<128;y+=8)for(let x=0;x<1024;x+=6){const j=(Math.sin(x*12.9+y*78.2)*43758)%1;
+    const v=150+Math.abs(j)*50|0;g.strokeStyle=`rgb(${v},${v},${v})`;g.lineWidth=2.4;
+    g.beginPath();g.moveTo(x,y+1);g.lineTo(x+3,y+7);g.lineTo(x+6,y+1);g.stroke();
+    g.strokeStyle='rgba(30,30,30,.55)';g.lineWidth=1;g.beginPath();g.moveTo(x+3,y);g.lineTo(x+3,y+1.5);g.stroke()}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.anisotropy=8;return t}
+const kt=knitTex();kt.repeat.set(10,1.4);
+const fabric=new THREE.MeshPhysicalMaterial({color:0x2a2b2c,roughness:.9,bumpMap:kt,bumpScale:.7,roughnessMap:kt,sheen:1,sheenRoughness:.55,sheenColor:new THREE.Color(0x8a8f86)});
+const bind=new THREE.MeshPhysicalMaterial({color:0x141513,roughness:.6,sheen:.6,sheenRoughness:.4,sheenColor:new THREE.Color(0x55594f)});
+const plastic=new THREE.MeshPhysicalMaterial({color:0x111211,roughness:.42,metalness:0,clearcoat:.55,clearcoatRoughness:.32});
+const plasticM=new THREE.MeshPhysicalMaterial({color:0x1b1c1b,roughness:.5,clearcoat:.35,clearcoatRoughness:.4});
+const ring=new THREE.MeshPhysicalMaterial({color:0x8d918a,roughness:.3,metalness:.85});
+const thread=new THREE.MeshStandardMaterial({color:0x3a3d37,roughness:.8});
+
+/* the head path: an egg-shaped ellipse (forehead toward +z), the strap's centre line at band height y=0 */
+const A=9.4,B=10.6; /* half-width (x), half-depth (z) in cm */
+function P(t,o){/* point at parameter t (0 = forehead centre), offset o outward along the normal */
+  const a=t*Math.PI*2,x=Math.sin(a)*A,z=Math.cos(a)*B*(Math.cos(a)>0?1:1.06);
+  const dx=Math.cos(a)*A,dz=-Math.sin(a)*B;const L=Math.hypot(dx,dz);const nx=dz/L,nz=-dx/L;
+  return new THREE.Vector3(x-nx*o,0,z-nz*o).multiplyScalar(1)}
+function frame(t){const p=P(t,0),q=P(t+.0005,0);const tg=q.sub(p).normalize();const up=new THREE.Vector3(0,1,0);const n=new THREE.Vector3().crossVectors(up,tg).normalize();return {p:P(t,0),tg,n,up}}
+/* strap: a ribbon swept around the path, 3.4 cm tall, 0.36 cm thick, slightly bulged faces */
+function strap(h,th,mat,seg=480,vs=14,t0=0,t1=1,off=0,ex=.32,ey=.18){const pos=[],uv=[],idx=[];const prof=[];
+  for(let k=0;k<vs;k++){const s=k/vs*Math.PI*2;const cx=Math.cos(s),cy=Math.sin(s);
+    const px=Math.sign(cx)*Math.pow(Math.abs(cx),ex)*th/2,py=Math.sign(cy)*Math.pow(Math.abs(cy),ey)*h/2;prof.push([px,py])}
+  for(let i=0;i<=seg;i++){const u=i/seg,f=frame(t0+(t1-t0)*u);const tp=(t1-t0<1)?Math.pow(Math.sin(Math.min(1,Math.min(u,1-u)*14)*Math.PI/2),.5):1;for(let k=0;k<=vs;k++){const pr=prof[k%vs];
+    const v=f.p.clone().addScaledVector(f.n,-off+pr[0]*tp).addScaledVector(f.up,pr[1]*(.82+.18*tp)).addScaledVector(f.up,pr[1]);pos.push(v.x,v.y,v.z);uv.push(i/seg,(pr[1]/h+.5))}}
+  for(let i=0;i<seg;i++)for(let k=0;k<vs;k++){const a=i*(vs+1)+k,b=a+vs+1;idx.push(a,a+1,b,b,a+1,b+1)}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();
+  const m=new THREE.Mesh(g,mat);m.castShadow=m.receiveShadow=true;return m}
+const dev=new THREE.Group();
+dev.add(strap(3.6,.4,fabric,480,14,0,1,0,.32,.3));
+/* bound edges: a soft tube along top and bottom edge */
+function edgeTube(y,o,rad,mat){const pts=[];for(let i=0;i<=400;i++){const f=frame(i/400);pts.push(f.p.clone().addScaledVector(f.n,o).add(new THREE.Vector3(0,y,0)))}
+  const c=new THREE.CatmullRomCurve3(pts,true);const m=new THREE.Mesh(new THREE.TubeGeometry(c,800,rad,10,true),mat);m.castShadow=true;return m}
+dev.add(edgeTube(1.8,0,.24,bind));dev.add(edgeTube(-1.8,0,.24,bind));
+/* stitching: short dashes just inside each binding, on the outer face */
+function stitches(y){const g=new THREE.Group();const n=300;for(let i=0;i<n;i++){const t=i/n;const f=frame(t);
+  const s=new THREE.Mesh(new THREE.CapsuleGeometry(.028,.16,2,6),thread);s.position.copy(f.p.clone().addScaledVector(f.n,-.215).add(new THREE.Vector3(0,y,0)));
+  s.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),f.tg);g.add(s)}return g}
+dev.add(stitches(1.4));dev.add(stitches(-1.4));
+/* place an object on the strap's outer face at parameter t: local x along the band, y up, z outward */
+function place(o,t,out){const f=frame(t);const m=new THREE.Matrix4().makeBasis(f.tg,f.up,f.n.clone().negate());o.quaternion.setFromRotationMatrix(m);
+  o.position.copy(f.p.clone().addScaledVector(f.n,-out));dev.add(o);return o}
+/* the front sensor housing: a long curved shell over the forehead, built as segments following the curve */
+const shellG=new THREE.Group();
+dev.add(strap(3.05,.62,plasticM,160,24,-.1,.1,.42,.22,.16));
+/* control pod at the centre: a raised rounded square with a recessed square button and an olive status light */
+const pod=new THREE.Group();
+const pb=new THREE.Mesh(new RoundedBoxGeometry(3.3,2.7,.5,5,.42),plastic);pb.castShadow=true;pod.add(pb);
+const btnRing=new THREE.Shape();(function(s,w,rr){s.moveTo(-w+rr,-w);s.lineTo(w-rr,-w);s.quadraticCurveTo(w,-w,w,-w+rr);s.lineTo(w,w-rr);s.quadraticCurveTo(w,w,w-rr,w);s.lineTo(-w+rr,w);s.quadraticCurveTo(-w,w,-w,w-rr);s.lineTo(-w,-w+rr);s.quadraticCurveTo(-w,-w,-w+rr,-w)})(btnRing,.62,.16);
+const hole=new THREE.Path();(function(s,w,rr){s.moveTo(-w+rr,-w);s.lineTo(w-rr,-w);s.quadraticCurveTo(w,-w,w,-w+rr);s.lineTo(w,w-rr);s.quadraticCurveTo(w,w,w-rr,w);s.lineTo(-w+rr,w);s.quadraticCurveTo(-w,w,-w,w-rr);s.lineTo(-w,-w+rr);s.quadraticCurveTo(-w,-w,-w+rr,-w)})(hole,.47,.1);btnRing.holes.push(hole);
+const br=new THREE.Mesh(new THREE.ExtrudeGeometry(btnRing,{depth:.05,bevelEnabled:true,bevelThickness:.02,bevelSize:.02,bevelSegments:2}),ring);br.position.z=.25;pod.add(br);
+const btn=new THREE.Mesh(new RoundedBoxGeometry(.9,.9,.12,3,.05),new THREE.MeshPhysicalMaterial({color:0x0c0d0c,roughness:.55,clearcoat:.3}));btn.position.z=.26;pod.add(btn);
+const led=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,.04,24),new THREE.MeshStandardMaterial({color:0x9fbf5a,emissive:0x9fcc4a,emissiveIntensity:2.2}));led.rotation.x=Math.PI/2;led.position.set(1.1,-.85,.26);pod.add(led);
+place(pod,0,.98);
+/* battery pod at the left temple, with a small charging port */
+const bat=new THREE.Group();const bb=new THREE.Mesh(new RoundedBoxGeometry(3.6,2.6,.7,5,.34),plastic);bb.castShadow=true;bat.add(bb);
+const port=new THREE.Mesh(new RoundedBoxGeometry(.7,.24,.1,2,.05),new THREE.MeshStandardMaterial({color:0x030303,roughness:.9}));port.position.set(0,-1.3,0);port.rotation.x=Math.PI/2;bat.add(port);
+place(bat,-.235,.52);
+const bat2=bat.clone();place(bat2,.235,.52);
+/* optode windows on the INNER face of the housing (toward the forehead): sources and detectors in a row */
+for(let i=-6;i<=6;i++){const t=i*.0145;const f=frame(t);
+  const o=new THREE.Group();const hs=new THREE.Mesh(new THREE.CylinderGeometry(.34,.38,.22,32),plasticM);hs.rotation.x=Math.PI/2;o.add(hs);
+  const lens=new THREE.Mesh(new THREE.SphereGeometry(.24,24,12,0,Math.PI*2,0,Math.PI/2),new THREE.MeshPhysicalMaterial({color:i%2?0x1d2a33:0x3a1515,roughness:.05,transmission:.2,clearcoat:1,emissive:i%2?0x000000:0x6a0d0d,emissiveIntensity:.8}));
+  lens.rotation.x=Math.PI/2;lens.position.z=.1;o.add(lens);
+  const m=new THREE.Matrix4().makeBasis(f.tg.clone().negate(),f.up,f.n.clone());o.quaternion.setFromRotationMatrix(m);
+  o.position.copy(f.p.clone().addScaledVector(f.n,.25));dev.add(o)}
+sc.add(dev);
+dev.rotation.set(RX*Math.PI/180,RY*Math.PI/180,+(Q.get('rz')||0)*Math.PI/180);
+/* a faint contact shadow catcher would add a floor; the hero floats on the page ink, so none */
+const cam=new THREE.PerspectiveCamera(FOV,W/H,.1,500);cam.position.set(0,0,CD);cam.lookAt(0,0,0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

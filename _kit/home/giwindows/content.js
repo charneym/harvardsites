@@ -22,13 +22,13 @@ var PROG=[
  ["FDA 510(k): Flexagon Plus OTOLoc","K250541 · August 2025","The OTOLoc access system, which controls and captures the enterotomy between Flexagon magnets, followed by further clearances in January 2026 (K253550) and October 2026 (K261630).",FDA+"K261630"]];
 /* people: giwindows.com/leadership-board-of-directors. [name, role, one sentence] */
 var LEADS=[
- ["Brian Tinkham","President and Chief Executive Officer","Co-founder of Beacon Endoscopic, acquired by Covidien in 2014, from which GI Windows was spun out; formerly VP of New Technologies at Medtronic."],
+ ["Brian Tinkham","President and Chief Executive Officer","Co-founder of Beacon Endoscopic, acquired by Covidien in 2014; formerly VP of New Technologies at Medtronic."],
  ["Peter Lukin","Chief Operating Officer","Over two decades in endoscopic device development and operations, and more than 15 commercial product launches."],
  ["Gerry Sheridan","Chief Financial Officer","Over 20 years of global financial management, principally in medical device startups."],
  ["Erik B. Wilson, MD","Chief Medical Officer","Professor of Surgery at McGovern Medical School, UTHealth Houston, and Division Chief of Elective General Surgery."],
  ["Yverre Bobay","Vice President, Regulatory","Over 20 years of global regulatory experience with class II and III devices, including PMAs, 510(k)s and IDEs."]];
 var BOARD=[
- ["Christopher Thompson, MD","Director","Co-founder of Beacon Endoscopic and GI Windows; Director of Endoscopy, Brigham and Women’s Hospital, and Professor of Medicine, Harvard Medical School."],
+ ["Christopher Thompson, MD","Director","Co-founder of GI Windows; Director of Endoscopy, Brigham and Women’s Hospital."],
  ["Frederic Moll, MD","Director","Co-founder of Intuitive Surgical and Auris Health; Co-Founder and Partner, Sonder Capital."],
  ["V. Kadir Kadhiresan, PhD","Director","Vice President, Venture Investments, Johnson & Johnson Innovation."],
  ["Daniel T. Sheehan","Director","Vice President of Venture Capital, Medtronic."],

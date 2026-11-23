@@ -1691,21 +1691,21 @@ function scene(){
   /* receptors on the T cell facing the APC */
   OXR.forEach(function(a){var r=a*Math.PI/180,x0=T[0]+RT*Math.cos(r),y0=T[1]+RT*Math.sin(r),x1=T[0]+(RT+16)*Math.cos(r),y1=T[1]+(RT+16)*Math.sin(r);
     g+='<path class="rc sD" d="M'+f(x0)+' '+f(y0)+'L'+f(x1)+' '+f(y1)+'M'+f(x1+6*Math.sin(r))+' '+f(y1-6*Math.cos(r))+'L'+f(x1)+' '+f(y1)+'L'+f(x1-6*Math.sin(r))+' '+f(y1+6*Math.cos(r))+'"/>'});
-  g+='<text class="t" x="'+A[0]+'" y="'+(A[1]-160)+'" text-anchor="middle">'+(mob?'APC':'ANTIGEN-PRESENTING CELL')+'</text>';
+  g+='<text class="t" x="'+A[0]+'" y="'+(mob?(A[1]-160):22)+'" text-anchor="middle">'+(mob?'APC':'ANTIGEN-PRESENTING CELL')+'</text>';
   g+='<text class="t" x="'+T[0]+'" y="'+(T[1]-RT-30)+'" text-anchor="middle">T CELL</text>';
   g+='<text class="t" x="'+(U[0]+(mob?0:96))+'" y="'+(U[1]+(mob?104:6))+'" text-anchor="'+(mob?"middle":"start")+'">TUMOR</text></g>';
   /* the synapse line between the cells */
   g+='<path class="syn" id="syn" d="M'+(A[0]+96)+' '+(A[1]-6)+'C380 236 400 232 '+(T[0]-RT-20)+' '+(T[1]+2)+'"/>';
   /* step 1: ligands shed by the tumor, docking on the receptors; the line breaks */
   g+='<g id="s1">';OXR.forEach(function(){g+='<g class="lig"><path d="M-7 -5Q0 9 7 -5"/><circle cx="0" cy="-8" r="3"/></g>'});
-  g+='<path class="brk" d="M392 222l16 16M408 222l-16 16"/><path class="ldr" d="M600 400L668 330H'+(mob?720:760)+'"/><text class="a" x="'+(mob?720:760)+'" y="318" text-anchor="end">PD-L1 · CD200</text></g>';
+  g+='<path class="brk" d="M392 222l16 16M408 222l-16 16"/>'+(mob?'<text class="a" x="538" y="474" text-anchor="end">PD-L1 · CD200</text>':'<path class="ldr" d="M600 400L668 330H760"/><text class="a" x="760" y="318" text-anchor="end">PD-L1 · CD200</text>')+'</g>';
   /* step 2: ARL200 peptides arrive from above and take the receptors */
   g+='<g id="s2">';OXR.forEach(function(){g+='<g class="pep"><circle cx="-12" cy="0" r="3.6"/><circle cx="-4" cy="-3" r="3.6"/><circle cx="4" cy="0" r="3.6"/><circle cx="12" cy="-3" r="3.6"/></g>'});
   g+='<path class="ldr" d="M430 120L470 70H'+(mob?640:690)+'"/><text class="a" x="'+(mob?640:690)+'" y="58" text-anchor="end">ARL200</text></g>';
   /* step 3: signals cross the synapse and activated T cells move out toward the tumor */
   g+='<g id="s3">';for(i=0;i<4;i++)g+='<circle class="pulse" r="5"/>';
   for(i=0;i<3;i++)g+='<g class="kid">'+tcell(0,0,26,"tk2",22)+'</g>';
-  g+='<text class="a" x="'+(mob?400:330)+'" y="'+(mob?530:520)+'" text-anchor="middle">'+(mob?'ACTIVATED T CELLS':'ACTIVATED T CELLS, TURNED ON THE TUMOR')+'</text></g>';
+  g+='<text class="a" x="'+(mob?400:330)+'" y="'+(mob?574:550)+'" text-anchor="middle">'+(mob?'ACTIVATED T CELLS':'ACTIVATED T CELLS, TURNED ON THE TUMOR')+'</text></g>';
   g+='</svg>';
   return g;
 }

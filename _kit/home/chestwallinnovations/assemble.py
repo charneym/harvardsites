@@ -14,6 +14,18 @@ for name, f in REG.items():
     new, n = pat.subn(lambda m: m.group(1) + part(f) + m.group(3), src)
     assert n == 1, (name, n)
     src = new
+# DR (coordinator review): the loader wordmark rises in and leaves as ONE unit (no per-letter SplitText fly-out, no fragments)
+LDR = [
+ ('var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});',
+  'var wm={chars:[$("#pre .wm span")]};gsap.set(wm.chars,{y:18,opacity:0});'),
+ ('.to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)',
+  '.to(wm.chars,{y:0,opacity:1,duration:.8,ease:"power2.out"},.15)'),
+ ('.to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)',
+  '.to(["#pre .wm","#pre .plk .lmk"],{opacity:0,duration:.32,ease:"power2.in"},.06)'),
+]
+for a, b in LDR:
+    assert src.count(a) == 1, a
+    src = src.replace(a, b)
 mark = part('mark.svg')
 src = src.replace('__MARK1__', mark.replace('__G__', 'mmG1')).replace('__MARK2__', mark.replace('__G__', 'mmG2').replace('class="lmk"', 'class="lmk mk"'))
 fav = mark.replace('class="lmk" ', 'xmlns="http://www.w3.org/2000/svg" ').replace(' aria-hidden="true"', '').replace('class="sk"', 'fill="#3a3a3c"').replace('class="sb"', 'fill="#0d73bb"')

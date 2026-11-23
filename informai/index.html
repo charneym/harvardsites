@@ -741,6 +741,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 @media (max-width:760px){.ps-sheet{grid-template-rows:auto minmax(0,1fr)}.ps-col{min-height:0;height:100%;overflow:visible}.ps-body{min-height:0}}
 .thanks svg *{fill:none;stroke:var(--accD);stroke-width:1}
 
+#pre .mk{width:68px;height:68px;overflow:visible}#pre .mk .im-a{fill:none;stroke:var(--accL);stroke-width:3.2;stroke-linecap:round}#pre .mk .im-b{fill:none;stroke:var(--bone);stroke-width:2.6;stroke-linecap:round}
 </style>
 </head>
 </head>
@@ -753,7 +754,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M56 14A34 34 0 1 1 44 80M10 34H70M16 48H76M10 62H70"/></svg>
+    <svg class="mk" viewBox="0 0 30 30"><path class="im-a" d="M17 3.5A11.5 11.5 0 1 1 13 25.5"/><path class="im-b" d="M1 9.5H22M3 14H25M1 18.5H22"/></svg>
     <div class="wm"><span>INFORMAI</span></div>
   </div>
   <span class="lab pl">Clinical AI · Texas Medical Center, Houston</span>
@@ -1656,7 +1657,7 @@ function scene(){
   s+='<g id="iaLab">'+
     '<path class="icl" d="M396 196L330 92H236"/><text class="ia2" x="236" y="82" style="font-size:'+fs+'px">TARGET</text>'+
     '<path class="icl" d="M482 358L560 452H700"/><text x="700" y="442" text-anchor="end" style="font-size:'+fs+'px">SPINAL CORD</text>'+
-    '<path class="icl" d="M610 290L652 178H726"/><text x="726" y="168" text-anchor="end" style="font-size:'+fs+'px">PAROTID</text></g>';
+    (mob?'<path class="icl" d="M344 352L310 452H200"/><text x="200" y="442" style="font-size:'+fs+'px">PAROTID</text>':'<path class="icl" d="M610 290L652 178H748"/><text x="748" y="168" text-anchor="end" style="font-size:'+fs+'px">PAROTID</text>')+'</g>';
   /* isodose legend (step 2) */
   s+='<g id="iaLeg" transform="translate(668 2)">'+[0,1,2,3].map(function(i){return '<path class="iso i'+(3-i)+'" d="M0 '+(i*20)+'H22"/><text x="32" y="'+(i*20+4)+'" style="font-size:'+(fs-1)+'px">'+["95%","80%","60%","40%"][i]+'</text>'}).join('')+'</g>';
   /* beams (step 3): fields from nine gantry angles converging on the target, and a VMAT arc */
@@ -1666,7 +1667,7 @@ function scene(){
     B+='<path class="ibm" d="M'+x1.toFixed(1)+' '+y1.toFixed(1)+'L'+x4.toFixed(1)+' '+y4.toFixed(1)+'L'+x3.toFixed(1)+' '+y3.toFixed(1)+'L'+x2.toFixed(1)+' '+y2.toFixed(1)+'Z"/>'+
        '<rect class="ihd" x="-9" y="-4" width="18" height="8" transform="translate('+(IA_T[0]+Math.cos(t)*224).toFixed(1)+' '+(IA_T[1]+Math.sin(t)*224).toFixed(1)+') rotate('+(a*40)+')"/>'}
   s+='<g id="iaBm">'+B+'</g><path id="iaArc" class="iarc" d="M'+(IA_T[0]+Math.cos(-2.6)*196).toFixed(1)+' '+(IA_T[1]+Math.sin(-2.6)*196).toFixed(1)+'A196 196 0 0 1 '+(IA_T[0]+Math.cos(-.54)*196).toFixed(1)+' '+(IA_T[1]+Math.sin(-.54)*196).toFixed(1)+'"/>';
-  s+='<text id="iaArcT" class="ia2" x="'+(IA_T[0]+Math.cos(-.54)*196+10).toFixed(1)+'" y="'+(IA_T[1]+Math.sin(-.54)*196-8).toFixed(1)+'" style="font-size:'+fs+'px">VMAT ARC</text>';
+  s+='<text id="iaArcT" class="ia2" x="660" y="'+(mob?26:56)+'" text-anchor="end" style="font-size:'+fs+'px">VMAT ARC</text>';
   /* step 4: dose-volume curves and the review mark */
   var DX=548,DY=430,DW=180,DH=82;
   s+='<g id="iaDvh"><rect class="idb" x="'+(DX-14)+'" y="'+(DY-30)+'" width="'+(DW+28)+'" height="'+(DH+50)+'"/>'+
@@ -1694,7 +1695,7 @@ function storyDraw(svg){
     E.lab.style.opacity=(s1*(1-s2)).toFixed(3);
     /* step 2: isodose lines grow out from the target, innermost first */
     E.iso.forEach(function(e,i){var q=seg(s2,(3-i)*.18,(3-i)*.18+.46);e.style.strokeDasharray=IL[i].toFixed(1)+" "+IL[i].toFixed(1);e.style.strokeDashoffset=(IL[i]*(1-q)).toFixed(1);e.style.opacity=(q>0?1-.35*s4:0).toFixed(3)});
-    E.wash.style.opacity=(s2*(1-.4*s4)).toFixed(3);E.leg.style.opacity=(s2*(1-s3)).toFixed(3);
+    E.wash.style.opacity=(s2*(1-.4*s4)).toFixed(3);E.leg.style.opacity=(s2*(1-seg(s3,0,.6))).toFixed(3);
     /* step 3: fields converge, then the arc sweeps round */
     E.bm.forEach(function(e,i){var q=seg(s3,i*.05,i*.05+.4);e.style.opacity=(q*(1-.8*s4)).toFixed(3)});
     E.hd.forEach(function(e,i){var q=seg(s3,i*.05,i*.05+.4);e.style.opacity=(q*(1-.8*s4)).toFixed(3)});
@@ -1931,7 +1932,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$$("#pre .mk path");mk.forEach(function(p){p.setAttribute("pathLength","1")});gsap.set(mk,{strokeDasharray:"1 1",strokeDashoffset:1});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1940,7 +1941,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{strokeDashoffset:0,duration:.85,ease:"flow",stagger:.08,onComplete:function(){gsap.set(mk,{clearProps:"strokeDasharray,strokeDashoffset"})}},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

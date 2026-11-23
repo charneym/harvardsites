@@ -1,0 +1,10 @@
+# Bone Solutions (bonesolutions) — home-only concept, batch 2026-11i
+- Domain: bonesolutions.net (company name, logo, Colleyville address, team and products on page; LinkedIn company page linked from the footer; FDA 510(k) applicant "Bone Solutions, Inc., Colleyville, Texas"). No newer site found.
+- HQ: 5712 Colleyville Blvd., Suite 210, Colleyville, Texas 76034. Phone 817-809-8850.
+- Lead: Drew Diaz, Chief Executive Officer (President and CEO / board member). Greeting: "Dear Mr. Diaz". Best published email: customerservice@bonesolutions.net (site footer and contact page); no personal email published.
+- Activity: FDA 510(k) K262230 (Mg OSTEOREVIVE, Mg OSTEOCRETE), decision 2026-09-11 (accessdata.fda.gov); blog posts Nov 2026 (bonesolutions.net/blog); OTA 2026 exhibitor (Nashville, Sept 24-25, 2026, About page); pediatric clearance press release 2025-10-21 (Business Wire); five FY25 patents 2025-08-05 (Business Wire).
+- Bad site: Wix site; the homepage opens as a near-empty page with only a nav bar, a faint pattern and a rule (content appears only after scrolling); the "Products" nav item returns a 404; product pages are thin ordering lists.
+- Palette: logo navy #132b44 (sampled from Mg Bone Solutions_Dark Blue.png); Mg OSTEOCRETE kit blue #155a9f, deepened to #1e5aa0 for type; ground #f5f7fa from their white site. Fonts Montserrat (logo face) + Public Sans.
+- Hero: their own product photograph of the Mg OSTEOCRETE kit (bonesolutions.net, "Mg OSTEOCRETE Box_New.png", 3600x3024 alpha cut-out), downscaled to 1400px, soft canvas floor shadow, slow drift. No stock photo.
+- Story: mix (powder + solution, ready in 30 s) → molded or injected into a bone void, sets in place → resorbed and replaced with bone (radiographic remodelling over one year), drawn as a fine-line cut-away bone end.
+- Sources: bonesolutions.net (home, about, technology, mgosteocrete, mgosteoinject, t-handeliverysystem, contact, blog); FDA 510(k) database K262230 / K251522; Business Wire releases 2024-02-13, 2025-08-05, 2025-10-21.

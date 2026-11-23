@@ -810,6 +810,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .stat p.k{margin:0}
 .pipe .pgm h3{margin:0}
 .pipe .pgm .loc{display:block;font-size:14px;margin-top:8px;color:var(--stone)}
+#pre .mk{width:128px;height:60px;overflow:visible}#pre .mk path{stroke:none}
 </style>
 </head>
 </head>
@@ -822,7 +823,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 64 30"><path d="M8 13l6.5 3.75v7.5L8 28l-6.5-3.75v-7.5z" fill="#435eae"/><path d="M22.5 6.5l6 3.5v7l-6 3.5-6-3.5v-7z" fill="#6786be"/><path d="M36 10.5l5.5 3.2v6.4L36 23.3l-5.5-3.2v-6.4z" fill="#8eaed4"/><path d="M48.5 3l5 2.9v5.8l-5 2.9-5-2.9V5.9z" fill="#b0cce2"/></svg>
+    <svg class="mk" viewBox="0 0 64 30"><path d="M8 13l6.5 3.75v7.5L8 28l-6.5-3.75v-7.5z" style="fill:#435eae"/><path d="M22.5 6.5l6 3.5v7l-6 3.5-6-3.5v-7z" style="fill:#6786be"/><path d="M36 10.5l5.5 3.2v6.4L36 23.3l-5.5-3.2v-6.4z" style="fill:#8eaed4"/><path d="M48.5 3l5 2.9v5.8l-5 2.9-5-2.9V5.9z" style="fill:#b0cce2"/><path d="M59 1.5l3.5 2v4l-3.5 2-3.5-2v-4z" style="fill:#c8e0e9"/></svg>
     <div class="wm"><span><b>IHP</b> THERAPEUTICS</span></div>
   </div>
   <span class="lab pl">Sickle cell disease · San Carlos, CA</span>
@@ -2014,7 +2015,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$$("#pre .mk path");gsap.set(mk,{opacity:0,scale:.55,transformOrigin:"50% 50%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2023,7 +2024,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.6,ease:"back.out(1.6)",stagger:.08},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

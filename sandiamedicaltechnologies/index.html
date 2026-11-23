@@ -88,8 +88,8 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk{width:124px;height:81px;overflow:visible}
+#pre .mk path{fill:var(--accL);stroke:none}#pre .mk path.o{fill:var(--org)}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -770,7 +770,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="-2 -4 172 112"><path d="M0.5 52L16 24L32 52Z"/><path d="M53.5 0L37.5 28L73 88.5H106.5Z"/><path d="M124 31L107.5 59L134 104H167Z"/></svg>
+    <svg class="mk" viewBox="-2 -4 172 112"><path class="o" d="M0.5 52L16 24L32 52Z"/><path d="M53.5 0L37.5 28L73 88.5H106.5Z"/><path d="M124 31L107.5 59L134 104H167Z"/></svg>
     <div class="wm"><span>SANDIA MEDICAL</span></div>
   </div>
   <span class="lab pl">Orthopedic extremity implants · Albuquerque, New Mexico</span>
@@ -1677,17 +1677,24 @@ function scene(){
   s+='<g id="smImp" transform="rotate(-32 232 424)"><path class="simp" d="M202 404C202 396 206 394 214 394H252C260 394 264 398 264 406V444C264 452 258 456 250 456H214C206 456 200 452 200 444Z"/>'+
     '<path class="simw" d="M218 412H248V440H218Z"/><circle class="simw" cx="228" cy="426" r="3.4"/><circle class="simw" cx="238" cy="426" r="3.4"/></g>';
   /* labels */
+  /* labels (placed clear of every bone, spur and the thumb's swing; phones stack them in the left column) */
   s+='<g id="smLab1"><path class="scl" d="M'+SM_CMC[0]+' '+SM_CMC[1]+'L150 420H40"/><text class="sa" x="40" y="410" style="font-size:'+fs+'px">CMC JOINT</text>'+
     '<path class="scl" d="M226 446L170 500H40"/><text x="40" y="490" style="font-size:'+fs+'px">TRAPEZIUM</text>'+
-    '<path class="scl" d="M166 300L120 330H40"/><text x="40" y="320" style="font-size:'+fs+'px">1ST METACARPAL</text></g>';
-  s+='<g id="smLab2"><path class="scl" d="M'+SM_CMC[0]+' '+SM_CMC[1]+'L150 420H40"/><text class="so" x="40" y="410" style="font-size:'+fs+'px">WORN CARTILAGE</text>'+
-    '<path class="scl" d="M250 384L300 300H360"/><text class="so" x="364" y="304" style="font-size:'+fs+'px">BONE SPURS</text></g>';
-  s+='<g id="smLab3"><path class="scl" d="M222 446L170 500H40"/><text class="sa" x="40" y="490" style="font-size:'+fs+'px">ZEPART</text>'+
-    '<text x="40" y="'+(510+fs)+'" style="font-size:'+(fs-1)+'px">REPLACES THE TRAPEZIUM</text></g>';
+    (mob?'<path class="scl" d="M176 326L160 352H24"/><text x="24" y="318" style="font-size:'+fs+'px">1ST</text><text x="24" y="342" style="font-size:'+fs+'px">METACARPAL</text>'
+        :'<path class="scl" d="M172 318L160 354H30"/><text x="30" y="346" style="font-size:'+fs+'px">1ST METACARPAL</text>')+'</g>';
+  s+='<g id="smLab2">'+(mob?'<path class="scl" d="M198 428L180 436H24"/><text class="so" x="24" y="396" style="font-size:'+fs+'px">WORN</text><text class="so" x="24" y="420" style="font-size:'+fs+'px">CARTILAGE</text>'+
+        '<path class="scl" d="M172 374L156 362H24"/><text class="so" x="24" y="350" style="font-size:'+fs+'px">BONE SPURS</text>'
+      :'<path class="scl" d="M'+SM_CMC[0]+' '+SM_CMC[1]+'L150 420H40"/><text class="so" x="40" y="410" style="font-size:'+fs+'px">WORN CARTILAGE</text>'+
+        '<path class="scl" d="M246 382L282 314H196"/><text class="so" x="196" y="304" style="font-size:'+fs+'px">BONE SPURS</text>')+'</g>';
+  var lx=mob?24:40,ly=mob?[448,472,496]:[458,478,498];
+  s+='<g id="smLab3"><path class="scl" d="M206 454L178 508H'+lx+'"/><text class="sa" x="'+lx+'" y="'+ly[0]+'" style="font-size:'+fs+'px">ZEPART</text>'+
+    '<text x="'+lx+'" y="'+ly[1]+'" style="font-size:'+(fs-1)+'px">REPLACES THE</text><text x="'+lx+'" y="'+ly[2]+'" style="font-size:'+(fs-1)+'px">TRAPEZIUM</text></g>';
   /* step 4: range of motion arc at the thumb tip and the pinch toward the index finger */
   s+='<g id="smMo"><path id="smArc" class="sarc" d="M58 150A190 190 0 0 1 150 66"/><path class="sarc" d="M146 58l6 8-10 2"/>'+
-    '<text class="sa" x="40" y="44" style="font-size:'+fs+'px">RANGE OF MOTION</text>'+
-    '<path id="smPin" class="sarc" d="M100 112C170 92 240 92 300 110"/><path class="sarc" d="M292 102l8 8-10 4"/><text class="sa" x="190" y="84" text-anchor="middle" style="font-size:'+fs+'px">GRIP STRENGTH</text></g>';
+    '<text class="sa" x="40" y="'+(mob?2:8)+'" style="font-size:'+fs+'px">RANGE OF MOTION</text>'+
+    '<path id="smPin" class="sarc" d="M100 112C170 92 240 92 300 110"/><path class="sarc" d="M292 102l8 8-10 4"/>'+
+    (mob?'<text class="sa" x="180" y="150" style="font-size:'+fs+'px">GRIP</text><text class="sa" x="180" y="174" style="font-size:'+fs+'px">STRENGTH</text>'
+        :'<text class="sa" x="180" y="146" style="font-size:'+fs+'px">GRIP STRENGTH</text>')+'</g>';
   s+='</g>';
   caps.forEach(function(t,i){s+='<text class="cap" id="smC'+i+'" x="320" y="'+(mob?604:600)+'" text-anchor="middle" style="font-size:'+cs+'px">'+t+'</text>'});
   return s+'</svg>';
@@ -1938,7 +1945,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$$("#pre .mk path");gsap.set(mk,{opacity:0,y:10});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -1947,7 +1954,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,y:0,duration:.6,ease:"power2.out",stagger:.12},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

@@ -18,7 +18,7 @@ function vHome(){
    '<i class="hrule" aria-hidden="true" data-r></i>'+
    '<div class="hero-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body: to seal leaks, heal tissues and deliver drugs.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
-   '<p class="lab hcap" data-r>A tough hydrogel adhesive sealing a bleeding cut, rendered.</p>'+
+   '<p class="lab hcap" data-r>Hydrogel network, rendered.</p>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
@@ -95,7 +95,10 @@ function footer(){
   '<div class="legal"><span class="lab">© 2026 LiMax Biosciences</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
-/* ================= ROUTER: one route; #/<section> scrolls to that section ================= */
+/* ================= ROUTER: one route. #/contact and #/about scroll to their section; a typed or linked #/technology,
+   #/programs, #/team or #/news (the nav items) opens that item's build-out page, as a nav click does (buildout.js) ================= */
+var BOK={technology:1,programs:1,team:1,news:1};
+function boOpen(k){try{if(window.BuildOut&&BuildOut.open){BuildOut.open(k);return true}}catch(x){}return false}
 var SECS={about:"about",technology:"technology",programs:"programs",team:"team",news:"news",contact:"contact"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
@@ -106,7 +109,8 @@ function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)len
 addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
 addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
+  if(r.sec&&BOK[r.sec]){try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/";boOpen(r.sec);return}
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
 (function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){secGo(r.sec,true);try{history.replaceState(null,"","#/")}catch(x){}},300)})()})();
+  setTimeout(function(){try{history.replaceState(null,"","#/")}catch(x){}if(BOK[r.sec]&&boOpen(r.sec))return;secGo(r.sec,true)},300)})()})();

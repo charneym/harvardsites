@@ -1,6 +1,6 @@
-/* ================= HERO FIELD: a crafted render of the product at work (HOME_BRIEF update option c, PRINCIPLES DS): a thin, water-clear
-   tough-adhesive hydrogel patch sealing a small cut on wet soft tissue, a single bead of blood held back at its edge; raymarched
-   (render3.js -> hero.webp), the swatch feathering into the ink with real alpha (DJ/DP). Centred in the open area right of the copy (~70% width, DO), ink scrim only
+/* ================= HERO FIELD: LiMax's own brand image, rendered calmly (client round 4): one flowing, translucent ribbon of
+   hydrogel in their teal -> blue -> violet gradient with a delicate polymer network inside (render4.js -> hero.webp; alpha
+   recovered from the light, so it sits on the ink with no box, DJ/DP). Centred in the open area right of the copy (~70% width, DO), ink scrim only
    behind the text (DI); slow drift, no pointer response (CZ). On phones it sits in the top band and fades into the ink. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
@@ -24,7 +24,7 @@ var field=(function(){
     if(ok){
       var iw=img.naturalWidth,ih=img.naturalHeight,k=.5-.5*Math.cos(t*Math.PI*2/48),cx,cy,sc;
       if(!G.mob){var tr=textR(),a0=tr+120,a1=w-G.side;cx=Math.max((a0+a1)/2,w*.62);cy=75+(h-75)*.49;sc=Math.min(G.cw*.42/iw,(h-200)*.8/ih,.62,Math.max(60,(a1-a0))/(iw*1.08),Math.max(60,2*(cx-a0))/(iw*1.08))}
-      else{sc=Math.min(w*.8/iw,G.bh*.7/ih,.5);cx=w*.5;cy=G.bh*.56}
+      else{sc=Math.min(w*.94/iw,G.bh*.7/ih,.5);cx=w*.5;cy=G.bh*.56}
       sc*=(1+.035*k)*(1+.05*(1-e));
       var dw=iw*sc,dh=ih*sc,x=cx-dw/2-k*dw*.012,y=cy-dh/2+k*dh*.008-SP.v*h*.04;
       /* a soft maroon glow under the device */

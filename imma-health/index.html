@@ -547,7 +547,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ps-media img{object-position:62% 30%}
 .rail span{color:#a39684}.rail span::before{background:var(--ink2);border-color:#7a6a58}
 .scene text{fill:#c2b6a4}.scene text.w{fill:var(--bone)}.scene text.a{fill:var(--accL)}
-.scene .node{fill:var(--ink2)}
+.scene .node{fill:var(--ink2);stroke:var(--ember);stroke-width:1.6}
 .scene .co{fill:var(--ink3);stroke:var(--accL);stroke-width:1.5}
 .scene .peer{fill:rgba(var(--boner),.04);stroke:rgba(var(--boner),.42);stroke-width:1.1}
 .scene .tag{fill:var(--ink2);stroke:rgba(var(--boner),.6);stroke-width:1.2}
@@ -1710,7 +1710,7 @@ function scene(){
 
   /* step 1: the sweep line crossing the fan; the acquisition note */
   g+='<g id="s1"><path class="swp" id="swp" d="M300 140L300 490"/><path class="wav" d="'+arc(USF.r0+14,USF.A0+8,USF.A1-8)+'"/><path class="wav" d="'+arc(USF.r0+28,USF.A0+12,USF.A1-12)+'"/>';
-  g+='<path class="ldr" d="M340 30H500L540 70H700"/><text class="a" x="700" y="58" text-anchor="end">'+(mob?'HANDS-FREE':'MANIPULATION-FREE')+'</text><text class="fq" x="700" y="94" text-anchor="end">'+(mob?'ONE PASS':'ULTRAFAST · ONE PASS')+'</text></g>';
+  g+='<path class="ldr" d="M340 30H'+(mob?450:500)+'L'+(mob?490:540)+' 70H700"/><text class="a" x="700" y="58" text-anchor="end">'+(mob?'HANDS-FREE':'MANIPULATION-FREE')+'</text><text class="fq" x="700" y="94" text-anchor="end">'+(mob?'ONE PASS':'ULTRAFAST · ONE PASS')+'</text></g>';
 
   /* step 2: calipers on the larger follicles, and the selected planes stacked into a volume */
   g+='<g id="s2">';
@@ -1723,7 +1723,7 @@ function scene(){
   [[644,230,7],[662,240,9],[670,220,5]].forEach(function(c){g+='<circle class="pfol2" cx="'+c[0]+'" cy="'+c[1]+'" r="'+c[2]+'"/>'});
   g+='<path class="pbar" d="M616 286H694M616 304H676M616 322H686"/>';
   g+='<path class="lnk" id="lnk" d="M710 250C770 250 772 452 704 460H572"/><circle class="node" cx="560" cy="460" r="9"/>';
-  g+='<path class="ldr" d="M424 300C480 300 540 262 598 256"/><text class="a" x="'+(mob?560:556)+'" y="500" text-anchor="middle">'+(mob?'HER CLINIC':'HER MEDICAL TEAM')+'</text></g>';
+  g+='<path class="ldr" d="M424 300C480 300 540 262 598 256"/><text class="a" x="'+(mob?560:556)+'" y="'+(mob?516:500)+'" text-anchor="middle">'+(mob?'HER CLINIC':'HER MEDICAL TEAM')+'</text></g>';
   g+='</svg>';
   return g;
 }
@@ -1767,8 +1767,9 @@ function homeScroll(view){
   if(RM){draw(.98,1);return}
   var tl=gsap.timeline();tl.to({},{duration:1});
   var fx=StoryFX({section:sec,figs:[],steps:steps});
-  tl.eventCallback("onUpdate",function(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p,pre.v)});
-  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+  function stUpd(){if(!prog.isConnected)return;var p=tl.progress();lastP=p;prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);draw(p,pre.v)}
+  tl.eventCallback("onUpdate",stUpd);
+  ScrollTrigger.create({trigger:sec,start:"top top",end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,scrub:.6,anticipatePin:1,invalidateOnRefresh:true,onRefresh:function(st){tl.progress(st.progress);stUpd()}});
 }
 
 /* ================= HEADER ================= */

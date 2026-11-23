@@ -527,6 +527,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .ftr{background:var(--deep)}
 .ftr .fcv{opacity:.5}
 @media (max-width:860px){.ftr .fcv{height:30%}}
+/* DR: on phones the footer molecule echo would sit under the wordmark and legal lines, so it is dropped there */@media (max-width:600px){.ftr .fcv{display:none!important}}
 .ps-sheet{background:var(--bone);color:var(--ink)}
 .ps-body .role{color:var(--stoneD)}.ps-body .lab{color:var(--accD)}
 .ps .btn{color:var(--ink);border-color:rgba(var(--inkr),.5)}
@@ -786,6 +787,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .pfr li:hover .pn h3{color:var(--accL);transform:translateX(6px)}
 
 .hcap sup{font-size:.7em;line-height:0}
+.hcap{transition:filter .25s ease}html.hscroll .hcap{filter:opacity(0)}
 .cta .act .btn.solid{text-transform:none;letter-spacing:.02em}
 .tm .tn{min-width:0;font-family:var(--sans)}
 #pipeline .bk{margin-top:clamp(48px,5vw,76px)}
@@ -1734,7 +1736,7 @@ function scene(){
   g+='</g>';
   /* labels, one set per step */
   var t0=PCS.T.filter(function(t){return t.ang===-145})[0],tb=PCS.T.filter(function(t){return t.ang===-65})[0];
-  g+='<g id="lb1"><text class="a" x="60" y="'+(mob?96:110)+'">'+(mob?'TAGGED PROTEIN':'TAGGED TARGET PROTEIN')+'</text><path class="ldr" d="M120 '+(mob?110:120)+'L'+f(t0.p[0]-6)+' '+f(t0.p[1]-18)+'"/>'+
+  g+='<g id="lb1"><text class="a" x="60" y="'+(mob?96:110)+'">'+(mob?'TAGGED PROTEIN':'TAGGED TARGET PROTEIN')+'</text><path class="ldr" d="M120 '+(mob?110:146)+'L'+f(t0.p[0]-6)+' '+f(t0.p[1]-18)+'"/>'+
      (mob?'':'<text class="t" x="60" y="134">BINDS THE PARTNER ON THE RESIN</text>')+'</g>';
   g+='<g id="lb2"><text class="a" x="400" y="'+(mob?490:482)+'" text-anchor="middle">'+(mob?'IMPURITIES OUT':'WASH · IMPURITIES OUT')+'</text></g>';
   g+='<g id="lb3"><text class="a" x="60" y="'+(mob?96:110)+'">'+(mob?'TAGLESS PROTEIN':'pH SHIFT · TAGLESS PROTEIN ELUTES')+'</text>'+(mob?'':'<text class="t" x="60" y="134">DOWN AND OUT OF THE COLUMN</text>')+
@@ -1746,13 +1748,17 @@ function storyDraw(svg){
   var E={base:dl("#scBase .sD"),fade:$$("#scBase text, #scBase .stp, #scBase .cp",svg),mv:$("#scMove",svg),fl:$(".fl",svg),
     im:PCS.IMP.map(function(m,j){return $("#im"+j,svg)}),tp:PCS.T.map(function(t,k){var g=$("#tp"+k,svg);return {g:g,pr:$(".pb",g),tg:$(".tgg",g),sp:$(".sp",g)}}),
     l1:$("#lb1",svg),l2:$("#lb2",svg),l3:$("#lb3",svg)};
-  var lastB=-1;
+  var lastB=-1,LB=null,LO=[0,0,0];
+  /* label boxes (user units, padded): a moving protein or impurity fades while it passes behind a visible label, so no text ever sits on a shape */
+  function lbox(){LB=[E.l1,E.l2,E.l3].map(function(g){var bb=null;$$("text",g).forEach(function(t){var q=t.getBBox();if(!q.width)return;bb=bb?[Math.min(bb[0],q.x),Math.min(bb[1],q.y),Math.max(bb[2],q.x+q.width),Math.max(bb[3],q.y+q.height)]:[q.x,q.y,q.x+q.width,q.y+q.height]});return bb})}
+  function clear(x,y){var v=1;if(!LB)lbox();LB.forEach(function(bb,i){if(bb&&LO[i]>0&&x>bb[0]-30&&x<bb[2]+30&&y>bb[1]-30&&y<bb[3]+30)v=Math.min(v,1-LO[i])});return v}
   function draw(list,v){list.forEach(function(a){a[0].style.strokeDashoffset=(a[1]*(1-v)).toFixed(1)})}
   function op(el,v){el.style.opacity=Math.max(0,Math.min(1,v)).toFixed(3)}
   function tr(el,x,y){el.setAttribute("transform","translate("+x.toFixed(1)+" "+y.toFixed(1)+")")}
   return function(p,b){
     if(!svg.isConnected)return;
     if(b!==lastB){lastB=b;draw(E.base,b);E.fade.forEach(function(el){el.style.opacity=b.toFixed(3)});op(E.mv,b)}
+    LO=[b*seg(p,.1,.18)*(1-seg(p,.28,.34)),b*seg(p,.38,.46)*(1-seg(p,.6,.66)),b*seg(p,.72,.8)];
     /* step 1: tagged targets flow in from the top and dock, in order */
     PCS.T.forEach(function(t,k){var o=E.tp[k],a=seg(p,.02+t.j*.014,.15+t.j*.014),
       rel=seg(p,.68+t.j*.008,.9+t.j*.008),
@@ -1763,13 +1769,14 @@ function storyDraw(svg){
       /* the protein sits beyond its tag; on release it drops away, tagless, and the tag stays */
       var px=x+t.u[0]*26+t.u[0]*14*rel,py=y+t.u[1]*26+rel*420;
       tr(o.pr,px,py);tr(o.sp,x+t.u[0]*12,y+t.u[1]*12);
-      op(o.tg,b*Math.min(1,a*3));op(o.pr,b*Math.min(1,a*3)*(1-seg(rel,.55,1)));
+      var cv=a<1?Math.min(clear(x,y),clear(px,py)):1;
+      op(o.tg,b*Math.min(1,a*3)*cv);op(o.pr,b*Math.min(1,a*3)*(1-seg(rel,.55,1))*(a<1?cv:clear(px,py)));
       var s0=.68+t.j*.008,sk=seg(p,s0,s0+.04)*(1-seg(p,s0+.06,s0+.12));op(o.sp,b*sk);o.sp.setAttribute("r",(4+10*seg(p,s0,s0+.12)).toFixed(1))});
     /* impurities pass through during capture and are washed out */
-    PCS.IMP.forEach(function(m,j){var q=Math.max(0,Math.min(1,(p-.01-j*.04)/.5)),y=-40+q*660;tr(E.im[j],m.x+8*Math.sin(q*9+j),y);op(E.im[j],b*(q>0&&q<1?1:0)*seg(q,.04,.12)*(1-seg(q,.72,.86)))});
+    PCS.IMP.forEach(function(m,j){var q=Math.max(0,Math.min(1,(p-.01-j*.04)/.5)),y=-40+q*660;var ix=m.x+8*Math.sin(q*9+j);tr(E.im[j],ix,y);op(E.im[j],b*(q>0&&q<1?1:0)*seg(q,.04,.12)*(1-seg(q,.72,.86))*clear(ix,y))});
     /* buffer flow during the wash */
     op(E.fl,b*seg(p,.3,.4)*(1-seg(p,.6,.68))*.9);E.fl.style.strokeDashoffset=(-p*900).toFixed(1);
-    op(E.l1,b*seg(p,.1,.18)*(1-seg(p,.28,.34)));op(E.l2,b*seg(p,.38,.46)*(1-seg(p,.6,.66)));op(E.l3,b*seg(p,.72,.8));
+    op(E.l1,LO[0]);op(E.l2,LO[1]);op(E.l3,LO[2]);
   };
 }/*</R:story>*/
 
@@ -2026,5 +2033,6 @@ function preload(){
 var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
 })();
 </script>
+<script>/* the hero caption fades as soon as the page scrolls, so it never crosses the parallaxing render */(function(){var on=false;function u(){var v=scrollY>24;if(v!==on){on=v;document.documentElement.classList.toggle("hscroll",v)}}addEventListener("scroll",u,{passive:true});u()})();</script>
 </body>
 </html>

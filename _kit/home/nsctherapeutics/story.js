@@ -43,7 +43,7 @@ function storyScene(o){
       (mob?'':'<text class="t o" x="'+q[0]+'" y="468" text-anchor="middle">'+q[1]+'</text><text class="t q" x="'+q[0]+'" y="486" text-anchor="middle">'+q[2]+'</text>')+'</g>'});g+='</g>';
   if(!mob){
     g+='<g id="lPre"><path class="ld" d="M200 150L170 150"/><text class="t" x="162" y="146" text-anchor="end">CHOLINERGIC</text><text class="t q" x="162" y="162" text-anchor="end">TERMINAL</text></g>';
-    g+='<g id="lRc"><path class="ld" d="M524 '+f1(memAt(504)+3)+'L586 '+f1(memAt(504)+3)+'"/><text class="t" x="594" y="'+f1(memAt(504)-1)+'">M1</text><text class="t q" x="594" y="'+f1(memAt(504)+15)+'">RECEPTORS</text></g>';
+    g+='<g id="lRc"><path class="ld" d="M522 '+f1(memAt(504)-16)+'L586 274"/><text class="t" x="594" y="266">M1</text><text class="t q" x="594" y="282">RECEPTORS</text></g>';
     g+='<g id="lNsc"><text class="t" x="640" y="236">NSC001</text></g>';
   }else{g+='<g id="lPre"></g><g id="lRc"></g><g id="lNsc"></g>'}
   var ly=SCH-6,lx=mob?96:80;

@@ -614,6 +614,43 @@ em{font-style:normal}
 .thanks svg circle{stroke:var(--blue)}
 .ul::after{background:currentColor}
 .ps-body .src a,.refs a{color:var(--accD)}
+
+/* ===== v2 (client, 2026-11-22): calmer type scale, solid accents (no clipped gradients), photo hero ===== */
+.d1 em,.d2 em,.d3 em,.cta .big em,.xt .t em,.mani .txt em,.mani .txt em .w,#pre .wm em,
+.dark .d1 em,.dark .d2 em,.dark .d3 em,.dark2 .d1 em,.dark2 .d2 em,.dark2 .d3 em{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#2fd6cb!important;-webkit-text-fill-color:#2fd6cb!important}
+.d1,.d2,.d3,.hero-h,.cta .big,.xt .t{font-weight:600}
+.step h3,.pl3 h3,.addr h3,.ps-body h2,.prow h3,.stat .v,.mani .txt{font-weight:600}
+.d1{font-size:clamp(38px,4.9vw,84px);letter-spacing:-.026em}
+.hero-h{font-size:clamp(36px,4.3vw,64px);line-height:1.04;letter-spacing:-.028em}
+.d2{font-size:clamp(32px,3.5vw,58px);letter-spacing:-.024em}
+.d3{font-size:clamp(26px,2.4vw,40px);letter-spacing:-.02em}
+.lede{font-size:clamp(18px,1.45vw,23px)}
+.mani .txt{font-size:clamp(24px,2.35vw,40px);line-height:1.2;letter-spacing:-.018em}
+.stat .v{font-size:clamp(32px,2.9vw,50px)}
+.step h3{font-size:clamp(21px,1.75vw,28px)}
+.prow h3{font-size:clamp(20px,1.6vw,26px)}
+.pcard h3{font-size:clamp(19px,1.45vw,23px)}
+.row-a h3{font-size:clamp(17px,1.35vw,22px)}
+.cta .big{font-size:clamp(40px,5.2vw,90px)}
+.pl3 h3{font-size:clamp(21px,1.7vw,28px)}
+.addr h3{font-size:clamp(24px,2.1vw,34px)}
+.ps-body h2{font-size:clamp(28px,2.6vw,40px)}
+.nav a.nl{font-size:12px;font-weight:500;letter-spacing:.12em;color:rgba(242,244,248,.78);transition:color .2s}
+.nav a.nl:hover,.nav a.nl[aria-current="page"]{color:var(--ink)}
+.hero .inner{max-width:min(600px,45%)}
+.hero-foot .s{font-size:16px;max-width:44ch}
+.fieldbg{background:radial-gradient(50% 60% at 74% 52%,#0a0e1d 0%,#07080f 55%,#06070b 85%)}
+@media (max-width:860px){
+  .hero-h{font-size:clamp(34px,9.6vw,52px)}
+  .hero .inner{max-width:none}
+}
+
+.hero-art{position:absolute;z-index:0;pointer-events:none;left:calc(var(--side) + (100% - 2 * var(--side)) * .73);top:53%;width:min(calc((100% - 2 * var(--side)) * .66),1040px);translate:-50% -50%}
+.hero-art img{display:block;width:100%;height:auto;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 52%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 52%,#000 62%,rgba(0,0,0,.35) 86%,transparent 100%);animation:heroDrift 30s ease-in-out infinite alternate;will-change:transform}
+@keyframes heroDrift{from{transform:scale(1) translateX(0)}to{transform:scale(1.035) translateX(-.8%)}}
+@media (prefers-reduced-motion:reduce){.hero-art img{animation:none}}
+@media (max-width:1100px){.hero-art{left:75%;top:44%;width:60%}}
+@media (max-width:860px){.hero-art{left:50%;top:calc(64px + 15svh);width:min(112%,620px)}}
 </style>
 </head>
 <body>
@@ -982,13 +1019,14 @@ function fig(src,cap,alt){return '<figure class="band"><img src="'+src+'" alt="'
 function vHome(){
   return ''+
   '<section class="hero light" id="hero" data-field data-theme="light">'+
+   '<div class="hero-art" aria-hidden="true"><img src="hero.webp" alt="" width="1800" height="1050" decoding="async" fetchpriority="high"></div>'+
    '<div class="inner">'+
    '<span class="lab eyebrow" data-r>Bioinspired tough adhesives<span style="white-space:nowrap"> · Boston</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Sealing tissue</span><span class="l">that is <em>wet,</em></span><span class="l">soft and moving.</span></h1><i class="hrule" data-r aria-hidden="true"></i>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Sealing tissue</span><span class="l">that is <em>wet,</em></span><span class="l">soft and moving.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Limax builds hydrogel adhesives modeled on slug mucus: a dual polymer network that entangles with wet tissue instead of reacting with it, holding 100 to 1,000 times more strongly than existing sealants.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">How it bonds '+ARR+'</a><a class="btn" href="#/applications">Applications</a></div></div>'+
    '</div>'+
-   '<div class="hero-key lab" data-r aria-hidden="true"><span><i></i>Wet tissue surface</span><span><i class="s"></i>Chitosan chains bridging the water</span><span><i class="g"></i>Dissipative network, taking the load</span></div>'+
+   
   '</section>'+
 
   '<section class="sec mani light" data-theme="light"><div class="wrap">'+
@@ -1191,7 +1229,7 @@ function footerFX(){
     var t=RM?9:(performance.now()-t0)/1000;
     var bb=field.bb,S=Math.min(W*.82/bb.w,H*.84/bb.h);
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
-    field.scene(c,S,W/2,H*.5,0,t,.5);
+    field.scene(c,S,W/2,H*.5,0,t,.28);
     if(!shown){shown=true;requestAnimationFrame(function(){cv.classList.add("ready")})}
   }
   function loop(){if(!alive)return;if(vis)draw();raf=requestAnimationFrame(loop)}
@@ -1220,147 +1258,51 @@ var RM=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 gsap.registerPlugin(ScrollTrigger,SplitText,CustomEase);
 CustomEase.create("flow","0.65,0.05,0.2,1");
 CustomEase.create("silk","0.22,1,0.36,1");
-/* rebrand: gradient accent words keep their gradient while split into moving lines/words/chars
-   (background-clip:text on the <em> cannot paint through transformed children, so each piece gets its own slice) */
-(function(){var _c=SplitText.create;
-  var GT="linear-gradient(90deg,#0fc7bd 0%,#00b7e0 22%,#1479e6 50%,#7a5cf0 76%,#c04ae8 100%)",GD="linear-gradient(90deg,#0fc7bd,#00b7e0 40%,#4495d1 70%,#d96beb)";
-  SplitText.create=function(t,o){var s=_c.apply(SplitText,arguments);
-    try{(s.elements||[]).forEach(function(el){el.querySelectorAll("em").forEach(function(em){
-      var er=em.getBoundingClientRect(),g=em.closest(".dark,.dark2")?GD:GT;
-      em.querySelectorAll("div,span").forEach(function(p){if(p.querySelector("div,span"))return;var r=p.getBoundingClientRect();
-        p.style.backgroundImage=g;p.style.backgroundSize=Math.max(1,er.width).toFixed(1)+"px 100%";p.style.backgroundPosition=(er.left-r.left).toFixed(1)+"px 0";
-        p.style.webkitBackgroundClip="text";p.style.backgroundClip="text";p.style.color="transparent";p.style.webkitTextFillColor="transparent"})})})}catch(e){}
-    return s};
-})();
+/* accent words are a solid brand teal: background-clip:text on split, transformed pieces flickered in Safari */
 var lenis=null;
 if(!RM&&window.Lenis){lenis=new Lenis({lerp:0.09,smoothWheel:true,wheelMultiplier:1});lenis.on("scroll",ScrollTrigger.update);gsap.ticker.add(function(t){lenis.raf(t*1000)});gsap.ticker.lagSmoothing(120,33)}
 var MOBILE=function(){return innerWidth<861};
 
-/* ============ HERO FIELD: the dual network bonding to wet tissue, bond by bond ============ */
+/* ============ HERO FIELD: a crafted render of the product (HOME_BRIEF 2c): a Limax adhesive hydrogel patch peeling off a
+   wet bench, its polymer network glowing in the brand gradient (render: _kit/assets/limax/render_hero.js -> hero.webp).
+   Drawn into the fixed #field canvas with a long radial feather (no box edge, DP/DJ) and a slow drift; no pointer
+   parallax (CZ). Same API as before: start/stop/once/intro/setDim/snapDim/scene/bb. ============ */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,W=0,H=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var m=[0,0],mT=[0,0],IN={v:1},dim=1,dimT=1;
-  function R(i,k){var x=Math.sin(i*91.7+k*47.3)*43758.5453;return x-Math.floor(x)}
-  /* world: a gel sheet above, a wet tissue surface below, chains bridging between them */
-  var X0=0,X1=520,YG=-150,YB=0;              /* gel from YG to the interface at YB */
-  var NODES=[],EDGES=[],COLS=15,ROWS=5;
-  (function(){
-    for(var r=0;r<ROWS;r++)for(var q=0;q<COLS;q++){
-      var x=X0+q*(X1-X0)/(COLS-1)+(r%2?(X1-X0)/(COLS-1)/2:0);
-      var y=YG+r*(YB-YG-18)/(ROWS-1);
-      NODES.push({x:x,y:y,ox:x,oy:y,q:q,r:r,j:R(q+r*7,1)});
-    }
-    function at(q,r){return r<0||r>=ROWS||q<0||q>=COLS?-1:r*COLS+q}
-    for(var r2=0;r2<ROWS;r2++)for(var q2=0;q2<COLS;q2++){
-      var a=at(q2,r2);
-      [[1,0],[0,1],[(r2%2?1:-1),1]].forEach(function(d){var b=at(q2+d[0],r2+d[1]);if(b>=0)EDGES.push([a,b])});
-    }
-  })();
-  /* chitosan chains: sinuous strands threading the sheet and reaching the tissue */
-  var CHAINS=[];
-  for(var ci=0;ci<11;ci++){
-    var x=X0+10+ci*(X1-X0-20)/10;
-    CHAINS.push({x:x,ph:R(ci,3),amp:7+R(ci,4)*7,d:x});
-  }
-  /* the tissue surface */
-  var TIS=[];
-  for(var ti=0;ti<30;ti++){TIS.push({x:X0+ti*(X1-X0)/29,y:YB+6+Math.sin(ti*1.3)*2.2+R(ti,5)*3});}
-  var BB={x:(X0+X1)/2,y:(YG+YB+120)/2,w:X1-X0,h:(YB+120)-YG};
+  var IN={v:1},dim=1,dimT=1,ok=false,art=null;
+  var BB={x:0,y:0,w:1800,h:1050};
+  var img=new Image();img.decoding="async";
+  img.onload=function(){
+    /* pre-feather once: an elliptical alpha falloff that reaches zero well inside the frame */
+    art=document.createElement("canvas");art.width=img.naturalWidth;art.height=img.naturalHeight;BB.w=art.width;BB.h=art.height;
+    var a=art.getContext("2d");a.drawImage(img,0,0);a.globalCompositeOperation="destination-in";
+    a.save();a.translate(art.width*.5,art.height*.52);a.scale(1,art.height/art.width);
+    var g=a.createRadialGradient(0,0,0,0,0,art.width*.5);g.addColorStop(0,"rgba(0,0,0,1)");g.addColorStop(.62,"rgba(0,0,0,1)");g.addColorStop(.86,"rgba(0,0,0,.35)");g.addColorStop(1,"rgba(0,0,0,0)");
+    a.fillStyle=g;a.fillRect(-art.width,-art.width,art.width*2,art.width*2);a.restore();
+    ok=true;frame(true)};
+  img.src="hero.webp";
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);if(!running)frame(true)}
   function layout(){
-    var gut=Math.max(16,Math.min(72,W*.042)),side=Math.max(gut,(W-1320)/2),right=W-side,cont=W-side*2;
-    if(W<861)return {cx:.5,cy:.25,tw:.86,th:.26,right:0};
-    if(W<1100)return {cx:.765,cy:.4,tw:.39,th:.34,right:0};
-    return {cx:0,cy:.5,tw:cont*.42/W,th:.6,right:right-6};
+    var gut=Math.max(16,Math.min(72,W*.042)),side=Math.max(gut,(W-1320)/2),cont=W-side*2;
+    if(W<861)return {x:W*.5,y:H*.24,w:Math.min(W*1.12,620)};
+    if(W<1100)return {x:W*.75,y:H*.44,w:W*.6};
+    return {x:side+cont*.73,y:H*.53,w:Math.min(cont*.66,1040)};
   }
-  function cl(x){return x<0?0:x>1?1:x}
   function scene(c,S,ox,oy,rot,t,al){
-    c.save();c.translate(ox,oy);if(rot)c.rotate(rot);c.scale(S,S);c.translate(-BB.x,-BB.y);
-    c.lineJoin="round";c.lineCap="round";
-    var px=function(n){return n/S};
-    /* the bond sweeps along the interface, then the joint takes load and holds */
-    var CYC=12,ph=(t%CYC)/CYC;
-    var front=X0-60+cl(ph/.42)*(X1-X0+120);
-    var load=cl((ph-.5)/.18)*(1-cl((ph-.88)/.1));
-    var G=c.createLinearGradient(X0,YG,X1,YB+40);
-    G.addColorStop(0,"#0fc7bd");G.addColorStop(.22,"#00b7e0");G.addColorStop(.5,"#1479e6");G.addColorStop(.77,"#5254e8");G.addColorStop(1,"#b211e1");
-    /* --- the wet film --- */
-    c.lineWidth=px(1.5);c.strokeStyle="rgba(0,183,224,"+(.5*al).toFixed(3)+")";
-    c.beginPath();TIS.forEach(function(q,i){var y=q.y-4+Math.sin(t*.7+i*.5)*.6;i?c.lineTo(q.x,y):c.moveTo(q.x,y)});c.stroke();
-    /* --- tissue below --- */
-    c.lineWidth=px(1.4);c.strokeStyle="rgba(150,160,182,"+(.46*al).toFixed(3)+")";
-    c.beginPath();TIS.forEach(function(q,i){i?c.lineTo(q.x,q.y):c.moveTo(q.x,q.y)});c.stroke();
-    c.lineWidth=px(1);
-    for(var row=0;row<3;row++)for(var k=0;k<9;k++){
-      var cx=X0+22+k*(X1-X0-44)/8+(row%2?18:0),cy=YB+34+row*34+(k%2?10:0);
-      c.strokeStyle="rgba(150,160,182,"+((.2-row*.05)*al).toFixed(3)+")";
-      c.beginPath();c.ellipse(cx,cy,24,15,0,0,6.283);c.stroke();
-    }
-    /* --- gel sheet: the stiff network, stretched where the joint is loaded --- */
-    for(var i=0;i<NODES.length;i++){var n=NODES[i];
-      var d=cl((front-n.ox)/40);
-      var stretch=load*d*(1-n.r/(ROWS-1));
-      n.x=n.ox+Math.sin(t*.5+n.j*6)*1.1;
-      n.y=n.oy-stretch*16+Math.cos(t*.4+n.j*5)*1.1;
-    }
-    c.lineWidth=px(1.3);c.strokeStyle=G;
-    for(i=0;i<EDGES.length;i++){var a=NODES[EDGES[i][0]],b=NODES[EDGES[i][1]];
-      var lit=cl((front-(a.ox+b.ox)/2)/40);
-      c.globalAlpha=(.36+.5*lit)*al;
-      c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();
-    }
-    /* molecular nodes: small beads, a few larger glowing ones */
-    c.fillStyle=G;
-    for(i=0;i<NODES.length;i++){var nd=NODES[i],big=nd.j>.8,lt=cl((front-nd.ox)/40);
-      c.globalAlpha=(.5+.5*lt)*al;
-      if(big){c.shadowColor="rgba(82,84,232,"+(.55*lt*al).toFixed(3)+")";c.shadowBlur=14}
-      c.beginPath();c.arc(nd.x,nd.y,px(big?5.2:2.3),0,6.283);c.fill();
-      if(big){c.shadowBlur=0;c.fillStyle="rgba(255,255,255,"+(.75*al).toFixed(3)+")";c.beginPath();c.arc(nd.x-px(1.5),nd.y-px(1.6),px(1.6),0,6.283);c.fill();c.fillStyle=G}
-    }
-    c.globalAlpha=1;c.shadowBlur=0;
-    /* --- the chitosan chains: thread the sheet, then anchor into the tissue --- */
-    for(i=0;i<CHAINS.length;i++){var ch=CHAINS[i];
-      var bond=cl((front-ch.d)/36);
-      c.lineWidth=px(2.1);
-      c.strokeStyle=G;c.globalAlpha=(.4+.55*bond)*al;
-      c.beginPath();
-      var yEnd=YB+(bond>.5?10+bond*12:2);
-      for(var s=0;s<=26;s++){
-        var u=s/26,y=YG+6+u*(yEnd-YG-6);
-        var x=ch.x+Math.sin(u*7.2+ch.ph*6.283+t*.35)*ch.amp*(1-u*.45);
-        s?c.lineTo(x,y):c.moveTo(x,y);
-      }
-      c.stroke();
-      if(bond>.1){
-        c.globalAlpha=bond*al;c.fillStyle=G;c.shadowColor="rgba(82,84,232,.5)";c.shadowBlur=10;
-        c.beginPath();c.arc(ch.x+Math.sin(7.2+ch.ph*6.283+t*.35)*ch.amp*.55,yEnd,px(3.6),0,6.283);c.fill();c.shadowBlur=0;
-      }
-      c.globalAlpha=1;
-    }
-    /* --- the advancing bond line --- */
-    if(ph<.46){
-      c.strokeStyle="rgba(20,121,230,"+(.5*al).toFixed(3)+")";c.lineWidth=px(2);
-      c.beginPath();c.moveTo(front,YG+4);c.lineTo(front,YB+4);c.stroke();
-    }
-    c.restore();
+    if(!ok||al<=0)return;
+    var k=1+.035*(.5-.5*Math.cos(t*.11));              /* slow breathing zoom, ~57s period */
+    var w=BB.w*S*k,h=BB.h*S*k,dx=Math.sin(t*.07)*BB.w*S*.008;
+    c.save();c.globalAlpha=Math.min(1,al);c.imageSmoothingQuality="high";
+    c.drawImage(art,ox-w/2+dx,oy-h/2,w,h);c.restore();
   }
   function frame(once){
-    var t=RM?16:(performance.now()-t0)/1000;
-    m[0]+=(mT[0]-m[0])*.05;m[1]+=(mT[1]-m[1])*.05;dim+=(dimT-dim)*.08;
-    var L=layout(),S=Math.min(W*L.tw/BB.w,H*L.th/BB.h);
-    var cxp=L.right?(L.right-BB.w*S/2):W*L.cx;
-    var e=IN.v*IN.v*(3-2*IN.v);
-    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);
-    scene(c,S,cxp+m[0]*20,H*L.cy+m[1]*14,0,t,dim*e);
-    if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
-    if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
+    c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,W,H);   /* hero art is now an <img> in the hero (.hero-art) */
   }
-  function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
+  function start(){}
   function stop(){running=false;cancelAnimationFrame(raf)}
   addEventListener("resize",size);size();
-  addEventListener("pointermove",function(e){mT[0]=(e.clientX/innerWidth-.5);mT[1]=(e.clientY/innerHeight-.5)},{passive:true});
   return {start:start,stop:stop,once:function(){frame(true)},finish:function(){},
-   intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},
+   intro:function(d){var el=document.querySelector(".hero-art");if(!el)return;if(RM||d<.05){gsap.set(el,{opacity:1,y:0});return}gsap.fromTo(el,{opacity:0,y:26},{opacity:1,y:0,duration:d,ease:"power2.out"})},
    setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},scene:scene,bb:BB};
 })();
 
@@ -1370,175 +1312,172 @@ function observeField(){fieldIO.disconnect();$$("[data-field]").forEach(function
 document.addEventListener("visibilitychange",function(){if(document.hidden)field.stop();else chkField()});
 function fieldScroll(){var y=window.scrollY,H=innerHeight;var p=Math.max(0,Math.min(1,y/H));field.setDim((curKey==="home"?1:.4)*(1-p*.55))}
 
-/* ============ STORY CANVAS: ONE scene, one moving camera (PRINCIPLES BL) ============ */
+/* ============ STORY CANVAS v2 (client, 2026-11-22): one fixed scene, no camera moves.
+   Gel above, a fluid film, then tissue drawn as a mesh of crossing fibres. Chitosan chains descend from the gel and
+   WEAVE through the tissue mesh, alternating over and under each fibre they cross (knot-diagram crossings), so the
+   entanglement is visible. Step 4: the dissipative cross-links pop while the long strands hold. Labels live only in
+   the clear bands above and below the art (DR3). ============ */
 var story=null;
 function makeStory(cv){
   var c=cv.getContext("2d"),w=0,h=0,dpr=1,p=0,pT=0,alive=true,vis=false,t0=performance.now();
   function R(i,k){var x=Math.sin(i*91.7+k*13.3)*43758.5453;return x-Math.floor(x)}
-  var PAPER="6,7,11",ACC="20,121,230",VIO="82,84,232",DIM="150,160,182",BLOOD="178,17,225",CY="0,183,224";
-  /* ONE world, seen in section: tissue below, a wound at its centre, the gel patch above.
-     The camera crosses the interface, dives into it, then pulls back to the whole patch. */
-  var X0=60,X1=900,SURF=250;                  /* tissue surface line */
-  var WX=480,WW=90;                           /* the wound */
-  var GEL={y0:20,y1:218};                      /* the gel patch above the surface */
-  var ZX=300;                                  /* where the camera dives into the interface */
-  var CAM=[[480,210,900],[380,214,420],[420,236,340],[470,170,430],[480,200,900]];
-  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
   function sm(x){return x*x*(3-2*x)}
   function cl(x){return x<0?0:x>1?1:x}
-  function seg(v,a,b){return cl((v-a)/(b-a))}
-  function cam(){var s=p*4,i0=Math.min(3,Math.floor(s)),fr=s-i0;var f=sm(cl((fr-.24)/.48));var A=CAM[i0],B=CAM[i0+1];
-    return {x:A[0]+(B[0]-A[0])*f,y:A[1]+(B[1]-A[1])*f,span:Math.exp(Math.log(A[2])+(Math.log(B[2])-Math.log(A[2]))*f),i0:i0,f:f}}
-  function w5(C){var o=[0,0,0,0,0];o[C.i0]=1-C.f;o[C.i0+1]=C.f;return o}
-  function surfY(x){return SURF+Math.sin(x*.021)*5+Math.sin(x*.053)*2.4}
+  function seg(v,a,b){return sm(cl((v-a)/(b-a)))}
+  var WW=1000,WH=720,GH,GB0,GB1,TS,TB,FIBS,CELLS,CH,NC,DEPTH,XS,STR,RUNG,DROPS;
+  var HALO="rgb(17,20,30)",BG="#0a0d16";       /* tissue-band ground, for over/under gaps */
+  var CY="0,183,224",FIB="150,160,182";
+  function build(k){
+    GH=Math.round(170*k);GB0=Math.round(44+GH+36*k);GB1=Math.round(GB0+106*k);TS=Math.round(GB1+74*k);TB=Math.round(250*k);WH=TS+TB+44;
+  /* ---- tissue: long fibres crossing each other ---- */
+  FIBS=[];var NF=Math.round(9+5*k);
+  for(var f=0;f<NF;f++){
+    var y0=TS+30+R(f,1)*(TB-60),a1=(14+R(f,2)*26)*k,fr=.006+R(f,3)*.009,ph=R(f,4)*6.28,tilt=(R(f,5)-.5)*.16,pts=[];
+    for(var x=-20;x<=WW+20;x+=12){var y=y0+tilt*(x-500)+a1*Math.sin(x*fr+ph)+6*Math.sin(x*.031+ph*2);
+      pts.push([x,Math.max(TS+16,Math.min(TS+TB-14,y))])}
+    FIBS.push(pts);
+  }
+  CELLS=[];for(var ce=0;ce<9;ce++)CELLS.push([60+ce*108+R(ce,7)*30,TS+50+R(ce,8)*(TB-100),20+R(ce,9)*10]);
+  /* ---- chains: rest geometry measured from the settled gel bottom GB1 ---- */
+  CH=[];NC=13;DEPTH=TS+TB-22-GB1;
+  for(var kk=0;kk<NC;kk++){
+    var x0=118+kk*(764/(NC-1))+(R(kk,11)-.5)*20,p1=R(kk,12)*6.28,p2=R(kk,13)*6.28,a=16+R(kk,14)*12,cp=[];
+    for(var s=0;s<=70;s++){var d=s/70*DEPTH;cp.push([x0+a*Math.sin(d*.05/k+p1)+8*Math.sin(d*.13/k+p2),GB1+d])}
+    CH.push(cp);
+  }
+  /* ---- crossings between chains and fibres, alternating over/under along each chain ---- */
+  function ix(a,b,c2,d){var r=[b[0]-a[0],b[1]-a[1]],s2=[d[0]-c2[0],d[1]-c2[1]],den=r[0]*s2[1]-r[1]*s2[0];if(Math.abs(den)<1e-9)return null;
+    var u=((c2[0]-a[0])*s2[1]-(c2[1]-a[1])*s2[0])/den,v=((c2[0]-a[0])*r[1]-(c2[1]-a[1])*r[0])/den;
+    return (u>=0&&u<=1&&v>=0&&v<=1)?[a[0]+u*r[0],a[1]+u*r[1],u]:null}
+  XS=[];
+  CH.forEach(function(cp,ci){var list=[];
+    for(var i=0;i<cp.length-1;i++)FIBS.forEach(function(fp,fi){for(var j=0;j<fp.length-1;j++){
+      if(Math.max(fp[j][1],fp[j+1][1])<Math.min(cp[i][1],cp[i+1][1])-1||Math.min(fp[j][1],fp[j+1][1])>Math.max(cp[i][1],cp[i+1][1])+1)continue;
+      var q=ix(cp[i],cp[i+1],fp[j],fp[j+1]);if(q)list.push({x:q[0],y:q[1],ci:ci,fi:fi,fj:j,d:q[1]-GB1})}});
+    list.sort(function(a2,b2){return a2.y-b2.y});
+    list.forEach(function(o,n){o.over=(n+ci)%2===0;XS.push(o)});
+  });
+  /* ---- gel: long stretchy strands and short sacrificial cross-links between them ---- */
+  STR=5;RUNG=[];
+  for(var rr=0;rr<STR-1;rr++)for(var q2=0;q2<16;q2++)RUNG.push({row:rr,x:50+q2*58+R(q2,rr+20)*30,brk:R(q2,rr+40)});
+  DROPS=[];for(var dr=0;dr<14;dr++)DROPS.push([40+dr*68+R(dr,30)*30,TS-8-R(dr,31)*18,2.6+R(dr,32)*2.2]);
+
+  }
+  var KB=-1;
+  function size(){var r=cv.getBoundingClientRect();w=r.width;h=r.height;dpr=Math.min(devicePixelRatio||1,2);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
+    var k=w&&h?Math.max(.8,Math.min(1.75,(1000*h/w-88)/636)):1;k=Math.round(k*20)/20;if(k!==KB){KB=k;build(k)}}
   function draw(){
-    p+=(pT-p)*.085;if(Math.abs(pT-p)<.0004)p=pT;
-    var t=RM?10:(performance.now()-t0)/1000;var C=cam(),W=w5(C);
-    var sc=Math.min(w,h*1.25)/C.span;
+    p+=(pT-p)*.09;if(Math.abs(pT-p)<.0004)p=pT;
+    var t=RM?0:(performance.now()-t0)/1000;
+    var sc=Math.min(w/WW,h/WH),ox=(w-WW*sc)/2,oy=(h-WH*sc)/2;
     var px=function(n){return n/sc};
+    var q=p*4;                                           /* 0..4 across the five steps */
+    var settle=seg(q,.25,1),film=1-seg(q,.3,1.05);
+    var reach=18+(TS+4-GB1-18)*seg(q,.35,1.1)+(DEPTH-(TS+4-GB1))*seg(q,1.25,2.1);
+    var tangle=seg(q,1.4,2.2);
+    var load=seg(q,2.3,3)*(1-seg(q,3.35,4));
+    var broken=seg(q,2.45,3.05);
+    var sealed=seg(q,3.3,4);
+    var lift=load*26;                                     /* the gel pulled up under load */
+    var GB=GB0+(GB1-GB0)*settle-lift,GT=GB-GH;
     c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);
-    c.save();c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-C.x,-C.y);
-    c.lineJoin="round";c.lineCap="round";
-    var G=c.createLinearGradient(X0,0,X1,0);
+    c.save();c.translate(ox,oy);c.scale(sc,sc);c.lineJoin="round";c.lineCap="round";
+    var G=c.createLinearGradient(0,0,WW,0);
     G.addColorStop(0,"#0fc7bd");G.addColorStop(.22,"#00b7e0");G.addColorStop(.5,"#1479e6");G.addColorStop(.77,"#5254e8");G.addColorStop(1,"#b211e1");
-    var film=1-seg(p,.22,.42);        /* the fluid film, absorbed by the dry layer */
-    var bridge=seg(p,.2,.42);         /* chains reach the surface */
-    var tangle=seg(p,.42,.62);        /* entanglement at the interface */
-    var load=seg(p,.6,.8);            /* the joint takes load, the sacrificial net breaks */
-    var sealed=seg(p,.78,.95);        /* bleeding stops, the gel degrades */
-    /* ---------- the three layers, as distinct bands, so the section reads at a glance ---------- */
-    var slabA=cl((C.span-190)/210),liftS=(1-bridge)*40;
-    if(slabA>.01){
-      c.fillStyle="rgba(82,84,232,"+(.06*slabA).toFixed(3)+")";
-      c.beginPath();c.rect(X0,GEL.y0-liftS,X1-X0,(GEL.y1-GEL.y0));c.fill();
-      c.lineWidth=px(1.1);c.strokeStyle="rgba("+VIO+","+(.34*slabA).toFixed(3)+")";
-      c.beginPath();c.moveTo(X0,GEL.y0-liftS);c.lineTo(X1,GEL.y0-liftS);
-      c.moveTo(X0,GEL.y1-liftS);c.lineTo(X1,GEL.y1-liftS);c.stroke();
-    }
-    c.fillStyle="rgba(150,160,182,.075)";
-    c.beginPath();c.moveTo(X0,SURF+150);c.lineTo(X0,surfY(X0));
-    for(var bx=X0;bx<=X1;bx+=8){var inWb=Math.abs(bx-WX)<WW/2;
-      c.lineTo(bx,surfY(bx)+(inWb?(1-sealed*.55)*Math.cos((bx-WX)/WW*3.14159)*26:0))}
-    c.lineTo(X1,SURF+150);c.closePath();c.fill();
-    /* ---------- tissue ---------- */
-    c.lineWidth=px(1.6);c.strokeStyle="rgba("+DIM+",.6)";
-    c.beginPath();
-    for(var x=X0;x<=X1;x+=8){
-      var inW=Math.abs(x-WX)<WW/2;
-      var y=surfY(x)+(inW?(1-sealed*.55)*Math.cos((x-WX)/WW*3.14159)*26:0);
-      x===X0?c.moveTo(x,y):c.lineTo(x,y);
-    }
-    c.stroke();
-    c.lineWidth=px(1);c.strokeStyle="rgba("+DIM+",.3)";
-    for(var row=0;row<3;row++)for(var k=0;k<16;k++){var cx=X0+28+k*(X1-X0-56)/15+(row%2?18:0),cy=SURF+42+row*40+(k%2?14:0);
-      if(row===0&&Math.abs(cx-WX)<WW*.6)continue;
-      c.strokeStyle="rgba("+DIM+","+(.3-row*.07).toFixed(2)+")";
-      c.beginPath();c.ellipse(cx,cy,26,16,0,0,6.283);c.stroke()}
-    /* ---------- bleeding from the wound, stopping as the seal forms ---------- */
-    var bleed=(1-sealed)*(1-seg(p,.86,1));
-    if(bleed>.01)for(k=0;k<16;k++){
-      var u=(R(k,7)+t*.3)%1;
-      var bx=WX+(R(k,8)-.5)*WW*.8,by=surfY(WX)+26-u*54;
-      c.fillStyle="rgba("+BLOOD+","+(.8*bleed*(1-u)).toFixed(3)+")";
-      c.beginPath();c.arc(bx,by,px(3.4),0,6.283);c.fill();
-    }
-    /* ---------- the fluid film on the surface ---------- */
+
+    /* ---------- tissue band ---------- */
+    c.fillStyle="rgba("+FIB+",.05)";c.fillRect(0,TS,WW,TB);
+    c.lineWidth=px(1.4);c.strokeStyle="rgba("+FIB+",.55)";
+    c.beginPath();c.moveTo(0,TS);c.lineTo(WW,TS);c.stroke();
+    c.lineWidth=px(1);c.strokeStyle="rgba("+FIB+",.16)";
+    CELLS.forEach(function(e){c.beginPath();c.ellipse(e[0],e[1],e[2]*1.5,e[2],0,0,6.283);c.stroke()});
+    c.lineWidth=px(1.8);c.strokeStyle="rgba("+FIB+",.58)";
+    FIBS.forEach(function(fp){c.beginPath();fp.forEach(function(pt,i){i?c.lineTo(pt[0],pt[1]):c.moveTo(pt[0],pt[1])});c.stroke()});
+
+    /* ---------- fluid film (absorbed as the dry layer lands) ---------- */
     if(film>.01){
-      c.lineWidth=px(3);c.strokeStyle="rgba("+CY+","+(.5*film).toFixed(3)+")";
-      c.beginPath();
-      for(x=X0;x<=X1;x+=8){var y2=surfY(x)-7+Math.sin(t*.8+x*.03)*1.2;x===X0?c.moveTo(x,y2):c.lineTo(x,y2)}
-      c.stroke();
+      c.fillStyle="rgba("+CY+","+(.10*film).toFixed(3)+")";
+      c.beginPath();c.moveTo(0,TS);for(var x=0;x<=WW;x+=10)c.lineTo(x,TS-26+Math.sin(x*.02+t*.8)*3);c.lineTo(WW,TS);c.closePath();c.fill();
+      c.lineWidth=px(1.6);c.strokeStyle="rgba("+CY+","+(.65*film).toFixed(3)+")";
+      c.beginPath();for(x=0;x<=WW;x+=10){var yf=TS-26+Math.sin(x*.02+t*.8)*3;x?c.lineTo(x,yf):c.moveTo(x,yf)}c.stroke();
+      var rise=seg(q,.3,1.05);
+      DROPS.forEach(function(d){var yy=d[1]-rise*(d[1]-GB-6);c.fillStyle="rgba("+CY+","+(.7*film).toFixed(3)+")";
+        c.beginPath();c.arc(d[0],yy,px(d[2]),0,6.283);c.fill()});
     }
-    /* ---------- the gel patch: two interpenetrating networks ---------- */
-    var gelA=cl((C.span-190)/210);
-    if(gelA>.01){
-      c.globalAlpha=gelA;
-      var lift=(1-bridge)*40;
-      /* the dissipative network: a fine lattice that tears under load */
-      c.lineWidth=px(1);
-      for(var r=0;r<5;r++)for(var q=0;q<24;q++){
-        var gx=X0+10+q*(X1-X0-20)/23,gy=GEL.y0+r*(GEL.y1-GEL.y0)/4-lift;
-        var broke=load>.2&&R(q*3+r,9)<load*.55;
-        c.strokeStyle="rgba("+VIO+","+((broke?.1:.42)).toFixed(3)+")";
-        if(q<23){c.beginPath();c.moveTo(gx,gy);c.lineTo(X0+10+(q+1)*(X1-X0-20)/23,gy+(r%2?2:-2));c.stroke()}
-        if(r<4){c.beginPath();c.moveTo(gx,gy);c.lineTo(gx+(r%2?4:-4),gy+(GEL.y1-GEL.y0)/4);c.stroke()}
-      }
-      /* the stretchy network: long chains that keep holding */
-      c.lineWidth=px(2.2);c.strokeStyle=G;c.globalAlpha=gelA*.9;
-      for(var s2=0;s2<5;s2++){
-        c.beginPath();
-        var yb=GEL.y0+16+s2*30-lift;
-        for(x=X0+8;x<=X1-8;x+=10){
-          var yy=yb+Math.sin(x*.035+s2*1.5+t*.25)*(6+load*5);
-          x===X0+8?c.moveTo(x,yy):c.lineTo(x,yy);
-        }
-        c.stroke();
-      }
-      c.globalAlpha=1;
-    }
-    /* ---------- the tissue's own polymer network, visible close up ---------- */
-    if(tangle>.02){
-      c.lineWidth=px(1.6);c.strokeStyle="rgba("+DIM+","+(.78*tangle).toFixed(3)+")";
-      for(k=0;k<110;k++){
-        var tx=X0+k*(X1-X0)/109,ty=surfY(tx)+6+R(k,21)*16;
-        c.beginPath();
-        for(var s4=0;s4<=6;s4++){var u4=s4/6;
-          var qx=tx+u4*16-8,qy=ty+Math.sin(u4*6.283+k)*3.4;
-          s4?c.lineTo(qx,qy):c.moveTo(qx,qy)}
-        c.stroke();
-      }
-    }
-    /* ---------- the interface: chains crossing and entangling ---------- */
-    if(bridge>.01){
-      for(k=0;k<52;k++){
-        var ix=X0+12+k*(X1-X0-24)/51;
-        var top=GEL.y1-(1-bridge)*26-(1-gelA)*230,bot=surfY(ix)+tangle*16;
-        c.lineWidth=px(1.6+1*(1-gelA));
-        c.strokeStyle=G;c.globalAlpha=(.45+.5*tangle)*bridge;
-        c.beginPath();
-        for(var s3=0;s3<=10;s3++){
-          var u3=s3/10,yy2=top+(bot-top)*u3;
-          var xx=ix+Math.sin(u3*6+k*.7+t*.3)*(3+tangle*4);
-          s3?c.lineTo(xx,yy2):c.moveTo(xx,yy2);
-        }
-        c.stroke();
-        if(tangle>.2){c.fillStyle=G;c.globalAlpha=tangle;
-          c.beginPath();c.arc(ix,bot,px(2.6+1.4*(1-gelA)),0,6.283);c.fill()}
-        c.globalAlpha=1;
-      }
-    }
-    /* ---------- the sealed patch over the wound ---------- */
-    if(sealed>.02){
-      c.globalAlpha=sealed;
-      c.lineWidth=px(3);c.strokeStyle=G;
-      c.beginPath();
-      for(x=WX-WW;x<=WX+WW;x+=6){var ys=surfY(x)+4-Math.cos((x-WX)/WW*1.57)*9;x===WX-WW?c.moveTo(x,ys):c.lineTo(x,ys)}
-      c.stroke();
-      c.globalAlpha=1;
-    }
+
+    /* ---------- chains (drawn up to their current reach), then under-crossings on top ---------- */
+    function chainPath(cp){
+      var out=[];for(var i=0;i<cp.length;i++){var d=cp[i][1]-GB1;if(d>reach){
+          if(i){var pr=cp[i-1],dp=pr[1]-GB1,f2=(reach-dp)/(d-dp);out.push(mapPt([pr[0]+(cp[i][0]-pr[0])*f2,GB1+reach]))}break}
+        out.push(mapPt(cp[i]))}
+      return out}
+    function mapPt(pt){                                   /* gel side moves with the gel; tissue side stays anchored */
+      var d=pt[1]-GB1,gap=TS-GB1;
+      if(d>=gap)return [pt[0],pt[1]];
+      var top=GB,u=d/gap;return [pt[0],top+(TS-top)*u]}
+    var paths=CH.map(chainPath);
+    c.save();c.beginPath();c.rect(0,TS+2,WW,TB+20);c.clip();
+    c.lineWidth=px(7);c.strokeStyle=HALO;                  /* halo only inside the tissue band: chain passes over */
+    paths.forEach(function(pp){if(pp.length<2)return;c.beginPath();pp.forEach(function(pt,i){i?c.lineTo(pt[0],pt[1]):c.moveTo(pt[0],pt[1])});c.stroke()});
     c.restore();
-    /* ---------- labels ---------- */
-    function lab(txt,wx,wy,a,align){if(a<.16)return;a=Math.min(1,(a-.16)/.5);var sx=(wx-C.x)*sc+w/2,sy=(wy-C.y)*sc+h/2;
-      c.font="400 10.5px 'DM Mono',monospace";c.textAlign=align||"center";if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";
-      var tw=c.measureText(txt).width+txt.length*1.5,l=align==="left"?sx:sx-tw/2,r2=l+tw;
-      if(l<w*.08+6||r2>w*.92-6||sy<h*.08||sy>h*.93)return;
-      c.globalAlpha=Math.min(1,a);
-      c.shadowColor="rgba(6,7,11,1)";c.shadowBlur=7;c.fillStyle="#e4e8f0";
-      c.fillText(txt,sx,sy);c.fillText(txt,sx,sy);c.shadowBlur=0;c.globalAlpha=1}
-    lab("WET TISSUE",X1-150,SURF+168,W[0]+W[1]);
-    lab("FLUID FILM",250,SURF-34,W[0]*film);
-    lab("TOUGH ADHESIVE HYDROGEL",480,GEL.y0-56,(W[0]+W[1])*(1-tangle));
-    lab("CHITOSAN CHAINS",ZX+96,GEL.y1+6,W[1]*bridge,"left");
-    lab("GEL STRANDS TANGLE INTO TISSUE",420,SURF+42,W[2]);
-    lab("INNER BONDS ABSORB STRAIN",470,GEL.y0+10,W[3]*(1-sealed));
-    lab("STRETCHY NETWORK HOLDS",470,GEL.y1+4,W[3]*(1-sealed));
-    lab("SEALED · HEMOSTASIS",WX,SURF+168,W[4]);
+    c.lineWidth=px(2.6);c.strokeStyle=G;c.globalAlpha=1;
+    paths.forEach(function(pp){if(pp.length<2)return;c.beginPath();pp.forEach(function(pt,i){i?c.lineTo(pt[0],pt[1]):c.moveTo(pt[0],pt[1])});c.stroke()});
+    c.globalAlpha=1;
+    /* where the chain goes UNDER a fibre, redraw that bit of fibre over it */
+    XS.forEach(function(o){if(o.over||o.d>reach)return;var fp=FIBS[o.fi],j=o.fj;
+      var a2=fp[Math.max(0,j-1)],b2=fp[j],c3=fp[j+1],d3=fp[Math.min(fp.length-1,j+2)];
+      c.lineWidth=px(7);c.strokeStyle=HALO;c.beginPath();c.moveTo(b2[0]+(a2[0]-b2[0])*.3,b2[1]+(a2[1]-b2[1])*.3);c.lineTo(b2[0],b2[1]);c.lineTo(c3[0],c3[1]);c.lineTo(c3[0]+(d3[0]-c3[0])*.3,c3[1]+(d3[1]-c3[1])*.3);c.stroke();
+      c.lineWidth=px(1.8);c.strokeStyle="rgba("+FIB+",.8)";c.beginPath();c.moveTo(a2[0],a2[1]);c.lineTo(b2[0],b2[1]);c.lineTo(c3[0],c3[1]);c.lineTo(d3[0],d3[1]);c.stroke()});
+    /* entanglement points glow in as the chains lock in */
+    if(tangle>.02)XS.forEach(function(o){if(o.d>reach)return;var pul=.75+.25*Math.sin(t*1.6+o.x*.05);
+      c.globalAlpha=tangle*.9*pul;c.fillStyle=G;c.beginPath();c.arc(o.x,o.y,px(3),0,6.283);c.fill()});
+    c.globalAlpha=1;
+
+    /* ---------- the gel ---------- */
+    c.fillStyle="rgba(82,84,232,.075)";c.fillRect(30,GT,WW-60,GH);
+    c.lineWidth=px(1.2);c.strokeStyle="rgba(122,110,240,.55)";c.strokeRect(30,GT,WW-60,GH);
+    var amp=(1-load*.7)*7;
+    function sy(r,x){return GT+22+r*(GH-44)/(STR-1)+Math.sin(x*.018+r*1.7+t*.35)*amp}
+    /* sacrificial cross-links: short rungs between strands; under load they flash and break */
+    RUNG.forEach(function(g){var b3=cl((broken-g.brk*.7)/.3);var x=g.x+Math.sin(t*.3+g.row)*2;
+      var y1=sy(g.row,x),y2=sy(g.row+1,x);
+      if(b3<1){c.globalAlpha=(1-b3)*.85;c.lineWidth=px(1.6);c.strokeStyle="rgba(150,140,255,1)";
+        c.beginPath();c.moveTo(x,y1);c.lineTo(x,y2);c.stroke();
+        c.fillStyle="#9d8cff";c.beginPath();c.arc(x,y1,px(2.2),0,6.283);c.arc(x,y2,px(2.2),0,6.283);c.fill()}
+      if(b3>0&&b3<1){c.globalAlpha=Math.sin(b3*3.14)*.9;c.fillStyle="#b9b0ff";c.beginPath();c.arc(x,(y1+y2)/2,px(2+4*b3),0,6.283);c.fill()}
+      if(b3>=1){c.globalAlpha=.35;c.lineWidth=px(1.2);c.strokeStyle="rgba(150,140,255,1)";var m=(y1+y2)/2;
+        c.beginPath();c.moveTo(x,y1);c.lineTo(x,y1+(m-y1)*.45);c.moveTo(x,y2);c.lineTo(x,y2-(y2-m)*.45);c.stroke()}
+      c.globalAlpha=1});
+    /* long stretchy strands */
+    c.lineWidth=px(2.4);c.strokeStyle=G;
+    for(var r=0;r<STR;r++){c.beginPath();for(x=34;x<=WW-34;x+=8){var y=sy(r,x);x>34?c.lineTo(x,y):c.moveTo(x,y)}c.stroke()}
+
+    /* ---------- sealed: the interface glows as one continuous bond ---------- */
+    if(sealed>.02){c.save();c.globalAlpha=sealed*(.8+.2*Math.sin(t*1.2));c.shadowColor="rgba(20,121,230,.8)";c.shadowBlur=14;
+      c.lineWidth=px(3);c.strokeStyle=G;c.beginPath();c.moveTo(0,TS);c.lineTo(WW,TS);c.stroke();c.restore()}
+    c.restore();
+
+    /* ---------- labels: one clear band above the gel, one below the tissue ---------- */
+    function lab(txt,wy,a){if(a<.05)return;var sx=w/2,syy=oy+wy*sc;
+      var fs=w<520?9.5:10.5;c.font="400 "+fs+"px 'DM Mono',monospace";c.textAlign="center";c.textBaseline="middle";
+      if(c.letterSpacing!==undefined)c.letterSpacing="1.5px";c.globalAlpha=Math.min(1,a);c.fillStyle="#d9deea";c.fillText(txt,sx,syy);c.globalAlpha=1}
+    var st=[0,0,0,0,0],qi=Math.min(3,Math.floor(q)),qf=sm(cl((q-qi-.35)/.3));st[qi]=1-qf;st[qi+1]=qf;
+    var topY=Math.max(20,(GT-22)),botY=TS+TB+26;
+    lab("TOUGH ADHESIVE HYDROGEL",topY,st[0]);
+    lab("DRY LAYER ABSORBS THE FILM",topY,st[1]);
+    lab("SACRIFICIAL BONDS BREAK · LONG STRANDS HOLD",topY,st[3]);
+    lab("FLUID FILM ON WET TISSUE",botY,st[0]);
+    lab("CHITOSAN CHAINS REACH THE TISSUE",botY,st[1]);
+    lab("CHAINS ENTANGLE WITH TISSUE FIBRES",botY,st[2]);
+    lab("ENTANGLED ANCHORS STAY PUT",botY,st[3]);
+    lab("SEALED · BIODEGRADABLE",botY,st[4]);
   }
   function loop(){if(!alive)return;if(vis)draw();requestAnimationFrame(loop)}
   size();draw();loop();
   var io=new IntersectionObserver(function(es){vis=es[0].isIntersecting});io.observe(cv);
   return {set:function(v){pT=v},snap:function(v){p=pT=v;draw()},resize:function(){size();draw()},kill:function(){alive=false;io.disconnect()}};
 }
+
 
 /* ============ HEADER THEME ============ */
 var hdr=$("#hdr"),lastSY=0;

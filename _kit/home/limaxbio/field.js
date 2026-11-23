@@ -1,5 +1,6 @@
-/* ================= HERO FIELD: a crafted render of the real material (HOME_BRIEF update option c): a swollen hydrogel block, its
-   cross-linked polymer network holding water, lit in LiMax's teal -> blue -> violet (render.js -> hero.webp, real alpha, DJ/DP). Centred in the open area right of the copy (~70% width, DO), ink scrim only
+/* ================= HERO FIELD: a crafted render of the real material (HOME_BRIEF update option c): a single water-clear bead of
+   tough hydrogel, raymarched with real refraction and Fresnel reflections of soft teal / blue / violet studio light, its polymer
+   network only a faint texture inside (render2.js -> hero.webp, real alpha, DJ/DP). Centred in the open area right of the copy (~70% width, DO), ink scrim only
    behind the text (DI); slow drift, no pointer response (CZ). On phones it sits in the top band and fades into the ink. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;

@@ -85,8 +85,9 @@ h1,h2,h3{text-wrap:balance}
 /* preloader */
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
-#pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk{width:72px;height:72px;overflow:visible;animation:ccMkIn .8s cubic-bezier(.2,.7,.2,1) both}
+#pre .mk path{stroke:none}#pre .mk .cm-b{fill:#1f74bf}#pre .mk .cm-a{fill:var(--accL)}/* DR: the firm's real filled mark, not a hairline snowflake */
+@keyframes ccMkIn{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -744,7 +745,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
-    <svg class="mk" viewBox="0 0 96 96"><path d="M48 10V86M15 29L81 67M15 67L81 29M48 22l-7-7M48 22l7-7M48 74l-7 7M48 74l7 7M26 35l-9 2M26 35l-2-9M70 61l9-2M70 61l2 9M26 61l-2 9M26 61l-9-2M70 35l2-9M70 35l9 2"/></svg>
+    <svg class="mk" viewBox="0 0 55 55"><path class="cm-b" d="M51.99 24.42a5.86 5.86 0 00-5.86-5.87h-8.08v11.68c0 .13 0 .27-.01.4a7.89 7.89 0 01-7.88 7.48H18.48v8.09a5.84 5.84 0 005.86 5.86h21.79a5.86 5.86 0 005.86-5.86z"/><path class="cm-b" d="M16.45 31.56v-7.19a8.06 8.06 0 01.63-3.04 7.92 7.92 0 013.61-3.91 8.13 8.13 0 013.65-.9h11.68V8.44a5.86 5.86 0 00-5.86-5.87H8.37a6.1 6.1 0 00-2.71.67A5.89 5.89 0 002.5 8.44v22.0a5.86 5.86 0 005.87 5.86h8.08z"/><path class="cm-a" d="M36.02 26.05v-7.5h-7.44a51.23 51.23 0 007.44 7.5M35.31 33.02a7.37 7.37 0 00.7-2.79 44.69 44.69 0 00-11.77-11.61 6.09 6.09 0 00-2.66.69 71.4 71.4 0 0013.73 13.71M18.48 28.6v7.5h7.61a44.47 44.47 0 00-7.61-7.5M19.17 21.66a5.93 5.93 0 00-.69 2.66 51.42 51.42 0 0011.64 11.77 6.95 6.95 0 002.84-.72 61.85 61.85 0 00-13.79-13.71M7.92 38.11H6.54l9.9 9.9v-9.89H8.37zM48.37 16.51L38.05 6.2v10.31z"/></svg>
     <div class="wm"><span>CRYOCRATE</span></div>
   </div>
   <span class="lab pl">Life in nano ice · Columbia, Missouri</span>
@@ -1668,15 +1669,20 @@ function scene(){
   var s='<svg viewBox="0 0 640 560" role="img" aria-label="Engraved diagram of one cell during freezing: large ice crystals tear it, C80EZ keeps the ice nanoscale, the sample is stored at minus 80 degrees and the cell thaws intact">';
   var g='';for(var gx=20;gx<=620;gx+=40)g+='<path class="cg" d="M'+gx+' 20V500"/>';for(var gy=20;gy<=500;gy+=40)g+='<path class="cg" d="M20 '+gy+'H620"/>';
   s+='<g>'+g+'</g>';
+  /* DR: keep-out boxes around every label (and the scale column) so no ice or polymer touches text */
+  var cw=fs*.78,Y80=60+80/196*410,KO=[[28,16,52+22*cw,58],[548-11*cw-14,Y80-fs-10,640,Y80+14],[CC_C[0]+CC_R*.72,CC_C[1]-CC_R*.72-fs-16,CC_C[0]+CC_R*.72+60+6*cw,CC_C[1]-CC_R*.72+22],[536-6*cw-14,470-fs-10,640,490],[536,40,640,500]];
+  var ccFree=function(x,y,m){m=m||0;for(var k=0;k<KO.length;k++){var o=KO[k];if(x>o[0]-m&&x<o[2]+m&&y>o[1]-m&&y<o[3]+m)return false}return true};
   /* nano ice: many tiny crystals outside the cell */
   var rnd=ccRand(7),N='';
-  for(var i=0;i<230;i++){var x=40+rnd()*440,y=40+rnd()*450;var dx=x-CC_C[0],dy=y-CC_C[1];if(Math.sqrt(dx*dx+dy*dy)<CC_R+12)continue;
+  for(var i=0;i<230;i++){var x=40+rnd()*440,y=40+rnd()*450;var dx=x-CC_C[0],dy=y-CC_C[1];if(Math.sqrt(dx*dx+dy*dy)<CC_R+12||!ccFree(x,y,6))continue;
     var r=2.2+rnd()*2.2;N+='<path class="cn" data-k="'+rnd().toFixed(3)+'" d="'+ccHex(x,y,r,rnd()*1.05)+'"/>'}
   s+='<g id="ccN">'+N+'</g>';
   /* the polymers: wavy chains threading between the ice */
-  var PL='';[[60,90,0],[70,440,1],[400,70,2],[430,470,3],[40,270,4],[410,236,5]].forEach(function(p,k){var x=p[0],y=p[1],d="M"+x+" "+y,a=(k*1.1)%6.28;
-    for(var j=0;j<9;j++){a+=(rnd()-.5)*1.2;var nx=x+Math.cos(a)*14,ny=y+Math.sin(a)*14;var c1x=x+Math.cos(a+1.2)*10,c1y=y+Math.sin(a+1.2)*10;d+="Q"+c1x.toFixed(1)+" "+c1y.toFixed(1)+" "+nx.toFixed(1)+" "+ny.toFixed(1);x=nx;y=ny}
-    PL+='<path class="cp" d="'+d+'"/>'});
+  var PL='';[[60,90,0],[70,440,1],[400,70,2],[430,470,3],[40,270,4],[410,236,5]].forEach(function(p,k){var d,ok=false;
+    for(var tr=0;tr<40&&!ok;tr++){var x=p[0],y=p[1],a=(k*1.1+tr*.9)%6.28;d="M"+x+" "+y;ok=ccFree(x,y,10);
+    for(var j=0;j<9;j++){a+=(rnd()-.5)*1.2;var nx=x+Math.cos(a)*14,ny=y+Math.sin(a)*14;var c1x=x+Math.cos(a+1.2)*10,c1y=y+Math.sin(a+1.2)*10;d+="Q"+c1x.toFixed(1)+" "+c1y.toFixed(1)+" "+nx.toFixed(1)+" "+ny.toFixed(1);
+      var ddx=nx-CC_C[0],ddy=ny-CC_C[1];if(!ccFree(nx,ny,10)||!ccFree(c1x,c1y,10)||Math.sqrt(ddx*ddx+ddy*ddy)<CC_R+14||nx<24||ny<24||ny>500)ok=false;x=nx;y=ny}}
+    if(ok)PL+='<path class="cp" d="'+d+'"/>'});
   s+='<g id="ccP">'+PL+'</g>';
   /* the cell */
   var M="";for(var q=0;q<=64;q++){var t=q/64*Math.PI*2,rr=CC_R+Math.sin(t*3)*3+Math.sin(t*5+1)*2;M+=(q?"L":"M")+(CC_C[0]+Math.cos(t)*rr).toFixed(1)+" "+(CC_C[1]+Math.sin(t)*rr).toFixed(1)}
@@ -1722,7 +1728,8 @@ function storyDraw(svg){
     E.T.style.opacity=(seg(s1,.55,1)*(1-s2)).toFixed(3);
     E.mem.classList.toggle("hurt",s1>.6&&s2<.5);
     /* step 2: polymers draw in, nano ice appears */
-    E.P.forEach(function(el,k){var L=PLn[k];el.style.strokeDasharray=L.toFixed(1)+" "+L.toFixed(1);el.style.strokeDashoffset=(L*(1-s2)).toFixed(1);el.style.opacity=(1-.5*s4).toFixed(3)});
+    var m=svg.getScreenCTM(),kk=m?Math.hypot(m.a,m.b):1;/* non-scaling strokes: dashes are in screen px */
+    E.P.forEach(function(el,k){var L=PLn[k]*kk+1;el.style.strokeDasharray=L.toFixed(1)+" "+L.toFixed(1);el.style.strokeDashoffset=(L*(1-s2)).toFixed(1);el.style.opacity=(1-.5*s4).toFixed(3)});
     E.N.forEach(function(el){var k=+el.getAttribute("data-k");var a=seg(s2,k*.6,k*.6+.4);el.style.opacity=(a*(1-s4)).toFixed(3)});
     /* step 3: the scale cools to -80 and holds */
     E.S.style.opacity=(Math.min(1,s3*1.6)*(1-s4)).toFixed(3);

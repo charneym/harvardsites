@@ -91,7 +91,7 @@ h1,h2,h3{text-wrap:balance}
 #pre{position:fixed;inset:0;z-index:1200;background:var(--deep)}
 #pre .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;visibility:hidden}
 #pre .mk{width:96px;height:96px;overflow:visible}
-#pre .mk path{fill:none;stroke:var(--bone);stroke-width:1.2}
+#pre .mk path{stroke:none}
 #pre .wm{font-family:var(--sans);font-weight:400;font-size:clamp(20px,2.4vw,32px);letter-spacing:.34em;margin-right:-.34em;color:var(--bone);line-height:1.2;padding:.16em .14em .26em;overflow:hidden}
 #pre .wm .c{display:inline-block}
 #pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--gut) + 92px);height:1px;background:var(--hair)}
@@ -1795,7 +1795,7 @@ function sensorScene(o){
   g+='<text class="a" x="'+(cx1-(o.mob?200:188))+'" y="'+(yv(100)-14).toFixed(1)+'">PDGF-BB · ~100%</text>';
   g+='<text class="g" x="'+(cx1-(o.mob?200:188))+'" y="'+(yv(80)+(o.mob?32:26)).toFixed(1)+'">CORTISOL · ~80%</text></g>';
   /* step labels, in the band under the electrode */
-  var ly=SCH-6;
+  var ly=o.mob?SCH+16:SCH+2;/* DR: the step caption sat on the GOLD ELECTRODE caption; drop it clear */
   g+='<g id="lb1"><text class="a" x="20" y="'+ly+'">'+(o.mob?'TARGET BOUND · STRAND FOLDS':'TARGET BOUND · THE STRAND FOLDS, THE CURRENT CHANGES')+'</text></g>';
   g+='<g id="lb2"><text class="a" x="20" y="'+ly+'">'+(o.mob?'PROTEINS TURNED BACK':'SERUM PROTEINS TURNED BACK · NO MEMBRANE')+'</text></g>';
   g+='<g id="lb3"><text class="a" x="20" y="'+ly+'">'+(o.mob?'14 DAYS IN WHOLE SERUM':'14 DAYS IN WHOLE SERUM · ACS SENSORS, 2026')+'</text></g>';
@@ -2050,7 +2050,7 @@ function preload(){
   try{sessionStorage.setItem(PK+"-pre","1")}catch(e){}
   lockScroll();
   var wm=SplitText.create("#pre .wm span",{type:"chars",charsClass:"c"});gsap.set(wm.chars,{yPercent:190,opacity:0});$("#pre .pc").style.visibility="visible";
-  var mk=$("#pre .mk path"),L=330;gsap.set(mk,{strokeDasharray:L,strokeDashoffset:L});
+  var mk=$("#pre .mk");gsap.set(mk,{opacity:0,scale:.82,transformOrigin:"50% 60%"});
   window._preShown=true;ENTRY=1.4;go(true);field.intro(.01);
   gsap.set("#hdr",{yPercent:-120});
   var wf=0;(function warm(){if(++wf<4){field.once();requestAnimationFrame(warm)}else runPre()})();
@@ -2059,7 +2059,7 @@ function preload(){
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
     var o={n:0};function upd(){cnt.textContent=("00"+Math.round(o.n)).slice(-3);bar.style.transform="scaleX("+o.n/100+")"}
-    gsap.timeline().to(mk,{strokeDashoffset:0,duration:1,ease:"flow"},0)
+    gsap.timeline().to(mk,{opacity:1,scale:1,duration:.8,ease:"silk"},0)
       .to(wm.chars,{yPercent:0,opacity:1,duration:.75,ease:"silk",stagger:.03},.15)
       .to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();

@@ -811,6 +811,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 #pre .mk .rb{fill:none;stroke:var(--accL);stroke-width:2.6;stroke-linecap:round}
 #pre .mk .rb2{fill:none;stroke:var(--rdL);stroke-width:2.6;stroke-linecap:round}
 #pre .wm{color:var(--bone)}
+/* DR: the loader wordmark is the logo's own one-line "Gibson Oncology" */#pre .wm{font-family:var(--disp);font-weight:600;font-size:clamp(28px,2.8vw,40px);letter-spacing:-.02em;margin-right:0}
 #pre .pl{color:var(--bone2)}
 #pre .cnt{color:var(--bone)}
 /* the story scene's own type sizes on narrow screens */
@@ -842,7 +843,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 <!--<R:pre>--><div id="pre" aria-hidden="true">
   <div class="pc">
     <svg class="mk" viewBox="0 0 48 48"><path class="rb" d="M24 7c-7.5 0-9.6 8.6-5.6 15.4L30.8 43"/><path class="rb2" d="M24 7c7.5 0 9.6 8.6 5.6 15.4L17.2 43"/></svg>
-    <div class="wm"><span>GIBSON</span></div>
+    <div class="wm"><span>Gibson Oncology</span></div>
   </div>
   <span class="lab pl">Clinical-stage oncology · Miami, FL</span>
   <div class="bar"><i id="preBar"></i></div>
@@ -1751,7 +1752,8 @@ function helix(x0,x1,y,amp,ph){var d='',x,st=6;for(x=x0;x<=x1;x+=st){var yy=y+am
 function gibsonScene(o){
   var g='',i,x;
   g+='<svg class="'+(o.mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
-  g+='<g id="scBase"><path class="frm sD" d="M18 24H120M740 24H638M18 496H120M740 496H638"/>';
+  /* phones: labels are drawn larger, so the frame rules would touch them; keep only the bottom pair, lowered captions clear them */
+  g+='<g id="scBase"><path class="frm sD" d="'+(o.mob?'M18 488H120M740 488H638':'M18 24H120M740 24H638M18 496H120M740 496H638')+'"/>';
   g+='<text class="t" x="18" y="14">LMP744 · MECHANISM</text><text class="t" x="742" y="14" text-anchor="end">INDENOISOQUINOLINE</text>';
   g+='<text class="t" x="18" y="'+(VY-44)+'">BLOOD</text><text class="t" x="18" y="'+(VY+62)+'">BRAIN</text></g>';
   /* the capillary wall: endothelial cells, edge to edge, with their nuclei */
@@ -1775,13 +1777,13 @@ function gibsonScene(o){
   /* the MYC promoter G-quadruplex: three stacked tetrads folded out of the strand */
   g+='<g id="scG4"><path class="lm sD" d="M'+(GX-22)+' '+(HY+26)+'C'+(GX-30)+' '+(HY+60)+' '+(GX-26)+' '+(HY+84)+' '+(GX-18)+' '+(HY+96)+'M'+(GX+22)+' '+(HY+26)+'C'+(GX+30)+' '+(HY+60)+' '+(GX+26)+' '+(HY+84)+' '+(GX+18)+' '+(HY+96)+'"/>';
   for(i=0;i<3;i++){var ty=HY+104+i*24;g+='<path class="tet sD" d="M'+(GX-34)+' '+ty+'L'+GX+' '+(ty-12)+'L'+(GX+34)+' '+ty+'L'+GX+' '+(ty+12)+'Z"/>'}
-  g+='<text class="t" x="'+(GX-48)+'" y="'+(HY+132)+'" text-anchor="end">MYC PROMOTER</text>';
+  g+='<text class="t" x="'+(GX-(o.mob?62:48))+'" y="'+(HY+132)+'" text-anchor="end">MYC PROMOTER</text>';
   g+='<path class="arw" id="arw" d="M'+(GX-20)+' '+(HY-58)+'H'+(GX+90)+'M'+(GX+82)+' '+(HY-64)+'L'+(GX+90)+' '+(HY-58)+'L'+(GX+82)+' '+(HY-52)+'"/>';
   g+='<text class="a" x="'+(GX-20)+'" y="'+(HY-70)+'" id="tMyc">MYC</text></g>';
   g+='<path class="mol mol2" id="mG4" d="'+ringPath(7)+'"/>';
-  g+='<g id="lb1"><text class="a" x="18" y="514">CROSSES THE BLOOD–BRAIN BARRIER</text></g>';
-  g+='<g id="lb2"><text class="a" x="18" y="514">TOP1 TRAPPED ON THE CUT DNA</text></g>';
-  g+='<g id="lb3"><text class="a" x="18" y="514">MYC G-QUADRUPLEX HELD · MYC DOWN</text></g>';
+  g+='<g id="lb1"><text class="a" x="18" y="'+(o.mob?536:514)+'">CROSSES THE BLOOD–BRAIN BARRIER</text></g>';
+  g+='<g id="lb2"><text class="a" x="18" y="'+(o.mob?536:514)+'">TOP1 TRAPPED ON THE CUT DNA</text></g>';
+  g+='<g id="lb3"><text class="a" x="18" y="'+(o.mob?536:514)+'">MYC G-QUADRUPLEX HELD · MYC DOWN</text></g>';
   return g+'</svg>';
 }
 function scene(){return gibsonScene({mob:MOBILE()?1:0})}

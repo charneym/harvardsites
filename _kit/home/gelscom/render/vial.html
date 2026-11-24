@@ -1,0 +1,49 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#08150f}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const S=+(P.get('s')||1400);const BG=P.get('bg')||'#08150f';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true,alpha:false});
+r.setPixelRatio(1);r.setSize(S,S*1.15);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+const pm=new THREE.PMREMGenerator(r);const env=pm.fromScene(new RoomEnvironment(),0.04).texture;sc.environment=env;
+const cam=new THREE.PerspectiveCamera(24,1/1.15,.1,100);cam.position.set(0,2.9,13.5);cam.lookAt(0,1.72,0);
+// profile of an injection vial (radius, y)
+function lathe(pts,seg=160){return new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg)}
+const R=.8,H=2.55;
+const outer=[[0,0],[R-.07,0],[R-.015,.025],[R,.09],[R,H],[R-.02,H+.1],[R-.14,H+.24],[.5,H+.36],[.43,H+.42],[.42,H+.52],[.48,H+.55],[.52,H+.6],[.52,H+.72],[.47,H+.76],[.3,H+.76]];
+const glassM=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.04,transmission:1,thickness:.18,ior:1.5,envMapIntensity:+(P.get('ge')||1.25),clearcoat:1,clearcoatRoughness:.03,attenuationColor:new THREE.Color('#f3f7f3'),attenuationDistance:6,specularIntensity:1});
+const glass=new THREE.Mesh(lathe(outer),glassM);sc.add(glass);
+// inner wall (so the glass reads as a shell)
+const inner=outer.map(p=>[Math.max(0,p[0]-.06),p[1]+.06]).slice(1);inner.unshift([0,.06]);
+const gin=new THREE.Mesh(lathe(inner),new THREE.MeshPhysicalMaterial({color:0xffffff,roughness:.05,transmission:1,thickness:.05,ior:1.5,side:THREE.BackSide,envMapIntensity:+(P.get('ie')||.3)}));sc.add(gin);
+// gel: grey radiopaque suspension with a meniscus
+const gH=+(P.get('gh')||1.5),gR=R-.075;const gel=[[0,.07],[gR-.05,.07],[gR,.12],[gR,gH-.02],[gR-.02,gH+.05],[gR-.12,gH+.02],[gR*.6,gH-.01],[0,gH-.02]];
+const tc=document.createElement('canvas');tc.width=1024;tc.height=512;const tx=tc.getContext('2d');tx.fillStyle='#fff';tx.fillRect(0,0,1024,512);
+let seed=7;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+for(let i=0;i<(+(P.get('sp')||0));i++){const v=150+rnd()*105|0;tx.fillStyle='rgba('+v+','+v+','+v+','+(.25+rnd()*.5)+')';const z=.6+rnd()*1.6;tx.fillRect(rnd()*1024,rnd()*512,z,z)}
+for(let i=0;i<9;i++){const g=tx.createLinearGradient(0,0,1024,0);const y=rnd()*512;g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.5,'rgba(235,240,235,.18)');g.addColorStop(1,'rgba(255,255,255,0)');tx.fillStyle=g;tx.fillRect(0,y,1024,8+rnd()*30)}
+const gtex=new THREE.CanvasTexture(tc);gtex.colorSpace=THREE.SRGBColorSpace;gtex.wrapS=gtex.wrapT=THREE.RepeatWrapping;
+const gelM=new THREE.MeshPhysicalMaterial({map:gtex,color:new THREE.Color(P.get('gc')||'#8f968f'),roughness:.36,metalness:+(P.get('gm')||.25),transmission:.0,clearcoat:.8,clearcoatRoughness:.12,sheen:.4,sheenColor:new THREE.Color('#dfe6dc'),envMapIntensity:1.1});
+sc.add(new THREE.Mesh(lathe(gel),gelM));
+// grey rubber stopper visible in the neck
+const st=new THREE.Mesh(new THREE.CylinderGeometry(.4,.4,.24,96),new THREE.MeshPhysicalMaterial({color:0x5b605c,roughness:.7}));st.position.y=H+.66;sc.add(st);
+// aluminium crimp seal
+const al=new THREE.MeshPhysicalMaterial({color:0xd9dcd8,metalness:1,roughness:.28,envMapIntensity:1.2,clearcoat:.3});
+const crimp=lathe([[0,0],[.5,0],[.535,.02],[.545,.05],[.545,.3],[.56,.32],[.56,.4],[.54,.43],[0,.43]],160);
+const cr=new THREE.Mesh(crimp,al);cr.position.y=H+.44;sc.add(cr);
+// flip-off cap in the brand green
+const fl=new THREE.Mesh(lathe([[0,0],[.53,0],[.55,.02],[.55,.12],[.52,.16],[0,.16]],160),new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('cc')||'#6f8f3a'),roughness:.38,clearcoat:.6,clearcoatRoughness:.2}));fl.position.y=H+.87;sc.add(fl);
+// soft key and rim lights
+const k=new THREE.DirectionalLight(0xffffff,1.6);k.position.set(-4,6,5);sc.add(k);
+const rim=new THREE.DirectionalLight(0xdfffd0,1.4);rim.position.set(5,3,-4);sc.add(rim);
+// tall softbox reflections (emissive cards, seen only in reflections)
+function card(x,z,w,h,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i),side:THREE.DoubleSide}));m.position.set(x,1.8,z);m.lookAt(0,1.8,0);m.layers.set(0);return m}
+const cards=[card(-3.2,2.6,1.4,6,2.4),card(3.6,1.2,.7,6,1.6)];
+// render the env including cards: build a cube camera env
+const envScene=new RoomEnvironment();cards.forEach(c=>envScene.add(c.clone()));sc.environment=pm.fromScene(envScene,0.02).texture;
+glass.rotation.y=.3;
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

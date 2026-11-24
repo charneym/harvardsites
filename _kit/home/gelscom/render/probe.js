@@ -1,0 +1,4 @@
+const {chromium}=require('playwright');(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:390,height:844}});
+await p.goto('file:///home/user/harvardsites/gelscom/index.html#/');await p.waitForTimeout(8000);
+console.log(await p.evaluate(()=>{const h=document.querySelector('.hero');const r=[getComputedStyle(h,'::before').backgroundImage.slice(0,200),getComputedStyle(h,'::after').backgroundImage.slice(0,200)];
+return r.concat(document.elementsFromPoint(20,280).map(e=>e.tagName+'.'+e.className+' '+getComputedStyle(e).backgroundColor+' '+getComputedStyle(e).backgroundImage.slice(0,80)+' | '+getComputedStyle(e,'::before').backgroundImage.slice(0,80)+' | '+getComputedStyle(e,'::after').backgroundImage.slice(0,120)+' '+getComputedStyle(e,'::after').backgroundColor))}));await b.close()})();

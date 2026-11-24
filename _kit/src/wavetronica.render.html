@@ -1,0 +1,64 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1600,H=+P.get('h')||1100;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;r.setClearColor(new THREE.Color(P.get('bg')||'#f3f6fa'),1);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const cam=new THREE.PerspectiveCamera(24,W/H,.1,100);
+cam.position.set(+P.get('cx')||3.1,+P.get('cy')||2.35,+P.get('cz')||3.6);cam.lookAt(0,0.05,0);
+
+/* housing: rounded slab with two circular cup openings (MIRACLE unilateral/bilateral breast coil housing, after wavetronica.com photos) */
+const L=1.5,D=0.82,T=0.24,R=0.07,cr=0.215,cxs=[-0.32,0.30];
+function rr(s,x,y,w,h,r){s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y)}
+const sh=new THREE.Shape();rr(sh,-L/2,-D/2,L,D,R);
+cxs.forEach(cx=>{const h=new THREE.Path();h.absarc(cx,0.02,cr,0,Math.PI*2,true);sh.holes.push(h)});
+const eg=new THREE.ExtrudeGeometry(sh,{depth:T,bevelEnabled:true,bevelThickness:0.025,bevelSize:0.025,bevelSegments:8,curveSegments:96});
+eg.rotateX(-Math.PI/2);
+const shell=new THREE.MeshPhysicalMaterial({color:0xf4f6f8,roughness:.42,metalness:0,clearcoat:.35,clearcoatRoughness:.4,transmission:+P.get('tr')||0.0,thickness:.3,ior:1.45,attenuationColor:new THREE.Color(0xdfe8f2),attenuationDistance:.6});
+const hs=new THREE.Mesh(eg,shell);hs.castShadow=true;hs.receiveShadow=true;sc.add(hs);
+/* cups: hemispherical bowls under the openings */
+const cupM=new THREE.MeshPhysicalMaterial({color:0xf7f8fa,roughness:.22,clearcoat:.8,clearcoatRoughness:.15,side:THREE.DoubleSide});
+cxs.forEach(cx=>{const g=new THREE.SphereGeometry(cr,96,48,0,Math.PI*2,Math.PI/2,Math.PI/2);const m=new THREE.Mesh(g,cupM);m.position.set(cx,T+0.025,-0.02);m.scale.y=0.78;m.receiveShadow=true;sc.add(m);
+  /* copper loop around each cup rim, seen as a fine inlay ring */
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(cr+0.028,0.0045,12,160),new THREE.MeshPhysicalMaterial({color:0xc8743f,metalness:1,roughness:.28}));ring.rotation.x=-Math.PI/2;ring.position.set(cx,T+0.0265,-0.02);sc.add(ring);
+});
+/* internal RF elements (31P loops and 1H dipoles, after WaveTronica's MIRACLE coil schematic), seen through the frosted shell */
+const cu=new THREE.MeshPhysicalMaterial({color:0xc77a45,metalness:1,roughness:.3});
+cxs.forEach(cx=>{for(const yy of [0.07,0.15]){const lp=new THREE.Mesh(new THREE.TorusGeometry(cr+0.06,0.006,10,160),cu);lp.rotation.x=-Math.PI/2;lp.position.set(cx,yy,0.02);sc.add(lp)}
+  for(let k=0;k<4;k++){const a=k*Math.PI/2+Math.PI/4;const d=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.006,0.016),cu);d.position.set(cx+Math.cos(a)*(cr+0.17),0.11,0.02+Math.sin(a)*(cr+0.14)*.7);d.rotation.y=-a;if(Math.abs(d.position.z)<0.36&&Math.abs(d.position.x)<0.68)sc.add(d)}});
+/* rear connectors; the coax bundle gathers into one sheathed cable that ends in a system plug */
+const boot=new THREE.MeshPhysicalMaterial({color:0xd5dae0,roughness:.45});
+const cab=new THREE.MeshPhysicalMaterial({color:0x1a1d22,roughness:.4,clearcoat:.5,clearcoatRoughness:.3});
+const N=+P.get('nc')||4;const J=new THREE.Vector3(L/2+0.55,0.02,0.32);
+for(let i=0;i<N;i++){
+  const z=-0.2+i*0.12, y=0.09+(i%2)*0.06;
+  const b=new THREE.Mesh(new THREE.CylinderGeometry(0.021,0.025,0.12,32),boot);b.rotation.z=Math.PI/2;b.position.set(L/2+0.085,y,z);b.castShadow=true;sc.add(b);
+  for(let k=0;k<4;k++){const rb=new THREE.Mesh(new THREE.TorusGeometry(0.025,0.0035,8,40),boot);rb.rotation.y=Math.PI/2;rb.position.set(L/2+0.06+k*0.02,y,z);sc.add(rb)}
+  const c=new THREE.CatmullRomCurve3([new THREE.Vector3(L/2+0.14,y,z),new THREE.Vector3(L/2+0.3,y*.7,z+0.02),new THREE.Vector3(J.x-0.04,0.03,J.z-0.12+i*0.012),J.clone().add(new THREE.Vector3(0,0,(i-1.5)*0.012))]);
+  const t=new THREE.Mesh(new THREE.TubeGeometry(c,160,0.0095,16,false),cab);t.castShadow=true;sc.add(t);
+}
+const tr=new THREE.CatmullRomCurve3([J.clone().add(new THREE.Vector3(0,0,-0.01)),new THREE.Vector3(J.x+0.05,0.022,J.z+0.25),new THREE.Vector3(J.x-0.15,0.022,J.z+0.62),new THREE.Vector3(J.x-0.6,0.022,J.z+0.72),new THREE.Vector3(J.x-0.95,0.022,J.z+0.58)]);
+const tm=new THREE.Mesh(new THREE.TubeGeometry(tr,240,0.021,20,false),cab);tm.castShadow=true;sc.add(tm);
+const sl=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.03,0.08,32),boot);sl.position.copy(J);sl.rotation.x=Math.PI/2;sl.rotation.z=0.0;sl.castShadow=true;sc.add(sl);
+const end=tr.getPoint(1),tan=tr.getTangent(1);
+const plug=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.075,0.12),new THREE.MeshPhysicalMaterial({color:0xe9edf1,roughness:.4,clearcoat:.4}));
+plug.position.copy(end).add(tan.clone().multiplyScalar(0.1));plug.position.y=0.04;plug.rotation.y=Math.atan2(-tan.z,tan.x);plug.castShadow=true;sc.add(plug);
+const pf=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.05,0.09),new THREE.MeshPhysicalMaterial({color:0x0e64bf,roughness:.5}));pf.position.copy(plug.position).add(tan.clone().multiplyScalar(0.1));pf.rotation.y=plug.rotation.y;sc.add(pf);
+/* floor: shadow catcher only */
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(20,20),new THREE.ShadowMaterial({opacity:+P.get('so')||0.16}));fl.rotation.x=-Math.PI/2;fl.receiveShadow=true;sc.add(fl);
+const key=new THREE.DirectionalLight(0xffffff,+P.get('kl')||1.6);key.position.set(-2.5,5,2.2);key.castShadow=true;key.shadow.mapSize.set(4096,4096);key.shadow.radius=14;key.shadow.blurSamples=25;
+Object.assign(key.shadow.camera,{left:-3,right:3,top:3,bottom:-3,near:.5,far:15});key.shadow.bias=-0.0004;sc.add(key);
+const fill=new THREE.DirectionalLight(0xdfe9ff,+P.get('fl')||.4);fill.position.set(4,2,-1);sc.add(fill);
+const rim=new THREE.DirectionalLight(0x5aa2ff,+P.get('rl')||0);rim.position.set(1.5,1.2,-4);sc.add(rim);
+sc.environmentIntensity=+P.get('ei')||1;
+sc.rotation.y=+P.get('ry')||0;
+r.render(sc,cam);
+window.DONE=r.domElement.toDataURL('image/png');
+</script></body></html>

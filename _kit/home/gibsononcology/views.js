@@ -5,7 +5,7 @@ var ARRS='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-
 function img(src,alt,w,h,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+IMG+src+'" alt="'+esc(alt)+'" width="'+w+'" height="'+h+'" loading="lazy" decoding="async">'}
 function more(href,t){return '<a class="g-more" href="'+href+'">'+esc(t)+' '+ARRS+'</a>'}
 /* the four partner marks, one tone, matched optical size (BW) */
-function plogo(p){return '<img class="g-logo '+p.lh+'" src="'+IMG+p.logo+'" alt="'+esc(p.inst)+' logo" decoding="async">'}
+function plogo(p){return '<img class="g-logo '+p.lh+'" src="'+IMG+p.logo+'" width="'+p.lw+'" height="'+p.lhh+'" alt="'+esc(p.inst)+' logo" decoding="async">'}
 function heroMarks(){return '<div class="g-hm" data-r><span class="lab g-hm-l">Advancing Gibson’s drugs with their own resources</span><ul class="g-hm-row">'+
   PARTNERS.map(function(p){return '<li>'+plogo(p)+'</li>'}).join("")+'</ul></div>'}
 
@@ -217,5 +217,6 @@ var _initView=initView;
 initView=function(k,first){_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.25+i*.1,scrollTrigger:{trigger:f.closest(".g-pipe"),start:"top 80%"}})});
+  if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}
   $$(".g-tt-x i",view).forEach(function(l){gsap.fromTo(l,{scaleY:0},{scaleY:1,duration:1.2,ease:"flow",scrollTrigger:{trigger:l,start:"top 85%"}})});
 };

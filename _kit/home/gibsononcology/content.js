@@ -10,16 +10,16 @@ var IMG="img/";
 
 /* the four strategic partners (deck slide 11). [key, institution, place, logo file, logo height class, investigators, drug, tag, big result, result line, detail] */
 var PARTNERS=[
- {k:"nih",inst:"National Institutes of Health",unit:"National Institute of Neurological Disorders and Stroke (NINDS)",logo:"logo-ninds.png",lh:"l-ninds",pi:"Dr. Sadhana Jackson",drug:"LMP744",
+ {k:"nih",inst:"National Institutes of Health",unit:"National Institute of Neurological Disorders and Stroke (NINDS)",logo:"logo-ninds.png",lw:1830,lhh:404,lh:"l-ninds",pi:"Dr. Sadhana Jackson",drug:"LMP744",
   stage:"Phase 2 under way · Preclinical PDX",big:"5 doses",res:"With just five doses of LMP744 as a single agent, glioma tumours were completely gone in patient-derived (PDX) animal models.",
   more:"The Phase 2 trial of LMP744 began in June 2026, with NINDS paying the majority of the clinical costs."},
- {k:"mayo",inst:"Mayo Clinic",unit:"Rochester, Minnesota",logo:"logo-mayo-clinic.svg",lh:"l-mayo",pi:"Dr. Terry Burns",drug:"LMP744",
+ {k:"mayo",inst:"Mayo Clinic",unit:"Rochester, Minnesota",logo:"logo-mayo-clinic.svg",lw:1320,lhh:277,lh:"l-mayo",pi:"Dr. Terry Burns",drug:"LMP744",
   stage:"Investigator-sponsored trial",big:"Before recurrence",res:"A principal-investigator-sponsored trial treating patients with residual glioma, proactively, before the cancer comes back.",
   more:"A paradigm shift from the usual approach of waiting for the cancer to recur."},
- {k:"duke",inst:"Duke University",unit:"The Preston Robert Tisch Brain Tumor Center (adults)",logo:"logo-duke-tisch.svg",lh:"l-duke",pi:"Drs. Henry Friedman and Matthew Waitkus",drug:"LMP400",
+ {k:"duke",inst:"Duke University",unit:"The Preston Robert Tisch Brain Tumor Center (adults)",logo:"logo-duke-tisch.svg",lw:211,lhh:50,lh:"l-duke",pi:"Drs. Henry Friedman and Matthew Waitkus",drug:"LMP400",
   stage:"Preclinical PDX · Phase 2 planned",big:"1 week",res:"Resistant grade 3 astrocytomas showed major tumour regression in a PDX model within one week of LMP400 as a single agent.",
   more:"Duke has filed a $15 million SPORE grant to advance LMP400 in a Phase 2 trial in resistant grade 3 astrocytomas, low and high grade."},
- {k:"cnmc",inst:"Children’s National",unit:"Washington, D.C. (paediatric)",logo:"logo-childrens-national.svg",lh:"l-cn",pi:"Drs. Roger Packer and Yanxin Pei",drug:"LMP400",
+ {k:"cnmc",inst:"Children’s National",unit:"Washington, D.C. (paediatric)",logo:"logo-childrens-national.svg",lw:189,lhh:24,lh:"l-cn",pi:"Drs. Roger Packer and Yanxin Pei",drug:"LMP400",
   stage:"Preclinical PDX",big:"7 of 8",res:"Resistant tumours completely gone within one week of LMP400 as a single agent, in grade 3 paediatric medulloblastoma PDX models. The eighth regressed significantly.",
   more:"Children’s National wants to work with Duke on LMP400 in paediatric patients."}];
 

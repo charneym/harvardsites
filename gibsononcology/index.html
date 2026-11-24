@@ -84,7 +84,7 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#07141a}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:linear-gradient(#07141a,#07141a)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -659,7 +659,7 @@ em{line-height:0}
 .light .btn.solid{background:var(--acc);border-color:var(--acc);color:#fff}
 .light .btn.solid::before{background:var(--ink)}
 .light .btn.solid:hover{color:var(--bone);border-color:var(--ink)}
-@media (max-width:860px){.fieldbg{background:#07141a}}
+@media (max-width:860px){.fieldbg{background:linear-gradient(#07141a,#07141a)}}
 .rail span{color:#93a7ad}.rail span::before{background:var(--ink2);border-color:#57707a;border-radius:0}
 @media (max-width:1024px){.scene text{font-size:14px;letter-spacing:.06em}.scene text.t{font-size:9.5px}}
 #pre .wm{font-family:var(--deco);font-weight:600;font-size:clamp(20px,2.4vw,34px);letter-spacing:.34em;margin-right:-.34em;white-space:nowrap}
@@ -1090,6 +1090,18 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
   .g-band .d2{line-height:1.08}
 }
 @media (min-width:1600px){.g-hm{max-width:min(900px,50vw)}.g-hm .l-ninds{height:31px}.g-hm .l-mayo{height:27px}.g-hm .l-duke{height:26px}.g-hm .l-cn{height:28px}.g-tt-w{font-size:clamp(64px,11.2vw,268px)}}
+
+/* gate fixes: logos solid bone at full opacity (BW), vertical Tisch lockup so its type stays legible */
+.g-logo{opacity:1}
+.g-hm .l-duke{height:34px}.g-pt .l-duke{height:54px}
+@media (min-width:1600px){.g-hm .l-duke{height:42px}}
+@media (max-width:860px){.g-hm .l-duke{height:32px;width:auto;max-width:100%}}
+@media (max-width:640px){.g-pt .l-duke{max-height:50px}}
+.g-lt{position:relative}.g-pipe{position:relative}.g-pr-b{min-width:0}.g-ds-s{position:relative}
+.g-cp li,.g-dl li{align-items:center}
+@media (max-width:860px){.hero-h{line-height:1.06}.hero .hero-foot{margin-top:40px}}
+/* phones: people as rows (portrait beside name), so no portrait ever stands alone on a short last row */
+@media (max-width:640px){.g-pp{display:grid;grid-template-columns:1fr;gap:20px}.g-pp>li,.g-pp.c3>li{max-width:none;display:grid;grid-template-columns:104px minmax(0,1fr);column-gap:18px;align-items:center}.g-pp-ph{grid-row:1/3;align-self:start}.g-pp h3{margin:0;align-self:end;font-size:18px}.g-pp p{margin-top:4px;align-self:start}}
 </style>
 </head>
 </head>
@@ -1371,16 +1383,16 @@ var IMG="img/";
 
 /* the four strategic partners (deck slide 11). [key, institution, place, logo file, logo height class, investigators, drug, tag, big result, result line, detail] */
 var PARTNERS=[
- {k:"nih",inst:"National Institutes of Health",unit:"National Institute of Neurological Disorders and Stroke (NINDS)",logo:"logo-ninds.png",lh:"l-ninds",pi:"Dr. Sadhana Jackson",drug:"LMP744",
+ {k:"nih",inst:"National Institutes of Health",unit:"National Institute of Neurological Disorders and Stroke (NINDS)",logo:"logo-ninds.png",lw:1830,lhh:404,lh:"l-ninds",pi:"Dr. Sadhana Jackson",drug:"LMP744",
   stage:"Phase 2 under way · Preclinical PDX",big:"5 doses",res:"With just five doses of LMP744 as a single agent, glioma tumours were completely gone in patient-derived (PDX) animal models.",
   more:"The Phase 2 trial of LMP744 began in June 2026, with NINDS paying the majority of the clinical costs."},
- {k:"mayo",inst:"Mayo Clinic",unit:"Rochester, Minnesota",logo:"logo-mayo-clinic.svg",lh:"l-mayo",pi:"Dr. Terry Burns",drug:"LMP744",
+ {k:"mayo",inst:"Mayo Clinic",unit:"Rochester, Minnesota",logo:"logo-mayo-clinic.svg",lw:1320,lhh:277,lh:"l-mayo",pi:"Dr. Terry Burns",drug:"LMP744",
   stage:"Investigator-sponsored trial",big:"Before recurrence",res:"A principal-investigator-sponsored trial treating patients with residual glioma, proactively, before the cancer comes back.",
   more:"A paradigm shift from the usual approach of waiting for the cancer to recur."},
- {k:"duke",inst:"Duke University",unit:"The Preston Robert Tisch Brain Tumor Center (adults)",logo:"logo-duke-tisch.svg",lh:"l-duke",pi:"Drs. Henry Friedman and Matthew Waitkus",drug:"LMP400",
+ {k:"duke",inst:"Duke University",unit:"The Preston Robert Tisch Brain Tumor Center (adults)",logo:"logo-duke-tisch.svg",lw:211,lhh:50,lh:"l-duke",pi:"Drs. Henry Friedman and Matthew Waitkus",drug:"LMP400",
   stage:"Preclinical PDX · Phase 2 planned",big:"1 week",res:"Resistant grade 3 astrocytomas showed major tumour regression in a PDX model within one week of LMP400 as a single agent.",
   more:"Duke has filed a $15 million SPORE grant to advance LMP400 in a Phase 2 trial in resistant grade 3 astrocytomas, low and high grade."},
- {k:"cnmc",inst:"Children’s National",unit:"Washington, D.C. (paediatric)",logo:"logo-childrens-national.svg",lh:"l-cn",pi:"Drs. Roger Packer and Yanxin Pei",drug:"LMP400",
+ {k:"cnmc",inst:"Children’s National",unit:"Washington, D.C. (paediatric)",logo:"logo-childrens-national.svg",lw:189,lhh:24,lh:"l-cn",pi:"Drs. Roger Packer and Yanxin Pei",drug:"LMP400",
   stage:"Preclinical PDX",big:"7 of 8",res:"Resistant tumours completely gone within one week of LMP400 as a single agent, in grade 3 paediatric medulloblastoma PDX models. The eighth regressed significantly.",
   more:"Children’s National wants to work with Duke on LMP400 in paediatric patients."}];
 
@@ -1489,7 +1501,7 @@ var ARRS='<svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-
 function img(src,alt,w,h,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'+IMG+src+'" alt="'+esc(alt)+'" width="'+w+'" height="'+h+'" loading="lazy" decoding="async">'}
 function more(href,t){return '<a class="g-more" href="'+href+'">'+esc(t)+' '+ARRS+'</a>'}
 /* the four partner marks, one tone, matched optical size (BW) */
-function plogo(p){return '<img class="g-logo '+p.lh+'" src="'+IMG+p.logo+'" alt="'+esc(p.inst)+' logo" decoding="async">'}
+function plogo(p){return '<img class="g-logo '+p.lh+'" src="'+IMG+p.logo+'" width="'+p.lw+'" height="'+p.lhh+'" alt="'+esc(p.inst)+' logo" decoding="async">'}
 function heroMarks(){return '<div class="g-hm" data-r><span class="lab g-hm-l">Advancing Gibson’s drugs with their own resources</span><ul class="g-hm-row">'+
   PARTNERS.map(function(p){return '<li>'+plogo(p)+'</li>'}).join("")+'</ul></div>'}
 
@@ -1701,6 +1713,7 @@ var _initView=initView;
 initView=function(k,first){_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.25+i*.1,scrollTrigger:{trigger:f.closest(".g-pipe"),start:"top 80%"}})});
+  if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}
   $$(".g-tt-x i",view).forEach(function(l){gsap.fromTo(l,{scaleY:0},{scaleY:1,duration:1.2,ease:"flow",scrollTrigger:{trigger:l,start:"top 85%"}})});
 };/*</R:views>*/
 

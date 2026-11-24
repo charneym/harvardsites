@@ -33,3 +33,9 @@ graphic, no imagery of the device, the trial or the team; home page holds a sing
   lumen. Generic and unbranded (not a picture of the actual device). Real alpha, drawn at or below native size (1044×563).
 - Story: long section of a leg artery. Plaque narrows the lumen → balloon expands four spaced scaffolds, plaque pressed back,
   flow restored → sirolimus elutes into the wall, scaffolds resorb, lumen stays open.
+
+## Gates (final build)
+smoke, reveal/anim/clip 1440+390, overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split, balance, logo,
+buildout-test (8 nav clicks), fit (5 widths), loader-contrast: OK. textclash OK (no crops); entities clean; contrast 1440/390 OK.
+hero-audit reports "title never uncovered" on #/ (known tool issue: the fixed .fieldbg layer counts as a cover; same on tolremo);
+hero, loader frames (200–2000 ms) and every story step checked by eye at 1920×930/1440×900/390.

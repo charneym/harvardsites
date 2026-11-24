@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"../../../node_modules/three/build/three.module.js","three/addons/":"../../../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Immunolight hero: one phosphor energy-converter microcrystal (a doped crystalline host, rod habit, as described on
+   immunolight.com/technology/energy-converters), clear and faceted, with the light it converts glowing inside. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1000),H=+(P.get('h')||1300);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true,premultipliedAlpha:false});
+r.setPixelRatio(1);r.setSize(W,H);r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),.04).texture;sc.environmentIntensity=+(P.get('env')||.9);
+const cam=new THREE.PerspectiveCamera(26,W/H,.1,100);cam.position.set(0,0,14.5);cam.lookAt(0,0,0);
+function crystal(R,L,C){
+  const body=new THREE.CylinderGeometry(R,R,L,6,1,true);
+  const top=new THREE.ConeGeometry(R,C,6,1,true);top.translate(0,L/2+C/2,0);
+  const bot=new THREE.ConeGeometry(R,C,6,1,true);bot.rotateX(Math.PI);bot.translate(0,-L/2-C/2,0);
+  return mergeGeometries([body.toNonIndexed(),top.toNonIndexed(),bot.toNonIndexed()]);
+}
+const G=new THREE.Group();sc.add(G);
+sc.background=new THREE.Color().setRGB(11/255,20/255,36/255,THREE.SRGBColorSpace);
+const geo=crystal(1,3.4,.95);geo.computeVertexNormals();
+const glass=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:+(P.get('ro')||.04),transmission:1,thickness:+(P.get('th')||1.6),ior:1.75,dispersion:+(P.get('di')||3),
+  attenuationColor:new THREE.Color(0xbcd8ff),attenuationDistance:2.4,clearcoat:1,clearcoatRoughness:.03,specularIntensity:1,flatShading:true,envMapIntensity:+(P.get('em')||1.4)});
+/* the converted light: an emissive violet-blue core, seen through the crystal */
+const MASK=P.get('mask'),NOC=P.get('noc');
+const core=crystal(+(P.get('cr')||.3),2.6,.25);
+if(!NOC&&!MASK)G.add(new THREE.Mesh(core,new THREE.MeshStandardMaterial({color:0x000000,emissive:new THREE.Color(P.get('cc')||'#6f6bff'),emissiveIntensity:+(P.get('ci')||1.6),roughness:1})));
+const core2=crystal(.1,2.2,.08);
+if(!NOC&&!MASK)G.add(new THREE.Mesh(core2,new THREE.MeshStandardMaterial({color:0x000000,emissive:new THREE.Color('#c8d4ff'),emissiveIntensity:+(P.get('c2')||1.6)})));
+let s=7;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
+const dg=new THREE.SphereGeometry(+(P.get('ds')||.011),6,4),dm=new THREE.MeshStandardMaterial({color:0,emissive:new THREE.Color('#bcd0ff'),emissiveIntensity:2.5});
+const inst=new THREE.InstancedMesh(dg,dm,260);const M=new THREE.Matrix4();
+for(let i=0;i<260;i++){const a=rnd()*Math.PI*2,rr=.55+Math.sqrt(rnd())*.3,y=(rnd()-.5)*3.2;M.makeTranslation(Math.cos(a)*rr,y,Math.sin(a)*rr);inst.setMatrixAt(i,M)}
+if(!MASK)G.add(inst);
+if(MASK){sc.background=new THREE.Color(0);sc.environment=null;G.add(new THREE.Mesh(crystal(.62,3.0,.55),new THREE.MeshBasicMaterial({color:0xffffff})))}
+if(!MASK)G.add(new THREE.Mesh(geo,glass));
+const kl=new THREE.DirectionalLight(0xffffff,2.2);kl.position.set(-4,6,6);sc.add(kl);
+const bl=new THREE.DirectionalLight(0x6fbfff,1.4);bl.position.set(5,-2,3);sc.add(bl);
+G.rotation.set(+(P.get('rx')||.32),+(P.get('ry')||.42),+(P.get('rz')||-.52));
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

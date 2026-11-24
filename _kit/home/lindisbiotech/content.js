@@ -26,7 +26,7 @@ var TEAM=[
  {g:"Leadership",name:"Dr. Peter Ruf",title:"Chief Operating Officer",sum:"Twenty years in tumour immunotherapy research; previously headed Antibody Development at Trion Research, taking trifunctional antibodies from the lab to industrial scale."}];
 var NEWS=[
  ["15 December 2025","Pharmanovia announces launch of KORJUNY® (catumaxomab) in Germany, a first-in-class treatment for malignant ascites","BioSpace",BS_LAUNCH],
- ["13 February 2025","Lindis Biotech and Pharmanovia announce European marketing authorisation for catumaxomab, a first-in-class treatment for malignant ascites","BioSpace",BS_EMA],
+ ["13 February 2025","Lindis Biotech and Pharmanovia announce EU marketing authorisation for catumaxomab","BioSpace",BS_EMA],
  ["19 November 2024","Lindis Biotech signs licensing agreement with Pharmanovia for the commercialisation of catumaxomab","lindisbiotech.com",LNEWS],
  ["21 October 2024","Lindis Biotech receives positive CHMP opinion for KORJUNY® (catumaxomab) in the European Union","lindisbiotech.com",LNEWS],
  ["14 November 2022","Encouraging data from high-risk NMIBC patients treated with catumaxomab, presented at EMUC22","lindisbiotech.com",LNEWS]];

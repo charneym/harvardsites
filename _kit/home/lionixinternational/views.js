@@ -51,7 +51,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="services" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split">From design to delivery, <em>in scalable volumes.</em></h2></div><p data-r>We build a project team with you at the centre and support the full life-cycle of your product: concept, architecture, production, assembly, test, supply and service.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split">Design to delivery, <em>at any volume.</em></h2></div><p data-r>We build a project team with you at the centre and support the full life-cycle of your product: concept, architecture, production, assembly, test, supply and service.</p></div>'+
    pipeRows(PIPE)+
   '</div></section>'+
 

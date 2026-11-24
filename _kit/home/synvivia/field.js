@@ -1,9 +1,12 @@
-/* ================= HERO FIELD (HOME_BRIEF update 2c): a crafted render of the real subject of Synvivia's platform,
-   the adeno-associated virus type 2 capsid that a packaging cell builds. Real coordinates: PDB 1LP3 (Xie et al.,
-   PNAS 2002), chain A expanded by the 60 icosahedral matrices in the entry, built as a radial height field on the
-   sphere and sphere-traced offline by capsid.py (screen-space AO, satin shading, real alpha) into hero.webp. It is
-   the same icosahedron as Synvivia's own logo mark, so a visitor names it at a glance (DS/DD).
-   Here it turns very slowly on its own, so there is no pointer response (CZ). The ground wash is painted across the
+/* ================= HERO FIELD (HOME_BRIEF update 2c): a crafted render of Synvivia's own product, a cyclic
+   peptide — the molecules their Discovery Library is built from and the thing they deliver to a packaging cell.
+   Real conformer: cyclosporin A, the cyclic peptide of the cyclophilin A complex PDB 1CWA (Mikol, Kallen,
+   Pflugl, Walkinshaw, 2.1 A), chain C, shown as its macrocycle — backbone ring, carbonyls and first side-chain
+   atoms — so the ring reads as one calm object rather than a tangle (DS). Rendered offline by pep.py as a
+   glossy ball-and-stick model (sphere-swept bonds, screen-space AO, satin highlight, real alpha) to hero.webp,
+   and captioned on the page as illustrative. Tilted well off the ring plane so it reads as a solid object with
+   depth, never an empty outline (CU).
+   It turns very slowly on its own, so there is no pointer response (CZ). The ground wash is painted across the
    whole canvas, never inside the image rect, so no edge of the baked render can read as a pasted box (DJ/DP).
    On phones it sits in the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){

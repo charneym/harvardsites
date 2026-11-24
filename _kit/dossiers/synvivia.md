@@ -78,12 +78,23 @@ Logo redrawn as crisp filled SVG geometry (a true icosahedron wireframe, same pr
 because their only file is a 301px raster (PRINCIPLES DR.2).
 
 ## Hero
-A crafted render of the **adeno-associated virus type 2 capsid** — the vector shell their cyclic peptides
-help packaging cells build well, and the same icosahedron as their own logo mark. Built from real
-coordinates: PDB **1LP3** (Xie et al., PNAS 2002), chain A VP3 expanded by the 60 icosahedral BIOMT matrices
-in the entry, as a radial height field on the sphere, sphere-traced with screen-space AO (`capsid.py`).
+A crafted render of **a cyclic peptide** — the molecule class their Discovery Library is built from and the
+thing the platform delivers to a packaging cell. Real conformer: **cyclosporin A**, the cyclic peptide of the
+cyclophilin A complex **PDB 1CWA** (Mikol, Kallen, Pflugl, Walkinshaw, 2.1 A), chain C, waters dropped, shown
+as its macrocycle (backbone ring, carbonyls and first side-chain atoms) so the ring reads as one calm object
+rather than a tangle. Rendered by `pep.py` as a glossy ball-and-stick model: atoms and bonds rasterised as one
+sphere set (a bond is a dense sphere sweep, so its surface normals are exactly the capsule's), z-buffered
+orthographically, with screen-space AO, a satin highlight and real alpha. Tilted well off the ring plane so it
+reads as a solid object with depth, never an empty outline (CU). Captioned on the page: "Cyclic peptide,
+illustrative - cyclosporin A, PDB 1CWA".
+
+The first version of this hero was a render of the AAV2 capsid (PDB 1LP3, 60 BIOMT matrices, `capsid.py`).
+The coordinator rejected it under DT: the knobbly grey shell read at a glance as "a virus", which the client
+finds alarming. `capsid.py` and `1lp3.pdb` are kept in the build folder; the capsid still appears, small and
+schematic, as the fifteen vectors of the batch in the story scene.
+
 No stock photo is reused from any other concept site.
 
 ## Images not used
 Their three site images: the molecular line drawing (low-contrast grey sketch, superseded by the real
-capsid render), the email PNG (replaced by real mailto links), the broken FCOI_POLICY placeholder.
+cyclic peptide render), the email PNG (replaced by real mailto links), the broken FCOI_POLICY placeholder.

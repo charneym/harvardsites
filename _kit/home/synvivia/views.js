@@ -20,6 +20,7 @@ function vHome(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Molecules that</span><span class="l"><em>reprogram</em> the cells</span><span class="l">that build vectors.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Synvivia engineers molecules to reprogram cells. Our discovery platform finds the cyclic peptides that make a manufacturer’s own packaging cells release more full, functional AAV vectors per batch.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/story">How it works '+ARR+'</a><a class="btn" href="#/platform">The platform</a></div></div>'+
+   '<span class="lab hcap" data-r>Cyclic peptide, illustrative · cyclosporin A, PDB 1CWA</span>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+

@@ -866,6 +866,10 @@ div.mh-row .mh-sum{display:block;-webkit-line-clamp:unset;overflow:visible}
 .pfr .lk svg{width:16px;height:10px;vertical-align:middle;margin-left:2px;transition:transform .3s var(--eo)}
 .pfr li:hover .lk svg{transform:translateX(5px)}
 .pfr .lk a{display:inline-flex;align-items:center;gap:6px}
+
+/* hero caption: the render is an illustrative cyclic peptide, said quietly at the foot of the hero, clear of the art and the buttons */
+.hero .hcap{position:absolute;right:var(--side);bottom:calc(var(--gut) + 6px);color:rgba(var(--boner),.46);font-size:10.5px;letter-spacing:.12em;text-align:right;white-space:nowrap;pointer-events:none}
+@media (max-width:980px){.hero .hcap{display:none}}
 </style>
 </head>
 </head>
@@ -1014,6 +1018,7 @@ function vHome(){
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Molecules that</span><span class="l"><em>reprogram</em> the cells</span><span class="l">that build vectors.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Synvivia engineers molecules to reprogram cells. Our discovery platform finds the cyclic peptides that make a manufacturer’s own packaging cells release more full, functional AAV vectors per batch.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/story">How it works '+ARR+'</a><a class="btn" href="#/platform">The platform</a></div></div>'+
+   '<span class="lab hcap" data-r>Cyclic peptide, illustrative · cyclosporin A, PDB 1CWA</span>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
@@ -1109,12 +1114,15 @@ var MOBILE=function(){return innerWidth<861};
 function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})}
 
 
-/*<R:field>*//* ================= HERO FIELD (HOME_BRIEF update 2c): a crafted render of the real subject of Synvivia's platform,
-   the adeno-associated virus type 2 capsid that a packaging cell builds. Real coordinates: PDB 1LP3 (Xie et al.,
-   PNAS 2002), chain A expanded by the 60 icosahedral matrices in the entry, built as a radial height field on the
-   sphere and sphere-traced offline by capsid.py (screen-space AO, satin shading, real alpha) into hero.webp. It is
-   the same icosahedron as Synvivia's own logo mark, so a visitor names it at a glance (DS/DD).
-   Here it turns very slowly on its own, so there is no pointer response (CZ). The ground wash is painted across the
+/*<R:field>*//* ================= HERO FIELD (HOME_BRIEF update 2c): a crafted render of Synvivia's own product, a cyclic
+   peptide — the molecules their Discovery Library is built from and the thing they deliver to a packaging cell.
+   Real conformer: cyclosporin A, the cyclic peptide of the cyclophilin A complex PDB 1CWA (Mikol, Kallen,
+   Pflugl, Walkinshaw, 2.1 A), chain C, shown as its macrocycle — backbone ring, carbonyls and first side-chain
+   atoms — so the ring reads as one calm object rather than a tangle (DS). Rendered offline by pep.py as a
+   glossy ball-and-stick model (sphere-swept bonds, screen-space AO, satin highlight, real alpha) to hero.webp,
+   and captioned on the page as illustrative. Tilted well off the ring plane so it reads as a solid object with
+   depth, never an empty outline (CU).
+   It turns very slowly on its own, so there is no pointer response (CZ). The ground wash is painted across the
    whole canvas, never inside the image rect, so no edge of the baked render can read as a pasted box (DJ/DP).
    On phones it sits in the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){
@@ -1583,7 +1591,7 @@ function preload(){
 var lw=innerWidth;addEventListener("resize",function(){clearTimeout(window._rz);window._rz=setTimeout(function(){if(Math.abs(innerWidth-lw)<2&&MOBILE())return;lw=innerWidth;ScrollTrigger.refresh()},250)});
 })();
 </script>
-/*<R:nssfix>*/<script>/* Safari dashes vector-effect:non-scaling-stroke paths in screen units, so a draw-in dash of getTotalLength() stops short of its end point (PRINCIPLES DR4). For every such path that is being dash-drawn, drop non-scaling-stroke and keep its on-screen width by dividing by the CTM scale. Static patterned dashes are left alone. */
+<script>/*R:nssfix*//* Safari dashes vector-effect:non-scaling-stroke paths in screen units, so a draw-in dash of getTotalLength() stops short of its end point (PRINCIPLES DR4). For every such path that is being dash-drawn, drop non-scaling-stroke and keep its on-screen width by dividing by the CTM scale. Static patterned dashes are left alone. */
 (function(){var done=new WeakSet();
 function sc(el){var m=el.getScreenCTM&&el.getScreenCTM();if(!m)return 1;var s=Math.sqrt(Math.abs(m.a*m.d-m.b*m.c));return s>0?s:1}
 function isDraw(el){var da=el.style.strokeDasharray||el.getAttribute("stroke-dasharray");if(!da||da==="none")return false;var v=String(da).split(/[ ,]+/).map(parseFloat).filter(function(x){return!isNaN(x)});if(!v.length)return false;var L=0;try{L=el.getTotalLength()}catch(e){return false}if(!(L>0))return false;return v[0]>=L*0.9}

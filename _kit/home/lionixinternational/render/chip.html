@@ -1,0 +1,82 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* A TriPleX(R) silicon-nitride photonic chip (LioniX International), butt-coupled to a glass fibre array, as in the firm's own
+   product photography: a dark die, faint waveguide circuitry (rings, an MZI, a spiral delay line), gold heater electrodes and
+   bond pads, light entering from the fibre array. ?pass=base|emit  ?bg=#000|#fff */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1700),H=+(P.get('h')||1100);const BG=P.get('bg')||'#000';const EM=P.get('pass')==='emit';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=EM?THREE.NoToneMapping:THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.05);r.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(EM?'#000':BG);
+const pm=new THREE.PMREMGenerator(r);
+/* die: 8 x 3.2, 0.55 thick; texture 2400 x 960 => 300 px per unit */
+const DW=8,DD=3.2,DT=.55,TX=2400,TY=960,K=TX/DW;
+function cv(){const c=document.createElement('canvas');c.width=TX;c.height=TY;return c}
+const col=cv(),met=cv(),emi=cv();const C=col.getContext('2d'),M=met.getContext('2d'),E=emi.getContext('2d');
+C.fillStyle='#262a31';C.fillRect(0,0,TX,TY);
+/* fine grain so the surface is not flat CG */
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+for(let i=0;i<9000;i++){const v=40+rnd()*16|0;C.fillStyle=`rgba(${v},${v+3},${v+9},.35)`;C.fillRect(rnd()*TX,rnd()*TY,1.5,1.5)}
+M.fillStyle='#000';M.fillRect(0,0,TX,TY);E.fillStyle='#000';E.fillRect(0,0,TX,TY);
+/* the circuit, in die units (x 0..8, y 0..3.2, y down) */
+const wg=[],lit=[];
+function P2(x,y){return [x*K,y*K]}
+function path(ctx,f){ctx.beginPath();f(ctx);ctx.stroke()}
+const yin=1.9;
+/* input bus from the fibre at the left edge, a 1x2 splitter, two arms (one ring-loaded), recombiner, output */
+function circuit(ctx){
+  ctx.moveTo(0,yin*K);ctx.lineTo(1.1*K,yin*K);
+  ctx.bezierCurveTo(1.6*K,yin*K,1.7*K,1.45*K,2.2*K,1.45*K);ctx.lineTo(5.2*K,1.45*K);ctx.bezierCurveTo(5.7*K,1.45*K,5.8*K,yin*K,6.3*K,yin*K);
+  ctx.moveTo(1.1*K,yin*K);ctx.bezierCurveTo(1.6*K,yin*K,1.7*K,2.35*K,2.2*K,2.35*K);ctx.lineTo(5.2*K,2.35*K);ctx.bezierCurveTo(5.7*K,2.35*K,5.8*K,yin*K,6.3*K,yin*K);
+  ctx.lineTo(8*K,yin*K);
+}
+function rings(ctx){[[3.0,1.45-.36],[4.1,1.45-.36],[3.55,2.35+.36]].forEach(q=>{ctx.moveTo((q[0]+.32)*K,q[1]*K);ctx.arc(q[0]*K,q[1]*K,.32*K,0,Math.PI*2)})}
+/* a spiral delay line, unlit, upper right */
+function spiral(ctx){const cx=6.9*K,cy=.82*K;ctx.moveTo(cx+.08*K,cy);for(let t=0;t<Math.PI*2*5.5;t+=.05){const rr=(.08+t/(Math.PI*2)*.085)*K;ctx.lineTo(cx+Math.cos(t)*rr,cy+Math.sin(t)*rr*.78)}}
+/* a few spare test structures and alignment marks */
+function spare(ctx){for(let i=0;i<5;i++){ctx.moveTo(0,(.35+i*.12)*K);ctx.lineTo(1.9*K,(.35+i*.12)*K);ctx.bezierCurveTo(2.2*K,(.35+i*.12)*K,2.2*K,(.18+i*.04)*K,2.5*K,(.18+i*.04)*K)}
+  for(let i=0;i<4;i++){ctx.moveTo(6.4*K,(2.7+i*.1)*K);ctx.lineTo(8*K,(2.7+i*.1)*K)}}
+C.lineCap='round';C.strokeStyle='#59616e';C.lineWidth=5;path(C,circuit);path(C,rings);C.lineWidth=4;C.strokeStyle='#4a515d';path(C,spiral);path(C,spare);
+/* gold heaters over the ring and the upper arm, traces to bond pads along the far edge */
+function gold(ctx,fill){ctx.strokeStyle=fill;ctx.fillStyle=fill;ctx.lineWidth=13;
+  [[3.0,1.09],[4.1,1.09]].forEach(q=>{ctx.beginPath();ctx.arc(q[0]*K,q[1]*K,.32*K,Math.PI*.15,Math.PI*.85,true);ctx.stroke()});
+  ctx.lineWidth=11;
+  [[2.75,.2],[3.25,.2],[3.85,.2],[4.35,.2]].forEach((q,i)=>{const rx=(i%2?3.27:2.73)+(i>1?1.1:0);ctx.beginPath();ctx.moveTo(rx*K,(1.09-.18)*K);ctx.lineTo(rx*K,.34*K);ctx.lineTo(q[0]*K,.34*K);ctx.stroke()});
+  for(let i=0;i<12;i++){const x=2.45+i*.2;ctx.fillRect(x*K,.06*K,.13*K,.22*K)}
+  ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(2.4*K,1.62*K);ctx.lineTo(5.0*K,1.62*K);ctx.stroke();
+}
+gold(C,'#b8955a');gold(M,'#ffffff');
+/* the lit path: light from the fibre runs the bus, both arms, the rings it couples into, and out */
+E.lineCap='round';E.strokeStyle='#ff2a36';E.lineWidth=6;path(E,circuit);E.globalAlpha=.75;path(E,rings);E.globalAlpha=1;
+/* engraved die mark, as on the firm's chips */
+C.fillStyle='#6b7380';C.font='600 54px Arial';C.fillText('LioniX',.2*K,3.05*K);
+const mk=(c,cs)=>{const t=new THREE.CanvasTexture(c);t.anisotropy=16;if(cs)t.colorSpace=THREE.SRGBColorSpace;return t};
+const topM=EM?new THREE.MeshBasicMaterial({map:mk(emi,true)}):new THREE.MeshPhysicalMaterial({map:mk(col,true),metalnessMap:mk(met),metalness:1,roughness:.32,clearcoat:1,clearcoatRoughness:.06,envMapIntensity:1.0,emissiveMap:mk(emi,true),emissive:new THREE.Color('#ff3040'),emissiveIntensity:.9});
+const sideM=EM?new THREE.MeshBasicMaterial({color:0}):new THREE.MeshPhysicalMaterial({color:'#3b4048',metalness:.55,roughness:.42,envMapIntensity:.8});
+const black=new THREE.MeshBasicMaterial({color:0});
+const die=new THREE.Mesh(new THREE.BoxGeometry(DW,DT,DD),[sideM,sideM,topM,sideM,sideM,sideM]);
+const G=new THREE.Group();G.add(die);
+/* the fibre array: a glass V-groove block with a lid, butted to the input facet, four fibres leaving it */
+const glassM=EM?black:new THREE.MeshPhysicalMaterial({color:'#c9d2dc',roughness:.06,metalness:.1,transparent:true,opacity:.42,envMapIntensity:1.8,clearcoat:1,clearcoatRoughness:.03,depthWrite:false});
+const fa=new THREE.Mesh(new THREE.BoxGeometry(1.15,.9,1.5),glassM);fa.position.set(-DW/2-.6,-.02,yin-DD/2);G.add(fa);
+const lid=new THREE.Mesh(new THREE.BoxGeometry(.8,.28,1.5),glassM);lid.position.set(-DW/2-.78,.57,yin-DD/2);G.add(lid);
+const fibM=EM?black:new THREE.MeshPhysicalMaterial({color:'#d9dee6',roughness:.25,metalness:0,transmission:.6,thickness:.1,clearcoat:1,envMapIntensity:1});
+for(let i=0;i<4;i++){const z=yin-DD/2-.39+i*.26;const cu=new THREE.CatmullRomCurve3([new THREE.Vector3(-DW/2-1.15,.12,z),new THREE.Vector3(-DW/2-2.4,.12,z),new THREE.Vector3(-DW/2-4.6,-.05,z+(i-1.5)*.05),new THREE.Vector3(-DW/2-7.5,-.35,z+(i-1.5)*.16)]);
+  G.add(new THREE.Mesh(new THREE.TubeGeometry(cu,120,.045,20,false),fibM))}
+/* the active fibre glows faintly where it meets the chip (the light being coupled in) */
+if(EM){const s=new THREE.Mesh(new THREE.SphereGeometry(.05,16,16),new THREE.MeshBasicMaterial({color:'#ff3a44'}));s.position.set(-DW/2,DT/2-.02,yin-DD/2);G.add(s)}
+/* output fibre array at the far facet, smaller */
+const fa2=new THREE.Mesh(new THREE.BoxGeometry(.9,.8,1.2),glassM);fa2.position.set(DW/2+.47,-.03,yin-DD/2);G.add(fa2);
+for(let i=0;i<2;i++){const z=yin-DD/2-.13+i*.26;const cu=new THREE.CatmullRomCurve3([new THREE.Vector3(DW/2+.9,.1,z),new THREE.Vector3(DW/2+2.2,.1,z),new THREE.Vector3(DW/2+4.4,-.1,z+(i-.5)*.2)]);G.add(new THREE.Mesh(new THREE.TubeGeometry(cu,80,.045,20,false),fibM))}
+G.rotation.y=+(P.get('ry')||-.32);G.rotation.x=0;sc.add(G);
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||22),W/H,.1,200);cam.position.set(0,+(P.get('cy')||9.2),+(P.get('cz')||15));cam.lookAt(+(P.get('lx')||-.6),0,0);
+if(!EM){const env=new RoomEnvironment();
+  function card(x,y,z,w,h,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);return m}
+  env.add(card(-2,6,4,6,2,1.3));env.add(card(4,4,-3,2,5,1.2));
+  sc.environment=pm.fromScene(env,0.03).texture;
+  const k=new THREE.DirectionalLight(0xffffff,1.2);k.position.set(-4,8,5);sc.add(k);
+  const rim=new THREE.DirectionalLight(0xffd8d8,1.3);rim.position.set(6,3,-6);sc.add(rim);}
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

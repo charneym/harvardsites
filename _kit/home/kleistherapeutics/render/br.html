@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"../../../node_modules/three/build/three.module.js","three/addons/":"../../../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1200),H=+(P.get('h')||1200);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true,premultipliedAlpha:false});
+r.setPixelRatio(1);r.setSize(W,H);r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),.04).texture;sc.environmentIntensity=+(P.get('env')||.55);
+const A=await (await fetch((P.get('f')||'atoms')+'.json')).json();
+// centre + PCA
+let c=[0,0,0];A.forEach(a=>{c[0]+=a[0];c[1]+=a[1];c[2]+=a[2]});c=c.map(v=>v/A.length);
+const pts=A.map(a=>new THREE.Vector3(a[0]-c[0],a[1]-c[1],a[2]-c[2]));
+const cov=[[0,0,0],[0,0,0],[0,0,0]];pts.forEach(p=>{const v=[p.x,p.y,p.z];for(let i=0;i<3;i++)for(let j=0;j<3;j++)cov[i][j]+=v[i]*v[j]});
+function powerIt(M,orth){let v=new THREE.Vector3(Math.random(),Math.random(),Math.random());for(let k=0;k<200;k++){let w=new THREE.Vector3(M[0][0]*v.x+M[0][1]*v.y+M[0][2]*v.z,M[1][0]*v.x+M[1][1]*v.y+M[1][2]*v.z,M[2][0]*v.x+M[2][1]*v.y+M[2][2]*v.z);orth.forEach(o=>w.sub(o.clone().multiplyScalar(w.dot(o))));v=w.normalize()}return v}
+const e1=powerIt(cov,[]),e2=powerIt(cov,[e1]),e3=new THREE.Vector3().crossVectors(e1,e2);
+const basis=new THREE.Matrix4().makeBasis(e2,e1,e3).invert(); // long axis -> y
+pts.forEach(p=>p.applyMatrix4(basis));
+const g=new THREE.Group();sc.add(g);
+const R={C:1.7,N:1.55,O:1.52,S:1.8};
+const geo=new THREE.IcosahedronGeometry(1,3);
+const mat=new THREE.MeshPhysicalMaterial({roughness:+(P.get('rough')||.42),metalness:0,clearcoat:.35,clearcoatRoughness:.35,sheen:.4,sheenRoughness:.6,sheenColor:new THREE.Color(0xffd0e4)});
+const im=new THREE.InstancedMesh(geo,mat,pts.length);
+const dom=(a)=>{if(a[4]==='X')return 0xf7eef3;const n=a[3];if(n<140)return 0x7a0a44;if(n<455)return 0xc4166b;if(n<479)return 0xa00f5c;if(n<586)return 0xb3125f;return 0xe0679f};
+// buriedness for AO
+const cnt=pts.map((p,i)=>{let k=0;for(let j=0;j<pts.length;j++){if(p.distanceToSquared(pts[j])<100)k++}return k});
+const mn=Math.min(...cnt),mx=Math.max(...cnt);
+const m=new THREE.Matrix4(),col=new THREE.Color();
+pts.forEach((p,i)=>{const a=A[i];const s=(R[a[5]]||1.7);m.makeScale(s,s,s);m.setPosition(p);im.setMatrixAt(i,m);
+ col.setHex(dom(a));const t=(cnt[i]-mn)/(mx-mn);const ao=1-Math.pow(t,1.1)*.86;col.multiplyScalar(ao*(a[5]==='O'?1.04:a[5]==='N'?.95:1));im.setColorAt(i,col)});
+g.add(im);
+g.rotation.set(+(P.get('rx')||0),+(P.get('ry')||0),+(P.get('rz')||0));
+const key=new THREE.DirectionalLight(0xfff4f8,+(P.get('key')||2.2));key.position.set(-40,60,80);sc.add(key);
+const rim=new THREE.DirectionalLight(0xff9cc8,+(P.get('rim')||2.6));rim.position.set(60,20,-70);sc.add(rim);
+const fill=new THREE.DirectionalLight(0x8f86c8,.5);fill.position.set(40,-50,40);sc.add(fill);
+sc.add(new THREE.AmbientLight(0xffffff,.12));
+const box=new THREE.Box3().setFromObject(g);const sz=box.getSize(new THREE.Vector3());const ctr=box.getCenter(new THREE.Vector3());
+const cam=new THREE.PerspectiveCamera(20,W/H,1,2000);const dist=Math.max(sz.x,sz.y)*(+(P.get('d')||3.3));cam.position.set(ctr.x,ctr.y,ctr.z+dist);cam.lookAt(ctr);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

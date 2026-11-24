@@ -27,7 +27,7 @@ function vHome(){
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">−80</span><p class="k">mmHg of consistent negative pressure (±20), delivered by npSIMS</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">7</span><p class="k">Days of continuous NPWT from a single device</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">0</span><p class="k">Moving parts, batteries, buttons or pressure settings</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">6.3</span><p class="k">Days of negative pressure on average in the first-in-human study</p></div>'+
    '</div>'+
   '</div></section>'+
 

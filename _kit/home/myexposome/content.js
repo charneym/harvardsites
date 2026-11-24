@@ -15,10 +15,10 @@ var TEAM=[
  {g:"Founders and scientists",name:"Steven G. O’Connell, PhD",title:"Senior Scientist",sum:"One of the inventors of the core wristband and testing technology (US Patents 9,757,774 and 9,849,489), and Principal Investigator on the company’s NIH SBIR Phase 1 and Phase 2 awards."},
  {g:"Founders and scientists",name:"Kim A. Anderson, PhD",title:"Professor, Oregon State University",sum:"Department of Environmental and Molecular Toxicology; develops and validates passive sampling devices for people, companion animals and livestock, with over 60 peer-reviewed publications related to the technology MyExposome uses."}];
 var PUBS=[
- ["September 2025","Pesticide exposure in Costa Rica’s pineapple and banana regions","Mecca Howe et al., Environmental Pollution","https://doi.org/10.1016/j.envpol.2025.126577"],
- ["July 2025","Chemical threats to health in Uganda, measured with wristbands","Y. Edu Essandoh et al., Environmental Research","https://doi.org/10.1016/j.envres.2025.121522"],
- ["June 2025","Occupational exposure to semi-volatile organic compounds","Zihao Zhang et al., Environmental Science: Processes & Impacts","https://doi.org/10.1039/d5em00272a"],
- ["April 2025","The Fire Fighter Cancer Cohort Study","Jefferey Burgess et al., JMIR","https://doi.org/10.2196/70522"]];
+ ["September 2025","Pesticide exposure in Costa Rica’s pineapple and banana regions","Mecca Howe et al.","https://doi.org/10.1016/j.envpol.2025.126577"],
+ ["July 2025","Chemical threats to health in Uganda, measured with wristbands","Y. Edu Essandoh et al.","https://doi.org/10.1016/j.envres.2025.121522"],
+ ["June 2025","Occupational exposure to semi-volatile organic compounds","Zihao Zhang et al.","https://doi.org/10.1039/d5em00272a"],
+ ["April 2025","The Fire Fighter Cancer Cohort Study","Jefferey Burgess et al.","https://doi.org/10.2196/70522"]];
 var NEWS=[
  ["7 Nov 2025","Firefighters wear wristbands to track harmful exposures","C&EN","https://cen.acs.org/environment/pollution/firefighters-wear-wristbands-track-harmful-silicone/103/web/2025/11"],
  ["26 Jul 2024","Wristbands show farmworkers exposed to multiple pesticides","Investigate Midwest","https://investigatemidwest.org/2024/07/15/exposed/"],

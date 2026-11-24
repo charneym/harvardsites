@@ -1,0 +1,56 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* PANCO hero: a thermoelectric (Peltier) module like those PANCO stocks (panco.de, Produkte: TEC1-127xx, 40 x 40 mm, 127 couples):
+   two alumina ceramic plates, the grid of p/n semiconductor legs on copper bridges between them, red and black teflon leads.
+   Rendered on black and on white; matte.py turns the pair into real alpha. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1600),H=+(P.get('h')||1200);const BG=P.get('bg')||'#000000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+const pm=new THREE.PMREMGenerator(r);
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||20),W/H,.1,200);cam.position.set(0,+(P.get('cy')||6.2),+(P.get('cz')||13.5));cam.lookAt(0,-.15,0);
+const M=new THREE.Group();sc.add(M);
+const S=4.0, T=.075, LEG=.16, GAP=.25, N=16;   // 40 mm square, 0.75 mm ceramic, 1.6 mm legs
+// ceramic texture: fine grain noise
+function grain(base,amt,seed){const c=document.createElement('canvas');c.width=c.height=1024;const x=c.getContext('2d');x.fillStyle=base;x.fillRect(0,0,1024,1024);let s=seed;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
+  for(let i=0;i<60000;i++){const v=rnd();x.fillStyle='rgba('+(v<.5?'120,115,105':'255,255,255')+','+(amt*rnd())+')';x.fillRect(rnd()*1024,rnd()*1024,1.2,1.2)}const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+const cer=new THREE.MeshPhysicalMaterial({map:grain('#e4e1da',.12,11),color:0xffffff,roughness:.62,metalness:0,clearcoat:.15,clearcoatRoughness:.6,sheen:.3,sheenColor:new THREE.Color('#ffffff')});
+const top=new THREE.Mesh(new RoundedBoxGeometry(S,T,S,3,.012),cer);top.position.y=LEG/2+.02+T/2;M.add(top);
+const bot=new THREE.Mesh(new RoundedBoxGeometry(S,T,S+.0,3,.012),cer);bot.position.y=-(LEG/2+.02+T/2);M.add(bot);
+top.castShadow=bot.castShadow=true;top.receiveShadow=bot.receiveShadow=true;
+// legs: bismuth telluride, dark grey with a soft metallic sheen, on copper bridges
+const legM=new THREE.MeshPhysicalMaterial({color:0x4a4d52,roughness:.42,metalness:.45,clearcoat:.2});
+const cuM=new THREE.MeshPhysicalMaterial({color:0xd08a5c,roughness:.28,metalness:1});
+const snM=new THREE.MeshPhysicalMaterial({color:0xcfd3d6,roughness:.35,metalness:1});
+const legG=new THREE.BoxGeometry(.15,LEG,.15);
+const legs=new THREE.InstancedMesh(legG,legM,N*N);const m4=new THREE.Matrix4();let k=0;
+const o=-(N-1)/2*GAP;
+for(let i=0;i<N;i++)for(let j=0;j<N;j++){m4.makeTranslation(o+i*GAP,0,o+j*GAP);legs.setMatrixAt(k++,m4)}
+legs.castShadow=true;M.add(legs);
+// copper bridges: pairs of legs joined alternately on the top and bottom faces
+const brG=new THREE.BoxGeometry(.4,.02,.17);
+const brT=new THREE.InstancedMesh(brG,cuM,N*N/2),brB=new THREE.InstancedMesh(brG,cuM,N*N/2);let a=0,b=0;
+for(let j=0;j<N;j++)for(let i=0;i<N;i+=2){m4.makeTranslation(o+(i+.5)*GAP,LEG/2+.01,o+j*GAP);brT.setMatrixAt(a++,m4)}
+for(let j=0;j<N;j++)for(let i=1;i<N-1;i+=2){m4.makeTranslation(o+(i+.5)*GAP,-LEG/2-.01,o+j*GAP);brB.setMatrixAt(b++,m4)}
+brB.count=b;M.add(brT);M.add(brB);
+// two leads, red and black, soldered to the lower plate's front edge and running off in a soft curve
+function lead(col,x0,dz){const pts=[new THREE.Vector3(x0,-(LEG/2+.02+T/2)+.005,S/2-.12),new THREE.Vector3(x0,-.15,S/2+.3),new THREE.Vector3(x0-.08+dz*.05,-.24,S/2+.95),new THREE.Vector3(x0-.45+dz*.18,-.3,S/2+1.45),new THREE.Vector3(x0-1.05+dz*.3,-.32,S/2+1.75)];
+  const c=new THREE.CatmullRomCurve3(pts);const tube=new THREE.Mesh(new THREE.TubeGeometry(c,160,.058,28,false),new THREE.MeshPhysicalMaterial({color:new THREE.Color(col),roughness:.32,clearcoat:.7,clearcoatRoughness:.18}));tube.castShadow=true;M.add(tube);
+  const end=c.getPoint(1),tan=c.getTangent(1);const cap=new THREE.Mesh(new THREE.CylinderGeometry(.058,.058,.001,28),tube.material);
+  const wire=new THREE.Mesh(new THREE.CylinderGeometry(.034,.034,.32,18),snM);wire.position.copy(end.clone().add(tan.clone().multiplyScalar(.16)));wire.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),tan);M.add(wire);
+  const capm=new THREE.Mesh(new THREE.CircleGeometry(.058,28),tube.material);capm.position.copy(end);capm.lookAt(end.clone().add(tan));M.add(capm);}
+lead(P.get('c1')||'#c62a1c',-1.35,0);lead(P.get('c2')||'#1b1d20',-.95,1);
+M.rotation.y=+(P.get('ry')||-.62);M.position.x=+(P.get('mx')||0);M.rotation.x=+(P.get('rx')||0);M.rotation.z=+(P.get('rz')||0);
+// light: a soft key from the upper left, a warm red glow under the hot side, a cool blue rim on the cold side (the logo red and blue)
+const env=new RoomEnvironment();sc.environment=pm.fromScene(env,.03).texture;sc.environmentIntensity=+(P.get('ei')||.55);
+const key=new THREE.SpotLight(0xffffff,+(P.get('ki')||260),0,.5,1,1.6);key.position.set(-5,9,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=key.shadow.camera.bottom=-5;key.shadow.camera.right=key.shadow.camera.top=5;key.shadow.radius=4;key.shadow.bias=-.0004;sc.add(key);
+const blue=new THREE.DirectionalLight(0x6ea6d8,+(P.get('bi')||1.6));blue.position.set(6,3,-5);sc.add(blue);
+const red=new THREE.PointLight(0xff5a3a,+(P.get('ri')||5),9,1.6);red.position.set(-3.4,-1.4,2.2);sc.add(red);
+const fill=new THREE.DirectionalLight(0xdfe8f0,.5);fill.position.set(3,2,8);sc.add(fill);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

@@ -39,3 +39,9 @@ Licence to Athira/LeonaBio 2025-12-18 and LeonaBio rename 2026-01-09 (both poste
 
 ## Bad-site evidence
 Divi WordPress template (2019–2020 uploads): faded stock portrait on a beach as the hero, light-blue small text, sparse home page with one-paragraph overview (screenshot v2-sheets/11k-sermonixpharma.jpg).
+
+## Gates
+smoke, reveal 1440/390, anim 1440/390, clip 1440/390, overlay, masthead, mixed, polish, loader, unstyled, cramped, hoverpad, split,
+balance, logo, buildout-test (8 nav clicks), fit (5 widths), loader-contrast, entities, contrast 1440/390, textclash: all OK.
+hero-audit reports "#/ title never uncovered": a false positive from the template's fixed .fieldbg backdrop (z-index 0, behind content);
+tolremo/index.html gives the identical result. By eye: hero 1920×930/1440/390, loader frames 200–2000 ms at 1440/390, story steps 1440/390.

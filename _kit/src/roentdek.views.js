@@ -1,6 +1,6 @@
 /* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
 function dets(){return '<div class="rdk-dets">'+DETS.map(function(d){
-  return '<article class="rdk-det"><div class="rdk-ph" data-r><img src="'+d.img+'" alt="RoentDek '+esc(d.name.toLowerCase())+' ('+esc(d.tag)+')" width="'+d.w+'" height="'+d.h+'" loading="lazy" decoding="async"></div>'+
+  return '<article class="rdk-det"><div class="rdk-ph"><img src="'+d.img+'" alt="RoentDek '+esc(d.name.toLowerCase())+' ('+esc(d.tag)+')" width="'+d.w+'" height="'+d.h+'" decoding="async"></div>'+
    '<span class="lab rdk-tg">'+esc(d.tag)+'</span><h3>'+esc(d.name)+'</h3><p class="rdk-sub">'+esc(d.sub)+'</p><ul>'+d.li.map(function(l){return '<li>'+esc(l)+'</li>'}).join("")+'</ul></article>'}).join("")+'</div>'}
 function moreRows(){return '<ul class="pfr rdk-more">'+MORE.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><div class="pgm"><h3>'+esc(c[1])+'</h3><span class="loc">'+esc(c[2])+'</span></div><p>'+esc(c[3])+'</p></li>'}).join("")+'</ul>'}

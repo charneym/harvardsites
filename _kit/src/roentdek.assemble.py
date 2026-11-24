@@ -103,6 +103,9 @@ region('story', open(os.path.join(K, 'roentdek.story.js')).read())
 # ---------------- site CSS: appended after the base's tail rules, so it wins ----------------
 rep('</style>\n</head>', open(os.path.join(K, 'roentdek.extra.css')).read() + '\n</style>\n</head>')
 
+# product photographs: their own scroll fade (the global reveal misses media inside flex plates)
+rep('if(k==="home")homeScroll(view);', 'if(k==="home")homeScroll(view);if(k==="home"&&!RM)$$(".rdk-ph,.rdk-fig",view).forEach(function(el){gsap.fromTo(el,{opacity:0,y:30},{opacity:1,y:0,duration:1.1,ease:"silk",scrollTrigger:{trigger:el,start:"top 90%",once:true}})});')
+
 # nssfix as-is (already inline in the base, before </body>): verify it is there
 assert 'R:nssfix' in s
 s = s.replace('sutraRise', 'rdkRise')

@@ -1179,7 +1179,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 
 /*<R:views>*//* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
 function dets(){return '<div class="rdk-dets">'+DETS.map(function(d){
-  return '<article class="rdk-det"><div class="rdk-ph" data-r><img src="'+d.img+'" alt="RoentDek '+esc(d.name.toLowerCase())+' ('+esc(d.tag)+')" width="'+d.w+'" height="'+d.h+'" loading="lazy" decoding="async"></div>'+
+  return '<article class="rdk-det"><div class="rdk-ph"><img src="'+d.img+'" alt="RoentDek '+esc(d.name.toLowerCase())+' ('+esc(d.tag)+')" width="'+d.w+'" height="'+d.h+'" decoding="async"></div>'+
    '<span class="lab rdk-tg">'+esc(d.tag)+'</span><h3>'+esc(d.name)+'</h3><p class="rdk-sub">'+esc(d.sub)+'</p><ul>'+d.li.map(function(l){return '<li>'+esc(l)+'</li>'}).join("")+'</ul></article>'}).join("")+'</div>'}
 function moreRows(){return '<ul class="pfr rdk-more">'+MORE.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><div class="pgm"><h3>'+esc(c[1])+'</h3><span class="loc">'+esc(c[2])+'</span></div><p>'+esc(c[3])+'</p></li>'}).join("")+'</ul>'}
@@ -1512,7 +1512,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.lines,{yPercent:100,opacity:0,duration:1.05,ease:"silk",stagger:.08,delay:E+.05,onComplete:function(){unmask(s2)}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:.9,ease:"silk",stagger:.06,delay:E+.2}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});
-    if(k==="home")homeScroll(view);
+    if(k==="home")homeScroll(view);if(k==="home"&&!RM)$$(".rdk-ph,.rdk-fig",view).forEach(function(el){gsap.fromTo(el,{opacity:0,y:30},{opacity:1,y:0,duration:1.1,ease:"silk",scrollTrigger:{trigger:el,start:"top 90%",once:true}})});
     if(k==="contact")contactInit(view);
     rvView(view,E);
   },view);

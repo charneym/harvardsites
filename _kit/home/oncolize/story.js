@@ -37,7 +37,7 @@ function storyScene(o){
   /* the tumor outline in the accent, drawn in step 3 */
   g+='<path class="ol" id="scOl" d="'+TUM+'"/>';
   /* needle: drawn along +x with its tip at the origin, then rotated into place */
-  g+='<g id="scNd"><g transform="rotate('+NANG+')"><path class="nd" d="M-250 -2.6H-7L0 0L-7 2.6H-250Z"/><path class="hb" d="M-300 -8H-250V8H-300Z"/><path class="hb" d="M-250 -4.5L-238 -3.2V3.2L-250 4.5"/></g></g>';
+  g+='<g id="scNd"><g transform="rotate('+NANG+')"><path class="nd" d="M-210 -2.6H-7L0 0L-7 2.6H-210Z"/><path class="hb" d="M-250 -8H-210V8H-250Z"/><path class="hb" d="M-210 -4.5L-198 -3.2V3.2L-210 4.5"/></g></g>';
   if(!mob){
     g+='<g id="lNd"><text class="t" x="96" y="214">NEEDLE</text></g>';
     g+='<g id="lTu"><text class="t" x="600" y="148" text-anchor="middle">TUMOR</text></g>';

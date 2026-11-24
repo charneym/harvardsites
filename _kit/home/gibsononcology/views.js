@@ -52,7 +52,7 @@ function pipe(full){return '<div class="g-pipe"><div class="g-pipe-hd" aria-hidd
    '<div class="g-pr-b"><p class="g-pr-i">'+esc(r.ind)+'</p><div class="g-bar" style="--r:'+r.reach+'" role="img" aria-label="'+esc(r.drug)+': '+esc(r.live)+'"><span class="g-bar-t"></span><span class="g-bar-f"></span><span class="lab g-bar-l">'+esc(r.live)+'</span></div>'+
    '<p class="g-pr-w">'+esc(r.who)+'</p>'+(full?'<p class="g-pr-x">'+esc(r.txt)+'</p>':'')+'</div></div>'}).join("")+'</div>'}
 function pipeSec(){return '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
-  '<div class="shead"><div><span class="lab kick">Pipeline</span><h2 class="d2">Brain tumours first, <em>then wider.</em></h2></div><p>Three drugs from one class. LMP744 is in Phase 2 at the NIH, LMP400 has finished Phase 1 and is headed for Phase 2 with Duke, and the Azas follow.</p></div>'+
+  '<div class="shead"><div><span class="lab kick">Pipeline</span><h2 class="d2">Brain tumors first, <em>then wider.</em></h2></div><p>Three drugs from one class. LMP744 is in Phase 2 at the NIH, LMP400 has finished Phase 1 and is headed for Phase 2 with Duke, and the Azas follow.</p></div>'+
   pipe(false)+'<div class="g-act">'+more("#/pipeline","The full pipeline")+'</div></div></section>'}
 
 /* designations and IP, beside the multi-well plate photograph */
@@ -65,8 +65,8 @@ function desigSec(){return '<section class="sec light g-split" id="designations"
 function marketStats(){return '<div class="g-mk">'+MARKET.slice(0,2).map(function(m,i){return '<div class="g-mk-c"><span class="g-mk-v">'+esc(m[0])+'</span><span class="g-mk-k">'+esc(m[1])+'</span></div>'+(i===0?'<div class="g-mk-a" aria-hidden="true">'+ARRS+'</div>':'')}).join("")+'</div>'}
 function deals(){return '<ul class="g-dl">'+DEALS.map(function(d){return '<li><span class="lab">'+esc(d[0])+'</span><h3>'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</h3><b>'+esc(d[3])+'</b></li>'}).join("")+'</ul>'}
 function investSec(){return '<section class="sec dark" id="investors" data-theme="dark"><div class="wrap">'+
-  '<div class="shead"><div><span class="lab kick">Investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><p>Glioblastoma alone is a $3.2 billion market, and brain-tumour drugs have changed hands for up to $2.5 billion in the last six years.</p></div>'+
-  marketStats()+'<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumour transactions</span>'+deals()+'</div>'+
+  '<div class="shead"><div><span class="lab kick">Investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p></div>'+
+  marketStats()+'<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div>'+
   '<p class="g-src">Emergen Research (market, CAGR 7.8%); transaction values from Gibson’s investor presentation, November 2026.</p>'+
   '<div class="g-act">'+more("#/investors","Investor overview")+'</div></div></section>'}
 
@@ -108,9 +108,9 @@ function footer(){
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<span class="lab eyebrow" data-r>Clinical-stage oncology<span class="nomob"> · Brain tumours</span> · Miami, FL</span>'+
+   '<span class="lab eyebrow" data-r>Clinical-stage oncology<span class="nomob"> · Brain tumors</span> · Miami, FL</span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Two targets.</span><span class="l"><em>One molecule.</em></span></h1>'+
-   '<div class="hero-foot"><p class="s" data-r>LMP744, LMP400 and the next-generation Azas hit topoisomerase 1 and reduce overexpression of cMYC, the oncogene behind about 80% of all human cancers. Brain tumours come first.</p>'+
+   '<div class="hero-foot"><p class="s" data-r>LMP744, LMP400 and the next-generation Azas hit topoisomerase 1 and reduce overexpression of cMYC, the oncogene behind about 80% of all human cancers. Brain tumors come first.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/science">The science '+ARR+'</a><a class="btn" href="#/partners">Our partners</a></div></div>'+
    heroMarks()+
   '</section>'+
@@ -157,14 +157,14 @@ function vScience(){return head({k:"Science",h:"Two targets, <em>one molecule.</
 function drugCards(){return '<div class="g-dc">'+PIPE.slice(0,2).map(function(r){return '<article class="g-dc-c"><figure class="g-dc-s">'+img(r.img,"Chemical structure of "+r.drug,r.drug==="LMP744"?384:282,r.drug==="LMP744"?251:243)+'</figure>'+
   '<div><span class="lab kick">'+esc(r.route)+'</span><h3>'+esc(r.drug)+'</h3><p class="g-dc-i">'+esc(r.ind)+'</p><p>'+esc(r.txt)+'</p></div></article>'}).join("")+'</div>'}
 function compete(){return '<ul class="g-cp">'+COMPETE.map(function(c){return '<li'+(c[0]==="Gibson Oncology"?' class="me"':'')+'><span class="lab">'+esc(c[0])+'</span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p></li>'}).join("")+'</ul>'}
-function vPipeline(){return head({k:"Pipeline",h:"Brain tumours first, <em>then wider.</em>",p:"LMP744 is in a Phase 2 trial at the NIH. LMP400 has completed Phase 1 and is headed for Phase 2 with Duke. Over 700 next-generation Azas follow."})+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Programmes</span><h2 class="d2">Three drugs, <em>one class.</em></h2></div><p>Each acts on TOPO 1 and cMYC. The path to market targets brain tumours, where competition is low; doctors can then use the drugs in other cancers as merited.</p></div>'+pipe(false)+'</div></section>'+
+function vPipeline(){return head({k:"Pipeline",h:"Brain tumors first, <em>then wider.</em>",p:"LMP744 is in a Phase 2 trial at the NIH. LMP400 has completed Phase 1 and is headed for Phase 2 with Duke. Over 700 next-generation Azas follow."})+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Programmes</span><h2 class="d2">Three drugs, <em>one class.</em></h2></div><p>Each acts on TOPO 1 and cMYC. The path to market targets brain tumors, where competition is low; doctors can then use the drugs in other cancers as merited.</p></div>'+pipe(false)+'</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The molecules</span><h2 class="d2">Small molecules, <em>through Phase 1.</em></h2></div><p>Both lead drugs have completed Phase 1 at the National Cancer Institute, where they were well tolerated.</p></div>'+drugCards()+'</div></section>'+
   '<section class="sec dark g-split" data-theme="dark"><div class="wrap g-split-in">'+
    '<figure class="g-split-m">'+img("pipette.webp","Pipetting samples into a tray for DNA testing",2000,1500)+'</figure>'+
    '<div class="g-split-t"><span class="lab kick">LMP744 · Phase 2 at NINDS</span><h2 class="d2">A trial that may <em>register the drug.</em></h2>'+evid()+'</div></div></section>'+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Designations and protection</span><h2 class="d2">Orphan, rare paediatric, <em>and patented.</em></h2></div><p>The FDA designations shorten the road; the patents protect what lies at the end of it.</p></div>'+desig()+'</div></section>'+
-  '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">Competitive position</span><h2 class="d2">All gliomas, <em>not one mutation.</em></h2></div><p>Recent glioma drugs target specific mutations and smaller markets. LMP744 and LMP400 address all glioma brain tumours.</p></div>'+compete()+'</div></section>'+cta()}
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Designations and protection</span><h2 class="d2">Orphan, rare pediatric, <em>and patented.</em></h2></div><p>The FDA designations shorten the road; the patents protect what lies at the end of it.</p></div>'+desig()+'</div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">Competitive position</span><h2 class="d2">All gliomas, <em>not one mutation.</em></h2></div><p>Recent glioma drugs target specific mutations and smaller markets. LMP744 and LMP400 address all glioma brain tumors.</p></div>'+compete()+'</div></section>'+cta()}
 
 /* ================= PARTNERS ================= */
 function vPartners(){return head({k:"Partners",h:"Chosen by the institutions <em>that see the most.</em>",p:"NIH, Mayo Clinic, Duke and Children’s National see a great many candidate cancer drugs. Each chose to deploy its own resources on Gibson’s."})+
@@ -175,7 +175,7 @@ function vPartners(){return head({k:"Partners",h:"Chosen by the institutions <em
 /* ================= TEAM ================= */
 function vTeam(){return head({k:"Team",h:"Chemists, clinicians <em>and company builders.</em>",p:"A leadership team that has built over a billion dollars in new companies, including others with drugs now approved to treat cancer, with the chemist who designed the molecules as a founder."})+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">Leadership and board</span><h2 class="d2">The people <em>behind Gibson.</em></h2></div><p>Mark Cushman, Distinguished Professor Emeritus in Purdue University’s College of Pharmacy, has been inducted into the American Chemical Society Division of Medicinal Chemistry Hall of Fame.</p></div>'+people(TEAM)+'</div></section>'+
-  band({img:"clinical-lab.webp",w:2000,h:1316,k:"How Gibson works",h:"A lean company, <em>a large network.</em>",p:"Working with NINDS, Duke and Children’s National keeps Gibson’s annual burn rate very low, while some of the leading brain-tumour investigators in the country advance its drugs."})+
+  band({img:"clinical-lab.webp",w:2000,h:1316,k:"How Gibson works",h:"A lean company, <em>a large network.</em>",p:"Working with NINDS, Duke and Children’s National keeps Gibson’s annual burn rate very low, while some of the leading brain-tumor investigators in the country advance its drugs."})+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Scientific collaborators</span><h2 class="d2">Senior scientists <em>across the field.</em></h2></div><p>Significant parts of the Gibson pipeline were studied under preclinical and clinical agreements with these investigators and their institutions.</p></div>'+people(COLLAB,"c3")+'</div></section>'+cta()}
 
 /* ================= INVESTORS ================= */
@@ -183,7 +183,7 @@ function reasons(){return '<ol class="g-rs">'+REASONS.map(function(r){return '<l
 function vInvestors(){return head({k:"Investors",h:"Why invest <em>in Gibson.</em>",p:"Two commercially validated targets, four premier institutions deploying their own resources, orphan designations and patents beyond 2041, at a very low burn rate."})+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The case</span><h2 class="d2">Six reasons, <em>in brief.</em></h2></div><p>From Gibson’s November 2026 investor presentation.</p></div>'+reasons()+'</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">The market</span><h2 class="d2">Glioblastoma, <em>$6.9 billion by 2035.</em></h2></div><p>Glioblastoma recurs in nearly all patients, and survival once it does is typically six to ten months.</p></div>'+marketStats()+
-   '<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumour transactions</span>'+deals()+'</div><p class="g-src">Emergen Research; CBTRUS 2025; Penn Medicine, June 2025; Gibson investor presentation, November 2026.</p></div></section>'+
+   '<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div><p class="g-src">Emergen Research; CBTRUS 2025; Penn Medicine, June 2025; Gibson investor presentation, November 2026.</p></div></section>'+
   '<section class="sec light g-split" data-theme="light"><div class="wrap g-split-in">'+
    '<figure class="g-split-m">'+img("research.webp","A researcher holding results in the laboratory",2000,1333)+'</figure>'+
    '<div class="g-split-t"><span class="lab kick">The path</span><h2 class="d2">Licensing or acquisition <em>after Phase 2.</em></h2><p class="g-p">Gibson targets licensing or acquisition on completion of Phase 2 human trials, three to four years out. Its partners carry much of the clinical cost: NINDS is paying the majority of the LMP744 Phase 2 trial, and Duke has filed a $15 million SPORE grant for LMP400.</p>'+

@@ -65,14 +65,14 @@ function vHome(){
    team()+
   '</div></section>'+
 
-  '<section class="sec light" id="news" data-theme="light"><div class="wrap">'+
+  '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split">Latest from <em>LioniX.</em></h2></div><p data-r>Projects, milestones and people, from European research consortia to a TriPleX® chip for an in-orbit demonstration.</p></div>'+
    news()+
   '</div></section>'+
   cta();
 }
 function cta(){
-  return '<section class="sec dark2 cta" id="contact" data-theme="dark"><div class="wrap">'+
+  return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
    '<h2 class="big split">Let’s talk about <em>your project.</em></h2>'+
    '<p class="sub" data-r>Whether you have specific questions or want to discuss the options more generally, get in touch with LioniX International.</p>'+

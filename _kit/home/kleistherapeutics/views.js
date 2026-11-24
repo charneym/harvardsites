@@ -76,9 +76,9 @@ function cta(){
    '<p class="sub" data-r>For investment information, partnerships, licensing or research collaboration, our team would be glad to hear from you.</p>'+
    '<div class="act" data-r><a class="btn solid" href="'+MAIL+'">Write to Kleis '+ARR+'</a><a class="btn" href="#/investors">For investors</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Address</span><p data-r>Kleis Therapeutics Ltd<br>Birmingham B4 7ET, UK</p></div>'+
+    '<div><span class="lab" data-r>Address</span><p data-r><span class="kl-ln">Kleis Therapeutics Ltd</span><span class="kl-ln">Birmingham B4 7ET, UK</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="'+MAIL+'">info@kleistherapeutics.co.uk</a></p></div>'+
-    '<div><span class="lab" data-r>Investors</span><p data-r>Pre-Series A<br>SEIS and EIS eligible</p></div>'+
+    '<div><span class="lab" data-r>Investors</span><p data-r><span class="kl-ln">Pre-Series A</span><span class="kl-ln">SEIS and EIS eligible</span></p></div>'+
    '</div>'+
   '</div></section>';
 }

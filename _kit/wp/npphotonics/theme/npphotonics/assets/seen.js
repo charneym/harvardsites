@@ -1,0 +1,1 @@
+try{if(sessionStorage.getItem("npp-pre")==="1")document.documentElement.classList.add("seen")}catch(e){}

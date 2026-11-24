@@ -26,7 +26,7 @@ function vHome(){
    '<h2 class="txt" id="mani">For decades, topoisomerase-directed drugs have been a mainstay of oncology. But toxicity, resistance and limited flexibility in combination have constrained them. The next advance is not simply more force. <em>It’s better design.</em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">33</span><p class="k">Heavily pretreated patients with advanced solid tumors in the completed Phase I(a) dose escalation</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">0</span><p class="k">Grade 3 or 4 treatment-related adverse events, and no neutropenia, across every dose level</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">62%</span><p class="k">Stable disease in the higher-dose cohorts, alongside 56% tumor inhibition</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">22%</span><p class="k">Partial responses, more than 30% tumor size reduction, in the higher-dose cohorts</p></div>'+
    '</div>'+
   '</div></section>'+

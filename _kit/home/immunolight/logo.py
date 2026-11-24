@@ -15,10 +15,10 @@ def mark(cls='sw'):
         g+='<circle class="%sd %s" cx="%.1f" cy="%.1f" r="4.4" fill="%s"/>'%(cls,k,cx,cy,c)
     return g
 def svg(c,label='Immunolight'):
-    return ('<svg class="%s" viewBox="-1 -1 338 72" role="img" aria-label="%s">'%(c,label)+mark()+
-      '<text class="lt1" x="78" y="49" textLength="232" lengthAdjust="spacingAndGlyphs">IMMUNOLIGHT</text>'
-      '<text class="ltm" x="312" y="31">TM</text>'
-      '<text class="lt2" x="80" y="64" textLength="228" lengthAdjust="spacingAndGlyphs">ILLUMINATION | INNOVATION | TRANSFORMATION</text></svg>')
+    return ('<svg class="%s" viewBox="-1 -1 344 78" role="img" aria-label="%s">'%(c,label)+mark()+
+      '<text class="lt1" x="78" y="49">IMMUNOLIGHT</text>'
+      '<text class="ltm" x="324" y="24">TM</text>'
+      '<text class="lt2" x="79" y="70">ILLUMINATION | INNOVATION | TRANSFORMATION</text></svg>')
 if __name__=='__main__':
     open('logo_svg.txt','w').write(svg('LGO'))
     open('mark_svg.txt','w').write('<svg viewBox="-1 -1 70 70" xmlns="http://www.w3.org/2000/svg">'+mark()+'</svg>')

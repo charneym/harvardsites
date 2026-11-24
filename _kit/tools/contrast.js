@@ -1,0 +1,9 @@
+// Usage: node _kit/tools/contrast.js SLUG [WIDTH]. Scrolls the whole home page (and fires reveals), then flags visible text below 3:1 contrast against its effective background. Prints "contrast SLUG: OK" or the offenders.
+const {chromium}=require('playwright');const path=require('path');
+(async()=>{const [s,W='1440']=process.argv.slice(2);const b=await chromium.launch();const p=await b.newPage({viewport:{width:+W,height:+W>500?900:844}});
+await p.goto('file://'+path.resolve(__dirname,'../..',s,'index.html'));await p.waitForTimeout(6000);
+const h=await p.evaluate(()=>document.body.scrollHeight);for(let y=0;y<h;y+=500){await p.mouse.wheel(0,500);await p.waitForTimeout(120)}await p.waitForTimeout(2500);
+const bad=await p.evaluate(()=>{const L=c=>{const m=c.match(/[\d.]+/g);if(!m)return null;const [r,g,b,a=1]=m.map(Number);const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return {l:.2126*f(r)+.7152*f(g)+.0722*f(b),a}};
+const bg=el=>{for(let e=el;e;e=e.parentElement){const c=getComputedStyle(e).backgroundColor;const v=L(c);if(v&&v.a>.5)return v.l}return L(getComputedStyle(document.body).backgroundColor).l};
+const out=[];document.querySelectorAll('h1,h2,h3,h4,p,li,a,span,dt,dd,td,em,strong').forEach(el=>{if(!el.childNodes.length||![...el.childNodes].some(n=>n.nodeType==3&&n.textContent.trim().length>2))return;const cs=getComputedStyle(el);if(cs.visibility=='hidden'||+cs.opacity<.5||el.closest('#pre'))return;const r=el.getBoundingClientRect();if(!r.width||!r.height)return;const fg=L(cs.color);if(!fg)return;const b2=bg(el);const cr=(Math.max(fg.l,b2)+.05)/(Math.min(fg.l,b2)+.05);if(cr<3)out.push(cr.toFixed(2)+' '+el.textContent.trim().slice(0,50))});return out});
+console.log(bad.length?'contrast '+s+': '+bad.length+' low\n'+bad.slice(0,15).join('\n'):'contrast '+s+': OK');await b.close()})();

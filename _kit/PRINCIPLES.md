@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v23 (client critique, 2026-11-23)
 
+**DV. Every line of text is readable on its own ground.** Found on lionixinternational: News headlines and the Contact address were invisible, bone text on a bone section, because a section's theme class didn't match the styles copied in for it. When you move or restyle a section, its text colours must follow its ground. Gate: `node _kit/tools/contrast.js SLUG` (and again at 390) must print "OK". It scrolls the whole page and flags any visible text under 3:1.
+
 **DU. No raw HTML entities on screen.** Found on akyso: the team list showed "Adrienne O&#8217;Reilly" because an entity-encoded string was inserted as text. Write real characters (’ – é) in content.js, never entities. Gate: `node _kit/tools/entities.js SLUG` must print "clean" (it checks the visible text of home and every build-out route).
 
 **DT. Heroes are never alarming, and every site keeps the standard build-out.** Client on limaxbio v3 (tissue with a bleeding cut sealed by a gel patch): "confusing (and even alarming) and unsettling and unsatisfying". No wounds, cuts, blood, gore, diseased organs or injured bodies in the hero; show the product or material itself, calm and premium, ideally echoing the firm's own brand imagery. The client also asked "why is there no coming up animation when clicking on pages? why is the home design not in back of other pages' tops?": bespoke and priority builds must still use the template build-out (wipe and reveal on every nav click, with the hero ghosted large behind each page head). Gate: buildout-test, plus a by-eye check of one page mid-transition and settled.

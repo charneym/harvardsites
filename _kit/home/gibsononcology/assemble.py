@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble the Gibson Oncology home-only page from firelight.src.html regions (HOME_BRIEF)."""
+"""Assemble the Gibson Oncology full site from firelight.src.html regions (HOME_BRIEF)."""
 import re, pathlib
 H = pathlib.Path(__file__).resolve().parent
 K = H.parent.parent
@@ -15,7 +15,7 @@ for name, f in REG.items():
     assert n == 1, (name, n)
     src = new
 assert src.count('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->') == 1
-src = src.replace('<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->', '<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout-->')
+pass  # full site: the template's own router, no build-out module
 # site-specific CSS goes after every template rule
 assert src.count('</style>') == 1
 src = src.replace('</style>', part('extra.css') + '\n</style>')

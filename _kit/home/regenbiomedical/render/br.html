@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"../../../node_modules/three/build/three.module.js","three/addons/":"../../../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1100),H=+(P.get('h')||1400);const BG=P.get('bg')||'#000000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.05);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+const pm=new THREE.PMREMGenerator(r);
+const cam=new THREE.PerspectiveCamera(22,W/H,.1,100);cam.position.set(0,4.2,15.2);cam.lookAt(0,1.75,0);
+function lathe(pts,seg=180){return new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg)}
+const R=1.1,HV=3.4;
+// glass vessel: rounded bottom, straight wall, small flange at top
+const out=[[0,0],[R*.55,0],[R*.86,.05],[R*.97,.16],[R,.34],[R,HV],[R+.08,HV],[R+.08,HV+.08]];
+const glassM=new THREE.MeshPhysicalMaterial({color:0xeaf4f8,roughness:.03,transparent:true,opacity:+(P.get('go')||.07),envMapIntensity:1,depthWrite:false});
+const glassS=new THREE.MeshPhysicalMaterial({color:0x000000,roughness:+(P.get('gr')||.04),metalness:0,clearcoat:1,clearcoatRoughness:.03,envMapIntensity:+(P.get('ge')||2.4),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});
+const go=new THREE.Mesh(lathe(out),glassM);go.renderOrder=3;sc.add(go);const gs=new THREE.Mesh(lathe(out),glassS);gs.renderOrder=4;sc.add(gs);const gb=new THREE.Mesh(lathe(out),glassS.clone());gb.material.side=THREE.BackSide;gb.material.envMapIntensity=+(P.get("gbe")||.3);gb.renderOrder=0;sc.add(gb);
+const inn=[[0,.06],[R*.52,.06],[R*.82,.11],[R*.92,.2],[R-.05,.37],[R-.05,HV]];
+// culture medium (phenol red, the logo coral)
+const LH=+(P.get('lh')||2.05),LR=R-.06;
+const liq=[[0,.07],[LR*.5,.07],[LR*.8,.12],[LR*.9,.21],[LR,.38],[LR,LH+.03],[LR-.02,LH+.06],[LR-.1,LH+.01],[0,LH]];
+const medM=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('mc')||'#f26a52'),roughness:.1,transparent:true,opacity:+(P.get('mo')||.72),emissive:new THREE.Color(P.get('em')||'#a8301c'),emissiveIntensity:+(P.get('ei')||.35),envMapIntensity:+(P.get('me')||.25),clearcoat:+(P.get('mcc')||.2),depthWrite:false});
+const lq=new THREE.Mesh(lathe(liq),medM);lq.renderOrder=2;sc.add(lq);const lqb=new THREE.Mesh(lathe(liq),medM.clone());lqb.material.side=THREE.BackSide;lqb.renderOrder=1;sc.add(lqb);
+// stainless steel
+const st=new THREE.MeshPhysicalMaterial({color:0xd6dadd,metalness:1,roughness:.24,envMapIntensity:1.25,clearcoat:.25});
+const stD=new THREE.MeshPhysicalMaterial({color:0x9aa1a6,metalness:1,roughness:.35,envMapIntensity:1.1});
+// headplate and clamp ring
+const hp=new THREE.Mesh(new THREE.CylinderGeometry(R+.2,R+.2,.2,160),st);hp.position.y=HV+.18;sc.add(hp);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(R+.12,.07,24,160),stD);ring.rotation.x=Math.PI/2;ring.position.y=HV+.06;sc.add(ring);
+// motor hub
+const hub=new THREE.Mesh(lathe([[0,0],[.34,0],[.34,.36],[.3,.42],[.12,.42],[.12,.56],[0,.56]],120),st);hub.position.y=HV+.28;sc.add(hub);
+// ports on the headplate
+[[.82,0,.22],[-.8,.2,.3],[.35,-.75,.18],[-.25,.78,.16],[.62,.62,.12]].forEach(function(q){const g=new THREE.Mesh(lathe([[0,0],[.075,0],[.075,q[2]],[.1,q[2]],[.1,q[2]+.06],[0,q[2]+.06]],48),st);g.position.set(q[0],HV+.28,q[1]);sc.add(g)});
+// dip tubes and probe going into the medium
+[[.78,0,1.0],[-.62,.4,.7]].forEach(function(q){const t=new THREE.Mesh(new THREE.CylinderGeometry(.035,.035,HV+.2-q[2],24),st);t.position.set(q[0],(HV+.2+q[2])/2,q[1]);sc.add(t)});
+const probe=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,HV-1.2,32),stD);probe.position.set(-.8,HV-(HV-1.2)/2+.1,.2);sc.add(probe);
+// shaft and pitched-blade impeller
+const sh=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,HV-.4,32),st);sh.position.y=.6+(HV-.4)/2;sc.add(sh);
+const ih=new THREE.Mesh(new THREE.CylinderGeometry(.12,.12,.16,32),st);ih.position.y=.66;sc.add(ih);
+for(let i=0;i<4;i++){const b=new THREE.Mesh(new RoundedBoxGeometry(.5,.22,.025,3,.01),st);const a=i*Math.PI/2+.4;b.position.set(Math.cos(a)*.34,.66,-Math.sin(a)*.34);b.rotation.y=a;b.rotateX(.75);sc.add(b)}
+// microtissues: small pale spheroids suspended in the medium
+let seed=11;const rnd=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
+const mtM=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('tc')||'#ffe3d6'),roughness:.5,emissive:new THREE.Color('#ffb59c'),emissiveIntensity:.25,sheen:.6,sheenColor:new THREE.Color('#fff2ea'),envMapIntensity:.8});
+const N=+(P.get('n')||90);
+for(let i=0;i<N;i++){const rr=Math.sqrt(rnd())*(LR-.18),a=rnd()*Math.PI*2,y=.35+rnd()*(LH-.55);const s=(.018+rnd()*.022)*(+(P.get('ts')||1));
+  const m=new THREE.Mesh(new THREE.IcosahedronGeometry(s,3),mtM);m.position.set(Math.cos(a)*rr,y,Math.sin(a)*rr);sc.add(m)}
+// lights + softbox env
+const k=new THREE.DirectionalLight(0xffffff,1.5);k.position.set(-4,7,6);sc.add(k);
+const rim=new THREE.DirectionalLight(0xdff0ff,1.6);rim.position.set(5,3,-4);sc.add(rim);
+const env=new RoomEnvironment();
+function card(x,y,z,w,h,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,y,0);return m}
+[card(-3.4,2,2.6,1.3,7,2.6),card(3.8,2,1.0,.6,7,1.7)].forEach(c=>env.add(c));
+sc.environment=pm.fromScene(env,0.02).texture;
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

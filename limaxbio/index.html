@@ -1003,6 +1003,20 @@ html body .hero.hx h1.hero-h{font-size:clamp(46px,6.15vw,108px)}
  .hero.hx .hrule{width:72vw;font-size:inherit}
  .hero.hx::before{background:linear-gradient(180deg,rgba(var(--inkr),.72) 0%,rgba(var(--inkr),.22) 13%,rgba(var(--inkr),.12) 22%,rgba(var(--inkr),.88) 38%,rgba(var(--inkr),.94) 100%)!important}
 }
+
+/* numbers band: the template's .stats/.stat (so the shared fit checks apply), laid out as one 4-up row on the 12-column grid */
+.numb .nb.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:var(--gap);margin:0;gap:0 var(--gap)}
+.numb .nb .stat{padding:0;border:0;margin:0;display:block}
+.numb .nb .stat .ln2{display:none}
+@media (max-width:860px){.numb .nb.stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:44px}}
+@media (max-width:420px){.numb .nb.stats{grid-template-columns:1fr}}
+/* pillars start hidden and rise in (site.js); reduced motion shows them at once */
+.pil li{opacity:0;transform:translateY(26px)}
+@media (prefers-reduced-motion:reduce){.pil li{opacity:1;transform:none}}
+.nb .n{min-width:0}
+.numb .nb .stat::before{display:none}
+.numb .nb .stat .k{margin:16px 0 0;font-size:15px;line-height:1.5;color:rgba(var(--boner),.74);max-width:28ch}
+.numb .nb .stat .v{font-weight:600;letter-spacing:-.045em;line-height:1}
 </style>
 </head>
 </head>
@@ -1660,7 +1674,14 @@ var PK="lmx";
     mo2.observe(wm,{subtree:true,attributes:true,attributeFilter:["style"]});}
   if(pc.style.visibility==="visible")go();
   else{var mo=new MutationObserver(function(){if(pc.style.visibility==="visible"){mo.disconnect();go()}});mo.observe(pc,{attributes:true,attributeFilter:["style"]})}
-})();/*</R:site>*/
+})();
+
+/* the three pillars sit in the hero, which the template's scroll reveal skips: they rise in on their own, as each enters the
+   viewport, once the loader has slid away (on phones the third is below the fold) */
+(function(){if(RM)return;var n=0;(function wait(){if(++n>400)return;var pre=document.getElementById("pre");var ls=document.querySelectorAll("#hero .pil li");
+  if((pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)||!ls.length||!window.ScrollTrigger){setTimeout(wait,100);return}
+  Array.prototype.forEach.call(ls,function(li,i){gsap.set(li,{opacity:0,y:26});li.style.removeProperty("transform");gsap.set(li,{y:26});
+    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.9,ease:"power3.out",delay:li.getBoundingClientRect().top<innerHeight?.35+i*.08:0,clearProps:"transform"})}})})})()})();/*</R:site>*/
 
 /* ================= CONTENT (from the dossier; nothing invented) ================= */
 /*<R:content>*/var FONTS=['400 1em "Inter Tight"','500 1em "Inter Tight"','600 1em "Inter Tight"','700 1em "Inter Tight"','400 1em "Krona One"','300 1em "Montserrat"','400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"'];
@@ -1734,9 +1755,9 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="What our hydrogels do">'+
-    '<li class="p1" data-r><span class="pic">'+ICO.seal+'</span><div><span class="lab">Seal leaks</span><p>Tough sealants that stop bleeding on wet, moving tissue.</p></div></li>'+
-    '<li class="p2" data-r><span class="pic">'+ICO.heal+'</span><div><span class="lab">Heal tissues</span><p>Bioadhesives that replace staples and sutures and protect the wound.</p></div></li>'+
-    '<li class="p3" data-r><span class="pic">'+ICO.drug+'</span><div><span class="lab">Deliver drugs</span><p>Local release that keeps a drug at the site it treats.</p></div></li>'+
+    '<li class="p1"><span class="pic">'+ICO.seal+'</span><div><span class="lab">Seal leaks</span><p>Tough sealants that stop bleeding on wet, moving tissue.</p></div></li>'+
+    '<li class="p2"><span class="pic">'+ICO.heal+'</span><div><span class="lab">Heal tissues</span><p>Bioadhesives that replace staples and sutures and protect the wound.</p></div></li>'+
+    '<li class="p3"><span class="pic">'+ICO.drug+'</span><div><span class="lab">Deliver drugs</span><p>Local release that keeps a drug at the site it treats.</p></div></li>'+
    '</ul>'+
   '</section>'+
 
@@ -1760,11 +1781,11 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark numb" id="numbers" data-theme="dark"><div class="wrap">'+
-   '<div class="nb">'+
-    '<div class="n" data-r><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
-    '<div class="n" data-r><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
-    '<div class="n" data-r><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
-    '<div class="n" data-r><span class="v">6,000+</span><p class="k">Citations across more than 17 peer-reviewed publications</p></div>'+
+   '<div class="nb stats">'+
+    '<div class="n stat" data-r><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
+    '<div class="n stat" data-r><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
+    '<div class="n stat" data-r><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
+    '<div class="n stat" data-r><span class="v">6,000+</span><p class="k">Citations across more than 17 peer-reviewed publications</p></div>'+
    '</div>'+
   '</div></section>'+
 

@@ -23,9 +23,9 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="What our hydrogels do">'+
-    '<li class="p1" data-r><span class="pic">'+ICO.seal+'</span><div><span class="lab">Seal leaks</span><p>Tough sealants that stop bleeding on wet, moving tissue.</p></div></li>'+
-    '<li class="p2" data-r><span class="pic">'+ICO.heal+'</span><div><span class="lab">Heal tissues</span><p>Bioadhesives that replace staples and sutures and protect the wound.</p></div></li>'+
-    '<li class="p3" data-r><span class="pic">'+ICO.drug+'</span><div><span class="lab">Deliver drugs</span><p>Local release that keeps a drug at the site it treats.</p></div></li>'+
+    '<li class="p1"><span class="pic">'+ICO.seal+'</span><div><span class="lab">Seal leaks</span><p>Tough sealants that stop bleeding on wet, moving tissue.</p></div></li>'+
+    '<li class="p2"><span class="pic">'+ICO.heal+'</span><div><span class="lab">Heal tissues</span><p>Bioadhesives that replace staples and sutures and protect the wound.</p></div></li>'+
+    '<li class="p3"><span class="pic">'+ICO.drug+'</span><div><span class="lab">Deliver drugs</span><p>Local release that keeps a drug at the site it treats.</p></div></li>'+
    '</ul>'+
   '</section>'+
 
@@ -49,11 +49,11 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark numb" id="numbers" data-theme="dark"><div class="wrap">'+
-   '<div class="nb">'+
-    '<div class="n" data-r><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
-    '<div class="n" data-r><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
-    '<div class="n" data-r><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
-    '<div class="n" data-r><span class="v">6,000+</span><p class="k">Citations across more than 17 peer-reviewed publications</p></div>'+
+   '<div class="nb stats">'+
+    '<div class="n stat" data-r><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
+    '<div class="n stat" data-r><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
+    '<div class="n stat" data-r><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
+    '<div class="n stat" data-r><span class="v">6,000+</span><p class="k">Citations across more than 17 peer-reviewed publications</p></div>'+
    '</div>'+
   '</div></section>'+
 

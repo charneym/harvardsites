@@ -1,0 +1,42 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"../../../node_modules/three/build/three.module.js","three/addons/":"../../../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* CardioMech's own mark (the deep-red capsule and the bright-red gear of the cardiomech.com favicon/logo), rendered as one
+   crafted object: a glazed ceramic capsule in front of a machined, satin-lacquered gear. Real alpha, no ground. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1400),H=+(P.get('h')||1400);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true,premultipliedAlpha:false});
+r.setPixelRatio(1);r.setSize(W,H);r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.VSMShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),.04).texture;sc.environmentIntensity=+(P.get('env')||.6);
+const g=new THREE.Group();sc.add(g);
+/* gear: 10 teeth, trapezoid teeth with rounded roots, extruded with a fine bevel */
+const T=+(P.get('teeth')||10),Ro=1.0,Rr=.80,sh=new THREE.Shape();
+for(let i=0;i<T;i++){const a0=i/T*Math.PI*2,st=Math.PI*2/T;
+  const pts=[[Rr,a0],[Rr,a0+st*.18],[Ro,a0+st*.3],[Ro,a0+st*.66],[Rr,a0+st*.78]];
+  pts.forEach((q,k)=>{const x=Math.cos(q[1])*q[0],y=Math.sin(q[1])*q[0];if(i===0&&k===0)sh.moveTo(x,y);else sh.lineTo(x,y)});
+  const aE=a0+st;sh.absarc(0,0,Rr,a0+st*.78,aE,false)}
+const gGeo=new THREE.ExtrudeGeometry(sh,{depth:.30,bevelEnabled:true,bevelThickness:.035,bevelSize:.03,bevelSegments:6,curveSegments:48});
+gGeo.translate(0,0,-.15);
+const gMat=new THREE.MeshPhysicalMaterial({color:0xee3232,roughness:.38,metalness:.25,clearcoat:.6,clearcoatRoughness:.22});
+const gear=new THREE.Mesh(gGeo,gMat);gear.castShadow=true;gear.receiveShadow=true;
+gear.position.set(.78,.62,-.42);gear.rotation.z=+(P.get('gz')||.12);g.add(gear);
+/* capsule: deep red glazed ceramic, on the logo's diagonal */
+const cGeo=new THREE.CapsuleGeometry(.56,1.55,24,96);
+const cMat=new THREE.MeshPhysicalMaterial({color:0xb82a32,roughness:.24,metalness:0,clearcoat:1,clearcoatRoughness:.08,sheen:.3,sheenRoughness:.5,sheenColor:new THREE.Color(0xff8a80)});
+const cap=new THREE.Mesh(cGeo,cMat);cap.castShadow=true;cap.receiveShadow=true;
+cap.rotation.z=+(P.get('cz')||.70);cap.position.set(-.22,-.12,.18);g.add(cap);
+g.rotation.set(+(P.get('rx')||-.18),+(P.get('ry')||.42),0);
+const key=new THREE.DirectionalLight(0xfff2ee,+(P.get('key')||2.4));key.position.set(-3,4,5);key.castShadow=true;
+key.shadow.mapSize.set(2048,2048);key.shadow.radius=8;key.shadow.blurSamples=16;key.shadow.bias=-.0004;
+Object.assign(key.shadow.camera,{left:-3,right:3,top:3,bottom:-3,near:.5,far:20});sc.add(key);
+const rim=new THREE.DirectionalLight(0xff8f86,+(P.get('rim')||2.2));rim.position.set(4,1.5,-4);sc.add(rim);
+const fill=new THREE.DirectionalLight(0xcfd6ff,.35);fill.position.set(3,-3,3);sc.add(fill);
+sc.add(new THREE.AmbientLight(0xffffff,.08));
+const box=new THREE.Box3().setFromObject(g);const sz=box.getSize(new THREE.Vector3());const ctr=box.getCenter(new THREE.Vector3());
+const cam=new THREE.PerspectiveCamera(22,W/H,.1,200);const dist=Math.max(sz.x,sz.y)*(+(P.get('d')||2.75));cam.position.set(ctr.x,ctr.y,ctr.z+dist);cam.lookAt(ctr);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

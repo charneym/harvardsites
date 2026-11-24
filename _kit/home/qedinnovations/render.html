@@ -1,0 +1,46 @@
+<!doctype html><html><body style="margin:0;background:#15163a">
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from './RoomEnvironment.js';
+const P=new URLSearchParams(location.search);const S=+(P.get('s')||1600);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setSize(S,S);r.setPixelRatio(1);r.setClearColor(0x000000,0);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||24),1,.1,100);
+const az=+(P.get('az')||-38)*Math.PI/180,el=+(P.get('el')||18)*Math.PI/180,D=+(P.get('d')||8.2);
+cam.position.set(D*Math.sin(az)*Math.cos(el),D*Math.sin(el),D*Math.cos(az)*Math.cos(el));cam.lookAt(0,0,0);
+const g=new THREE.Group();sc.add(g);
+const N=+(P.get('n')||12),R=1.0,L=2.3,half=L/2;
+const copper=new THREE.MeshPhysicalMaterial({color:0xe0956a,metalness:.92,roughness:.3,clearcoat:.5,clearcoatRoughness:.15,envMapIntensity:+(P.get('ce')||1.6),side:THREE.DoubleSide});
+const acr=new THREE.MeshPhysicalMaterial({color:0xe9e8ff,metalness:0,roughness:.12,transparent:true,opacity:+(P.get('ao')||.16),clearcoat:1,clearcoatRoughness:.05,side:THREE.DoubleSide,depthWrite:false,envMapIntensity:1.4});
+const acrEdge=new THREE.MeshPhysicalMaterial({color:0xf2f1ff,roughness:.35,transparent:true,opacity:.55,clearcoat:1,envMapIntensity:1.2});
+const cer=new THREE.MeshPhysicalMaterial({color:0xcbb79a,roughness:.55,metalness:0});
+const tin=new THREE.MeshPhysicalMaterial({color:0xdadde6,metalness:1,roughness:.22});
+// acrylic former: outer + inner wall
+const tube=(rad)=>new THREE.Mesh(new THREE.CylinderGeometry(rad,rad,L+.3,160,1,true),acr);const tube2=new THREE.Mesh(new THREE.CylinderGeometry(R*.955,R*.955,L+.3,160,1,true),acr);g.add(tube2);
+g.add(tube(R*.975));
+for(const y of [-(L+.3)/2,(L+.3)/2]){const a=new THREE.Mesh(new THREE.TorusGeometry(R*.965,.022,16,200),acrEdge);a.rotation.x=Math.PI/2;a.position.y=y;g.add(a)}
+// end rings: N copper arcs with gaps bridged by chip capacitors
+const ringH=+(P.get('rh')||.17),gap=.07,ringR=R*.99;
+for(const y of [-half+ringH/2,half-ringH/2]){
+ for(let i=0;i<N;i++){const t0=i*2*Math.PI/N,tl=2*Math.PI/N-gap/ringR;
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(ringR,ringR,ringH,24,1,true,t0+gap/ringR/2,tl),copper);m.position.y=y;g.add(m);
+  const tc=t0;const cx=Math.sin(tc)*(ringR+.012),cz=Math.cos(tc)*(ringR+.012);
+  const cap=new THREE.Group();const body=new THREE.Mesh(new THREE.BoxGeometry(.06,.05,.028),cer);cap.add(body);
+  for(const s of [-1,1]){const e=new THREE.Mesh(new THREE.BoxGeometry(.018,.052,.03),tin);e.position.x=s*.035;cap.add(e)}
+  cap.position.set(cx,y,cz);cap.rotation.y=tc;g.add(cap);}
+}
+// rungs
+const rw=+(P.get('rw')||.085);
+for(let i=0;i<N;i++){const t=(i+.5)*2*Math.PI/N;const m=new THREE.Mesh(new THREE.CylinderGeometry(ringR,ringR,L-2*ringH+.004,6,1,true,t-rw/2/ringR,rw/ringR),copper);g.add(m)}
+// coax feed: a thin cable leaving one end ring
+const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(Math.sin(0)*ringR,half-.06,Math.cos(0)*ringR+.02),new THREE.Vector3(0,half+.25,1.12),new THREE.Vector3(0,half+.55,1.0),new THREE.Vector3(.0,half+.9,.7)]);
+if(P.get('cable')==='1'){const cab=new THREE.Mesh(new THREE.TubeGeometry(curve,60,.022,12),new THREE.MeshPhysicalMaterial({color:0x2a2a33,roughness:.5}));g.add(cab)}
+g.rotation.x=Math.PI/2; // axis toward camera-ish
+g.rotation.z=+(P.get('rz')||0)*Math.PI/180;
+const key=new THREE.DirectionalLight(0xffffff,+(P.get('kl')||1.2));key.position.set(-3,4,3);sc.add(key);
+const rim=new THREE.DirectionalLight(0xa9a3ff,+(P.get('rl')||1.6));rim.position.set(4,1,-3);sc.add(rim);
+r.render(sc,cam);window.DONE=r.domElement.toDataURL('image/png');
+</script></body></html>

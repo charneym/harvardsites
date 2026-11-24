@@ -1,0 +1,66 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"../../../node_modules/three/build/three.module.js","three/addons/":"../../../node_modules/three/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* OncoLize hero: a glass syringe with a fine needle (their depots go in through "long, thin needles (up to 25G)"),
+   the barrel filled with ChemoGell, a translucent gel in the logo magenta, and a small gel depot bead forming at the tip.
+   Rendered twice (black and white ground) and matted to real alpha by shot.js. */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=+(P.get('w')||1300),H=+(P.get('h')||1500);const BG=P.get('bg')||'#000000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+const pm=new THREE.PMREMGenerator(r);
+const cam=new THREE.PerspectiveCamera(20,W/H,.1,100);cam.position.set(0,.4,31);cam.lookAt(0,.3,0);
+function lathe(pts,seg=160){return new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg)}
+const S=new THREE.Group();sc.add(S);
+const BR=.5,B0=0,B1=3.7; // barrel radius, bottom and top (y)
+// glass barrel: closed conical bottom into the tip, open top with finger flange
+const out=[[.06,-.42],[.1,-.42],[.12,-.2],[BR*.72,-.06],[BR,.06],[BR,B1],[BR+.02,B1]];
+const glassM=new THREE.MeshPhysicalMaterial({color:0xf3eef4,roughness:.03,transparent:true,opacity:+(P.get('go')||.08),depthWrite:false});
+const glassS=new THREE.MeshPhysicalMaterial({color:0x000000,roughness:.04,clearcoat:1,clearcoatRoughness:.03,envMapIntensity:+(P.get('ge')||2.2),transparent:true,blending:THREE.AdditiveBlending,depthWrite:false});
+const go=new THREE.Mesh(lathe(out),glassM);go.renderOrder=3;S.add(go);
+const gs=new THREE.Mesh(lathe(out),glassS);gs.renderOrder=4;S.add(gs);
+const gb=new THREE.Mesh(lathe(out),glassS.clone());gb.material.side=THREE.BackSide;gb.material.envMapIntensity=.35;gb.renderOrder=0;S.add(gb);
+// finger flange: a rounded glass plate at the top
+const fl=new THREE.Mesh(new RoundedBoxGeometry(2.05,.12,.86,4,.05),glassS.clone());fl.position.y=B1+.06;fl.renderOrder=4;S.add(fl);
+const fl2=new THREE.Mesh(new RoundedBoxGeometry(2.05,.12,.86,4,.05),glassM.clone());fl2.position.y=B1+.06;fl2.material.opacity=.16;fl2.renderOrder=3;S.add(fl2);
+// ChemoGell: the translucent magenta gel filling the barrel up to the stopper
+const GT=+(P.get('gt')||2.55),GR=BR-.035;
+const gel=[[0,-.36],[.07,-.36],[.09,-.2],[GR*.7,-.04],[GR,.08],[GR,GT],[0,GT]];
+const gelM=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('gc')||'#8e2a7f'),roughness:.12,transparent:true,opacity:+(P.get('gop')||.86),emissive:new THREE.Color('#6e1a5d'),emissiveIntensity:+(P.get('ei')||.3),envMapIntensity:+(P.get('gee')||.4),clearcoat:.6,clearcoatRoughness:.08,sheen:.5,sheenColor:new THREE.Color('#ffb8ef'),depthWrite:false});
+const gm=new THREE.Mesh(lathe(gel),gelM);gm.renderOrder=2;S.add(gm);const gmb=new THREE.Mesh(lathe(gel),gelM.clone());gmb.material.side=THREE.BackSide;gmb.renderOrder=1;S.add(gmb);
+// rubber stopper with ribs, plunger rod (cross section) and thumb press
+const rub=new THREE.MeshPhysicalMaterial({color:0x2b2630,roughness:.55,clearcoat:.15,envMapIntensity:.6});
+const sp=[[0,GT],[GR-.02,GT],[GR,GT+.04],[GR,GT+.1],[GR-.04,GT+.14],[GR,GT+.18],[GR,GT+.26],[GR-.04,GT+.3],[GR,GT+.34],[GR,GT+.42],[GR-.05,GT+.46],[.12,GT+.46],[0,GT+.46]];
+S.add(new THREE.Mesh(lathe(sp,96),rub));
+const pl=new THREE.MeshPhysicalMaterial({color:0xd9d2db,roughness:.4,clearcoat:.3,envMapIntensity:.7});
+const RT=GT+.46,RL=B1+1.25-RT;
+[0,Math.PI/2].forEach(a=>{const b=new THREE.Mesh(new RoundedBoxGeometry(.62,RL,.07,3,.02),pl);b.position.y=RT+RL/2;b.rotation.y=a+.5;S.add(b)});
+const th=new THREE.Mesh(new THREE.CylinderGeometry(.56,.56,.09,96),pl);th.position.y=RT+RL+.04;S.add(th);
+// printed scale: fine ticks on the glass, front side only
+const tick=new THREE.MeshBasicMaterial({color:0x6a5a6c,transparent:true,opacity:.55});
+for(let i=0;i<=14;i++){const y=.3+i*.22,L=i%5===0?.22:.12;const t=new THREE.Mesh(new THREE.PlaneGeometry(L,.012),tick);const a=-.35;t.position.set(Math.sin(a)*(BR+.003)-L/2*Math.cos(a)*0,y,Math.cos(a)*(BR+.003));t.rotation.y=a;t.renderOrder=5;S.add(t)}
+// hub (clear) and the fine stainless needle
+const hubM=new THREE.MeshPhysicalMaterial({color:0xf2eaf2,roughness:.1,transparent:true,opacity:.22,clearcoat:.8,envMapIntensity:1.4});
+const hub=new THREE.Mesh(lathe([[0,0],[.15,0],[.15,-.08],[.11,-.12],[.1,-.52],[.05,-.6],[0,-.6]],64),pl);hub.position.y=-.42;hub.renderOrder=5;S.add(hub);
+const st=new THREE.MeshPhysicalMaterial({color:0xdcdde0,metalness:1,roughness:.18,envMapIntensity:1.4});
+const NL=+(P.get('nl')||2.7),NR=.024;
+const nd=new THREE.Mesh(new THREE.CylinderGeometry(NR,NR,NL,24),st);nd.position.y=-1.02-NL/2;S.add(nd);
+// bevelled tip
+const tip=new THREE.Mesh(new THREE.ConeGeometry(NR,.09,24),st);tip.rotation.x=Math.PI;tip.position.y=-1.02-NL-.045;S.add(tip);
+// the gel depot: a small soft bead just leaving the tip
+const bead=new THREE.Mesh(new THREE.SphereGeometry(.15,64,48),gelM.clone());bead.material.opacity=.78;bead.material.emissiveIntensity=.55;bead.scale.set(1,1.12,1);bead.position.y=-1.02-NL-.15;bead.renderOrder=6;S.add(bead);
+const beadS=new THREE.Mesh(new THREE.SphereGeometry(.152,64,48),glassS.clone());beadS.material.envMapIntensity=1.4;beadS.scale.copy(bead.scale);beadS.position.copy(bead.position);beadS.renderOrder=7;S.add(beadS);
+S.position.y=+(P.get('sy')||-.35);S.rotation.z=+(P.get('rz')||.4);S.rotation.y=+(P.get('ry')||.3);
+// lights + softbox env
+const k=new THREE.DirectionalLight(0xffffff,1.4);k.position.set(-4,7,6);sc.add(k);
+const rim=new THREE.DirectionalLight(0xffe6fb,1.4);rim.position.set(5,3,-4);sc.add(rim);
+const env=new RoomEnvironment();
+function card(x,y,z,w,h,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,y,0);return m}
+[card(-3.4,1,2.6,1.1,8,2.6),card(3.8,1,1.0,.5,8,1.6)].forEach(c=>env.add(c));
+sc.environment=pm.fromScene(env,0.02).texture;
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

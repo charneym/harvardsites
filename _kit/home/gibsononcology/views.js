@@ -218,5 +218,6 @@ initView=function(k,first){_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.25+i*.1,scrollTrigger:{trigger:f.closest(".g-pipe"),start:"top 80%"}})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}
+  $$(".g-pt-lg",view).forEach(function(w){gsap.fromTo(w,{opacity:0,y:18},{opacity:1,y:0,duration:1,ease:"silk",scrollTrigger:{trigger:w,start:"top 90%"}})});
   $$(".g-tt-x i",view).forEach(function(l){gsap.fromTo(l,{scaleY:0},{scaleY:1,duration:1.2,ease:"flow",scrollTrigger:{trigger:l,start:"top 85%"}})});
 };

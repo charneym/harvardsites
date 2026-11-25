@@ -5,7 +5,7 @@ function pipeRows(list){return '<ul class="pfr pipe">'+list.map(function(c){
 function team(){
   function grp(g){return TEAM.filter(function(p){return p.g===g}).map(function(p){
     return '<li data-r><span class="rg-nm">'+esc(p.name)+'</span><span class="rg-rl">'+esc(p.title)+'</span></li>'}).join("")}
-  return '<div class="lm-tg"><span class="lab kick" data-r>Management</span><ul class="lm-tm">'+grp("Management")+'</ul></div>'+
+  return '<div class="lm-tg"><span class="lab kick" data-r>Management</span><ul class="lm-tm n3">'+grp("Management")+'</ul></div>'+
    '<div class="lm-tg"><span class="lab kick" data-r>Board of directors</span><ul class="lm-tm">'+grp("Board")+'</ul></div>'}
 function sitesLine(){return '<div class="kl-pa gc-sites"><span class="lab kick" data-r>Highest-enrolling PREVENT sites</span><ul data-r>'+SITES.map(function(p){return '<li>'+esc(p)+'</li>'}).join("")+'</ul></div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li data-r><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}

@@ -1,0 +1,10 @@
+# Helioscopie (helioscopie) — batch 2026-11l, home-only concept
+
+- Domain: helioscopie.fr (company name, Vienne address, phone and commercial@helioscopie.fr on every page; legal notice gives RCS Vienne B 849 120 076, matching the Pappers record). Domain check passed; no newer site.
+- HQ: Helioscopie, Z.A. Château de Malissol, Rue des Frères Lumière, 38200 Vienne, France (legal notice: BP 385, 38217 Vienne Cedex). Tel 04 74 16 18 18. S.A., capital 30 000 €.
+- Lead: M. Pascal Paganon, Président (Pappers) and Directeur de la publication (helioscopie.fr/mentions-légales).
+- Facts used (home, /general-5 Savoir-Faire, /heliosphere, /copie-de-heliosphere = Heliogast, /copie-de-dynamesh-1 = Heliosond, /copie-de-heliosphere-1 = DynaMesh, /copie-de-dynamesh = Bulkamid): established in Vienne since 2000; class I–III implantable devices; obesity specialisation; EN ISO 13485; CE per RDM 2017/745 (KIWA 0476; DynaMesh TÜV SÜD 0123); exclusive French distributor of DynaMesh and Bulkamid; 25 years, 1 500+ practitioners, 35+ countries; "Primum non nocere" philosophy; competences list; Heliosphere specs (air, <15 g, Newtech 600 ~105 mm/600 cm³, Newtech 720 ~110 mm/720 cm³, 6 + 6 months, extraction kit); Heliogast (HAGA 10 cm³, HAGE 7 cm³, 3 patented ports incl. EV3, 9 000+ cases, <3 % slippage/pouch dilatation); Heliosond specs; Région Auvergne-Rhône-Alpes support.
+- Activity: event calendar on /about-3 (MEDICA 2025 Düsseldorf Nov 2025; MEDICA 2026 hall 7A stand 7AE04, 120e CFU Nov 2026, Euro-Pharmat Oct 2026, Medical Fair Asia Sept 2026, HERNIA-France July 2026).
+- Palette: logo yellow #FDCE0A and logo blue #147CC2 (sampled from the logo PNG on helioscopie.fr); navy ink derived from the blue.
+- Hero: crafted render (render.js, HOME_BRIEF 2c) of their HELIOSPHERE air-filled intragastric balloon after the product packshot on /heliosphere: pearly translucent sphere, blue valve in a clear patch, fine filling tube. No stock photo used.
+- Bad site: Wix template with a grey tab-strip nav in condensed type, stock lab photo slider with a dot pager, product pages left at Wix default slugs ("copie-de-heliosphere" for Heliogast, "copie-de-dynamesh" for Bulkamid).

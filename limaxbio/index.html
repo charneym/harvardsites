@@ -1071,6 +1071,15 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 .hx-foot{margin-top:clamp(48px,5.4vw,88px)!important}
 @media (max-width:860px){.hero.hx .hrule{margin-top:28px!important}.hx-foot{margin-top:40px!important}}
 .prow h3 *{transition:color .3s var(--eo)}
+
+/* v8: headings break deliberately, never leaving a lone word (client: "jobs" dropped alone) */
+#view h2,#view h3,.bo h2,.bo h3{text-wrap:balance}
+.nw{white-space:nowrap}
+.gt{white-space:nowrap}
+.hero-h .bd{display:block}.hero-h .bm{display:none}
+@media (max-width:860px){.hero-h .bm{display:block}.hero-h .bd{display:none}
+ .hero-h,html body .hero.hx h1.d1.hero-h{font-size:clamp(34px,9.2vw,64px)!important}}
+@media (max-width:1024px){.tg4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 </head>
@@ -1822,7 +1831,7 @@ function pipe(){return '<div class="pipe">'+
    '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
    '<span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></article>'}).join("")+'</div>'}
 function team(){return '<div class="tg4">'+TEAM.map(function(p){
-  return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(p[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(p[0])+'</h3><span class="lab">'+esc(p[1])+'</span>'+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
+  return (function(){var m=p[0].split(/, (.+)/);return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(m[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(m[0])+'</h3><span class="lab">'+(m[1]?esc(m[1])+' · ':'')+esc(p[1])+'</span>'})()+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join('<i aria-hidden="true">·</i>')}
 var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6.5C24.2 12.8 28.2 17 28.2 22.6a8.2 8.2 0 0 1-16.4 0C11.8 17 15.8 12.8 20 6.5Z"/><path d="M16.2 23.4a3.9 3.9 0 0 0 3.2 3.7"/></svg>',
@@ -1839,7 +1848,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of '+gtx('hydrogel therapeutics.')+'</span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1">Engineering the<span class="bm"></span> future<span class="bd"></span> of<span class="bm"></span> '+gtx('hydrogel therapeutics.')+'</h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
@@ -1853,7 +1862,7 @@ function vHome(){
 
   '<section class="sec mani light vis" id="about" data-theme="light"><div class="wrap">'+
    '<div class="vis-l"><span class="lab kick" data-r>Vision</span>'+
-   '<h2 class="txt" id="mani">We are changing the way the world thinks about biomaterials. Nearly 30% of surgical procedures still end in bleeding-related complications; <em>our hydrogels hold to wet, dynamic tissue where sealants and sutures can’t.</em></h2></div>'+
+   '<h2 class="txt" id="mani">We are changing the way the world thinks about biomaterials. Nearly 30% of surgical procedures still end in bleeding-related complications; <em>our hydrogels hold to wet, dynamic tissue where sealants and <span class="nw">sutures can’t.</span></em></h2></div>'+
    '<div class="stats vis-r">'+
     '<div class="stat"><span class="ln2"></span><span class="v">17+</span><p class="k">Publications in peer-reviewed research journals</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">6,000+</span><p class="k">Citations of the science behind our hydrogels</p></div>'+
@@ -1862,7 +1871,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">What our hydrogels do</span><h2 class="d3">One gel, <em>three jobs in the wound.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">What our hydrogels do</span><h2 class="d3"><span class="nw">One gel, <em>three jobs</em></span> <span class="nw"><em>in the wound.</em></span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Seal</span><span>Heal</span><span>Deliver</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Seal the leak.</h2><p>Applied to a bleeding wound, the gel bonds to wet tissue within seconds, unaffected by blood or by the movement of vessels and organs, and the bleeding stops.</p></article>'+

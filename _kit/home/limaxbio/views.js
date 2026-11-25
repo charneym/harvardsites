@@ -19,12 +19,18 @@ function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join
 var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6.5C24.2 12.8 28.2 17 28.2 22.6a8.2 8.2 0 0 1-16.4 0C11.8 17 15.8 12.8 20 6.5Z"/><path d="M16.2 23.4a3.9 3.9 0 0 0 3.2 3.7"/></svg>',
  heal:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="4.2"/><circle cx="20" cy="9.6" r="3.1"/><circle cx="29" cy="14.8" r="3.1"/><circle cx="29" cy="25.2" r="3.1"/><circle cx="20" cy="30.4" r="3.1"/><circle cx="11" cy="25.2" r="3.1"/><circle cx="11" cy="14.8" r="3.1"/></svg>',
  drug:'<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="15" width="28" height="10" rx="5" transform="rotate(-45 20 20)"/><path d="M16.5 16.5l7 7"/></svg>'};
+/* the brand gradient across a phrase as solid per-letter colours (teal -> cyan -> blue -> violet), so it reads and measures as
+   real text colour (a gradient clipped to text reads as transparent to contrast checks and some renderers) */
+function gtx(t){var S=[[47,181,165],[68,163,197],[58,123,213],[131,94,163],[138,79,214]],n=t.length-1;
+  function c(u){var k=Math.min(S.length-2,Math.floor(u*(S.length-1))),f=u*(S.length-1)-k,a=S[k],b=S[k+1];return "#"+[0,1,2].map(function(i){return ("0"+Math.round(a[i]+(b[i]-a[i])*f).toString(16)).slice(-2)}).join("")}
+  return '<span class="gt">'+t.split(" ").map(function(w,wi,ws){var off=ws.slice(0,wi).join(" ").length+(wi?1:0);
+    return '<span class="gw">'+w.split("").map(function(ch,ci){return '<i style="color:'+c((off+ci)/n)+'">'+ch+'</i>'}).join("")+'</span>'}).join(" ")+'</span>'}
 function vHome(){
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of <span class="gt">hydrogel therapeutics.</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of '+gtx('hydrogel therapeutics.')+'</span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

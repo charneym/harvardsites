@@ -1046,6 +1046,22 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 .vis .wrap>.vis-l{grid-column:1!important;grid-row:1!important}
 .vis .wrap>.stats{grid-column:2!important;grid-row:1!important}
 @media (max-width:860px){.vis .wrap>.vis-l,.vis .wrap>.stats{grid-column:1!important;grid-row:auto!important}}
+.bo h1 em,.bo h2 em,.bo .d2 em{font-style:normal}
+
+/* v7 fixes */
+.gt{background:none!important;-webkit-text-fill-color:initial!important;color:inherit!important}
+.gt i{font-style:normal}.gt .gw{white-space:nowrap}
+html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
+.ptile::after{background:#2fb5a5}
+.prow h3{transition:color .3s var(--eo),transform .4s var(--eo)}
+.prow:hover .pr-id h3{transform:translateX(6px)}
+.prow .lk2 svg{transition:transform .3s var(--eo)}
+.prow:hover .lk2 svg{transform:translateX(5px)}
+
+/* room for the big title's line entrance (each line rises one line-height inside its mask) above the lede */
+.hero.hx .hrule{margin-top:.4em!important}
+.hx-foot{margin-top:clamp(48px,5.4vw,88px)!important}
+@media (max-width:860px){.hero.hx .hrule{margin-top:28px!important}.hx-foot{margin-top:40px!important}}
 </style>
 </head>
 </head>
@@ -1147,20 +1163,28 @@ var PK="lmx";
 /* v7 (client: sections rendered as empty rows in their browser: reveals that never fired). Content is never left hidden: any
    block the template's reveal (or a split heading, or a counter) parked at opacity 0 is shown as soon as it is in, or above,
    the viewport, whether or not its ScrollTrigger fired (fast scrolls, loading mid-page, triggers measured before a pin or
-   a font settled). Story steps that are inactive by design, and the vision statement's word-by-word colouring, are left alone. */
+   a font settled). Story steps that are inactive by design, the vision statement's word-by-word colouring, and the hero (its own entrance plays
+   when the loader lifts) are left alone; nothing is swept while the loader is on screen. */
 (function(){var busy=false;
-  function sweep(){if(busy||!window.gsap)return;busy=true;try{var H=innerHeight;
+  function sweep(){if(busy||!window.gsap)return;var pre=document.getElementById("pre");if(pre&&pre.getBoundingClientRect().bottom>2)return;busy=true;try{var H=innerHeight;
     var list=document.querySelectorAll('#view [style*="opacity"], .ftr [style*="opacity"]');
-    for(var i=0;i<list.length;i++){var el=list[i];if(el.closest(".step,.scene,.rail,.hx .hrule")||el.classList.contains("w"))continue;
+    for(var i=0;i<list.length;i++){var el=list[i];if((el.closest("#hero")&&!el.closest(".pil"))||el.closest(".ph-head,.step,.scene,.rail")||el.classList.contains("w"))continue;
       var o=parseFloat(el.style.opacity);if(!(o<.2))continue;if(gsap.isTweening(el))continue;
       var r=el.getBoundingClientRect();if(r.top>=H-2||(!r.width&&!r.height))continue;
-      if(typeof rvGo==="function"&&window.RV_LIVE&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
+      if(typeof rvGo==="function"&&typeof RV_LIVE!=="undefined"&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
       gsap.to(el,{opacity:1,y:0,yPercent:0,scale:1,duration:.55,ease:"power2.out",overwrite:"auto",clearProps:"transform,opacity"})}}
     finally{busy=false}}
   var t=0;function soon(){clearTimeout(t);t=setTimeout(sweep,60)}
   addEventListener("scroll",soon,{passive:true});addEventListener("resize",soon);setInterval(sweep,400);
   addEventListener("load",function(){setTimeout(sweep,400);setTimeout(sweep,2500)});
-})();/*</R:site>*/
+})();
+
+/* pillars below the fold on phones: the hero's own entrance would play them unseen, so they reveal as they scroll in instead
+   (hidden only by script, and the failsafe above shows them anyway if the trigger never fires) */
+(function(){if(RM)return;var n=0;(function wait(){if(++n>900)return;var ls=document.querySelectorAll("#hero .pil li"),pre=document.getElementById("pre");
+  if(!ls.length||!window.ScrollTrigger||(pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)){setTimeout(wait,60);return}
+  Array.prototype.forEach.call(ls,function(li){if(li.getBoundingClientRect().top<innerHeight)return;li.removeAttribute("data-r");gsap.killTweensOf(li);gsap.set(li,{opacity:0,y:24,overwrite:true});
+    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();/*</R:site>*/
 
 /* ================= CONTENT (from the dossier; nothing invented) ================= */
 /*<R:content>*/var FONTS=['400 1em "Inter Tight"','500 1em "Inter Tight"','600 1em "Inter Tight"','700 1em "Inter Tight"','400 1em "Krona One"','300 1em "Montserrat"','400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"'];
@@ -1235,12 +1259,18 @@ function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join
 var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6.5C24.2 12.8 28.2 17 28.2 22.6a8.2 8.2 0 0 1-16.4 0C11.8 17 15.8 12.8 20 6.5Z"/><path d="M16.2 23.4a3.9 3.9 0 0 0 3.2 3.7"/></svg>',
  heal:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="4.2"/><circle cx="20" cy="9.6" r="3.1"/><circle cx="29" cy="14.8" r="3.1"/><circle cx="29" cy="25.2" r="3.1"/><circle cx="20" cy="30.4" r="3.1"/><circle cx="11" cy="25.2" r="3.1"/><circle cx="11" cy="14.8" r="3.1"/></svg>',
  drug:'<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="15" width="28" height="10" rx="5" transform="rotate(-45 20 20)"/><path d="M16.5 16.5l7 7"/></svg>'};
+/* the brand gradient across a phrase as solid per-letter colours (teal -> cyan -> blue -> violet), so it reads and measures as
+   real text colour (a gradient clipped to text reads as transparent to contrast checks and some renderers) */
+function gtx(t){var S=[[47,181,165],[68,163,197],[58,123,213],[131,94,163],[138,79,214]],n=t.length-1;
+  function c(u){var k=Math.min(S.length-2,Math.floor(u*(S.length-1))),f=u*(S.length-1)-k,a=S[k],b=S[k+1];return "#"+[0,1,2].map(function(i){return ("0"+Math.round(a[i]+(b[i]-a[i])*f).toString(16)).slice(-2)}).join("")}
+  return '<span class="gt">'+t.split(" ").map(function(w,wi,ws){var off=ws.slice(0,wi).join(" ").length+(wi?1:0);
+    return '<span class="gw">'+w.split("").map(function(ch,ci){return '<i style="color:'+c((off+ci)/n)+'">'+ch+'</i>'}).join("")+'</span>'}).join(" ")+'</span>'}
 function vHome(){
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of <span class="gt">hydrogel therapeutics.</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of '+gtx('hydrogel therapeutics.')+'</span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

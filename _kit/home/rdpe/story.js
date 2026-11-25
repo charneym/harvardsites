@@ -31,7 +31,7 @@ function rdScene(o){
      '<text class="cl" id="rdEx" x="320" y="374" text-anchor="middle">'+(mob?"AC IN":"AC EXCITATION")+'</text>';
   /* the panel meter, cabled to the transducer */
   g+='<path class="ln sD" d="M548 250V292"/><rect class="dsp" x="470" y="292" width="232" height="66"/>'+
-     '<text class="dg" id="rdV" x="586" y="337" text-anchor="middle">0.000</text>'+
+     '<text class="dg" id="rdV" x="586" y="337" text-anchor="middle">0.000 V</text>'+
      '<text id="rdO" x="586" y="382" text-anchor="middle">OUTPUT</text>'+
      '<text class="o2" id="rdO2" x="586" y="408" text-anchor="middle">'+(mob?"V · mA · DATA":"VOLTAGE · CURRENT · DATA")+'</text>';
   g+='<path class="pl sD" d="M60 440H700"/>';
@@ -69,7 +69,7 @@ function storyDraw(svg){
     E.L.forEach(function(l,j){l.classList.toggle("on",j===1?cur===0:(cur===1||(cur>=2&&j===2)))});
     E.ex.classList.toggle("on",cur===0);
     /* the meter: zero at centre, then proportional to position (illustrative) */
-    var val=(5*mv).toFixed(3);val=(mv>0.001?"+":"")+val;if(val!==lastV){lastV=val;E.v.textContent=val}
+    var val=(5*mv).toFixed(3);val=(mv>0.001?"+":"")+val+" V";if(val!==lastV){lastV=val;E.v.textContent=val}
     op(E.v,b*(.55+.45*Math.max(cpl,seg(p,.75,.8))));
     /* 4: voltage, current or serial data */
     op(E.o2,b*seg(p,.78,.86));

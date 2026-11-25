@@ -35,7 +35,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="products" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Products and services</span><h2 class="d2 split"><span class="nw">Filters for every</span> <em class="nw">part of the spectrum.</em></h2></div><p data-r>Every filter is designed and manufactured to your specification, between 300 and 6000&nbsp;nm, for prototype and development projects as well as large production batches at competitive prices.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Products and services</span><h2 class="d2 split"><span class="nw">Filters across</span> <em class="nw">the spectrum.</em></h2></div><p data-r>Every filter is designed and manufactured to your specification, between 300 and 6000&nbsp;nm, for prototype and development projects as well as large production batches at competitive prices.</p></div>'+
    prods()+
    '<div class="bk"><span class="lab kick" data-r>Where they are used</span><p class="cr" data-r><span>Gas sensing</span><span>Industrial processing</span><span>Food industry</span><span>Plastic sorting</span><span>Smart agriculture</span><span>Medical applications</span><span>Outer space</span></p></div>'+
   '</div></section>'+
@@ -56,7 +56,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Independent, and</span> <em class="nw">growing every year.</em></h2></div><p data-r>Since 2008 we have coated for medical devices, gas and hydrocarbon detection, integrated systems and OEMs, Formula 1 teams, a global leader in designer goods and leading tech companies, on short lead times in an industry where late deliveries are far too common.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">In Hinckley,</span> <em class="nw">since 2008.</em></h2></div><p data-r>Since 2008 we have coated for medical devices, gas and hydrocarbon detection, integrated systems and OEMs, Formula 1 teams, a global leader in designer goods and leading tech companies, on short lead times in an industry where late deliveries are far too common.</p></div>'+
    team()+
    '<div class="ev"><span class="lab kick" data-r>Quality, memberships and shows</span><dl>'+
     '<div data-r><dt class="lab">Quality</dt><dd><a class="ul" href="'+VX+'iso-9001-2015/" target="_blank" rel="noopener">ISO 9001:2015</a>, audited annually, with full traceability of spectral and environmental performance for every coating run</dd></div>'+
@@ -72,7 +72,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Tell us your</span> <em class="nw">wavelength.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Start with</span> <em class="nw">your spectrum.</em></h2>'+
    '<p class="sub" data-r>Our aim is simple: we will always support our customers, especially when you really need us. Send your specification for a quote, from a prototype run to a long-term production contract.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email us '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+

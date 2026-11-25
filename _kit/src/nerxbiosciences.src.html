@@ -1084,7 +1084,7 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.6vw,104px)!important;line
 /* ---- science tiles: words, not numbers ---- */
 .ptile .pm.word{font-size:clamp(38px,3.4vw,58px);padding-top:0}
 .ptile .pm small{font-family:'Open Sans',sans-serif;font-size:.3em;color:#2a5c91}
-.ptile::after{background:linear-gradient(90deg,#bf0d17,#336699)}
+.ptile::after{background:#bf0d17}
 /* ---- pipeline: three stages ---- */
 .nxp .pipe-axis{grid-template-columns:repeat(3,1fr)}
 .nxp .pr-bar{grid-template-columns:repeat(3,1fr);background:rgba(var(--boner),.08)}
@@ -1118,6 +1118,17 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.6vw,104px)!important;line
 .ftr .fcv{opacity:.16!important}
 .bo .bo-ph .d1 em,html body .bo .bo-ph .d1 em{color:#8fb6e6}
 html.bo-open #field{opacity:1!important;filter:brightness(1.15);-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 72%);mask-image:linear-gradient(90deg,transparent 40%,#000 72%)}
+/* pipeline rows: a visible hover motion (name and link arrow move), not only a colour change */
+.prow .pr-id h3{transition:color .3s var(--eo),transform .35s var(--eo)}
+.prow:hover .pr-id h3{transform:translateX(6px)}
+.prow .lk2 svg{transition:transform .3s var(--eo)}
+.prow:hover .lk2 svg{transform:translateX(5px)}
+/* contact details: a compact row */
+.cta .cinfo{padding-top:22px!important;padding-bottom:0!important}
+.cta .cinfo>div{padding-top:0!important;padding-bottom:0!important}
+/* room for the headline's rising second line to clear the lede during the entrance (polish UNDERLAP) */
+.hero.hx .hx-foot{margin-top:clamp(52px,6.4vh,72px)}
+@media (max-width:860px){.hero.hx .hx-foot{margin-top:40px}}
 </style>
 </head>
 </head>
@@ -1292,6 +1303,7 @@ var ICO={tgt:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20
  moa:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14C12 14 14 26 20 26S28 14 34 14"/><path d="M6 26C12 26 14 14 20 14S28 26 34 26"/><path d="M20 5V11M20 29V35"/></svg>',
  chem:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7L31.3 13.5V26.5L20 33L8.7 26.5V13.5Z"/><path d="M20 12.5L26.5 16.2V23.8L20 27.5L13.5 23.8V16.2Z"/></svg>'};
 function vHome(){
+  var PR=MOBILE()?'':' data-r';setTimeout(pilReveal,60);
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
@@ -1302,9 +1314,9 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="Our competitive advantage">'+
-    '<li class="p1" data-r><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
-    '<li class="p2" data-r><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
-    '<li class="p3" data-r><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
+    '<li class="p1"'+PR+'><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
+    '<li class="p2"'+PR+'><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
+    '<li class="p3"'+PR+'><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
    '</ul>'+
   '</section>'+
 
@@ -1359,6 +1371,9 @@ function vHome(){
   '</div></section>'+
   cta();
 }
+/* phones: the pillar band sits below the fold, so it reveals on scroll (enhancement only: the site failsafe shows anything in view) */
+function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
+  gsap.set(li,{opacity:0,y:24});ScrollTrigger.create({trigger:li,start:"top 96%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power2.out",clearProps:"transform,opacity"})}})})}
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Partners, investors and collaborators</span>'+
@@ -1486,7 +1501,7 @@ function makeHelix(cv){
       gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
 }
 var field=(function(){
-  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0;
+  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,lastRaf=0,ema=16,slowN=0;
   var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
   var G=makeHelix(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
@@ -1497,13 +1512,14 @@ var field=(function(){
     else{cx=w*.69;cy=h*.525;sc=Math.min(h*.335,w*.25);tl=-.40}
     var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
-    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05)*(slow?.7:1);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
-    var tn=performance.now();if(!once&&running&&tn-lastF<30){raf=requestAnimationFrame(function(){frame(false)});return}lastF=tn;
+    var tn=performance.now();if(!once&&running){var dt=tn-lastRaf;lastRaf=tn;if(dt>0&&dt<1000)ema=ema*.9+dt*.1;
+      /* a slow machine (software GL, throttled CPU): render smaller and less often rather than hold up the page */
+      if(!slow&&ema>55&&++slowN>8)slow=1;
+      if(tn-lastF<(slow?110:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
     dim+=(dimT-dim)*.08;cv.style.opacity=shown?String(.5+.5*dim):"";
     if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);
-      /* a slow GPU: render smaller rather than stutter */
-      if(!once&&!slow&&performance.now()-a>45){slow=1;size()}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }

@@ -66,7 +66,7 @@ function makeHelix(cv){
       gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
 }
 var field=(function(){
-  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0;
+  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,lastRaf=0,ema=16,slowN=0;
   var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
   var G=makeHelix(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
@@ -77,13 +77,14 @@ var field=(function(){
     else{cx=w*.69;cy=h*.525;sc=Math.min(h*.335,w*.25);tl=-.40}
     var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
-    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05)*(slow?.7:1);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
-    var tn=performance.now();if(!once&&running&&tn-lastF<30){raf=requestAnimationFrame(function(){frame(false)});return}lastF=tn;
+    var tn=performance.now();if(!once&&running){var dt=tn-lastRaf;lastRaf=tn;if(dt>0&&dt<1000)ema=ema*.9+dt*.1;
+      /* a slow machine (software GL, throttled CPU): render smaller and less often rather than hold up the page */
+      if(!slow&&ema>55&&++slowN>8)slow=1;
+      if(tn-lastF<(slow?110:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
     dim+=(dimT-dim)*.08;cv.style.opacity=shown?String(.5+.5*dim):"";
     if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);
-      /* a slow GPU: render smaller rather than stutter */
-      if(!once&&!slow&&performance.now()-a>45){slow=1;size()}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }

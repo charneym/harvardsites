@@ -1,0 +1,79 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+/* Bandwidth10 hero: a crafted render of their own product, the 7-pin TO56 tunable-VCSEL package (steel cap with window,
+   gold-plated header flange, seven gold pins), after the product photos on bandwidth10.com. Transparent ground (real alpha). */
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||2400,H=+P.get('h')||1800;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.05;
+r.setClearColor(0x000000,0);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);
+/* a dark studio: black room, a large soft top box, two tall strip lights and a faint warm-red kicker (brand) */
+const es=new THREE.Scene();
+es.add(new THREE.Mesh(new THREE.BoxGeometry(20,20,20),new THREE.MeshBasicMaterial({color:0x08090b,side:THREE.BackSide})));
+function sb(w,h,x,y,z,c,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);es.add(m)}
+sb(14,9,0,9,1,0xffffff,+P.get('top')||1.6);
+sb(3.2,12,-8,1,3,0xffffff,+P.get('sl')||2.4);sb(6,10,-3,2,9,0xffffff,+P.get('fr')||0.9);
+sb(1.2,9,7,1,5,0xdfe8ff,+P.get('sr')||1.4);
+sb(3,6,4,0,-8,0xff3a2e,+P.get('kr')||1.6);
+sb(14,1.5,0,-6,4,0xffffff,.35);
+sc.environment=pm.fromScene(es,0.02).texture;sc.environmentIntensity=+P.get('env')||1.0;
+const cam=new THREE.PerspectiveCamera(22,W/H,.1,100);
+cam.position.set(+P.get('cx')||2.6,+P.get('cy')||2.1,+P.get('cz')||4.9);cam.lookAt(0,0.02,0);
+
+const steel=new THREE.MeshPhysicalMaterial({color:0xe4e7eb,metalness:1,roughness:+P.get('sr2')||.22});
+const steelD=new THREE.MeshPhysicalMaterial({color:0xb8bdc4,metalness:1,roughness:.34});
+const gold=new THREE.MeshPhysicalMaterial({color:0xe8b95e,metalness:1,roughness:.26});
+const goldD=new THREE.MeshPhysicalMaterial({color:0xc99a46,metalness:1,roughness:.3});
+const glass=new THREE.MeshPhysicalMaterial({color:0x0e1116,metalness:0,roughness:.04,clearcoat:1,clearcoatRoughness:.02,transparent:true,opacity:.55,reflectivity:.9});
+const glassEdge=new THREE.MeshStandardMaterial({color:0x2a2e34,metalness:.6,roughness:.4});
+const dark=new THREE.MeshStandardMaterial({color:0x15171a,metalness:.2,roughness:.6});
+const cer=new THREE.MeshStandardMaterial({color:0xe9e4da,roughness:.55});
+const g=new THREE.Group();sc.add(g);
+
+/* header flange (gold-plated, with the orientation tab and key notch) */
+const fl=new THREE.Shape();fl.absarc(0,0,.62,0,Math.PI*2,false);
+
+const flg=new THREE.ExtrudeGeometry(fl,{depth:.13,bevelEnabled:true,bevelThickness:.012,bevelSize:.012,bevelSegments:4,curveSegments:160});flg.rotateX(-Math.PI/2);
+const flm=new THREE.Mesh(flg,gold);flm.position.y=-.13;g.add(flm);
+/* the orientation tab on the flange rim */
+const tab=new THREE.Mesh(new RoundedBoxGeometry(.16,.13,.1,2,.01),gold);tab.position.set(.66,-.065,0);g.add(tab);
+/* weld ring where the cap meets the flange */
+const wr=new THREE.Mesh(new THREE.CylinderGeometry(.505,.52,.03,160),steelD);wr.position.y=.012;g.add(wr);
+/* the cap: lathe profile (wide skirt, body, shoulder, top) */
+const prof=[[.150,.585],[.165,.60],[.175,.605],[.205,.61],[.30,.612],[.395,.60],[.43,.58],[.44,.55],[.44,.12],[.452,.1],[.50,.08],[.50,.03],[.49,.02]].reverse().map(p=>new THREE.Vector2(p[0],p[1]));
+const cap=new THREE.Mesh(new THREE.LatheGeometry(prof,180),steel);g.add(cap);
+/* window recess, glass and the chip on its cooler seen through it */
+const rec=new THREE.Mesh(new THREE.CylinderGeometry(.165,.165,.05,120,1,true),glassEdge);rec.position.y=.585;g.add(rec);
+const recB=new THREE.Mesh(new THREE.CylinderGeometry(.165,.165,.01,120),new THREE.MeshStandardMaterial({color:0x3a3d42,metalness:.8,roughness:.35}));recB.position.y=.53;g.add(recB);
+const tec=new THREE.Mesh(new RoundedBoxGeometry(.17,.03,.17,2,.006),cer);tec.position.y=.548;g.add(tec);
+const die=new THREE.Mesh(new RoundedBoxGeometry(.07,.016,.07,2,.003),new THREE.MeshPhysicalMaterial({color:0x2b3440,metalness:.7,roughness:.25,iridescence:1,iridescenceIOR:1.6,iridescenceThicknessRange:[200,700]}));die.position.y=.57;g.add(die);
+/* the emitting aperture, a small brand-red glow (the laser on) */
+const ap=new THREE.Mesh(new THREE.CircleGeometry(.009,40),new THREE.MeshBasicMaterial({color:0xff4a3d}));ap.rotation.x=-Math.PI/2;ap.position.y=.5795;g.add(ap);
+const gl=new THREE.Mesh(new THREE.CircleGeometry(.05,48),new THREE.MeshBasicMaterial({color:0xd71718,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false}));gl.rotation.x=-Math.PI/2;gl.position.y=.58;g.add(gl);
+/* bond wires */
+for(let i=0;i<2;i++){const c=new THREE.CatmullRomCurve3([new THREE.Vector3(.028*(i?1:-1),.578,.02),new THREE.Vector3(.06*(i?1:-1),.6,.05),new THREE.Vector3(.1*(i?1:-1),.555,.08)]);g.add(new THREE.Mesh(new THREE.TubeGeometry(c,24,.0025,6),gold))}
+const gw=new THREE.Mesh(new THREE.CylinderGeometry(.168,.168,.006,120),glass);gw.position.y=.606;g.add(gw);
+/* seven gold pins under the header (six on a circle, one centre), with glass seals */
+const pinR=.024,pinL=1.12;
+const pins=[[0,0]];for(let i=0;i<6;i++){const a=i/6*Math.PI*2+Math.PI/6;pins.push([Math.cos(a)*.3,Math.sin(a)*.3])}
+pins.forEach(([x,z],i)=>{const p=new THREE.Mesh(new THREE.CylinderGeometry(pinR,pinR,pinL,24),i?gold:goldD);p.position.set(x,-.13-pinL/2,z);g.add(p);
+  const tip=new THREE.Mesh(new THREE.SphereGeometry(pinR,20,10,0,Math.PI*2,Math.PI/2,Math.PI/2),gold);tip.position.set(x,-.13-pinL,z);g.add(tip);
+  const seal=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.012,32),new THREE.MeshPhysicalMaterial({color:0x8c8f86,roughness:.15,transmission:.3}));seal.position.set(x,-.145,z);if(i)g.add(seal)});
+
+g.rotation.set(+P.get('rx')||0.0,+P.get('ry')||-0.5,+P.get('rz')||-0.34);
+g.position.set(0,+P.get('gy')||.05,0);
+/* lights: a soft key from upper left, a cool fill, and a brand-red rim from behind right */
+const key=new THREE.DirectionalLight(0xffffff,+P.get('key')||1.6);key.position.set(-3,5,3);sc.add(key);
+const fill=new THREE.DirectionalLight(0xcfe0ff,.35);fill.position.set(4,1,4);sc.add(fill);
+const rim=new THREE.DirectionalLight(0xff3b30,+P.get('rim')||2.2);rim.position.set(3,1.5,-4);sc.add(rim);
+const rim2=new THREE.DirectionalLight(0xffffff,.8);rim2.position.set(-3,-1,-3);sc.add(rim2);
+r.render(sc,cam);
+window.DONE=true;
+</script></body></html>

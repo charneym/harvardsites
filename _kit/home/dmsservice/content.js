@@ -30,5 +30,5 @@ var ELEC=[
 var NEWS=[
  ["November 2026","DMS-Service exhibits the myPatch®sl at MEDICA 2026 in Düsseldorf, Hall 16, stand E17-4","MEDICA 2026",MED],
  ["February 22, 2017","FDA clears the myPatch®sl ambulatory ECG recorder through 510(k) K163535","U.S. FDA",FDA],
- ["2014 and 2017","DMS-Service certified as a Women’s Business Enterprise and Woman-Owned Small Business by WBENC","DMS-Service",ABOUT]];
+ ["2014 and 2017","WBENC certifies DMS-Service as a woman-owned business enterprise","DMS-Service",ABOUT]];
 var SHEETS=[];

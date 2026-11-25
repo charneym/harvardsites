@@ -18,7 +18,7 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">A Holter study is only as good as the patient’s willingness to wear it. myPatch®sl was designed around comfort, because <em>a comfortable patient is a compliant patient.</em></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">14 days</span><p class="k">Of continuous two-channel ECG on one recorder, or three channels for up to 9 days</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">14</span><p class="k">Days of continuous two-channel ECG on one recorder, or three channels for up to 9 days</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">IP68</span><p class="k">Tested to 2 metres of water for one hour, so patients shower as normal</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">1995</span><p class="k">The year DMS-Service began scanning Holter recordings for US physicians</p></div>'+
    '</div>'+
@@ -41,7 +41,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="services" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">Scanning, monitoring</span> <em class="nw">and support.</em></h2></div><p data-r>Since 1995 DMS-Service has scanned Holter recordings for physicians across the United States, with cardiac event monitoring, recorder sales and repairs from one team in Los Angeles.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">Holter services,</span> <em class="nw">made easy.</em></h2></div><p data-r>Since 1995 DMS-Service has scanned Holter recordings for physicians across the United States, with cardiac event monitoring, recorder sales and repairs from one team in Los Angeles.</p></div>'+
    servs()+
    '<div class="bk"><span class="lab kick" data-r>Reports</span><p class="cr" data-r>'+REPORTS.map(function(b){return '<span>'+esc(b)+'</span>'}).join('<i aria-hidden="true">·</i>')+'</p></div>'+
   '</div></section>'+

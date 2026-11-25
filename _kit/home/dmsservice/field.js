@@ -22,7 +22,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle="#071a2c";c.fillRect(0,0,w,h);
     if(ok){
       var iw=img.naturalWidth,ih=img.naturalHeight,k=.5-.5*Math.cos(t*Math.PI*2/56),cx,cy,sc;
-      if(!G.mob){sc=Math.min(w*.40/iw,(h-110)*.92/ih);cx=w*.7;cy=110+(h-110)*.5}
+      if(!G.mob){sc=Math.min(w*.37/iw,(h-110)*.84/ih);cx=w*.7;cy=110+(h-110)*.5}
       else{sc=Math.min(w*1.0/iw,(G.bh-64)*1.0/ih);cx=w*.5;cy=64+(G.bh-64)*.5}
       sc*=(1+.035*k)*(1+.05*(1-e));
       var dw=iw*sc,dh=ih*sc,x=cx-dw/2-k*dw*.012,y=cy-dh/2+k*dh*.008-SP.v*h*.04;

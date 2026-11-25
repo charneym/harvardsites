@@ -92,7 +92,7 @@ function footer(){
    '<div class="c"><span class="lab">Headquarters</span>Applications Uniques Ltd<br>413 Hickory Lane<br>Johnstown, CO 80534</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/services">Services</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:+19706851628">+1 970 685 1628</a></div>'+
-   '<div class="c"><span class="lab">Offices</span>Johnstown, Colorado<br>Changsha, China<br>Taipei, Taiwan</div>'+
+   '<div class="c"><span class="lab">Offices</span>Johnstown, Colorado; Changsha, China; and Taipei, Taiwan</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 640 96" aria-hidden="true"><text x="320" y="64" text-anchor="middle" style="font-family:\'Montserrat\',system-ui,sans-serif;font-size:40px;letter-spacing:.01em"><tspan fill="#f3f6f5" font-weight="700">APPLICATIONS</tspan><tspan fill="#f3f6f5" font-weight="300"> UNIQUES</tspan></text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Applications Uniques Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

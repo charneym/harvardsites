@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* TopLine's own product: a CCGA (ceramic column grid array) package, upside down as in TopLine's product photo
+   (topline.tv CCGA pages): a dark co-fired ceramic body with one chamfered index corner, carrying a full grid of
+   copper-wrapped Pb80/Sn20 solder columns (a silvery solder column with a helical copper ribbon, TopLine's own patented
+   design). ?bg=#000|#fff */
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=innerWidth,H=innerHeight;const BG=P.get('bg')||'#000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+const es=new THREE.Scene();es.background=new THREE.Color(P.get('eb')||'#262a36');
+function panel(w,h,col,int,pos){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(col).multiplyScalar(int),side:THREE.DoubleSide}));m.position.set(...pos);m.lookAt(0,0,0);es.add(m)}
+panel(30,14,'#ffffff',+(P.get('pw')||2.2),[-6,16,-10]);panel(30,12,'#e8ecff',+(P.get('pf')||1.0),[4,18,10]);
+panel(12,12,'#2f3cff',+(P.get('pb')||1.2),[12,6,-8]);
+panel(8,4,'#ffd2b0',+(P.get('pc')||0.7),[-12,4,8]);
+panel(3,26,'#ffffff',+(P.get('ps')||2.0),[-2,10,12]);
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(es,0.04).texture;
+const key=new THREE.DirectionalLight('#ffffff',+(P.get('kl')||1.2));key.position.set(-6,12,8);sc.add(key);
+/* ceramic body */
+const S=10,T=.9;
+const body=new THREE.Mesh(new RoundedBoxGeometry(S,T,S,4,.06),new THREE.MeshPhysicalMaterial({color:'#3a3040',roughness:.5,metalness:0,clearcoat:.25,clearcoatRoughness:.5}));
+body.position.y=T/2;sc.add(body);
+/* pad field: faint gold-ish land under each column */
+/* column texture: silver solder with a helical copper ribbon */
+const cc=document.createElement('canvas');cc.width=256;cc.height=1024;const g=cc.getContext('2d');
+g.fillStyle='#dfe2e6';g.fillRect(0,0,256,1024);
+g.strokeStyle='#d08a56';g.lineWidth=70;
+for(let k=-6;k<14;k++){g.beginPath();g.moveTo(0,k*180);g.lineTo(256,k*180+180);g.stroke()}
+const mc=document.createElement('canvas');mc.width=256;mc.height=1024;const gm=mc.getContext('2d');
+gm.fillStyle='#5a5a5a';gm.fillRect(0,0,256,1024);gm.strokeStyle='#454545';gm.lineWidth=70;
+for(let k=-6;k<14;k++){gm.beginPath();gm.moveTo(0,k*180);gm.lineTo(256,k*180+180);gm.stroke()}
+const ct=new THREE.CanvasTexture(cc);ct.colorSpace=THREE.SRGBColorSpace;ct.anisotropy=16;const rt=new THREE.CanvasTexture(mc);
+const N=+(P.get('n')||21),pitch=S*.86/(N-1),rad=pitch*.22,CH=+(P.get('ch')||1.7);
+const colG=new THREE.CylinderGeometry(rad,rad,CH,28,1,false);
+const capG=new THREE.SphereGeometry(rad,24,12,0,Math.PI*2,0,Math.PI/2);
+const cm=new THREE.MeshPhysicalMaterial({map:ct,roughnessMap:rt,metalness:.95,roughness:1,envMapIntensity:+(P.get('ei')||1.8)});
+const capM=new THREE.MeshPhysicalMaterial({color:'#cfd2d6',metalness:1,roughness:.3});
+const padM=new THREE.MeshPhysicalMaterial({color:'#b8bcc2',metalness:1,roughness:.35});
+const padG=new THREE.CylinderGeometry(rad*1.45,rad*1.45,.03,28);
+let cnt=0;const pos=[];
+for(let i=0;i<N;i++)for(let j=0;j<N;j++){const x=-S*.43+i*pitch,z=-S*.43+j*pitch;pos.push([x,z])}
+const I1=new THREE.InstancedMesh(colG,cm,pos.length),I2=new THREE.InstancedMesh(capG,capM,pos.length),I3=new THREE.InstancedMesh(padG,padM,pos.length);
+const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler();
+pos.forEach(([x,z],k)=>{const rot=(k*2.399)%(Math.PI*2);q.setFromEuler(e.set(0,rot,0));
+  m4.compose(new THREE.Vector3(x,T+CH/2,z),q,new THREE.Vector3(1,1,1));I1.setMatrixAt(k,m4);
+  m4.compose(new THREE.Vector3(x,T+CH,z),q,new THREE.Vector3(1,.55,1));I2.setMatrixAt(k,m4);
+  m4.compose(new THREE.Vector3(x,T+.015,z),q,new THREE.Vector3(1,1,1));I3.setMatrixAt(k,m4)});
+sc.add(I1,I2,I3);
+/* index chamfer marker: a small gold triangle on one corner of the body top */
+const tri=new THREE.Shape();tri.moveTo(0,0);tri.lineTo(.7,0);tri.lineTo(0,.7);tri.closePath();
+const tm=new THREE.Mesh(new THREE.ShapeGeometry(tri),new THREE.MeshPhysicalMaterial({color:'#d4a64a',metalness:1,roughness:.3}));
+tm.rotation.x=-Math.PI/2;tm.position.set(-S/2+.12,T+.005,S/2-.12);sc.add(tm);
+const grp=new THREE.Group();[body,I1,I2,I3,tm].forEach(o=>{sc.remove(o);grp.add(o)});grp.rotation.y=+(P.get('ry')||0.62);sc.add(grp);
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||22),W/H,.1,200);const el=+(P.get('el')||0.5);const dist=38;
+cam.position.set(0,Math.sin(el)*dist,Math.cos(el)*dist);cam.lookAt(0,+(P.get('ly')||1.2),0);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

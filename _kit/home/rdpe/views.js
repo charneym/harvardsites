@@ -15,14 +15,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>LVDT · load · pressure<span class="nomob"> · Wolverhampton · since 1966</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Every movement,</span><span class="l">measured without</span><span class="l"><em>a touch.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Every movement, </span><span class="l">measured without </span><span class="l"><em>a touch.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>RDP designs and makes LVDT displacement transducers, amplifiers, load cells and pressure sensors for the factory, the laboratory, the sea bed and space.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">See the range '+ARR+'</a><a class="btn" href="#/contact">Talk to RDP</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Privately owned since 1966</span>'+
-   '<h2 class="txt" id="mani">One of the first manufacturers of LVDT displacement transducers, and the first to build the amplifier into the sensor. <em>Made by us, in our own UK factory.</em></h2></div>'+
+   '<h2 class="txt" id="mani">One of the first manufacturers of LVDT displacement transducers, and the first to build the amplifier <span class="nw">into the sensor.</span> <em>Made by us, in our <span class="nw">own UK factory.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1966</span><p class="k">The year RDP was started by the two directors who still own it</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">2.2 km</span><p class="k">The depth in sea water the seawater submersible LVDTs are built for</p></div>'+
@@ -43,19 +43,19 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="products" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split">Displacement, load <em>and pressure.</em></h2></div><p data-r>RDP designs, manufactures and distributes transducers and the electronics that read them. The LVDT displacement sensors and amplifiers are made at the head office and factory in Wolverhampton.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Displacement, load</span> <em class="nw">and pressure.</em></h2></div><p data-r>RDP designs, manufactures and distributes transducers and the electronics that read them. The LVDT displacement sensors and amplifiers are made at the head office and factory in Wolverhampton.</p></div>'+
    prods()+
    '<div class="act shop" data-r><a class="btn solid" href="mailto:'+MAIL+'">Ask about a sensor '+ARR+'</a></div>'+
   '</div></section>'+
 
   '<section class="sec light" id="env" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Environments</span><h2 class="d2 split">From the laboratory <em>to the sea bed.</em></h2></div><p data-r>The standard industrial series is designed for factories, laboratories and research departments: the elongation of a test sample, the position of a steam valve in a power station. Then there are the harder places.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Environments</span><h2 class="d2 split"><span class="nw">The laboratory,</span> <em class="nw">the sea bed.</em></h2></div><p data-r>The standard industrial series is designed for factories, laboratories and research departments: the elongation of a test sample, the position of a steam valve in a power station. Then there are the harder places.</p></div>'+
    caps()+
    '<div class="qual"><span class="lab kick" data-r>Where they have been</span><p class="cr" data-r><span>Valve position at the bottom of the sea</span><span>Mirror deflection in space</span><span>Cutting tools in production</span><span>Test samples under load</span></p></div>'+
   '</div></section>'+
 
   '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>About RDP</span><h2 class="d2 split">Sixty years <em>of measurement.</em></h2></div><p data-r>RDP is privately owned by the two directors who started the company in 1966. Sales and support run from the Global Head Office in Wolverhampton and from RDP Electrosense in Pottstown, Pennsylvania, for the USA and Canada, with distributors worldwide.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>About RDP</span><h2 class="d2 split"><span class="nw">Sixty years</span> <em class="nw">of measurement.</em></h2></div><p data-r>RDP is privately owned by the two directors who started the company in 1966. Sales and support run from the Global Head Office in Wolverhampton and from RDP Electrosense in Pottstown, Pennsylvania, for the USA and Canada, with distributors worldwide.</p></div>'+
    '<div class="ev"><span class="lab kick" data-r>Firsts and standards</span><dl>'+
     '<div data-r><dt class="lab">LVDT pioneer</dt><dd>One of the first manufacturers of LVDT displacement transducers</dd></div>'+
     '<div data-r><dt class="lab">Built in</dt><dd>The first to build the LVDT signal conditioning amplifier into the sensor</dd></div>'+

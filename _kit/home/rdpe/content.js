@@ -3,7 +3,7 @@ var FONTS=['300 1em "Raleway"','400 1em "Raleway"','500 1em "Raleway"','400 1em 
 var TEL="+441902457512",TELT="+44 1902 457512",MAIL="sales@rdpe.com",USMAIL="info@rdpe.com",USTEL="+16104690850",USTELT="+1 610-469-0850";
 /* the range (rdpe.com > product menus). [group, name, detail] */
 var PRODS=[
- ["Displacement","LVDT displacement transducers","Spring return, captive guided, unguided, air push and non-contact types, in ranges from 0.5 mm to 940 mm: the D5 & D6, the GT gauging transducer and the ACT, plus DCV, DCC, LDC and DCTH models with the electronics built in."],
+ ["Displacement","LVDT transducers","Spring return, captive guided, unguided, air push and non-contact types, in ranges from 0.5 mm to 940 mm: the D5 & D6, the GT gauging transducer and the ACT, plus DCV, DCC, LDC and DCTH models with the electronics built in."],
  ["Displacement","Submersible and seawater LVDTs","D5W, ACW and DCW for long-term submersion in fluids, and the SSA and SSD for sea water, submersible to 2.2 km for 10 years or more."],
  ["Displacement","Extreme environment sensors","The LIN and the non-contact PY, for temperatures from −220 ℃ to 600 ℃ and for very high nuclear radiation."],
  ["Displacement","Micropulse sensors","Non-contact position sensing for longer strokes, of the order of 0.5 to 7 m, made primarily for fitting inside a hydraulic piston, with V, 4-20 mA or SSI output."],

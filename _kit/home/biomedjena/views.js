@@ -62,7 +62,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Biomedical engineering</span> <em class="nw">from Jena.</em></h2></div><p data-r>We work as a developer, as an OEM supplier and under our own BioMed label, in three fields.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Made in Jena,</span> <em class="nw">since 1997.</em></h2></div><p data-r>We work as a developer, as an OEM supplier and under our own BioMed label, in three fields.</p></div>'+
    '<div class="dmf-g"><div class="dmf-r">'+sites()+'</div>'+
    '<div class="dce-w"><span class="lab kick" data-r>Quality and history</span>'+certs()+
    '<p class="dmask" data-r>From the first analogue VNG system in 2000 to the eHIT USB and a combined vHIT and VNG system in 2011, we keep improving our products and help our customers keep up through free software updates.</p></div></div>'+
@@ -90,9 +90,9 @@ function cta(){
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Headquarters</span>BioMed Jena GmbH<br>Am Egelsee 1<br>07743 Jena, Germany</div>'+
-   '<div class="c"><span class="lab">Products</span>Balance systems<br>Auditory systems<br>Magnetic systems</div>'+
+   '<div class="c"><span class="lab">Products</span>Balance systems, auditory systems and magnetic sensor systems, developed and built in Jena</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="'+TELH+'">'+TEL+'</a><br>EN 13485 certified</div>'+
+   '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a> · <a class="ul" href="'+TELH+'">'+TEL+'</a> · certified to EN 13485</div>'+
   '</div>__LMARK3__'+
   '<div class="legal"><span class="lab">© 2026 BioMed Jena GmbH</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

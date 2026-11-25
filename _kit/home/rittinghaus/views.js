@@ -44,13 +44,13 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">Reinraumkonzept</span><h2 class="d3"><span class="nw">Reinraum</span> <em class="nw">im Grauraum.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">Reinraumkonzept</span><h2 class="d3"><span class="nw">Der Reinraum</span> <em class="nw">im Grauraum.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Grauraum</span><span>Übergabe</span><span>Reinraum</span><span>Charge</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2>Die Maschine bleibt draußen.</h2><p>Die Spritzgießmaschinen stehen außerhalb des Reinraums. So bringen Werkzeugwechsel und Wartung keine Kontamination hinein.</p></article>'+
-     '<article class="step"><h2>Ein Band durch die Wand.</h2><p>Ein gekapseltes Transportband bringt die Teile vom öffnenden Werkzeug in den Reinraum, permanent umspült von ausströmender Reinraumluft.</p></article>'+
-     '<article class="step"><h2>Klasse 7, voll klimatisiert.</h2><p>Reinräume nach DIN ISO 14644, Klasse 7, regelmäßig requalifiziert. Temperatur, Luftfeuchte und Drücke werden kontinuierlich geregelt und dokumentiert.</p></article>'+
-     '<article class="step"><h2>Jede Charge nachvollziehbar.</h2><p>Verpackt wird im Reinraum. Eine selbst entwickelte Software erstellt die Chargen per Barcodescan und verknüpft sie mit den SPC-Daten der Prüfungen.</p></article>'+
+     '<article class="step on"><h2><span class="nw">Die Maschine</span> <span class="nw">bleibt draußen.</span></h2><p>Die Spritzgießmaschinen stehen außerhalb des Reinraums. So bringen Werkzeugwechsel und Wartung keine Kontamination hinein.</p></article>'+
+     '<article class="step"><h2><span class="nw">Ein Band</span> <span class="nw">durch die Wand.</span></h2><p>Ein gekapseltes Transportband bringt die Teile vom öffnenden Werkzeug in den Reinraum, permanent umspült von ausströmender Reinraumluft.</p></article>'+
+     '<article class="step"><h2><span class="nw">Klasse 7,</span> <span class="nw">voll klimatisiert.</span></h2><p>Reinräume nach DIN ISO 14644, Klasse 7, regelmäßig requalifiziert. Temperatur, Luftfeuchte und Drücke werden kontinuierlich geregelt und dokumentiert.</p></article>'+
+     '<article class="step"><h2><span class="nw">Jede Charge</span> <span class="nw">ist nachvollziehbar.</span></h2><p>Verpackt wird im Reinraum. Eine selbst entwickelte Software erstellt die Chargen per Barcodescan und verknüpft sie mit den SPC-Daten der Prüfungen.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -67,7 +67,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="unternehmen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Flexibel,</span> <em class="nw">weil inhabergeführt.</em></h2></div><p data-r>Ein mittelständisches Familienunternehmen mit über 60 Jahren Erfahrung im Präzisionsspritzguss, das flexibel auf Ihre Anforderungen reagiert und Sie außergewöhnlich betreut.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Flexibel und</span> <em class="nw">persönlich betreut.</em></h2></div><p data-r>Ein mittelständisches Familienunternehmen mit über 60 Jahren Erfahrung im Präzisionsspritzguss, das flexibel auf Ihre Anforderungen reagiert und Sie außergewöhnlich betreut.</p></div>'+
    team()+
    '<div class="ozs">'+
     '<div class="oz-site"><span class="lab" data-r>Zertifiziert</span><h3 data-r>DIN EN ISO 9001 und 13485</h3><p data-r>Prüf- und Dokumentationsverfahren bis zum Erstmusterprüfbericht: 3D-Messplatz, optische Projektoren, CAQ-Software von Babtec.</p></div>'+

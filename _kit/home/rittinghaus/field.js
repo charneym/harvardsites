@@ -15,8 +15,8 @@ var field=(function(){
     var mob=w<861;
     if(mob){
       var ey=document.querySelector("#view .hero .eyebrow"),eyT=ey?ey.getBoundingClientRect().top+(window.scrollY||0):h*.45;
-      var top=78,bot=Math.max(230,eyT-30),bh=bot-top,iw=Math.min(w*1.06,bh*AR*1.05,NW*1.1),ih=iw/AR;
-      return {mob:1,iw:iw,ih:ih,kx:w*.56,ky:top+bh*.5,bh:bot+12};
+      var top=78,bot=Math.max(230,eyT-30),bh=bot-top,iw=Math.min(w*.98,bh*AR*1.05,NW*1.1),ih=iw/AR;
+      return {mob:1,iw:iw,ih:ih,kx:w*.5,ky:top+bh*.5,bh:bot+12};
     }
     /* DO: centred in the open area right of the H1, at 62-75% of the width */
     var L=Math.max(HR+Math.max(120,w*.07),w*.5),R=w-Math.max(40,w*.04),cx=Math.min(Math.max((L+R)/2,w*.62),w*.75);

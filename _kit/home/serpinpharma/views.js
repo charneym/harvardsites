@@ -22,9 +22,9 @@ function vHome(){
    '<div class="mani-in"><span class="lab kick" data-r>Why it matters</span>'+
    '<h2 class="txt" id="mani">Steroids and cytokine blockers calm inflammation by holding back the immune response that healing needs. <em>SP16 works with it,</em> clearing the triggers and switching on the cell’s own repair.</h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">300×</span><span class="k">More potent than AAT, the natural protein SP16 is drawn from</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">13/14</span><span class="k">Patent applications granted, covering composition of matter and use</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">120</span><span class="k">Patients in EASE-AKI, the Phase II kidney trial in Germany</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">300×</span><p class="k">More potent than AAT, the natural protein SP16 is drawn from</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">13/14</span><p class="k">Patent applications granted, covering composition of matter and use</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">120</span><p class="k">Patients in EASE-AKI, the Phase II kidney trial in Germany</p></div>'+
    '</div>'+
    '<div class="plat">'+
     '<div><span class="lab kick" data-r>Targeted</span><p data-r>A selective, precise mechanism that restores inflammatory balance, with no off-target effects seen in clinical trials so far.</p></div>'+

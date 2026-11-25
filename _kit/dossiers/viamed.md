@@ -1,0 +1,12 @@
+# Viamed Ltd (viamed), batch 2026-11m, home-only concept
+
+- Domain: viamed.co.uk now redirects (meta refresh) to www.viamed.online, a Shopify shop with the same dated layout: a fixed-width 2010s template, a centred logo, a two-row nav, a flat blue "LOOKING FOR OUR ONLINE CROSS REFERENCE? CLICK HERE" banner and a stock aerial industrial-plant photo in the slideshow. Ownership is confirmed by the footer (© 2026 Viamed Ltd), the contact page (company no. 01291765) and Companies House (registered office 15 Station Road, Cross Hills, Keighley BD20 7DT).
+- Companies House 01291765: incorporated 22 Dec 1976 as Vandagraph Limited and renamed Viamed Limited in 1991. SIC codes 32500 and 47990. Active officers: Derek Iain Lamb (Director, appointed 1999), Helen Jean Lamb (Director and Secretary), Georgeina Greenfield Lamb (Director) and others.
+- Lead: Derek Lamb, Managing Director. He signed the Viamed Ltd Modern Slavery Statement dated 27 Feb 2024 (cdn.shopify.com/s/files/1/0380/8149/5085/files/Viamed_Ltd_Modern_Slavery_Statement_ID143626.pdf). No pronouns are published, so the greeting is "Dear Derek Lamb".
+- Emails (contact page): info@viamed.co.uk (Sales), enquiries@viamed.co.uk (General), orders@, iso@, technical@. The events address is medica@viamed.co.uk. No personal address is published.
+- Phone: +44 (0)1535 634542.
+- Activity: exhibited at MEDICA 2026, Düsseldorf, 16–19 Nov 2026, Hall 16 Stand H06-01, in the UK Pavilion with Medilink (exhibitor directory https://www.medica-tradefair.com/vis/v1/en/exhibitors/medica2026.3084186; blog post 24 Sep 2026). EBME Expo is booked for June 2027 (stand L18).
+- Facts used: "Established in 1977" (their own About text). Six markets come from the menu. The group of three companies comes from their partners page. The SMARTsat OEM copy (low power, calibrated 60–100% SpO2 against CO-oximeter references) and the 400-AC probe facts come from the 8 Jul 2025 post.
+- Hero: Viamed's own studio product photograph of the VM-2160 SMARTsat handheld pulse oximeter (https://www.viamed.online/cdn/shop/files/001216x_VM-2160_SMARTsat.jpg, 2715x2089). It was matted to alpha by home/viamed/matte.py. Viamed's own branded product, firm photography (HOME_BRIEF 2a).
+- Logo: the M tile is their own 512px favicon (VM_512x.png, alpha). The VIAMED wordmark was keyed from their 2362px logo JPG and reversed to white (home/viamed/logo.py).
+- Palette: wordmark blue #00609a and the tile's bright blue (#0090c8), sampled from the logo. Navy ink #050c16.

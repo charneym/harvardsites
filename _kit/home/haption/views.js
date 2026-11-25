@@ -72,7 +72,7 @@ function cta(){
    '<p class="sub" data-r>For devices, teleoperation, simulation or a custom force-feedback solution, the Haption team in Laval would be glad to hear from you.</p>'+
    '<div class="act" data-r><a class="btn solid" href="'+MAIL+'">Write to Haption '+ARR+'</a><a class="btn" href="#/products">The Virtuose range</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Address</span><p data-r>Haption<br>8 ZA Route de Laval<br>53210 Soulgé-sur-Ouette, France</p></div>'+
+    '<div><span class="lab" data-r>Address</span><p data-r><span>8 ZA Route de Laval</span><br><span>53210 Soulgé-sur-Ouette, France</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="'+MAIL+'">contact@haption.com</a></p></div>'+
     '<div><span class="lab" data-r>Telephone</span><p data-r><a class="ul" href="tel:+33243645120">+33 2 43 64 51 20</a></p></div>'+
    '</div>'+

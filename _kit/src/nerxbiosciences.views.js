@@ -102,8 +102,8 @@ function cta(){
    '<p class="sub" data-r>We are seeking a partner in oncology to accelerate NĒRx-329 through IND to first-in-human studies. Write to us.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to NĒRx '+ARR+'</a><a class="btn" href="#/technology">See the science</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Corporate</span><p data-r>6151 Central Ave., Suite 120<br>Indianapolis, IN 46220</p></div>'+
-    '<div><span class="lab" data-r>Laboratory</span><p data-r>1220 Waterway Blvd.<br>Indianapolis, IN 46202</p></div>'+
+    '<div><span class="lab" data-r>Corporate</span><p class="al" data-r>6151 Central Ave., Suite 120</p><p class="al" data-r>Indianapolis, IN 46220</p></div>'+
+    '<div><span class="lab" data-r>Laboratory</span><p class="al" data-r>1220 Waterway Blvd.</p><p class="al" data-r>Indianapolis, IN 46202</p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
    '</div>'+
   '</div></section>';

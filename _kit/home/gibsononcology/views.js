@@ -50,7 +50,7 @@ function needBand(){return band({img:"band-brain.webp",w:2000,h:1500,k:"Glioblas
 function pipe(full){var gs=[];PROG.forEach(function(r){if(gs.indexOf(r.g)<0)gs.push(r.g)});
   return '<div class="g-pipe"><div class="g-pipe-hd" aria-hidden="true"><span class="lab">Programme</span><div class="g-pipe-st">'+PROG_STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</div></div>'+
   gs.map(function(g){return '<div class="g-pg"><span class="lab g-pg-l">'+esc(g)+'</span>'+PROG.filter(function(r){return r.g===g}).map(function(r){return '<div class="g-pr"><div class="g-pr-n"><span class="lab g-pr-c">'+esc(r.code)+'</span><h3>'+esc(r.drug)+'</h3></div>'+
-   '<div class="g-pr-b"><p class="g-pr-i">'+esc(r.ind)+'</p><div class="g-bar" style="--r:'+r.reach+'" role="img" aria-label="'+esc(r.code+' '+r.drug)+': '+esc(r.live)+'"><span class="g-bar-t"></span><span class="g-bar-f"></span><span class="lab g-bar-l">'+esc(r.live)+'</span></div>'+
+   '<div class="g-pr-b"><p class="g-pr-i">'+esc(r.ind)+'</p><div class="g-bar" data-norv style="--r:'+r.reach+'" role="img" aria-label="'+esc(r.code+' '+r.drug)+': '+esc(r.live)+'"><span class="g-bar-t"></span><span class="g-bar-f"></span><span class="lab g-bar-l">'+esc(r.live)+'</span></div>'+
    (full?'<p class="g-pr-x">'+esc(r.note)+'</p>':'')+'</div></div>'}).join("")+'</div>'}).join("")+'</div>'}
 function pipeSec(){return '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Pipeline</span><h2 class="d2">Brain tumors first, <em>then wider.</em></h2></div><p>Six programmes from one class of drugs. LMP744 is in Phase 2 at the NIH, LMP400 has finished Phase 1 and is headed for Phase 2 with Duke, and the oral Azas follow.</p></div>'+
@@ -118,7 +118,6 @@ function vHome(){
   targets()+
   partnersSec()+
   letters(false)+
-  needBand()+
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How LMP744 works</span><h2 class="d3">Into the brain, <em>onto the DNA.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Barrier</span><span>TOPO 1</span><span>cMYC</span></div>'+
@@ -189,6 +188,7 @@ function reasons(){return '<ol class="g-rs">'+REASONS.map(function(r){return '<l
 function vInvestors(){return head({k:"Investors",h:"Why invest <em>in Gibson.</em>",p:"Two commercially validated targets, four premier institutions deploying their own resources, orphan designations and patents beyond 2041, at a very low burn rate."})+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The case</span><h2 class="d2">Six reasons, <em>in brief.</em></h2></div><p>From Gibson’s November 2026 investor presentation.</p></div>'+reasons()+'</div></section>'+
   '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">The market</span><h2 class="d2">Glioblastoma, <em>$6.9 billion by 2035.</em></h2></div><p>Glioblastoma recurs in nearly all patients, and survival once it does is typically six to ten months.</p></div>'+marketStats()+
+   '<div class="g-need"><figure class="g-need-m">'+img("band-brain.webp","A brain scan visualization",2000,1500)+'</figure><div class="g-need-t"><span class="lab kick">The need</span><h3>Glioblastoma comes back in nearly all patients.</h3><dl>'+[["3.27","U.S. cases per 100,000, age-adjusted"],["66","Median age at diagnosis"],["6–10 mo","Typical median survival once it recurs"]].map(function(s){return '<div><dt>'+esc(s[0])+'</dt><dd>'+esc(s[1])+'</dd></div>'}).join("")+'</dl></div></div>'+
    '<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div><p class="g-src">Emergen Research; CBTRUS 2025; Penn Medicine, June 2025; Gibson investor presentation, November 2026.</p></div></section>'+
   '<section class="sec light g-split" data-theme="light"><div class="wrap g-split-in">'+
    '<figure class="g-split-m">'+img("research.webp","A researcher holding results in the laboratory",2000,1333)+'</figure>'+
@@ -231,7 +231,7 @@ function route(h){
 var _initView=initView;
 initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
-  $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.2+Math.min(i,3)*.07,scrollTrigger:{trigger:f.closest(".g-pg")||f.closest(".g-pipe"),start:"top 80%"}})});
+  $$(".g-bar",view).forEach(function(b,i){var f=$(".g-bar-f",b),l=$(".g-bar-l",b),st={trigger:b,start:"top 88%"};gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.3,ease:"flow",delay:.1,scrollTrigger:st});if(l)gsap.fromTo(l,{opacity:0},{opacity:1,duration:.6,ease:"power1.out",delay:.9,scrollTrigger:st})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}
   $$(".g-pt-lg",view).forEach(function(w){gsap.fromTo(w,{opacity:0,y:18},{opacity:1,y:0,duration:1,ease:"silk",scrollTrigger:{trigger:w,start:"top 90%"}})});
   $$(".g-tt-x i",view).forEach(function(l){gsap.fromTo(l,{scaleY:0},{scaleY:1,duration:1.2,ease:"flow",scrollTrigger:{trigger:l,start:"top 85%"}})});

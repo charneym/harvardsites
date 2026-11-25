@@ -127,6 +127,7 @@ var TEAM=[
  {name:"Mark S. Cushman, PhD, PharmD",title:"Founder and Chief Scientific Officer; Distinguished Professor Emeritus, Purdue",b:1,img:"p-cushman.webp"},
  {name:"Mark D. Baganz, MD",title:"Independent Director",b:1,img:"p-baganz.webp"}];
 var COLLAB=[
+ {name:"Mark S. Cushman, PhD, PharmD",title:"Founder and Chief Scientific Officer; Distinguished Professor of Medicinal Chemistry, Purdue University",img:"p-cushman.webp"},
  {name:"Sadhana Jackson, MD",title:"NIH Investigator; Head of Developmental Therapeutics & Pharmacology, NINDS/NCI",img:"p-jackson.webp"},
  {name:"Matthew Waitkus, PhD",title:"Assistant Professor in Neurosurgery and Pathology, Duke Cancer Institute",img:"p-waitkus.webp"},
  {name:"Yves Pommier, MD, PhD",title:"Senior Investigator, Developmental Therapeutics Branch, NCI/CCR",img:"p-pommier.webp"},

@@ -229,7 +229,7 @@ function route(h){
 /* site motion on top of the template's reveals: photo bands drift slowly (transform only, on a wrapper the reveal never touches),
    pipeline bars draw to their phase when they enter */
 var _initView=initView;
-initView=function(k,first){_initView(k,first);if(RM)return;var view=$("#view");
+initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.2+Math.min(i,3)*.07,scrollTrigger:{trigger:f.closest(".g-pg")||f.closest(".g-pipe"),start:"top 80%"}})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}

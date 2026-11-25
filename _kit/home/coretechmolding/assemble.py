@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+"""Assemble the Core Technology Molding home-only page from firelight.src.html regions (HOME_BRIEF)."""
+import re, pathlib
+H = pathlib.Path(__file__).resolve().parent
+K = H.parent.parent
+src = (K / 'src/firelight.src.html').read_text()
+def part(n): return (H / n).read_text().rstrip('\n')
+REG = {
+ 'meta':'meta.html','fonts':'fonts.txt','root':'root.css','fieldbg':'fieldbg.css','logocss':'logocss.css',
+ 'scenecss':'scenecss.css','seen':'seen.html','pre':'pre.html','brand':'brand.html','navmenu':'navmenu.html',
+ 'xc':'xc.html','site':'site.js','content':'content.js','views':'views.js','field':'field.js','story':'story.js'}
+for name, f in REG.items():
+    pat = re.compile(r'(/\*<R:%s>\*/|<!--<R:%s>-->)(.*?)(/\*</R:%s>\*/|<!--</R:%s>-->)' % ((name,)*4), re.S)
+    new, n = pat.subn(lambda m: m.group(1) + part(f) + m.group(3), src)
+    assert n == 1, (name, n)
+    src = new
+for i in range(1,6):
+    src = src.replace('__LMARK%d__' % i, part('mark.svg'))
+L = '<!--@libs gsap ScrollTrigger SplitText CustomEase lenis storyfx-->'
+assert src.count(L) == 1
+src = src.replace(L, L.replace('storyfx-->', 'storyfx buildout-->'))
+assert src.count('</style>') == 1
+src = src.replace('</style>', part('extra.css') + '\n</style>')
+assert 'Aptagen' not in src and 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
+nss = (K / 'lib/nssfix.js').read_text()
+assert src.count('</body>') == 1
+import re as _re
+nss = _re.search(r'<script>.*?</script>', nss, _re.S).group(0)
+src = src.replace('</body>', nss + '\n</body>')
+(K / 'src/coretechmolding.src.html').write_text(src)
+import shutil
+(K.parent / 'coretechmolding').mkdir(exist_ok=True)
+for f in ('hero.webp',):
+    if (H / f).exists(): shutil.copy(H / f, K.parent / 'coretechmolding' / f)
+print('wrote src/coretechmolding.src.html', len(src))

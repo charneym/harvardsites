@@ -47,7 +47,7 @@ function vHome(){
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
-  '<section class="sec light pwhite" id="products" data-theme="light"><div class="wrap">'+
+  '<section class="sec light" id="products" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Eight product lines,</span> <em class="nw">built to order.</em></h2></div><p data-r>Each product is engineered for stability and reliability, and can be customized to your specification: pulse width, repetition rate, wavelength, power and connectors.</p></div>'+
    '<figure class="psuite" data-r><img src="suite.webp" alt="PriTel instruments: an optical clock multiplier, a femtosecond fiber laser, an ultrafast optical clock, an optical fiber amplifier and a FEMTOPULSE pulse compressor" width="2000" height="656" loading="lazy" decoding="async"><figcaption class="lab">Clock multiplier, fiber laser, optical clock, amplifier and pulse compressor</figcaption></figure>'+
    lines()+

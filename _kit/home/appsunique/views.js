@@ -33,7 +33,7 @@ function vHome(){
 
   '<section class="sec mani light vis" id="about" data-theme="light"><div class="wrap">'+
    '<div class="vis-l"><span class="lab kick" data-r>About Applications Uniques</span>'+
-   '<h2 class="txt" id="mani">An analytical science company that develops and perfects sensing technologies and instruments, <em>for environmental, industrial, workplace-safety and <span class="nw">agricultural monitoring.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani">An analytical science company that develops and perfects sensing technologies and <span class="nw">instruments, for</span> <em><span class="nw">environmental, industrial,</span> <span class="nw">workplace-safety and</span> <span class="nw">agricultural monitoring.</span></em></h2></div>'+
    '<div class="stats vis-r">'+
     '<div class="stat"><span class="ln2"></span><span class="v">2019</span><p class="k">Founded in Colorado to produce new technologies and superior products</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">40</span><p class="k">Years of our founder’s experience in analytical instrumentation</p></div>'+
@@ -69,7 +69,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="news" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">New sensors,</span> <span class="nw"><em>a new platform.</em></span></h2></div><p data-r>Product releases, patents and trade fairs.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">New sensors,</span> <span class="nw"><em>a new platform.</em></span></h2></div><p data-r>Product releases, patents and trade fairs: the latest sensors, lamps and instruments from Applications Uniques and its factories in Changsha and Taipei.</p></div>'+
    news()+
   '</div></section>'+
   cta();

@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* BMT Fluid Control Solutions' core product class: a miniature 2/2-way solenoid valve for analytical and medical devices
+   (bmt-industrie.de / pumpen-ventile.de: "Miniatur Magnetventile", COMPAMED 2026 listing "Micro Solenoid Valves").
+   Generic, unbranded form: a brushed stainless valve body with two barbed hose ports, a black over-moulded coil, a
+   stainless armature tube with a lock nut on top, and two tin-plated terminal pins. Schematic proportions. ?bg=#000|#fff */
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=innerWidth,H=innerHeight;const BG=P.get('bg')||'#000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+/* studio: soft key overhead-left, BMT magenta panel behind right (#ec008c) for a brand rim, white strips for the steel edges */
+const es=new THREE.Scene();es.background=new THREE.Color('#07090c');
+function gtex(){const c=document.createElement('canvas');c.width=256;c.height=256;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,256,0);g.addColorStop(0,'#fff');g.addColorStop(.45,'#ddd');g.addColorStop(.8,'#555');g.addColorStop(1,'#000');x.fillStyle=g;x.fillRect(0,0,256,256);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+function panel(w,h,col,int,pos,gr){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(col).multiplyScalar(int),side:THREE.DoubleSide,map:gr?gtex():null}));m.position.set(...pos);m.lookAt(0,0,0);es.add(m)}
+panel(14,9,'#ffffff',+(P.get('pw')||1.6),[-7,12,7]);
+panel(10,12,'#ec008c',+(P.get('pm')||1.1),[11,3,-9]);
+panel(2,24,'#ffffff',+(P.get('ps')||2.6),[-12,4,-5]);
+panel(2,20,'#dfe8f2',+(P.get('pr')||1.6),[12,4,6]);
+panel(18,7,'#f4f6f8',+(P.get('pt')||1.2),[-2,9,-13],1);
+panel(10,10,'#ffffff',+(P.get('po')||0.9),[0,16,0],1);
+panel(16,6,'#8fa3b5',0.35,[0,-10,4]);
+panel(22,8,'#ffffff',+(P.get('pf')||0.9),[0,-2,14],1);
+panel(1.6,16,'#ffffff',+(P.get('pv')||2.2),[-7,3,10]);
+panel(12,9,'#eef3f8',+(P.get('pl')||1.0),[-10,-3,6],1);
+panel(1.2,14,'#ffd1ea',+(P.get('pq')||0.8),[8,3,10]);
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(es,0.035).texture;
+function ntex(a,b,sz,rx,ry,streak){const c=document.createElement('canvas');c.width=c.height=sz;const x=c.getContext('2d');const d=x.createImageData(sz,sz);
+  for(let j=0;j<sz;j++){const row=streak?a+Math.random()*(b-a):0;for(let i=0;i<sz;i++){const k=(j*sz+i)*4;const v=streak?row*.8+.2*(a+Math.random()*(b-a)):a+Math.random()*(b-a);d.data[k]=d.data[k+1]=d.data[k+2]=v;d.data[k+3]=255}}
+  x.putImageData(d,0,0);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx||4,ry||4);return t}
+const steel=new THREE.MeshPhysicalMaterial({color:'#d9dee3',metalness:1,roughness:+(P.get('sr')||0.3),roughnessMap:ntex(110,235,512,1,6,1),envMapIntensity:1.15});
+const steelP=new THREE.MeshPhysicalMaterial({color:'#e6eaee',metalness:1,roughness:0.18,envMapIntensity:1.2});
+const coil=new THREE.MeshPhysicalMaterial({color:'#1b1f25',metalness:0,roughness:0.5,bumpMap:ntex(110,150,512,3,3),bumpScale:.2,clearcoat:1,clearcoatRoughness:.16,envMapIntensity:1.0});
+const tin=new THREE.MeshPhysicalMaterial({color:'#c9ccd0',metalness:1,roughness:0.24,envMapIntensity:1.1});
+const seal=new THREE.MeshPhysicalMaterial({color:'#1b1d20',metalness:0,roughness:0.7});
+const dl=new THREE.DirectionalLight('#ffffff',+(P.get('dk')||1.5));dl.position.set(-4,8,6);sc.add(dl);
+const fl=new THREE.DirectionalLight('#ff4fae',+(P.get('dm')||0.55));fl.position.set(6,2,-5);sc.add(fl);
+sc.add(new THREE.AmbientLight('#a9b4c0',0.16));
+function lathe(pts,mat,seg=180){const g=new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg);return new THREE.Mesh(g,mat)}
+const grp=new THREE.Group();
+/* valve body: a brushed stainless block */
+const BW=1.9,BH=.78,BD=1.18;
+const body=new THREE.Mesh(new RoundedBoxGeometry(BW,BH,BD,6,.07),steel);body.position.y=BH/2;grp.add(body);
+/* two barbed hose ports along x (a lathe about y, rotated onto x) */
+function port(dir){const pts=[[0,0],[.2,0],[.2,.08],[.17,.1],[.17,.2],[.21,.22],[.21,.27],[.15,.36],[.15,.42],[.19,.44],[.19,.49],[.13,.58],[.13,.64],[.07,.64],[.07,.66],[0,.66]];
+  const p=lathe(pts,steelP,96);p.rotation.z=-dir*Math.PI/2;p.position.set(dir*BW/2-dir*.02,BH*.5,0);grp.add(p)}
+port(1);port(-1);
+/* coil: a black over-moulded cylinder with a stepped base flange and a slight crown */
+const cy0=BH, CR=.6, CH=1.42;
+grp.add(lathe([[0,cy0],[.66,cy0],[.68,cy0+.02],[.68,cy0+.07],[.66,cy0+.09],[0,cy0+.09]],steel));
+const cpts=[[0,cy0+.09],[CR-.03,cy0+.09],[CR,cy0+.12]];for(let k=0;k<=24;k++){cpts.push([CR+.006*Math.sin(Math.PI*k/24),cy0+.12+(CH-.18)*k/24])}
+cpts.push([CR-.02,cy0+.09+CH-.03],[CR-.06,cy0+.09+CH],[0,cy0+.09+CH]);grp.add(lathe(cpts,coil));
+/* a fine moulded groove band near the top of the coil */
+const ct=cy0+.09+CH;
+grp.add(lathe([[CR+.004,ct-.3],[CR+.012,ct-.29],[CR+.012,ct-.26],[CR+.004,ct-.25]],seal));
+/* armature tube and a hex lock nut */
+const nut=new THREE.Mesh(new THREE.CylinderGeometry(.26,.26,.16,6),steelP);nut.position.y=ct+.08;nut.rotation.y=Math.PI/6;grp.add(nut);
+grp.add(lathe([[0,ct+.16],[.15,ct+.16],[.15,ct+.36],[.13,ct+.39],[0,ct+.39]],steel));
+/* two tin-plated terminal pins on the crown */
+[-1,1].forEach(function(s){const b=new THREE.Mesh(new RoundedBoxGeometry(.2,.06,.12,2,.02),coil);b.position.set(s*.4,ct+.02,-.02);grp.add(b);
+  const pin=new THREE.Mesh(new RoundedBoxGeometry(.05,.34,.12,2,.012),tin);pin.position.set(s*.4,ct+.2,-.02);grp.add(pin)});
+/* mounting holes on the body face */
+[-1,1].forEach(function(s){const h=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.02,40),new THREE.MeshPhysicalMaterial({color:'#3a3f45',metalness:1,roughness:.4}));h.rotation.x=Math.PI/2;h.position.set(s*.68,BH*.5,BD/2+.002);grp.add(h)});
+grp.position.y=-(ct+.39)/2;
+const g2=new THREE.Group();g2.add(grp);g2.rotation.y=+(P.get('ry')||-0.55);sc.add(g2);
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||20),W/H,.1,200);const el=+(P.get('el')||0.3);const dist=+(P.get('d')||12);
+cam.position.set(0,Math.sin(el)*dist,Math.cos(el)*dist);cam.lookAt(0,0,0);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

@@ -67,7 +67,7 @@ region('pre', '''<div id="pre" aria-hidden="true">
   <div class="pc">
     <div class="mk lock">%s<span class="lab ptag">Wavelength-tunable VCSELs · since 2011</span></div>
   </div>
-  <span class="lab pl">Berkeley, California · Taoyuan · Berlin</span>
+  <span class="lab pl">Berkeley · Taoyuan · Berlin</span>
   <div class="bar"><i id="preBar"></i></div>
   <span class="cnt" id="preCnt">000</span>
 </div>''' % STACK, html=True)

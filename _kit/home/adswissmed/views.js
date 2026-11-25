@@ -14,8 +14,8 @@ function vHome(){
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
-    '<span class="lab eyebrow" data-r>Swiss medical technology<span class="eyd"> · </span><span class="nw eyp">Gravesano, Switzerland</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="nw">Non-invasive</span> <span class="nw">rehabilitation,</span> <em class="nw">Swiss made.</em></h1>'+
+    '<span class="lab eyebrow" data-r>Non-invasive rehabilitation devices<span class="eyd"> · </span><span class="nw eyp">Gravesano, Switzerland</span></span>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="nw">Science first,</span> <em class="nw">Swiss made.</em></h1>'+
     '<p class="s" data-r>AD Swiss MedTech develops, designs and manufactures medical devices for rehabilitation: Vibra 3.0 focal vibration and the Ponos and Monos neuromodulation systems, for physiotherapists, sports physicians and aesthetic doctors.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div>'+
    '</div>'+
@@ -28,7 +28,7 @@ function vHome(){
 
   '<section class="sec mani light vis" id="about" data-theme="light"><div class="wrap">'+
    '<div class="vis-l"><span class="lab kick" data-r>About us</span>'+
-   '<h2 class="txt" id="mani">We are engineers, technicians and managers from the medical, orthopaedic and aesthetic sectors, who joined forces to build patented rehabilitation devices with real therapeutic value, <em>science first of all.</em></h2></div>'+
+   '<h2 class="txt" id="mani">We are engineers, technicians and managers from the medical, orthopaedic and aesthetic sectors, who joined forces to build patented rehabilitation devices with real therapeutic value, <em><span class="nw">and an eye</span> <span class="nw">for every detail.</span></em></h2></div>'+
    '<div class="stats vis-r">'+
     '<div class="stat"><span class="ln2"></span><span class="v">ISO 13485</span><p class="k">Certified quality management system for every device we develop and build</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">CE 0476</span><p class="k">Medical devices certified under the EU MDR and the MDD</p></div>'+
@@ -75,7 +75,7 @@ function cta(){
    '<p class="sub" data-r>Ask us about a device, a training course or a distribution partnership, and our team in Gravesano will reply.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to us '+ARR+'</a><a class="btn" href="'+TELH+'">Call '+TEL+'</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Headquarters</span><p data-r>AD Swiss MedTech SA<br>Via Grumo 10<br>6929 Gravesano, Switzerland</p></div>'+
+    '<div><span class="lab" data-r>Headquarters</span><p data-r><span>AD Swiss MedTech SA</span><br><span>Via Grumo 10</span><br><span>6929 Gravesano, Switzerland</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
     '<div><span class="lab" data-r>Telephone</span><p data-r><a class="ul" href="'+TELH+'">'+TEL+'</a></p></div>'+
    '</div>'+

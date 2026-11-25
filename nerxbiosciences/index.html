@@ -203,7 +203,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .rail span.done::before,.rail span.on::before{background:var(--accL);border-color:var(--accL)}
 .steps{position:relative;min-height:clamp(220px,30vh,300px)}
 .step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
-.step.on{opacity:1;visibility:visible}
+.step.on{opacity:1;visibility:inherit}
 .step h3,.step h2{font-family:var(--disp);font-weight:500;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.02em;margin:0 0 16px}
 .step p{color:rgba(var(--boner),.8);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(70vh,640px);align-self:center}
@@ -2003,7 +2003,7 @@ function fMacron(){var sv=document.querySelector(".ftr .bigsvg");if(!sv)return;v
 var _fm=0,_fmi=setInterval(function(){fMacron();if(++_fm>20)clearInterval(_fmi)},700);addEventListener("load",function(){setTimeout(fMacron,300)});
 
 /* ================= ROUTER: one route. #/contact and #/about scroll to their section; a typed or linked #/technology,
-   #/pipeline, #/team or #/news (the nav items) opens that item's build-out page, as a nav click does (buildout.js) ================= */
+   #/pipeline, #/team or #/news scrolls to that section too; nav clicks open the build-out pages (buildout.js) ================= */
 var BOK={technology:1,pipeline:1,team:1,news:1};
 function boOpen(k){try{if(window.BuildOut&&BuildOut.open){BuildOut.open(k);return true}}catch(x){}return false}
 var SECS={about:"about",technology:"technology",pipeline:"pipeline",team:"team",news:"news",contact:"contact"};
@@ -2016,11 +2016,10 @@ function secGo(id,instant){var el=secEl(id);if(!el)return;if(lenis&&!instant)len
 addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#/']");if(!a)return;var r=route(a.getAttribute("href"));if(!r.sec)return;
   e.preventDefault();e.stopPropagation();if(document.body.classList.contains("menu-open")){closeMenu();setTimeout(function(){secGo(r.sec)},450)}else secGo(r.sec)},true);
 addEventListener("hashchange",function(e){var r=route(location.hash);if(curKey!=="home")return;e.stopImmediatePropagation();
-  if(r.sec&&BOK[r.sec]){try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/";boOpen(r.sec);return}
   if(r.sec)secGo(r.sec);else if(lenis)lenis.scrollTo(0,{duration:1.4});else scrollTo(0,0);
   try{history.replaceState(null,"","#/")}catch(x){}prevHash="#/"});
 (function(){var r=route(location.hash);if(!r.sec)return;var n=0;(function wait(){if(++n>60)return;var lk=document.documentElement.style.overflow==="hidden"||!document.getElementById(r.sec);if(lk){setTimeout(wait,150);return}
-  setTimeout(function(){try{history.replaceState(null,"","#/")}catch(x){}if(BOK[r.sec]&&boOpen(r.sec))return;secGo(r.sec,true)},300)})()})();
+  setTimeout(function(){try{history.replaceState(null,"","#/")}catch(x){}secGo(r.sec,true)},300)})()})();
 /*</R:views>*/
 
 /* ================= ENV ================= */

@@ -98,7 +98,7 @@ region('scenecss', '''/* story (pinned, one continuous scene) */
 .rail span.done::before,.rail span.on::before{background:var(--accL);border-color:var(--accL)}
 .steps{position:relative;min-height:clamp(220px,30vh,300px)}
 .step{position:absolute;left:0;top:0;right:0;opacity:0;visibility:hidden}
-.step.on{opacity:1;visibility:visible}
+.step.on{opacity:1;visibility:inherit}
 .step h3,.step h2{font-family:var(--disp);font-weight:500;font-size:clamp(26px,2.3vw,38px);line-height:1.12;letter-spacing:-.02em;margin:0 0 16px}
 .step p{color:rgba(var(--boner),.8);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(70vh,640px);align-self:center}

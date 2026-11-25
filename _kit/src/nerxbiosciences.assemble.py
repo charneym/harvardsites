@@ -74,8 +74,8 @@ region('root', ''':root{
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
 }
 @media (min-width:1800px){:root{--maxw:1600px}}''')
-region('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:#070a12}
-.fieldbg.still{background:#070a12 url(helix-still.webp) 70% 50%/auto 100% no-repeat}
+region('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(60% 70% at 70% 50%,#0b1020 0%,#070a12 70%)}
+.fieldbg.still{background:url(helix-still.webp) 70% 50%/auto 100% no-repeat,linear-gradient(#070a12,#070a12)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}''')
 region('logocss', '''.brand{display:flex;align-items:center;height:56px;color:var(--bone)}

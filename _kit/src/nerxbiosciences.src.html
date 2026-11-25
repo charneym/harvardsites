@@ -78,8 +78,8 @@ h1,h2,h3{text-wrap:balance}
 .grain{position:fixed;inset:-50%;z-index:1500;pointer-events:none;opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-4%)}60%{transform:translate(-4%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:#070a12}
-.fieldbg.still{background:#070a12 url(helix-still.webp) 70% 50%/auto 100% no-repeat}
+/*<R:fieldbg>*/.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(60% 70% at 70% 50%,#0b1020 0%,#070a12 70%)}
+.fieldbg.still{background:url(helix-still.webp) 70% 50%/auto 100% no-repeat,linear-gradient(#070a12,#070a12)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}/*</R:fieldbg>*/
 
@@ -1130,6 +1130,9 @@ html.bo-open #field{opacity:1!important;filter:brightness(1.15);-webkit-mask-ima
 /* room for the headline's rising second line to clear the lede during the entrance (polish UNDERLAP) */
 .hero.hx .hx-foot{margin-top:clamp(52px,6.4vh,72px)}
 @media (max-width:860px){.hero.hx .hx-foot{margin-top:40px}}
+
+.cta .cinfo p.al{margin:0}
+.cta .cinfo p.al+p.al{margin-top:2px}
 </style>
 </head>
 </head>
@@ -1319,7 +1322,7 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="Our competitive advantage">'+
-    '<li class="p1"'+PR+'><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
+    '<li class="p1" data-r><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
     '<li class="p2"'+PR+'><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
     '<li class="p3"'+PR+'><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
    '</ul>'+
@@ -1377,7 +1380,7 @@ function vHome(){
   cta();
 }
 /* phones: the pillar band sits below the fold, so it reveals on scroll (enhancement only: the site failsafe shows anything in view) */
-function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
+function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li:not([data-r])").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
   gsap.set(li,{opacity:0,y:24});ScrollTrigger.create({trigger:li,start:"top 96%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power2.out",clearProps:"transform,opacity"})}})})}
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
@@ -1386,8 +1389,8 @@ function cta(){
    '<p class="sub" data-r>We are seeking a partner in oncology to accelerate NĒRx-329 through IND to first-in-human studies. Write to us.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to NĒRx '+ARR+'</a><a class="btn" href="#/technology">See the science</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Corporate</span><p data-r>6151 Central Ave., Suite 120<br>Indianapolis, IN 46220</p></div>'+
-    '<div><span class="lab" data-r>Laboratory</span><p data-r>1220 Waterway Blvd.<br>Indianapolis, IN 46202</p></div>'+
+    '<div><span class="lab" data-r>Corporate</span><p class="al" data-r>6151 Central Ave., Suite 120</p><p class="al" data-r>Indianapolis, IN 46220</p></div>'+
+    '<div><span class="lab" data-r>Laboratory</span><p class="al" data-r>1220 Waterway Blvd.</p><p class="al" data-r>Indianapolis, IN 46202</p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
    '</div>'+
   '</div></section>';

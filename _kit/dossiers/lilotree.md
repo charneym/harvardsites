@@ -1,0 +1,13 @@
+# LiloTree (lilotree) — batch 2026-11l, home-only concept
+
+- Domain: lilotree.com (Google Sites; company name, Redmond address and contact.us@lilotree.com on every page; same Redmond address and phone in the NSF award records and the productronica 2025 exhibitor page). Domain check passed; no newer site found.
+- HQ: LiloTree LLC, 2904 266th Ave NE, Building B, Redmond, WA 98053, USA. +1 425 686 9639, +1 971 344 0136. Second mfg and sales office: WP142, GIDC 2, Sanand, Gujarat 382110, India.
+- Lead: Kunal Shah, PhD, President (lilotree.com about page; "inventor of ENIG-Premium, Ni-less ENIG-Premium"); I-Connect007 calls him chief scientist and president. Greeting: Dear Dr. Shah.
+- Email: kunal.shah@lilotree.com (PI email on NSF SBIR awards 1621067 and 1739047, api.nsf.gov); general contact.us@lilotree.com.
+- Activity: exhibited at productronica 2025, Munich, November 2025, hall B3 stand 529 (https://exhibitors.productronica.com/ausstellerportal/2025/aussteller/ausstellerdetails/lilotree/?elb=228.1100.5967.1.111).
+- Facts used: lilotree.com home (Ni-less ENIG-Premium: low insertion loss, no brittle failures, 50 vs 200 nm gold vs EPIG/EPAG/DIG, cyanide-free, RoHS; ENIG-Premium: IPC 4552A, rose-gold, 10x corrosion resistance via barrier layer, up to 40% gold savings vs ENIG/ENEPIG; the four conventional ENIG issues), about (company overview, NSF SBIR Phase I & II, IPC award), contact, news (Taiyo America partnership, IMPACT 2022 award, HDP User Group, Lilo-BL, LILO-EAu, NanoCleaner), events (Comcast RISE, APEX 2020 best paper), solutions (failure analysis, quality compliance, plating services, lab techniques), product sheet images on the site (OSP-Premium, NanoCleaner & Lilo-Pretreat, Activator + Catalyst, LILO-ImmAu 1.5–20 µin).
+- Palette: banner navy #010A4F, leaf greens #68B458 / #227E3E (logo raster), circuit cyan #22B2E1, wordmark grey #6D6E71.
+- Logo: the two-leaf mark redrawn as filled SVG from the 79px raster; wordmark set in Comfortaa.
+- Hero: crafted GLSL render (render.js + render_fs.glsl, HOME_BRIEF 2c) of a PCB test coupon with a rose-gold finish (BGA land pattern, fine-pitch pads, vias, green solder mask, FR-4 edge). No stock photo; the site's own photos are low-res (275–512 px).
+- Story: pad cross-section: conventional ENIG with black pad, ENIG-Premium with barrier layer and rose gold, Ni-less with the nickel removed and a high-frequency signal.
+- Bad site: default Google Sites template, clip-art banner with bevelled green title text and a circuit-line graphic, an embedded YouTube video as the main home content, Google "Report abuse" footer, news page of pasted 2018–2023 links.

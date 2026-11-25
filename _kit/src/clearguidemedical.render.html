@@ -1,0 +1,112 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<!-- Clear Guide Medical hero render: the SCENERGY TP transperineal grid template (after the product render on
+     clearguidemedical.com: a grey plate with a lettered A–M / 1–13 hole grid, a header tab, two optical fiducial markers
+     on posts below and a round knob between them), with one needle through a grid hole and the AR target ring in the
+     firm's overlay green. Rendered once offline with three.js to a transparent PNG (HOME_BRIEF option c). -->
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1200,H=+P.get('h')||1400;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0x000000,0);
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+sc.environmentIntensity=+P.get('ei')||0.38;
+
+/* ---- plate: 13 x 13 through-holes at pitch 1, label margins, a header tab on top ---- */
+const N=13,PI=1.0,HR=0.25,GW=(N-1)*PI;
+const PW=GW+3.2,PH=GW+3.2,TH=0.9,TABW=8.4,TABH=3.0;
+function rr(s,x,y,w,h,r){s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y)}
+const shp=new THREE.Shape();
+/* outline: plate with a centred tab above (one continuous outline) */
+(function(){const x0=-PW/2,x1=PW/2,y0=-PH/2,y1=PH/2,tx0=-TABW/2,tx1=TABW/2,ty=y1+TABH,r=0.45;
+ shp.moveTo(x0+r,y0);shp.lineTo(x1-r,y0);shp.quadraticCurveTo(x1,y0,x1,y0+r);shp.lineTo(x1,y1-r);shp.quadraticCurveTo(x1,y1,x1-r,y1);
+ shp.lineTo(tx1+r,y1);shp.quadraticCurveTo(tx1,y1,tx1,y1+r);shp.lineTo(tx1,ty-r);shp.quadraticCurveTo(tx1,ty,tx1-r,ty);
+ shp.lineTo(tx0+r,ty);shp.quadraticCurveTo(tx0,ty,tx0,ty-r);shp.lineTo(tx0,y1+r);shp.quadraticCurveTo(tx0,y1,tx0-r,y1);
+ shp.lineTo(x0+r,y1);shp.quadraticCurveTo(x0,y1,x0,y1-r);shp.lineTo(x0,y0+r);shp.quadraticCurveTo(x0,y0,x0+r,y0)})();
+const HC=[];for(let i=0;i<N;i++)for(let j=0;j<N;j++){const x=-GW/2+i*PI,y=-GW/2+j*PI;HC.push([x,y]);const h=new THREE.Path();h.absarc(x,y,HR,0,Math.PI*2,true);shp.holes.push(h)}
+const eg=new THREE.ExtrudeGeometry(shp,{depth:TH,bevelEnabled:true,bevelThickness:0.08,bevelSize:0.08,bevelSegments:6,curveSegments:28});
+eg.translate(0,0,-TH);
+
+/* printed face: letters A–M top/bottom, 1–13 left/right, faint grid rules (a canvas texture in shape units) */
+const TX=2048,cv=document.createElement('canvas');cv.width=cv.height=TX;const g=cv.getContext('2d');
+const BX0=-PW/2-.2,BY0=-PH/2-.2,BW=PW+.4,BH=PH+TABH+.4;
+function tx(x){return (x-BX0)/BW*TX}function ty(y){return TX-(y-BY0)/BH*TX}
+g.fillStyle='#b7bdc6';g.fillRect(0,0,TX,TX);
+/* subtle moulded-polymer tone variation */
+const gr=g.createLinearGradient(0,0,TX,TX);gr.addColorStop(0,'rgba(255,255,255,.10)');gr.addColorStop(1,'rgba(0,0,0,.08)');g.fillStyle=gr;g.fillRect(0,0,TX,TX);
+(function(){const id=g.getImageData(0,0,TX,TX),d=id.data;for(let i=0;i<d.length;i+=4){const n=(Math.random()-.5)*7;d[i]+=n;d[i+1]+=n;d[i+2]+=n}g.putImageData(id,0,0)})();
+g.strokeStyle='rgba(40,46,56,.38)';g.lineWidth=2.2;
+for(let i=0;i<N;i++){const x=tx(-GW/2+i*PI);g.beginPath();g.moveTo(x,ty(GW/2));g.lineTo(x,ty(-GW/2));g.stroke();const y=ty(-GW/2+i*PI);g.beginPath();g.moveTo(tx(-GW/2),y);g.lineTo(tx(GW/2),y);g.stroke()}
+g.fillStyle='#2a2f38';g.font='600 '+Math.round(TX/BW*.5)+'px Helvetica, Arial, sans-serif';g.textAlign='center';g.textBaseline='middle';
+const L='ABCDEFGHIJKLM';
+for(let i=0;i<N;i++){const x=-GW/2+i*PI;g.fillText(L[i],tx(x),ty(GW/2+.85));g.fillText(L[i],tx(x),ty(-GW/2-.85));
+ const y=-GW/2+i*PI;g.fillText(String(i+1),tx(-GW/2-.95),ty(y));g.fillText(String(i+1),tx(GW/2+.95),ty(y))}
+/* the header tab carries two small dark label windows, as on the product */
+g.fillStyle='#23272e';
+[[0,PH/2+2.05,3.2,.62],[.4,PH/2+1.05,2.4,.55]].forEach(function(b){g.fillRect(tx(b[0]-b[2]/2),ty(b[1]+b[3]/2),b[2]/BW*TX,b[3]/BH*TX)});
+g.fillStyle='#9aa1ab';[[-.9,PH/2+2.05],[.2,PH/2+2.1],[1.0,PH/2+1.05]].forEach(function(b){g.fillRect(tx(b[0]-.35),ty(b[1]+.08),.7/BW*TX,.16/BH*TX)});
+const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;
+tex.repeat.set(1/BW,1/BH);tex.offset.set(-BX0/BW,-BY0/BH);tex.wrapS=tex.wrapT=THREE.ClampToEdgeWrapping;
+const faceM=new THREE.MeshPhysicalMaterial({map:tex,roughness:.62,metalness:0,clearcoat:.15,clearcoatRoughness:.6});
+const sideM=new THREE.MeshPhysicalMaterial({color:0x7c838d,roughness:.55,metalness:0});
+const plate=new THREE.Mesh(eg,[faceM,sideM]);plate.castShadow=true;plate.receiveShadow=true;
+
+const obj=new THREE.Group();obj.add(plate);
+/* dark bores behind each hole so they read as through-holes */
+const boreM=new THREE.MeshStandardMaterial({color:0x14171c,roughness:.9});
+const back=new THREE.Mesh(new THREE.PlaneGeometry(GW+1.2,GW+1.2),boreM);back.position.z=-TH-0.12;obj.add(back);
+
+/* ---- lower block: two fiducial markers on posts, a round knob between ---- */
+const legM=new THREE.MeshPhysicalMaterial({color:0xb3b9c2,roughness:.55});
+function marker(seed){const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');
+ x.fillStyle='#f2f3f5';x.fillRect(0,0,512,512);x.fillStyle='#101216';x.fillRect(48,48,416,416);x.fillStyle='#f2f3f5';
+ const pat=seed?[[0,0,1,0,1],[1,1,0,0,1],[0,1,1,1,0],[1,0,0,1,1],[0,1,0,1,0]]:[[1,0,0,1,0],[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,1],[1,1,0,1,0]];
+ for(let i=0;i<5;i++)for(let j=0;j<5;j++)if(pat[j][i])x.fillRect(112+i*57.6,112+j*57.6,57.6,57.6);
+ const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+[[-3.1,0],[3.1,1]].forEach(function(m){
+ const blk=new THREE.Mesh(new THREE.BoxGeometry(3.4,3.4,0.7),legM);blk.position.set(m[0],-PH/2-2.6,-0.5);blk.castShadow=true;obj.add(blk);
+ const face=new THREE.Mesh(new THREE.PlaneGeometry(2.8,2.8),new THREE.MeshStandardMaterial({map:marker(m[1]),roughness:.5}));face.position.set(m[0],-PH/2-2.6,-0.14);obj.add(face);
+ const post=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,1.6,48),legM);post.position.set(m[0],-PH/2-5.1,-0.55);post.castShadow=true;obj.add(post);
+ const col=new THREE.Mesh(new THREE.CylinderGeometry(.62,.62,.7,48),legM);col.position.set(m[0],-PH/2-6.1,-0.55);obj.add(col);
+ const bridge=new THREE.Mesh(new THREE.BoxGeometry(1.4,.9,.7),legM);bridge.position.set(m[0],-PH/2-.75,-0.5);obj.add(bridge)});
+const knob=new THREE.Mesh(new THREE.CylinderGeometry(.85,.85,.55,64),legM);knob.rotation.x=Math.PI/2;knob.position.set(0,-PH/2-.9,-.1);obj.add(knob);
+
+/* ---- needle through hole H6 (column 8, row 6), perpendicular to the plate, with a hub behind the tip ---- */
+const NI=7,NJ=5,nx=-GW/2+NI*PI,ny=-GW/2+NJ*PI;
+const steel=new THREE.MeshPhysicalMaterial({color:0xe9edf2,metalness:1,roughness:.18});
+const nd=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,5.2,32),steel);nd.rotation.x=Math.PI/2;nd.position.set(nx,ny,1.6);nd.castShadow=false;obj.add(nd);
+const hubM=new THREE.MeshPhysicalMaterial({color:0xdfe6ee,roughness:.15,transmission:.55,thickness:.6,ior:1.45,clearcoat:1});
+const hub=new THREE.Mesh(new THREE.CylinderGeometry(.34,.24,1.6,48),hubM);hub.rotation.x=Math.PI/2;hub.position.set(nx,ny,4.9);obj.add(hub);
+const cap=new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,.35,48),new THREE.MeshPhysicalMaterial({color:0x4969ac,roughness:.4}));cap.rotation.x=Math.PI/2;cap.position.set(nx,ny,5.85);obj.add(cap);
+
+/* a second probe two holes up and three left (biopsy and ablation in one session) */
+{const mx=-GW/2+4*PI,my=-GW/2+8*PI;
+ const n2=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,6.4,32),steel);n2.rotation.x=Math.PI/2;n2.position.set(mx,my,2.2);obj.add(n2);
+ const h2=new THREE.Mesh(new THREE.CylinderGeometry(.36,.36,1.3,48),new THREE.MeshPhysicalMaterial({color:0x3a414c,roughness:.35,clearcoat:.6}));h2.rotation.x=Math.PI/2;h2.position.set(mx,my,5.9);obj.add(h2);
+ const c2=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.9,32),new THREE.MeshPhysicalMaterial({color:0xd7dde5,roughness:.3}));c2.rotation.x=Math.PI/2;c2.position.set(mx,my,6.9);obj.add(c2)}
+/* ---- AR target ring (their overlay green), projected on the face around the needle hole ---- */
+if(P.get('ring')!=='0'){
+ const gm=new THREE.MeshBasicMaterial({color:0x52e08a,transparent:true,opacity:.95,toneMapped:false});
+ const ring=new THREE.Mesh(new THREE.RingGeometry(.5,.58,96),gm);ring.position.set(nx,ny,.09);obj.add(ring);
+ [[0,1],[0,-1],[1,0],[-1,0]].forEach(function(d){const t=new THREE.Mesh(new THREE.PlaneGeometry(d[0]?.42:.06,d[0]?.06:.42),gm);t.position.set(nx+d[0]*.82,ny+d[1]*.82,.09);obj.add(t)});
+}
+
+obj.position.y=1.6;
+obj.rotation.set(+P.get('rx')||-0.42,+P.get('ry')||-0.5,+P.get('rz')||0.02);
+sc.add(obj);
+
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||26,W/H,.1,200);
+cam.position.set(0,0,+P.get('cz')||52);cam.lookAt(0,0,0);
+const key=new THREE.DirectionalLight(0xffffff,+P.get('kl')||2.8);key.position.set(-20,24,16);key.castShadow=true;key.shadow.mapSize.set(4096,4096);key.shadow.radius=6;
+Object.assign(key.shadow.camera,{left:-16,right:16,top:16,bottom:-16,near:1,far:80});key.shadow.bias=-0.0005;sc.add(key);
+const fill=new THREE.DirectionalLight(0xc9d8ff,+P.get('fl')||.5);fill.position.set(18,-4,14);sc.add(fill);
+const rim=new THREE.DirectionalLight(0x7f9be0,+P.get('rl')||1.8);rim.position.set(10,8,-18);sc.add(rim);
+r.render(sc,cam);
+window.DONE=r.domElement.toDataURL('image/png');
+</script></body></html>

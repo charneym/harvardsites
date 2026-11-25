@@ -45,9 +45,9 @@ function cvScene(o){
   g+='<text class="nm" id="cvNm" x="300" y="'+(mob?18:22)+'" text-anchor="middle">ST LEGER C/R</text>';
   if(!mob){
     g+='<text class="cl" id="cvL" x="186" y="300" text-anchor="end">PCL KEPT</text>';
-    g+='<text class="cl fx" x="410" y="150" text-anchor="start">FEMORAL</text><text class="cl fx" x="410" y="168" text-anchor="start">COMPONENT</text>';
-    g+='<text class="cl fx" x="424" y="364" text-anchor="start">INSERT</text>';
-    g+='<text class="cl fx" x="424" y="402" text-anchor="start">TIBIAL TRAY</text>';
+    g+='<text class="cl fx" x="420" y="150" text-anchor="start">FEMORAL</text><text class="cl fx" x="420" y="168" text-anchor="start">COMPONENT</text>';
+    g+='<text class="cl fx" x="440" y="360" text-anchor="start">INSERT</text>';
+    g+='<text class="cl fx" x="440" y="404" text-anchor="start">TIBIAL TRAY</text>';
   }
   var BX=KX;
   if(!mob)g+='<path class="pl sD" d="M110 590H550"/>';

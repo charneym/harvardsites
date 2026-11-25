@@ -1022,6 +1022,12 @@ body.menu-open .hdr .brand .cvt i{color:var(--accL)}
 .cap svg .f{fill:var(--accD)}
 /* phones: the render gets a taller clear band above the hero text (CW) */
 @media (max-width:860px){.hero{padding-top:calc(50svh + 8px)!important}}
+/* loader: the mark keeps its orange ring and navy dot (overrides the inherited white-fill loader rule) */
+#pre .mk .cvm .o{fill:#f58026!important}
+#pre .mk .cvm .n{fill:var(--navy)!important}
+/* footer: two columns on tablets so no column is squeezed (DX) */
+@media (max-width:1100px){.ftr .cols{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ftr .cols{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 </head>
@@ -1152,9 +1158,9 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){
   return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
 function caps(){var C=[
   ["Production","Made in our own facility","Hip and knee implants, trauma plates and screws, spinal implants and their instrument sets are manufactured in Covision’s own production facility, equipped with some of the very latest high performance machining centres.",'<rect x="8" y="22" width="40" height="28"/><path d="M8 22L20 12V22L32 12V22L44 12V22"/><path class="a" d="M16 34H40M16 42H32"/><circle class="f" cx="44" cy="42" r="2.2"/>'],
-  ["Testing","Test and development laboratories","Designs are based on well proven technologies whose long term use has been shown to deliver excellent clinical outcomes, and are tested and developed in the company’s own laboratories.",'<path d="M22 8V24L10 46H46L34 24V8"/><path d="M18 8H38"/><path class="a" d="M15 38H41"/><circle class="f" cx="28" cy="31" r="2.2"/>'],
+  ["Testing","<span class=\"nw\">Tested in</span> <span class=\"nw\">our own laboratories</span>","Designs are based on well proven technologies whose long term use has been shown to deliver excellent clinical outcomes, and are tested and developed in the company’s own laboratories.",'<path d="M22 8V24L10 46H46L34 24V8"/><path d="M18 8H38"/><path class="a" d="M15 38H41"/><circle class="f" cx="28" cy="31" r="2.2"/>'],
   ["Regulation","CE and MDD requirements","Every product in the range meets all of the CE and MDD regulatory and quality requirements, and electronic instructions for use are published for every product group.",'<circle cx="28" cy="28" r="18"/><path class="a" d="M19 28L25 34L37 22"/><circle class="f" cx="28" cy="10" r="2.2"/>']];
-  return '<div class="caps">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
+  return '<div class="caps">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+(c[1].indexOf('<')<0?esc(c[1]):c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="light">'+
@@ -1199,12 +1205,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light co" id="company" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Headquartered</span> <em class="nw">in Nottinghamshire.</em></h2></div><p data-r>Covision Medical Technologies Limited is based at Carlton-in-Lindrick, near Worksop, and is part of the Ortopro group of Istanbul, its parent company. It serves hospitals, administrators and surgeons with high levels of customer service and product quality.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A UK company,</span> <em class="nw">in Nottinghamshire.</em></h2></div><p data-r>Covision Medical Technologies Limited is based at Carlton-in-Lindrick, near Worksop, and is part of the Ortopro group of Istanbul, its parent company. It serves hospitals, administrators and surgeons with high levels of customer service and product quality.</p></div>'+
    team()+
   '</div></section>'+
 
   '<section class="sec dark" id="news" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Courses, congresses</span> <em class="nw">and launches.</em></h2></div><p data-r>Covision shows its full range at the major medical trade fairs and supports surgeon training. The latest is on the News page and on LinkedIn.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Trade fairs</span> <em class="nw">and courses.</em></h2></div><p data-r>Covision shows its full range at the major medical trade fairs and supports surgeon training. The latest is on the News page and on LinkedIn.</p></div>'+
    news()+
   '</div></section>'+
   cta();
@@ -1227,7 +1233,7 @@ function footer(){
    '<div class="c"><span class="lab">Head office</span>Covision Medical Technologies Ltd<br>Lawn Road, Carlton-in-Lindrick, Worksop, Nottinghamshire S81 9LB</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/systems">Systems</a><br><a class="ul" href="#/knee-designs">Knee designs</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Range</span>Knee · Hip<br>Trauma · Spine<br>Instrument sets</div>'+
+   '<div class="c"><span class="lab">Range</span>Knee, hip, trauma and spine implants, with an instrument set for every system</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 120" aria-hidden="true"><text x="450" y="98" text-anchor="middle" style="font-family:\'Montserrat\',Arial,sans-serif;font-weight:600;font-size:124px;letter-spacing:.06em">COVISION</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Covision Medical Technologies Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
@@ -1377,9 +1383,9 @@ function cvScene(o){
   g+='<text class="nm" id="cvNm" x="300" y="'+(mob?18:22)+'" text-anchor="middle">ST LEGER C/R</text>';
   if(!mob){
     g+='<text class="cl" id="cvL" x="186" y="300" text-anchor="end">PCL KEPT</text>';
-    g+='<text class="cl fx" x="410" y="150" text-anchor="start">FEMORAL</text><text class="cl fx" x="410" y="168" text-anchor="start">COMPONENT</text>';
-    g+='<text class="cl fx" x="424" y="364" text-anchor="start">INSERT</text>';
-    g+='<text class="cl fx" x="424" y="402" text-anchor="start">TIBIAL TRAY</text>';
+    g+='<text class="cl fx" x="420" y="150" text-anchor="start">FEMORAL</text><text class="cl fx" x="420" y="168" text-anchor="start">COMPONENT</text>';
+    g+='<text class="cl fx" x="440" y="360" text-anchor="start">INSERT</text>';
+    g+='<text class="cl fx" x="440" y="404" text-anchor="start">TIBIAL TRAY</text>';
   }
   var BX=KX;
   if(!mob)g+='<path class="pl sD" d="M110 590H550"/>';

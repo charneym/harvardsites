@@ -2,6 +2,10 @@
 These came from the client's critiques over several batches. The newest are at the top. Every rule applies to every site. Paths like `kit/x.js` refer to the `_kit` folder of github.com/charneym/harvardsites.
 
 
+# v24 (coordinator review, 2026-11-25)
+
+**DX. Multi-column rows stack on phones; no squeezed columns.** Found on crystalgmbh, gctool and lilotree. On a 390 phone the product/pipeline rows kept their desktop columns because a desktop grid rule was declared after the phone rule and overrode it. The result: the small category label sat on top of the product name, names wrapped one word per line in a column about 60px wide, long German words overflowed into the description, and descriptions became narrow two-word columns. Below about 860px, every multi-column row (products, pipeline, team, news, specs, references) must stack full width in one column, in the order label, name, description, link. Put phone overrides after the desktop rules, or scope the desktop rules with min-width. German and other long-word copy gets `hyphens:auto; overflow-wrap:anywhere`. GATE: `node _kit/tools/squeeze.js SLUG` (and `SLUG 768`) must print OK. It flags text in a column narrower than 40% of the viewport, text squeezed to under 14 characters per line, and text boxes that overlap.
+
 # v23 (client critique, 2026-11-23)
 
 **DW. Content is visible by default; whitespace is earned.** Client on limaxbio v6: sections showed numbered rows and "Funded by" labels with NOTHING beside them. Their reveal animations never fired in a real browser, so content stayed at opacity 0. Never make opacity:0 the resting state of content; animate in only as progressive enhancement. Also: no section of tall empty rows, no text squeezed into a narrow column with a wide void beside it, and no two sections in the same visual form (e.g. two numbered lists back to back). Gate: `node _kit/tools/hidden.js SLUG` after a fast scroll must list nothing except inactive story steps; check by eye at 1920 after a fast scroll.

@@ -1063,7 +1063,8 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 /* ---- hero: headline left, the helix render in the open area to the right; pillars as the bottom band ---- */
 html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.6vw,104px)!important;line-height:1.02;letter-spacing:-.025em;font-weight:500;max-width:none}
 .hero.hx .hrule{width:min(6.4em,100%);font-size:clamp(44px,5.6vw,104px)}
-.gt{background:linear-gradient(90deg,#f0646a 0%,#c9718e 40%,#9b8fc4 70%,#8fb6e6 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:.08em;font-style:italic}
+.gt{background:none!important;-webkit-background-clip:initial;background-clip:initial;-webkit-text-fill-color:currentColor;color:#c9718e;padding-right:.08em;font-style:italic}
+.gt i{font-style:italic;-webkit-text-fill-color:currentColor}
 .hx-copy{max-width:min(46vw,720px)}
 .hx-foot{flex-direction:column;align-items:flex-start;gap:24px}
 .hx-foot .s{max-width:40ch}
@@ -1302,13 +1303,17 @@ function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join
 var ICO={tgt:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="6.5"/><circle cx="20" cy="20" r="1.6"/></svg>',
  moa:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14C12 14 14 26 20 26S28 14 34 14"/><path d="M6 26C12 26 14 14 20 14S28 26 34 26"/><path d="M20 5V11M20 29V35"/></svg>',
  chem:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7L31.3 13.5V26.5L20 33L8.7 26.5V13.5Z"/><path d="M20 12.5L26.5 16.2V23.8L20 27.5L13.5 23.8V16.2Z"/></svg>'};
+/* the headline's second line in solid per-letter colours along the brand ramp (coral -> rose -> lilac -> blue), so every
+   glyph has a real colour (gradient-clipped text reads as transparent to contrast checks and some renderers) */
+function gradWord(w){var A=[[240,100,106],[201,113,142],[155,143,196],[143,182,230]],n=w.length;return w.split("").map(function(ch,i){var t=n>1?i/(n-1):0,k=Math.min(2,Math.floor(t*3)),u=t*3-k,a=A[k],b=A[k+1];
+  return '<i style="color:rgb('+a.map(function(v,j){return Math.round(v+(b[j]-v)*u)}).join(",")+')">'+ch+'</i>'}).join("")}
 function vHome(){
   var PR=MOBILE()?'':' data-r';setTimeout(pilReveal,60);
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>DNA damage response therapeutics<span class="nomob"> · Indianapolis</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">uncompromised.</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">'+gradWord("uncompromised.")+'</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>A new generation of targeted cancer therapeutics: first-in-class small molecules that block the proteins that sense DNA damage.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

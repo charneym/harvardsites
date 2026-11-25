@@ -54,7 +54,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="capabilities" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">Molding, cleanroom</span> <span class="nw"><em>and everything around it.</em></span></h2></div><p data-r>We run 24/7 across five shifts, in an air-conditioned plant with central chilled water. Engineering, tooling, assembly and inspection are all in house, so a part goes from concept to shipment under one roof.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">In house,</span> <span class="nw"><em>end to end.</em></span></h2></div><p data-r>We run 24/7 across five shifts, in an air-conditioned plant with central chilled water. Engineering, tooling, assembly and inspection are all in house, so a part goes from concept to shipment under one roof.</p></div>'+
    caps()+
   '</div></section>'+
 

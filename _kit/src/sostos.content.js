@@ -20,13 +20,13 @@ var FUND=["NSF","NASA","NIH","CDC","CPSC"];
 var PROGS=["NIH Innovator Showcase","Equalize","NSF I-Corps"];
 /* people, as published on sostosinc.com (Meet the Team) */
 var LEAD=[
- ["Nancy L. Guo, PhD","Founder and Chief Executive Officer","Fulbright U.S. Scholar for biomarker discovery; more than $45.5M in federal funding to develop AI for healthcare."],
- ["Qing Ye, PhD","Chief Technology Officer","AI and big data; principal investigator on Sostos’s NSF and NIH SBIR awards."]];
+ ["Nancy L. Guo, PhD","Founder and Chief Executive Officer","Fulbright U.S. Scholar; over $45.5M in federal funding for AI in healthcare."],
+ ["Qing Ye, PhD","Chief Technology Officer","AI and big data; PI on Sostos’s NSF and NIH SBIR awards."]];
 var BOARD=[
- ["Stephen Carrithers, PhD","Board Director","President and Director of R&D, AmDx PrognostX; has led multiple diagnostics to commercialization."],
- ["Kevin Combs","Board Director","Entrepreneur and investor for over 30 years; co-founder of the Country Roads Angel Network."],
- ["Daniel C. Flynn, PhD","Business Advisor","Former vice president for research, Florida Atlantic University; scientific creator of Protea Biosciences."],
- ["Ray Johnson, DBA MBA","Business Advisor","Serial entrepreneur; CEO, President or Managing Director of six start-up and early-stage companies."]];
+ ["Stephen Carrithers, PhD","Board Director","President, AmDx PrognostX; has taken diagnostics to market."],
+ ["Kevin Combs","Board Director","Investor; co-founder of the Country Roads Angel Network."],
+ ["Daniel C. Flynn, PhD","Business Advisor","Former VP for research, Florida Atlantic University."],
+ ["Ray Johnson, DBA MBA","Business Advisor","Serial entrepreneur; led six early-stage companies."]];
 var CLIN=["Afshin Dowlati, MD","Thomas Hensing, MD","David Carbone, MD PhD","Kathy Mangold, PhD (medical laboratory)"];
 var STAFF=["Prem Bhajaj, data scientist","Ryan Goodman, data scientist"];
 /* news: only items with a working link. [date, headline, source, url] */

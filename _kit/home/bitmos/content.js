@@ -26,6 +26,6 @@ var CERTS=[["1988","Gegründet von Absolventen der Heinrich-Heine-Universität"]
 var NEWS=[
  ["November 2026","Bitmos als Aussteller auf der MEDICA 2026 in Düsseldorf","MEDICA",'https://www.medica-tradefair.com/vis/v1/en/exhibitors/medica2026.3089104'],
  ["November 2025","MEDICA 2025: Halle 11, Stand B25","Bitmos",WEB+"index.php"],
- ["März 2024","Sauerstofftherapieprodukte: Service auch nach Produktionsende","Bitmos",WEB+"aktuelles/75-sauerstofftherapieprodukte.php"],
+ ["März 2024","Service für die Sauerstofftherapie, auch nach Produktionsende","Bitmos",WEB+"aktuelles/75-sauerstofftherapieprodukte.php"],
  ["Juni 2022","Spende kommt in Albanien an","Bitmos",WEB+"aktuelles/62-spende-kommt-in-albanien-an.php"]];
 var SHEETS=[];

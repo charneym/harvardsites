@@ -18,7 +18,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Medizintechnik · <span class="nw">Düsseldorf, seit 1988</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="nw">Pulsoxymetrie,</span> <span class="nw">entwickelt und gefertigt</span> <em class="nw">in Düsseldorf.</em></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="nw">Pulsoxymetrie aus</span> <span class="nw">eigener Entwicklung,</span> <em><span class="nw">seit 1988</span> <span class="nw">in Düsseldorf.</span></em></h1>'+
     '<p class="s" data-r>Bitmos entwickelt und fertigt Medizinprodukte mit eigener Produktion: den Monitor <span class="nw">sat 805,</span> das Handpulsoxymeter <span class="nw">sat 801+</span> und die Elektronik dahinter, von der Idee bis zur CE-Zertifizierung.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/produkte">Unsere Produkte '+ARR+'</a><a class="btn" href="#/kontakt">Kontakt</a></div>'+
    '</div>'+
@@ -31,7 +31,7 @@ function vHome(){
 
   '<section class="sec mani light vis" id="about" data-theme="light"><div class="wrap">'+
    '<div class="vis-l"><span class="lab kick" data-r>Über Bitmos</span>'+
-   '<h2 class="txt" id="mani">Hervorgegangen aus Absolventen der Heinrich-Heine-Universität, entwickeln wir seit 1988 hochwertige Medizinprodukte, <em>mit klaren Bedienkonzepten, <span class="nw">in eigener Produktion.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Seit 1988 entwickeln wir</span> <span class="nw">in Düsseldorf</span> <span class="nw">hochwertige Medizinprodukte,</span> <em><span class="nw">mit klaren Bedienkonzepten,</span> <span class="nw">in eigener Produktion.</span></em></h2></div>'+
    '<div class="stats vis-r">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1988</span><p class="k">Gegründet in Düsseldorf, mit Lösungen von der Neugeborenenüberwachung bis zur Schlafapnoetherapie</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">2000</span><p class="k">Seit diesem Jahr entwickelt unser Design-Team pulsoxymetrische Lösungen rund um Masimo SET</p></div>'+
@@ -52,7 +52,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="produkte" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Produkte</span><h2 class="d2 split"><span class="nw">Pulsoxymeter</span> <em class="nw">und Sensoren.</em></h2></div><p data-r>Bitmos-Produkte zeichnen sich durch klar strukturierte Bedienkonzepte, innovative Details, modernes Design und hohe Wirtschaftlichkeit aus.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Produkte</span><h2 class="d2 split"><span class="nw">Zwei Geräte,</span> <em class="nw">viele Sensoren.</em></h2></div><p data-r>Bitmos-Produkte zeichnen sich durch klar strukturierte Bedienkonzepte, innovative Details, modernes Design und hohe Wirtschaftlichkeit aus.</p></div>'+
    '<div class="dcols"><div class="dcol"><div class="dcol-h"><span class="lab kick" data-r>Pulsoxymetrie</span><span class="lab dn" data-r>02</span></div>'+prods(["Puls"])+'</div>'+
    '<div class="dcol"><div class="dcol-h"><span class="lab kick" data-r>Masimo-Sensoren</span><span class="lab dn" data-r>03</span></div>'+prods(["Sens"])+'</div></div>'+
    '<div class="dmesh-h"><div><span class="lab kick" data-r>Entwicklung als Leistung</span><h3 data-r><span class="nw">Von der Idee</span> <span class="nw">bis zur CE</span></h3></div><p data-r>Neben eigenen Produkten bietet das Bitmos-Team den kompletten Service einer Medizinprodukte-Entwicklung.</p></div>'+
@@ -68,7 +68,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="aktuelles" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Aktuelles</span><h2 class="d2 split"><span class="nw">Neues</span> <em class="nw">aus Düsseldorf.</em></h2></div><p data-r>Messen, Produkte und Service, aus unserem Newsbereich und dem Ausstellerverzeichnis der MEDICA.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Aktuelles</span><h2 class="d2 split"><span class="nw">Das Neueste</span> <em class="nw">aus Düsseldorf.</em></h2></div><p data-r>Messen, Produkte und Service, aus unserem Newsbereich und dem Ausstellerverzeichnis der MEDICA.</p></div>'+
    news()+
   '</div></section>'+
   cta();
@@ -89,7 +89,7 @@ function cta(){
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Anschrift</span>Bitmos GmbH<br>Himmelgeister Str. 37<br>40225 Düsseldorf</div>'+
-   '<div class="c"><span class="lab">Produkte</span>sat 805<br>sat 801+<br>Masimo-Sensoren</div>'+
+   '<div class="c"><span class="lab">Produkte</span>Pulsoxymeter sat 805 und sat 801+<br>Masimo-Sensoren und Zubehör</div>'+
    '<div class="c"><span class="lab">Entdecken</span><a class="ul" href="#/produkte">Produkte</a><br><a class="ul" href="#/technologie">Technologie</a><br><a class="ul" href="#/unternehmen">Unternehmen</a><br><a class="ul" href="#/aktuelles">Aktuelles</a></div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="'+TELH+'">'+TEL+'</a></div>'+
   '</div>__LMARK3__'+

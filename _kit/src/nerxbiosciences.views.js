@@ -29,7 +29,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>DNA damage response therapeutics<span class="nomob"> · Indianapolis</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">'+gradWord("uncompromised.")+'</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">uncompromised.</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>A new generation of targeted cancer therapeutics: first-in-class small molecules that block the proteins that sense DNA damage.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

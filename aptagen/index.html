@@ -1127,7 +1127,7 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.3vw,104px)!important;line
 .ts-m{display:block;font-family:var(--disp);font-weight:500;font-size:clamp(24px,2vw,34px);line-height:1.05;letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
 .ts-m small{font-size:.5em;margin-left:.2em;color:var(--accT);font-weight:500}
 .ts h3{margin:14px 0 0;font-family:var(--mono);font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accT)!important}
-.ts p{margin:8px 0 0;font-size:15px;line-height:1.55;color:#3f4c5e}
+.ts p{margin:10px 0 0;font-size:15px;line-height:1.55;color:#3f4c5e}
 @media (max-width:1180px){.ts-row{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:40px}}
 @media (max-width:860px){.ts-axis{display:none}.ts-row{grid-template-columns:1fr;row-gap:0;border-left:1px solid var(--line);margin-left:11px}.ts{border-top:0;padding:0 0 30px 28px}.ts-dot{left:0;top:6px;transform:translate(-50%,0)}.ts-m{font-size:28px}}
 /* services: a 3 x 2 grid on the dark ground, top rule draws on hover */
@@ -1152,6 +1152,14 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.3vw,104px)!important;line
 .light .mh-sum{color:#26313f;opacity:1}
 /* footer wordmark */
 .ftr .bigsvg text{letter-spacing:.01em}
+/* phones and tablets (DX, squeeze): single columns get the full measure */
+@media (max-width:860px){
+ .pil p{max-width:none}
+ .mh-row,div.mh-row{grid-template-columns:1fr 20px;row-gap:4px;padding:14px 0}
+ .mh-name{grid-column:1}.mh-role,.mh-sum{grid-column:1 / -1}
+ .cta .cinfo{grid-template-columns:1fr!important}
+}
+@media (max-width:560px){html body .cta h2.big{font-size:clamp(26px,8vw,34px)!important}}
 </style>
 </head>
 </head>
@@ -1887,7 +1895,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
    target range as a size scale (bone), services and technologies as a grid (dark), team (bone, masthead), news (dark),
    contact (bone). Content is never hidden at rest: reveals only enhance (see the failsafe in site.js). ================= */
 function scale(){return '<div class="tscale"><div class="ts-axis" aria-hidden="true"><span class="lab">Smaller</span><i></i><span class="lab">Larger</span></div><ol class="ts-row">'+TARGETS.map(function(c,i){
-  return '<li class="ts" data-r><span class="ts-dot" aria-hidden="true" style="--k:'+(i/(TARGETS.length-1)).toFixed(2)+'"></span><span class="ts-m">'+esc(c[0])+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span><h3>'+esc(c[2])+'</h3><p>'+esc(c[3])+'</p></li>'}).join("")+'</ol></div>'}
+  return '<li class="ts" data-r><span class="ts-dot" aria-hidden="true" style="--k:'+(i/(TARGETS.length-1)).toFixed(2)+'"></span><span class="ts-m">'+esc(c[0])+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span>'+(c[2]!==c[0]?'<h3>'+esc(c[2])+'</h3>':'')+'<p>'+esc(c[3])+'</p></li>'}).join("")+'</ol></div>'}
 function svcs(){return '<div class="svg6">'+SVC.map(function(c,i){
   return '<article class="svc" data-r><span class="lab sv-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="sv-k">'+esc(c[1])+'</span><p>'+esc(c[2])+'</p><a class="lab ul lk2" href="'+c[3]+'" target="_blank" rel="noopener">'+esc(c[4])+' '+ARR+'</a></article>'}).join("")+'</div>'}
 function team(){return '<section class="mh"><div class="mh-group"><p class="mh-label" data-r>Leadership and lab</p><ul class="mh-list">'+TEAM.map(function(p){
@@ -1901,7 +1909,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Aptamer development<span class="nomob"> · Jacobus, Pennsylvania</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Forget antibodies.</span><span class="l"><em>Use aptamers.</em></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Forget antibodies.</span> <span class="l"><em>Use aptamers.</em></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>DNA-based synthetic antibodies with high affinity and specificity, against targets from small molecules to protein biomarkers, cells and tissues. You own 100% of the IP.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/services">Our services '+ARR+'</a><a class="btn" href="#/contact">Start a project</a></div></div>'+
@@ -1940,7 +1948,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="services" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">Challenging projects,</span> <span class="nw"><em>positive results.</em></span></h2></div><p data-r>Contract R&amp;D with a price-match guarantee, our own aptamer technologies, and kits and data for labs that want to work with aptamers themselves.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">We guarantee</span> <span class="nw"><em>our services.</em></span></h2></div><p data-r>Taking on challenging projects and delivering positive results: contract R&amp;D with a price-match guarantee, our own aptamer technologies, and kits and data for labs that want to work with aptamers themselves.</p></div>'+
    svcs()+
   '</div></section>'+
 

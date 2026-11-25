@@ -5,7 +5,7 @@
    target range as a size scale (bone), services and technologies as a grid (dark), team (bone, masthead), news (dark),
    contact (bone). Content is never hidden at rest: reveals only enhance (see the failsafe in site.js). ================= */
 function scale(){return '<div class="tscale"><div class="ts-axis" aria-hidden="true"><span class="lab">Smaller</span><i></i><span class="lab">Larger</span></div><ol class="ts-row">'+TARGETS.map(function(c,i){
-  return '<li class="ts" data-r><span class="ts-dot" aria-hidden="true" style="--k:'+(i/(TARGETS.length-1)).toFixed(2)+'"></span><span class="ts-m">'+esc(c[0])+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span><h3>'+esc(c[2])+'</h3><p>'+esc(c[3])+'</p></li>'}).join("")+'</ol></div>'}
+  return '<li class="ts" data-r><span class="ts-dot" aria-hidden="true" style="--k:'+(i/(TARGETS.length-1)).toFixed(2)+'"></span><span class="ts-m">'+esc(c[0])+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span>'+(c[2]!==c[0]?'<h3>'+esc(c[2])+'</h3>':'')+'<p>'+esc(c[3])+'</p></li>'}).join("")+'</ol></div>'}
 function svcs(){return '<div class="svg6">'+SVC.map(function(c,i){
   return '<article class="svc" data-r><span class="lab sv-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="sv-k">'+esc(c[1])+'</span><p>'+esc(c[2])+'</p><a class="lab ul lk2" href="'+c[3]+'" target="_blank" rel="noopener">'+esc(c[4])+' '+ARR+'</a></article>'}).join("")+'</div>'}
 function team(){return '<section class="mh"><div class="mh-group"><p class="mh-label" data-r>Leadership and lab</p><ul class="mh-list">'+TEAM.map(function(p){
@@ -19,7 +19,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Aptamer development<span class="nomob"> · Jacobus, Pennsylvania</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Forget antibodies.</span><span class="l"><em>Use aptamers.</em></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Forget antibodies.</span> <span class="l"><em>Use aptamers.</em></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>DNA-based synthetic antibodies with high affinity and specificity, against targets from small molecules to protein biomarkers, cells and tissues. You own 100% of the IP.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/services">Our services '+ARR+'</a><a class="btn" href="#/contact">Start a project</a></div></div>'+
@@ -58,7 +58,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="services" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">Challenging projects,</span> <span class="nw"><em>positive results.</em></span></h2></div><p data-r>Contract R&amp;D with a price-match guarantee, our own aptamer technologies, and kits and data for labs that want to work with aptamers themselves.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Services</span><h2 class="d2 split"><span class="nw">We guarantee</span> <span class="nw"><em>our services.</em></span></h2></div><p data-r>Taking on challenging projects and delivering positive results: contract R&amp;D with a price-match guarantee, our own aptamer technologies, and kits and data for labs that want to work with aptamers themselves.</p></div>'+
    svcs()+
   '</div></section>'+
 

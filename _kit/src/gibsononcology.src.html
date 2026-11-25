@@ -1317,22 +1317,27 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .g-pipe-st,.g-pr-b{grid-column:4/span 9}
 @media (max-width:860px){.g-dl li,.g-cp li,.nws a{grid-template-columns:1fr}.g-dl li>*,.g-cp li>*,.nws a>*{grid-column:1/-1!important;padding-top:0}.g-pipe-hd,.g-pr{grid-template-columns:1fr}.g-pipe-hd>.lab,.g-pr-n,.g-pipe-st,.g-pr-b{grid-column:1/-1}}
 
-/* 7. people: 4 a row from 1280px, 3 on tablets, 2 on phones. Double-track grids (8 / 6 / 4 tracks, each person spans 2)
-   so a short last row is centred exactly; an odd last person on phones becomes a full-width row beside its text (BX). */
-.g-pp,.g-pp.c3{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:clamp(32px,3vw,48px) var(--gap);max-width:calc(4 * 300px + 3 * var(--gap));margin:0 auto}
-.g-pp>li,.g-pp.c3>li{grid-column:span 2;max-width:300px;width:100%;justify-self:center;display:block}
-.g-pp>li:nth-child(4n+1):nth-last-child(3){grid-column:2/span 2}
-.g-pp>li:nth-child(4n+1):nth-last-child(2){grid-column:3/span 2}
-.g-pp>li:nth-child(4n+1):last-child{grid-column:4/span 2}
-@media (max-width:1279px){
+/* 7. people: 4 a row from 1280px, 3 on tablets, 2 on phones. Each width range has its own rules (no specificity leaks):
+   double-track grids (8 / 6 tracks, each person spans 2) centre a short last row exactly; on phones an odd last person
+   becomes a full-width row beside its text (BX). */
+.g-pp,.g-pp.c3{display:grid;gap:clamp(32px,3vw,48px) var(--gap);max-width:calc(4 * 300px + 3 * var(--gap));margin:0 auto}
+.g-pp>li,.g-pp.c3>li{display:block;width:100%;max-width:300px;justify-self:center}
+@media (min-width:1280px){
+  .g-pp,.g-pp.c3{grid-template-columns:repeat(8,minmax(0,1fr))}
+  .g-pp>li{grid-column:span 2}
+  .g-pp>li:nth-child(4n+1):nth-last-child(3){grid-column:2/span 2}
+  .g-pp>li:nth-child(4n+1):nth-last-child(2){grid-column:3/span 2}
+  .g-pp>li:nth-child(4n+1):last-child{grid-column:4/span 2}
+}
+@media (min-width:641px) and (max-width:1279px){
   .g-pp,.g-pp.c3{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .g-pp>li,.g-pp.c3>li,.g-pp>li:nth-child(n){grid-column:span 2}
+  .g-pp>li{grid-column:span 2}
   .g-pp>li:nth-child(3n+1):nth-last-child(2){grid-column:2/span 2}
   .g-pp>li:nth-child(3n+1):last-child{grid-column:3/span 2}
 }
 @media (max-width:640px){
   .g-pp,.g-pp.c3{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 16px}
-  .g-pp>li,.g-pp.c3>li,.g-pp>li:nth-child(n){grid-column:auto;max-width:none}
+  .g-pp>li,.g-pp.c3>li{grid-column:auto;max-width:none;display:block}
   .g-pp-ph{grid-row:auto}
   .g-pp h3{margin-top:12px;font-size:16px}.g-pp p{font-size:13px}.g-pp-b{grid-column:auto}
   .g-pp>li:last-child:nth-child(odd){grid-column:1/-1;display:grid;grid-template-columns:calc(50% - 8px) minmax(0,1fr);column-gap:16px;align-content:end}

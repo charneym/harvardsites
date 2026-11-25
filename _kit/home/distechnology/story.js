@@ -13,8 +13,8 @@ function dsScene(o){
     CX.map(function(x,j){return '<clipPath id="dsV'+j+'"><circle cx="'+x+'" cy="86" r="29"/></clipPath>'}).join("")+'</defs>';
   /* floor, machine bed and the process line */
   g+='<path class="bn sD" d="M24 400H736"/><path class="ln sD" d="M70 352H690"/><path class="ln sD" d="M96 352V398M664 352V398"/>';
-  g+='<path class="pl sD" d="M60 452H700"/>';
-  BX.forEach(function(x,k){g+='<circle class="dt" id="dsD'+k+'" cx="'+x+'" cy="452" r="5"/>'});
+  g+='<path class="pl sD" d="M60 440H700"/>';
+  BX.forEach(function(x,k){g+='<circle class="dt" id="dsD'+k+'" cx="'+x+'" cy="440" r="5"/>'});
   /* 1 Load: six layers, core and prepreg alternating */
   g+='<g id="dsS0">';
   for(k=0;k<6;k++)g+='<rect class="ly '+(k%2?"pp":"co")+'" id="dsL'+k+'" x="150" y="'+(344-k*12)+'" width="460" height="8"/>';
@@ -40,7 +40,7 @@ function dsScene(o){
   g+='<path class="ax" id="dsAx" d="M300 100H460M300 100V44"/><path class="pf" id="dsPf" d="M304 98L344 52H404L456 98"/>'+
      '<text class="t" id="dsT3" x="380" y="128" text-anchor="middle">RAMP · HOLD · COOL</text></g>';
   var CAP=["1 · LOAD","2 · ALIGN","3 · CLAMP","4 · WELD"];
-  CAP.forEach(function(c,k){g+='<text class="a" id="dsC'+k+'" x="'+BX[k]+'" y="494" text-anchor="middle">'+c+'</text>'});
+  CAP.forEach(function(c,k){g+='<text class="a" id="dsC'+k+'" x="'+BX[k]+'" y="500" text-anchor="middle">'+c+'</text>'});
   return g+'</svg>';
 }
 function scene(){return dsScene({mob:MOBILE()?1:0})}

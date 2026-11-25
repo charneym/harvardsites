@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script></head><body>
+<script type="module">
+/* Massachusetts Bay Technologies' own package style: a ceramic pill microwave diode package (massbaytech.com, MBT Package Styles:
+   "Ceramic Pill"), strip-line form: a gold-plated base flange, a white alumina ceramic ring, a gold-plated lid, and two flat
+   gold ribbon tabs leaving in opposite directions (one from the base, one from the lid). Schematic proportions. ?bg=#000|#fff */
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);const W=innerWidth,H=innerHeight;const BG=P.get('bg')||'#000';
+const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(1);r.setSize(W,H);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+(P.get('ex')||1.0);r.outputColorSpace=THREE.SRGBColorSpace;document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();sc.background=new THREE.Color(BG);
+/* studio: a big soft key overhead-left, a brand-blue panel behind right (#0093d0 family), a thin strip light for the gold edges */
+const es=new THREE.Scene();es.background=new THREE.Color('#06080c');
+function gtex(){const c=document.createElement('canvas');c.width=256;c.height=256;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,256,0);g.addColorStop(0,'#fff');g.addColorStop(.45,'#ddd');g.addColorStop(.8,'#555');g.addColorStop(1,'#000');x.fillStyle=g;x.fillRect(0,0,256,256);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}
+function panel(w,h,col,int,pos,gr){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(col).multiplyScalar(int),side:THREE.DoubleSide,map:gr?gtex():null}));m.position.set(...pos);m.lookAt(0,0,0);es.add(m)}
+panel(14,9,'#ffffff',+(P.get('pw')||1.5),[-6,12,6]);
+panel(12,10,'#1a8fd0',+(P.get('pb')||1.8),[10,5,-10]);
+panel(2,22,'#ffffff',+(P.get('ps')||2.4),[-11,6,-6]);
+panel(8,3,'#ffe9c8',0.5,[4,-6,8]);
+panel(18,7,'#fff4e2',+(P.get('pt')||1.4),[-2,9,-13],1);
+panel(10,10,'#ffffff',+(P.get('po')||0.9),[0,16,0],1);
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(es,0.04).texture;
+function ntex(a,b,sz){const c=document.createElement('canvas');c.width=c.height=sz;const x=c.getContext('2d');const d=x.createImageData(sz,sz);for(let i=0;i<d.data.length;i+=4){const v=a+Math.random()*(b-a);d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=255}x.putImageData(d,0,0);const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(6,6);return t}
+const gold=new THREE.MeshPhysicalMaterial({color:'#f0c46a',metalness:1,roughness:+(P.get('gr')||0.26),roughnessMap:ntex(150,255,512),envMapIntensity:1.2});
+const goldB=new THREE.MeshPhysicalMaterial({color:'#d9a649',metalness:1,roughness:0.34,envMapIntensity:1.1});
+const cer=new THREE.MeshPhysicalMaterial({color:'#f6f3ec',metalness:0,roughness:0.62,bumpMap:ntex(90,170,1024),bumpScale:.6,clearcoat:.25,clearcoatRoughness:.5,sheen:.3,envMapIntensity:1.0});
+/* key light so the ceramic has form */
+const dl=new THREE.DirectionalLight('#ffffff',+(P.get('dk')||1.6));dl.position.set(-4,8,5);sc.add(dl);
+const fl=new THREE.DirectionalLight('#5fb6ea',0.7);fl.position.set(6,2,-4);sc.add(fl);
+sc.add(new THREE.AmbientLight('#9fb4c8',0.18));
+function lathe(pts,mat,seg=160){const g=new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg);return new THREE.Mesh(g,mat)}
+const grp=new THREE.Group();
+/* base flange, chamfered */
+grp.add(lathe([[0,0],[1.02,0],[1.06,.03],[1.06,.13],[1.02,.16],[.74,.16],[0,.16]],gold));
+/* ceramic ring with a hint of rounding at the top and bottom edge */
+const cr=.74,ch=.92;const cp=[[0,.16],[cr-.02,.16],[cr,.18]];for(let k=0;k<=20;k++){cp.push([cr+.004*Math.sin(Math.PI*k/20),.18+(ch-.04)*k/20])}cp.push([cr-.02,.16+ch],[0,.16+ch]);
+grp.add(lathe(cp,cer));
+/* metallised seal band and lid */
+grp.add(lathe([[0,.16+ch-.01],[.76,.16+ch-.01],[.76,.16+ch+.02],[0,.16+ch+.02]],goldB));
+const lt=.16+ch+.02;grp.add(lathe([[0,lt],[.8,lt],[.82,lt+.02],[.82,lt+.1],[.79,lt+.13],[0,lt+.13]],gold));
+/* ribbon tabs: one off the base flange, one off the lid, opposite directions */
+const tw=+(P.get('tw')||.62),tl=+(P.get('tl')||2.6),tt=.035;
+const t1=new THREE.Mesh(new RoundedBoxGeometry(tl,tt,tw,2,.012),gold);t1.position.set(.7+tl/2,.08,0);grp.add(t1);
+const t2=new THREE.Mesh(new RoundedBoxGeometry(tl,tt,tw,2,.012),gold);t2.position.set(-.55-tl/2,lt+.065,0);grp.add(t2);
+grp.position.y=-(lt+.13)/2;
+const g2=new THREE.Group();g2.add(grp);g2.rotation.y=+(P.get('ry')||0.62);g2.rotation.z=+(P.get('rz')||0.0);sc.add(g2);
+const cam=new THREE.PerspectiveCamera(+(P.get('fov')||22),W/H,.1,200);const el=+(P.get('el')||0.42);const dist=+(P.get('d')||17);
+cam.position.set(0,Math.sin(el)*dist,Math.cos(el)*dist);cam.lookAt(0,0,0);
+r.render(sc,cam);window.DONE=1;
+</script></body></html>

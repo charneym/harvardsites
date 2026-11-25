@@ -1,37 +1,48 @@
-/* ================= VIEWS (home only: Technology / Programs / Team / News open build-out pages via _kit/lib/buildout.js; Contact and in-page CTAs scroll) ================= */
-function props(){return '<ul class="pfr">'+PROPS.map(function(c,i){
-  return '<li><span class="lab tg">'+String(i+1).padStart(2,"0")+'</span><div class="pn"><h3>'+esc(c[0])+'</h3><span class="loc">'+esc(c[1])+'</span></div><p>'+esc(c[2])+'</p></li>'}).join("")+'</ul>'}
-function progs(){return '<ul class="pfr pgr">'+PROG.map(function(c,i){
-  return '<li><span class="lab tg">'+String(i+1).padStart(2,"0")+'</span><div class="pn"><h3>'+esc(c[0])+'</h3><span class="loc">'+esc(c[1])+'</span></div><p>'+esc(c[2])+'</p><a class="lab ul lk" href="'+c[3]+'" target="_blank" rel="noopener">Source</a></li>'}).join("")+'</ul>'}
-function team(){return '<div class="mh"><div class="mh-group"><p class="mh-label">Leadership and research</p><ul class="mh-list">'+TEAM.map(function(p){
-  return '<li><div class="mh-row"><span class="mh-name">'+esc(p[0])+'</span><span class="mh-role">'+esc(p[1])+'</span><span class="mh-sum">'+esc(p[2])+'</span></div></li>'}).join("")+'</ul></div></div>'}
+/* ================= VIEWS (home only: Technology / Programs / Team / News open build-out pages via _kit/lib/buildout.js; Contact and in-page CTAs scroll)
+   v7 (client round 7): the v5/v6 gel surface behind a wide, type-led hero with LiMax's three pillars as its bottom band; then
+   dark and bone grounds alternate: vision (bone), the seal-heal-deliver story (dark), technology as metric tiles (bone),
+   programs as a pipeline (dark), team as a photo grid (bone), news (dark), contact (bone). Content is never hidden at rest:
+   reveals only enhance (see the failsafe in site.js). ================= */
+function tiles(){return '<div class="ptile-g">'+PROPS.map(function(c){
+  return '<div class="ptile"><span class="pm'+(/^[0-9&]/.test(c[0])?'':' word')+'">'+c[0]+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span><h3>'+esc(c[2])+'</h3><p>'+esc(c[3])+'</p></div>'}).join("")+'</div>'}
+function pipe(){return '<div class="pipe">'+
+  '<div class="pipe-h" aria-hidden="true"><span class="lab">Program</span><span class="lab">About</span><span class="pipe-axis">'+STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</span></div>'+
+  PROG.map(function(c,i){var pct=(c[3]/STAGES.length*100).toFixed(1);
+  return '<article class="prow"><div class="pr-id"><span class="lab pr-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="pr-ind">'+esc(c[1])+'</span></div>'+
+   '<p class="pr-d">'+esc(c[4])+'</p>'+
+   '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
+   '<span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></article>'}).join("")+'</div>'}
+function team(){return '<div class="tg4">'+TEAM.map(function(p){
+  return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(p[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(p[0])+'</h3><span class="lab">'+esc(p[1])+'</span>'+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}
 function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join('<i aria-hidden="true">·</i>')}
-var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7C24 13 28 17 28 22.5a8 8 0 0 1-16 0C12 17 16 13 20 7Z"/><path d="M11 33.5h18"/></svg>',
- heal:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="4.2"/><circle cx="20" cy="9.5" r="3.2"/><circle cx="29.1" cy="14.8" r="3.2"/><circle cx="29.1" cy="25.2" r="3.2"/><circle cx="20" cy="30.5" r="3.2"/><circle cx="10.9" cy="25.2" r="3.2"/><circle cx="10.9" cy="14.8" r="3.2"/></svg>',
+var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6.5C24.2 12.8 28.2 17 28.2 22.6a8.2 8.2 0 0 1-16.4 0C11.8 17 15.8 12.8 20 6.5Z"/><path d="M16.2 23.4a3.9 3.9 0 0 0 3.2 3.7"/></svg>',
+ heal:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="4.2"/><circle cx="20" cy="9.6" r="3.1"/><circle cx="29" cy="14.8" r="3.1"/><circle cx="29" cy="25.2" r="3.1"/><circle cx="20" cy="30.4" r="3.1"/><circle cx="11" cy="25.2" r="3.1"/><circle cx="11" cy="14.8" r="3.1"/></svg>',
  drug:'<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="15" width="28" height="10" rx="5" transform="rotate(-45 20 20)"/><path d="M16.5 16.5l7 7"/></svg>'};
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the</span><span class="l">future of hydrogel</span><span class="l"><em>therapeutics.</em></span></h1>'+
-   '<i class="hrule" aria-hidden="true" data-r></i>'+
-   '<div class="hero-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body: to seal leaks, heal tissues and deliver drugs.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
+  '<section class="hero hx" id="hero" data-field data-theme="dark">'+
+   '<div class="hx-copy">'+
+    '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Engineering the future</span><span class="l">of <span class="gt">hydrogel therapeutics.</span></span></h1>'+
+    '<i class="hrule" aria-hidden="true" data-r></i>'+
+    '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
+    '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
+   '</div>'+
+   '<ul class="pil" aria-label="What our hydrogels do">'+
+    '<li class="p1" data-r><span class="pic">'+ICO.seal+'</span><div><span class="lab">Seal leaks</span><p>HemoMax, our sealant, stops bleeding on wet, moving tissue.</p></div></li>'+
+    '<li class="p2" data-r><span class="pic">'+ICO.heal+'</span><div><span class="lab">Heal tissues</span><p>Bioadhesives that replace staples and sutures and protect the wound.</p></div></li>'+
+    '<li class="p3" data-r><span class="pic">'+ICO.drug+'</span><div><span class="lab">Deliver drugs</span><p>Local release that keeps a drug at the site it treats.</p></div></li>'+
+   '</ul>'+
   '</section>'+
 
-  '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
-   '<div class="mani-in"><span class="lab kick" data-r>Vision</span>'+
+  '<section class="sec mani light vis" id="about" data-theme="light"><div class="wrap">'+
+   '<div class="vis-l"><span class="lab kick" data-r>Vision</span>'+
    '<h2 class="txt" id="mani">We are changing the way the world thinks about biomaterials. Nearly 30% of surgical procedures still end in bleeding-related complications; <em>our hydrogels hold to wet, dynamic tissue where sealants and sutures can’t.</em></h2></div>'+
-   '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2,000<small>J/m²</small></span><p class="k">Tough adhesion, 100 to 1,000 times that of sealants on the market</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">20×</span><p class="k">Stretch, so the gel moves with the tissue it is bonded to</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">&lt;30<small>s</small></span><p class="k">To adhesion, and to stop a haemorrhage</p></div>'+
-   '</div>'+
-   '<div class="plat">'+
-    '<div class="p1"><span class="pic">'+ICO.seal+'</span><span class="lab kick" data-r>Seal leaks</span><p data-r>HemoMax, our sealant, is built to prevent bleeding complications with unprecedented toughness and wet adhesion.</p></div>'+
-    '<div class="p2"><span class="pic">'+ICO.heal+'</span><span class="lab kick" data-r>Heal tissues</span><p data-r>Bioadhesives that replace staples and sutures, with a barrier that improves the healing interface, hydrates and protects against infection.</p></div>'+
-    '<div class="p3"><span class="pic">'+ICO.drug+'</span><span class="lab kick" data-r>Deliver drugs</span><p data-r>Local delivery that keeps a drug at its target, minimises systemic side effects and removes the need for repeated doses.</p></div>'+
+   '<div class="stats vis-r">'+
+    '<div class="stat"><span class="ln2"></span><span class="v">17+</span><p class="k">Publications in peer-reviewed research journals</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">6,000+</span><p class="k">Citations of the science behind our hydrogels</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">200+</span><p class="k">Media outlets, among them Forbes, BBC, NPR and The Washington Post</p></div>'+
    '</div>'+
   '</div></section>'+
 
@@ -46,23 +57,27 @@ function vHome(){
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark2" id="technology" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split">A new way to design materials, <em>inspired by nature.</em></h2></div><p data-r>Our adhesives mimic the sticky, flexible mucus the Dusky Arion slug secretes when frightened, without using slugs. A dual polymer network stays tough and highly stretchable under stress while bonding to wet tissue within seconds, through physical entanglement and electrostatic interactions instead of toxic chemical linkers.</p></div>'+
-   props()+
+  '<section class="sec light" id="technology" data-theme="light"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split">A new way to design materials, <em>inspired by nature.</em></h2></div><p data-r>Our adhesives mimic the sticky, flexible mucus the Dusky Arion slug secretes when frightened, without using slugs. A dual polymer network stays tough and highly stretchable under stress while bonding to wet tissue within seconds.</p></div>'+
+   tiles()+
   '</div></section>'+
 
   '<section class="sec dark" id="programs" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">Built for real, <em>unmet needs in surgery.</em></h2></div><p data-r>From postpartum hemorrhage, the leading cause of maternal death worldwide, to vascular, dural and tendon repair: programs backed by the NIH and by more than 17 peer-reviewed publications with over 6,000 citations.</p></div>'+
-   progs()+
-   '<div class="bk"><span class="lab kick" data-r>Funded by</span><p class="cr" data-r>'+lst(FUND)+'</p></div>'+
-   '<div class="bk bk2"><span class="lab kick" data-r>Recognition</span><p class="cr" data-r>'+lst(AWARDS)+'</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Programs</span><h2 class="d2 split">Built for real, <em>unmet needs in surgery.</em></h2></div><p data-r>From postpartum hemorrhage, the leading cause of maternal death worldwide, to vascular, dural and tendon repair, with support from the NIH.</p></div>'+
+   pipe()+
+   '<div class="cred">'+
+    '<div class="bk"><span class="lab kick" data-r>Funded by</span><p class="cr" data-r>'+lst(FUND)+'</p></div>'+
+    '<div class="bk"><span class="lab kick" data-r>Recognition</span><p class="cr" data-r>'+lst(AWARDS)+'</p></div>'+
+   '</div>'+
   '</div></section>'+
 
-  '<section class="sec dark2 tmsec" id="team" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split">Founded at the <em>Wyss Institute at Harvard.</em></h2></div><p data-r>A spinout of the Wyss Institute, founded in 2021 by the inventors of the technology, with scientists, business and regulatory advisors, and surgeons on our clinical advisory board.</p></div>'+
    team()+
-   '<div class="bk"><span class="lab kick" data-r>Commercial and strategic advisors</span><p class="cr" data-r>'+lst(ADV)+'</p></div>'+
-   '<div class="bk bk2"><span class="lab kick" data-r>Clinical advisors</span><p class="cr" data-r>'+lst(CLIN)+'</p></div>'+
+   '<div class="cred">'+
+    '<div class="bk"><span class="lab kick" data-r>Commercial and strategic advisors</span><p class="cr" data-r>'+lst(ADV)+'</p></div>'+
+    '<div class="bk"><span class="lab kick" data-r>Clinical advisors</span><p class="cr" data-r>'+lst(CLIN)+'</p></div>'+
+   '</div>'+
   '</div></section>'+
 
   '<section class="sec dark" id="news" data-theme="dark"><div class="wrap">'+
@@ -72,7 +87,7 @@ function vHome(){
   cta();
 }
 function cta(){
-  return '<section class="sec dark2 cta" id="contact" data-theme="dark"><div class="wrap">'+
+  return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Surgeons, partners and investors</span>'+
    '<h2 class="big split">Let’s seal, heal <em>and deliver, together.</em></h2>'+
    '<p class="sub" data-r>Write to us about our hydrogel adhesives, partnerships or careers at LiMax.</p>'+

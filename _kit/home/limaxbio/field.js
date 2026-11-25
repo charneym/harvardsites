@@ -3,7 +3,7 @@
    lit from the right at a low angle so soft specular ridges and caustic highlights drift across it, on a near-black ground,
    the light picked up in LiMax's teal -> blue -> violet.    The left of the frame (behind the type) and the bottom band (behind the pillars) are kept calm. Reduced motion: one still
    frame. No WebGL: a pre-rendered still (gel-still.webp). v6: no pointer interaction (client: glitchy on mouse move);
-   only the slow autonomous drift, at a fixed render scale and capped DPR so nothing pops. Same API as the template's field (start/stop/once/intro/setDim/snapDim/setScroll/running/focus). ================= */
+   only the slow autonomous drift (v7: a clearly perceptible flow, main swell cycle ~25s), at a fixed render scale and capped DPR so nothing pops. Same API as the template's field (start/stop/once/intro/setDim/snapDim/setScroll/running/focus). ================= */
 function makeGel(cv,opt){
   opt=opt||{};var gl=null;
   try{gl=cv.getContext("webgl",{alpha:false,antialias:false,depth:false,premultipliedAlpha:false,preserveDrawingBuffer:true,powerPreference:"low-power"})}catch(e){}
@@ -18,8 +18,8 @@ function makeGel(cv,opt){
   /* the gel's surface: slow, smooth swells (warped sine bands, like a viscous liquid settling) */
   "float Hf(vec2 p){vec2 q=p*ZOOM*1.75+OFF;",
   /* long flowing folds, warped by slow low-frequency noise: a viscous surface settling */
-  " float w1=fb(q*.30+vec2(T*.010,T*.004)),w2=fb(q*.46+vec2(3.1,-T*.008));",
-  " float h=.62*sin(q.x*2.7+q.y*1.1+w1*4.2+T*.10)+.26*sin(q.x*5.2-q.y*1.5+w2*3.0-T*.08)+.08*sin(q.x*9.5+q.y*2.4+w1*2.+T*.14);",
+  " float w1=fb(q*.30+vec2(T*.030,T*.012)),w2=fb(q*.46+vec2(3.1,-T*.024));",
+  " float h=.62*sin(q.x*2.7+q.y*1.1+w1*4.2+T*.25)+.26*sin(q.x*5.2-q.y*1.5+w2*3.0-T*.20)+.08*sin(q.x*9.5+q.y*2.4+w1*2.+T*.34);",
   " h*=.5;",
   " return h;}",
   "vec3 grad(float t){vec3 a=vec3(.184,.710,.647),b=vec3(.267,.639,.773),c=vec3(.227,.482,.835),d=vec3(.541,.310,.839);",

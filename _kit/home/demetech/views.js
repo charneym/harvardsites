@@ -55,7 +55,7 @@ function vHome(){
    '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Seventeen sutures,</span> <em class="nw">one standard.</em></h2></div><p data-r>Every DemeTECH suture meets the requirements of the U.S. Pharmacopeia. Alongside them, DemeLENE MESH for hernia repair and DemeWAX bone wax.</p></div>'+
    '<div class="dcols"><div class="dcol"><div class="dcol-h"><span class="lab kick" data-r>Absorbable</span><span class="lab dn" data-r>08</span></div>'+cat(ABS)+'</div>'+
    '<div class="dcol"><div class="dcol-h"><span class="lab kick" data-r>Nonabsorbable</span><span class="lab dn" data-r>09</span></div>'+cat(NON)+'</div></div>'+
-   '<div class="dmesh-h"><div><span class="lab kick" data-r>DemeLENE MESH</span><h3 data-r>Polypropylene mesh, <span class="nw">in four weights</span></h3></div><p data-r>Nonabsorbable mesh that reinforces or bridges hernia defects and stays soft and pliable while tissue grows through its pores. Trusted by doctors for more than 20 years.</p></div>'+
+   '<div class="dmesh-h"><div><span class="lab kick" data-r>DemeLENE MESH</span><h3 data-r><span class="nw">Polypropylene mesh,</span> <span class="nw">in four weights</span></h3></div><p data-r>Nonabsorbable mesh that reinforces or bridges hernia defects and stays soft and pliable while tissue grows through its pores. Trusted by doctors for more than 20 years.</p></div>'+
    mesh()+
    apps()+
   '</div></section>'+

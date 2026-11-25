@@ -18,7 +18,8 @@ const { chromium } = require('playwright');
       if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity < 0.2) return false;
       const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0;
     });
-    const boxes = els.map(el => ({ el, r: el.getBoundingClientRect(), t: el.textContent.trim().replace(/\s+/g, ' ') }));
+    const fixedAnc = el => { for (let e = el; e && e !== document.body; e = e.parentElement) { const ps = getComputedStyle(e).position; if (ps === 'fixed' || ps === 'sticky') return true; } return false; };
+    const boxes = els.filter(el => !fixedAnc(el)).map(el => ({ el, r: el.getBoundingClientRect(), t: el.textContent.trim().replace(/\s+/g, ' ') }));
     for (const b of boxes) {
       const rg = document.createRange(); rg.selectNodeContents(b.el);
       const tops = new Set([...rg.getClientRects()].filter(q => q.width > 1).map(q => Math.round(q.top / 4)));

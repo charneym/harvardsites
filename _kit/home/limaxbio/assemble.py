@@ -29,6 +29,6 @@ nss = _re.search(r'<script>.*?</script>', nss, _re.S).group(0)
 src = src.replace('</body>', nss + '\n</body>')
 (K / 'src/limaxbio.src.html').write_text(src)
 import shutil
-for f in ('gel-still.webp', 'gel-panel.webp'):
+for f in ('gel-still.webp',):
     if (H / f).exists(): shutil.copy(H / f, K.parent / 'limaxbio' / f)
 print('wrote src/limaxbio.src.html', len(src))

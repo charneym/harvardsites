@@ -14,10 +14,3 @@ var PK="lmx";
   if(pc.style.visibility==="visible")go();
   else{var mo=new MutationObserver(function(){if(pc.style.visibility==="visible"){mo.disconnect();go()}});mo.observe(pc,{attributes:true,attributeFilter:["style"]})}
 })();
-
-/* the three pillars sit in the hero, which the template's scroll reveal skips: they rise in on their own, as each enters the
-   viewport, once the loader has slid away (on phones the third is below the fold) */
-(function(){if(RM)return;var n=0;(function wait(){if(++n>400)return;var pre=document.getElementById("pre");var ls=document.querySelectorAll("#hero .pil li");
-  if((pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)||!ls.length||!window.ScrollTrigger){setTimeout(wait,100);return}
-  Array.prototype.forEach.call(ls,function(li,i){gsap.set(li,{opacity:0,y:26});li.style.removeProperty("transform");gsap.set(li,{y:26});
-    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.9,ease:"power3.out",delay:li.getBoundingClientRect().top<innerHeight?.35+i*.08:0,clearProps:"transform"})}})})})()})();

@@ -70,7 +70,7 @@ function cta(){
 }
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
-   '<div class="c"><span class="lab">Address</span>65 Commerce Way<br>Dedham, MA 02026<br>United States</div>'+
+   '<div class="c"><span class="lab">Address</span>65 Commerce Way, Dedham<br>MA 02026, United States</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="'+MAIL+'">info@divbio.com</a><br><a class="ul" href="tel:+18007969199">800-796-9199</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/planetsafe">Planet-Safe®</a><br><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/sustainability">Sustainability</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Product lines</span>Labels · Planet-Safe® · Sample cooling · Liquid handling · Tissue culture</div>'+

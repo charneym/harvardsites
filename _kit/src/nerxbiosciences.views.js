@@ -19,13 +19,17 @@ function lst(a){return a.map(function(b){return '<span>'+esc(b)+'</span>'}).join
 var ICO={tgt:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="6.5"/><circle cx="20" cy="20" r="1.6"/></svg>',
  moa:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14C12 14 14 26 20 26S28 14 34 14"/><path d="M6 26C12 26 14 14 20 14S28 26 34 26"/><path d="M20 5V11M20 29V35"/></svg>',
  chem:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7L31.3 13.5V26.5L20 33L8.7 26.5V13.5Z"/><path d="M20 12.5L26.5 16.2V23.8L20 27.5L13.5 23.8V16.2Z"/></svg>'};
+/* the headline's second line in solid per-letter colours along the brand ramp (coral -> rose -> lilac -> blue), so every
+   glyph has a real colour (gradient-clipped text reads as transparent to contrast checks and some renderers) */
+function gradWord(w){var A=[[240,100,106],[201,113,142],[155,143,196],[143,182,230]],n=w.length;return w.split("").map(function(ch,i){var t=n>1?i/(n-1):0,k=Math.min(2,Math.floor(t*3)),u=t*3-k,a=A[k],b=A[k+1];
+  return '<i style="color:rgb('+a.map(function(v,j){return Math.round(v+(b[j]-v)*u)}).join(",")+')">'+ch+'</i>'}).join("")}
 function vHome(){
   var PR=MOBILE()?'':' data-r';setTimeout(pilReveal,60);
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>DNA damage response therapeutics<span class="nomob"> · Indianapolis</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">uncompromised.</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">'+gradWord("uncompromised.")+'</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>A new generation of targeted cancer therapeutics: first-in-class small molecules that block the proteins that sense DNA damage.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

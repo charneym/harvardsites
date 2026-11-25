@@ -1,0 +1,59 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<!-- Galaxy Therapeutics hero render: the SEAL implant (Saccular Endovascular Aneurysm Lattice; galaxytherapeutics.com:
+     "dual-layer nitinol and platinum architecture", a 3D braided globe whose wires converge at one proximal hub, as in the
+     firm's own SEAL ARC artwork). Outer and inner braided layers are modelled as wire loops through the hub on an ellipsoid
+     (ARC: height close to width), a platinum hub marker and a short length of the delivery pusher. Rendered once offline
+     with three.js to a transparent PNG (HOME_BRIEF option c). -->
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1100,H=+P.get('h')||1300;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0x000000,0);
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+sc.environmentIntensity=+P.get('env')||.45;
+const nit=new THREE.MeshPhysicalMaterial({color:0xc4c8d0,metalness:1,roughness:.3,clearcoat:.4,clearcoatRoughness:.2});
+const pla=new THREE.MeshPhysicalMaterial({color:0xc8bfb0,metalness:1,roughness:.22});
+const dev=new THREE.Group();sc.add(dev);
+/* one wire = a loop on the ellipsoid through the hub (bottom pole): plane through the pole, tilted by a from the axis, turned by phi */
+function loop(R,ey,a,phi,n){
+  const pts=[];
+  /* circle in the plane spanned by the axis-ish direction u and the horizontal v, passing through the south pole S */
+  const S=new THREE.Vector3(0,-R,0);
+  const u=new THREE.Vector3(Math.sin(a)*Math.cos(phi),Math.cos(a),Math.sin(a)*Math.sin(phi)).normalize();
+  const v=new THREE.Vector3(-Math.sin(phi),0,Math.cos(phi));
+  const nrm=new THREE.Vector3().crossVectors(u,v).normalize();
+  /* plane through S with normal nrm; its circle on the unit sphere: centre c = (S.nrm) nrm */
+  const d=S.dot(nrm),c=nrm.clone().multiplyScalar(d),rr=Math.sqrt(Math.max(0,R*R-d*d));
+  const e1=S.clone().sub(c).normalize(),e2=new THREE.Vector3().crossVectors(nrm,e1).normalize();
+  for(let i=0;i<=n;i++){const t=i/n*Math.PI*2;const p=c.clone().add(e1.clone().multiplyScalar(Math.cos(t)*rr)).add(e2.clone().multiplyScalar(Math.sin(t)*rr));
+    p.y=(p.y+R)*ey-R; /* squash/stretch above the hub */
+    /* soften the very top into a dome (atraumatic leading tip) */
+    pts.push(p)}
+  return pts;
+}
+function layer(R,ey,N,a,tube,mat,mat2,off){
+  for(let i=0;i<N;i++){const phi=off+i/N*Math.PI*2;const pts=loop(R,ey,a,phi,260);
+    const cv=new THREE.CatmullRomCurve3(pts,true);const g=new THREE.TubeGeometry(cv,520,tube,8,true);
+    dev.add(new THREE.Mesh(g,(mat2&&i%4==0)?mat2:mat))}
+}
+const R=1,EY=+P.get('ey')||.92;
+layer(R,EY,+P.get('n1')||56,+P.get('a1')||0.15,.0085,nit,pla,0);
+layer(.8,EY*.9,+P.get('n2')||40,+P.get('a2')||0.12,.0068,nit,pla,.07);
+/* hub marker (platinum) and a short length of the pusher below it */
+const hub=new THREE.Mesh(new THREE.CylinderGeometry(.075,.075,.16,48),pla);hub.position.y=-R-.06;dev.add(hub);
+const hub2=new THREE.Mesh(new THREE.CylinderGeometry(.05,.075,.05,48),pla);hub2.position.y=-R-.165;dev.add(hub2);
+const push=new THREE.Mesh(new THREE.CylinderGeometry(.02,.02,.5,24),new THREE.MeshPhysicalMaterial({color:0x8a8f99,metalness:1,roughness:.35}));push.position.y=-R-.44;dev.add(push);
+dev.rotation.z=+P.get('rz')||-.3;dev.rotation.x=+P.get('rx')||-.2;dev.rotation.y=+P.get('ry')||.2;
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||24,W/H,.1,100);cam.position.set(0,.05,+P.get('cz')||8);cam.lookAt(0,-.18,0);
+const key=new THREE.DirectionalLight(0xfff4e6,+P.get('kl')||2.6);key.position.set(-6,8,6);sc.add(key);
+const gold=new THREE.DirectionalLight(0xf2a516,+P.get('gl')||2.4);gold.position.set(7,-2,-4);sc.add(gold);
+const vio=new THREE.DirectionalLight(0xa678d6,+P.get('vl')||1.6);vio.position.set(-7,-3,-5);sc.add(vio);
+r.render(sc,cam);
+window.DONE=r.domElement.toDataURL('image/png');
+</script></body></html>

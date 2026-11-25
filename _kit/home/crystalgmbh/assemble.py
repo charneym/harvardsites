@@ -22,6 +22,9 @@ src = src.replace('</style>', part('extra.css') + '\n</style>')
 assert 'Firelight' not in re.sub(r'/\*.*?\*/', '', src, flags=re.S).replace('===== Firelight', ''), 'leftover Firelight text'
 assert 'etabolic' not in src and 'OZ Optics' not in src, 'leftover text'
 src = src.replace('<html lang="en">', '<html lang="de">', 1)
+# German UI strings from the template (DU / language fidelity)
+for a, b in [('Skip to content', 'Zum Inhalt springen'), ('textContent="Close"', 'textContent="Schließen"'), ('textContent="Menu"', 'textContent="Menü"'), ('>Close<', '>Schließen<')]:
+    src = src.replace(a, b)
 assert src.count('</body>') == 1
 src = src.replace('</body>', (K / 'lib/nssfix.js').read_text().rstrip('\n') + '\n</body>')
 (K / 'src/crystalgmbh.src.html').write_text(src)

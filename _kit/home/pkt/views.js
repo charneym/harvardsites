@@ -13,7 +13,7 @@ var ICO={
  q:'<svg viewBox="0 0 56 56"><path d="M28 28m-18 0a18 18 0 1 0 36 0a18 18 0 1 0-36 0"/><path class="a" d="M28 28m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0"/><path d="M28 4V12M28 44V52M4 28H12M44 28H52"/></svg>'};
 var SERV=[
  ["k","Entwicklung / Konstruktion","Beratung von Anfang an","Machbarkeitsanalyse, Bauteiloptimierung gemeinsam mit Ihnen und Moldflow-Analyse für Füllung, Verzug und Schwund, Anspritzpunkt und Entlüftung."],
- ["w","Werkzeugbau","Ausgangspunkt höchster Präzision","Mit der Sarix 3D-Mikro-Funkenerosion: Bohrungen bis 0,02 mm, Eckradien bis 3 µm, Oberflächen bis Ra 0,05 µm."],
+ ["w","Werkzeugbau","Höchste Präzision","Mit der Sarix 3D-Mikro-Funkenerosion: Bohrungen bis 0,02 mm, Eckradien bis 3 µm, Oberflächen bis Ra 0,05 µm."],
  ["p","Produktion","Hoch automatisiert","Über 70, zum Teil vollelektrische Spritzgießmaschinen mit Schließkräften bis 2.000 kN, alle gängigen Materialien bis zum Hochtemperaturkunststoff."],
  ["q","Qualitätssicherung","Tag für Tag gesichert","Hochpräzisionsmesstechnik, dreidimensionale Teilemessung mit dem Werth TomoScope XS 160 und Inline-Kameraüberwachung in der Produktion."]];
 function serv(){return '<div class="caps svc">'+SERV.map(function(c){return '<div class="cap">'+ICO[c[0]]+'<span class="lab" data-r>'+esc(c[1])+'</span><h3 data-r>'+esc(c[2])+'</h3><p data-r>'+esc(c[3])+'</p></div>'}).join("")+'</div>'}
@@ -67,7 +67,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="unternehmen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split">Authentisch: <em>Das sind wir.</em></h2></div><p data-r>Ein mittelständisches, familiengeführtes Unternehmen mit flachen Hierarchien und kurzen Entscheidungswegen, und einem großen Kundenstamm weltweit tätiger, namhafter Unternehmen.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Ein Team</span> <em class="nw">mit kurzen Wegen.</em></h2></div><p data-r>Ein mittelständisches, familiengeführtes Unternehmen mit flachen Hierarchien und kurzen Entscheidungswegen, und einem großen Kundenstamm weltweit tätiger, namhafter Unternehmen.</p></div>'+
    team()+
    '<div class="ozs">'+
     '<div class="oz-site"><span class="lab" data-r>Zertifiziert</span><h3 data-r>IATF 16949 und ISO</h3><p data-r>Zertifiziert nach IATF 16949, ISO 9001, ISO 14001, ISO 45001 und ISO 50001, mit eigener Prozessvalidierung.</p></div>'+
@@ -85,7 +85,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="kontakt" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Kontakt</span>'+
-   '<h2 class="big split">Sprechen Sie <em>mit uns.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Sprechen Sie</span> <em class="nw">mit uns.</em></h2>'+
    '<p class="sub" data-r>Komplexe Anforderungen sehen wir als Herausforderung, nicht als Hindernis. Wir finden sicher auch für Ihre Aufgabe eine Lösung.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">E-Mail schreiben '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Anrufen: '+TELT+'</a></div>'+
    '<div class="cinfo">'+

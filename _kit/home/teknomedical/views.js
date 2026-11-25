@@ -4,7 +4,7 @@ function prods(){return '<ul class="pfr pipe np">'+PRODS.map(function(c){
 function team(){var gs=[],by={};TEAM.forEach(function(p){if(!by[p.g]){by[p.g]=[];gs.push(p.g)}by[p.g].push(p)});
   return '<div class="mh">'+gs.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g)+'</p><ul class="mh-list">'+by[g].map(function(p){
     return '<li><div class="mh-row cg-r"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span></div></li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
-function news(){return '<div class="caps nwc">'+NEWS.map(function(c){return '<div class="cap"><span class="lab" data-r>'+esc(c[1])+'</span><h3 data-r>'+esc(c[0])+'</h3><p data-r>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">Datenblatt (PDF) '+ARR+'</a></div>'}).join("")+'</div>'}
+function news(){return '<div class="caps nwc">'+NEWS.map(function(c){return '<div class="cap"><span class="lab" data-r>'+esc(c[1])+'</span><h3 data-r>'+esc(c[0])+'</h3><p data-r>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener"><span>Datenblatt (PDF)</span>'+ARR+'</a></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -16,7 +16,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>TEKNO® makes the difference</span>'+
-   '<h2 class="txt" id="mani">Seit 1976 hat sich Tekno-Medical zu einem weltweiten Partner für medizinische Instrumente und Lösungen entwickelt. <em>Gesundheit steht im Mittelpunkt <span class="nw">unseres Handelns.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani">Seit 1976 hat sich Tekno-Medical zu einem weltweiten Partner für medizinische Instrumente und Lösungen entwickelt. <em><span class="nw">Gesundheit steht</span> <span class="nw">im Mittelpunkt</span> <span class="nw">unseres Handelns.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1976</span><p class="k">in Tuttlingen gegründet, heute in zweiter Generation familiengeführt</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">130+</span><p class="k">Länder, in denen Tekno-Medical aktiv ist</p></div>'+

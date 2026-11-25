@@ -1433,6 +1433,25 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 /* lists never show browser markers */
 .g-pp,.g-pb,.g-rs,.g-rq,.g-bk,.g-ms,.g-pt,.nws,.g-tt-one ul,.g-hm-row{list-style:none}
 .g-pp>li::marker,.g-pb>li::marker,.g-rs>li::marker,.g-rq>li::marker,.g-bk>li::marker,.g-ms>li::marker,.g-pt>li::marker,.nws>li::marker{content:none}
+/* v4 gate fixes */
+.g-tt-80 p{max-width:24ch;flex:1 1 auto}
+@media (max-width:960px){.g-split-t .d2{max-width:24ch}}
+@media (max-width:860px){.hero .hero-foot{margin-top:58px}}
+@media (min-width:641px) and (max-width:900px){
+  .g-pp,.g-pp.c3{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .g-pp>li,.g-pp>li:nth-child(n){grid-column:span 2}
+  .g-pp>li:nth-child(odd):last-child{grid-column:2/span 2}
+}
+@media (max-width:1024px){.g-tt-80 p{max-width:44ch}}
+@media (min-width:641px) and (max-width:900px){
+  .g-pp,.g-pp.c3{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
+  .g-pp>li,.g-pp>li:nth-child(n),.g-pp>li:nth-child(odd):last-child{grid-column:auto;max-width:none;display:grid;grid-template-columns:132px minmax(0,1fr);column-gap:18px;align-items:start}
+  .g-pp>li .g-pp-ph{grid-row:1/4}
+  .g-pp>li h3{margin-top:0}
+  .g-pp>li:nth-child(odd):last-child{grid-column:1/-1;max-width:calc(50% - var(--gap) / 2);justify-self:center;width:100%}
+}
+@media (min-width:641px) and (max-width:900px){.g-pp,.g-pp.c3{grid-template-columns:repeat(2,minmax(0,1fr))}.g-pp>li,.g-pp>li:nth-child(n),.g-pp>li:nth-child(odd):last-child{grid-column:1/-1;max-width:640px;justify-self:start}}
+@media (min-width:641px) and (max-width:900px){.g-pp>li,.g-pp>li:nth-child(n){align-content:start;row-gap:6px}.g-pp>li p{margin-top:0}}
 </style>
 </head>
 </head>
@@ -1935,7 +1954,9 @@ function route(h){
 /* site motion on top of the template's reveals: photo bands drift slowly (transform only, on a wrapper the reveal never touches),
    pipeline bars draw to their phase when they enter */
 var _initView=initView;
-initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);if(RM)return;var view=$("#view");
+initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);
+  /* back / reload into a scrolled page: whatever is in view after the position is restored reveals at once, not after the entry delay */
+  setTimeout(function(){if(!window.scrollY||!RV_LIVE)return;var inV=RV_LIVE.filter(function(el){if(!el.isConnected||el._rvDone)return false;var r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0});if(inV.length)rvGo(inV,0,.04)},140);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar",view).forEach(function(b,i){var f=$(".g-bar-f",b),l=$(".g-bar-l",b),st={trigger:b,start:"top 88%"};gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.3,ease:"flow",delay:.1,scrollTrigger:st});if(l)gsap.fromTo(l,{opacity:0},{opacity:1,duration:.6,ease:"power1.out",delay:.9,scrollTrigger:st})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}

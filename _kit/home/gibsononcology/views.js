@@ -229,7 +229,9 @@ function route(h){
 /* site motion on top of the template's reveals: photo bands drift slowly (transform only, on a wrapper the reveal never touches),
    pipeline bars draw to their phase when they enter */
 var _initView=initView;
-initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);if(RM)return;var view=$("#view");
+initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);
+  /* back / reload into a scrolled page: whatever is in view after the position is restored reveals at once, not after the entry delay */
+  setTimeout(function(){if(!window.scrollY||!RV_LIVE)return;var inV=RV_LIVE.filter(function(el){if(!el.isConnected||el._rvDone)return false;var r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0});if(inV.length)rvGo(inV,0,.04)},140);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar",view).forEach(function(b,i){var f=$(".g-bar-f",b),l=$(".g-bar-l",b),st={trigger:b,start:"top 88%"};gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.3,ease:"flow",delay:.1,scrollTrigger:st});if(l)gsap.fromTo(l,{opacity:0},{opacity:1,duration:.6,ease:"power1.out",delay:.9,scrollTrigger:st})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}

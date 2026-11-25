@@ -1051,6 +1051,23 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 .vis .wrap>.vis-l{grid-column:1!important;grid-row:1!important}
 .vis .wrap>.stats{grid-column:2!important;grid-row:1!important}
 @media (max-width:860px){.vis .wrap>.vis-l,.vis .wrap>.stats{grid-column:1!important;grid-row:auto!important}}
+.bo h1 em,.bo h2 em,.bo .d2 em{font-style:normal}
+
+/* v7 fixes */
+.gt{background:none!important;-webkit-text-fill-color:initial!important;color:inherit!important}
+.gt i{font-style:normal}.gt .gw{white-space:nowrap}
+html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
+.ptile::after{background:#bf0d17}
+.prow h3{transition:color .3s var(--eo),transform .4s var(--eo)}
+.prow:hover .pr-id h3{transform:translateX(6px)}
+.prow .lk2 svg{transition:transform .3s var(--eo)}
+.prow:hover .lk2 svg{transform:translateX(5px)}
+
+/* room for the big title's line entrance (each line rises one line-height inside its mask) above the lede */
+.hero.hx .hrule{margin-top:.4em!important}
+.hx-foot{margin-top:clamp(48px,5.4vw,88px)!important}
+@media (max-width:860px){.hero.hx .hrule{margin-top:28px!important}.hx-foot{margin-top:40px!important}}
+.prow h3 *{transition:color .3s var(--eo)}
 
 /* ===================================== NĒRx BioSciences: colours from their logo and live site (blue #336699, red #bf0d17,
    their red-to-blue banner gradient); Playfair Display headings and Open Sans text, as on nerxbiosciences.com ===================================== */
@@ -1070,7 +1087,7 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 /* ---- hero: headline left, the helix render in the open area to the right; pillars as the bottom band ---- */
 html body .hero.hx h1.d1.hero-h{font-size:clamp(44px,5.6vw,104px)!important;line-height:1.02;letter-spacing:-.025em;font-weight:500;max-width:none}
 .hero.hx .hrule{width:min(6.4em,100%);font-size:clamp(44px,5.6vw,104px)}
-.gt{background:none!important;-webkit-background-clip:initial;background-clip:initial;-webkit-text-fill-color:currentColor;color:#c9718e;padding-right:.08em;font-style:italic}
+.gt{background:none!important;-webkit-background-clip:initial;background-clip:initial;-webkit-text-fill-color:currentColor;color:#ef7d82;padding-right:.08em;font-style:italic}
 .gt i{font-style:italic;-webkit-text-fill-color:currentColor}
 .hx-copy{max-width:min(46vw,720px)}
 .hx-foot{flex-direction:column;align-items:flex-start;gap:24px}
@@ -1140,6 +1157,7 @@ html.bo-open #field{opacity:1!important;filter:brightness(1.15);-webkit-mask-ima
 
 .cta .cinfo p.al{margin:0}
 .cta .cinfo p.al+p.al{margin-top:2px}
+html body .hero.hx h1.hero-h .gt,html body .hero.hx h1.hero-h .gt *{color:#ef7d82!important;-webkit-text-fill-color:#ef7d82!important}
 </style>
 </head>
 </head>
@@ -1787,20 +1805,28 @@ var PK="nrx";
 /* v7 (client: sections rendered as empty rows in their browser: reveals that never fired). Content is never left hidden: any
    block the template's reveal (or a split heading, or a counter) parked at opacity 0 is shown as soon as it is in, or above,
    the viewport, whether or not its ScrollTrigger fired (fast scrolls, loading mid-page, triggers measured before a pin or
-   a font settled). Story steps that are inactive by design, and the vision statement's word-by-word colouring, are left alone. */
+   a font settled). Story steps that are inactive by design, the vision statement's word-by-word colouring, and the hero (its own entrance plays
+   when the loader lifts) are left alone; nothing is swept while the loader is on screen. */
 (function(){var busy=false;
-  function sweep(){if(busy||!window.gsap)return;busy=true;try{var H=innerHeight;
+  function sweep(){if(busy||!window.gsap)return;var pre=document.getElementById("pre");if(pre&&pre.getBoundingClientRect().bottom>2)return;busy=true;try{var H=innerHeight;
     var list=document.querySelectorAll('#view [style*="opacity"], .ftr [style*="opacity"]');
-    for(var i=0;i<list.length;i++){var el=list[i];if(el.closest(".step,.scene,.rail,.hx .hrule")||el.classList.contains("w"))continue;
+    for(var i=0;i<list.length;i++){var el=list[i];if((el.closest("#hero")&&!el.closest(".pil"))||el.closest(".ph-head,.step,.scene,.rail")||el.classList.contains("w"))continue;
       var o=parseFloat(el.style.opacity);if(!(o<.2))continue;if(gsap.isTweening(el))continue;
       var r=el.getBoundingClientRect();if(r.top>=H-2||(!r.width&&!r.height))continue;
-      if(typeof rvGo==="function"&&window.RV_LIVE&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
+      if(typeof rvGo==="function"&&typeof RV_LIVE!=="undefined"&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
       gsap.to(el,{opacity:1,y:0,yPercent:0,scale:1,duration:.55,ease:"power2.out",overwrite:"auto",clearProps:"transform,opacity"})}}
     finally{busy=false}}
   var t=0;function soon(){clearTimeout(t);t=setTimeout(sweep,60)}
   addEventListener("scroll",soon,{passive:true});addEventListener("resize",soon);setInterval(sweep,400);
   addEventListener("load",function(){setTimeout(sweep,400);setTimeout(sweep,2500)});
-})();/*</R:site>*/
+})();
+
+/* pillars below the fold on phones: the hero's own entrance would play them unseen, so they reveal as they scroll in instead
+   (hidden only by script, and the failsafe above shows them anyway if the trigger never fires) */
+(function(){if(RM)return;var n=0;(function wait(){if(++n>900)return;var ls=document.querySelectorAll("#hero .pil li"),pre=document.getElementById("pre");
+  if(!ls.length||!window.ScrollTrigger||(pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)){setTimeout(wait,60);return}
+  Array.prototype.forEach.call(ls,function(li){if(li.getBoundingClientRect().top<innerHeight)return;li.removeAttribute("data-r");gsap.killTweensOf(li);gsap.set(li,{opacity:0,y:24,overwrite:true});
+    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();/*</R:site>*/
 
 /* ================= CONTENT (from the dossier; nothing invented) ================= */
 /*<R:content>*/var FONTS=['400 1em "Playfair Display"','500 1em "Playfair Display"','600 1em "Playfair Display"','400 1em "Open Sans"','500 1em "Open Sans"','600 1em "Open Sans"','700 1em "Open Sans"'];
@@ -1883,7 +1909,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>DNA damage response therapeutics<span class="nomob"> · Indianapolis</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">'+gradWord("uncompromised.")+'</span></span></h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Innovation</span><span class="l"><span class="gt">uncompromised.</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>A new generation of targeted cancer therapeutics: first-in-class small molecules that block the proteins that sense DNA damage.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

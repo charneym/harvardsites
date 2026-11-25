@@ -23,15 +23,15 @@ function targets(){return '<section class="sec dark g-tt" id="targets" data-them
   '</div></div></section>'}
 
 /* (b) proof of value: the four partners */
-function partnerRows(full){return '<ol class="g-pt">'+PARTNERS.map(function(p){
+function partnerRows(full,link){return '<ol class="g-pt">'+PARTNERS.map(function(p){
   return '<li class="g-pt-r"><div class="g-pt-lg">'+plogo(p)+'</div>'+
    '<div class="g-pt-who"><h3>'+esc(p.inst)+'</h3><p class="g-pt-u">'+esc(p.unit)+'</p><p class="g-pt-pi">'+esc(p.pi)+'</p><span class="lab g-pt-d"><b>'+esc(p.drug)+'</b><i>'+esc(p.stage)+'</i></span></div>'+
    '<div class="g-pt-res"><span class="g-pt-big'+(/\d/.test(p.big)?'':' txt')+'">'+esc(p.big)+'</span><p>'+esc(p.res)+'</p>'+(full?'<p class="g-pt-more">'+esc(p.more)+'</p>':'')+'</div></li>'}).join("")+'</ol>'+
-  '<p class="note-s g-pt-note">All animal results are preclinical, in patient-derived xenograft (PDX) models. Licensing or acquisition is targeted on completion of Phase 2 human trials, three to four years out.</p>'}
+  '<div class="g-pt-foot"><p class="note-s g-pt-note">All animal results are preclinical, in patient-derived xenograft (PDX) models. Licensing or acquisition is targeted on completion of Phase 2 human trials, three to four years out.</p>'+(link||'')+'</div>'}
 function partnersSec(){return '<section class="sec g-deep" id="partners" data-theme="dark"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Proof of value</span><h2 class="d2 g-wide">Premier institutions chose to put <em>their own resources</em> behind Gibson’s drugs.</h2></div>'+
   '<p>They see a great many candidate cancer drugs. NIH, Mayo Clinic, Duke and Children’s National are each advancing LMP744 or LMP400 with their own investigators and resources.</p></div>'+
-  partnerRows(false)+'<div class="g-act">'+more("#/partners","Partners and collaborators")+'</div></div></section>'}
+  partnerRows(false,more("#/partners","Partners and collaborators"))+'</div></section>'}
 
 /* letters of support: editorial pull quotes */
 function letter(L,big,two){return '<figure class="g-q'+(big?' big':'')+'"><span class="g-qm" aria-hidden="true">“</span><blockquote>'+L.q.map(function(t){return '<p>'+esc(t)+'</p>'}).join("")+(two?'<p>'+esc(L.q2)+'</p>':'')+'</blockquote>'+
@@ -231,7 +231,7 @@ function route(h){
 var _initView=initView;
 initView=function(k,first){document.documentElement.classList.toggle("g-sub",k!=="home");_initView(k,first);
   /* back / reload into a scrolled page: whatever is in view after the position is restored reveals at once, not after the entry delay */
-  setTimeout(function(){if(!window.scrollY||!RV_LIVE)return;var inV=RV_LIVE.filter(function(el){if(!el.isConnected||el._rvDone)return false;var r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0});if(inV.length)rvGo(inV,0,.04)},140);if(RM)return;var view=$("#view");
+  [400,900].forEach(function(ms){setTimeout(function(){if(!window.scrollY||!RV_LIVE)return;var inV=RV_LIVE.filter(function(el){if(!el.isConnected||el._rvDone)return false;var r=el.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0});if(inV.length)rvGo(inV,0,.04)},ms)});if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
   $$(".g-bar",view).forEach(function(b,i){var f=$(".g-bar-f",b),l=$(".g-bar-l",b),st={trigger:b,start:"top 88%"};gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.3,ease:"flow",delay:.1,scrollTrigger:st});if(l)gsap.fromTo(l,{opacity:0},{opacity:1,duration:.6,ease:"power1.out",delay:.9,scrollTrigger:st})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}

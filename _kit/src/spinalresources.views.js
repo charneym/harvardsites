@@ -99,7 +99,7 @@ function cta(){
   '</div></section>';
 }
 function footer(){
-  return '<footer class="ftr" data-theme="dark" data-field><div class="cols">'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Headquarters</span>5975 N Federal Highway, Suite 250<br>Fort Lauderdale, FL 33308</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:+19045409049">'+TEL+'</a></div>'+

@@ -49,7 +49,7 @@ region('root', ''':root{
   --ease:cubic-bezier(.65,.05,.2,1);--eo:cubic-bezier(.22,.61,.36,1);
 }
 @media (min-width:1800px){:root{--maxw:1600px}}''')
-region('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:#07090c}
+region('fieldbg', '''.fieldbg{position:fixed;inset:0;z-index:0;background:radial-gradient(60% 70% at 70% 50%,#0a0d12 0%,#07090c 70%)}
 #field{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;opacity:0;transition:opacity .9s ease-out}
 #field.ready{opacity:1}''')
 region('logocss', '''.brand{display:flex;align-items:center;height:56px;color:var(--bone)}

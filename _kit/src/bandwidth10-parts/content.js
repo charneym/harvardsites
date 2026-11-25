@@ -15,9 +15,9 @@ var PRODUCTS=[
  ["Swept source","1060 nm VCSEL swept source (OEM)","BW10-907B","A single-mode tunable 1060 nm VCSEL with a semiconductor optical amplifier, driving electronics, A-scan trigger and k-clock module.",UP+"2026/07/BW10-907B-TR-PW-SR-KC-KCD-OP-rev1.1.pdf"],
  ["Swept source","1550 nm VCSEL swept source (OEM)","BW10-908B","The same architecture around a single-mode tunable 1550 nm VCSEL: SOA, driving electronics, A-scan trigger and k-clock.",UP+"2026/07/BW10-908B-TR-PW-SR-KC-KCD-OP-rev1.2.pdf"]];
 var APPS=["Industrial and medical OCT","FBG sensing","Gas sensing","Biosensing","2D and 3D imaging","LIDAR"];
-var TEAM=[["Phil Worland","Founder, President and CEO"],["Chris Chase, PhD","Founder, Vice President Engineering"],["Dennis Hsieh","Director of Product Engineering"],["Carlos Mateus, PhD","Director, Research and Development"],
- ["Thomas Käßemodel","Director of Quality"],["Murat Serbay, PhD","Director, Application Engineering"],["Dalila Ellafi, PhD","Product Line Manager"],["Neelanjan Bandyopadhyay, PhD","Product Line Manager"],
- ["Selina Liu, PhD","Senior Application Engineer"],["Stefano Prandoni","Director Sales and Marketing, Europe and Japan"],["Michael Cheng","Director of Sales, Asia"],["Stuart Fowler","Director of Sales, North America"]];
+var TEAM=[["Phil Worland","Founder, President and CEO"],["Chris Chase","Founder, Vice President Engineering","PhD"],["Dennis Hsieh","Director of Product Engineering"],["Carlos Mateus","Director, Research and Development","PhD"],
+ ["Thomas Käßemodel","Director of Quality"],["Murat Serbay","Director, Application Engineering","PhD"],["Dalila Ellafi","Product Line Manager","PhD"],["Neelanjan Bandyopadhyay","Product Line Manager","PhD"],
+ ["Selina Liu","Senior Application Engineer","PhD"],["Stefano Prandoni","Director Sales and Marketing, Europe and Japan"],["Michael Cheng","Director of Sales, Asia"],["Stuart Fowler","Director of Sales, North America"]];
 var PAPERS=[
  ["Device","HCG MEMS tunable VCSEL with intracavity integrated detector",WEB+"hcg-mems-tunable-vcsel-with-intracavity-integrated-detector/"],
  ["OCT","High-speed optical coherence tomography imaging with a tunable HCG-VCSEL light source at the 1060 nm wavelength window",WEB+"high-speed-optical-coherence-tomography-imaging-with-a-tunable-hcg-vcsel-light-source-at-the-1060nm-wavelength-window/"],

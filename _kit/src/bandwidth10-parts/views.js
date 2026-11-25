@@ -2,7 +2,7 @@
 function platRows(){return '<div class="plat">'+PLAT.map(function(a){return '<div><span class="lab kick" data-r>'+esc(a[0])+'</span><h3 data-r>'+esc(a[1])+'</h3><p data-r>'+esc(a[2])+'</p></div>'}).join("")+'</div>'}
 function prodRows(){return '<ul class="pfr path">'+PRODUCTS.map(function(c){return '<li><span class="lab tg">'+esc(c[0])+'</span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[2])+'</span></h3><p>'+esc(c[3])+'</p><a class="lab lk" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[1])+' datasheet (PDF) on bandwidth10.com">Datasheet '+ARR+'</a></li>'}).join("")+'</ul>'}
 function appList(){return '<ul class="ind">'+APPS.map(function(a){return '<li>'+esc(a)+'</li>'}).join("")+'</ul>'}
-function teamGrid(){return '<ul class="ex bwt">'+TEAM.map(function(p){return '<li><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+'</p></li>'}).join("")+'</ul>'}
+function teamGrid(){return '<ul class="ex bwt">'+TEAM.map(function(p){return '<li><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+(p[2]?' · '+p[2]:'')+'</p></li>'}).join("")+'</ul>'}
 function paperRows(){return '<ul class="rows">'+PAPERS.map(function(n){return '<li><a class="row-a" href="'+n[2]+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n[0])+'</span></span><h3>'+esc(n[1])+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
@@ -16,11 +16,11 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap"><div class="mrow">'+
    '<div class="mani-in"><span class="lab kick" data-r>Bandwidth10</span>'+
-   '<h2 class="txt" id="mani">Founded in 2011 by a team out of UC Berkeley and industry veterans, Bandwidth10 has shipped tunable lasers since 2014. <b class="w0">Small, low-power and wavelength-stabilized, from the TO-can to the swept-source engine.</b></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Founded in 2011</span> <span class="nw">by a team out of</span> <span class="nw">UC Berkeley and</span> <span class="nw">industry veterans,</span> <span class="nw">Bandwidth10 has shipped</span> <span class="nw">tunable lasers since 2014.</span> <b class="w0"><span class="nw">Small and low-power,</span> <span class="nw">with wavelength</span> <span class="nw">stabilization built in,</span> <span class="nw">from the TO-can to</span> <span class="nw">the swept-source engine.</span></b></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2011</span><span class="k">Founded in Berkeley, a University of California spin-out</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">720–1700</span><span class="k">Nanometres covered by the company’s swept-source VCSELs</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2014</span><span class="k">The year Bandwidth10 began shipping products</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2011</span><p class="k">Founded in Berkeley, a University of California spin-out</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">720–1700</span><p class="k">Nanometres covered by the company’s swept-source VCSELs</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2014</span><p class="k">The year Bandwidth10 began shipping products</p></div>'+
    '</div></div>'+
    platRows()+
   '</div></section>'+
@@ -53,16 +53,15 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="papers" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Papers</span><h2 class="d2 split"><span class="nw">The research</span> <em class="nw">behind it.</em></h2></div><p data-r>Papers on the HCG VCSEL and its applications, from the library on bandwidth10.com.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Papers</span><h2 class="d2 split"><span class="nw">The research</span> <em class="nw">behind it.</em></h2></div><p data-r>Papers on the HCG VCSEL and its applications, from the library on bandwidth10.com. Most recently on the show floor at SPIE BiOS and Photonics West 2026, CIOE 2025 in Shenzhen and LASER World of PHOTONICS 2025 in Munich.</p></div>'+
    paperRows()+
-   '<div class="credit"><span class="lab" data-r>Recently exhibited</span><p data-r><span>SPIE BiOS and Photonics West 2026, San Francisco</span><i>·</i><span>CIOE 2025, Shenzhen</span><i>·</i><span>LASER World of PHOTONICS 2025, Munich</span></p></div>'+
   '</div></section>'+
   cta();
 }
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Sales in the USA, Asia and Europe</span>'+
-   '<h2 class="big split"><span class="nw">Find your</span> <em class="nw">wavelength.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Ask about</span> <em class="nw">your wavelength.</em></h2>'+
    '<p class="sub" data-r>Write to the Bandwidth10 team about a tunable VCSEL, a pigtailed module or an OEM swept source, with datasheets and application notes for each.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a></div>'+
    '<div class="cinfo">'+

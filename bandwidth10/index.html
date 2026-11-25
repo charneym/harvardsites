@@ -797,7 +797,8 @@ html body .bo .bo-note .d2{max-width:21ch}
 }
 /* ===== Bandwidth10 site layer ===== */
 .d1,.d2,.d3,.cta .big,.mani .txt,.step h2{font-weight:300}
-.hero-h{font-size:clamp(40px,4.6vw,84px);letter-spacing:-.03em;line-height:1.02;max-width:11.5ch}
+.hero-h{font-size:clamp(40px,4.6vw,84px);letter-spacing:-.03em;line-height:1.02}
+.hero-h .l{display:block;white-space:nowrap}
 .hero-h em{color:var(--accL)}
 .hero-foot .s{max-width:44ch}
 @media (max-width:560px){.hero-h{font-size:10.2vw}}
@@ -854,6 +855,23 @@ html body .bo .bo-note .d2{max-width:21ch}
 .light .btn.solid:hover{color:var(--bone);border-color:var(--ink)}
 .scene svg.mob text.a{font-size:20px;letter-spacing:.12em}
 .scene svg.mob text.t,.scene svg.mob text.t.c{font-size:17px;letter-spacing:.06em}
+/* the loader mark is the solid red logo, never a stroked trace (DR2); the template's dash draw is neutralised */
+#pre .mk.lock .plogo path{fill:#d71718!important;stroke:none!important;stroke-dasharray:none!important;stroke-dashoffset:0!important}
+
+.mani .stat p.k{margin:14px 0 0}
+.ex.bwt h3{white-space:nowrap}
+@media (max-width:860px){.ex.bwt p{max-width:none}.credit p span{white-space:normal}.mani .txt{font-size:24px}}
+.scene svg.mob .tb{display:none}
+.light .pfr .loc{color:var(--stoneD)}
+.rows .row-a h3{font-size:clamp(19px,1.45vw,23px)}
+.credit{margin-top:clamp(36px,3.4vw,52px)}
+/* DF: the footer echo of the can stays dim and only at the right edge, fading out before the wordmark and the legal line */
+.ftr .fcv{opacity:.22!important;-webkit-mask-image:linear-gradient(90deg,transparent 58%,#000 96%),linear-gradient(180deg,transparent,#000 30%);mask-image:linear-gradient(90deg,transparent 58%,#000 96%),linear-gradient(180deg,transparent,#000 30%);-webkit-mask-composite:source-in;mask-composite:intersect}
+.credit{margin-top:16px;padding-top:0}
+@media (max-width:860px){.credit p span{display:block;white-space:normal}.credit p i{display:none}}
+@media (max-width:560px){.cta .big{font-size:10vw!important}}
+
+@media (max-width:560px){.hero-h{font-size:9.4vw}.hero-h .l{white-space:normal}}
 
 </style>
 </head>
@@ -1518,9 +1536,9 @@ var PRODUCTS=[
  ["Swept source","1060 nm VCSEL swept source (OEM)","BW10-907B","A single-mode tunable 1060 nm VCSEL with a semiconductor optical amplifier, driving electronics, A-scan trigger and k-clock module.",UP+"2026/07/BW10-907B-TR-PW-SR-KC-KCD-OP-rev1.1.pdf"],
  ["Swept source","1550 nm VCSEL swept source (OEM)","BW10-908B","The same architecture around a single-mode tunable 1550 nm VCSEL: SOA, driving electronics, A-scan trigger and k-clock.",UP+"2026/07/BW10-908B-TR-PW-SR-KC-KCD-OP-rev1.2.pdf"]];
 var APPS=["Industrial and medical OCT","FBG sensing","Gas sensing","Biosensing","2D and 3D imaging","LIDAR"];
-var TEAM=[["Phil Worland","Founder, President and CEO"],["Chris Chase, PhD","Founder, Vice President Engineering"],["Dennis Hsieh","Director of Product Engineering"],["Carlos Mateus, PhD","Director, Research and Development"],
- ["Thomas Käßemodel","Director of Quality"],["Murat Serbay, PhD","Director, Application Engineering"],["Dalila Ellafi, PhD","Product Line Manager"],["Neelanjan Bandyopadhyay, PhD","Product Line Manager"],
- ["Selina Liu, PhD","Senior Application Engineer"],["Stefano Prandoni","Director Sales and Marketing, Europe and Japan"],["Michael Cheng","Director of Sales, Asia"],["Stuart Fowler","Director of Sales, North America"]];
+var TEAM=[["Phil Worland","Founder, President and CEO"],["Chris Chase","Founder, Vice President Engineering","PhD"],["Dennis Hsieh","Director of Product Engineering"],["Carlos Mateus","Director, Research and Development","PhD"],
+ ["Thomas Käßemodel","Director of Quality"],["Murat Serbay","Director, Application Engineering","PhD"],["Dalila Ellafi","Product Line Manager","PhD"],["Neelanjan Bandyopadhyay","Product Line Manager","PhD"],
+ ["Selina Liu","Senior Application Engineer","PhD"],["Stefano Prandoni","Director Sales and Marketing, Europe and Japan"],["Michael Cheng","Director of Sales, Asia"],["Stuart Fowler","Director of Sales, North America"]];
 var PAPERS=[
  ["Device","HCG MEMS tunable VCSEL with intracavity integrated detector",WEB+"hcg-mems-tunable-vcsel-with-intracavity-integrated-detector/"],
  ["OCT","High-speed optical coherence tomography imaging with a tunable HCG-VCSEL light source at the 1060 nm wavelength window",WEB+"high-speed-optical-coherence-tomography-imaging-with-a-tunable-hcg-vcsel-light-source-at-the-1060nm-wavelength-window/"],
@@ -1545,7 +1563,7 @@ function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-
 function platRows(){return '<div class="plat">'+PLAT.map(function(a){return '<div><span class="lab kick" data-r>'+esc(a[0])+'</span><h3 data-r>'+esc(a[1])+'</h3><p data-r>'+esc(a[2])+'</p></div>'}).join("")+'</div>'}
 function prodRows(){return '<ul class="pfr path">'+PRODUCTS.map(function(c){return '<li><span class="lab tg">'+esc(c[0])+'</span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[2])+'</span></h3><p>'+esc(c[3])+'</p><a class="lab lk" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[1])+' datasheet (PDF) on bandwidth10.com">Datasheet '+ARR+'</a></li>'}).join("")+'</ul>'}
 function appList(){return '<ul class="ind">'+APPS.map(function(a){return '<li>'+esc(a)+'</li>'}).join("")+'</ul>'}
-function teamGrid(){return '<ul class="ex bwt">'+TEAM.map(function(p){return '<li><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+'</p></li>'}).join("")+'</ul>'}
+function teamGrid(){return '<ul class="ex bwt">'+TEAM.map(function(p){return '<li><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+(p[2]?' · '+p[2]:'')+'</p></li>'}).join("")+'</ul>'}
 function paperRows(){return '<ul class="rows">'+PAPERS.map(function(n){return '<li><a class="row-a" href="'+n[2]+'" target="_blank" rel="noopener"><span class="nm"><span class="lab">'+esc(n[0])+'</span></span><h3>'+esc(n[1])+'</h3><span class="c4">'+ARRX+'</span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
@@ -1559,11 +1577,11 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap"><div class="mrow">'+
    '<div class="mani-in"><span class="lab kick" data-r>Bandwidth10</span>'+
-   '<h2 class="txt" id="mani">Founded in 2011 by a team out of UC Berkeley and industry veterans, Bandwidth10 has shipped tunable lasers since 2014. <b class="w0">Small, low-power and wavelength-stabilized, from the TO-can to the swept-source engine.</b></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Founded in 2011</span> <span class="nw">by a team out of</span> <span class="nw">UC Berkeley and</span> <span class="nw">industry veterans,</span> <span class="nw">Bandwidth10 has shipped</span> <span class="nw">tunable lasers since 2014.</span> <b class="w0"><span class="nw">Small and low-power,</span> <span class="nw">with wavelength</span> <span class="nw">stabilization built in,</span> <span class="nw">from the TO-can to</span> <span class="nw">the swept-source engine.</span></b></h2></div>'+
    '<div class="stats">'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2011</span><span class="k">Founded in Berkeley, a University of California spin-out</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">720–1700</span><span class="k">Nanometres covered by the company’s swept-source VCSELs</span></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">2014</span><span class="k">The year Bandwidth10 began shipping products</span></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2011</span><p class="k">Founded in Berkeley, a University of California spin-out</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">720–1700</span><p class="k">Nanometres covered by the company’s swept-source VCSELs</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">2014</span><p class="k">The year Bandwidth10 began shipping products</p></div>'+
    '</div></div>'+
    platRows()+
   '</div></section>'+
@@ -1596,16 +1614,15 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="papers" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Papers</span><h2 class="d2 split"><span class="nw">The research</span> <em class="nw">behind it.</em></h2></div><p data-r>Papers on the HCG VCSEL and its applications, from the library on bandwidth10.com.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Papers</span><h2 class="d2 split"><span class="nw">The research</span> <em class="nw">behind it.</em></h2></div><p data-r>Papers on the HCG VCSEL and its applications, from the library on bandwidth10.com. Most recently on the show floor at SPIE BiOS and Photonics West 2026, CIOE 2025 in Shenzhen and LASER World of PHOTONICS 2025 in Munich.</p></div>'+
    paperRows()+
-   '<div class="credit"><span class="lab" data-r>Recently exhibited</span><p data-r><span>SPIE BiOS and Photonics West 2026, San Francisco</span><i>·</i><span>CIOE 2025, Shenzhen</span><i>·</i><span>LASER World of PHOTONICS 2025, Munich</span></p></div>'+
   '</div></section>'+
   cta();
 }
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Sales in the USA, Asia and Europe</span>'+
-   '<h2 class="big split"><span class="nw">Find your</span> <em class="nw">wavelength.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Ask about</span> <em class="nw">your wavelength.</em></h2>'+
    '<p class="sub" data-r>Write to the Bandwidth10 team about a tunable VCSEL, a pigtailed module or an OEM swept source, with datasheets and application notes for each.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">'+MAIL+' '+ARR+'</a></div>'+
    '<div class="cinfo">'+
@@ -1740,7 +1757,7 @@ function scene(){
   g+='<path class="wl sD" d="M230 372H570V436H230Z"/><path class="wi sD" d="'+dbr+'"/>';
   g+='<path class="wl sD" d="M230 350H570V368H230Z"/>';
   g+='<path class="hatch" d="M230 292H272V350H230Z M528 292H570V350H528Z"/><path class="wl sD" d="M230 350V292H272V350 M528 350V292H570V350"/></g>';
-  g+='<g class="tb"><path class="tbl" d="M548 504h228v44h-228Z M548 526h228"/><text x="558" y="520" class="t">SECTION · HCG TUNABLE VCSEL</text><text x="558" y="542" class="t s">BANDWIDTH10 · NOT TO SCALE</text></g>';
+  if(!mob)g+='<g class="tb"><path class="tbl" d="M548 504h228v44h-228Z M548 526h228"/><text x="558" y="520" class="t">SECTION · HCG TUNABLE VCSEL</text><text x="558" y="542" class="t s">BANDWIDTH10 · NOT TO SCALE</text></g>';
   g+='</g>';
   /* 1 the cavity: quantum wells in the active region, the oxide aperture; labels for the active region, the bottom mirror, the substrate */
   g+='<g id="sc1">'+DV+'<path class="ld2 dr" d="M314 355H486 M314 359H486 M314 363H486"/><path class="pdt dr" d="M232 370H338 M462 370H568"/></g>'+

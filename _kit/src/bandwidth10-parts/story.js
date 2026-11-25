@@ -16,7 +16,7 @@ function scene(){
   g+='<path class="wl sD" d="M230 372H570V436H230Z"/><path class="wi sD" d="'+dbr+'"/>';
   g+='<path class="wl sD" d="M230 350H570V368H230Z"/>';
   g+='<path class="hatch" d="M230 292H272V350H230Z M528 292H570V350H528Z"/><path class="wl sD" d="M230 350V292H272V350 M528 350V292H570V350"/></g>';
-  g+='<g class="tb"><path class="tbl" d="M548 504h228v44h-228Z M548 526h228"/><text x="558" y="520" class="t">SECTION · HCG TUNABLE VCSEL</text><text x="558" y="542" class="t s">BANDWIDTH10 · NOT TO SCALE</text></g>';
+  if(!mob)g+='<g class="tb"><path class="tbl" d="M548 504h228v44h-228Z M548 526h228"/><text x="558" y="520" class="t">SECTION · HCG TUNABLE VCSEL</text><text x="558" y="542" class="t s">BANDWIDTH10 · NOT TO SCALE</text></g>';
   g+='</g>';
   /* 1 the cavity: quantum wells in the active region, the oxide aperture; labels for the active region, the bottom mirror, the substrate */
   g+='<g id="sc1">'+DV+'<path class="ld2 dr" d="M314 355H486 M314 359H486 M314 363H486"/><path class="pdt dr" d="M232 370H338 M462 370H568"/></g>'+

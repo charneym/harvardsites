@@ -75,7 +75,7 @@ function cta(){
    '<div class="act" data-r><a class="btn solid" href="'+MAIL+'">Write to sales '+ARR+'</a><a class="btn" href="#/procedures">The procedures</a></div>'+
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Headquarters</span><p data-r>3600 Clipper Mill Road, Suite 400<br>Baltimore, MD 21211, USA</p></div>'+
-    '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="'+MAIL+'">sales@clearguidemedical.com</a><br><a class="ul" href="mailto:eusales@clearguidemedical.com">eusales@clearguidemedical.com</a> (Europe)</p></div>'+
+    '<div><span class="lab" data-r>Email · US and Europe</span><p data-r><a class="ul" href="'+MAIL+'">sales@clearguidemedical.com</a><br><a class="ul" href="mailto:eusales@clearguidemedical.com">eusales@clearguidemedical.com</a></p></div>'+
     '<div><span class="lab" data-r>Telephone</span><p data-r><a class="ul" href="tel:+14105046540">+1 410 504 6540</a> (office)<br><a class="ul" href="tel:+14432678116">+1 443 267 8116</a> (sales)</p></div>'+
    '</div>'+
   '</div></section>';

@@ -24,9 +24,9 @@ var TEAM=[
  {g:"Leadership",name:"Pezhman Foroughi, PhD",title:"Chief Technology Officer",sum:"Leads development; needle tracking, ultrasound and stereo calibration and 3D reconstruction, with 40+ publications and patents."},
  {g:"Leadership",name:"Kenny Harlan",title:"Director of Sales",sum:"Over 25 years in capital medical sales, focused on diagnostic and surgical ultrasound, working side by side with physicians."}];
 var NEWS=[
- ["October 2026","At iMRI 2026 in Boston: MRI-guided hepatic interventions with augmented reality optical navigation, initial clinical experience with LUMENA","Clear Guide Medical","https://clearguidemedical.com/"],
- ["July 2025","Mayo Clinic study of the LUMENA guidance system in MRI-guided liver procedures begins","ClinicalTrials.gov",CTG],
- ["April 2025","Augmented reality system for MRI-guided interventions: a cadaver study","Publication","https://clearguidemedical.com/augmented-reality-system-for-mri-guided-interventions-a-cadaver-study/"],
+ ["October 2026","At iMRI 2026 in Boston: MRI‑guided hepatic interventions with augmented reality optical navigation, initial clinical experience with LUMENA","Clear Guide Medical","https://clearguidemedical.com/"],
+ ["July 2025","Mayo Clinic study of the LUMENA guidance system in MRI‑guided liver procedures begins","ClinicalTrials.gov",CTG],
+ ["April 2025","Augmented reality system for MRI‑guided interventions: a cadaver study","Publication","https://clearguidemedical.com/augmented-reality-system-for-mri-guided-interventions-a-cadaver-study/"],
  ["March 2025","SCENERGY TP and LUMENA on display at the SIR Annual Scientific Meeting","SIR","https://www.sirmeeting.org/"],
- ["October 2024","Clinical evaluation of a transperineal access tool for MRI-guided procedures: a 30-patient study at Mayo Clinic","Publication","https://clearguidemedical.com/clinical-evaluation-of-a-transperineal-access-tool-for-mri-guided-procedures/"]];
+ ["October 2024","Clinical evaluation of a transperineal access tool for MRI‑guided procedures: a 30-patient study at Mayo Clinic","Publication","https://clearguidemedical.com/clinical-evaluation-of-a-transperineal-access-tool-for-mri-guided-procedures/"]];
 var SHEETS=[];/*</R:content>*/

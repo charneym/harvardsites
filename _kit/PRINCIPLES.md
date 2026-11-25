@@ -4,6 +4,8 @@ These came from the client's critiques over several batches. The newest are at t
 
 # v23 (client critique, 2026-11-23)
 
+**DW. Content is visible by default; whitespace is earned.** Client on limaxbio v6: sections showed numbered rows and "Funded by" labels with NOTHING beside them. Their reveal animations never fired in a real browser, so content stayed at opacity 0. Never make opacity:0 the resting state of content; animate in only as progressive enhancement. Also: no section of tall empty rows, no text squeezed into a narrow column with a wide void beside it, and no two sections in the same visual form (e.g. two numbered lists back to back). Gate: `node _kit/tools/hidden.js SLUG` after a fast scroll must list nothing except inactive story steps; check by eye at 1920 after a fast scroll.
+
 **DV. Every line of text is readable on its own ground.** Found on lionixinternational: News headlines and the Contact address were invisible, bone text on a bone section, because a section's theme class didn't match the styles copied in for it. When you move or restyle a section, its text colours must follow its ground. Gate: `node _kit/tools/contrast.js SLUG` (and again at 390) must print "OK". It scrolls the whole page and flags any visible text under 3:1.
 
 **DU. No raw HTML entities on screen.** Found on akyso: the team list showed "Adrienne O&#8217;Reilly" because an entity-encoded string was inserted as text. Write real characters (’ – é) in content.js, never entities. Gate: `node _kit/tools/entities.js SLUG` must print "clean" (it checks the visible text of home and every build-out route).

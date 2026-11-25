@@ -5,7 +5,8 @@ var PK="vivheart";
    the viewport, whether or not its ScrollTrigger fired (fast scrolls, loading mid-page, triggers measured before a pin or
    a font settled). Story steps that are inactive by design, and the vision statement's word-by-word colouring, are left alone. */
 (function(){var busy=false;
-  function sweep(){if(busy||!window.gsap)return;busy=true;try{var H=innerHeight;
+  function sweep(){if(busy||!window.gsap||document.getElementById("pre"))return;  /* never under the loader: the hero entrance owns that moment */
+    busy=true;try{var H=innerHeight;
     var list=document.querySelectorAll('#view [style*="opacity"], .ftr [style*="opacity"]');
     for(var i=0;i<list.length;i++){var el=list[i];if(el.closest(".step,.scene,.rail,.hx .hrule")||el.classList.contains("w"))continue;
       var o=parseFloat(el.style.opacity);if(!(o<.2))continue;if(gsap.isTweening(el))continue;

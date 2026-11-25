@@ -202,7 +202,7 @@ html.seen #pre .pc,html.seen #pre .bar,html.seen #pre .cnt,html.seen #pre .pl{di
 .step p{color:rgba(var(--boner),.8);max-width:44ch;margin:0;font-size:16px}
 .story-r{position:relative;height:min(70vh,640px);align-self:center}
 .scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.scene svg{width:100%;height:100%;overflow:hidden}
+.scene svg{width:100%;height:100%;overflow:visible}
 .scene .wl{fill:none;stroke:rgba(var(--boner),.7);stroke-width:1.4}
 .scene .fr{fill:none;stroke:rgba(var(--boner),.42);stroke-width:1}
 .scene .lf{fill:none;stroke:rgba(var(--boner),.75);stroke-width:1.6}
@@ -814,7 +814,7 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .stat .ln2{background:var(--accL)}
 .ftr .bigsvg{color:var(--bone)}
 .ftr .bigsvg .v{fill:#ff4b55}
-.scene svg{overflow:hidden}
+.scene svg{overflow:visible}
 
 /* ===== ViVHeart additions ===== */
 /* loader: their real lockup on their own white ground, as on vivheart.it: VIV in red and HEART in navy inside the thin navy frame that
@@ -969,7 +969,8 @@ var PK="vivheart";
    the viewport, whether or not its ScrollTrigger fired (fast scrolls, loading mid-page, triggers measured before a pin or
    a font settled). Story steps that are inactive by design, and the vision statement's word-by-word colouring, are left alone. */
 (function(){var busy=false;
-  function sweep(){if(busy||!window.gsap)return;busy=true;try{var H=innerHeight;
+  function sweep(){if(busy||!window.gsap||document.getElementById("pre"))return;  /* never under the loader: the hero entrance owns that moment */
+    busy=true;try{var H=innerHeight;
     var list=document.querySelectorAll('#view [style*="opacity"], .ftr [style*="opacity"]');
     for(var i=0;i<list.length;i++){var el=list[i];if(el.closest(".step,.scene,.rail,.hx .hrule")||el.classList.contains("w"))continue;
       var o=parseFloat(el.style.opacity);if(!(o<.2))continue;if(gsap.isTweening(el))continue;

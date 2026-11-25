@@ -20,6 +20,7 @@ var ICO={tgt:'<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20
  moa:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 14C12 14 14 26 20 26S28 14 34 14"/><path d="M6 26C12 26 14 14 20 14S28 26 34 26"/><path d="M20 5V11M20 29V35"/></svg>',
  chem:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 7L31.3 13.5V26.5L20 33L8.7 26.5V13.5Z"/><path d="M20 12.5L26.5 16.2V23.8L20 27.5L13.5 23.8V16.2Z"/></svg>'};
 function vHome(){
+  var PR=MOBILE()?'':' data-r';setTimeout(pilReveal,60);
   return ''+
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
@@ -30,9 +31,9 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="Our competitive advantage">'+
-    '<li class="p1" data-r><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
-    '<li class="p2" data-r><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
-    '<li class="p3" data-r><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
+    '<li class="p1"'+PR+'><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
+    '<li class="p2"'+PR+'><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
+    '<li class="p3"'+PR+'><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
    '</ul>'+
   '</section>'+
 
@@ -87,6 +88,9 @@ function vHome(){
   '</div></section>'+
   cta();
 }
+/* phones: the pillar band sits below the fold, so it reveals on scroll (enhancement only: the site failsafe shows anything in view) */
+function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
+  gsap.set(li,{opacity:0,y:24});ScrollTrigger.create({trigger:li,start:"top 96%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power2.out",clearProps:"transform,opacity"})}})})}
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Partners, investors and collaborators</span>'+

@@ -26,7 +26,7 @@ function targets(){return '<section class="sec dark g-tt" id="targets" data-them
 function partnerRows(full){return '<ol class="g-pt">'+PARTNERS.map(function(p){
   return '<li class="g-pt-r"><div class="g-pt-lg">'+plogo(p)+'</div>'+
    '<div class="g-pt-who"><h3>'+esc(p.inst)+'</h3><p class="g-pt-u">'+esc(p.unit)+'</p><p class="g-pt-pi">'+esc(p.pi)+'</p><span class="lab g-pt-d"><b>'+esc(p.drug)+'</b><i>'+esc(p.stage)+'</i></span></div>'+
-   '<div class="g-pt-res"><span class="g-pt-big">'+esc(p.big)+'</span><p>'+esc(p.res)+'</p>'+(full?'<p class="g-pt-more">'+esc(p.more)+'</p>':'')+'</div></li>'}).join("")+'</ol>'+
+   '<div class="g-pt-res"><span class="g-pt-big'+(/\d/.test(p.big)?'':' txt')+'">'+esc(p.big)+'</span><p>'+esc(p.res)+'</p>'+(full?'<p class="g-pt-more">'+esc(p.more)+'</p>':'')+'</div></li>'}).join("")+'</ol>'+
   '<p class="note-s g-pt-note">All animal results are preclinical, in patient-derived xenograft (PDX) models. Licensing or acquisition is targeted on completion of Phase 2 human trials, three to four years out.</p>'}
 function partnersSec(){return '<section class="sec g-deep" id="partners" data-theme="dark"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Proof of value</span><h2 class="d2 g-wide">Premier institutions chose to put <em>their own resources</em> behind Gibson’s drugs.</h2></div>'+
@@ -63,8 +63,8 @@ function desigSec(){return '<section class="sec light g-split" id="designations"
   '<div class="g-split-t"><span class="lab kick">Designations and protection</span><h2 class="d2">Recognised by the FDA, <em>protected for decades.</em></h2>'+desig()+'</div></div></section>'}
 
 /* market and deals */
-function marketStats(){return '<div class="g-mk">'+MARKET.slice(0,2).map(function(m,i){return '<div class="g-mk-c"><span class="g-mk-v">'+esc(m[0])+'</span><span class="g-mk-k">'+esc(m[1])+'</span></div>'+(i===0?'<div class="g-mk-a" aria-hidden="true">'+ARRS+'</div>':'')}).join("")+'</div>'}
-function deals(){return '<ul class="g-dl">'+DEALS.map(function(d){return '<li><span class="lab">'+esc(d[0])+'</span><h3>'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</h3><b>'+esc(d[3])+'</b></li>'}).join("")+'</ul>'}
+function marketStats(){return '<div class="g-mk" aria-label="Glioblastoma market">'+MARKET.slice(0,2).map(function(m,i){return '<div class="g-mk-c"><span class="g-mk-v">'+esc(m[0])+'</span><span class="g-mk-k">'+esc(m[1])+'</span></div>'+(i===0?'<div class="g-mk-a" aria-hidden="true">'+ARRS+'</div>':'')}).join("")+'</div>'}
+function deals(){return '<table class="g-dt"><thead><tr><th scope="col" class="lab">Date</th><th scope="col" class="lab">Acquirer / target</th><th scope="col" class="lab">Value</th></tr></thead><tbody>'+DEALS.map(function(d){return '<tr><td class="lab">'+esc(d[0])+'</td><th scope="row">'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</th><td>'+esc(d[3])+'</td></tr>'}).join("")+'</tbody></table>'}
 function investSec(){return '<section class="sec dark" id="investors" data-theme="dark"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p></div>'+
   marketStats()+'<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div>'+
@@ -161,7 +161,7 @@ function vScience(){return head({k:"Science",h:"Two targets, <em>one molecule.</
 /* ================= PIPELINE ================= */
 function drugCards(){return '<div class="g-dc">'+PIPE.slice(0,2).map(function(r){return '<article class="g-dc-c"><figure class="g-dc-s">'+img(r.img,"Chemical structure of "+r.drug,r.drug==="LMP744"?384:282,r.drug==="LMP744"?251:243)+'</figure>'+
   '<div><span class="lab kick">'+esc(r.route)+'</span><h3>'+esc(r.drug)+'</h3><p class="g-dc-i">'+esc(r.ind)+'</p><p>'+esc(r.txt)+'</p></div></article>'}).join("")+'</div>'}
-function compete(){return '<ul class="g-cp">'+COMPETE.map(function(c){return '<li'+(c[0]==="Gibson Oncology"?' class="me"':'')+'><span class="lab">'+esc(c[0])+'</span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p></li>'}).join("")+'</ul>'}
+function compete(){return '<div class="g-ct-w"><table class="g-ct"><thead><tr><th scope="col" class="lab">Company</th><th scope="col" class="lab">Drug</th><th scope="col" class="lab">Scope</th></tr></thead><tbody>'+COMPETE.map(function(c){return '<tr'+(c[0]==="Gibson Oncology"?' class="me"':'')+'><th scope="row">'+esc(c[0])+'</th><td>'+esc(c[1])+'</td><td>'+esc(c[2])+'</td></tr>'}).join("")+'</tbody></table></div>'}
 function vPipeline(){return head({k:"Pipeline",h:"Brain tumors first, <em>then wider.</em>",p:"LMP744 is in a Phase 2 trial at the NIH. LMP400 has completed Phase 1 and is headed for Phase 2 with Duke. Over 700 next-generation Azas follow."})+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Programmes</span><h2 class="d2">Six programmes, <em>one class.</em></h2></div><p>Each drug acts on TOPO 1 and cMYC. The path to market targets brain tumors, where competition is low; doctors can then use the drugs in other cancers as merited.</p></div>'+pipe(true)+'</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The molecules</span><h2 class="d2">Small molecules, <em>through Phase 1.</em></h2></div><p>Both lead drugs have completed Phase 1 at the National Cancer Institute, where they were well tolerated.</p></div>'+drugCards()+'</div></section>'+

@@ -76,7 +76,7 @@ function vHome(){
 function cta(){
   return '<section class="sec cta" id="contact" data-theme="dark"><div class="wrap">'+
    '<span class="lab kick" data-r>Medical, laboratory and industrial OEMs</span>'+
-   '<h2 class="big split"><span class="nw">Let’s discuss</span> <em class="nw">your next challenge.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Let’s discuss your</span> <em class="nw">next challenge.</em></h2>'+
    '<p class="sub" data-r>Tell us about your application, standard or custom, and SMD will go to work for you.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to SMD Sensors '+ARR+'</a><a class="btn" href="tel:+12032945800">Call the US office</a></div>'+
    '<div class="cinfo">'+

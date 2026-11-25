@@ -38,8 +38,8 @@ def rosette(cx, cy, n=14, r=26.5):
     return out
 def logo(cls, label=True):
     return ('<svg class="%s" viewBox="0 0 482 120" role="img" aria-label="Galaxy Therapeutics">' % cls +
-            rosette(60, 60) + '<circle class="hd" cx="60" cy="60" r="17"/>'
-            '<text class="gt" x="60" y="67.5" text-anchor="middle" style="font-family:\'Krona One\',sans-serif;font-size:19px;letter-spacing:-.06em">GT</text>'
+            rosette(60, 60) + '<circle class="hd" cx="60" cy="60" r="20"/>'
+            '<text class="gt" x="60" y="66" text-anchor="middle" style="font-family:\'Krona One\',sans-serif;font-size:16px;letter-spacing:-.06em">GT</text>'
             '<text class="gx" x="134" y="70" textLength="338" lengthAdjust="spacing" style="font-family:\'Krona One\',sans-serif;font-size:62px">GALAXY</text>'
             '<text class="th" x="136" y="99" textLength="335" lengthAdjust="spacing" style="font-family:\'Krona One\',sans-serif;font-size:15px">THERAPEUTICS</text></svg>')
 

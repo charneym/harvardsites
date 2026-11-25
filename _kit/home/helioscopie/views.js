@@ -73,7 +73,7 @@ function cta(){
    '<p class="sub">Une question sur nos dispositifs, une démonstration ou un partenariat de distribution : notre équipe vous répond.</p>'+
    '<div class="act"><a class="btn solid" href="mailto:'+MAIL+'">Écrire à Helioscopie '+ARR+'</a><a class="btn" href="#/produits">Voir les produits</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab">Siège et fabrication</span><p>Helioscopie<br>Z.A. Château de Malissol<br>Rue des Frères Lumière<br>38200 Vienne, France</p></div>'+
+    '<div><span class="lab">Siège et fabrication</span><p><span>Helioscopie</span><br><span>Z.A. Château de Malissol</span><br><span>Rue des Frères Lumière</span><br><span>38200 Vienne, France</span></p></div>'+
     '<div><span class="lab">Téléphone</span><p><a class="ul" href="tel:+33474161818">04 74 16 18 18</a></p></div>'+
     '<div><span class="lab">E-mail</span><p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
    '</div>'+

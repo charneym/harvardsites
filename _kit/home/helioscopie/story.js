@@ -33,7 +33,7 @@ function hsScene(o){
   /* step 3: the 6 + 6 month timeline */
   g+='<g id="tl"><path class="rul" d="M30 424H730"/><path class="rul" d="M30 416V432M380 416V432M730 416V432"/>'+
      '<path class="rulp" id="rulp" d="M30 424H380"/><path class="rulq" id="rulq" d="M380 424H730"/>'+
-     '<text class="t" x="30" y="456">'+(mob?"0":"MOIS 0")+'</text><text class="t" x="380" y="456" text-anchor="middle">6 MOIS</text>'+
+     '<text class="t" x="30" y="456">MOIS 0</text><text class="t" x="380" y="456" text-anchor="middle">6 MOIS</text>'+
      '<text class="t" x="730" y="456" text-anchor="end">12 MOIS</text>'+
      '<text class="t s1" x="205" y="404" text-anchor="middle">NEWTECH 600</text><text class="t s2" x="555" y="404" text-anchor="middle">NEWTECH 720</text></g>';
   /* step captions, in the clear band under the scene */

@@ -1,5 +1,5 @@
 /* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
-function prods(){return '<ul class="pfr pipe np vxp">'+PRODS.map(function(c){
+function prods(){return '<ul class="pfr pipe np">'+PRODS.map(function(c){
   return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">More '+ARR+'</a></li>'}).join("")+'</ul>'}
 function team(){
   return '<div class="mh vxmh"><ul class="mh-list">'+TEAM.map(function(p){
@@ -63,6 +63,7 @@ function vHome(){
     '<div data-r><dt class="lab">Memberships</dt><dd>EPIC, the European Photonics Industry Consortium · SpectroNet · GasG</dd></div>'+
     '<div data-r><dt class="lab">Shows</dt><dd><a class="ul" href="https://www.sensor-test.de/en/visitors/search/exhibitor/1831" target="_blank" rel="noopener">SENSOR+TEST 2026, Nuremberg, stand 1-518</a></dd></div>'+
     '<div data-r><dt class="lab">Talks</dt><dd>SpectroNet Conference 2025, Fraunhofer IOSB, Karlsruhe: infrared linear variable filters developed for a Mars rover</dd></div>'+
+    '<div data-r><dt class="lab">Web shop</dt><dd><a class="ul" href="'+VX+'shop/" target="_blank" rel="noopener">Standard infrared filters and linear variable filters</a>, to order online</dd></div>'+
     '<div data-r><dt class="lab">Community</dt><dd>Hinckley RFC, Barwell Cricket Club, Hinckley Area Foodbank, Alternativity and Career Ready mentoring</dd></div>'+
    '</dl></div>'+
   '</div></section>'+

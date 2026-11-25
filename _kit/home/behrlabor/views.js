@@ -94,7 +94,7 @@ function footer(){
    '<div class="c"><span class="lab">Anschrift</span>Behr Labor-Technik GmbH<br>Spangerstraße 8, 40599 Düsseldorf</div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Entdecken</span><a class="ul" href="#/produkte">Produkte</a><br><a class="ul" href="#/service">Service</a><br><a class="ul" href="#/unternehmen">Unternehmen</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Analytik</span>Lebens- und Futtermittel<br>Umwelt · Elementar<br>Labor-Instrumente</div>'+
+   '<div class="c"><span class="lab">Analytik</span>Lebens- und Futtermittel-, Umwelt- und Elementaranalytik, Labor-Instrumente</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 72" aria-hidden="true"><text x="450" y="58" text-anchor="middle" style="font-family:\'Arimo\',Arial,sans-serif;font-weight:700;font-size:66px;letter-spacing:.06em">behr</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Behr Labor-Technik GmbH</span><span class="lab">Konzept-Website</span><a class="lab ul" href="#main" id="toTop">Nach oben ↑</a></div></footer>';
 }

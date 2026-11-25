@@ -1,0 +1,94 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<!-- Liberate Medical hero render: the VentFree Respiratory Muscle Stimulator control unit, after the firm's own product
+     photograph (liberatemedical.com "BeautyShot_color.jpg"): a blue rounded housing, a light front bezel with +/− marks,
+     a blue inner panel holding the screen (two patient figures, stimulation level, progress bar) and two round keys,
+     the Liberate Medical logo and VentFree wordmark along the bottom. Rendered once offline with three.js to a transparent
+     PNG (HOME_BRIEF option c). The breath waveform is left off the screen: the site draws it live, and this page reports
+     the projected corners of that screen region (window.WAVE) so the hero can map it exactly. -->
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1400,H=+P.get('h')||1180;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.outputColorSpace=THREE.SRGBColorSpace;r.setClearColor(0x000000,0);
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+sc.environmentIntensity=+P.get('ei')||0.55;
+
+const logo=await new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.src='/home/user/harvardsites/liberatemedical/logo-c.png'});
+
+/* ---- face texture: 22 x 16 units at 100 px/unit ---- */
+const FW=22,FH=16,K=100;
+const cv=document.createElement('canvas');cv.width=FW*K;cv.height=FH*K;const g=cv.getContext('2d');
+function rr(x,y,w,h,rad){g.beginPath();g.moveTo(x+rad,y);g.arcTo(x+w,y,x+w,y+h,rad);g.arcTo(x+w,y+h,x,y+h,rad);g.arcTo(x,y+h,x,y,rad);g.arcTo(x,y,x+w,y,rad);g.closePath()}
+g.scale(K,K);
+/* bezel */
+let gr=g.createLinearGradient(0,0,0,FH);gr.addColorStop(0,'#f3f6fa');gr.addColorStop(1,'#dfe5ee');g.fillStyle=gr;g.fillRect(0,0,FW,FH);
+/* inner blue panel */
+gr=g.createLinearGradient(0,1.6,0,12.2);gr.addColorStop(0,'#3a73c4');gr.addColorStop(1,'#2a5eae');g.fillStyle=gr;rr(3.1,1.5,15.8,10.7,.9);g.fill();
+/* screen */
+gr=g.createLinearGradient(0,2.1,0,9.5);gr.addColorStop(0,'#0a1a36');gr.addColorStop(1,'#050f22');g.fillStyle=gr;rr(3.9,2.1,14.2,7.4,.22);g.fill();
+/* status line */
+g.fillStyle='rgba(255,255,255,.82)';g.font='600 .34px Arial';g.textAlign='center';g.fillText('TREATMENT',11,2.66);
+g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=.05;g.strokeRect(16.75,2.38,.72,.32);g.fillStyle='#7ee0a0';g.fillRect(16.81,2.44,.5,.2);g.fillStyle='rgba(255,255,255,.8)';g.fillRect(17.47,2.48,.06,.12);
+/* two patient figures (head + shoulders), light blue, as on the device */
+function fig(cx){g.fillStyle='#f4f8fc';g.beginPath();g.arc(cx,3.72,.42,0,Math.PI*2);g.fill();
+ g.fillStyle='#6cc4f4';g.beginPath();g.moveTo(cx-.72,5.9);g.lineTo(cx-.52,4.5);g.quadraticCurveTo(cx,4.18,cx+.52,4.5);g.lineTo(cx+.72,5.9);g.closePath();g.fill();
+ g.fillStyle='#f4f8fc';g.font='700 1.0px Arial';g.textAlign='center';g.fillText('30',cx,7.15)}
+fig(5.75);fig(16.25);
+/* progress bar */
+g.strokeStyle='rgba(255,255,255,.75)';g.lineWidth=.05;g.strokeRect(4.6,7.95,10.4,.55);g.fillStyle='#e9f1fb';g.fillRect(4.66,8.01,2.2,.43);
+g.fillStyle='rgba(255,255,255,.85)';g.font='600 .36px Arial';g.textAlign='right';g.fillText('25:10',17.4,8.36);
+/* two round keys */
+function key(cx,ic){let kg=g.createRadialGradient(cx-.15,10.6,.05,cx,10.75,.62);kg.addColorStop(0,'#ffffff');kg.addColorStop(1,'#d5dde8');g.fillStyle=kg;g.beginPath();g.arc(cx,10.75,.6,0,Math.PI*2);g.fill();
+ g.fillStyle='#2a5eae';g.strokeStyle='#2a5eae';g.lineWidth=.07;
+ if(ic==='m'){[-.17,0,.17].forEach(d=>{g.fillRect(cx-.25,10.75+d-.03,.5,.06)})}else{g.beginPath();g.moveTo(cx-.22,10.53);g.lineTo(cx+.06,10.75);g.lineTo(cx-.22,10.97);g.closePath();g.fill();g.fillRect(cx+.1,10.55,.06,.4);g.fillRect(cx+.22,10.55,.06,.4)}}
+key(5.0,'m');key(17.0,'p');
+/* + / − marks on the bezel */
+g.fillStyle='#2a5eae';[1.55,20.45].forEach(x=>{g.fillRect(x-.32,4.2-.04,.64,.08);g.fillRect(x-.04,4.2-.32,.08,.64);g.fillRect(x-.32,7.4-.04,.64,.08)});
+/* logo + VentFree along the bottom */
+const lh=1.55,lw=lh*logo.width/logo.height;g.drawImage(logo,3.6,12.95,lw,lh);
+g.font='300 1.15px Arial';g.textAlign='left';const vx=13.7,vy=14.25;g.fillStyle='#1b4e9e';g.fillText('Vent',vx,vy);const vw=g.measureText('Vent').width;g.fillStyle='#14aee2';g.fillText('Free',vx+vw,vy);
+g.font='300 1.15px Arial';const fw2=g.measureText('Free').width;g.font='300 .38px Arial';g.fillStyle='#14aee2';g.fillText('™',vx+vw+fw2+.06,vy-.72);
+const tex=new THREE.CanvasTexture(cv);tex.colorSpace=THREE.SRGBColorSpace;tex.anisotropy=8;
+
+/* ---- the unit ---- */
+const obj=new THREE.Group();
+const DW=24,DH=18,DD=5.4;
+const housing=new THREE.Mesh(new RoundedBoxGeometry(DW,DH,DD,8,1.6),new THREE.MeshPhysicalMaterial({color:0x4f86cf,roughness:.42,clearcoat:.5,clearcoatRoughness:.35}));
+housing.castShadow=true;obj.add(housing);
+const shp=new THREE.Shape();(function(){const x0=-FW/2,y0=-FH/2,x1=FW/2,y1=FH/2,q=1.7;shp.moveTo(x0+q,y0);shp.lineTo(x1-q,y0);shp.quadraticCurveTo(x1,y0,x1,y0+q);shp.lineTo(x1,y1-q);shp.quadraticCurveTo(x1,y1,x1-q,y1);shp.lineTo(x0+q,y1);shp.quadraticCurveTo(x0,y1,x0,y1-q);shp.lineTo(x0,y0+q);shp.quadraticCurveTo(x0,y0,x0+q,y0)})();
+const fg=new THREE.ExtrudeGeometry(shp,{depth:.25,bevelEnabled:true,bevelThickness:.12,bevelSize:.12,bevelSegments:4,curveSegments:24});
+/* planar UVs from x/y for every vertex so the front cap shows the texture */
+const pa=fg.attributes.position,uv=fg.attributes.uv;for(let i=0;i<pa.count;i++){uv.setXY(i,pa.getX(i)/FW+.5,pa.getY(i)/FH+.5)}uv.needsUpdate=true;
+const fgp=new THREE.Group();fgp.scale.set(.9,.9,1);obj.add(fgp);
+const face=new THREE.Mesh(fg,new THREE.MeshPhysicalMaterial({map:tex,roughness:.5,clearcoat:.25,clearcoatRoughness:.4}));
+const FZ=DD/2-.15;face.position.z=FZ;fgp.add(face);
+const fzTop=FZ+.25+.12;
+/* glass over the screen */
+const gl=new THREE.Mesh(new THREE.PlaneGeometry(14.2,7.4),new THREE.MeshPhysicalMaterial({color:0x000000,transparent:true,opacity:.18,roughness:.06,clearcoat:1,clearcoatRoughness:.05,metalness:0}));
+gl.position.set(0,8-5.8,fzTop+.01);fgp.add(gl);
+/* a pole clamp on the back, as mounted in the photo */
+const cl=new THREE.Mesh(new RoundedBoxGeometry(5,6,2.4,4,.5),new THREE.MeshPhysicalMaterial({color:0x2f3742,roughness:.5}));cl.position.set(0,0,-DD/2-1);obj.add(cl);
+
+obj.rotation.set(+P.get('rx')||0.05,+P.get('ry')||-0.42,+P.get('rz')||0);
+sc.add(obj);
+
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||24,W/H,.1,300);
+cam.position.set(0,+P.get('cy')||3,+P.get('cz')||78);cam.lookAt(0,0,0);
+const key1=new THREE.DirectionalLight(0xffffff,+P.get('kl')||2.6);key1.position.set(-22,26,30);sc.add(key1);
+const fill=new THREE.DirectionalLight(0xd6e6ff,+P.get('fl')||.6);fill.position.set(24,-6,18);sc.add(fill);
+const rim=new THREE.DirectionalLight(0x6fc6ef,+P.get('rl')||2.2);rim.position.set(18,10,-20);sc.add(rim);
+r.render(sc,cam);
+obj.updateMatrixWorld(true);
+/* waveform region on the screen, in face coords x 7.5..14.5, y 3.25..6.75 (y down) */
+const pr=(fx,fy)=>{const v=new THREE.Vector3(fx-FW/2,FH/2-fy,fzTop+.02).applyMatrix4(fgp.matrixWorld).project(cam);return [(v.x+1)/2*W,(1-v.y)/2*H]};
+window.WAVE={tl:pr(7.5,3.25),tr:pr(14.5,3.25),bl:pr(7.5,6.75),br:pr(14.5,6.75),W,H};
+window.DONE=r.domElement.toDataURL('image/png');
+</script></body></html>

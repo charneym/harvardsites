@@ -46,13 +46,14 @@ function band(o){return '<section class="g-band '+(o.cls||"")+'" data-theme="dar
 function needBand(){return band({img:"band-brain.webp",w:2000,h:1500,k:"Glioblastoma",h:"It comes back in <em>nearly all patients.</em>",
   stats:[["3.27","U.S. cases per 100,000, age-adjusted"],["66","Median age at diagnosis"],["6–10 mo","Typical median survival once it recurs"]],src:"CBTRUS 2025; Penn Medicine, June 2025."})}
 
-/* pipeline chart: stage bars across four phases */
-function pipe(full){return '<div class="g-pipe"><div class="g-pipe-hd" aria-hidden="true"><span class="lab">Programme</span><div class="g-pipe-st">'+STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</div></div>'+
-  PIPE.map(function(r){return '<div class="g-pr"><div class="g-pr-n"><h3>'+esc(r.drug)+'</h3><span class="lab">'+esc(r.route)+'</span></div>'+
-   '<div class="g-pr-b"><p class="g-pr-i">'+esc(r.ind)+'</p><div class="g-bar" style="--r:'+r.reach+'" role="img" aria-label="'+esc(r.drug)+': '+esc(r.live)+'"><span class="g-bar-t"></span><span class="g-bar-f"></span><span class="lab g-bar-l">'+esc(r.live)+'</span></div>'+
-   '<p class="g-pr-w">'+esc(r.who)+'</p>'+(full?'<p class="g-pr-x">'+esc(r.txt)+'</p>':'')+'</div></div>'}).join("")+'</div>'}
+/* pipeline chart: their six programmes (gibsononcology.com/our-pipeline), grouped as they group them, bars across three phases */
+function pipe(full){var gs=[];PROG.forEach(function(r){if(gs.indexOf(r.g)<0)gs.push(r.g)});
+  return '<div class="g-pipe"><div class="g-pipe-hd" aria-hidden="true"><span class="lab">Programme</span><div class="g-pipe-st">'+PROG_STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</div></div>'+
+  gs.map(function(g){return '<div class="g-pg"><span class="lab g-pg-l">'+esc(g)+'</span>'+PROG.filter(function(r){return r.g===g}).map(function(r){return '<div class="g-pr"><div class="g-pr-n"><span class="lab g-pr-c">'+esc(r.code)+'</span><h3>'+esc(r.drug)+'</h3></div>'+
+   '<div class="g-pr-b"><p class="g-pr-i">'+esc(r.ind)+'</p><div class="g-bar" style="--r:'+r.reach+'" role="img" aria-label="'+esc(r.code+' '+r.drug)+': '+esc(r.live)+'"><span class="g-bar-t"></span><span class="g-bar-f"></span><span class="lab g-bar-l">'+esc(r.live)+'</span></div>'+
+   (full?'<p class="g-pr-x">'+esc(r.note)+'</p>':'')+'</div></div>'}).join("")+'</div>'}).join("")+'</div>'}
 function pipeSec(){return '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
-  '<div class="shead"><div><span class="lab kick">Pipeline</span><h2 class="d2">Brain tumors first, <em>then wider.</em></h2></div><p>Three drugs from one class. LMP744 is in Phase 2 at the NIH, LMP400 has finished Phase 1 and is headed for Phase 2 with Duke, and the Azas follow.</p></div>'+
+  '<div class="shead"><div><span class="lab kick">Pipeline</span><h2 class="d2">Brain tumors first, <em>then wider.</em></h2></div><p>Six programmes from one class of drugs. LMP744 is in Phase 2 at the NIH, LMP400 has finished Phase 1 and is headed for Phase 2 with Duke, and the oral Azas follow.</p></div>'+
   pipe(false)+'<div class="g-act">'+more("#/pipeline","The full pipeline")+'</div></div></section>'}
 
 /* designations and IP, beside the multi-well plate photograph */
@@ -71,7 +72,7 @@ function investSec(){return '<section class="sec dark" id="investors" data-theme
   '<div class="g-act">'+more("#/investors","Investor overview")+'</div></div></section>'}
 
 /* people: a uniform portrait grid (CI), duotone that warms to colour on hover */
-function people(list,cls){return '<ul class="g-pp '+(cls||"")+'">'+list.map(function(p){return '<li><figure class="g-pp-ph">'+img(p.img,"Portrait of "+p.name,495,619)+'</figure><h3>'+esc(p.name)+'</h3><p>'+esc(p.title)+'</p></li>'}).join("")+'</ul>'}
+function people(list,cls){return '<ul class="g-pp '+(cls||"")+'">'+list.map(function(p){return '<li><figure class="g-pp-ph">'+img(p.img,"Portrait of "+p.name,495,619)+'</figure><h3>'+esc(p.name)+'</h3><p>'+esc(p.title)+'</p>'+(p.b?'<span class="lab g-pp-b">Board member</span>':'')+'</li>'}).join("")+'</ul>'}
 function teamSec(){return '<section class="sec light" id="team" data-theme="light"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Leadership</span><h2 class="d2">Chemists, clinicians <em>and company builders.</em></h2></div><p>The team has built over a billion dollars in new companies, including others with drugs now approved to treat cancer. Its scientific founder designed the molecules.</p></div>'+
   people(TEAM)+'<div class="g-act">'+more("#/team","Team and collaborators")+'</div></div></section>'}
@@ -89,7 +90,7 @@ function cta(){
    '<div class="act"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="#/investors">Investor overview</a></div>'+
    '<div class="cinfo">'+
     '<div><span class="lab">President and CEO</span><p>Randall B. Riggs<br><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></p></div>'+
-    '<div><span class="lab">General enquiries</span><p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
+    '<div><span class="lab">General enquiries</span><p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:+13056747072">'+PHONE+'</a></p></div>'+
     '<div><span class="lab">Headquarters</span><p>7772 Fisher Drive<br>Miami, FL 33109</p></div>'+
    '</div>'+
   '</div></section>';
@@ -99,7 +100,7 @@ function footer(){
    '<div class="c"><span class="lab">Headquarters</span>7772 Fisher Drive<br>Miami, FL 33109</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">Science</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/partners">Partners</a><br><a class="ul" href="#/team">Team</a></div>'+
-   '<div class="c"><span class="lab">More</span><a class="ul" href="#/investors">Investors</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/contact">Contact</a></div>'+
+   '<div class="c"><span class="lab">More</span><a class="ul" href="#/investors">Investors</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/publications">Publications</a><br><a class="ul" href="#/contact">Contact</a></div>'+
   '</div><svg class="bigsvg" viewBox="0 0 560 62" aria-hidden="true"><text x="280" y="52" text-anchor="middle" style="font-family:\'Manrope\',system-ui,sans-serif;font-weight:600;font-size:60px;letter-spacing:-.03em">Gibson Oncology</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Gibson Oncology</span><span class="lab">Tough on cancer. Not on patients.</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
@@ -143,22 +144,27 @@ function caps(){var C=[
   ["It reduces cMYC","cMYC, the largest human oncogene, drives about 80% of all human cancers and has long been called undruggable. The same molecules bind and stabilise the G-quadruplex in the MYC promoter and lower MYC expression.",'<path d="M10 22l18-8 18 8-18 8z"/><path d="M10 31l18-8 18 8-18 8z"/><path class="a" d="M10 40l18-8 18 8-18 8z"/><circle class="f" cx="28" cy="10" r="3.4"/>']];
   return '<div class="caps">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[2]+'</svg><h3>'+esc(c[0])+'</h3><p>'+esc(c[1])+'</p></div>'}).join("")+'</div>'}
 function evid(){return '<dl class="g-ev">'+EVID.map(function(e){return '<div><dt class="lab">'+esc(e[0])+'</dt><dd>'+esc(e[1])+'.</dd></div>'}).join("")+'</dl>'}
+function rationale(){return '<ol class="g-rq">'+RATIONALE.map(function(r){return '<li><h3>'+esc(r[0])+'</h3><p>'+esc(r[1])+'</p></li>'}).join("")+'</ol>'}
+function mech(){var M=[["Non-camptothecin TOPO 1 activity","A class distinct from the camptothecins such as irinotecan."],["cMYC activity via the G-quadruplex","The drugs bind and stabilise the G-quadruplex in the MYC promoter."],["Selective for HRD and SLFN11-positive cancers","With “synergistic cytotoxicity” with PARP inhibitors."],["Untouched by key efflux transporters","“Not affected by many efflux drug transporters including key ones found at the BBB” (NIH)."],["Activity after many failed drugs","In NCI Phase 1 trials, patients who had failed 7 or 8 drugs showed “prolonged stabilization of disease with prior progression on irinotecan” (NIH)."],["PTEN-deficient tumors","Gibson animal studies show LMP400 works in multiple kinds of PTEN-deficient tumors; NIH studies found low-dose LMP400 with niraparib effective in PTEN-deficient brain tumor models."]];
+  return '<dl class="g-ds g-ds-2">'+M.map(function(m){return '<div><dt>'+esc(m[0])+'</dt><dd>'+esc(m[1])+'</dd></div>'}).join("")+'</dl>'}
 function vScience(){return head({k:"Science",h:"Two targets, <em>one molecule.</em>",p:"Gibson’s indenoisoquinolines cross the blood-brain barrier, trap topoisomerase 1 on the DNA and reduce overexpression of cMYC. Two commercially validated targets, hit by the same small molecule."})+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">Three properties</span><h2 class="d2">Built for <em>brain cancer.</em></h2></div><p>LMP744 and LMP400 were designed by Mark Cushman’s group at Purdue University and taken through Phase 1 by the National Cancer Institute. When Gibson found that LMP744 crosses the blood-brain barrier, the NIH began its brain cancer research.</p></div>'+caps()+'</div></section>'+
   '<section class="sec dark2 g-split" data-theme="dark"><div class="wrap g-split-in">'+
    '<figure class="g-fig">'+img("fig-dual-action.webp","Gibson’s diagram of the dual action: the drug stabilises the MYC promoter G-quadruplex, switching MYC transcription off, and inhibits topoisomerase 1",873,463)+'<figcaption class="lab">Dual action attack on cancer: stabilise the cMYC promoter, inhibit TOPO 1</figcaption></figure>'+
    '<div class="g-split-t"><span class="lab kick">The second target</span><h2 class="d2">cMYC, <em>turned down.</em></h2><p class="g-p">Upstream of the MYC gene, the DNA can fold into a four-stranded knot called a G-quadruplex. The indenoisoquinolines bind and stabilise it, and MYC transcription falls.</p>'+
    '<blockquote class="g-mini"><p>“In vitro studies showed a marked reduction in MYC expression following treatment, indicating that MYC may present a key therapeutic target of this compound.”</p><footer>Yanxin Pei, PhD, Children’s National Research Institute</footer></blockquote></div></div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The rationale</span><h2 class="d2">Seven requirements <em>for a brain cancer drug.</em></h2></div><p>Gibson’s case for LMP744 and LMP400 in brain cancer, requirement by requirement. Documented activity in brain tumors from drugs that have already been through Phase 1 is strong evidence of their potential.</p></div>'+rationale()+'</div></section>'+
   band({img:"lab-study.webp",w:2000,h:1333,cls:"g-band-r",k:"Origins",h:"Invented at the NIH and Purdue, <em>licensed to Gibson.</em>",p:"Three indenoisoquinolines, LMP744, LMP400 and LMP776, came out of Mark Cushman’s laboratory at Purdue and the National Cancer Institute, which took them through Phase 1. Gibson holds the worldwide commercial rights, and to the next-generation azaindenoisoquinolines."})+
   '<section class="sec dark g-split" data-theme="dark"><div class="wrap g-split-in"><figure class="g-split-m">'+img("gel.webp","A scientist analysing DNA gel electrophoresis results",2000,1500)+'</figure><div class="g-split-t"><span class="lab kick">The clinical record</span><h2 class="d2">Tested in people <em>before the brain.</em></h2><p class="g-p">LMP744 reached its Phase 2 trial in glioblastoma on the strength of two National Cancer Institute Phase 1 trials.</p>'+evid()+
-   '<p class="g-src">Purdue University, “Gibson Oncology, NIH to begin Phase 2 trials of LMP744 for treatment of first-time recurrent glioblastoma”, 25 February 2026; gibsononcology.com.</p></div></div></section>'+cta()}
+   '<p class="g-src">Purdue University, “Gibson Oncology, NIH to begin Phase 2 trials of LMP744 for treatment of first-time recurrent glioblastoma”, 25 February 2026; gibsononcology.com.</p></div></div></section>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Mechanisms of action</span><h2 class="d2">What sets the class <em>apart.</em></h2></div><p>From the National Cancer Institute’s preclinical and Phase 1 work on the indenoisoquinolines.</p></div>'+mech()+'<div class="g-act">'+more("#/publications","Publications")+'</div></div></section>'+cta()}
 
 /* ================= PIPELINE ================= */
 function drugCards(){return '<div class="g-dc">'+PIPE.slice(0,2).map(function(r){return '<article class="g-dc-c"><figure class="g-dc-s">'+img(r.img,"Chemical structure of "+r.drug,r.drug==="LMP744"?384:282,r.drug==="LMP744"?251:243)+'</figure>'+
   '<div><span class="lab kick">'+esc(r.route)+'</span><h3>'+esc(r.drug)+'</h3><p class="g-dc-i">'+esc(r.ind)+'</p><p>'+esc(r.txt)+'</p></div></article>'}).join("")+'</div>'}
 function compete(){return '<ul class="g-cp">'+COMPETE.map(function(c){return '<li'+(c[0]==="Gibson Oncology"?' class="me"':'')+'><span class="lab">'+esc(c[0])+'</span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p></li>'}).join("")+'</ul>'}
 function vPipeline(){return head({k:"Pipeline",h:"Brain tumors first, <em>then wider.</em>",p:"LMP744 is in a Phase 2 trial at the NIH. LMP400 has completed Phase 1 and is headed for Phase 2 with Duke. Over 700 next-generation Azas follow."})+
-  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Programmes</span><h2 class="d2">Three drugs, <em>one class.</em></h2></div><p>Each acts on TOPO 1 and cMYC. The path to market targets brain tumors, where competition is low; doctors can then use the drugs in other cancers as merited.</p></div>'+pipe(false)+'</div></section>'+
+  '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Programmes</span><h2 class="d2">Six programmes, <em>one class.</em></h2></div><p>Each drug acts on TOPO 1 and cMYC. The path to market targets brain tumors, where competition is low; doctors can then use the drugs in other cancers as merited.</p></div>'+pipe(true)+'</div></section>'+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The molecules</span><h2 class="d2">Small molecules, <em>through Phase 1.</em></h2></div><p>Both lead drugs have completed Phase 1 at the National Cancer Institute, where they were well tolerated.</p></div>'+drugCards()+'</div></section>'+
   '<section class="sec dark g-split" data-theme="dark"><div class="wrap g-split-in">'+
    '<figure class="g-split-m">'+img("pipette.webp","Pipetting samples into a tray for DNA testing",2000,1500)+'</figure>'+
@@ -190,16 +196,25 @@ function vInvestors(){return head({k:"Investors",h:"Why invest <em>in Gibson.</e
    '<dl class="g-ds g-ds-s"><div><dt>Randall B. Riggs</dt><dd>President and Chief Executive Officer · <a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></dd></div><div><dt>Theodore C. Solomon</dt><dd>Founder and Chief Financial Officer · via <a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></dd></div><div><dt>Mark C. Rogers, MD, MBA</dt><dd>Founder and Executive Chair</dd></div></dl></div></div></section>'+
   '<section class="sec dark2" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Competitive position</span><h2 class="d2">All gliomas, <em>not one mutation.</em></h2></div><p>The recent glioma drugs that changed hands each target a specific mutation and a smaller market.</p></div>'+compete()+'</div></section>'+cta()}
 
+/* ================= PUBLICATIONS ================= */
+function pubList(){var cs=[];PUBS.forEach(function(p){if(cs.indexOf(p[0])<0)cs.push(p[0])});
+  return cs.map(function(c){return '<div class="g-pb-g"><h2 class="g-pb-h">'+esc(PUBCATS[c])+'</h2><ul class="g-pb">'+PUBS.filter(function(p){return p[0]===c}).map(function(p){
+   return '<li><a href="'+esc(p[5])+'" target="_blank" rel="noopener"><span class="lab g-pb-y">'+esc(p[3])+'</span><span class="g-pb-t"><b>'+esc(p[1])+'</b><i>'+esc(p[2])+(p[4]?' · '+esc(p[4]):'')+'</i></span><span class="g-pb-a">'+ARRS+'</span></a></li>'}).join("")+'</ul></div>'}).join("")}
+function vPublications(){return head({k:"Publications",h:"The science, <em>in print.</em>",p:"The published research behind the indenoisoquinolines: TOPO 1 and cMYC, the blood-brain barrier, brain tumors, the clinical trials and the Azas. "+PUBS.length+" papers, as Gibson lists them."})+
+  '<section class="sec light first" data-theme="light"><div class="wrap"><div class="g-cda"><span class="lab kick">Available under confidentiality</span><p>Important scientific information on LMP400 and LMP744 in glioblastoma and other brain tumors is in Gibson’s approved FDA Orphan Drug Designation filings, and extensive NIH and Gibson studies in brain tumors await publication. Both, and the blood-brain barrier data, can be viewed under a confidentiality agreement.</p><a class="g-more" href="mailto:'+CEOMAIL+'">Request access '+ARRS+'</a></div>'+pubList()+'</div></section>'+cta()}
+
 /* ================= NEWS ================= */
 function vNews(){return head({k:"News",h:"Trials, designations <em>and science.</em>",p:"The Phase 2 trial, the FDA’s designations and the research behind Gibson’s drugs, linked to the original reports."})+
-  '<section class="sec dark first" data-theme="dark"><div class="wrap">'+newsRowsG(NEWS)+'</div></section>'+cta()}
+  '<section class="sec g-deep first" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">Breaking news</span><h2 class="d2">Three new <em>developments.</em></h2></div><p>From gibsononcology.com.</p></div><ol class="g-bk">'+BREAKING.map(function(b){return '<li><span class="lab">'+esc(b[0])+'</span><p>'+esc(b[1])+'</p></li>'}).join("")+'</ol></div></section>'+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">News and events</span><h2 class="d2">In the <em>record.</em></h2></div><p>Every item, linked to the original report.</p></div>'+newsRowsG(NEWS)+'</div></section>'+
+  '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">Milestones</span><h2 class="d2">Eight years, <em>step by step.</em></h2></div><p>From the acquisition of the drugs in 2018 to the Phase 2 trial now under way.</p></div><ol class="g-ms">'+MILESTONES.map(function(m){return '<li><span class="lab">'+esc(m[0])+'</span><p>'+esc(m[1])+'</p></li>'}).join("")+'</ol></div></section>'+cta()}
 
 /* ================= CONTACT ================= */
 function vContact(){return head({k:"Contact",h:"Talk to <em>Gibson.</em>",p:"Clinicians, partners and investors are welcome. Data on blood-brain barrier transmission and the Phase 2 design are available under a confidentiality agreement."})+
   '<section class="sec light g-split" data-theme="light"><div class="wrap g-split-in">'+
    '<figure class="g-split-m tall">'+img("microscope-v.webp","A scientist studying samples under a microscope",1333,2000)+'</figure>'+
    '<div class="g-split-t"><span class="lab kick">Get in touch</span><h2 class="d2">Write to the <em>CEO directly.</em></h2>'+
-   '<dl class="g-ds g-ds-s"><div><dt>Randall B. Riggs, President and CEO</dt><dd><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></dd></div><div><dt>General enquiries</dt><dd><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></dd></div><div><dt>Headquarters</dt><dd>Gibson Oncology, 7772 Fisher Drive, Miami, FL 33109</dd></div><div><dt>Follow</dt><dd><a class="ul" href="https://www.linkedin.com/company/gibson-oncology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/GibsonOncology" target="_blank" rel="noopener">X</a></dd></div></dl>'+
+   '<dl class="g-ds g-ds-s"><div><dt>Randall B. Riggs, President and CEO</dt><dd><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></dd></div><div><dt>General enquiries</dt><dd><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></dd></div><div><dt>Telephone</dt><dd><a class="ul" href="tel:+13056747072">'+PHONE+'</a></dd></div><div><dt>Headquarters</dt><dd>Gibson Oncology, 7772 Fisher Drive, Miami, FL 33109</dd></div><div><dt>Follow</dt><dd><a class="ul" href="https://www.linkedin.com/company/gibson-oncology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/GibsonOncology" target="_blank" rel="noopener">X</a></dd></div></dl>'+
    '<div class="act g-act-l"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="mailto:'+MAIL+'">General enquiries</a></div></div></div></section>'}
 function v404(){return head({k:"Not found",h:"This page <em>does not exist.</em>",p:"The link may be out of date."})+'<section class="sec dark" data-theme="dark"><div class="wrap"><a class="btn" href="#/">Back to the home page '+ARR+'</a></div></section>'}
 
@@ -207,7 +222,7 @@ function v404(){return head({k:"Not found",h:"This page <em>does not exist.</em>
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   if(!p.length)return {k:"home",v:vHome,t:"Gibson Oncology — Two targets, one molecule: TOPO 1 and cMYC in brain cancer",x:"Home"};
-  var R={science:[vScience,"Science"],pipeline:[vPipeline,"Pipeline"],partners:[vPartners,"Partners"],team:[vTeam,"Team"],investors:[vInvestors,"Investors"],news:[vNews,"News"],contact:[vContact,"Contact"]};
+  var R={science:[vScience,"Science"],pipeline:[vPipeline,"Pipeline"],partners:[vPartners,"Partners"],team:[vTeam,"Team"],investors:[vInvestors,"Investors"],news:[vNews,"News"],publications:[vPublications,"Publications"],contact:[vContact,"Contact"]};
   var r=R[p[0]];if(r&&p.length===1)return {k:p[0],v:r[0],t:r[1]+" — "+SITE,x:r[1]};
   return {k:"404",v:v404,t:"Not found — "+SITE,x:"Not found"};
 }
@@ -216,7 +231,7 @@ function route(h){
 var _initView=initView;
 initView=function(k,first){_initView(k,first);if(RM)return;var view=$("#view");
   $$(".g-band",view).forEach(function(b){var m=$(".g-band-m",b);if(!m)return;gsap.fromTo(m,{yPercent:-7},{yPercent:7,ease:"none",scrollTrigger:{trigger:b,start:"top bottom",end:"bottom top",scrub:true}})});
-  $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.25+i*.1,scrollTrigger:{trigger:f.closest(".g-pipe"),start:"top 80%"}})});
+  $$(".g-bar-f",view).forEach(function(f,i){gsap.fromTo(f,{scaleX:0},{scaleX:1,duration:1.5,ease:"flow",delay:.2+Math.min(i,3)*.07,scrollTrigger:{trigger:f.closest(".g-pg")||f.closest(".g-pipe"),start:"top 80%"}})});
   if(k==="home"&&MOBILE()){var hm=$(".g-hm-row",view);if(hm&&hm.getBoundingClientRect().top>innerHeight*.85)gsap.from($$(".g-hm-row li",view),{opacity:0,y:20,duration:.9,ease:"silk",stagger:.05,scrollTrigger:{trigger:hm,start:"top 92%"}})}
   $$(".g-pt-lg",view).forEach(function(w){gsap.fromTo(w,{opacity:0,y:18},{opacity:1,y:0,duration:1,ease:"silk",scrollTrigger:{trigger:w,start:"top 90%"}})});
   $$(".g-tt-x i",view).forEach(function(l){gsap.fromTo(l,{scaleY:0},{scaleY:1,duration:1.2,ease:"flow",scrollTrigger:{trigger:l,start:"top 85%"}})});

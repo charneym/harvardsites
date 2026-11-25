@@ -4,6 +4,7 @@ var CEOMAIL="rriggs@gibsononcology.com";
 var GO="https://gibsononcology.com/";
 var PU="https://www.purdue.edu/newsroom/2026/Q1/gibson-oncology-nih-to-begin-phase-2-trials-of-lmp744-for-treatment-of-first-time-recurrent-glioblastoma/";
 var IMG="img/";
+var PHONE="305-674-7072";
 /* Sources: the client's November 2026 investor deck and three letters of support (_kit/priority/gibson/materials.md),
    gibsononcology.com (home, Lead Program, Additional Programs, Leadership Team, Scientific Collaborators, News and Events),
    and the Purdue University release of 25 February 2026. Nothing here is invented; animal data are labelled preclinical. */
@@ -50,12 +51,59 @@ var PIPE=[
   txt:"The next generation of the class, among them G-103, designed for oral administration. Over 700 rationally designed compounds, with intellectual property running beyond 2038.",img:null}];
 var STAGES=["Preclinical","Phase 1","Phase 2","Phase 3"];
 
+/* the pipeline as gibsononcology.com/our-pipeline shows it (six programmes), brought up to date with the November 2026 deck.
+   reach runs 0..3 across Preclinical / Phase 1 / Phase 2. Conflicts between site and deck are logged in BUILD_NOTES.md. */
+var PROG_STAGES=["Preclinical","Phase 1","Phase 2"];
+var PROG=[
+ {g:"Brain tumors",code:"DC-101",drug:"LMP744",ind:"Glioblastoma (first-time recurrent); residual glioma",reach:2.5,live:"Phase 2",
+  note:"NIH (NINDS) Phase 2 trial under way since June 2026, with NINDS paying the majority of clinical costs. Mayo Clinic: investigator-sponsored trial in residual glioma."},
+ {g:"Brain tumors",code:"DC-103",drug:"LMP400",ind:"Grade 3 and grade 4 astrocytoma",reach:2,live:"Phase 2 planned",
+  note:"Phase 1 complete. Duke has filed a $15 million SPORE grant for a Phase 2 trial in resistant grade 3 astrocytomas; Children’s National is studying pediatric brain tumors."},
+ {g:"Other cancers",code:"DC-102",drug:"LMP744",ind:"Relapsed solid tumors, lymphoma",reach:2,live:"Phase 1 complete",
+  note:"NCI Phase 1: two partial responses, and tumors held stable for up to 18 months in 35% of patients."},
+ {g:"Other cancers",code:"DC-104",drug:"LMP400",ind:"Relapsed solid tumors, lymphoma",reach:2,live:"Phase 1 complete",
+  note:"A PTEN endometrial PDX study is done. FDA Rare Pediatric Disease Designation for Ewing’s sarcoma."},
+ {g:"Other cancers",code:"DC-105",drug:"LMP776",ind:"Relapsed solid tumors, lymphoma",reach:2,live:"Phase 1 complete",
+  note:"Indimitecan, the third licensed indenoisoquinoline, through NCI Phase 1."},
+ {g:"Other cancers",code:"DC-106",drug:"G-103",ind:"The Azas: hematologic and solid tumors",reach:1,live:"Preclinical",
+  note:"Oral administration. One of over 700 rationally designed Aza compounds, protected beyond 2038."}];
+
+/* gibsononcology.com/brain-cancer: the rationale, in their seven requirements */
+var RATIONALE=[
+ ["It must cross the blood-brain barrier","Both LMP744 and LMP400 easily cross the barrier, are not pumped out by drug transporters, and accumulate in the brain for up to 24 hours after a single dose."],
+ ["Its doses must be proven safe in trials","LMP744 and LMP400 have been shown to be safe in multiple Phase 1 trials in solid tumors and lymphomas."],
+ ["Its mechanisms must matter in brain cancer","It reduces overexpression of the cMYC oncogene and inhibits TOPO 1, both well-known targets in brain cancer."],
+ ["Its mechanisms must be impressive","Shown to the FDA, they won Gibson an orphan drug designation broader than the company had requested."],
+ ["Strong preclinical activity in glioblastoma","Extensive NIH studies of LMP744 led to the Phase 2 trial in patients whose glioblastoma has failed one drug."],
+ ["Effect across several brain tumors","Beyond glioblastoma, NIH studies have shown evidence of effect in multiple other brain tumors."],
+ ["Independent confirmation","Duke University has shown that LMP400 slows tumor growth in IDH-mutant astrocytoma models."]];
+
+/* gibsononcology.com/news-and-events-2: "Breaking news" */
+var BREAKING=[
+ ["NINDS · Phase 2 trial with LMP744","The NINDS has begun treating patients in the Phase 2 study of LMP744 in glioblastoma patients who have failed their initial drug. The first patient has completed the first course of treatment without complications."],
+ ["Mayo Clinic · Residual tumor reduction","Mayo Clinic is beginning a trial of LMP744 to reduce residual tumor in glioblastoma patients in a period of temporary stability after radiation and temozolomide, to decrease the likelihood of recurrence."],
+ ["Duke University · Preclinical studies of LMP400","The Preston Robert Tisch Brain Tumor Center has run multiple PDX studies of LMP400 in ATRX-deficient glioblastoma, leading to advanced animal studies designed to support new clinical studies in brain tumors."]];
+
+/* milestones: dated items from their news page and the November 2026 deck */
+var MILESTONES=[
+ ["Sep 2018","Gibson acquires three clinical non-camptothecin TOPO 1 drugs from Linus Oncology"],
+ ["Dec 2018","FDA Rare Pediatric Disease Designation for LMP400 in Ewing sarcoma"],
+ ["Feb 2020","Exclusive commercial rights to the cMYC-inhibiting indenoisoquinolines"],
+ ["May 2020","Worldwide rights to the azaindenoisoquinolines from Purdue and the NCI"],
+ ["Oct 2023","FDA Orphan Drug Designation for LMP400 in glioma"],
+ ["Oct 2024","FDA Orphan Drug Designation for LMP744 in glioma"],
+ ["Feb 2026","Gibson and the NIH announce the Phase 2 trial of LMP744"],
+ ["Jun 2026","The NINDS Phase 2 trial of LMP744 begins, NINDS paying most clinical costs"],
+ ["Sep 2026","Letters of support from Duke and Children’s National"],
+ ["Oct 2026","Phase 2 update at the 28th Annual Blood-Brain Barrier Consortium"]];
+
+
 /* regulatory and IP (deck slide 12) */
 var DESIG=[
  ["FDA Orphan Drug Designation","LMP744 and LMP400, for all glioma brain tumors. Duke: the FDA gave Gibson “a wider ODD coverage than Gibson asked for.”"],
  ["FDA Rare Pediatric Disease Designation","LMP400, for Ewing’s sarcoma."],
- ["Patents beyond 2041","Strong intellectual property for LMP744 and LMP400."],
- ["700+ compounds, IP beyond 2038","The next-generation azaindenoisoquinolines (Azas), rationally designed."]];
+ ["Patents beyond 2041","U.S. and international composition-of-matter patents for LMP744 and LMP400, with new composition-of-matter patents filed."],
+ ["700+ compounds, IP beyond 2038","The next-generation azaindenoisoquinolines (Azas), with U.S. and international patents filed and oral administration possible."]];
 
 /* market and transactions (deck slides 3, 6, 9) */
 var MARKET=[["$3.2B","Glioblastoma market, 2025"],["$6.9B","Projected by 2035 (CAGR 7.8%)"],["3.27","U.S. cases per 100,000 (age-adjusted)"],["6–10 mo","Typical median survival in recurrent disease"]];
@@ -71,13 +119,13 @@ var REASONS=[
 
 /* people (gibsononcology.com, Leadership Team and Board of Directors; Scientific Collaborators). Portraits are theirs. */
 var TEAM=[
- {name:"Mark C. Rogers, MD, MBA",title:"Founder and Executive Chair",img:"p-rogers.webp"},
- {name:"Randall B. Riggs",title:"President and Chief Executive Officer",img:"p-riggs.webp"},
- {name:"Theodore C. Solomon",title:"Founder and Chief Financial Officer",img:"p-tsolomon.webp"},
- {name:"Elizabeth London Rogers, MD",title:"Founder and Chief Operations Officer",img:"p-erogers.webp"},
- {name:"Clifford T. Solomon, MD",title:"Founder and Chief Medical Officer; Clinical Professor, UM Neurosurgery",img:"p-csolomon.webp"},
- {name:"Mark S. Cushman, PhD, PharmD",title:"Founder and Chief Scientific Officer; Distinguished Professor Emeritus, Purdue",img:"p-cushman.webp"},
- {name:"Mark D. Baganz, MD",title:"Independent Director",img:"p-baganz.webp"}];
+ {name:"Mark C. Rogers, MD, MBA",title:"Founder and Executive Chair",b:1,img:"p-rogers.webp"},
+ {name:"Randall B. Riggs",title:"President and Chief Executive Officer",b:1,img:"p-riggs.webp"},
+ {name:"Theodore C. Solomon",title:"Founder and Chief Financial Officer",b:1,img:"p-tsolomon.webp"},
+ {name:"Elizabeth London Rogers, MD",title:"Founder and Chief Operations Officer",b:1,img:"p-erogers.webp"},
+ {name:"Clifford T. Solomon, MD",title:"Founder and Chief Medical Officer; Clinical Professor, UM Neurosurgery",b:1,img:"p-csolomon.webp"},
+ {name:"Mark S. Cushman, PhD, PharmD",title:"Founder and Chief Scientific Officer; Distinguished Professor Emeritus, Purdue",b:1,img:"p-cushman.webp"},
+ {name:"Mark D. Baganz, MD",title:"Independent Director",b:1,img:"p-baganz.webp"}];
 var COLLAB=[
  {name:"Sadhana Jackson, MD",title:"NIH Investigator; Head of Developmental Therapeutics & Pharmacology, NINDS/NCI",img:"p-jackson.webp"},
  {name:"Matthew Waitkus, PhD",title:"Assistant Professor in Neurosurgery and Pathology, Duke Cancer Institute",img:"p-waitkus.webp"},
@@ -91,17 +139,19 @@ var COLLAB=[
 
 /* news: only items with a working link (gibsononcology.com News and Events). [date, headline, source, url] */
 var NEWS=[
- ["October 2026","Dr. Sadhana Jackson presents an update on the NINDS Phase 2 trial of LMP744 at the 28th Annual Blood-Brain Barrier Consortium","Gibson Oncology",GO+"news-and-events/"],
- ["February 2026","Gibson Oncology and NIH begin Phase 2 trials of LMP744 in first-time recurrent glioblastoma","Purdue University",PU],
- ["October 2024","FDA grants orphan drug designation to LMP744 for glioma","OncLive","https://www.onclive.com/view/fda-grants-orphan-drug-designation-to-lmp744-for-glioma"],
- ["July 2024","2024 Topoisomerases in Biology and Medicine Conference","FIU","https://case.fiu.edu/news-events/topoisomerases-in-biology-and-medicine-conference/"],
- ["October 2023","FDA grants orphan drug designation to indotecan (LMP400) for the treatment of glioma","NCI Center for Cancer Research","https://ccr.cancer.gov/news/article/fda-grants-orphan-drug-designation-to-indotecan-for-the-treatment-of-glioma"],
- ["September 2023","Powerful drug combination kills glioblastoma tumors containing a unique genetic makeup","NCI Center for Cancer Research","https://ccr.cancer.gov/neuro-oncology-branch/powerful-drug-combination-kills-glioblastoma-tumors-containing-a-unique-genetic-makeup"],
- ["April 2021","Gibson congratulates Dr. Danzhou Yang as Distinguished Professor of Medicinal Chemistry and Molecular Pharmacology at Purdue","Business Wire","https://www.businesswire.com/news/home/20210422005301/en/Gibson-Oncology-Congratulates-Dr.-Danzhou-Yang-as-Distinguished-Professor-of-Medicinal-Chemistry-and-Molecular-Pharmacology-at-Purdue-University"],
- ["May 2020","Gibson secures worldwide rights to the azaindenoisoquinolines and expands its Scientific Advisory Board for its cMYC programme","Business Wire","https://www.businesswire.com/news/home/20200520005015/en/Gibson-Oncology-Expands-its-Scientific-Advisory-Board-for-Novel-Oncology-cMYC-Program"],
- ["February 2020","BRCAness, SLFN11 and RB1 loss predict response to topoisomerase I inhibitors in triple-negative breast cancers","Science Translational Medicine","https://www.science.org/doi/10.1126/scitranslmed.aax2625"],
- ["February 2020","Gibson obtains exclusive commercial rights to novel anti-cancer drugs that inhibit the cMYC oncogene","Business Wire","https://www.businesswire.com/news/home/20200210005202/en/Gibson-Oncology-Obtains-Exclusive-Commercial-Rights-to-Novel-Anti-Cancer-Drugs-That-Inhibit-the-Undruggable-cMyc-Oncogene-a-Key-Driver-for-the-Majority-of-Cancers"],
- ["December 2018","LMP400 receives FDA Rare Pediatric Disease Designation for the treatment of Ewing sarcoma","BioSpace","https://www.biospace.com/gibson-s-novel-anti-cancer-drug-lmp-400-receives-fda-rare-pediatric-disease-designation-for-the-treatment-of-ewing-sarcoma"]];
+ ["October 15, 2026","Dr. Sadhana Jackson presents an update on the NINDS Phase 2 trial of LMP744, a novel cMYC / TOPO 1 inhibitor, at the 28th Annual Blood-Brain Barrier Consortium","Conference details","https://cmetracker.net/PPMC/Publisher?page=pubOpen#/featured"],
+ ["February 25, 2026","Gibson Oncology and NIH begin Phase 2 trials of LMP744 in first-time recurrent glioblastoma","Purdue University",PU],
+ ["October 11, 2024","FDA grants orphan drug designation to LMP744 for glioma","OncLive","https://www.onclive.com/view/fda-grants-orphan-drug-designation-to-lmp744-for-glioma"],
+ ["July 15, 2024","2024 Topoisomerases in Biology and Medicine Conference","FIU","https://case.fiu.edu/news-events/topoisomerases-in-biology-and-medicine-conference/"],
+ ["October 2023","FDA grants orphan drug designation to LMP400 (indotecan) for the treatment of glioma","NCI Center for Cancer Research","https://ccr.cancer.gov/news/article/fda-grants-orphan-drug-designation-to-indotecan-for-the-treatment-of-glioma"],
+ ["September 19, 2023","Powerful drug combination kills glioblastoma tumors containing a unique genetic makeup","NCI Center for Cancer Research","https://ccr.cancer.gov/neuro-oncology-branch/powerful-drug-combination-kills-glioblastoma-tumors-containing-a-unique-genetic-makeup"],
+ ["April 22, 2021","Gibson congratulates Dr. Danzhou Yang as Distinguished Professor of Medicinal Chemistry and Molecular Pharmacology at Purdue","Business Wire","https://www.businesswire.com/news/home/20210422005301/en/Gibson-Oncology-Congratulates-Dr.-Danzhou-Yang-as-Distinguished-Professor-of-Medicinal-Chemistry-and-Molecular-Pharmacology-at-Purdue-University"],
+ ["May 20, 2020","Gibson secures worldwide rights to 56 azaindenoisoquinolines and expands its Scientific Advisory Board for its cMYC programme","Business Wire","https://www.businesswire.com/news/home/20200520005015/en/Gibson-Oncology-Expands-its-Scientific-Advisory-Board-for-Novel-Oncology-cMYC-Program"],
+ ["February 19, 2020","BRCAness, SLFN11 and RB1 loss predict response to topoisomerase I inhibitors in triple-negative breast cancers","Science Translational Medicine","https://www.science.org/doi/10.1126/scitranslmed.aax2625"],
+ ["February 10, 2020","Gibson obtains exclusive commercial rights to novel anti-cancer drugs that inhibit the cMYC oncogene","Business Wire","https://www.businesswire.com/news/home/20200210005202/en/Gibson-Oncology-Obtains-Exclusive-Commercial-Rights-to-Novel-Anti-Cancer-Drugs-That-Inhibit-the-Undruggable-cMyc-Oncogene-a-Key-Driver-for-the-Majority-of-Cancers"],
+ ["December 12, 2018","LMP400 receives FDA Rare Pediatric Disease Designation for the treatment of Ewing sarcoma","BioSpace","https://www.biospace.com/gibson-s-novel-anti-cancer-drug-lmp-400-receives-fda-rare-pediatric-disease-designation-for-the-treatment-of-ewing-sarcoma"],
+ ["October 1, 2018","The NCI reports anti-cancer efficacy and safety of Gibson’s indenoisoquinolines in 84 dogs with advanced lymphoma","BioSpace","https://www.biospace.com/the-national-cancer-institute-nci-demonstrates-anti-cancer-efficacy-and-safety-of-gibson-s-novel-class-of-indenoisoquinolines-in-advanced-canine-lymphoma"],
+ ["September 6, 2018","Gibson acquires three clinical non-camptothecin TOPO 1 drugs from Linus Oncology","BioSpace","https://www.biospace.com/gibson-oncology-llc-acquires-novel-anti-cancer-drugs-from-linus-oncology"]];
 /* The Phase 1 record behind the Phase 2 trial: Purdue University release, 25 February 2026; trial design from gibsononcology.com. */
 var EVID=[
  ["Phase 1","Two NCI trials in more than 40 heavily pretreated, advanced-stage cancer patients; LMP744 was well tolerated"],

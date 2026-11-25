@@ -4,7 +4,7 @@ import re, pathlib
 H = pathlib.Path(__file__).resolve().parent
 K = H.parent.parent
 src = (K / 'src/firelight.src.html').read_text()
-def part(n): return (H / n).read_text().rstrip('\n')
+def part(n): return ((H / n).read_text() + ('\n' + (H / 'pubs.js').read_text() if n == 'content.js' else '')).rstrip('\n')
 REG = {
  'meta':'meta.html','fonts':'fonts.txt','root':'root.css','fieldbg':'fieldbg.css','logocss':'logocss.css',
  'scenecss':'scenecss.css','seen':'seen.html','pre':'pre.html','brand':'brand.html','navmenu':'navmenu.html',

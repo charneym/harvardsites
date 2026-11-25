@@ -30,7 +30,7 @@ function vHome(){
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">2–5</span><p class="k">Years of life expectancy after an ALS diagnosis</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">$2.9M</span><p class="k">In ALS awards from the NIH, the Department of Defense, the ALS Association and the Hoffman programme, 2019–2023</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">0</span><p class="k">FDA-approved MMP inhibitors to date</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">~24</span><p class="k">Zinc-dependent enzymes in the MMP family; AQU-118 targets the two linked with ALS</p></div>'+
    '</div>'+
   '</div></section>'+
 

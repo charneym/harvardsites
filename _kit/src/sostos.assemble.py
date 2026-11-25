@@ -179,3 +179,10 @@ for bad in ['NĒRx', 'NERx', 'nerx', 'Indianapolis', 'RPA', 'helix-still', 'Turc
     assert bad not in s, bad
 open(os.path.join(D, 'sostos.src.html'), 'w', encoding='utf-8').write(s)
 print('assembled', len(s))
+
+# the hero moves as one unit (CM): no title-only scroll parallax (it alone drifted 14% while the rest of the hero stayed put)
+s = open(os.path.join(D, 'sostos.src.html'), encoding='utf-8').read()
+a = 'if(!mob)gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});'
+assert s.count(a) == 1
+s = s.replace(a, '')
+open(os.path.join(D, 'sostos.src.html'), 'w', encoding='utf-8').write(s)

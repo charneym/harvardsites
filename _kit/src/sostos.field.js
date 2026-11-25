@@ -19,15 +19,15 @@ function makeStrip(cv){
   "float sdBx(vec3 p,vec3 b){vec3 q=abs(p)-b;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.);}",
   "float smin(float a,float b,float k){float h=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,h)-k*h*(1.-h);}",
   /* one tube in its own cell: conical tip, straight wall, rim lip; the cap; and the liquid in the tip */
-  "vec2 tube(vec3 q){float cone=sdCC(q-vec3(0.,-.19,0.),.19,.02,.086)-.006;float wall=sdCy(q,.092,-.01,.36);float body=smin(cone,wall,.03);",
+  "vec2 tube(vec3 q){float bd=max(length(q.xz)-.122,abs(q.y-.04)-.43);if(bd>.04)return vec2(bd,0.);float cone=sdCC(q-vec3(0.,-.19,0.),.19,.02,.086)-.006;float wall=sdCy(q,.092,-.01,.36);float body=smin(cone,wall,.03);",
   " float lip=sdCy(q,.106,.352,.374)-.003;float cap=min(sdCy(q,.086,.392,.44)-.008,sdCy(q,.06,.43,.455)-.006);float d=min(body,lip);return d<cap?vec2(d,0.):vec2(cap,1.);}",
   "float liq(vec3 q){return max(sdCC(q-vec3(0.,-.182,0.),.182,.011,.077),q.y+.035);}",
   "float cid(float x){return clamp(floor(x/SP),-4.,3.);}",
-  "vec2 mapS(vec3 p){float i0=cid(p.x);vec2 r=vec2(9.,0.);for(int k=-1;k<=1;k++){float i=clamp(i0+float(k),-4.,3.);vec2 t=tube(vec3(p.x-(i+.5)*SP,p.y,p.z));if(t.x<r.x)r=t;}",
+  "vec2 mapS(vec3 p){float i0=cid(p.x);float lx=p.x-(i0+.5)*SP;float i1=clamp(i0+(lx>0.?1.:-1.),-4.,3.);vec2 r=tube(vec3(lx,p.y,p.z));vec2 t=tube(vec3(p.x-(i1+.5)*SP,p.y,p.z));if(t.x<r.x)r=t;",
   /* the web that joins the strip at the rim, and the hinge web between the caps */
-  " float web=max(sdBx(p-vec3(0.,.363,0.),vec3(4.*SP,.006,.014)),abs(p.x)-3.5*SP);float hw=max(sdBx(p-vec3(0.,.383,-.1),vec3(4.*SP,.011,.005)),abs(p.x)-3.5*SP-.02);",
-  " if(web<r.x)r=vec2(web,0.);if(hw<r.x)r=vec2(hw,1.);return r;}",
-  "vec2 mapL(vec3 p){float i0=cid(p.x);vec2 r=vec2(9.,0.);for(int k=-1;k<=1;k++){float i=clamp(i0+float(k),-4.,3.);float d=liq(vec3(p.x-(i+.5)*SP,p.y,p.z));if(d<r.x)r=vec2(d,i);}return r;}",
+  " if(abs(p.y-.37)<.06){float web=max(sdBx(p-vec3(0.,.363,0.),vec3(4.*SP,.006,.014)),abs(p.x)-3.5*SP);float hw=max(sdBx(p-vec3(0.,.383,-.1),vec3(4.*SP,.011,.005)),abs(p.x)-3.5*SP-.02);",
+  " if(web<r.x)r=vec2(web,0.);if(hw<r.x)r=vec2(hw,1.);}return r;}",
+  "vec2 mapL(vec3 p){float i0=cid(p.x);float lx=p.x-(i0+.5)*SP;float i1=clamp(i0+(lx>0.?1.:-1.),-4.,3.);vec2 r=vec2(liq(vec3(lx,p.y,p.z)),i0);float d=liq(vec3(p.x-(i1+.5)*SP,p.y,p.z));if(d<r.x)r=vec2(d,i1);return r;}",
   "vec3 nS(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(mapS(p+e.xyy).x-mapS(p-e.xyy).x,mapS(p+e.yxy).x-mapS(p-e.yxy).x,mapS(p+e.yyx).x-mapS(p-e.yyx).x));}",
   "vec3 nL(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(mapL(p+e.xyy).x-mapL(p-e.xyy).x,mapL(p+e.yxy).x-mapL(p-e.yxy).x,mapL(p+e.yyx).x-mapL(p-e.yyx).x));}",
   "float lvl(float i){float h=fract(sin((i+5.)*12.9898)*43758.5453);return .38+.62*h;}",
@@ -40,8 +40,8 @@ function makeStrip(cv){
   /* ray / bounding box (object space) */
   " vec3 bmin=vec3(-4.*SP-.03,-.40,-.14),bmax=vec3(4.*SP+.03,.47,.14);vec3 iv=1./rd;vec3 t0=(bmin-ro)*iv,t1=(bmax-ro)*iv;vec3 tn=min(t0,t1),tf=max(t0,t1);float ta=max(max(tn.x,tn.y),tn.z),tb=min(min(tf.x,tf.y),tf.z);",
   " if(tb>max(ta,0.)){",
-  "  float t=max(ta,0.);vec2 hs=vec2(-1.);for(int i=0;i<72;i++){if(t>tb)break;vec2 m=mapS(ro+rd*t);if(m.x<.0012){hs=vec2(t,m.y);break;}t+=max(m.x*.9,.0015);}",
-  "  float tl=max(ta,0.),dm=9.,di=0.;vec2 hl2=vec2(-1.);for(int i=0;i<64;i++){if(tl>tb)break;vec2 m=mapL(ro+rd*tl);if(m.x<dm){dm=m.x;di=m.y;}if(m.x<.0012){hl2=vec2(tl,m.y);break;}tl+=max(m.x*.9,.0015);}",
+  "  float t=max(ta,0.);vec2 hs=vec2(-1.);for(int i=0;i<48;i++){if(t>tb)break;vec2 m=mapS(ro+rd*t);if(m.x<.0015){hs=vec2(t,m.y);break;}t+=max(m.x,.003);}",
+  "  vec3 lmin=vec3(-4.*SP,-.38,-.09),lmax=vec3(4.*SP,-.03,.09);vec3 u0=(lmin-ro)*iv,u1=(lmax-ro)*iv;vec3 un=min(u0,u1),uf=max(u0,u1);float la=max(max(un.x,un.y),un.z),lb=min(min(uf.x,uf.y),uf.z);float tl=max(la-.12,0.),tlb=lb+.12,dm=9.,di=0.;vec2 hl2=vec2(-1.);for(int i=0;i<34;i++){if(tl>tlb)break;vec2 m=mapL(ro+rd*tl);if(m.x<dm){dm=m.x;di=m.y;}if(m.x<.0015){hl2=vec2(tl,m.y);break;}tl+=max(m.x,.003);}",
   "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.85,.1,.4)),vw=vec3(0.,0.,1.);",
   /* what is behind the shell: the glowing reaction mix, or the ground with a soft blue bloom near each tip */
   "  float lv=lvl(di)*(.88+.12*sin(T*.5+di*1.7));vec3 gc=mix(vec3(.13,.36,.86),vec3(.52,.84,1.),lv*.7);",
@@ -64,10 +64,10 @@ function makeStrip(cv){
   var al=gl.getAttribLocation(pr,"a");gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
   var U={};["R","C","S","T","IN","TL"].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
   return {draw:function(t,s){gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.R,cv.width,cv.height);gl.uniform2f(U.C,s.cx,s.cy);gl.uniform1f(U.S,s.sc);
-      gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
+      gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)},sync:function(){var px=new Uint8Array(4);gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,px)}};
 }
 var field=(function(){
-  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,lastRaf=0,ema=16,slowN=0;
+  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,warmN=0,startT=-9e9,lastRaf=0,ema=16,slowN=0;
   var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
   var G=makeStrip(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
@@ -78,18 +78,18 @@ var field=(function(){
     else{cx=w*.705;cy=h*.5;sc=Math.min(h*.6,w*.255);tl=0}
     var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
-    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05)*(slow?.8:1);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
     var tn=performance.now();if(!once&&running){var dt=tn-lastRaf;lastRaf=tn;if(dt>0&&dt<1000)ema=ema*.9+dt*.1;
       /* a slow machine (software GL, throttled CPU): render smaller and less often rather than hold up the page */
-      if(!slow&&ema>55&&++slowN>8)slow=1;
-      if(tn-lastF<(slow?110:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
+      if(!slow&&ema>55&&++slowN>8){slow=1;size()}
+      if((slow&&shown&&scrollY>h*1.1&&!document.documentElement.classList.contains("bo-open"))||(slow&&tn-startT<1600)||tn-lastF<((slow||tn-startT<1700)?320:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
     dim+=(dimT-dim)*.08;cv.style.opacity=shown?String(.5+.5*dim):"";
-    if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);
+    if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);if(once&&warmN<4){warmN++;G.sync();if(!slow&&performance.now()-a>60){slow=1;size()}}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
-  function start(){if(running||document.hidden)return;running=true;if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
+  function start(){if(running||document.hidden)return;running=true;if(startT<0)startT=performance.now();if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p},

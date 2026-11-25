@@ -1056,6 +1056,23 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 .vis .wrap>.vis-l{grid-column:1!important;grid-row:1!important}
 .vis .wrap>.stats{grid-column:2!important;grid-row:1!important}
 @media (max-width:860px){.vis .wrap>.vis-l,.vis .wrap>.stats{grid-column:1!important;grid-row:auto!important}}
+.bo h1 em,.bo h2 em,.bo .d2 em{font-style:normal}
+
+/* v7 fixes */
+.gt{background:none!important;-webkit-text-fill-color:initial!important;color:inherit!important}
+.gt i{font-style:normal}.gt .gw{white-space:nowrap}
+html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
+.ptile::after{background:#2f7bf0}
+.prow h3{transition:color .3s var(--eo),transform .4s var(--eo)}
+.prow:hover .pr-id h3{transform:translateX(6px)}
+.prow .lk2 svg{transition:transform .3s var(--eo)}
+.prow:hover .lk2 svg{transform:translateX(5px)}
+
+/* room for the big title's line entrance (each line rises one line-height inside its mask) above the lede */
+.hero.hx .hrule{margin-top:.4em!important}
+.hx-foot{margin-top:clamp(48px,5.4vw,88px)!important}
+@media (max-width:860px){.hero.hx .hrule{margin-top:28px!important}.hx-foot{margin-top:40px!important}}
+.prow h3 *{transition:color .3s var(--eo)}
 
 
 /* ===================================== Sostos: colours from their logo (navy wordmark #022670, mark gradient #01307d to
@@ -1796,20 +1813,28 @@ var PK="sst";
 /* v7 (client: sections rendered as empty rows in their browser: reveals that never fired). Content is never left hidden: any
    block the template's reveal (or a split heading, or a counter) parked at opacity 0 is shown as soon as it is in, or above,
    the viewport, whether or not its ScrollTrigger fired (fast scrolls, loading mid-page, triggers measured before a pin or
-   a font settled). Story steps that are inactive by design, and the vision statement's word-by-word colouring, are left alone. */
+   a font settled). Story steps that are inactive by design, the vision statement's word-by-word colouring, and the hero (its own entrance plays
+   when the loader lifts) are left alone; nothing is swept while the loader is on screen. */
 (function(){var busy=false;
-  function sweep(){if(busy||!window.gsap)return;busy=true;try{var H=innerHeight;
+  function sweep(){if(busy||!window.gsap)return;var pre=document.getElementById("pre");if(pre&&pre.getBoundingClientRect().bottom>2)return;busy=true;try{var H=innerHeight;
     var list=document.querySelectorAll('#view [style*="opacity"], .ftr [style*="opacity"]');
-    for(var i=0;i<list.length;i++){var el=list[i];if(el.closest(".step,.scene,.rail,.hx .hrule")||el.classList.contains("w"))continue;
+    for(var i=0;i<list.length;i++){var el=list[i];if((el.closest("#hero")&&!el.closest(".pil"))||el.closest(".ph-head,.step,.scene,.rail")||el.classList.contains("w"))continue;
       var o=parseFloat(el.style.opacity);if(!(o<.2))continue;if(gsap.isTweening(el))continue;
       var r=el.getBoundingClientRect();if(r.top>=H-2||(!r.width&&!r.height))continue;
-      if(typeof rvGo==="function"&&window.RV_LIVE&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
+      if(typeof rvGo==="function"&&typeof RV_LIVE!=="undefined"&&RV_LIVE.indexOf(el)>=0&&!el._rvDone){rvGo([el],0,0);continue}
       gsap.to(el,{opacity:1,y:0,yPercent:0,scale:1,duration:.55,ease:"power2.out",overwrite:"auto",clearProps:"transform,opacity"})}}
     finally{busy=false}}
   var t=0;function soon(){clearTimeout(t);t=setTimeout(sweep,60)}
   addEventListener("scroll",soon,{passive:true});addEventListener("resize",soon);setInterval(sweep,400);
   addEventListener("load",function(){setTimeout(sweep,400);setTimeout(sweep,2500)});
-})();/*</R:site>*/
+})();
+
+/* pillars below the fold on phones: the hero's own entrance would play them unseen, so they reveal as they scroll in instead
+   (hidden only by script, and the failsafe above shows them anyway if the trigger never fires) */
+(function(){if(RM)return;var n=0;(function wait(){if(++n>900)return;var ls=document.querySelectorAll("#hero .pil li"),pre=document.getElementById("pre");
+  if(!ls.length||!window.ScrollTrigger||(pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)){setTimeout(wait,60);return}
+  Array.prototype.forEach.call(ls,function(li){if(li.getBoundingClientRect().top<innerHeight)return;li.removeAttribute("data-r");gsap.killTweensOf(li);gsap.set(li,{opacity:0,y:24,overwrite:true});
+    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();/*</R:site>*/
 
 /* ================= CONTENT (from the dossier; nothing invented) ================= */
 /*<R:content>*/var FONTS=['500 1em "Exo"','600 1em "Exo"','500 1em "Inter"','400 1em "Inter"','600 1em "Inter"','500 1em "Saira Semi Condensed"','600 1em "Saira Semi Condensed"'];
@@ -2028,15 +2053,15 @@ function makeStrip(cv){
   "float sdBx(vec3 p,vec3 b){vec3 q=abs(p)-b;return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.);}",
   "float smin(float a,float b,float k){float h=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,h)-k*h*(1.-h);}",
   /* one tube in its own cell: conical tip, straight wall, rim lip; the cap; and the liquid in the tip */
-  "vec2 tube(vec3 q){float cone=sdCC(q-vec3(0.,-.19,0.),.19,.02,.086)-.006;float wall=sdCy(q,.092,-.01,.36);float body=smin(cone,wall,.03);",
+  "vec2 tube(vec3 q){float bd=max(length(q.xz)-.122,abs(q.y-.04)-.43);if(bd>.04)return vec2(bd,0.);float cone=sdCC(q-vec3(0.,-.19,0.),.19,.02,.086)-.006;float wall=sdCy(q,.092,-.01,.36);float body=smin(cone,wall,.03);",
   " float lip=sdCy(q,.106,.352,.374)-.003;float cap=min(sdCy(q,.086,.392,.44)-.008,sdCy(q,.06,.43,.455)-.006);float d=min(body,lip);return d<cap?vec2(d,0.):vec2(cap,1.);}",
   "float liq(vec3 q){return max(sdCC(q-vec3(0.,-.182,0.),.182,.011,.077),q.y+.035);}",
   "float cid(float x){return clamp(floor(x/SP),-4.,3.);}",
-  "vec2 mapS(vec3 p){float i0=cid(p.x);vec2 r=vec2(9.,0.);for(int k=-1;k<=1;k++){float i=clamp(i0+float(k),-4.,3.);vec2 t=tube(vec3(p.x-(i+.5)*SP,p.y,p.z));if(t.x<r.x)r=t;}",
+  "vec2 mapS(vec3 p){float i0=cid(p.x);float lx=p.x-(i0+.5)*SP;float i1=clamp(i0+(lx>0.?1.:-1.),-4.,3.);vec2 r=tube(vec3(lx,p.y,p.z));vec2 t=tube(vec3(p.x-(i1+.5)*SP,p.y,p.z));if(t.x<r.x)r=t;",
   /* the web that joins the strip at the rim, and the hinge web between the caps */
-  " float web=max(sdBx(p-vec3(0.,.363,0.),vec3(4.*SP,.006,.014)),abs(p.x)-3.5*SP);float hw=max(sdBx(p-vec3(0.,.383,-.1),vec3(4.*SP,.011,.005)),abs(p.x)-3.5*SP-.02);",
-  " if(web<r.x)r=vec2(web,0.);if(hw<r.x)r=vec2(hw,1.);return r;}",
-  "vec2 mapL(vec3 p){float i0=cid(p.x);vec2 r=vec2(9.,0.);for(int k=-1;k<=1;k++){float i=clamp(i0+float(k),-4.,3.);float d=liq(vec3(p.x-(i+.5)*SP,p.y,p.z));if(d<r.x)r=vec2(d,i);}return r;}",
+  " if(abs(p.y-.37)<.06){float web=max(sdBx(p-vec3(0.,.363,0.),vec3(4.*SP,.006,.014)),abs(p.x)-3.5*SP);float hw=max(sdBx(p-vec3(0.,.383,-.1),vec3(4.*SP,.011,.005)),abs(p.x)-3.5*SP-.02);",
+  " if(web<r.x)r=vec2(web,0.);if(hw<r.x)r=vec2(hw,1.);}return r;}",
+  "vec2 mapL(vec3 p){float i0=cid(p.x);float lx=p.x-(i0+.5)*SP;float i1=clamp(i0+(lx>0.?1.:-1.),-4.,3.);vec2 r=vec2(liq(vec3(lx,p.y,p.z)),i0);float d=liq(vec3(p.x-(i1+.5)*SP,p.y,p.z));if(d<r.x)r=vec2(d,i1);return r;}",
   "vec3 nS(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(mapS(p+e.xyy).x-mapS(p-e.xyy).x,mapS(p+e.yxy).x-mapS(p-e.yxy).x,mapS(p+e.yyx).x-mapS(p-e.yyx).x));}",
   "vec3 nL(vec3 p){vec2 e=vec2(.0012,0.);return normalize(vec3(mapL(p+e.xyy).x-mapL(p-e.xyy).x,mapL(p+e.yxy).x-mapL(p-e.yxy).x,mapL(p+e.yyx).x-mapL(p-e.yyx).x));}",
   "float lvl(float i){float h=fract(sin((i+5.)*12.9898)*43758.5453);return .38+.62*h;}",
@@ -2049,8 +2074,8 @@ function makeStrip(cv){
   /* ray / bounding box (object space) */
   " vec3 bmin=vec3(-4.*SP-.03,-.40,-.14),bmax=vec3(4.*SP+.03,.47,.14);vec3 iv=1./rd;vec3 t0=(bmin-ro)*iv,t1=(bmax-ro)*iv;vec3 tn=min(t0,t1),tf=max(t0,t1);float ta=max(max(tn.x,tn.y),tn.z),tb=min(min(tf.x,tf.y),tf.z);",
   " if(tb>max(ta,0.)){",
-  "  float t=max(ta,0.);vec2 hs=vec2(-1.);for(int i=0;i<72;i++){if(t>tb)break;vec2 m=mapS(ro+rd*t);if(m.x<.0012){hs=vec2(t,m.y);break;}t+=max(m.x*.9,.0015);}",
-  "  float tl=max(ta,0.),dm=9.,di=0.;vec2 hl2=vec2(-1.);for(int i=0;i<64;i++){if(tl>tb)break;vec2 m=mapL(ro+rd*tl);if(m.x<dm){dm=m.x;di=m.y;}if(m.x<.0012){hl2=vec2(tl,m.y);break;}tl+=max(m.x*.9,.0015);}",
+  "  float t=max(ta,0.);vec2 hs=vec2(-1.);for(int i=0;i<48;i++){if(t>tb)break;vec2 m=mapS(ro+rd*t);if(m.x<.0015){hs=vec2(t,m.y);break;}t+=max(m.x,.003);}",
+  "  vec3 lmin=vec3(-4.*SP,-.38,-.09),lmax=vec3(4.*SP,-.03,.09);vec3 u0=(lmin-ro)*iv,u1=(lmax-ro)*iv;vec3 un=min(u0,u1),uf=max(u0,u1);float la=max(max(un.x,un.y),un.z),lb=min(min(uf.x,uf.y),uf.z);float tl=max(la-.12,0.),tlb=lb+.12,dm=9.,di=0.;vec2 hl2=vec2(-1.);for(int i=0;i<34;i++){if(tl>tlb)break;vec2 m=mapL(ro+rd*tl);if(m.x<dm){dm=m.x;di=m.y;}if(m.x<.0015){hl2=vec2(tl,m.y);break;}tl+=max(m.x,.003);}",
   "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.85,.1,.4)),vw=vec3(0.,0.,1.);",
   /* what is behind the shell: the glowing reaction mix, or the ground with a soft blue bloom near each tip */
   "  float lv=lvl(di)*(.88+.12*sin(T*.5+di*1.7));vec3 gc=mix(vec3(.13,.36,.86),vec3(.52,.84,1.),lv*.7);",
@@ -2073,10 +2098,10 @@ function makeStrip(cv){
   var al=gl.getAttribLocation(pr,"a");gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
   var U={};["R","C","S","T","IN","TL"].forEach(function(k){U[k]=gl.getUniformLocation(pr,k)});
   return {draw:function(t,s){gl.viewport(0,0,cv.width,cv.height);gl.uniform2f(U.R,cv.width,cv.height);gl.uniform2f(U.C,s.cx,s.cy);gl.uniform1f(U.S,s.sc);
-      gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}};
+      gl.uniform1f(U.T,t);gl.uniform1f(U.IN,s.IN);gl.uniform1f(U.TL,s.tl);gl.drawArrays(gl.TRIANGLE_STRIP,0,4)},sync:function(){var px=new Uint8Array(4);gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,px)}};
 }
 var field=(function(){
-  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,lastRaf=0,ema=16,slowN=0;
+  var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,warmN=0,startT=-9e9,lastRaf=0,ema=16,slowN=0;
   var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
   var G=makeStrip(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
@@ -2087,18 +2112,18 @@ var field=(function(){
     else{cx=w*.705;cy=h*.5;sc=Math.min(h*.6,w*.255);tl=0}
     var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
-    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
+    var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05)*(slow?.8:1);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
     var tn=performance.now();if(!once&&running){var dt=tn-lastRaf;lastRaf=tn;if(dt>0&&dt<1000)ema=ema*.9+dt*.1;
       /* a slow machine (software GL, throttled CPU): render smaller and less often rather than hold up the page */
-      if(!slow&&ema>55&&++slowN>8)slow=1;
-      if(tn-lastF<(slow?110:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
+      if(!slow&&ema>55&&++slowN>8){slow=1;size()}
+      if((slow&&shown&&scrollY>h*1.1&&!document.documentElement.classList.contains("bo-open"))||(slow&&tn-startT<1600)||tn-lastF<((slow||tn-startT<1700)?320:46)||document.getElementById("pre")&&shown){raf=requestAnimationFrame(function(){frame(false)});return}}lastF=tn;
     dim+=(dimT-dim)*.08;cv.style.opacity=shown?String(.5+.5*dim):"";
-    if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);
+    if(G){var g=geo();g.IN=IN.v;var a=performance.now();G.draw(now(),g);if(once&&warmN<4){warmN++;G.sync();if(!slow&&performance.now()-a>60){slow=1;size()}}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}}
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});
   }
-  function start(){if(running||document.hidden)return;running=true;if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
+  function start(){if(running||document.hidden)return;running=true;if(startT<0)startT=performance.now();if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p},
@@ -2259,7 +2284,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
          .from(hr,{y:22,opacity:0,duration:mob?.6:.9,ease:"silk",stagger:.04},mob?.12:.22);
       if(paused){window._heroIn=htl;htl.progress(.001).progress(0)}
       HERO_TL.push(htl);
-      if(!mob)gsap.to(t,{yPercent:-14,opacity:.25,ease:"none",scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:true}});
+      
     }else if(t&&!RM){var s2=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});HERO_TL.push(gsap.from(s2.lines,{yPercent:100,opacity:0,duration:1.05,ease:"silk",stagger:.08,delay:E+.05,onComplete:function(){unmask(s2)}}))}
     if(!RM&&$(".ph-head",view)){HERO_TL.push(gsap.from($$(".ph-head [data-r], .ph-head .eyebrow",view),{y:20,opacity:0,duration:.9,ease:"silk",stagger:.06,delay:E+.2}))}
     $$(".split",view).forEach(function(el){if(el.id!=="pageTitle")splitReveal(el,E)});

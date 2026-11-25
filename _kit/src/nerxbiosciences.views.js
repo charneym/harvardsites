@@ -35,7 +35,7 @@ function vHome(){
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our science '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
    '</div>'+
    '<ul class="pil" aria-label="Our competitive advantage">'+
-    '<li class="p1"'+PR+'><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
+    '<li class="p1" data-r><span class="pic">'+ICO.tgt+'</span><div><span class="lab">Novel targets</span><p>The DNA damage sensors RPA and Ku, upstream of the DDR kinases.</p></div></li>'+
     '<li class="p2"'+PR+'><span class="pic">'+ICO.moa+'</span><div><span class="lab">Novel mechanism</span><p>Inhibitors that stop a sensor from binding damaged DNA.</p></div></li>'+
     '<li class="p3"'+PR+'><span class="pic">'+ICO.chem+'</span><div><span class="lab">Novel chemistry</span><p>First-in-class small molecules from two decades of DNA repair research.</p></div></li>'+
    '</ul>'+
@@ -93,7 +93,7 @@ function vHome(){
   cta();
 }
 /* phones: the pillar band sits below the fold, so it reveals on scroll (enhancement only: the site failsafe shows anything in view) */
-function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
+function pilReveal(){if(!MOBILE()||RM||!window.ScrollTrigger)return;$$(".pil li:not([data-r])").forEach(function(li){if(li.getBoundingClientRect().top<innerHeight)return;
   gsap.set(li,{opacity:0,y:24});ScrollTrigger.create({trigger:li,start:"top 96%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power2.out",clearProps:"transform,opacity"})}})})}
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+

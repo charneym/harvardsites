@@ -87,7 +87,7 @@ function cta(){
    '<span class="lab kick">Partnering and investment</span>'+
    '<h2 class="big">Talk to <em>Gibson.</em></h2>'+
    '<p class="sub">Data on blood-brain barrier transmission and on the design of the Phase 2 trial are available under a confidentiality agreement. Gibson welcomes clinicians, partners and investors.</p>'+
-   '<div class="act"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="#/investors">Investor overview</a></div>'+
+   '<p class="act"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="#/investors">Investor overview</a></p>'+
    '<div class="cinfo">'+
     '<div><span class="lab">President and CEO</span><p>Randall B. Riggs<br><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></p></div>'+
     '<div><span class="lab">General enquiries</span><p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:+13056747072">'+PHONE+'</a></p></div>'+
@@ -110,7 +110,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Clinical-stage oncology<span class="nomob"> · Brain tumors</span> · Miami, FL</span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Two targets.</span><span class="l"><em>One molecule.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Two targets.</span> <span class="l"><em>One molecule.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>LMP744, LMP400 and the next-generation Azas hit topoisomerase 1 and reduce overexpression of cMYC, the oncogene behind about 80% of all human cancers. Brain tumors come first.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/science">The science '+ARR+'</a><a class="btn" href="#/partners">Our partners</a></div></div>'+
    heroMarks()+
@@ -187,7 +187,7 @@ function vTeam(){return head({k:"Team",h:"Chemists, clinicians <em>and company b
 function reasons(){return '<ol class="g-rs">'+REASONS.map(function(r){return '<li><h3>'+esc(r[0])+'</h3><p>'+esc(r[1])+'</p></li>'}).join("")+'</ol>'}
 function vInvestors(){return head({k:"Investors",h:"Why invest <em>in Gibson.</em>",p:"Two commercially validated targets, four premier institutions deploying their own resources, orphan designations and patents beyond 2041, at a very low burn rate."})+
   '<section class="sec light" data-theme="light"><div class="wrap"><div class="shead"><div><span class="lab kick">The case</span><h2 class="d2">Six reasons, <em>in brief.</em></h2></div><p>From Gibson’s November 2026 investor presentation.</p></div>'+reasons()+'</div></section>'+
-  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">The market</span><h2 class="d2">Glioblastoma, <em>$6.9 billion by 2035.</em></h2></div><p>Glioblastoma recurs in nearly all patients, and survival once it does is typically six to ten months.</p></div>'+marketStats()+
+  '<section class="sec dark" data-theme="dark"><div class="wrap"><div class="shead"><div><span class="lab kick">The market</span><h2 class="d2 g-mkh">Glioblastoma,<br><em>$6.9 billion by 2035.</em></h2></div></div><div class="g-mkrow">'+marketStats()+'<p class="g-mkp">Glioblastoma recurs in nearly all patients, and survival once it does is typically six to ten months.</p></div>'+
    '<div class="g-need"><figure class="g-need-m">'+img("band-brain.webp","A brain scan visualization",2000,1500)+'</figure><div class="g-need-t"><span class="lab kick">The need</span><h3>Glioblastoma comes back in nearly all patients.</h3><dl>'+[["3.27","U.S. cases per 100,000, age-adjusted"],["66","Median age at diagnosis"],["6–10 mo","Typical median survival once it recurs"]].map(function(s){return '<div><dt>'+esc(s[0])+'</dt><dd>'+esc(s[1])+'</dd></div>'}).join("")+'</dl></div></div>'+
    '<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div><p class="g-src">Emergen Research; CBTRUS 2025; Penn Medicine, June 2025; Gibson investor presentation, November 2026.</p></div></section>'+
   '<section class="sec light g-split" data-theme="light"><div class="wrap g-split-in">'+
@@ -215,7 +215,7 @@ function vContact(){return head({k:"Contact",h:"Talk to <em>Gibson.</em>",p:"Cli
    '<figure class="g-split-m tall">'+img("microscope-v.webp","A scientist studying samples under a microscope",1333,2000)+'</figure>'+
    '<div class="g-split-t"><span class="lab kick">Get in touch</span><h2 class="d2">Write to the <em>CEO directly.</em></h2>'+
    '<dl class="g-ds g-ds-s"><div><dt>Randall B. Riggs, President and CEO</dt><dd><a class="ul" href="mailto:'+CEOMAIL+'">'+CEOMAIL+'</a></dd></div><div><dt>General enquiries</dt><dd><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></dd></div><div><dt>Telephone</dt><dd><a class="ul" href="tel:+13056747072">'+PHONE+'</a></dd></div><div><dt>Headquarters</dt><dd>Gibson Oncology, 7772 Fisher Drive, Miami, FL 33109</dd></div><div><dt>Follow</dt><dd><a class="ul" href="https://www.linkedin.com/company/gibson-oncology" target="_blank" rel="noopener">LinkedIn</a> · <a class="ul" href="https://x.com/GibsonOncology" target="_blank" rel="noopener">X</a></dd></div></dl>'+
-   '<div class="act g-act-l"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="mailto:'+MAIL+'">General enquiries</a></div></div></div></section>'}
+   '<p class="act g-act-l"><a class="btn solid" href="mailto:'+CEOMAIL+'">Email the CEO '+ARR+'</a><a class="btn" href="mailto:'+MAIL+'">General enquiries</a></p></div></div></section>'}
 function v404(){return head({k:"Not found",h:"This page <em>does not exist.</em>",p:"The link may be out of date."})+'<section class="sec dark" data-theme="dark"><div class="wrap"><a class="btn" href="#/">Back to the home page '+ARR+'</a></div></section>'}
 
 /* ================= ROUTER ================= */

@@ -76,7 +76,7 @@ function footer(){
    '<div class="c"><span class="lab">Visit</span>95 Highway 22 W<br>Milledgeville, GA 31061</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="'+MAIL+'">sales@topline.tv</a><br><a class="ul" href="tel:+18007769888">(800) 776-9888</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/contact">Contact</a></div>'+
-   '<div class="c"><span class="lab">Since</span>1989<br>TopLine Corporation</div>'+
+   '<div class="c"><span class="lab">Since 1989</span>TopLine Corporation, a niche maker of semiconductor test and interconnect components</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 760 74" aria-hidden="true"><text x="380" y="62" text-anchor="middle" style="font-family:\'Rubik\',sans-serif;font-weight:700;font-size:80px">TopLine</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 TopLine Corporation</span><span class="lab">Site concept</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

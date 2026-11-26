@@ -1080,12 +1080,17 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 @media (max-width:860px){.hero-h .bm{display:block}.hero-h .bd{display:none}
  .hero-h,html body .hero.hx h1.d1.hero-h{font-size:clamp(34px,9.2vw,64px)!important}}
 @media (max-width:1024px){.tg4{grid-template-columns:repeat(2,minmax(0,1fr))}}
-/* v11 (client: hero broke into "Engineering the / future / of / hydrogel therapeutics." in their browser): the headline breaks
-   only at its markers (desktop: 2 lines, <=860: 3 lines), never by natural wrapping, and its size is capped by the column width
-   (container units) so the longest line always fits whatever the browser's font metrics */
+/* v12 (client: hero broke into "Engineering the / future / of / hydrogel therapeutics." in Safari, where the line split was measured
+   against the wrong metrics): the lines are written in the markup, desktop "Engineering the future / of hydrogel therapeutics.",
+   <=860 "Engineering the / future of / hydrogel therapeutics.", each unbreakable; the size is capped by the column width so the longest
+   line always fits (vw fallback, then container units where supported) */
 .hx-copy{container-type:inline-size}
-html body .hero.hx h1.d1.hero-h{white-space:nowrap;font-size:min(clamp(40px, 4.7vw + 24px, 108px), 100cqw / 10.9)!important}
-@media (max-width:860px){html body .hero.hx h1.d1.hero-h{font-size:min(clamp(34px, 9.2vw, 64px), 100cqw / 9.9)!important}}
+.hero-h .hm{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.hero-h .hl{display:block;white-space:nowrap}
+.hero-h .hmo{display:none}
+html body .hero.hx h1.d1.hero-h{font-size:min(clamp(40px, 4.7vw + 24px, 108px), (100vw - 96px) / 10.9)!important;font-size:min(clamp(40px, 4.7vw + 24px, 108px), 100cqw / 10.9)!important}
+@media (max-width:860px){.hero-h .hmo{display:block}.hero-h .hd{display:none}
+ html body .hero.hx h1.d1.hero-h{font-size:min(clamp(34px, 9.2vw, 64px), (100vw - 56px) / 9.9)!important;font-size:min(clamp(34px, 9.2vw, 64px), 100cqw / 9.9)!important}}
 
 /* tablet (squeeze): vision figures full width under the statement, figure beside its caption; contact details stacked */
 @media (max-width:1024px){
@@ -1910,7 +1915,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1">Engineering the<span class="bm"></span> future<span class="bd"></span> of<span class="bm"></span> '+gtx('hydrogel therapeutics.')+'</h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="hm"><span class="hl">Engineering the<span class="hd"> future</span></span></span><span class="hm hmo"><span class="hl">future of</span></span><span class="hm"><span class="hl"><span class="hd">of </span>'+gtx('hydrogel therapeutics.')+'</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
@@ -2279,7 +2284,9 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     if(k==="home"&&!RM){
       var mob=MOBILE();
       /* CR: the headline rises as whole lines; eyebrow, copy and buttons start while it is still settling */
-      var s=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});
+      /* v12: the hero's lines are fixed in the markup (.hm mask > .hl line), so nothing is measured; SplitText only as a fallback */
+      var hl=$$(".hl",t).filter(function(e){return e.offsetParent!==null});
+      var s=hl.length?{lines:hl,masks:$$(".hm",t)}:SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(s)}});

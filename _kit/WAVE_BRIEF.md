@@ -38,3 +38,17 @@ Things an ordinary visitor notices straight away:
 4. Straight or gently angled subjects only. A diagonal that runs off the bottom edge looks accidental.
 5. Sharp: never shown larger than about 1.2x its native pixels. If the only photo is small, show it smaller inside a frame, not stretched as a hero.
 6. Before reporting, look at the hero at 1440 and 390 and ask: "Would a normal person think something is off here?" If so, fix it.
+
+## PREMIUM MOTION v4 (client, 2026-11-26 — "where's all the flashy premium design?" Overrides v3 where v3 says plain/no GSAP)
+v3 removed the template skeleton. It must NOT remove the premium feel. Every site needs rich, polished motion and design effects, built on the company's REAL photos, brand palette and readable layout (v3 + COMPOSITION BASICS still apply). Use GSAP + ScrollTrigger + Lenis (and SplitText for whole LINES, never per-letter). Required, tuned per site:
+1. Smooth scrolling (Lenis) and a header that condenses on scroll.
+2. A short brand intro, ≤1.2s: the logo unmasks (clip-path wipe) and lifts away into the header position. No counter and no progress number.
+3. Hero entrance: headline lines rise out of a mask one after another (single colour), the lede and buttons fade up, and the hero photo reveals with a clip-path wipe while easing from scale 1.12 to 1, then keeps a slow parallax/Ken Burns drift. The trust strip slides in.
+4. The first screen is exactly one viewport: hero plus the trust/fact strip fill 100svh at 1440x900, 1920x1080 and 390x844. No white band showing under the strip.
+5. A pinned, scroll-driven PHOTO story (it replaces the old SVG diagram story): 3–5 real photos of their process, products or factory crossfade and zoom while the step text changes beside them, with a progress rail. On phones it becomes a stacked sequence with reveals, never empty dark screens.
+6. A horizontal-scroll (pinned) gallery or product strip using their real images, with captions.
+7. Every image reveals on scroll (clip-path or mask wipe) and has subtle inner parallax inside its frame. Cards lift and the image zooms on hover; link underlines draw in; primary buttons are magnetic.
+8. One or two signature touches suited to the company: e.g. counting numbers on genuinely notable figures, a slow marquee of materials/sectors/certifications, a cursor-follow image preview on list rows (plant list, news), or a large type band that scrolls sideways.
+9. Clean transitions into the build-out nav pages.
+10. Respect prefers-reduced-motion, keep content visible by default (no opacity:0 resting state without JS), and still pass all gates plus nssfix.
+Report adds "Motion:" (list the effects used).

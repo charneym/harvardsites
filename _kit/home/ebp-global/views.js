@@ -14,12 +14,12 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>EBP Manufacturing Solutions<span class="nomob"> · Woking, since 1966</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Making challenging</span></span> <span class="l"><em class="nw">products cost effective.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Making challenging</span></span> <span class="l"><span class="nw">products cost effective.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Europe’s most experienced electron beam welding specialist, with X-ray and non-destructive testing, hard metal CNC machining and design for manufacture under one roof in Woking.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/services">Our services '+ARR+'</a><a class="btn" href="#/contact">Send us a drawing</a></div></div>'+
   '</section>'+
 
-  '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
+  '<section class="sec mani dark redband" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Working with EBP</span>'+
    '<h2 class="txt" id="mani"><span class="nw">The cost of manufacture</span> <span class="nw">is largely fixed by the design.</span> <span class="nw">Send us the details,</span> <span class="nw">whether or not it includes</span> <span class="nw">EB welding.</span> <em><span class="nw">We work with you,</span> <span class="nw">not for you.</span></em></h2></div>'+
    '<div class="stats">'+
@@ -29,7 +29,7 @@ function vHome(){
    '</div>'+
   '</div></section>'+
 
-  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+  '<section class="story blackband" id="story" data-theme="dark"><div class="story-pin">'+
    '<div class="story-l"><span class="lab kick">How an EB weld is made</span><h2 class="d3"><span class="nw">Two finished parts,</span> <em class="nw">one weld.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Fit up</span><span>Weld</span><span>X-ray</span></div>'+
     '<div class="steps">'+
@@ -51,7 +51,7 @@ function vHome(){
    '<div class="qual"><span class="lab kick" data-r>Also for</span><p class="cr" data-r><span>Power transmission</span><span>Gear to shaft assemblies</span><span>Defence</span><span>Motorsport</span><span>Industrial</span><span>Salvage and repair</span><span>Additive manufacturing</span></p></div>'+
   '</div></section>'+
 
-  '<section class="sec dark" id="quality" data-theme="dark"><div class="wrap">'+
+  '<section class="sec dark blackband" id="quality" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Quality</span><h2 class="d2 split"><span class="nw">Approved for</span> <em class="nw">critical parts.</em></h2></div><p data-r>High-tech OEMs require international and OEM-specific approvals. EBP holds them for welding, inspection and critical rotating parts, with staff approved to EN4179, ISO 9712, SNT-TC-1A and PCN.</p></div>'+
    '<div class="ev"><span class="lab kick" data-r>Approvals</span><dl>'+
     '<div data-r><dt class="lab">AS9100 Rev D</dt><dd>Aerospace quality management, with ISO 9001</dd></div>'+
@@ -93,7 +93,7 @@ function cta(){
   '</div></section>';
 }
 function footer(){
-  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
+  return '<footer class="ftr blackband" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Address</span>Electron Beam Processes Ltd<br>Unit 4, Octimum, Forsyth Road, Woking, Surrey GU21 5SF, UK</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/services">Services</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/quality">Quality</a><br><a class="ul" href="#/company">Company</a></div>'+

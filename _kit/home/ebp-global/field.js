@@ -1,14 +1,14 @@
-/* ================= HERO FIELD: a crafted render of the kind of part EBP weld (HOME_BRIEF update 2c): a finish-ground spur gear with a lightened web, joined to a separate hub by one narrow electron beam weld seam (ebpglobal.com > Gallery: Gears; Power Transmission: spur gear assemblies), sphere-traced offline by render.py with real alpha, baked to hero.webp, breathing in a slow Ken Burns drift over a soft warm-graphite glow with a faint EBP-red light. The headline side stays quiet (DI). ================= */
+/* ================= HERO FIELD (REBRAND 2026-11-26, brand-fidelity brief): EBP's own product photograph, a polished stainless vessel with welded branches and a flanged port (ebpglobal.com/wp-content/uploads/2021/11/Top-hat-scaled.jpg, 2560x1920, their Gallery), cut out offline with real alpha, its warm cast neutralised, on a plain white studio ground (their site is white) with a soft contact shadow. No glow, no wash. A very slow drift; no pointer response (CZ). On phones it sits in the top band above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#0f0d0c";
+  var BG="#ffffff",BG2="#ffffff";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
   /* DO: the open area right of the H1; its centre is held at 62-75% of the width and the subject is sized to fit with room both sides */
   var HR=0;function OA(){var L=Math.max(HR+Math.max(140,w*.08),w*.5),R=w-Math.max(48,w*.045),cx=Math.min(Math.max((L+R)/2,w*.62),w*.75);return {cx:cx,half:Math.min(cx-L,R-cx)}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  var AR=918/987;  /* render aspect (w/h) */
+  var AR=859/823;  /* render aspect (w/h) */
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var ey=mob?document.querySelector("#view .hero .eyebrow"):null,eyT=ey?ey.getBoundingClientRect().top+(window.scrollY||0):h*.45;
@@ -25,32 +25,17 @@ var field=(function(){
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    c.setTransform(dpr,0,0,dpr,0,0);var bgg=c.createLinearGradient(0,0,0,G.mob?G.bh:h);bgg.addColorStop(0,BG);bgg.addColorStop(.72,BG);bgg.addColorStop(1,BG2);c.fillStyle=bgg;c.fillRect(0,0,w,h);
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low warm-graphite glow across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
-         render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.5,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(40,33,30,"+(.55*e).toFixed(3)+")");ag.addColorStop(.5,"rgba(26,22,20,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(15,13,12,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint EBP-red light behind the gear, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*.5,py=y+dh*.62,pr=dw*.5;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(212,17,10,"+((.08+.03*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(212,17,10,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
+      /* a soft contact shadow on the studio floor under the vessel's base */
+      var sx=x+dw*.47,sy=y+dh*.955,sr=dw*.42;c.save();c.translate(sx,sy);c.scale(1,.16);
+      var sg=c.createRadialGradient(0,0,0,0,0,sr);sg.addColorStop(0,"rgba(20,18,17,"+(.30*e).toFixed(3)+")");sg.addColorStop(.55,"rgba(20,18,17,"+(.12*e).toFixed(3)+")");sg.addColorStop(1,"rgba(20,18,17,0)");
+      c.fillStyle=sg;c.fillRect(-sr,-sr,2*sr,2*sr);c.restore();
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
-      if(!G.mob){
-        /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(9,8,7,.95)");lv.addColorStop(.6,"rgba(9,8,7,.55)");lv.addColorStop(1,"rgba(9,8,7,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(9,8,7,.6)");tv.addColorStop(1,"rgba(9,8,7,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(15,13,12,0)");bv.addColorStop(1,"rgba(15,13,12,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
-      }else{
-        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(9,8,7,.6)");tv2.addColorStop(1,"rgba(9,8,7,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
-        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(15,13,12,0)");mv.addColorStop(1,"rgba(15,13,12,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
-        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
-      }
+      if(G.mob){c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1)}
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     }
     if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});

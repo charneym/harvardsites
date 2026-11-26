@@ -7,11 +7,11 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){
   return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
 /* the four measuring principles (cetatest.com > Produkte, Informationen > Dichtheitsprüfung, Durchflussprüfung, Massendurchflussprüfung) */
 function caps(){var C=[
-  ["Differenzdruck","Gegen ein dichtes Referenzvolumen","Der Druck im Prüfteil wird mit einem leckdichten Referenzvolumen verglichen. So lassen sich kleine Druckverluste und geringe Leckageraten zuverlässig erfassen.",'<rect x="8" y="18" width="16" height="20"/><rect class="a" x="32" y="18" width="16" height="20"/><path d="M24 28H32"/><circle class="f" cx="28" cy="28" r="2.2"/>'],
-  ["Überdruck","Druckverlust direkt gemessen","Der Überdrucksensor misst den Druckverlust im Prüfteil direkt: ideal für Prüfteile mit großen Leckagen und für Aufgaben, die einen großen Messbereich brauchen.",'<path d="M10 40A18 18 0 0 1 46 40"/><path class="a" d="M28 40L38 26"/><path d="M10 46H46"/><circle class="f" cx="28" cy="40" r="2.2"/>'],
-  ["Massendurchfluss","Kalorimetrisch gemessen","Der thermische Massendurchflusssensor erfasst kleinste Leckagen in großvolumigen Prüfteilen oder größere Massendurchflüsse, mit parametrierbaren Bezugsbedingungen.",'<path d="M8 22H48M8 34H48"/><path class="a" d="M22 28H34"/><circle class="f" cx="28" cy="28" r="2.2"/>'],
-  ["Volumenstrom","Über eine laminare Messstrecke","Der Durchfluss ergibt sich aus dem Druckabfall an einer laminaren Messstrecke. Je nach Messstrecke von 3 ml/min bis 200 l/min, kalibrierbar bei verschiedenen Prüfdrücken.",'<path d="M8 20H48M8 36H48"/><path class="a" d="M12 25H44M12 28H44M12 31H44"/><circle class="f" cx="28" cy="28" r="2.2"/>']];
-  return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
+  ["Differenzdruck","<span class=\"nw\">Vergleich mit</span> <span class=\"nw\">dem Referenzvolumen</span>","Der Druck im Prüfteil wird mit einem leckdichten Referenzvolumen verglichen. So lassen sich kleine Druckverluste und geringe Leckageraten zuverlässig erfassen.",'<rect x="8" y="18" width="16" height="20"/><rect class="a" x="32" y="18" width="16" height="20"/><path d="M24 28H32"/><circle class="f" cx="28" cy="28" r="2.2"/>'],
+  ["Überdruck","<span class=\"nw\">Den Druckverlust</span> <span class=\"nw\">direkt gemessen</span>","Der Überdrucksensor misst den Druckverlust im Prüfteil direkt: ideal für Prüfteile mit großen Leckagen und für Aufgaben, die einen großen Messbereich brauchen.",'<path d="M10 40A18 18 0 0 1 46 40"/><path class="a" d="M28 40L38 26"/><path d="M10 46H46"/><circle class="f" cx="28" cy="40" r="2.2"/>'],
+  ["Massendurchfluss","<span class=\"nw\">Kalorimetrisch gemessen</span>","Der thermische Massendurchflusssensor erfasst kleinste Leckagen in großvolumigen Prüfteilen oder größere Massendurchflüsse, mit parametrierbaren Bezugsbedingungen.",'<path d="M8 22H48M8 34H48"/><path class="a" d="M22 28H34"/><circle class="f" cx="28" cy="28" r="2.2"/>'],
+  ["Volumenstrom","<span class=\"nw\">Über eine</span> <span class=\"nw\">laminare Messstrecke</span>","Der Durchfluss ergibt sich aus dem Druckabfall an einer laminaren Messstrecke. Je nach Messstrecke von 3 ml/min bis 200 l/min, kalibrierbar bei verschiedenen Prüfdrücken.",'<path d="M8 20H48M8 36H48"/><path class="a" d="M12 25H44M12 28H44M12 31H44"/><circle class="f" cx="28" cy="28" r="2.2"/>']];
+  return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
@@ -23,7 +23,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Seit 1988 in Hilden</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Unsere Prüfgeräte sind</span> <span class="nw">Eigenentwicklungen:</span> <span class="nw">Elektronik, Mechanik,</span> <span class="nw">Pneumatik, Firmware</span> <span class="nw">und Software</span> <em><span class="nw">entstehen im</span> <span class="nw">eigenen Haus.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Elektronik, Mechanik,</span> <span class="nw">Pneumatik, Firmware</span> <span class="nw">und Software</span> <span class="nw">unserer Prüfgeräte</span> <em><span class="nw">entwickeln wir</span> <span class="nw">im eigenen Haus.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">0,001</span><p class="k">mbar·l/s, die Größenordnung der kleinsten nachweisbaren Leckagen im Differenzdruckverfahren</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">30 bar</span><p class="k">Prüfdrücke je nach Anforderung von −1 bar bis +30 bar</p></div>'+
@@ -38,7 +38,7 @@ function vHome(){
      '<article class="step on"><h2><span class="nw">Das Prüfteil wird</span> <span class="nw">auf Zieldruck gefüllt.</span></h2><p>Das Dichtheitsprüfgerät steuert den gesamten Prüfprozess. In der Füllphase wird das Prüfteil mit Druckluft auf den Zieldruck gebracht, je nach Prüfaufgabe zwischen −1 bar und +30 bar.</p></article>'+
      '<article class="step"><h2><span class="nw">Der Druck</span> <span class="nw">kommt zur Ruhe.</span></h2><p>Bei abgetrenntem Füllventil beruhigen sich in der Stabilisierphase die Druckschwankungen, die durch die Befüllung auftreten.</p></article>'+
      '<article class="step"><h2><span class="nw">Gemessen wird</span> <span class="nw">der Druckverlust.</span></h2><p>Die Differenzdruckmesszelle wird in den Messkreis geschaltet und misst den Druckabfall gegen ein dichtes Referenzvolumen. Nachweisbar sind Druckverluste in der Größenordnung von 1 Pa/s.</p></article>'+
-     '<article class="step"><h2><span class="nw">Entlüftet,</span> <span class="nw">bewertet, im Takt.</span></h2><p>Der Druck im Prüfteil wird wieder abgelassen. Liegt der Druckverlust innerhalb der parametrierten Grenzwerte, wird das Prüfteil als Gutteil bewertet.</p></article>'+
+     '<article class="step"><h2><span class="nw">Druck ablassen,</span> <span class="nw">Teil bewerten.</span></h2><p>Der Druck im Prüfteil wird wieder abgelassen. Liegt der Druckverlust innerhalb der parametrierten Grenzwerte, wird das Prüfteil als Gutteil bewertet.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -66,7 +66,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="unternehmen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Hersteller</span> <em class="nw">und Lösungspartner.</em></h2></div><p data-r>1988 als Handelsunternehmen für Dichtheits- und Durchflussprüfgeräte gegründet, entwickelt und fertigt CETA seit der Umfirmierung 1996 eigene Prüfgeräte, heute in Hilden bei Düsseldorf.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Seit 1996 Hersteller,</span> <em class="nw">Partner der Industrie.</em></h2></div><p data-r>1988 als Handelsunternehmen für Dichtheits- und Durchflussprüfgeräte gegründet, entwickelt und fertigt CETA seit der Umfirmierung 1996 eigene Prüfgeräte, heute in Hilden bei Düsseldorf.</p></div>'+
    '<div class="engco">'+team()+
     '<div class="engpol"><span class="lab kick" data-r>Qualität</span><ul>'+
      '<li data-r><b>Eigene Komponenten</b>Multifunktionsventil, Micro-Controller und Kalibriernormale stellt CETA selbst her.</li>'+

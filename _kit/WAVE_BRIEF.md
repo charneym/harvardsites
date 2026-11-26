@@ -52,3 +52,10 @@ v3 removed the template skeleton. It must NOT remove the premium feel. Every sit
 9. Clean transitions into the build-out nav pages.
 10. Respect prefers-reduced-motion, keep content visible by default (no opacity:0 resting state without JS), and still pass all gates plus nssfix.
 Report adds "Motion:" (list the effects used).
+
+## v4 CORRECTION (client, 2026-11-26 — overrides points 6–8 of PREMIUM MOTION v4)
+The client did NOT ask for new gimmicks. "Premium" means the same motion and polish the already-sent sites had (the template's Lenis smooth scroll, the logo loader, masked line-rise headings, the pinned scroll story with its progress rail, scroll reveals, parallax and hover polish), applied to the company's own style (v3 layout, real photos, brand palette, readable text, composition basics).
+- REMOVE: the horizontal-scroll gallery, the marquee, cursor-follow previews and magnetic buttons, unless the template already had that exact effect.
+- Keep the pinned story as in the sent sites, but with real photos (or a drawing in the brand colours if there are no usable photos), on the light theme.
+- The loader is the sent sites' logo loader (whole lockup, no counter).
+Reference for motion feel: any sent site, e.g. /desoutter/ or /lightel/. Reference for look: their own brand.

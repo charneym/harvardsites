@@ -104,7 +104,7 @@ function footer(){
    '<div class="c"><span class="lab">Registered office</span>Medasil Surgical Limited<br>Medasil House, Hunslet Road, Leeds LS10 1AU</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/quality">Quality</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Certified</span>ISO 13485:2016 (SGS)<br>Company no. 01173261</div>'+
+   '<div class="c"><span class="lab">Certified</span>ISO 13485:2016, regulated by SGS. Registered in England and Wales, company no. 01173261</div>'+
   '</div>'+'<svg class="bigsvg mdw" viewBox="338 1066 978 222" aria-hidden="true"><path d="@@WORD@@"/></svg>'+
   '<div class="legal"><span class="lab">© 2026 Medasil Surgical Limited</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

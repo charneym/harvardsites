@@ -7,7 +7,7 @@
 var SCW=760,SCH=520;
 function mdScene(o){
   var g='',mob=o.mob,i;
-  var Y=mob?24:0;
+  var Y=mob?8:0;
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
   g+='<g transform="translate(0 '+Y+')">';
   /* step 1: the mould, two dashed halves that part */
@@ -34,10 +34,10 @@ function mdScene(o){
   g+=mob?L("mdL2","s2","CLASS 8 CLEANROOM","MADE IN LEEDS"):L("mdL2","s2","MANUFACTURED IN A CLASS 8 CLEANROOM","AT OUR OWN PREMISES IN LEEDS");
   g+=mob?L("mdL3","s1","ISO 13485:2016","SIZE 4 · 10 CM · RED"):L("mdL3","s1","STRICT QUALITY CONTROLS · ISO 13485:2016","SIZE 4 · 10 CM · RED BITE BLOCK");
   g+=mob?L("mdL4","s2","STERILE, SINGLE WRAP","NEXT-DAY UK DELIVERY"):L("mdL4","s2","SUPPLIED STERILE, IN A SINGLE WRAP POUCH","NEXT-DAY UK DELIVERY ON IN-STOCK ITEMS");
-  g+='<g id="lb1"><text class="a" x="20" y="'+(mob?514:506)+'">1 · MOULDED</text></g>';
-  g+='<g id="lb2"><text class="a" x="20" y="'+(mob?514:506)+'">2 · CLEANROOM</text></g>';
-  g+='<g id="lb3"><text class="a" x="20" y="'+(mob?514:506)+'">3 · CHECKED</text></g>';
-  g+='<g id="lb4"><text class="a" x="20" y="'+(mob?514:506)+'">4 · DELIVERED</text></g>';
+  g+='<g id="lb1"><text class="a" x="20" y="'+(mob?518:506)+'">1 · MOULDED</text></g>';
+  g+='<g id="lb2"><text class="a" x="20" y="'+(mob?518:506)+'">2 · CLEANROOM</text></g>';
+  g+='<g id="lb3"><text class="a" x="20" y="'+(mob?518:506)+'">3 · CHECKED</text></g>';
+  g+='<g id="lb4"><text class="a" x="20" y="'+(mob?518:506)+'">4 · DELIVERED</text></g>';
   return g+'</svg>';
 }
 function scene(){return mdScene({mob:MOBILE()?1:0})}
@@ -54,13 +54,13 @@ function storyDraw(svg){
     var mo=seg(p,.1,.24);
     op(E.mt,b*seg(p,0,.06)*(1-seg(p,.2,.27)));op(E.mb,b*seg(p,0,.06)*(1-seg(p,.2,.27)));
     if(E.mt)E.mt.setAttribute("transform","translate(0 "+(-22*mo).toFixed(1)+")");if(E.mb)E.mb.setAttribute("transform","translate(0 "+(22*mo).toFixed(1)+")");
-    draw(E.ins,b*seg(p,.02,.16));draw(E.lum,b*seg(p,.1,.2));
+    draw(E.ins,b*seg(p,0,.07));draw(E.lum,b*seg(p,.03,.1));
     op(E.L1,b*seg(p,.03,.09)*(1-seg(p,.22,.25)));
     /* step 2: laminar air falls through the scene */
     op(E.air,b*seg(p,.27,.33)*(1-seg(p,.46,.5)));if(E.air)E.air.style.strokeDashoffset=(-p*900).toFixed(1);
     op(E.L2,b*seg(p,.3,.36)*(1-seg(p,.47,.5)));
     /* step 3: the bite block takes its size colour, the gauge draws */
-    op(E.bite,b*seg(p,.52,.6));draw(E.gauge,b*seg(p,.56,.7));
+    op(E.bite,b*seg(p,.52,.6));draw(E.gauge,b*seg(p,.53,.6));
     op(E.L3,b*seg(p,.55,.61)*(1-seg(p,.72,.75)));
     /* step 4: the pouch draws and seals around it, the airway brightens */
     draw(E.pouch,b*seg(p,.77,.92));op(E.glow,b*seg(p,.84,.94));

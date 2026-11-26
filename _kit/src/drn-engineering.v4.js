@@ -60,7 +60,7 @@ function start(){
   /* ---- 3. image reveals + inner parallax, on every framed photo ---- */
   G.utils.toArray("#view .iw").forEach(function(w){if(w.closest(".hero"))return;var im=w.querySelector("img");
     G.fromTo(w,{clipPath:"inset(100% 0% 0% 0%)"},{clipPath:"inset(0% 0% 0% 0%)",duration:1.15,ease:"power3.inOut",clearProps:"clipPath",scrollTrigger:{trigger:w,start:"top 90%",once:true}});
-    if(im)G.fromTo(im,{yPercent:-3.5,scale:1.08},{yPercent:3.5,scale:1.08,ease:"none",scrollTrigger:{trigger:w,start:"top bottom",end:"bottom top",scrub:true}})});
+    if(im&&innerWidth>900)G.fromTo(im,{yPercent:-3.5,scale:1.08},{yPercent:3.5,scale:1.08,ease:"none",scrollTrigger:{trigger:w,start:"top bottom",end:"bottom top",scrub:true}})});
   /* section heads, cards, rows: fade up as they arrive */
   function up(sel,stg){G.utils.toArray(sel).forEach(function(el){var kids=stg?el.children:[el];G.from(kids,{y:34,opacity:0,duration:.9,ease:"power3.out",stagger:stg?.08:0,clearProps:"transform,opacity",scrollTrigger:{trigger:el,start:"top 88%",once:true}})})}
   /* section headings: whole lines rise out of a mask (SplitText lines, never letters) */
@@ -80,11 +80,11 @@ function start(){
     function setI(i){if(i===cur)return;cur=i;lab.forEach(function(s,k){s.classList.toggle("on",k===i)});sts.forEach(function(s,k){if(k===i)s.removeAttribute("aria-hidden");else s.setAttribute("aria-hidden","true")});if(cap)cap.textContent=ims[i].getAttribute("data-cap")}
     G.set(ims,{opacity:0});G.set(ims[0],{opacity:1});G.set(sts,{opacity:0});G.set(sts[0],{opacity:1});setI(0);
     var tl=G.timeline({defaults:{ease:"none"},scrollTrigger:{trigger:pin,start:"top top+=64",end:"+=320%",pin:true,scrub:.7,anticipatePin:1,
-      onUpdate:function(s){G.set(prog,{scaleX:s.progress})}},onUpdate:function(){setI(Math.max(0,Math.min(3,Math.floor(tl.time()+.05))))}});
+      onUpdate:function(s){G.set(prog,{scaleX:s.progress})}},onUpdate:function(){setI(Math.max(0,Math.min(3,Math.floor(tl.time()+.24))))}});
     tl.fromTo(ims[0],{scale:1.1},{scale:1,duration:1},0);
     for(var i=1;i<4;i++){var t=i-.25;
       tl.to(ims[i-1],{opacity:0,duration:.5},t).fromTo(ims[i],{opacity:0},{opacity:1,duration:.5},t).fromTo(ims[i],{scale:1.14},{scale:1,duration:1.25},t)
-        .to(sts[i-1],{opacity:0,y:-26,duration:.35},t).fromTo(sts[i],{opacity:0,y:26},{opacity:1,y:0,duration:.4},t+.15)}
+        .to(sts[i-1],{opacity:0,y:-26,duration:.25,ease:"power2.in"},t-.27).fromTo(sts[i],{opacity:0,y:26},{opacity:1,y:0,duration:.28,ease:"power2.out",immediateRender:false},t+.02)}
     tl.to({},{duration:.4});
     return function(){sec.classList.remove("on");G.set(ims.concat(sts),{clearProps:"all"})};
   });

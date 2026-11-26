@@ -5,7 +5,7 @@ var CP="https://www.gk-smb.de/de/";
 /* machines, as listed on gk-smb.de > Verpackungsmaschinen (technical data: standard versions) */
 var MACH=[
  ["Siegelrandbeutel","Baureihe FB-S, <span class=\"nw\">FB-M, FB-L</span>","Siegelrandbeutelmaschinen für Viersiegelrand-Flachbeutel, vertikal und intermittierend, mit servo-angetriebener Siegelung und Folienabzug. 1 bis 16 Bahnen, thermisch bis zu 1.600 ppm, mit Ultraschall bis zu 640 ppm. Auch mit Tüchlein- und Tupferherstellung oder in ATEX-Ausführung.","siegelrandbeutelmaschinen/"],
- ["Schlauchbeutel","Schlauchbeutelmaschinen SB-S, SB-L","Für Schlauchbeutel bis 2 kg, entwickelt für hohe Verfügbarkeit und Zuverlässigkeit. Die neue SB-S zeigten wir erstmals auf der Fachpack 2025.","schlauchbeutelmaschinen/"],
+ ["Schlauchbeutel","Baureihe SB-S, SB-L","Schlauchbeutelmaschinen für Beutel bis 2 kg, entwickelt für hohe Verfügbarkeit und Zuverlässigkeit. Die neue SB-S zeigten wir erstmals auf der Fachpack 2025.","schlauchbeutelmaschinen/"],
  ["Stickpacks","Stickpackmaschine ST-L","Für hohe Ausbringung: 2 bis 12 Bahnen, bis zu 1.080 ppm, kompakt und modular, auf Wunsch mit Tablettendosierung oder Dreisiegelrandbeutel.","stickpackmaschinen"],
  ["Dosierung","Dosiersysteme","Kolbenpumpe KP, Drehschieberpumpe DSP und Kugelventilpumpe für flüssige Produkte, mit vollautomatischer CIP/SIP-Reinigung; dazu Dosiersysteme für Pulver und Granulat.","dosierung-fluessig/"],
  ["Zubehör","Konturstanze und Sachet Tester","Peripherie rund um die Maschine: Konturstanzen, Sachet Tester, externe CIP-Stationen, Papier- und Vliesabrollungen, Stapel-, Förder- und Handlingstechnik.","konturstanze/"]];

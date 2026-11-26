@@ -24,7 +24,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Inhabergeführt, seit 1969</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Ein mittelständisches</span> <span class="nw">Familienunternehmen</span> <span class="nw">mit hoher Fertigungstiefe:</span> <em><span class="nw">von der Beratung</span> <span class="nw">und Konstruktion</span> <span class="nw">bis zur schlüsselfertigen</span> <span class="nw">Übergabe, aus einer Hand.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Ein Familienunternehmen</span> <span class="nw">mit hoher Fertigungstiefe:</span> <em><span class="nw">von der Beratung</span> <span class="nw">und Konstruktion</span> <span class="nw">bis zur schlüsselfertigen</span> <span class="nw">Übergabe, aus einer Hand.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1969</span><p class="k">begann Gerhard Kummerfeldt in einer Garage in Rellingen bei Hamburg, mit drei Maschinen</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">1.600</span><p class="k">Beutel pro Minute auf der Siegelrandbeutelmaschine FB-L, thermisch gesiegelt auf bis zu 16 Bahnen</p></div>'+
@@ -39,7 +39,7 @@ function vHome(){
      '<article class="step on"><h2><span class="nw">Die Folie läuft</span> <span class="nw">von der Rolle.</span></h2><p>Ein servo-angetriebener Folienabzug zieht die Packstoffbahn vertikal und im Takt in die Maschine, auch kompostierbare und recyclebare Folien, die wir im eigenen Technikum testen.</p></article>'+
      '<article class="step"><h2><span class="nw">Längs gesiegelt,</span> <span class="nw">in Bahnen.</span></h2><p>Servo-angetriebene Siegelbacken schließen die Längsnähte. So laufen mehrere Beutel nebeneinander, bei der FB-L auf bis zu 16 Bahnen.</p></article>'+
      '<article class="step"><h2><span class="nw">Jede Bahn</span> <span class="nw">wird dosiert.</span></h2><p>Kolben-, Drehschieber- oder Kugelventilpumpen füllen flüssige Produkte ab, auf Wunsch mit vollautomatischer CIP/SIP-Reinigung; für Pulver und Granulat gibt es eigene Dosierer.</p></article>'+
-     '<article class="step"><h2><span class="nw">Quer gesiegelt,</span> <span class="nw">abgetrennt.</span></h2><p>Die Quersiegelung schließt die Beutel, das Messer trennt sie ab: thermisch bis zu 1.600 Beutel pro Minute, mit Ultraschall bis zu 640.</p></article>'+
+     '<article class="step"><h2><span class="nw">Quer gesiegelt</span> <span class="nw">und abgetrennt.</span></h2><p>Die Quersiegelung schließt die Beutel, das Messer trennt sie ab: thermisch bis zu 1.600 Beutel pro Minute, mit Ultraschall bis zu 640.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+

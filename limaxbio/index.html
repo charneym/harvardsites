@@ -1116,6 +1116,19 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 .pr-id h3{grid-column:2}
 .pr-id .pr-ind{grid-column:2;margin:4px 0 0!important}
 @media (max-width:1024px){.pr-meta{flex-direction:column;align-items:flex-start;gap:6px}}
+/* v10 (client: stage lines looked like they sat between phases): four discrete, gapped segments, one per phase, header
+   labels centred over their segment, a dot on the current phase, and the phase named in each row (the header hides <=1024) */
+.pipe-axis{column-gap:6px}
+.pipe-axis .lab{text-align:center}
+.pr-seg{display:grid!important;grid-template-columns:repeat(4,1fr);column-gap:6px;height:3px!important;background:none!important;overflow:visible}
+.pr-seg b{position:relative;display:block;height:100%;border:0!important;border-radius:2px;background:rgba(var(--boner),.14)}
+.pr-seg b.on{background:var(--grad);background-size:400% 100%;background-position:calc(var(--k) * 33.333%) 0}
+.pr-seg b.cur::after{content:"";position:absolute;right:-1px;top:50%;width:9px;height:9px;border-radius:50%;transform:translate(0,-50%);background:#8a4fd6;box-shadow:0 0 0 3px rgba(2,1,8,1)}
+.pr-seg b.cur[style*="--k:0"]::after{background:#44a3c5}
+@media (min-width:1025px) and (max-width:1360px){.pipe-h,.prow{grid-template-columns:minmax(0,2.7fr) minmax(0,3.8fr) minmax(0,4.8fr)!important}.pipe-axis .lab{letter-spacing:.1em!important;font-size:10.5px!important}}
+.pipe-axis .lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-stg{font-style:normal;display:inline-block;margin-right:.7em;padding-right:.7em;border-right:1px solid rgba(var(--boner),.22);color:#59c7d4;font-family:var(--deco);font-size:11px;letter-spacing:.24em;text-transform:uppercase;vertical-align:1px}
+
 </style>
 </head>
 </head>
@@ -1861,11 +1874,11 @@ function tiles(){return '<div class="ptile-g">'+PROPS.map(function(c){
   return '<div class="ptile"><span class="pm'+(/^[0-9&]/.test(c[0])?'':' word')+'">'+c[0]+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span><h3>'+esc(c[2])+'</h3><p>'+esc(c[3])+'</p></div>'}).join("")+'</div>'}
 function pipe(){return '<div class="pipe">'+
   '<div class="pipe-h" aria-hidden="true"><span class="lab">Program</span><span class="lab">About</span><span class="pipe-axis">'+STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</span></div>'+
-  PROG.map(function(c,i){var pct=(c[3]/STAGES.length*100).toFixed(1);
+  PROG.map(function(c,i){
   return '<article class="prow"><div class="pr-id"><span class="lab pr-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="pr-ind">'+esc(c[1])+'</span></div>'+
    '<p class="pr-d">'+esc(c[4])+'</p>'+
-   '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
-   '<div class="pr-meta"><span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></div></article>'}).join("")+'</div>'}
+   '<div class="pr-st"><div class="pr-bar pr-seg" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+' ('+c[3]+' of '+STAGES.length+')">'+STAGES.map(function(s,k){return '<b class="'+(k<c[3]?'on':'')+(k===c[3]-1?' cur':'')+'" style="--k:'+k+'"></b>'}).join("")+'</div>'+
+   '<div class="pr-meta"><span class="pr-stl"><em class="pr-stg">'+esc(STAGES[c[3]-1])+'</em>'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></div></article>'}).join("")+'</div>'}
 function team(){return '<div class="tg4">'+TEAM.map(function(p){
   return (function(){var m=p[0].split(/, (.+)/);return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(m[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(m[0])+'</h3><span class="lab">'+(m[1]?esc(m[1])+' · ':'')+esc(p[1])+'</span>'})()+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}

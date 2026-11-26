@@ -14,8 +14,8 @@ var NEWS=[
  ["06.–08. Okt. 2026","Expo for Electronics Manufacturing 2026 in Stuttgart, Halle 9, Stand 9A58","atn-berlin.de",AT+"atn-events.php"],
  ["18.–21. Nov. 2025","productronica 2025 in München, Halle A4 und auf der FutureLine in Halle B2","productronica.com","https://exhibitors.productronica.com/ausstellerportal/2025/aussteller/ausstellerdetails/atn-automatisierungstechnik-niemeier-gmbh/?elb=228.1100.2091.1.111"],
  ["25. Juni 2025","EMIL – Elektronik zum Anfassen: Technologietag in der Alten Brauerei Stegen am Ammersee","Agenda (PDF)",AT+"media/eventarchiv/2025/Agenda-EMIL-Final-Rev-2.pdf"],
- ["Neu bei ATN","Neu im INOPLACER-Programm: Laserbeschriftung für die SMD-Fertigung","atn-berlin.de",AT+"inoplacer/laserbeschriftung.php"]];
-function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
+ ["Neu bei ATN","<span class=\"nw\">Laserbeschriftung, neu</span> <span class=\"nw\">im INOPLACER-Programm</span> <span class=\"nw\">für die SMD-Fertigung</span>","atn-berlin.de",AT+"inoplacer/laserbeschriftung.php"]];
+function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+(n[1].indexOf('<span')===0?n[1]:esc(n[1]))+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
 function team(){var P=[
   ["Dr.-Ing. Jörg Niemeier","Geschäftsleitung und Vertrieb","Geschäftsführer der ATN Automatisierungstechnik Niemeier GmbH und der ATN Produktionstechnik Niemeier GmbH."],
   ["Luca Ballenthin","Vertrieb","Telefon +49 (0)30 5659 095-46"],

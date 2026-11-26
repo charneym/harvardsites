@@ -10,14 +10,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Vacuum &amp; atmospheric automation<span class="nomob"> · St. Petersburg, Florida</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Moving your</span><span class="l">technology,</span><span class="l"><em>by design.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">From a dream</span> <span class="l"><em>to a design.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Hine Automation designs and manufactures vacuum and atmospheric automation systems and robotic components: load locks, cluster systems, EFEMs, robots, aligners and elevators for semiconductor, solar and flat panel display OEMs worldwide.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/story">How a load lock works '+ARR+'</a><a class="btn" href="#/systems">Systems</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Who we are</span>'+
-   '<h2 class="txt" id="mani">From a dream to a design, Hine Automation builds and automates with precision and passion, combining quality and reliability with <em>modular, versatile designs.</em></h2>'+
+   '<h2 class="txt" id="mani">Hine Automation builds and automates with precision and passion, combining unsurpassed quality and reliability with <em>modular, versatile designs.</em></h2>'+
    '<p class="mlead" data-r>Hine serves original equipment manufacturers, from flexible research and development environments to stringent production lines, with semiconductor automation for silicon and compound III-V or II-VI materials, tape frames, photomasks and reticles, and solar and flat panel displays.</p></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">30+</span><p class="k">years of experience designing products in the semiconductor space</p></div>'+

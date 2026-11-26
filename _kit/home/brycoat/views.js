@@ -48,7 +48,7 @@ function vHome(){
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Clean to</span> <span class="nw">the bare metal.</span></h2><p>Parts are inspected on arrival, put through a proprietary multi-stage cleaning process to an oxide-free surface, and mounted on fixtures.</p></article>'+
      '<article class="step"><h2><span class="nw">Pumped down,</span> <span class="nw">heated, ion-cleaned.</span></h2><p>The air is pumped out to a high vacuum, the parts are pre-heated to process temperature, and ion cleaning removes the last atomic contaminants.</p></article>'+
-     '<article class="step"><h2><span class="nw">Titanium,</span> <span class="nw">struck by an arc.</span></h2><p>With nitrogen and argon flowing, a vacuum arc flash-evaporates and ionises titanium. A voltage on the parts accelerates the ions of the plasma to their surface.</p></article>'+
+     '<article class="step"><h2><span class="nw">An arc frees</span> <span class="nw">the titanium.</span></h2><p>With nitrogen and argon flowing, a vacuum arc flash-evaporates and ionises titanium. A voltage on the parts accelerates the ions of the plasma to their surface.</p></article>'+
      '<article class="step"><h2><span class="nw">A gold coat,</span> <span class="nw">tested every batch.</span></h2><p>Titanium and nitrogen combine into dense, hard TiN that bonds into the surface. Each batch is tested for quality, thickness and uniformity, and every part is inspected.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
@@ -66,7 +66,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="quality" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Quality and company</span><h2 class="d2 split"><span class="nw">Controlled,</span> <em class="nw">batch by batch.</em></h2></div><p data-r>Our computer system controls every customer part by drawing and specification revision, and a traveler tracks it through each process step. Witness samples accompany and are kept from every coating batch.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Quality and company</span><h2 class="d2 split"><span class="nw">Every batch</span> <em class="nw">under control.</em></h2></div><p data-r>Our computer system controls every customer part by drawing and specification revision, and a traveler tracks it through each process step. Witness samples accompany and are kept from every coating batch.</p></div>'+
    team()+
    '<div class="ozs">'+
     '<div class="oz-site"><span class="lab" data-r>Nadcap Merit</span><h3 data-r>Accredited special processes</h3><p data-r>PVD coating, thermal spray coating, dry-film lubricant (WS2), coating removal and the metallurgical laboratory, with Merit status.</p></div>'+

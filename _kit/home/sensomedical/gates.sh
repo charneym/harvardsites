@@ -26,7 +26,7 @@ run buildout-test.js $F
 run fit-audit.js $F
 (cd .. && echo '=== loader-contrast (root)' && node _kit/loader-contrast-audit.js sensomedical && echo LC-DONE)
 echo "=== ALL DONE"
-(cd .. && node _kit/tools/textclash.js sensomedical /tmp/claude-0/-home-user-harvardsites/d1491e42-5d55-5985-8941-95363422b23c/scratchpad/tc 2>&1 | tail -30)
+(cd .. && node _kit/tools/textclash.js sensomedical /tmp/claude-0/-home-user-harvardsites/1b87a68b-6faf-55e3-b8e9-4524f980628d/scratchpad/tc 2>&1 | tail -30)
 (cd .. && echo '=== entities' && node _kit/tools/entities.js sensomedical 2>&1 | tail -10)
 (cd .. && echo '=== contrast 1440' && node _kit/tools/contrast.js sensomedical 2>&1 | tail -10)
 (cd .. && echo '=== contrast 390' && node _kit/tools/contrast.js sensomedical 390 2>&1 | tail -10)

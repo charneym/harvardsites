@@ -8,5 +8,6 @@
 - Emails (published): m.farah@sensomedical.com (/electrode-development-solutions), r.elaiyan@sensomedical.com (HQ), l.salah@sensomedical.com (USA & Canada).
 - Bad site: © 2021 footer; Elementor placeholder "Slide 1 Heading / Add Your Heading Text Here" in the home slider; "Worth Reading" page of "Article Title 1/2/3" placeholders; typos in nav and copy ("why sensomadical", "SENSOMEDICL", "Adhessive"); BIOSTIM still "to be released 2nd half 2021".
 - Palette: logo cyan #21b0de, navy #191b2d / #0d355b, crimson dot #a90034; site teal #55bbcb. Fonts on their site: Montserrat, Open Sans.
-- Hero: crafted render (render.py, numpy) of the Wovyn SEEG depth electrode: three leads, Pt/Ir ring contacts, clear TPU jacket with the conductor coil. No stock photo.
-- Logo: new-logo@2x.png from sensomedical.com/wp-content/uploads/2021/04/ (682x92), navy letters recoloured white for the dark ground; used at or below native size.
+- Hero (rebrand 2026-11-26): their own studio photo of the wired EEG cap, sensomedical.com/wp-content/uploads/2021/08/2-B.jpg (3840x2160), cropped and downscaled to 1600px, edges feathered into its own white ground #f8f9fe. Earlier render (render.py) retired.
+- Theme (rebrand): light, as their site is: white ground, navy #0d355b type, logo cyan #21b0de accent (#0a76a0 for text on white), navy bands; headings single weight and colour.
+- Logo: new-logo@2x.png from sensomedical.com/wp-content/uploads/2021/04/ (682x92), original colours (cyan + #191b2d letters) on the light ground; used at or below native size.

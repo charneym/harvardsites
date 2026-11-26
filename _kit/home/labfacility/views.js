@@ -14,14 +14,14 @@ function caps(){var C=[
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="dark">'+
+  '<section class="hero" id="hero" data-field data-theme="light">'+
    '<span class="lab eyebrow" data-r>Temperature &amp; process technology<span class="nomob"> · Bognor Regis</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Temperature sensors,</span> <span class="l"><em class="nw">made in Britain</em></span> <span class="l"><em class="nw">since 1971.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Temperature sensors,</span> <span class="l nw">made in Britain</span> <span class="l nw">since 1971.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Labfacility designs and manufactures thermocouples, resistance thermometers and thermocouple connectors, stocks thermocouple cable and supplies the instruments that read them, from two UK sites to over 85 countries.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Send an enquiry</a></div></div>'+
   '</section>'+
 
-  '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
+  '<section class="sec mani light" id="about" data-theme="light"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>West Sussex and South Yorkshire</span>'+
    '<h2 class="txt" id="mani"><span class="nwp">A temperature reading</span> <span class="nwp">is only as good as</span> <span class="nwp">the sensor, cable and</span> <span class="nwp">connector behind it.</span> <em><span class="nwp">We make, stock</span> <span class="nwp">and supply all three.</span></em></h2></div>'+
    '<div class="stats">'+
@@ -43,7 +43,7 @@ function vHome(){
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark2" id="products" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light alt" id="products" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Every part</span> <em class="nw">of the reading.</em></h2></div><p data-r>The UK’s leading manufacturer of temperature sensors, thermocouple connectors and associated temperature instrumentation, and a stockist of thermocouple cable. Digikey and Farnell also stock the range.</p></div>'+
    prods()+
    '<div class="qual mk"><span class="lab kick" data-r>Applications</span><p class="cr" data-r><span>Plastics and rubber processing</span><span>Pharmaceutical</span><span>Cold chain monitoring</span><span>Automotive and motor sport</span><span>HVAC</span><span>Highways</span><span>Healthcare</span><span>Veterinary</span><span>Environmental</span><span>Food and catering</span><span>Agricultural</span></p></div>'+
@@ -54,7 +54,7 @@ function vHome(){
    caps()+
   '</div></section>'+
 
-  '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light alt" id="company" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Two UK sites,</span> <em class="nw">over fifty years.</em></h2></div><p data-r>Labfacility has been trading since 1971, with its office in Bognor Regis, West Sussex, and its manufacturing plant in Dinnington, South Yorkshire. Technical support for sensing and instrumentation is always freely available.</p></div>'+
    '<div class="engco">'+team()+
     '<div class="engpol"><span class="lab kick" data-r>Facts</span><ul>'+
@@ -67,14 +67,14 @@ function vHome(){
     '</ul></div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
+  '<section class="sec light" id="news" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Next seen</span> <em class="nw">at Farnborough.</em></h2></div><p data-r>Labfacility is listed as an exhibitor at Southern Manufacturing &amp; Electronics, 2 to 4 February 2027, on stand N135. Each entry links to its source.</p></div>'+
    news()+
   '</div></section>'+
   cta();
 }
 function cta(){
-  return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
+  return '<section class="sec light alt cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
    '<h2 class="big split"><span class="nw">Need a sensor?</span> <em class="nw">Talk to our team.</em></h2>'+
    '<p class="sub" data-r>From a stocked thermocouple to a sensor built to your drawing, tell us the application, the temperature range and how you will connect it.</p>'+

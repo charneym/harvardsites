@@ -1,4 +1,4 @@
-var FONTS=['300 1em "Barlow"','400 1em "Barlow"','500 1em "Barlow"','600 1em "Barlow"','700 1em "Open Sans"','400 1em "Open Sans"','italic 400 1em "Open Sans"','500 1em "Open Sans"','600 1em "Open Sans"'];
+var FONTS=['400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"','700 1em "Open Sans"','400 1em "Open Sans"','italic 400 1em "Open Sans"','500 1em "Open Sans"','600 1em "Open Sans"'];
 /* contact: labfacility.com > Contact Us and the site footer */
 var TEL="+441243871280",TELT="+44 (0)1243 871280",FAXT="+44 (0)1243 871281",MAIL="sales@labfacility.com";
 var CP="https://www.labfacility.com/";

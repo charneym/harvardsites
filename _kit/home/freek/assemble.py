@@ -56,6 +56,8 @@ h1,h2,h3{font-weight:700;hyphens:manual}
 p,dd,li,figcaption,blockquote{hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
 .nl,.btn,.lab,.burger,.mm li a,.strip,.rail span,.ranges .dv,.more,.addr dt,.ftr .ft,.kv dt{font-weight:400}
 .btn{font-weight:700}
+.nl{white-space:nowrap}
+@media (max-width:1120px){.nav .nl,.nav .btn{display:none}.burger{display:inline-flex}}
 @media (max-width:420px){.brand img{height:32px}.hdr.solid .brand img{height:30px}}
 @media (min-width:861px){.gal{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .gal .ph{aspect-ratio:16/10;background:#dbdbdb}
@@ -114,7 +116,8 @@ body = rep(body, 'NEWS', ''.join('<li><a href="%s" target="_blank" rel="noopener
 
 # ---------- script ----------
 js = rep(js, 'var SECS={about:"about",story:"story",pumps:"pumps",technology:"technology",capabilities:"capabilities",heritage:"heritage",news:"news",contact:"contact"};',
-         'var SECS={about:"about",story:"story",produkte:"produkte",anwendungen:"anwendungen",unternehmen:"unternehmen",forschung:"forschung",news:"news",kontakt:"kontakt"};')
+         'var SECS={unternehmen:"about",about:"about",story:"story",team:"team",produkte:"produkte",anwendungen:"anwendungen",forschung:"forschung",news:"news",kontakt:"kontakt"};')
+js = rep(js, 'if(innerWidth>980&&', 'if(innerWidth>1120&&')
 js = rep(js, '$("#burgerLab").textContent=on?"Close":"Menu"', '$("#burgerLab").textContent=on?"Schließen":"Menü"')
 js = rep(js, 'gsap.fromTo(".hero-ph",{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0% 0 0)"', 'gsap.fromTo(".hero-ph",{clipPath:"inset(0 0 0 100%)"},{clipPath:"inset(0 0 0 0%)"')
 js = rep(js, 'var lk=$(".cawm",pre)', 'var lk=$(".plk",pre)')
@@ -142,7 +145,7 @@ head = '''<!doctype html>
 </head>
 <body>
 '''
-out = head + body + '\n<!--@libs gsap ScrollTrigger SplitText lenis buildout-->\n<script>gsap.set(".xc",{yPercent:101});</script>\n<script>\n' + js + '\n</script>\n' + (K / 'lib/nssfix.js').read_text().rstrip('\n') + '\n</body>\n</html>\n'
+out = head + body + '\n<script>window.BUILDOUT={copy:{h:"So geht es weiter."}};</script>\n<!--@libs gsap ScrollTrigger SplitText lenis buildout-->\n<script>gsap.set(".xc",{yPercent:101});</script>\n<script>\n' + js + '\n</script>\n' + (K / 'lib/nssfix.js').read_text().rstrip('\n') + '\n</body>\n</html>\n'
 for bad in ['Charles', 'Austen', 'Byfleet', 'pump', 'Pump', '0072bc']:
     assert bad not in out, (bad, out[max(0,out.find(bad)-200):out.find(bad)+60])
 (K / 'src/freek.src.html').write_text(out)

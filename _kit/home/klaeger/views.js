@@ -15,14 +15,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Ceramic and plastic injection moulding<span class="nomob"> · Dornstetten</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Precision parts</span><span class="l">in technical ceramics</span><span class="l"><em>and plastics.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Precision parts </span><span class="l">in technical ceramics </span><span class="l"><em>and plastics.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Kläger is a development partner and system supplier for precision injection-moulded components, from engineering and mould making to series production and assembly. Family-owned since 1959, a pioneer of ceramic injection moulding since 1996.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/capabilities">Our capabilities '+ARR+'</a><a class="btn" href="#/contact">Start a project</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Home of CIM</span>'+
-   '<h2 class="txt" id="mani">Engineering, mould making and injection moulding under one roof, so we take full responsibility for <em>turning product ideas into market-ready parts.</em></h2></div>'+
+   '<h2 class="txt" id="mani">Engineering, mould making and injection moulding under one roof, so we take full responsibility for <em>turning product ideas into <span class="nw">market-ready parts.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1959</span><p class="k">Founded in Dornstetten by Ing. Gerhard Kläger, still family-owned today</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">&gt; 300</span><p class="k">Materials processed, from standard plastics to high-performance ceramics</p></div>'+
@@ -63,7 +63,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="company" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split">A hidden champion <em>from Baden-Württemberg.</em></h2></div><p data-r>In 1959 Ing. Gerhard Kläger began moulding switch receptacles in plastic. Today about 100 people in Dornstetten build moulds and mould parts for market leaders, as one of the pioneers of ceramic injection moulding.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A family company</span> <em class="nw">since 1959.</em></h2></div><p data-r>In 1959 Ing. Gerhard Kläger began moulding switch receptacles in plastic. Today about 100 people in Dornstetten build moulds and mould parts for market leaders, as one of the pioneers of ceramic injection moulding.</p></div>'+
    team()+
    '<div class="qual"><span class="lab kick" data-r>Industries</span><p class="cr" data-r><span>Medical and dental</span><span>Measurement and control</span><span>Electrical</span><span>Household appliances</span><span>Consumer goods</span><span>Mechanical engineering</span></p></div>'+
   '</div></section>'+
@@ -77,7 +77,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split">Moving products <em>forward.</em></h2>'+
+   '<h2 class="big split">Start your <em>next part.</em></h2>'+
    '<p class="sub" data-r>For ceramic or plastic injection moulding, engineering, prototypes or mould making, talk to us directly in Dornstetten.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to us '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+

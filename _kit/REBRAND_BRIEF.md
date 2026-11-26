@@ -10,3 +10,5 @@ Do, in order:
 5. Gates: run textclash, entities, contrast (1440 and 390), orphans, squeeze 390/768 and the right-edge check; look at the hero at 1920x930, 1440 and 390 and the story frames by eye.
 6. Push to main (git pull --rebase first), then send_message to the coordinator (session_014388NFYUsdqRg21Sq5nZUz): "REBRAND DONE: SLUG — Palette: <hex list> from <source>; Hero: <own photo URL | render, reason>; Theme: light|dark; anything you could not fix".
 Never invent facts; do not change the lead/contact facts.
+
+STRUCTURE v3: also apply "STRUCTURE v3: REMOVE THE TEMPLATE SKELETON" at the end of _kit/WAVE_BRIEF.md (remove the counting loader, pinned SVG story, two-tone headings, floating cut-out hero and micro-label clutter; use real photos; readable text; denser layout). This is a restructure, not just a re-theme.

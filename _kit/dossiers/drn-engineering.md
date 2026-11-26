@@ -1,0 +1,9 @@
+# D.R.N. Engineering Ltd (drn-engineering), home-only concept, batch 2026-11p
+- Domain: drn.co.uk (company name, logo, sales@DRN.co.uk and the Luton address on every page; Companies House 01672231, incorporated 18 October 1982, registered office 2 Trojan Court, Laporte Way, Luton LU4 8RN).
+- Hero: DRN's own product photograph, a knurled aluminium cap with an internal thread (drn.co.uk > Gallery, wp-content/uploads/2017/02/272.jpg), near-white lifted to pure white, cropped 630 x 614, drawn with multiply on the light hero ground. No stock photo.
+- Logo: redrawn as outlined SVG paths (Roboto Slab 900 "DRN" in #05572F, Kaushan Script "Engineering" in grey), after drn.co.uk/wp-content/uploads/2017/02/logo.jpg.
+- Palette: logo green #046836/#05572F (logo.jpg pixels, slider caption box #05572f), slider caption orange #d87f3e (home page inline CSS).
+- Copy: drn.co.uk home, History, Services, Plant List (issue 8/1/2026), FAQs, ISO 9001 Quality & ISO 14001 Environmental, News (two posts), Contact; Southern Manufacturing & Electronics 2027 exhibitor profile (history, Stand A220).
+- Activity: exhibitor, Southern Manufacturing & Electronics 2027, Farnborough, 2–4 Feb 2027, Stand A220 — https://www.southern-manufacturing-electronics.com/exhibitors/drn-engineering-ltd-239365/ ; news post "DRN Engineering invests in a new Citizen Miyano BNE 65 MYY 9 Axis" (published 17 Mar 2026; machine installed Nov 2025); "New Machine Investment" Star SP23 (19 Jun 2025); T&Cs of Purchase V2 dated 31 Jul 2026.
+- Directors (Companies House): Barbara Ellen Lydia Newport (before 1991), Paul Donald Newport (2008; joined 1985, built the customer base), Gary James Oakley (2008; Works Manager from day one), Calvin Raymond Newport (2020). Founder Donald Raymond Newport resigned Jan 2020.
+- Lead (registry): Barbara Newport, Director. Email: sales@drn.co.uk (site header/footer/contact). Phone 01582 451111.

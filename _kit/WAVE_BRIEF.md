@@ -7,3 +7,6 @@ DOMAIN CHECK (first step): confirm the registry domain really belongs to this co
 LOADER (mandatory, the most common send-back): the template splits the loader wordmark into per-letter chars and animates them with a clip mask. That produces letters at different heights, partly typed names and clipped glyphs, so it is BANNED. Always add this CSS and animate the whole lockup (mark + wordmark + tagline wrapper) as one unit with a single fade/small rise in and a single fade out:
 `#pre .char,#pre .word,#pre .line{transform:none!important;opacity:1!important} #pre .wm,#pre .wm *{overflow:visible!important;clip-path:none!important}`
 Then look at the ldm frames at 200/400/700/1000/1300/1600/2000 ms at 1440 and 390: every frame must show the whole logo or nothing, with no partial letters.
+
+## RIGHT-EDGE OVERFLOW (coordinator, 2026-11-26)
+Before SITE DONE, load the page at 360, 390 and 414 px wide, scroll the whole page, and check that no visible text runs past the right edge of the viewport (each text element's bounding right ≤ viewport width, and document.documentElement.scrollWidth ≤ clientWidth). Manifesto lines built from nowrap break groups and long German compounds are the usual cause: below ~600px let the manifesto wrap naturally, and use hyphens:auto (with the right lang) or &shy; for long words. Two builds were sent back for this.

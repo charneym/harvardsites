@@ -38,7 +38,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">Process</span><h2 class="d3"><span class="nw">Drop, sphere,</span> <em class="nw">device.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">Process</span><h2 class="d3"><span class="nw">From a drop</span> <em class="nw">to a device.</em></h2>'+
     '<p class="st-in">How a liquid reagent becomes a shelf-stable LyoSphere.</p>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Dispense</span><span>Lyophilize</span><span>Package</span></div>'+
     '<div class="steps">'+
@@ -81,7 +81,7 @@ function cta(){
    '<p class="sub" data-r>Tell us about your reagent and device. We start with a Processing Requirements Profile and can arrange a proof-of-principle sample.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email us '+ARR+'</a><a class="btn" href="'+TELH+'">Call</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Address</span><p data-r><span>BIOLYPH LLC</span><br><span>4275 Norex Drive</span><br><span>Chaska, MN 55318, USA</span></p></div>'+
+    '<div><span class="lab" data-r>Address</span><p data-r><span>BIOLYPH LLC, 4275 Norex Drive,</span><br><span>Chaska, MN 55318, USA</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
     '<div><span class="lab" data-r>Phone</span><p data-r><a class="ul" href="'+TELH+'">'+TEL+'</a><br><a class="ul" href="'+TOLLH+'">'+TOLL+'</a> <span class="cfree">toll free</span></p></div>'+
    '</div>'+

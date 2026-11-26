@@ -46,7 +46,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="hospital" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Hospital-grade</span><h2 class="d2 split"><span class="nw">Design. Quality.</span> <em class="nw">Safety.</em></h2></div><p data-r>Hospital-grade plugs and sockets, power cords and cord sets, and power entry modules. Hospital-grade cords, plugs and sockets are subject to specific requirements or recommendations in four markets.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Hospital-grade</span><h2 class="d2 split"><span class="nw">Quality and safety,</span> <em class="nw">by design.</em></h2></div><p data-r>Hospital-grade plugs and sockets, power cords and cord sets, and power entry modules. Hospital-grade cords, plugs and sockets are subject to specific requirements or recommendations in four markets.</p></div>'+
    regionList()+
    '<div class="act ipa" data-r><a class="btn" href="'+WEB+'hospitalgrade.html" target="_blank" rel="noopener">Hospital-grade products '+ARR+'</a></div>'+
   '</div></section>'+

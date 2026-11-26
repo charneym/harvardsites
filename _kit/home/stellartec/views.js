@@ -34,13 +34,13 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">Case study · Esophageal ablation</span><h2 class="d3"><span class="nw">A clinical need,</span> <em class="nw">engineered.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">Case study · Esophageal ablation</span><h2 class="d3"><span class="nw">From a clinical need</span> <em class="nw">to a new therapy.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Need</span><span>Balloon</span><span>Energy</span><span>Market</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Less than 700 microns.</h2><p>In 2000, two physicians brought Stellartech a clinical need: remove the pre-cancerous lining of Barrett’s esophagus. The lining is very thin, and harming the deeper layers can narrow the esophagus.</p></article>'+
      '<article class="step"><h2>An electrode band on a balloon.</h2><p>Stellartech’s engineers mounted a bipolar electrode band on a balloon catheter. Inflated, it meets the esophageal wall evenly all the way around.</p></article>'+
      '<article class="step"><h2>A rapid burst of RF energy.</h2><p>A high-power generator sends a rapid burst of radiofrequency energy to the band, treating several centimetres of the superficial lining in just a few seconds while the tissue beneath is preserved.</p></article>'+
-     '<article class="step"><h2>A new outpatient procedure.</h2><p>A new company was formed to develop the system and run the clinical work to commercialise it. In 2007 the design won a Medical Design Excellence Gold Award.</p></article>'+
+     '<article class="step"><h2><span class="nw">A new</span> <span class="nw">outpatient procedure.</span></h2><p>A new company was formed to develop the system and run the clinical work to commercialise it. In 2007 the design won a Medical Design Excellence Gold Award.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -53,13 +53,13 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="portfolio" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Portfolio</span><h2 class="d2 split"><span class="nw">A generator</span> <em class="nw">and the device it drives.</em></h2></div><p data-r>Typically a disposable patient-contact device and a microprocessor-controlled instrument, with complex electronics for sensor feedback and controlled delivery of therapeutic energy.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Portfolio</span><h2 class="d2 split"><span class="nw">A generator</span> <em><span class="nw">and the device</span> <span class="nw">it drives.</span></em></h2></div><p data-r>Typically a disposable patient-contact device and a microprocessor-controlled instrument, with complex electronics for sensor feedback and controlled delivery of therapeutic energy.</p></div>'+
    prod()+
    '<div class="bk"><span class="lab kick" data-r>Contract manufacturing</span><p class="cr" data-r><span>FDA registered</span><i aria-hidden="true">·</i><span>California licensed</span><i aria-hidden="true">·</i><span>ISO 13485:2016 certified</span><i aria-hidden="true">·</i><span>Sterile devices and electronic instruments</span></p></div>'+
   '</div></section>'+
 
   '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Your business partner,</span> <em class="nw">every stage.</em></h2></div><p data-r>We work with companies of all sizes, and directly with entrepreneurs, physicians and investment groups, adding value from initial concept to market introduction.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A partner</span> <em class="nw">at every stage.</em></h2></div><p data-r>We work with companies of all sizes, and directly with entrepreneurs, physicians and investment groups, adding value from initial concept to market introduction.</p></div>'+
    '<div class="uf">'+
     '<div class="uf-p"><span class="lab" data-r>Management</span>'+
      '<ul class="dirs">'+MGMT.map(function(m){return '<li data-r><span class="dn">'+esc(m[0])+'</span><span class="dr">'+esc(m[1])+'</span></li>'}).join("")+'</ul></div>'+

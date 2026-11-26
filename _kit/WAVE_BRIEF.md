@@ -60,3 +60,6 @@ The client did NOT ask for new gimmicks. "Premium" means the same motion and pol
 - The loader is the sent sites' logo loader (whole lockup, no counter).
 Reference for motion feel: any sent site, e.g. /desoutter/ or /lightel/. Reference for look: their own brand.
 11. Pinned story text never overlaps: the outgoing step text is fully gone before the incoming text appears, so a viewer who stops mid-scroll never sees ghosted double text. Photos may crossfade. Check frames at 10% increments through the pin.
+
+## CURRENT STANDARD (2026-11-26 evening): reference sites
+Client-approved quality references for the whole current standard (v3 structure, COMPOSITION BASICS, PREMIUM MOTION v4 with its CORRECTION, and the no-overlap story text rule): /drn-engineering/, /teknomedical/ and /charlesausten/. Grep their source (_kit/src/drn-engineering.v3.src.html plus drn-engineering.v4.js; _kit/home/teknomedical/) for the motion code and reuse it rather than reinventing. Earlier quality references in this brief are superseded for look and structure.

@@ -76,7 +76,7 @@ function cta(){
    '<p class="sub" data-r>Ask about Foam-Karve seating, the right size of Delta or Hippocampe, or a visit to the workshop. Real people will help you choose.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write to Delichon '+ARR+'</a><a class="btn" href="'+WEB+'" target="_blank" rel="noopener">Visit the shop</a></div>'+
    '<div class="cinfo">'+
-    '<div><span class="lab" data-r>Headquarters</span><p data-r>1 The Clayfields, Sandleheath Industrial Estate<br>Fordingbridge, Hampshire SP6 1PA</p></div>'+
+    '<div><span class="lab" data-r>Headquarters</span><p data-r>Sandleheath Industrial Estate<br>Fordingbridge SP6 1PA</p></div>'+
     '<div><span class="lab" data-r>Email and phone</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:+441725519405">'+TEL+'</a></p></div>'+
     '<div><span class="lab" data-r>Registered</span><p data-r>Delichon Ltd, England<br>No. 03184535</p></div>'+
    '</div>'+

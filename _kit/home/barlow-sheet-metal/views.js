@@ -43,24 +43,24 @@ function vHome(){
      '<article class="step on"><h2><span class="nw">Your design,</span> <span class="nw">as data.</span></h2><p>From your ideas, sketches, samples or CAD files, the CAD team models the part in SolidWorks Premium, simplifies it where it can and emails a virtual model for approval, then programs the machines straight from the data.</p></article>'+
      '<article class="step"><h2><span class="nw">Punched on</span> <span class="nw">the turret.</span></h2><p>Two LVD Strippit P Series 29-station CNC punch presses, with three auto-index stations, punch the vent fields, slots and connector cut-outs from the flat blank.</p></article>'+
      '<article class="step"><h2><span class="nw">Folded on</span> <span class="nw">the press brake.</span></h2><p>LVD PPEB 80-tonne and Dyna-Press 24-tonne CNC press brakes fold each flange to its angle, bend after bend.</p></article>'+
-     '<article class="step"><h2><span class="nw">Inserted, welded,</span> <span class="nw">assembled.</span></h2><p>Haeger machines press in the fasteners, TIG, spot and stud welding join what must be joined, and the case is assembled, finished and held in stock for call-off.</p></article>'+
+     '<article class="step"><h2><span class="nw">Inserted and welded,</span> <span class="nw">then assembled.</span></h2><p>Haeger machines press in the fasteners, TIG, spot and stud welding join what must be joined, and the case is assembled, finished and held in stock for call-off.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
   '<section class="sec dark2" id="capabilities" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">Prototype</span> <em><span class="nw">to full production.</span></em></h2></div><p data-r>Barlow specialises in precision sheet metal fabrications for the electronics and electro-mechanical sectors, and takes a part from design through every process to a finished, assembled product.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">From prototype</span> <em><span class="nw">to full production.</span></em></h2></div><p data-r>Barlow specialises in precision sheet metal fabrications for the electronics and electro-mechanical sectors, and takes a part from design through every process to a finished, assembled product.</p></div>'+
    prods()+
   '</div></section>'+
 
   '<section class="sec light" id="quality" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Quality</span><h2 class="d2 split"><span class="nw">Prevention,</span> <em class="nw">not detection.</em></h2></div><p data-r>Quality runs through a documented management system that every member of staff understands and shares responsibility for, reviewed against key performance indicators for continual improvement.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Quality</span><h2 class="d2 split"><span class="nw">Quality by prevention,</span> <em class="nw">not detection.</em></h2></div><p data-r>Quality runs through a documented management system that every member of staff understands and shares responsibility for, reviewed against key performance indicators for continual improvement.</p></div>'+
    caps()+
    quotes()+
   '</div></section>'+
 
   '<section class="sec dark" id="plant" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Plant</span><h2 class="d2 split"><span class="nw">High-technology plant,</span> <em class="nw">under one roof.</em></h2></div><p data-r>The plant list behind every quote: CNC punching and folding from LVD, welding, insertion, finishing and an internal machining facility to support production.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Plant</span><h2 class="d2 split"><span class="nw">Modern plant,</span> <em class="nw">under one roof.</em></h2></div><p data-r>The plant list behind every quote: CNC punching and folding from LVD, welding, insertion, finishing and an internal machining facility to support production.</p></div>'+
    '<div class="ev"><span class="lab kick" data-r>Plant list</span><dl>'+
     '<div data-r><dt class="lab">Punching</dt><dd>2 × LVD Strippit P Series 29-station and 1 × LVD 1000 18-station CNC punch presses</dd></div>'+
     '<div data-r><dt class="lab">Bending · forming</dt><dd>2 × LVD PPEB 80 t, 2.5 m and 2 × LVD Dyna-Press 24 t, 1.2 m CNC press brakes</dd></div>'+

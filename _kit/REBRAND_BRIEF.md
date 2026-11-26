@@ -1,0 +1,12 @@
+# Rebrand pass for an already-built home page (client feedback 2026-11-26)
+
+The client says many concept sites read as "clearly AI": dark navy page, one floating 3D object with a glow on the right, a two-line headline whose second line is an italic accent colour, and an accent colour that isn't the company's (example: Tekno-Medical's red logo was given a teal site). Fix THIS site (slug in your prompt) so it looks like the company's own next website, made by a top studio.
+
+Do, in order:
+1. BRAND. Open the company's live site (domain in _kit/sourcing/registry.csv or _kit/dossiers/SLUG.md). Sample their logo and site colours (hex). Re-theme the page so the primary accent and the overall feel come from THEIR brand. If their brand and site are light, make the page light (light ground, dark text, their colour as accent); only stay dark if their brand is genuinely dark. No invented teal/cyan/lime/violet accents. Check contrast.
+2. HERO. Look for usable real images on their site (product photos, factory/lab, people at work; aim ≥ ~700px, cleanly cut-out or usable full-bleed). If one exists, replace the render with it: either a clean cut-out on a plain studio-like ground matching the new palette, or a full-bleed photo hero with text over a calm area and a subtle scrim. Never upscale more than ~1.5x. Only keep a render if they truly have no usable image, and then it must match their real product exactly (no generic glow).
+3. SILHOUETTE. Remove the default italic accent-coloured second headline line (single weight, single colour unless their brand uses italics). Remove decorative glows behind the hero object. Keep the page's structure, copy, story and sections unless something conflicts with the new palette (recolour the story SVG strokes/fills to the new palette).
+4. Keep everything that already works: loader rules, nssfix inline, no right-edge overflow at 360/390/414, buildout nav.
+5. Gates: run textclash, entities, contrast (1440 and 390), orphans, squeeze 390/768 and the right-edge check; look at the hero at 1920x930, 1440 and 390 and the story frames by eye.
+6. Push to main (git pull --rebase first), then send_message to the coordinator (session_014388NFYUsdqRg21Sq5nZUz): "REBRAND DONE: SLUG — Palette: <hex list> from <source>; Hero: <own photo URL | render, reason>; Theme: light|dark; anything you could not fix".
+Never invent facts; do not change the lead/contact facts.

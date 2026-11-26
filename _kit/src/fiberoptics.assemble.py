@@ -27,9 +27,9 @@ RED = '#d71f26'
 def mark(x, y, s, fill='currentColor'):
     return '<g transform="translate(%s %s) scale(%s)"><path fill="%s" fill-rule="evenodd" d="%s"/>%s</g>' % (x, y, s, fill, MARK, BUNDLE)
 WM = "font-family:'Fraunces',Georgia,serif;font-style:italic;font-weight:700"
-STACK = ('<svg class="plogo" viewBox="0 0 352 124" role="img" aria-label="Fiberoptics Technology Incorporated, established 1977">%s'
-         '<g style="%s" fill="%s" font-size="30"><text x="118" y="30">fiberoptics</text><text x="118" y="61">technology</text><text x="118" y="92">incorporated</text></g>'
-         '<text x="120" y="117" fill="#f3f1ed" style="font-family:\'IBM Plex Mono\',monospace;font-weight:500;letter-spacing:.2em" font-size="11.5">ESTABLISHED 1977</text></svg>') % (mark(-22, 0, .236, '#f3f1ed'), WM, '#ff3b42')
+STACK = ('<svg class="plogo" viewBox="0 0 346 134" role="img" aria-label="Fiberoptics Technology Incorporated, established 1977">%s'
+         '<g style="%s" fill="%s" font-size="28"><text x="118" y="28">fiberoptics</text><text x="118" y="64">technology</text><text x="118" y="100">incorporated</text></g>'
+         '<text x="120" y="127" fill="#f3f1ed" style="font-family:\'IBM Plex Mono\',monospace;font-weight:500;letter-spacing:.2em" font-size="11.5">ESTABLISHED 1977</text></svg>') % (mark(-22, 4, .236, '#f3f1ed'), WM, '#ff3b42')
 HORIZ = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318 44" aria-hidden="true">%s'
          '<text x="58" y="31" style="%s" fill="currentColor" font-size="27">fiberoptics technology</text></svg>') % (mark(-9.5, -1, .0875), WM)
 region('meta', '''<title>Fiberoptics Technology — fiber optic light guides, illumination and fiber drawing since 1977</title>

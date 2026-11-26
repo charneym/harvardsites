@@ -29,7 +29,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>KREMO-WERKE Hermanns GmbH &amp; Co. KG</span>'+
-   '<h2 class="txt" id="mani">Seit mehr als einem halben Jahrhundert konzentriert auf <span class="nw">die Umformung</span> von Edelstahl: <em>Stanzen, Tiefziehen und Streckprojizieren.</em></h2></div>'+
+   '<h2 class="txt" id="mani"><em>Stanzen, Tiefziehen, Streckprojizieren:</em> die Umformung von Edelstahl, seit mehr als einem <span class="nw">halben Jahrhundert.</span></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">2500 t</span><p class="k">Pressdruck: Pressen und Stanzen von 25 bis 2500 Tonnen</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">50 %</span><p class="k">Materialersparnis bis zu: gepresste Flansche bei gleicher Festigkeit</p></div>'+
@@ -43,13 +43,13 @@ function vHome(){
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Werkzeug und Presse</span> <span class="nw">aus einem Haus.</span></h2><p>Die Werkzeuge entstehen im eigenen Werkzeugbau. Pressen und Stanzen von 25 bis 2500 Tonnen Pressdruck schneiden den Rohling aus Edelstahl.</p></article>'+
      '<article class="step"><h2><span class="nw">Tiefgezogen,</span> <span class="nw">nahtlos geformt.</span></h2><p>Der Stempel zieht den Rohling in die Matrize. So entsteht ein nahtlos geformtes Teil, etwa ein Vorschweißbördel mit glattem Übergang vom Rohr zum Bund.</p></article>'+
-     '<article class="step"><h2><span class="nw">Geglüht, gebeizt,</span> <span class="nw">abgenommen.</span></h2><p>Vakuum-Glühanlagen, Schweißerei, Beizerei und Abnahmen im Haus runden das Programm ab. Auf Wunsch mit Abnahmeprüfzeugnis 3.1 nach EN 10204 und Glühbescheinigung.</p></article>'+
+     '<article class="step"><h2><span class="nw">Geglüht, gebeizt</span> <span class="nw">und abgenommen.</span></h2><p>Vakuum-Glühanlagen, Schweißerei, Beizerei und Abnahmen im Haus runden das Programm ab. Auf Wunsch mit Abnahmeprüfzeugnis 3.1 nach EN 10204 und Glühbescheinigung.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
   '<section class="sec dark2" id="produkte" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Unsere Produkte</span><h2 class="d2 split"><span class="nw">Rohrzubehör, Flansche</span> <em class="nw">und Schaugläser.</em></h2></div><p data-r>Die Produktpalette der KREMO-Edelstahlwerke umfasst Rohrzubehör, Flansche, mantelbeheizte Flansche und Zubehör sowie Schauglasarmaturen und wächst mit Ihren Wünschen.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unsere Produkte</span><h2 class="d2 split"><span class="nw">Rohrzubehör und</span> <em class="nw">gepresste Flansche.</em></h2></div><p data-r>Die Produktpalette der KREMO-Edelstahlwerke umfasst Rohrzubehör, Flansche, mantelbeheizte Flansche und Zubehör sowie Schauglasarmaturen und wächst mit Ihren Wünschen.</p></div>'+
    rows(PRODS)+
   '</div></section>'+
 
@@ -59,7 +59,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="werkstoffe" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Werkstoffe</span><h2 class="d2 split"><span class="nw">Acht Werkstoffe,</span> <em class="nw">serienmäßig.</em></h2></div><p data-r>Rohrformstücke liefern die KREMO-Werke serienmäßig in diesen Werkstoffen. Auf Wunsch verarbeiten sie auch Aluminium, Kupfer, Hastelloy, Inconel und Titan sowie Edelstähle nach AD 2000-Merkblatt W2, EN 10028-7, EN 10217-7 und EN 10216-5.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Werkstoffe</span><h2 class="d2 split"><span class="nw">Acht Werkstoffe</span> <em class="nw">in Serie.</em></h2></div><p data-r>Rohrformstücke liefern die KREMO-Werke serienmäßig in diesen Werkstoffen. Auf Wunsch verarbeiten sie auch Aluminium, Kupfer, Hastelloy, Inconel und Titan sowie Edelstähle nach AD 2000-Merkblatt W2, EN 10028-7, EN 10217-7 und EN 10216-5.</p></div>'+
    mats()+
   '</div></section>'+
 

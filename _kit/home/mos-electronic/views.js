@@ -22,7 +22,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Leiterplattenhersteller<span class="nomob"> · Neuweiler</span> · seit 1984</span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Leiterplattentechnik</span> <span class="l acc">für die Zukunft.</span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Heute schon</span> <span class="l acc">Technologie von morgen.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>MOS Electronic fertigt im Nordschwarzwald Leiterplatten vom Prototypen bis zur Großserie: bis 50 Lagen, HDI, Flex und Starrflex, Dickkupfer und IMS, im Eildienst ab einem Arbeitstag.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technologien">Zu den Technologien '+ARR+'</a><a class="btn" href="#/kontakt">Anfrage stellen</a></div></div>'+
   '</section>'+
@@ -42,14 +42,14 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Verpressen</span><span>Bohren</span><span>Oberfläche</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Daten und Lagen</span> <span class="nw">aus einem Haus.</span></h2><p>Das Team CAM bereitet die Daten auf. Kerne, Prepregs und Kupferfolien werden zum Multilayer verpresst, von einseitig bis 50 Lagen.</p></article>'+
-     '<article class="step"><h2><span class="nw">Gebohrt, galvanisiert,</span> <span class="nw">verfüllt.</span></h2><p>Durchgangs- und Sacklochbohrungen werden durchkontaktiert. Die eigene Hole-Plugging-Anlage verfüllt sie nach Typ VII in einem Produktionsschritt.</p></article>'+
-     '<article class="step"><h2><span class="nw">Lötstopplack</span> <span class="nw">und Endoberfläche.</span></h2><p>Lötstopplack in allen Farben, dazu alle gängigen Endoberflächen. Auf Wunsch mit Impedanzprüfung, RoHS-konform und UL-gelistet.</p></article>'+
+     '<article class="step"><h2><span class="nw">Bohren, galvanisieren,</span> <span class="nw">Vias verfüllen.</span></h2><p>Durchgangs- und Sacklochbohrungen werden durchkontaktiert. Die eigene Hole-Plugging-Anlage verfüllt sie nach Typ VII in einem Produktionsschritt.</p></article>'+
+     '<article class="step"><h2><span class="nw">Die Oberfläche</span> <span class="nw">zum Schluss.</span></h2><p>Lötstopplack in allen Farben, dazu alle gängigen Endoberflächen. Auf Wunsch mit Impedanzprüfung, RoHS-konform und UL-gelistet.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
   '<section class="sec dark2" id="technologien" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technologien</span><h2 class="d2 split"><span class="nw">Alle Arten von</span> <em class="nw">Leiterplatten.</em></h2></div><p data-r>Vom einseitigen Prototypen bis zum Multilayer mit 50 Lagen: MOS fertigt in Neuweiler und bietet zusammen mit dem MOS-Verbund alle Arten von Leiterplatten in jeder Stückzahl an.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technologien</span><h2 class="d2 split"><span class="nw">Jede Leiterplatte,</span> <em class="nw">in jeder Stückzahl.</em></h2></div><p data-r>Vom einseitigen Prototypen bis zum Multilayer mit 50 Lagen: MOS fertigt in Neuweiler und bietet zusammen mit dem MOS-Verbund alle Arten von Leiterplatten in jeder Stückzahl an.</p></div>'+
    rows(PRODS)+
   '</div></section>'+
 
@@ -80,7 +80,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="kontakt" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Kontakt</span>'+
-   '<h2 class="big split"><span class="nw">Ihr Layout,</span> <em class="nw">unsere Leiterplatte.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Schicken Sie</span> <em class="nw">uns Ihre Daten.</em></h2>'+
    '<p class="sub" data-r>Für Anfragen zu Prototypen, Eildienst und Serien, zu PoolPlus oder zum MOS-Verbund erreichen Sie das Team in Neuweiler direkt.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">E-Mail schreiben '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Anrufen: '+TELT+'</a></div>'+
    '<div class="cinfo">'+

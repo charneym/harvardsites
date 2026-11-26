@@ -1,0 +1,66 @@
+<!doctype html><html><head><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./build/three.module.js"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from './examples/jsm/geometries/RoundedBoxGeometry.js';
+import {RoomEnvironment} from './examples/jsm/environments/RoomEnvironment.js';
+const W=+new URLSearchParams(location.search).get('w')||1400,H=+new URLSearchParams(location.search).get('h')||1100;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(2);r.setSize(W,H);r.setClearColor(0x000000,0);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);
+const envS=new RoomEnvironment();
+sc.environment=pm.fromScene(envS,0.03).texture;
+const cam=new THREE.PerspectiveCamera(26,W/H,.1,100);
+const steel=new THREE.MeshPhysicalMaterial({color:0xd4d8de,metalness:1,roughness:.24,envMapIntensity:1.0});
+const steel2=new THREE.MeshPhysicalMaterial({color:0xc9cdd4,metalness:1,roughness:.34,envMapIntensity:.95});
+const nutM=new THREE.MeshPhysicalMaterial({color:0xdfe2e7,metalness:1,roughness:.2,envMapIntensity:1.05});
+const tubeM=new THREE.MeshPhysicalMaterial({color:0xe2e5ea,metalness:1,roughness:.12,envMapIntensity:1.1});
+const dark=new THREE.MeshPhysicalMaterial({color:0x1a1d24,metalness:.6,roughness:.45});
+const G=new THREE.Group();sc.add(G);
+function lathe(pts,mat,seg=128){const g=new THREE.LatheGeometry(pts.map(p=>new THREE.Vector2(p[0],p[1])),seg);const m=new THREE.Mesh(g,mat);m.rotation.x=Math.PI/2;return m}
+// valve body along +z (y in lathe -> z after rotation). profile [radius, height]
+G.add(lathe([[0,-1.92],[.62,-1.92],[.62,-1.2],[.66,-1.18],[.66,-.95],[.0,-.95]],dark));          // standoff into the actuator (dark anodised)
+G.add(lathe([[0,-.95],[.92,-.95],[.95,-.92],[.95,-.80],[.92,-.77],[.88,-.77],[.88,-.70],[.0,-.70]],steel2)); // back collar
+G.add(lathe([[0,-.70],[1.0,-.70],[1.02,-.68],[1.02,.62],[1.0,.66],[.0,.66]],steel));         // stator housing
+const tc=document.createElement('canvas');tc.width=tc.height=1024;const tx=tc.getContext('2d');tx.fillStyle='#8a8a8a';tx.fillRect(0,0,1024,1024);
+for(let i=0;i<900;i++){const rr=Math.random()*512;tx.strokeStyle='rgba('+(Math.random()<.5?'255,255,255':'0,0,0')+','+(Math.random()*.10).toFixed(3)+')';tx.lineWidth=.6+Math.random()*1.2;tx.beginPath();tx.arc(512,512,rr,0,7);tx.stroke()}
+const rt=new THREE.CanvasTexture(tc);
+const face=new THREE.MeshPhysicalMaterial({color:0xc4c9d0,metalness:.72,roughness:.30,roughnessMap:rt,envMapIntensity:1.15});G.add(lathe([[0,.66],[1.0,.66],[.60,1.02],[.57,1.04],[.56,1.04]],steel));{const d=new THREE.Mesh(new THREE.CircleGeometry(.565,128),face);d.position.z=1.041;G.add(d)}                         // conical stator face
+{const bx=new THREE.Mesh(new RoundedBoxGeometry(2.3,2.3,3.0,6,.12),new THREE.MeshPhysicalMaterial({color:0x353a46,metalness:.8,roughness:.36,clearcoat:.25,clearcoatRoughness:.5}));bx.position.z=-3.5;G.add(bx);
+ for(const [x,y] of [[-.88,-.88],[.88,-.88],[-.88,.88],[.88,.88]]){const sc2=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,.04,24).rotateX(Math.PI/2),steel2);sc2.position.set(x,y,-1.99);G.add(sc2)}}
+// groove lines on the housing
+for(const z of [-.40,.30]){const t=new THREE.Mesh(new THREE.TorusGeometry(1.021,.012,10,160),steel2);t.position.z=z;G.add(t)}
+function hexNut(len,rad){const g=new THREE.CylinderGeometry(rad,rad,len,6,1);g.rotateX(Math.PI/2);return g}
+const N=10,cone=Math.atan2(1.0-.60,1.02-.66);// cone slope
+const tubes=[];
+for(let k=0;k<N;k++){
+  const a=k/N*Math.PI*2+Math.PI/N;
+  const rr=.80,zz=.66+(1.0-rr)/(1.0-.60)*(1.02-.66);
+  const base=new THREE.Vector3(Math.cos(a)*rr,Math.sin(a)*rr,zz);
+  const tilt=.62; // outward tilt of the port axis
+  const dir=new THREE.Vector3(Math.cos(a)*Math.sin(tilt),Math.sin(a)*Math.sin(tilt),Math.cos(tilt)).normalize();
+  const q=new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0,0,1),dir);
+  const nut=new THREE.Group();nut.position.copy(base);nut.quaternion.copy(q);G.add(nut);
+  const body=new THREE.Mesh(hexNut(.30,.14),nutM);body.position.z=.13;nut.add(body);
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(.075,.11,.08,32).rotateX(Math.PI/2),nutM);cap.position.z=.31;nut.add(cap);
+  const end=base.clone().add(dir.clone().multiplyScalar(.34));
+  const stub=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.22,16).rotateX(Math.PI/2),tubeM);stub.position.z=.46;nut.add(stub);
+}
+// centre port nut
+{const nut=new THREE.Group();nut.position.set(0,0,1.04);G.add(nut);
+ const b=new THREE.Mesh(hexNut(.30,.15),nutM);b.position.z=.15;nut.add(b);
+ const c=new THREE.Mesh(new THREE.CylinderGeometry(.08,.12,.08,32).rotateX(Math.PI/2),nutM);c.position.z=.34;nut.add(c);
+ const st=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.24,16).rotateX(Math.PI/2),tubeM);st.position.z=.5;nut.add(st);}
+// lights: soft key, cool cyan rim from behind-left (VICI cyan)
+const key=new THREE.DirectionalLight(0xffffff,1.6);key.position.set(2,4,6);sc.add(key);
+const rim=new THREE.DirectionalLight(0x01b3e7,1.6);rim.position.set(-5,1,-4);sc.add(rim);
+
+sc.add(new THREE.AmbientLight(0x404a70,.3));const fl=new THREE.DirectionalLight(0xe8eeff,1.1);fl.position.set(4,1,8);sc.add(fl);const top=new THREE.DirectionalLight(0xffffff,.8);top.position.set(-1,8,1);sc.add(top);
+// orient: axis toward camera-right
+G.rotation.y=.62;G.rotation.x=.26;G.rotation.z=0;G.position.set(.9,0,0);
+cam.position.set(0,0,15);cam.lookAt(0,0,0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

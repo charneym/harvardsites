@@ -96,7 +96,7 @@ function footer(){
    '<div class="c"><span class="lab">Registered office</span>Kace Building, Victoria Passage<br>Wolverhampton WV1 4LG</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/products">Products</a><br><a class="ul" href="#/approach">Approach</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Products</span>Ortho-Glide<br>RhinoPinch<br>Hook-It<br>Uflow, Femmax, Femmeze</div>'+
+   '<div class="c"><span class="lab">Products</span>Ortho-Glide, RhinoPinch, Hook-It, Uflow, Femmax and Femmeze</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 62" aria-hidden="true"><text x="450" y="52" text-anchor="middle" style="font-family:\'Source Serif 4\',Georgia,serif;font-weight:400;font-size:60px;letter-spacing:.14em">MDTi</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Medical Devices Technology International Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

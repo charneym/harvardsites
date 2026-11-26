@@ -12,3 +12,5 @@ Do, in order:
 Never invent facts; do not change the lead/contact facts.
 
 STRUCTURE v3: also apply "STRUCTURE v3: REMOVE THE TEMPLATE SKELETON" at the end of _kit/WAVE_BRIEF.md (remove the counting loader, pinned SVG story, two-tone headings, floating cut-out hero and micro-label clutter; use real photos; readable text; denser layout). This is a restructure, not just a re-theme.
+
+PREMIUM MOTION v4: also apply "PREMIUM MOTION v4" at the end of _kit/WAVE_BRIEF.md. A rebrand keeps or adds the full premium motion layer (Lenis, masked line-rise hero, clip-path photo reveals, pinned photo story, horizontal gallery, hover and magnetic effects), built on real photos. Never ship a plain static page.

@@ -1,0 +1,1 @@
+<span class="stl"><span class="stw">STELL<span class="sta">A<svg viewBox="0 0 40 24" aria-hidden="true"><path d="M8 22A14 14 0 0 1 32 22M13 22A8.4 8.4 0 0 1 27 22M17.6 22A3 3 0 0 1 22.4 22"/></svg></span>RTECH</span><span class="stc">RESEARCH CORPORATION</span></span>

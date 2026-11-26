@@ -72,7 +72,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="people" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Management</span><h2 class="d2 split"><span class="nw">Led from</span> <em class="nw">Efringen-Kirchen.</em></h2></div><p data-r>RSD Technik GmbH is the headquarters of the RSD Group, an ISO-certified manufacturer of printing machines for cable, tube and profile applications.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Management</span><h2 class="d2 split"><span class="nw">Management at</span> <em class="nw">the headquarters.</em></h2></div><p data-r>RSD Technik GmbH is the headquarters of the RSD Group, an ISO-certified manufacturer of printing machines for cable, tube and profile applications.</p></div>'+
    team()+
    '<div class="bk"><span class="lab kick" data-r>Trade fairs</span><p class="cr" data-r><span>wire 2026, Düsseldorf</span><span>Exhibitor, April 2026</span><a class="ul" href="https://www.wire-tradefair.com/vis/v1/en/exhibitors/wire2026.3040534" target="_blank" rel="noopener">Exhibitor directory</a></p>'+
    '<p class="cr" data-r><span>wire India, Mumbai</span><span>30 Nov – 2 Dec 2026</span><span>wire Mexico, Monterrey, 23–25 Feb 2027</span></p></div>'+
@@ -82,7 +82,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Send us your</span> <em class="nw">specifications.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Tell us what</span> <em class="nw">you need marked.</em></h2>'+
    '<p class="sub" data-r>Send your technical specifications, artwork, or cable, hose and tube samples. RSD Technik will advise you and quote, and for laser marking run a feasibility study and test marking.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Write an email '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+

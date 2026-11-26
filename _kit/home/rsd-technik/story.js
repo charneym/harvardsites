@@ -28,10 +28,10 @@ function rsScene(o){
   /* the fibre laser head over the cable (step 3) */
   g+='<g id="rsLas"><path class="tool" style="fill:url(#rsW)" d="M'+(LX-24)+' 226H'+(LX+24)+'V292H'+(LX-24)+'Z"/><path class="body" d="M'+(LX-24)+' 226H'+(LX+24)+'V292H'+(LX-24)+'Z"/><path class="body" d="M'+(LX-10)+' 292H'+(LX+10)+'V306H'+(LX-10)+'Z"/><path class="beam" d="M'+LX+' 308V'+CT+'"/><circle cx="'+LX+'" cy="'+(CT+8)+'" r="15" fill="url(#rsH)"/></g>';
   /* labels, kept clear of every stroke */
-  g+='<g id="rsN"><text class="t" x="20" y="'+(mob?204:236)+'">'+(mob?"INK":"INK ROLLER")+'</text><text class="t" x="338" y="'+(mob?292:300)+'">'+(mob?"WHEEL":"PRINT WHEEL")+'</text><text class="t" x="'+(mob?600:620)+'" y="428">CABLE</text></g>';
+  g+='<g id="rsN"><text class="t" x="20" y="'+(mob?204:236)+'">'+(mob?"INK":"INK ROLLER")+'</text><text class="t" x="338" y="'+(mob?284:300)+'">'+(mob?"WHEEL":"PRINT WHEEL")+'</text><text class="t" x="'+(mob?600:620)+'" y="428">CABLE</text></g>';
   g+='<g id="rsP1"><text class="t s1" x="290" y="'+(mob?162:160)+'">'+(mob?"ENGRAVING":"LASER ENGRAVING")+'</text></g>';
-  g+='<g id="rsP2"><text class="t s1" x="338" y="'+(mob?318:322)+'">'+(mob?"1500 M/MIN":"UP TO 1500 M/MIN")+'</text></g>';
-  g+='<g id="rsP3"><text class="t" x="'+(LX+40)+'" y="250">'+(mob?"LASER":"FIBRE LASER")+'</text><text class="t s3" x="'+(LX+40)+'" y="'+(mob?276:272)+'">'+(mob?"500 M/MIN":"UP TO 500 M/MIN")+'</text></g>';
+  g+='<g id="rsP2"><text class="t s1" x="338" y="'+(mob?326:322)+'">'+(mob?"1500 M/MIN":"UP TO 1500 M/MIN")+'</text></g>';
+  g+='<g id="rsP3"><text class="t" x="'+(LX+40)+'" y="'+(mob?242:250)+'">'+(mob?"LASER":"FIBRE LASER")+'</text><text class="t s3" x="'+(LX+40)+'" y="'+(mob?284:272)+'">'+(mob?"500 M/MIN":"UP TO 500 M/MIN")+'</text></g>';
   g+='<g id="lb1"><text class="a" x="20" y="488">'+(mob?"":"1 · ENGRAVE")+'</text></g>';
   g+='<g id="lb2"><text class="a" x="20" y="488">'+(mob?"":"2 · PRINT")+'</text></g>';
   g+='<g id="lb3"><text class="a" x="20" y="488">'+(mob?"":"3 · LASER")+'</text></g>';

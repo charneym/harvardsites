@@ -10,14 +10,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Precious-metal products<span class="nomob"> · Las Vegas, since 1986</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Precious metals,</span><span class="l">made to your</span><span class="l"><em>exact specification.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Precious metals,</span> <span class="l nw">made to your</span> <span class="l nw"><em>exact specification.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Refining Systems fabricates precious-metal products for the industrial and scientific community: sputtering targets, tubing, wire, bands, sheets and foils, from 99.5% to 99.999% pure.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">See the product line '+ARR+'</a><a class="btn" href="#/contact">Request a quote</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Experience. Quality. Reliability.</span>'+
-   '<h2 class="txt" id="mani">Since 1986, Refining Systems has made precious-metal products for high-tech industries, research facilities and laboratories, built on <em>honesty and dependability.</em></h2></div>'+
+   '<h2 class="txt" id="mani">Since 1986, Refining Systems has made precious-metal products for high-tech industries, research facilities and laboratories, built on <em class="nw">honesty and dependability.</em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1986</span><p class="k">The year Refining Systems began manufacturing precious-metal products</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">99.999%</span><p class="k">The highest purity we make, from a range that starts at 99.5%</p></div>'+
@@ -26,7 +26,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">How a part is made</span><h2 class="d3">From melt <em>to specification.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">How a part is made</span><h2 class="d3">From melt <em class="nw">to specification.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Melt</span><span>Roll</span><span>Finish</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Melted, pure or alloyed.</h2><p>Each part starts as metal melted to the purity you specify, from 99.5% to 99.999%, in pure form or alloyed with other precious metals.</p></article>'+

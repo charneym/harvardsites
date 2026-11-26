@@ -16,14 +16,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Normgerechte Prüfsysteme<span class="nomob"> · Viechtach</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Wir bringen</span> <span class="l">Spannung</span> <span class="l"><em class="nw">in Form.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Wir bringen Spannung</span> <span class="l"><em class="nw">in Form.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Seit über 50 Jahren entwickelt und fertigt Spitzenberger & Spies analoge lineare Transistorverstärker, AC/DC Strom- und Spannungsquellen und komplette Prüfsysteme für Entwicklungs- und Testlabors in aller Welt.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/produkte">Unsere Produkte '+ARR+'</a><a class="btn" href="#/kontakt">Anfrage stellen</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Seit 1963 in Viechtach</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Basierend auf unseren</span> <span class="nw">4-Quadranten-Verstärkern</span> <span class="nw">simulieren wir alle</span> <span class="nw">Versorgungsspannungen</span> <em><span class="nw">von DC bis zu mehreren</span> <span class="nw">hundert kHz, bis in den</span> <span class="nw">Megawattbereich.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Mit unseren</span> <span class="nw">4-Quadranten-Verstärkern</span> <span class="nw">simulieren wir alle</span> <span class="nw">Versorgungsspannungen,</span> <em><span class="nw">von DC bis zu</span> <span class="nw">mehreren hundert kHz,</span> <span class="nw">bis in den Megawattbereich.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1 MW</span><p class="k">Leistung, von 50 W bis in den Megawattbereich</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">300 kHz</span><p class="k">Frequenzbereich von DC bis 300 kHz</p></div>'+
@@ -48,7 +48,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="normen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Normen</span><h2 class="d2 split">Normkonforme Prüfsysteme <em class="nw">für viele Bereiche.</em></h2></div><p data-r>Als Lösung verstehen wir die Summe aus technischen Einzelkomponenten, Know-how, Integration, anwenderfreundlicher Software und kundenorientiertem Service.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Normen</span><h2 class="d2 split"><span class="nw">Nach Norm geprüft,</span> <em class="nw">für viele Bereiche.</em></h2></div><p data-r>Als Lösung verstehen wir die Summe aus technischen Einzelkomponenten, Know-how, Integration, anwenderfreundlicher Software und kundenorientiertem Service.</p></div>'+
    caps()+
   '</div></section>'+
 
@@ -78,7 +78,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="messen" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Messen und Aktuelles</span><h2 class="d2 split">Zuletzt <em class="nw">auf der electronica.</em></h2></div><p data-r>Auf der electronica 2026 in München stellte Spitzenberger & Spies in Halle A4, Stand 106, aus. Jeder Eintrag verweist auf seine Quelle.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Messen und Aktuelles</span><h2 class="d2 split"><span class="nw">Zuletzt in München,</span> <em class="nw">auf der electronica.</em></h2></div><p data-r>Auf der electronica 2026 in München stellte Spitzenberger & Spies in Halle A4, Stand 106, aus. Jeder Eintrag verweist auf seine Quelle.</p></div>'+
    news()+
   '</div></section>'+
   cta();

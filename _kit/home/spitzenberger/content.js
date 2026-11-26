@@ -15,7 +15,7 @@ var TEAM=[
  {name:"Michael Maimer",title:"Bevollmächtigter"}];
 /* news: each row links out to the source */
 var NEWS=[
- ["11/2026","electronica 2026 in München: Spitzenberger & Spies in Halle A4, Stand 106","electronica · Ausstellerverzeichnis","https://exhibitors.electronica.de/ausstellerportal/2026/aussteller/ausstellerdetails/spitzenberger-und-spies-gmbh-und-co-kg/?elb=809.1100.2849.1.111"],
+ ["11/2026","electronica 2026 in München: Halle A4, Stand 106","electronica · Ausstellerverzeichnis","https://exhibitors.electronica.de/ausstellerportal/2026/aussteller/ausstellerdetails/spitzenberger-und-spies-gmbh-und-co-kg/?elb=809.1100.2849.1.111"],
  ["2026","Veranstaltungen und Messebeteiligungen: weitere Informationen per Mail an sales@spitzenberger.de","spitzenberger.de",SP+"Veranstaltungen-und-Messen.aspx"],
  ["Normen","Der Spitzenberger & Spies Normen-Guide: Prüfnormen für Solar, Kfz, Avionik und EMV","spitzenberger.de",SP+"Normen.aspx"],
  ["Downloads","Flyer, Datenblätter und Unterlagen im Downloadportal","spitzenberger.de",SP+"Downloadportal.aspx"]];

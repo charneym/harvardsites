@@ -979,6 +979,8 @@ p,.ev dd{hyphens:auto}
 .amtl{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:860px){.amtl{grid-template-columns:1fr}}
 .stat .v{white-space:nowrap}
+/* phones and tablets: the legal line spans the full width (DX) */
+@media (max-width:860px){.ftr .legal>*{justify-self:stretch!important;width:100%}}
 </style>
 </head>
 </head>
@@ -1633,14 +1635,14 @@ var ADDR="Glogauer Straße 21, 10999 Berlin";
 var SO="https://www.solarc.de/";
 /* the product range (solarc.de > Produkte, "Unsere Produkte auf einen Blick"). [group, title, detail, url] */
 var PRODS=[
- ["Solarmodule","Standard- und kundenspezifische Solarmodule","Starre und semiflexible mono- und polykristalline Module sowie semiflexible Dünnschichtmodule, von 40 mW bis 200 W. Nach Ihren Vorgaben in Form, Farbe und Abmessung, für Indoor oder Outdoor, glas- oder ETFE-laminiert.",SO+"deutsch/produkte/solarmodule/"],
- ["Elektronik","Solar-Laderegler und DC/DC-Wandler","Laderegler und DC/DC-Wandler speziell für autarke Kleinleistungssysteme, dazu kundenspezifische Elektronik und Neuentwicklungen.",SO+"deutsch/produkte/"],
+ ["Solarmodule","Standard- und|kundenspezifische Solarmodule","Starre und semiflexible mono- und polykristalline Module sowie semiflexible Dünnschichtmodule, von 40 mW bis 200 W. Nach Ihren Vorgaben in Form, Farbe und Abmessung, für Indoor oder Outdoor, glas- oder ETFE-laminiert.",SO+"deutsch/produkte/solarmodule/"],
+ ["Elektronik","Solare Laderegler|und DC/DC-Wandler","Laderegler und DC/DC-Wandler speziell für autarke Kleinleistungssysteme, dazu kundenspezifische Elektronik und Neuentwicklungen.",SO+"deutsch/produkte/"],
  ["Systeme","Kundenspezifische Lösungen","Solarversorgte GPS-Ortungssysteme (Tracking), Motor- und Lichtsteuerungssysteme sowie Batterie- und Speichersysteme, vom Prototyp bis zur Serienfertigung.",SO+"deutsch/produkte/"],
- ["Messtechnik","Messtechnik für Windkraft und PV","ROMEG M 20 G zur Blattwinkelvermessung des Rotors per Laser, Solareinstrahlungs-Messsysteme, Referenzzellen und der PV Plant Power Optimizer.",SO+"deutsch/produkte/"]];
+ ["Messtechnik","Messtechnik für|Windkraft und PV","ROMEG M 20 G zur Blattwinkelvermessung des Rotors per Laser, Solareinstrahlungs-Messsysteme, Referenzzellen und der PV Plant Power Optimizer.",SO+"deutsch/produkte/"]];
 /* test and consulting services (solarc.de > Über uns, Produkte > Prüf- und Beratungsdienstleistungen). [label, title, detail, icon] */
 var SYS=[
  ["Klimaschrank","Umweltsimulation","Wärme- und Feuchtetests, Klimawechseltests und Langzeittests (Alterungstests) für Entwicklungs- und Fertigungsaufgaben, auch für Komponenten unserer Kunden vor der Markteinführung.",'<rect x="12" y="8" width="32" height="40"/><path class="a" d="M20 20H36M20 28H30"/><circle class="f" cx="36" cy="38" r="2.4"/>'],
- ["Modulprüfung","Elektrolumineszenz und Fotolumineszenz","Sonnensimulatoren, Elektro- und Fotolumineszenz machen Minderleistung und versteckte Defekte wie Microcracks, inaktive Bereiche und Hotspots schnell und sicher sichtbar.",'<path d="M8 14H48V42H8Z"/><path d="M21 14V42M35 14V42M8 28H48"/><path class="a" d="M25 17L30 24L27 27"/><circle class="f" cx="42" cy="36" r="2.4"/>'],
+ ["Modulprüfung","Elektrolumineszenz-Tests","Sonnensimulatoren, Elektro- und Fotolumineszenz machen Minderleistung und versteckte Defekte wie Microcracks, inaktive Bereiche und Hotspots schnell und sicher sichtbar.",'<path d="M8 14H48V42H8Z"/><path d="M21 14V42M35 14V42M8 28H48"/><path class="a" d="M25 17L30 24L27 27"/><circle class="f" cx="42" cy="36" r="2.4"/>'],
  ["Beratung","Beratung und Integration","Beratung und technische Beurteilungen von Solarprodukten, dazu die Integration von Solarkomponenten in bestehende Kundenprodukte.",'<path d="M10 40H46"/><path class="a" d="M14 32L24 22L32 28L44 14"/><circle class="f" cx="44" cy="14" r="2.4"/>']];
 var TEAM=[
  {g:"Geschäftsführung",name:"Dipl.-Ing. Dieter Werner",title:"Geschäftsführer",sum:"SOLARC Innovative Solarprodukte GmbH, Berlin"},
@@ -1666,14 +1668,16 @@ function mhRow(p){var i='<span class="mh-name">'+esc(p.name)+'</span><span class
 function mhList(ps){return '<div class="mh"><div class="mh-group"><ul class="mh-list">'+ps.map(mhRow).join("")+'</ul></div></div>'}
 
 /*<R:views>*//* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
+/* headings: phrases split at | are kept whole (DY) */
+function nwh(t){return t.split('|').map(function(x){return '<span class="nw">'+esc(x)+'</span>'}).join(' ')}
 function prods(){return '<ul class="pfr pipe np">'+PRODS.map(function(c){
-  return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">Mehr erfahren '+ARR+'</a></li>'}).join("")+'</ul>'}
+  return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><h3>'+nwh(c[1])+'</h3><p>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">Mehr erfahren '+ARR+'</a></li>'}).join("")+'</ul>'}
 function team(){var gs=[],by={};TEAM.forEach(function(p){if(!by[p.g]){by[p.g]=[];gs.push(p.g)}by[p.g].push(p)});
   return '<div class="mh">'+gs.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g)+'</p><ul class="mh-list">'+by[g].map(function(p){
     return '<li><div class="mh-row cg-r"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span></div></li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){
   return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
-function caps(){return '<div class="caps">'+SYS.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
+function caps(){return '<div class="caps">'+SYS.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+nwh(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 /* what SOLARC does (solarc.de > Über uns: "entwickelt, produziert und vertreibt ...", with the test lab) */
 function tl(){var T=[["Entwickeln","Technisch hochwertige, autarke Stromversorgungskonzepte nach Kundenanforderung, bis zum fertigen Produkt"],["Prüfen","Klimaschrank, Sonnensimulatoren, Elektro- und Fotolumineszenz für eine hohe Produktqualität"],["Produzieren","Automatisierte Produktionsmethoden sowie Verguss- und Laminierungstechniken"],["Vertreiben","Dazu Handel mit in Deutschland geprüften Solarmodulen und Ladereglern"]];
   return '<ol class="amtl">'+T.map(function(t){return '<li><span class="v" data-r>'+t[0]+'</span><p data-r>'+esc(t[1])+'</p></li>'}).join("")+'</ol>'}
@@ -1719,7 +1723,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="referenzen" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Referenzen</span><h2 class="d2 split"><span class="nw">Sonderentwicklungen</span> <em><span class="nw">für namhafte Kunden.</span></em></h2></div><p data-r>Im Laufe unserer Tätigkeit haben wir für viele deutsche und ausländische Kunden Sonderentwicklungen getätigt und Partnerschaften gebildet, in Industrie und Forschung.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Referenzen</span><h2 class="d2 split"><span class="nw">Für namhafte</span> <em><span class="nw">Kunden entwickelt.</span></em></h2></div><p data-r>Im Laufe unserer Tätigkeit haben wir für viele deutsche und ausländische Kunden Sonderentwicklungen getätigt und Partnerschaften gebildet, in Industrie und Forschung.</p></div>'+
    refs()+
    '<p class="sorefs-n" data-r>u. v. m.</p>'+
   '</div></section>'+

@@ -5,14 +5,14 @@ var ADDR="Glogauer Straße 21, 10999 Berlin";
 var SO="https://www.solarc.de/";
 /* the product range (solarc.de > Produkte, "Unsere Produkte auf einen Blick"). [group, title, detail, url] */
 var PRODS=[
- ["Solarmodule","Standard- und kundenspezifische Solarmodule","Starre und semiflexible mono- und polykristalline Module sowie semiflexible Dünnschichtmodule, von 40 mW bis 200 W. Nach Ihren Vorgaben in Form, Farbe und Abmessung, für Indoor oder Outdoor, glas- oder ETFE-laminiert.",SO+"deutsch/produkte/solarmodule/"],
- ["Elektronik","Solar-Laderegler und DC/DC-Wandler","Laderegler und DC/DC-Wandler speziell für autarke Kleinleistungssysteme, dazu kundenspezifische Elektronik und Neuentwicklungen.",SO+"deutsch/produkte/"],
+ ["Solarmodule","Standard- und|kundenspezifische Solarmodule","Starre und semiflexible mono- und polykristalline Module sowie semiflexible Dünnschichtmodule, von 40 mW bis 200 W. Nach Ihren Vorgaben in Form, Farbe und Abmessung, für Indoor oder Outdoor, glas- oder ETFE-laminiert.",SO+"deutsch/produkte/solarmodule/"],
+ ["Elektronik","Solare Laderegler|und DC/DC-Wandler","Laderegler und DC/DC-Wandler speziell für autarke Kleinleistungssysteme, dazu kundenspezifische Elektronik und Neuentwicklungen.",SO+"deutsch/produkte/"],
  ["Systeme","Kundenspezifische Lösungen","Solarversorgte GPS-Ortungssysteme (Tracking), Motor- und Lichtsteuerungssysteme sowie Batterie- und Speichersysteme, vom Prototyp bis zur Serienfertigung.",SO+"deutsch/produkte/"],
- ["Messtechnik","Messtechnik für Windkraft und PV","ROMEG M 20 G zur Blattwinkelvermessung des Rotors per Laser, Solareinstrahlungs-Messsysteme, Referenzzellen und der PV Plant Power Optimizer.",SO+"deutsch/produkte/"]];
+ ["Messtechnik","Messtechnik für|Windkraft und PV","ROMEG M 20 G zur Blattwinkelvermessung des Rotors per Laser, Solareinstrahlungs-Messsysteme, Referenzzellen und der PV Plant Power Optimizer.",SO+"deutsch/produkte/"]];
 /* test and consulting services (solarc.de > Über uns, Produkte > Prüf- und Beratungsdienstleistungen). [label, title, detail, icon] */
 var SYS=[
  ["Klimaschrank","Umweltsimulation","Wärme- und Feuchtetests, Klimawechseltests und Langzeittests (Alterungstests) für Entwicklungs- und Fertigungsaufgaben, auch für Komponenten unserer Kunden vor der Markteinführung.",'<rect x="12" y="8" width="32" height="40"/><path class="a" d="M20 20H36M20 28H30"/><circle class="f" cx="36" cy="38" r="2.4"/>'],
- ["Modulprüfung","Elektrolumineszenz und Fotolumineszenz","Sonnensimulatoren, Elektro- und Fotolumineszenz machen Minderleistung und versteckte Defekte wie Microcracks, inaktive Bereiche und Hotspots schnell und sicher sichtbar.",'<path d="M8 14H48V42H8Z"/><path d="M21 14V42M35 14V42M8 28H48"/><path class="a" d="M25 17L30 24L27 27"/><circle class="f" cx="42" cy="36" r="2.4"/>'],
+ ["Modulprüfung","Elektrolumineszenz-Tests","Sonnensimulatoren, Elektro- und Fotolumineszenz machen Minderleistung und versteckte Defekte wie Microcracks, inaktive Bereiche und Hotspots schnell und sicher sichtbar.",'<path d="M8 14H48V42H8Z"/><path d="M21 14V42M35 14V42M8 28H48"/><path class="a" d="M25 17L30 24L27 27"/><circle class="f" cx="42" cy="36" r="2.4"/>'],
  ["Beratung","Beratung und Integration","Beratung und technische Beurteilungen von Solarprodukten, dazu die Integration von Solarkomponenten in bestehende Kundenprodukte.",'<path d="M10 40H46"/><path class="a" d="M14 32L24 22L32 28L44 14"/><circle class="f" cx="44" cy="14" r="2.4"/>']];
 var TEAM=[
  {g:"Geschäftsführung",name:"Dipl.-Ing. Dieter Werner",title:"Geschäftsführer",sum:"SOLARC Innovative Solarprodukte GmbH, Berlin"},

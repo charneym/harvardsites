@@ -1,12 +1,14 @@
 /* ================= VIEWS (home only; nav items open build-out pages via the kit's buildout module, in-page CTAs scroll to sections) ================= */
+/* headings: phrases split at | are kept whole (DY) */
+function nwh(t){return t.split('|').map(function(x){return '<span class="nw">'+esc(x)+'</span>'}).join(' ')}
 function prods(){return '<ul class="pfr pipe np">'+PRODS.map(function(c){
-  return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><h3>'+esc(c[1])+'</h3><p>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">Mehr erfahren '+ARR+'</a></li>'}).join("")+'</ul>'}
+  return '<li><span class="lab tg"><b>'+esc(c[0])+'</b></span><h3>'+nwh(c[1])+'</h3><p>'+esc(c[2])+'</p><a class="lab lk ul" href="'+c[3]+'" target="_blank" rel="noopener">Mehr erfahren '+ARR+'</a></li>'}).join("")+'</ul>'}
 function team(){var gs=[],by={};TEAM.forEach(function(p){if(!by[p.g]){by[p.g]=[];gs.push(p.g)}by[p.g].push(p)});
   return '<div class="mh">'+gs.map(function(g){return '<div class="mh-group"><p class="mh-label">'+esc(g)+'</p><ul class="mh-list">'+by[g].map(function(p){
     return '<li><div class="mh-row cg-r"><span class="mh-name">'+esc(p.name)+'</span><span class="mh-role">'+esc(p.title)+'</span><span class="mh-sum">'+esc(p.sum)+'</span></div></li>'}).join("")+'</ul></div>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){
   return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
-function caps(){return '<div class="caps">'+SYS.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
+function caps(){return '<div class="caps">'+SYS.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+nwh(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 /* what SOLARC does (solarc.de > Über uns: "entwickelt, produziert und vertreibt ...", with the test lab) */
 function tl(){var T=[["Entwickeln","Technisch hochwertige, autarke Stromversorgungskonzepte nach Kundenanforderung, bis zum fertigen Produkt"],["Prüfen","Klimaschrank, Sonnensimulatoren, Elektro- und Fotolumineszenz für eine hohe Produktqualität"],["Produzieren","Automatisierte Produktionsmethoden sowie Verguss- und Laminierungstechniken"],["Vertreiben","Dazu Handel mit in Deutschland geprüften Solarmodulen und Ladereglern"]];
   return '<ol class="amtl">'+T.map(function(t){return '<li><span class="v" data-r>'+t[0]+'</span><p data-r>'+esc(t[1])+'</p></li>'}).join("")+'</ol>'}
@@ -52,7 +54,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="referenzen" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Referenzen</span><h2 class="d2 split"><span class="nw">Sonderentwicklungen</span> <em><span class="nw">für namhafte Kunden.</span></em></h2></div><p data-r>Im Laufe unserer Tätigkeit haben wir für viele deutsche und ausländische Kunden Sonderentwicklungen getätigt und Partnerschaften gebildet, in Industrie und Forschung.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Referenzen</span><h2 class="d2 split"><span class="nw">Für namhafte</span> <em><span class="nw">Kunden entwickelt.</span></em></h2></div><p data-r>Im Laufe unserer Tätigkeit haben wir für viele deutsche und ausländische Kunden Sonderentwicklungen getätigt und Partnerschaften gebildet, in Industrie und Forschung.</p></div>'+
    refs()+
    '<p class="sorefs-n" data-r>u. v. m.</p>'+
   '</div></section>'+

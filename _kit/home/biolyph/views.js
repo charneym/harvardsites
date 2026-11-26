@@ -57,7 +57,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="lyospheres" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>LyoSpheres</span><h2 class="d2 split"><span class="nw">A new shape for</span> <em class="nw">lyophilized reagents.</em></h2></div><p data-r>BIOLYPH redefined the lyophilization paradigm with LyoSpheres, expanding what reagents, cocktails and devices can do.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>LyoSpheres</span><h2 class="d2 split"><span class="nw">A new shape</span> <em class="nw">for reagents.</em></h2></div><p data-r>BIOLYPH redefined the lyophilization paradigm with LyoSpheres, expanding what reagents, cocktails and devices can do.</p></div>'+
    '<div class="dmf-g"><div class="dmf-r">'+sites()+'</div>'+
    '<div class="dce-w"><span class="lab kick" data-r>Proven at scale</span>'+certs()+
    '<p class="dmask" data-r>LyoSpheres are packaged inside '+esc(DEVS)+'.</p></div></div>'+
@@ -89,8 +89,8 @@ function cta(){
 }
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
-   '<div class="c"><span class="lab">Address</span>BIOLYPH LLC<br>4275 Norex Drive<br>Chaska, MN 55318</div>'+
-   '<div class="c"><span class="lab">What we make</span>LyoSpheres<br>ReActivator delivery system</div>'+
+   '<div class="c"><span class="lab">Address</span>BIOLYPH LLC, 4275 Norex Drive,<br>Chaska, MN 55318, USA</div>'+
+   '<div class="c"><span class="lab">What we make</span>LyoSpheres, and the ReActivator reagent delivery system</div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/services">Services</a><br><a class="ul" href="#/process">Process</a><br><a class="ul" href="#/lyospheres">LyoSpheres</a><br><a class="ul" href="#/company">Company</a></div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="'+TELH+'">'+TEL+'</a></div>'+
   '</div>__LMARK3__'+

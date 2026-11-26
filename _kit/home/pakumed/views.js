@@ -22,7 +22,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick">Über uns</span>'+
-   '<h2 class="txt" id="mani">PakuMed wurde von Medizinern ins Leben gerufen. <span class="nw">Unsere Produkte</span> sind Antworten: <em>Ideen, die eigentlich selbstverständlich sein sollten.</em></h2></div>'+
+   '<h2 class="txt" id="mani">PakuMed wurde von Medizinern ins Leben gerufen. <span class="nw">Unsere Produkte</span> sind Antworten: <em><span class="nw">Ideen, die eigentlich</span> <span class="nw">selbstverständlich sein sollten.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">3.000</span><p class="k">Punktionen hält die selbstschließende Silikonmembran der Standard-Ports aus</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">3 Tesla</span><p class="k">MR-bedingt sicher: TITAN-Port-Kathetersysteme bis 3 Tesla</p></div>'+
@@ -53,7 +53,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="unternehmen" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick">Unternehmen</span><h2 class="d2 split"><span class="nw">Von Medizinern</span> <em class="nw">gegründet.</em></h2></div><p>Im Fokus steht der Patient. Von unserem Stammsitz in Essen aus liefern wir international, verbunden mit Universitäten, Forschungseinrichtungen, Anwendern und Einkäufern.</p></div>'+
+   '<div class="shead"><div><span class="lab kick">Unternehmen</span><h2 class="d2 split"><span class="nw">Von Essen aus</span> <em class="nw">in alle Welt.</em></h2></div><p>Von Medizinern gegründet, mit dem Patienten im Fokus. Von unserem Stammsitz in Essen aus liefern wir international, verbunden mit Universitäten, Forschungseinrichtungen, Anwendern und Einkäufern.</p></div>'+
    '<div class="uf">'+
     '<div class="uf-p"><span class="lab">Leitung</span>'+
      '<ul class="dirs">'+

@@ -23,7 +23,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Neater Solutions</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Drinking aids,</span> <span class="nw">eating aids</span> <span class="nw">and mobile arm supports</span> <span class="nw">for ataxia, muscular dystrophy,</span> <span class="nw">tremors and more.</span> <em><span class="nw">Designed with</span> <span class="nw">the people who use them,</span> <span class="nw">made in the UK.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Drinking aids,</span> <span class="nw">eating aids</span> <span class="nw">and mobile</span> <span class="nw">arm supports</span> <span class="nw">for ataxia,</span> <span class="nw">muscular dystrophy,</span> <span class="nw">tremors and more.</span> <em><span class="nw">Designed with</span> <span class="nw">the people</span> <span class="nw">who use them,</span> <span class="nw">made in the UK.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">30+</span><p class="k">Years of working with real customers and innovating on their feedback</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">10,000+</span><p class="k">Personalised assessments behind the design of every product</p></div>'+

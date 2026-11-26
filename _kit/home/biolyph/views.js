@@ -57,7 +57,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="lyospheres" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>LyoSpheres</span><h2 class="d2 split"><span class="nw">A new shape</span> <em class="nw">for lyophilized reagents.</em></h2></div><p data-r>BIOLYPH redefined the lyophilization paradigm with LyoSpheres, expanding what reagents, cocktails and devices can do.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>LyoSpheres</span><h2 class="d2 split"><span class="nw">A new shape for</span> <em class="nw">lyophilized reagents.</em></h2></div><p data-r>BIOLYPH redefined the lyophilization paradigm with LyoSpheres, expanding what reagents, cocktails and devices can do.</p></div>'+
    '<div class="dmf-g"><div class="dmf-r">'+sites()+'</div>'+
    '<div class="dce-w"><span class="lab kick" data-r>Proven at scale</span>'+certs()+
    '<p class="dmask" data-r>LyoSpheres are packaged inside '+esc(DEVS)+'.</p></div></div>'+

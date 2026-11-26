@@ -21,7 +21,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>AMC – Ihr Partner seit 1990</span>'+
-   '<h2 class="txt" id="mani">Seit 1990 liefern und realisieren Ingenieure und Techniker von AMC moderne Produkte und innovative Lösungen für die Mess-, Prüf- <span class="nw">und Automatisierungstechnik.</span> <em><span class="nw">Ihr Partner für</span> <span class="nw">den Erfolg von morgen.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani">Seit 1990 liefern und realisieren Ingenieure und Techniker von AMC moderne Produkte und innovative Lösungen für die Mess-, Prüf- <span class="nw">und Automatisierungs­technik.</span> <em><span class="nw">Ihr Partner für</span> <span class="nw">den Erfolg von morgen.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1990</span><p class="k">am 13. August in Chemnitz gegründet, von Dipl.-Ing. Bernd Göbel und Dr. Frank Neubert</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">30 Jahre</span><p class="k">Partnerschaft mit Advantech, als iAutomation-Premier-Partner (2024)</p></div>'+

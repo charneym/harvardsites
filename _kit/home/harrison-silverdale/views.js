@@ -16,7 +16,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Innovative fasteners<span class="nomob"> · Dronfield, since 1982</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Making the right</span> <span class="l"><em class="nw">connection.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">The right fastener,</span> <span class="l"><em class="nw">the right connection.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Since 1982 Harrison Silverdale has supplied specialised industrial fasteners to OEMs and distributors: threaded inserts for plastics and composites, spring steel and sheet metal fasteners, and special parts designed in house.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Discuss a fastener</a></div></div>'+
   '</section>'+

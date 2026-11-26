@@ -1501,6 +1501,53 @@ p.act{margin-bottom:0}
 /* partners: the footnote and its link share one row */
 .g-pt-foot{display:flex;justify-content:space-between;align-items:baseline;gap:16px 40px;flex-wrap:wrap;margin-top:22px}
 .g-pt-foot .g-pt-note{margin:0;max-width:72ch}
+
+/* v6 (client review, Nov 2026): alignment and white space
+   1 targets: the 80% / "one molecule" row sits on the same three columns as TOPO 1 / cMYC, tops aligned */
+@media (min-width:1025px){
+ .g-tt-foot{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:0 clamp(28px,3.4vw,64px);align-items:start}
+ .g-tt-80,.g-tt-one{grid-column:auto}
+ .g-tt-sp{visibility:hidden;padding:0!important;align-self:start}
+ .g-tt-sp b{line-height:0}
+ .g-tt-80{align-items:flex-start}
+ .g-tt-80 p{margin:.1em 0 0}
+}
+@media (max-width:1024px){.g-tt-sp{display:none!important}}
+/* 2 partners: logos centred in their row, every logo in the same box */
+@media (min-width:1025px){.g-pt-lg{align-self:stretch!important;display:flex!important;align-items:center!important}}
+.g-pt .g-logo{max-width:100%;object-fit:contain;object-position:left center}
+/* 3 letters: the featured quote fills the width, its attribution in the right column under the section note */
+@media (min-width:861px){
+ .g-q.big{display:grid!important;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gap);row-gap:0;align-items:end;max-width:none!important}
+ .g-q.big .g-qm{grid-column:1/-1;margin-bottom:4px}
+ .g-q.big blockquote{grid-column:1/span 7}
+ .g-q.big figcaption{grid-column:8/span 5;margin-top:0;align-self:end}
+}
+/* 4 investors: market figures beside the heading, not in a band of their own; deal values on the right-hand column line */
+.shead>.g-inv-r{grid-column:8/span 5;padding-top:calc(11px * 1.4 + 22px)}
+.g-inv-r p{margin:0;color:var(--stone);max-width:48ch}
+.g-inv-r .g-mk{margin-top:clamp(22px,2.4vw,36px);padding-bottom:0;border-bottom:0}
+.g-inv{margin-bottom:0}
+#investors .g-dl-w{margin-top:clamp(36px,4vw,60px);padding-top:clamp(22px,2.4vw,34px);border-top:1px solid var(--hair)}
+@media (max-width:860px){.shead>.g-inv-r{grid-column:1/-1;padding-top:0}}
+@media (min-width:641px){
+ .g-dt{table-layout:fixed}
+ .g-dt td.lab,.g-dt thead th:first-child{width:17%}
+ .g-dt tbody th,.g-dt thead th:nth-child(2){width:42.8%}
+ .g-dt td:last-child,.g-dt thead th:last-child{text-align:left}
+}
+/* 5 pipeline: phase names centred between their dividers; the status sits under the bar, ending at its marker, off the track */
+.g-pipe-st .lab{text-align:center;padding-left:6px;padding-right:6px}
+@media (min-width:861px){
+ .g-bar{height:44px}
+ .g-bar-l{top:26px;left:calc(var(--r) / 3 * 100% + 6px);transform:translateX(-100%)}
+}
+/* 6 competitive position: columns centred; Gibson's row no longer indented */
+@media (min-width:641px){
+ .g-ct{table-layout:fixed}
+ .g-ct thead th,.g-ct td,.g-ct tbody th{text-align:center;padding-left:12px;padding-right:12px;width:33.333%}
+ .g-ct tr.me th{padding-left:12px}
+}
 </style>
 </head>
 </head>
@@ -1972,6 +2019,7 @@ function targets(){return '<section class="sec dark g-tt" id="targets" data-them
   '</div>'+
   '<div class="g-tt-foot">'+
    '<div class="g-tt-80"><span class="g-tt-n">80%</span><p>of all human cancers are driven by cMYC, approximately.</p></div>'+
+   '<div class="g-tt-x g-tt-sp" aria-hidden="true"><b>+</b></div>'+
    '<div class="g-tt-one"><h3>One molecule hits both.</h3><ul><li><b>LMP744</b><span>Intravenous</span></li><li><b>LMP400</b><span>Oral and intravenous</span></li><li><b>Azas</b><span>Next generation, 700+ compounds</span></li></ul></div>'+
   '</div></div></section>'}
 
@@ -2019,8 +2067,8 @@ function desigSec(){return '<section class="sec light g-split" id="designations"
 function marketStats(){return '<div class="g-mk" aria-label="Glioblastoma market">'+MARKET.slice(0,2).map(function(m,i){return '<div class="g-mk-c"><span class="g-mk-v">'+esc(m[0])+'</span><span class="g-mk-k">'+esc(m[1])+'</span></div>'+(i===0?'<div class="g-mk-a" aria-hidden="true">'+ARRS+'</div>':'')}).join("")+'</div>'}
 function deals(){return '<table class="g-dt"><thead><tr><th scope="col" class="lab">Date</th><th scope="col" class="lab">Acquirer / target</th><th scope="col" class="lab">Value</th></tr></thead><tbody>'+DEALS.map(function(d){return '<tr><td class="lab">'+esc(d[0])+'</td><th scope="row">'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</th><td>'+esc(d[3])+'</td></tr>'}).join("")+'</tbody></table>'}
 function investSec(){return '<section class="sec dark" id="investors" data-theme="dark"><div class="wrap">'+
-  '<div class="shead"><div><span class="lab kick">Investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p></div>'+
-  marketStats()+'<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div>'+
+  '<div class="shead g-inv"><div><span class="lab kick">For investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><div class="g-inv-r"><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p>'+marketStats()+'</div></div>'+
+  '<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div>'+
   '<p class="g-src">Emergen Research (market, CAGR 7.8%); transaction values from Gibson’s investor presentation, November 2026.</p>'+
   '<div class="g-act">'+more("#/investors","Investor overview")+'</div></div></section>'}
 

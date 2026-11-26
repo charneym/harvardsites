@@ -208,14 +208,7 @@ tbody th{font-weight:600;color:var(--ink);width:34%}
 .ftr .legal{max-width:var(--max);margin:36px auto 0;padding:18px var(--side) 0;border-top:1px solid rgba(255,255,255,.18);display:flex;flex-wrap:wrap;gap:8px 28px;font-size:15px;color:#c3d4c9}
 .ftr .legal a{color:#fff;margin-left:auto}
 
-/* gentle entrance for the hero only; nothing is hidden waiting for a scroll */
-@media (prefers-reduced-motion:no-preference){
-  .hero-t>*{animation:up .7s cubic-bezier(.22,1,.36,1) both}
-  .hero-t>*:nth-child(2){animation-delay:.06s}.hero-t>*:nth-child(3){animation-delay:.12s}.hero-t>*:nth-child(4){animation-delay:.18s}.hero-t>*:nth-child(5){animation-delay:.24s}
-  .hero-p img{animation:fi .9s ease both}
-}
-@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@keyframes fi{from{opacity:0}to{opacity:1}}
+
 
 /* tablet */
 @media (max-width:1100px){
@@ -279,6 +272,88 @@ tbody th{font-weight:600;color:var(--ink);width:34%}
   .ftr .legal a{margin-left:0}
 }
 
+
+/* ===== v4 premium layer (WAVE_BRIEF "PREMIUM MOTION v4"). Every resting state is visible; JS adds the motion. ===== */
+:root{--sh:115px}
+@media (min-width:561px){:root{--hh:84px}.hdr.solid{height:64px}.hdr.solid .drl{height:42px}}
+.hdr{transition:height .35s cubic-bezier(.22,1,.36,1),box-shadow .25s}
+.drl{transition:height .35s cubic-bezier(.22,1,.36,1)}
+/* first screen = exactly one viewport: hero + trust strip */
+.hero{height:max(500px,calc(100svh - var(--hh) - var(--sh)));min-height:0}
+.strip li .sub{display:block}
+.strip li{font-size:16px}
+/* link underlines draw in */
+.nav a:not(.btn){border-bottom:0;padding:6px 0;background:linear-gradient(var(--green),var(--green)) 0 100%/0 2px no-repeat;transition:background-size .35s cubic-bezier(.22,1,.36,1),color .2s}
+.nav a:not(.btn):hover,.nav a[aria-current="page"]{background-size:100% 2px}
+a.ul{text-decoration:none;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1px no-repeat;transition:background-size .4s cubic-bezier(.22,1,.36,1)}
+a.ul:hover{animation:uld .6s cubic-bezier(.22,1,.36,1)}
+@keyframes uld{0%{background-size:100% 1px;background-position:100% 100%}45%{background-size:0 1px;background-position:100% 100%}46%{background-position:0 100%}100%{background-size:100% 1px;background-position:0 100%}}
+.hero .call a{border-bottom:0}
+/* images: frame + inner parallax room */
+.iw{display:block;overflow:hidden;position:relative}
+.contact .ph .iw{position:absolute;inset:0}
+.card .iw{border-bottom:1px solid var(--line)}.card .iw img{border-bottom:0}
+/* cards lift, photo zooms */
+.card{transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s}
+.card img{transition:scale .9s cubic-bezier(.22,1,.36,1)}
+@media (hover:hover){.card:hover{transform:translateY(-6px);box-shadow:0 22px 44px -22px rgba(16,40,26,.38)}.card:hover img{scale:1.06}}
+/* brand intro (JS only) and the route curtain used by the build-out pages */
+#intro{position:fixed;inset:0;z-index:950;background:#fff;display:none;place-items:center;pointer-events:none}
+#intro .in-logo{line-height:0;will-change:transform,clip-path}
+#intro .drl{height:clamp(86px,8vw,124px);transition:none}
+#xc{position:fixed;inset:0;z-index:940;background:var(--green);transform:translateY(101%);pointer-events:none}
+#xt{position:fixed;inset:0;z-index:945;display:grid;place-items:center;visibility:hidden;pointer-events:none;color:#fff}
+#xtt{display:block;overflow:hidden;padding:.08em 0;font:500 clamp(36px,4vw,64px)/1.1 var(--slab)}
+/* the sliding-head photo story: stacked steps by default; pinned and scroll-driven on large screens (JS adds .on) */
+.story{padding:clamp(56px,6vw,92px) 0;background:#fff}
+.story .steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 32px;counter-reset:none}
+.story .steps li{border:0;padding:0}
+.story .steps li::before{display:none}
+.story .steps .st{border-top:2px solid var(--green);padding-top:14px;margin-top:16px}
+.story .n{display:block;font:500 17px/1 var(--slab);color:var(--green);margin-bottom:10px}
+.story .steps h3{margin-bottom:8px}
+.story .steps p{font-size:17px;line-height:1.6}
+.story .steps .ph img{aspect-ratio:4/3}
+.story-pin{display:none}
+.story.on{padding:0}
+.story.on .story-in{display:none}
+.story.on .story-pin{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,4vw,72px);align-items:center;height:calc(100vh - 64px);max-width:var(--max);margin:0 auto;padding:clamp(20px,3vh,44px) var(--side)}
+.sp-l .d2{margin-bottom:clamp(20px,3vh,32px)}
+.rail{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--line);margin-bottom:clamp(20px,3.4vh,36px)}
+.rail .prog{position:absolute;left:0;top:-2px;height:2px;width:100%;background:var(--green);transform-origin:0 50%;transform:scaleX(0)}
+.rail span{padding-top:10px;font-weight:600;font-size:16px;color:var(--muted);transition:color .3s}
+.rail span.on{color:var(--green)}
+.psteps{display:grid}
+.pstep{grid-area:1/1}
+.pstep h3{font-size:clamp(26px,1vw + 16px,34px);margin:6px 0 12px}
+.pstep p{font-size:18px;line-height:1.62;max-width:34em}
+.sp-r{display:flex;flex-direction:column;align-items:center}
+.frame{position:relative;width:min(100%,720px,calc((100vh - 200px) * 4 / 3));aspect-ratio:4/3;overflow:hidden;background:var(--stone)}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.frame img:first-child{opacity:1}
+.spcap{margin-top:12px;font-size:15px;color:var(--muted);width:min(100%,720px,calc((100vh - 200px) * 4 / 3))}
+@media (max-width:900px){
+  .hero{grid-template-rows:auto minmax(0,1fr)}
+  .hero-p{aspect-ratio:auto;min-height:0}
+}
+@media (max-width:640px){
+  :root{--sh:120px}
+  .nomob{display:none}
+  .hero-t{padding:22px var(--side) 22px}
+  .d1{font-size:clamp(34px,9vw,40px)}
+  .hero .lede{margin-top:14px;font-size:16px;line-height:1.55}
+  .hero .act{flex-direction:row;margin-top:18px;gap:10px}
+  .hero .act .btn{width:auto;flex:1 1 auto;padding:0 14px;min-height:46px;font-size:16px}
+  .hero .call{display:none}
+  .hero-p figcaption{padding:8px var(--side);font-size:14px}
+  .strip ul{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px var(--side);gap:10px 14px}
+  .strip li{font-size:15px;padding-left:24px}
+  .strip li b{font-size:15.5px;line-height:1.35}
+  .strip li .sub{display:none}
+  .strip li svg{width:16px;height:16px}
+  .story .steps{grid-template-columns:minmax(0,1fr)}
+}
+
 /* build-out pages (lib/buildout.js): light, as the home page; the sub-page head sits on the stone ground with a green rule */
 html .bo{background:var(--paper);color:var(--text)}
 html .bo-tint{display:none!important}
@@ -301,6 +376,9 @@ html .bo .ftr{margin-top:0}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+
+<div id="intro" aria-hidden="true"><div class="in-logo"><!--LOGOH--></div></div>
+<div id="xc" aria-hidden="true"></div><div id="xt" aria-hidden="true"><span id="xtt"></span></div>
 
 <header class="hdr" id="hdr">
   <div class="hdr-in">
@@ -338,11 +416,11 @@ html .bo .ftr{margin-top:0}
 
 <section class="hero" id="hero">
   <div class="hero-t">
-    <span class="kick">Precision CNC turned parts · Luton, Bedfordshire</span>
+    <span class="kick">Precision CNC turned parts<span class="nomob"> · Luton, Bedfordshire</span></span>
     <h1 class="d1" id="pageTitle" tabindex="-1">Quality turned parts, made in Luton since&nbsp;1982.</h1>
     <p class="lede">A family company making precision CNC turned parts and machined components, from 3 mm to 65 mm diameter from the bar, on sliding head and fixed head lathes with sub-spindle and driven tooling.</p>
     <div class="act"><a class="btn solid" href="#/contact">Send an enquiry <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a><a class="btn" href="#/turning">Our turning</a></div>
-    <p class="call">Or call the factory on <a href="tel:+441582451111">01582 451111</a></p>
+    <p class="call">Or call the factory on <a class="ul" href="tel:+441582451111">01582 451111</a></p>
   </div>
   <figure class="hero-p">
     <img src="img/miyano-bne65.webp" width="1400" height="1146" alt="The new Citizen Miyano BNE 65 MYY lathe on DRN's shop floor, with thread gauges and a caliper on the bench in front" fetchpriority="high">
@@ -352,10 +430,10 @@ html .bo .ftr{margin-top:0}
 
 <section class="strip" id="facts" aria-label="At a glance">
   <ul>
-    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>ISO 9001 and ISO 14001</b>Audited by BSI Assurance UK</li>
-    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>3 mm to 65 mm from the bar</b>And 65 mm to 178 mm in the chuck</li>
-    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>Batches of 100 to 5,000</b>From 10 off on an annual call‑off</li>
-    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>Three to four weeks</b>Our normal quoted lead time</li>
+    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>ISO 9001 and ISO 14001</b><span class="sub">Audited by BSI Assurance UK</span></li>
+    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>3 mm to 65 mm from the bar</b><span class="sub">And 65 mm to 178 mm in the chuck</span></li>
+    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>Batches of 100 to 5,000</b><span class="sub">From 10 off on an annual call‑off</span></li>
+    <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10.5l4.2 4L17 5" fill="none" stroke="currentColor" stroke-width="2.2"/></svg><b>Three to four weeks</b><span class="sub">Our normal quoted lead time</span></li>
   </ul>
 </section>
 
@@ -394,22 +472,6 @@ html .bo .ftr{margin-top:0}
       <article class="card"><img src="img/p-flats.webp" width="680" height="510" loading="lazy" alt="A turned aluminium part with milled slots"><div><h3>Second operations</h3><span class="sub">Hexagons, slots and flats</span><p>When it is more cost-effective, milling is done as a second operation on four Haas vertical machining centres. Plating and heat treatment are subcontracted.</p></div></article>
     </div>
 
-    <div class="how">
-      <figure class="ph">
-        <img src="img/star-sr20.webp" width="800" height="600" loading="lazy" alt="A DRN machinist at the control of a Star SR20 sliding head lathe">
-        <figcaption class="cap">At one of the four Star SR20 sliding head lathes.</figcaption>
-      </figure>
-      <div>
-        <h3>From a 3 metre bar to a finished part, on a sliding head lathe</h3>
-        <ol class="steps">
-          <li><b>Fed from the magazine</b><p>The magazine bar loader feeds the bar through the main spindle and out through the guide bush. A small batch of 100 is often the product of a single 3 metre bar.</p></li>
-          <li><b>Turned beside the guide bush</b><p>The headstock slides the bar forward while the tool moves in and out, so every cut is taken right next to its support. That is how slender parts stay accurate.</p></li>
-          <li><b>Drilled by a driven tool</b><p>Driven tooling cross drills, mills and taps while the bar is still held, so most parts need no second set-up.</p></li>
-          <li><b>Parted off into the sub-spindle</b><p>The sub-spindle grips the part, the parting tool cuts it free and the back is machined, all in one operation. More jobs in one operation is a cost saving for the customer.</p></li>
-        </ol>
-      </div>
-    </div>
-
     <div class="mat">
       <div>
         <h3>Materials we machine</h3>
@@ -429,10 +491,32 @@ html .bo .ftr{margin-top:0}
       </table>
     </div>
 
-    <figure class="band">
-      <img src="img/parts.webp" width="1169" height="420" loading="lazy" alt="A heap of freshly turned metal parts with bores, grooves and cross holes">
-      <figcaption class="cap">A batch of turned parts, from DRN’s own gallery.</figcaption>
-    </figure>
+  </div>
+</section>
+
+<section class="story" id="process">
+  <div class="wrap story-in">
+    <div class="shead"><span class="kick">On a sliding head lathe</span><h2 class="d2">From a 3 metre bar to a finished part.</h2></div>
+    <ol class="steps">
+      <li class="step"><figure class="ph"><img src="img/star-sr20.webp" width="800" height="600" loading="lazy" alt="A DRN machinist at a Star SR20 sliding head lathe"><figcaption class="cap">A Star SR20 sliding head lathe at DRN.</figcaption></figure><div class="st"><span class="n">01</span><h3>Fed from the magazine</h3><p>The magazine bar loader feeds the bar through the main spindle and out through the guide bush. A small batch of 100 is often the product of a single 3 metre bar.</p></div></li>
+      <li class="step"><figure class="ph"><img src="img/star-sp23.webp" width="1000" height="959" loading="lazy" alt="The Star SP23 turn and mill machine at DRN"><figcaption class="cap">The Star SP23 sliding head turn and mill machine, new in 2025.</figcaption></figure><div class="st"><span class="n">02</span><h3>Turned beside the guide bush</h3><p>The headstock slides the bar forward while the tool moves in and out, so every cut is taken right next to its support. That is how slender parts stay accurate.</p></div></li>
+      <li class="step"><figure class="ph"><img src="img/p-pins.webp" width="680" height="510" loading="lazy" alt="Slender turned pins and shafts with cross-drilled holes"><figcaption class="cap">Slender turned parts with cross-drilled holes.</figcaption></figure><div class="st"><span class="n">03</span><h3>Drilled by a driven tool</h3><p>Driven tooling cross drills, mills and taps while the bar is still held, so most parts need no second set-up.</p></div></li>
+      <li class="step"><figure class="ph"><img src="img/p-knurl.webp" width="680" height="510" loading="lazy" alt="A knurled turned cap with an internal thread"><figcaption class="cap">A finished part: knurled, with an internal thread.</figcaption></figure><div class="st"><span class="n">04</span><h3>Parted off into the sub-spindle</h3><p>The sub-spindle grips the part, the parting tool cuts it free and the back is machined, all in one operation. More jobs in one operation is a cost saving for the customer.</p></div></li>
+    </ol>
+  </div>
+  <div class="story-pin">
+    <div class="sp-l">
+      <span class="kick">On a sliding head lathe</span>
+      <h2 class="d2">From a 3 metre bar to a finished part.</h2>
+      <div class="rail" aria-hidden="true"><i class="prog"></i><span class="on">Bar</span><span>Turn</span><span>Drill</span><span>Part off</span></div>
+      <div class="psteps">
+        <div class="pstep"><span class="n">01 · Bar</span><h3>Fed from the magazine</h3><p>The magazine bar loader feeds the bar through the main spindle and out through the guide bush. A small batch of 100 is often the product of a single 3 metre bar.</p></div>
+        <div class="pstep"><span class="n">02 · Turn</span><h3>Turned beside the guide bush</h3><p>The headstock slides the bar forward while the tool moves in and out, so every cut is taken right next to its support. That is how slender parts stay accurate.</p></div>
+        <div class="pstep"><span class="n">03 · Drill</span><h3>Drilled by a driven tool</h3><p>Driven tooling cross drills, mills and taps while the bar is still held, so most parts need no second set-up.</p></div>
+        <div class="pstep"><span class="n">04 · Part off</span><h3>Parted off into the sub-spindle</h3><p>The sub-spindle grips the part, the parting tool cuts it free and the back is machined, all in one operation. More jobs in one operation is a cost saving for the customer.</p></div>
+      </div>
+    </div>
+    <div class="sp-r" aria-hidden="true"><div class="frame"><img src="img/star-sr20.webp" width="800" height="600" alt="" data-cap="A Star SR20 sliding head lathe at DRN."><img src="img/star-sp23.webp" width="1000" height="959" alt="" data-cap="The Star SP23 sliding head turn and mill machine, new in 2025."><img src="img/p-pins.webp" width="680" height="510" alt="" data-cap="Slender turned parts with cross-drilled holes."><img src="img/p-knurl.webp" width="680" height="510" alt="" data-cap="A finished part: knurled, with an internal thread."></div><p class="spcap">A Star SR20 sliding head lathe at DRN.</p></div>
   </div>
 </section>
 
@@ -544,8 +628,8 @@ html .bo .ftr{margin-top:0}
     </div>
     <div class="cinfo">
       <div><h3>Factory</h3><p>D.R.N. Engineering Ltd<br>Trojan Court, Laporte Way<br>Luton, Bedfordshire LU4 8RN<br>England</p></div>
-      <div><h3>Sales</h3><p><a href="mailto:sales@drn.co.uk">sales@drn.co.uk</a><br>Phone <a href="tel:+441582451111">+44 (0)1582 451111</a></p></div>
-      <div><h3>Company</h3><p>Registered in England, No. 01672231<br>ISO 9001:2015 and ISO 14001:2015<br><a href="https://drn.co.uk/gallery/" target="_blank" rel="noopener">Our parts, in photos</a></p></div>
+      <div><h3>Sales</h3><p><a class="ul" href="mailto:sales@drn.co.uk">sales@drn.co.uk</a><br>Phone <a class="ul" href="tel:+441582451111">+44 (0)1582 451111</a></p></div>
+      <div><h3>Company</h3><p>Registered in England, No. 01672231<br>ISO 9001:2015 and ISO 14001:2015<br><a class="ul" href="https://drn.co.uk/gallery/" target="_blank" rel="noopener">Our parts, in photos</a></p></div>
     </div>
   </div>
 </section>
@@ -563,30 +647,9 @@ html .bo .ftr{margin-top:0}
 </div></main>
 <div id="live" class="skip" aria-live="polite"></div>
 
+<!--LIBS-->
 <!--BUILDOUT-->
-<script>
-/* home page behaviour: no loader, no scroll story. In-page links #/<section> scroll to their section; the header nav items open
-   the build-out pages (lib/buildout.js, loaded above, captures them first). */
-(function(){
-try{history.scrollRestoration="manual"}catch(x){}
-var SECS={about:"about",turning:"turning",plant:"plant",quality:"quality",history:"history",news:"news",contact:"contact"};
-var D=document,B=D.body,hdr=D.getElementById("hdr"),bur=D.getElementById("burger"),mm=D.getElementById("mm");
-var RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
-function hh(){return hdr.getBoundingClientRect().height}
-function go(id,instant){var el=D.getElementById(id);if(!el)return;var y=el.getBoundingClientRect().top+scrollY-hh()+1;if(id==="contact")y+=0;window.scrollTo({top:Math.max(0,y),behavior:(instant||RM)?"auto":"smooth"})}
-function key(h){var m=/^#\/?([^\/?#]+)/.exec(h||"");return m?SECS[m[1]]||null:null}
-function setMenu(on){B.classList.toggle("menu-open",on);bur.setAttribute("aria-expanded",on?"true":"false");mm.setAttribute("aria-hidden",on?"false":"true");D.getElementById("burgerLab").textContent=on?"Close":"Menu"}
-bur.addEventListener("click",function(){setMenu(!B.classList.contains("menu-open"))});
-addEventListener("keydown",function(e){if(e.key==="Escape"&&B.classList.contains("menu-open"))setMenu(false)});
-addEventListener("resize",function(){if(innerWidth>1040&&B.classList.contains("menu-open"))setMenu(false)});
-D.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href^='#']");if(!a)return;var h=a.getAttribute("href");
-  if(h==="#main"||h==="#/"){e.preventDefault();var was=B.classList.contains("menu-open");setMenu(false);setTimeout(function(){window.scrollTo({top:0,behavior:RM?"auto":"smooth"})},was?60:0);return}
-  var id=key(h);if(!id)return;e.preventDefault();var open=B.classList.contains("menu-open");setMenu(false);setTimeout(function(){go(id)},open?60:0)});
-addEventListener("hashchange",function(){var id=key(location.hash);if(id){go(id);try{history.replaceState(null,"","#/")}catch(x){}}});
-var first=key(location.hash);if(first)addEventListener("load",function(){setTimeout(function(){go(first,true);try{history.replaceState(null,"","#/")}catch(x){}},120)});
-function onS(){hdr.classList.toggle("solid",scrollY>8)}addEventListener("scroll",onS,{passive:true});onS();
-})();
-</script>
+<!--SITEJS-->
 <!--NSSFIX-->
 </body>
 </html>

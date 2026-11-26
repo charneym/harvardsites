@@ -1,0 +1,98 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+/* Interpower hero: a crafted render of their own product, a grey IEC 60320 C13 cord set (moulded C13 connector, strain reliefs,
+   SJT-style jacketed cable, moulded North American NEMA 5-15P plug with nickel-plated blades), after the cord-set photos on
+   interpower.com. Transparent ground (real alpha). 1 unit = 10 mm. */
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||1800,H=+P.get('h')||1800;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.setClearColor(0x000000,0);r.shadowMap.enabled=false;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);
+/* a dark navy studio: a large soft top box, a tall strip from the left, a cool blue kicker behind (their navy, lifted) */
+const es=new THREE.Scene();
+es.add(new THREE.Mesh(new THREE.BoxGeometry(40,40,40),new THREE.MeshBasicMaterial({color:0x050d18,side:THREE.BackSide})));
+function sb(w,h,x,y,z,c,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);es.add(m)}
+sb(24,14,0,16,2,0xffffff,+P.get('top')||1.5);
+sb(5,20,-15,3,6,0xffffff,+P.get('sl')||1.8);
+sb(10,14,-5,4,16,0xffffff,+P.get('fr')||0.7);
+sb(2,16,14,2,8,0xdfe9ff,+P.get('sr')||1.3);
+sb(8,10,8,0,-14,0x5a9cff,+P.get('kb')||1.8);
+sb(24,2,0,-12,6,0xffffff,.3);
+sc.environment=pm.fromScene(es,0.03).texture;sc.environmentIntensity=+P.get('env')||1.0;
+
+const pvc=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('col')||'#8f949b'),roughness:+P.get('rg')||.42,metalness:0,clearcoat:.35,clearcoatRoughness:.38,sheen:.2,sheenColor:new THREE.Color(0x9fb4cc)});
+const pvcD=new THREE.MeshPhysicalMaterial({color:0x2b2f35,roughness:.6});
+const holeM=new THREE.MeshStandardMaterial({color:0x0a0c0f,roughness:.8});
+const nickel=new THREE.MeshPhysicalMaterial({color:0xe6e9ed,metalness:1,roughness:.32});
+const brass=new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:1,roughness:.26});
+const root=new THREE.Group();sc.add(root);
+
+function rshape(w,h,rad,chTop){ /* rounded rect, optional chamfered top corners (the C13 outline) */
+  const s=new THREE.Shape(),x=-w/2,y=-h/2;
+  s.moveTo(x+rad,y);s.lineTo(x+w-rad,y);s.quadraticCurveTo(x+w,y,x+w,y+rad);
+  if(chTop){s.lineTo(x+w,y+h-chTop);s.lineTo(x+w-chTop,y+h);s.lineTo(x+chTop,y+h);s.lineTo(x,y+h-chTop);}
+  else{s.lineTo(x+w,y+h-rad);s.quadraticCurveTo(x+w,y+h,x+w-rad,y+h);s.lineTo(x+rad,y+h);s.quadraticCurveTo(x,y+h,x,y+h-rad);}
+  s.lineTo(x,y+rad);s.quadraticCurveTo(x,y,x+rad,y);return s}
+function rhole(cx,cy,w,h){const p=new THREE.Path();p.moveTo(cx-w/2,cy-h/2);p.lineTo(cx+w/2,cy-h/2);p.lineTo(cx+w/2,cy+h/2);p.lineTo(cx-w/2,cy+h/2);p.closePath();return p}
+function ext(shape,depth,bev){const g=new THREE.ExtrudeGeometry(shape,{depth:depth,bevelEnabled:true,bevelThickness:bev,bevelSize:bev,bevelSegments:6,curveSegments:24});return g}
+/* strain relief: a lathe from the body to the cable, with moulded rings; axis +Z (towards the body) */
+function relief(r0,r1,len,rings){
+  const pts=[];const N=40;for(let i=0;i<=N;i++){const t=i/N;let rr=r1+(r0-r1)*Math.pow(t,1.6);
+    if(rings){const k=(t*rings)%1;rr+= (t>.15&&t<.92)? .05*Math.exp(-Math.pow((k-.5)/.18,2)) : 0}
+    pts.push(new THREE.Vector2(rr,-len+len*t))}
+  const g=new THREE.LatheGeometry(pts,72);g.rotateX(Math.PI/2);return g}
+
+/* ---------- IEC 60320 C13 connector (its mating face points +Z) ---------- */
+function c13(){
+  const g=new THREE.Group();
+  const face=rshape(2.45,1.57,.18,.42);
+  face.holes.push(rhole(-.62,-.2,.2,.58),rhole(.62,-.2,.2,.58),rhole(0,.36,.22,.5));
+  const fg=ext(face,.7,.05);const f=new THREE.Mesh(fg,pvc);f.position.z=.0;g.add(f);
+  /* the dark contacts recessed inside each slot */
+  [[-.62,-.2,.2,.58],[.62,-.2,.2,.58],[0,.36,.22,.5]].forEach(([x,y,w,h])=>{const b=new THREE.Mesh(new THREE.BoxGeometry(w,h,.02),holeM);b.position.set(x,y,.18);g.add(b)});
+  /* the grip: wider, softly bevelled, with three shallow finger ribs on each side */
+  const grip=ext(rshape(2.75,1.95,.42),2.4,.14);const gm=new THREE.Mesh(grip,pvc);gm.position.z=-2.55;g.add(gm);
+  for(let i=0;i<3;i++)for(const sx of [-1,1]){const rb=new THREE.Mesh(new RoundedBoxGeometry(.06,1.3,.16,2,.025),pvc);rb.position.set(sx*1.5,0,-1.95+i*.42);g.add(rb)}
+  const st=new THREE.Mesh(relief(.62,.37,2.2,7),pvc);st.position.z=-2.7;g.add(st);
+  return g}
+/* ---------- NEMA 5-15P plug (blades point +Z) ---------- */
+function plug(){
+  const g=new THREE.Group();
+  const body=ext(rshape(2.9,1.95,.5),2.2,.18);const b=new THREE.Mesh(body,pvc);b.position.z=-2.2;g.add(b);
+  /* a slightly raised face pad */
+  const pad=ext(rshape(2.5,1.6,.42),.08,.04);const pd=new THREE.Mesh(pad,pvc);pd.position.z=.12;g.add(pd);
+  for(const sx of [-1,1]){const bl=new THREE.Mesh(new RoundedBoxGeometry(.15,.64,1.75,2,.03),nickel);bl.position.set(sx*.635,.18,.2+.85);g.add(bl);
+    const hole=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.2,20),holeM);hole.rotation.z=Math.PI/2;hole.position.set(sx*.635,.18,1.55);g.add(hole)}
+  const gp=new THREE.Mesh(new THREE.CylinderGeometry(.24,.24,1.9,36),brass);gp.rotation.x=Math.PI/2;gp.position.set(0,-.55,.2+.92);g.add(gp);
+  const tip=new THREE.Mesh(new THREE.SphereGeometry(.24,36,18,0,Math.PI*2,0,Math.PI/2),brass);tip.rotation.x=Math.PI/2;tip.position.set(0,-.55,.2+1.87);g.add(tip);
+  const st=new THREE.Mesh(relief(.6,.37,2.1,6),pvc);st.position.z=-2.35;g.add(st);
+  return g}
+
+/* place the two ends, then run the cable between their strain-relief tips */
+const A=c13();A.position.set(+P.get('ax')||-2.2,+P.get('ay')||2.4,+P.get('az')||1.0);A.rotation.set(+P.get('arx')||-.12,+P.get('ary')||-.5,+P.get('arz')||-.04);root.add(A);
+const B=plug();B.position.set(+P.get('bx')||2.4,+P.get('by')||-2.6,+P.get('bz')||1.6);B.rotation.set(+P.get('brx')||-.18,+P.get('bry')||.62,+P.get('brz')||.08);root.add(B);
+A.updateMatrixWorld();B.updateMatrixWorld();
+function wp(o,z){return new THREE.Vector3(0,0,z).applyMatrix4(o.matrixWorld)}
+const a0=wp(A,-4.85),a1=wp(A,-5.9),a2=wp(A,-7.4);
+const b0=wp(B,-4.4),b1=wp(B,-5.5),b2=wp(B,-7.0);
+/* a relaxed loop: from the connector down and back, round behind, into the plug */
+const mid=(P.get('mid')?JSON.parse(P.get('mid')):[[5.6,1.4,-6.2],[5.4,-2.4,-8.4],[1.0,-1.0,-9.6],[-4.2,-2.8,-7.0],[-4.6,-5.4,-3.4]]).map(p=>new THREE.Vector3(...p));
+const path=new THREE.CatmullRomCurve3([a0,a1,a2,...mid,b2,b1,b0],false,'centripetal',.5);
+root.add(new THREE.Mesh(new THREE.TubeGeometry(path,600,.37,40,false),pvc));
+
+root.rotation.set(+P.get('rx')||0,+P.get('ry')||0,+P.get('rz')||0);
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||26,W/H,.1,200);
+cam.position.set(+P.get('cx')||3,+P.get('cy')||6,+P.get('cz')||27);cam.lookAt(+P.get('lx')||0,+P.get('ly')||-.3,0);
+const key=new THREE.DirectionalLight(0xffffff,+P.get('key')||1.4);key.position.set(-6,10,8);sc.add(key);
+const fill=new THREE.DirectionalLight(0xcfe0ff,.3);fill.position.set(8,2,6);sc.add(fill);
+const rim=new THREE.DirectionalLight(0x6aa8ff,+P.get('rim')||2.0);rim.position.set(6,3,-8);sc.add(rim);
+const rim2=new THREE.DirectionalLight(0xffffff,.6);rim2.position.set(-6,-2,-6);sc.add(rim2);
+r.render(sc,cam);
+window.DONE=true;
+</script></body></html>

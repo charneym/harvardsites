@@ -33,3 +33,7 @@ echo "=== ALL DONE"
 (cd .. && echo '=== hidden 1440' && node _kit/tools/hidden.js amcsysteme 2>&1 | tail -15)
 (cd .. && echo '=== hidden 390' && node _kit/tools/hidden.js amcsysteme 390 2>&1 | tail -15)
 echo '=== END'
+(cd .. && echo '=== orphans' && node _kit/tools/orphans.js amcsysteme 2>&1 | tail -10)
+(cd .. && echo '=== squeeze 390' && node _kit/tools/squeeze.js amcsysteme 2>&1 | tail -10)
+(cd .. && echo '=== squeeze 768' && node _kit/tools/squeeze.js amcsysteme 768 2>&1 | tail -10)
+echo '=== END2'

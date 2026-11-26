@@ -14,14 +14,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Systemhaus seit 1990<span class="nomob"> · Chemnitz, Sachsen</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Messen, prüfen,</span> <span class="l"><em>automatisieren.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Messen, prüfen</span> <span class="l"><em>und automatisieren.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>AMC ist Ihr Systemhaus für Mess-, Steuerungs- und Automatisierungstechnik aus Chemnitz: bewährte und innovative Produkte, dazu Systemlösungen von der Aufgabenstellung bis zur Inbetriebnahme.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/systeme">Zu den Systemlösungen '+ARR+'</a><a class="btn" href="#/kontakt">Anfrage stellen</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>AMC – Ihr Partner seit 1990</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Seit 1990 liefern</span> <span class="nw">und realisieren Ingenieure</span> <span class="nw">und Techniker von AMC</span> <span class="nw">moderne Produkte</span> <span class="nw">und innovative Lösungen</span> <span class="nw">für die Mess-, Prüf-</span> <span class="nw">und Automatisierungstechnik.</span> <em><span class="nw">Ihr Partner</span> <span class="nw">für den Erfolg von morgen.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani">Seit 1990 liefern und realisieren Ingenieure und Techniker von AMC moderne Produkte und innovative Lösungen für die Mess-, Prüf- <span class="nw">und Automatisierungstechnik.</span> <em><span class="nw">Ihr Partner für</span> <span class="nw">den Erfolg von morgen.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1990</span><p class="k">am 13. August in Chemnitz gegründet, von Dipl.-Ing. Bernd Göbel und Dr. Frank Neubert</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">30 Jahre</span><p class="k">Partnerschaft mit Advantech, als iAutomation-Premier-Partner (2024)</p></div>'+
@@ -41,12 +41,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="produkte" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Produkte</span><h2 class="d2 split"><span class="nw">Komponenten</span> <em><span class="nw">für die Industrie.</span></em></h2></div><p data-r>Zum umfangreichen Lieferprogramm von AMC gehören Produkte für die Mess- und Prüftechnik sowie für die Steuerungstechnik und Automation, mit Partnern wie Advantech, NI (heute Teil von Emerson) und Meilhaus Electronic.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Produkte</span><h2 class="d2 split"><span class="nw">Komponenten für</span> <em><span class="nw">die Industrie.</span></em></h2></div><p data-r>Zum umfangreichen Lieferprogramm von AMC gehören Produkte für die Mess- und Prüftechnik sowie für die Steuerungstechnik und Automation, mit Partnern wie Advantech, NI (heute Teil von Emerson) und Meilhaus Electronic.</p></div>'+
    prods()+
   '</div></section>'+
 
   '<section class="sec light" id="systeme" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Systeme</span><h2 class="d2 split"><span class="nw">Lösungen,</span> <em><span class="nw">komplett bearbeitet.</span></em></h2></div><p data-r>Wir übernehmen die komplette Bearbeitung von Projekten, oder helfen bei Teilaufgaben: Beratung, Planung und Projektierung, Forschung und Entwicklung, Software, Montage, Inbetriebnahme, Schulung und Wartung.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Systeme</span><h2 class="d2 split"><span class="nw">Von der Aufgabe</span> <em><span class="nw">bis zum System.</span></em></h2></div><p data-r>Wir übernehmen die komplette Bearbeitung von Projekten, oder helfen bei Teilaufgaben: Beratung, Planung und Projektierung, Forschung und Entwicklung, Software, Montage, Inbetriebnahme, Schulung und Wartung.</p></div>'+
    caps()+
   '</div></section>'+
 
@@ -64,7 +64,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="unternehmen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Über AMC</span><h2 class="d2 split"><span class="nw">35 Jahre</span> <em><span class="nw">aus Chemnitz.</span></em></h2></div><p data-r>Was 1990 mit Geräten für die Mikrowellen- und Plasmaphysik begann, ist heute PC-basierte Mess-, Steuerungs- und Automatisierungstechnik für Maschinen- und Anlagenbau, Fabrikautomation, Energie und Umwelt, Transportation und die Automobilindustrie.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">35 Jahre</span> <em><span class="nw">aus Chemnitz.</span></em></h2></div><p data-r>Was 1990 mit Geräten für die Mikrowellen- und Plasmaphysik begann, ist heute PC-basierte Mess-, Steuerungs- und Automatisierungstechnik für Maschinen- und Anlagenbau, Fabrikautomation, Energie und Umwelt, Transportation und die Automobilindustrie.</p></div>'+
    tl()+
    team()+
   '</div></section>'+

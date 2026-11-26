@@ -48,7 +48,7 @@ function vHome(){
      '<article class="step on"><h2>Ansaugen.</h2><p>Die Saugteller setzen auf die Scheibe, die Pumpe baut das Vakuum auf. Ein integriertes Manometer zeigt es an, das druckschaltergeregelte Vakuumniveau spart Strom bzw. Druckluft.</p></article>'+
      '<article class="step"><h2>Zwei Kreise, doppelt gesichert.</h2><p>Baustellengeräte arbeiten als redundante 2-Kreis-Vakuumsysteme, jeder Kreis mit 2-facher Sicherheit. Ein Vakuumreservoir gleicht Verluste aus, Warneinrichtungen melden jede Abweichung.</p></article>'+
      '<article class="step"><h2>Heben.</h2><p>Am Kran, am Stapler oder am Manipulator: OKTOPUS® Vakuumheber erfüllen alle Kriterien der DIN EN 13155. Der GL-M 9000 hebt Glaselemente bis 9.000 kg.</p></article>'+
-     '<article class="step"><h2>Drehen und schwenken.</h2><p>Integrierte manuelle oder angetriebene Dreh-, Schwenk-, Kipp- und Hebebewegungen bringen die Last in Position: effizient, ergonomisch und sicher.</p></article>'+
+     '<article class="step"><h2><span class="nw">Drehen und schwenken.</span></h2><p>Integrierte manuelle oder angetriebene Dreh-, Schwenk-, Kipp- und Hebebewegungen bringen die Last in Position: effizient, ergonomisch und sicher.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -59,12 +59,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="sicherheit" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Sicherheit</span><h2 class="d2 split"><span class="nw">Zertifizierte Sicherheit</span> <em class="nw">auf hohem Niveau.</em></h2></div><p data-r>Was an einem OKTOPUS® Vakuumheber hängt, ist oft Glas, Paneel oder Blech von vielen Hundert Kilo. Deshalb ist jedes Gerät auf Redundanz, Überwachung und klare Warnung ausgelegt.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Sicherheit</span><h2 class="d2 split"><span class="nw">Geprüft und</span> <em class="nw">doppelt gesichert.</em></h2></div><p data-r>Was an einem OKTOPUS® Vakuumheber hängt, ist oft Glas, Paneel oder Blech von vielen Hundert Kilo. Deshalb ist jedes Gerät auf Redundanz, Überwachung und klare Warnung ausgelegt.</p></div>'+
    inds()+
   '</div></section>'+
 
   '<section class="sec light" id="kantprofile" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>WIRTH Kantprofile</span><h2 class="d2 split"><span class="nw">Stahlleichtprofile,</span> <em class="nw">perfekt in Form.</em></h2></div><p data-r>Bereits seit 1992 planen und produzieren wir auf modernen Blechbearbeitungsanlagen Kant- und Stahlleichtprofile und Spezialformteile für Industrie- und Gewerbebau, Maschinen- und Anlagenbau, Nutz- und Sonderfahrzeugbau.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>WIRTH Kantprofile</span><h2 class="d2 split"><span class="nw">Profile aus Blech,</span> <em class="nw">perfekt in Form.</em></h2></div><p data-r>Bereits seit 1992 planen und produzieren wir auf modernen Blechbearbeitungsanlagen Kant- und Stahlleichtprofile und Spezialformteile für Industrie- und Gewerbebau, Maschinen- und Anlagenbau, Nutz- und Sonderfahrzeugbau.</p></div>'+
    serv()+
    '<div class="ozs">'+
     '<div class="oz-site"><span class="lab" data-r>Pfetten und Riegel</span><h3 data-r>Tragende Profile</h3><p data-r>Z-Pfetten, C-Wandriegel, CL-Wandriegel und Traufpfetten, dazu Wechselprofile und Lichtbandzargen.</p></div>'+

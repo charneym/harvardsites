@@ -9,7 +9,7 @@ var PROD=[
  ["Glasbearbeitung","Saugrahmen und Glaszangen","Für Fensterproduktion, Glasbearbeitung und Isolierglas: vertikale und horizontale Saugrahmen, kettenhängende Geräte, starr geführte Geräte mit Hubsäule und die Glaszange ERGO-Up.",PV+"/glashandling/glasbearbeitung"],
  ["Blech, Metall, Holz","Lasttraversen und Anbaugeräte","Vakuumheber für Metall- und Holzverarbeitung: Lasttraversen für Krane und kombinierte Stapler- und Krananbaugeräte.",PV+"/blech-metall-holz"],
  ["Manipulatoren","Gegengewichtsanlagen","Vakuumheber mit integrierter Gegengewichtsanlage, variable Gegengewichtsanlagen für Glasmontagen, Baustellenmanipulatoren zum Kran- und Stapleranbau, innerbetriebliche Manipulatoren.",PW+"/gegengewichtsanlagen-de"],
- ["Krananlagen","Leichtüberkranung und Schwenkkrane","X-Y-Leichtüberkranungen sowie Säulen- und Wandschwenkkrane: von der Planung und dem Layout bis zur Montage.",PV+"/krananlagen"]];
+ ["Krananlagen","X-Y-Leichtüberkranung","X-Y-Leichtüberkranungen sowie Säulen- und Wandschwenkkrane: von der Planung und dem Layout bis zur Montage.",PV+"/krananlagen"]];
 /* the safety features listed on every OKTOPUS category page (wirth-gmbh.com > Sicherheitsmerkmale) */
 var IND=[
  ["Normen","Erfüllung aller Kriterien der DIN EN 13155; Geräte für innerbetriebliches Handling von Glas nach DIN EN 13035."],

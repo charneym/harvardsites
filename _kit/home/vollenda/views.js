@@ -16,14 +16,14 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Vollenda-Werk GmbH<span class="nomob"> · Kaltenberg bei München, seit 1924</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Schüttgüter</span> <span class="l">exakt verwogen,</span> <span class="l"><em class="nw">Flüssigkeiten</em></span> <span class="l"><em class="nw">genau dosiert.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Schüttgüter exakt</span> <span class="l">verwogen, <em>Flüssigkeiten</em></span> <span class="l"><em class="nw">genau dosiert.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Waagen, Absack- und Abfüllanlagen für Schüttgüter und Flüssigkeiten, von der kleinen ml-Flasche bis zum Big Bag, semiautomatisch bis vollautomatisch, geliefert in alle Teile der Welt.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/anlagen">Unsere Anlagen '+ARR+'</a><a class="btn" href="#/kontakt">Anfrage stellen</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Unser Name</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Die vollendete Waage</span> <span class="nw">zu bauen, war 1924</span> <span class="nw">das Ziel des Gründers.</span> <em><span class="nw">Daher der Name</span> <span class="nw">VOLLENDA.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Die vollendete Waage</span> <span class="nw">zu bauen, war 1924</span> <span class="nw">das Ziel des Gründers.</span> <em><span class="nw">Daher der Name VOLLENDA.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1924</span><p class="k">Michael Siegburg gründet das Unternehmen in München-Aubing und baut selbsttätige mechanische Waagen</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">50</span><p class="k">Fast 50 Patente für Waagen und Abfüllmaschinen machten VOLLENDA weltweit bekannt</p></div>'+
@@ -90,7 +90,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="kontakt" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Kontakt</span>'+
-   '<h2 class="big split"><span class="nw">Interesse?</span> <em class="nw">Wir beraten Sie gerne.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Haben Sie Interesse?</span> <em class="nw">Wir beraten Sie gerne.</em></h2>'+
    '<p class="sub" data-r>Wir erstellen Ihnen ein anlagenspezifisches Angebot, für eine einzelne Abfüllanlage ebenso wie für eine komplette Abpackstraße.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Schreiben Sie uns '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Anrufen '+TELT+'</a></div>'+
    '<div class="cinfo">'+

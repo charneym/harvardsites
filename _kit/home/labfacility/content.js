@@ -15,8 +15,8 @@ var TEAM=[
  {name:"Martin Jonathan Riddett",title:"Director"}];
 /* news: each row links out to its source */
 var NEWS=[
- ["Feb 2027","Labfacility exhibits at Southern Manufacturing & Electronics, Farnborough, stand N135","Southern Manufacturing · Exhibitors","https://www.southern-manufacturing-electronics.com/exhibitors/labfacility-ltd-247355/"],
- ["25 Nov 2026","Thermistor temperature sensors: NTC and PTC types, and the full range","Labfacility · News",CP+"news"],
- ["16 Nov 2026","PCB thermocouple connectors for test boards in AI servers and data centres","Labfacility · News",CP+"news"],
- ["09 Nov 2026","Two days on stand F130 at Advanced Engineering 2026, NEC Birmingham","Labfacility · News",CP+"news"]];
+ ["Feb 2027","At Southern Manufacturing & Electronics, Farnborough, stand N135","Exhibitor listing","https://www.southern-manufacturing-electronics.com/exhibitors/labfacility-ltd-247355/"],
+ ["25 Nov 2026","Thermistor temperature sensors: NTC and PTC types","Labfacility · News",CP+"news"],
+ ["16 Nov 2026","PCB thermocouple connectors for data centre test boards","Labfacility · News",CP+"news"],
+ ["09 Nov 2026","Stand F130 at Advanced Engineering 2026, NEC Birmingham","Labfacility · News",CP+"news"]];
 var SHEETS=[];

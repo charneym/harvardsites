@@ -1563,6 +1563,20 @@ p.act{margin-bottom:0}
  .g-pg-l{padding-top:clamp(18px,1.8vw,26px)}
  .g-pg+.g-pg .g-pg-l{padding-top:clamp(26px,2.6vw,38px)}
 }
+/* v8 (client review 3) */
+/* hero: the partner strip is the hero's footer, its rule across the full content width under text and helix */
+@media (min-width:861px){.hero .g-hm{max-width:none!important}.hero .g-hm-row{justify-content:flex-start;gap:20px clamp(40px,4.4vw,72px)}}
+/* pipeline: no hover rule, no grey track; the status sits right of its marker; name and bar block centred in the row */
+.g-pr::after{display:none!important}
+.g-bar-t{display:none!important}
+@media (min-width:861px){
+ .g-pr{align-items:center!important;padding:clamp(18px,1.7vw,24px) 0!important}
+ .g-pr-i{margin:0 0 8px!important}
+ .g-bar{height:22px!important}
+ .g-bar-f{top:9px!important}
+ .g-bar-l{top:50%!important;left:calc(var(--r) / 3 * 100% + 18px)!important;transform:translateY(-50%)!important}
+}
+@media (max-width:860px){.g-bar{height:44px!important}.g-bar-l{top:24px!important;left:0!important;transform:none!important}}
 /* 5 pipeline: phase names centred between their dividers; the status sits under the bar, ending at its marker, off the track */
 .g-pipe-st .lab{text-align:center;padding-left:6px;padding-right:6px}
 @media (min-width:861px){
@@ -2042,10 +2056,9 @@ function targets(){return '<section class="sec dark g-tt" id="targets" data-them
   '<div class="g-tt-row">'+
    '<div class="g-tt-c"><h2 class="g-tt-w">TOPO 1</h2><span class="lab g-tt-l">Topoisomerase I</span><p>The enzyme that cuts DNA so it can unwind. Gibson’s drugs trap it on the cut, so the break cannot be resealed.</p></div>'+
    '<div class="g-tt-x" aria-hidden="true"><i></i><b>+</b><i></i></div>'+
-   '<div class="g-tt-c"><h2 class="g-tt-w">cMYC</h2><span class="lab g-tt-l">The largest human oncogene</span><p>Overexpressed, it drives cancer. Gibson’s drugs reduce that overexpression, a target that resisted drugs for decades.</p>'+
-   '<div class="g-tt-stat"><span class="g-tt-n">80%</span><p>of all human cancers are driven by cMYC, approximately.</p></div></div>'+
+   '<div class="g-tt-c"><h2 class="g-tt-w">cMYC</h2><span class="lab g-tt-l">The largest human oncogene</span><p>Overexpressed, it drives about 80% of human cancers. Gibson’s drugs reduce that overexpression, a target that resisted drugs for decades.</p></div>'+
   '</div>'+
-  '<div class="g-tt-mol"><h3>One molecule hits both.</h3><ul><li><b>LMP744</b><span>Intravenous</span></li><li><b>LMP400</b><span>Oral and intravenous</span></li><li><b>Azas</b><span>Next generation, 700+ compounds</span></li></ul></div>'+
+  '<div class="g-tt-mol"><h3>Each Gibson drug hits both targets.</h3><ul><li><b>LMP744</b><span>Intravenous</span></li><li><b>LMP400</b><span>Oral and intravenous</span></li><li><b>Azas</b><span>Next generation, 700+ compounds</span></li></ul></div>'+
   '</div></div></section>'}
 
 /* (b) proof of value: the four partners */
@@ -2297,6 +2310,11 @@ var field=(function(){
     /* the helix: whole in frame, below the nav with headroom, centred in the open area right of the text */
     var ih=mob?Math.max(150,Math.min(h*.4-96,1310)):Math.min(h*.6,1310,(cw*.26)/AR),iw=ih*AR;
     var kx=mob?w*.5:side+cw*.71,ky=mob?86+ih*.5:Math.max(h*.52,110+ih*.5);
+    /* v7 (client: the helix ran down into the partner strip): on the home hero it spans the text block only, from just above the
+       eyebrow to a clear gap above the strip's rule, so the strip reads as the hero's footer under both columns */
+    if(!mob){var ey=document.querySelector(".hero .eyebrow"),hm=document.querySelector(".hero .g-hm");
+      if(ey&&hm){var sy=window.scrollY||0,t=Math.max(96,ey.getBoundingClientRect().top+sy-24),b=hm.getBoundingClientRect().top+sy-36;
+        if(b-t>160){ih=Math.min(b-t,1310,(cw*.26)/AR);iw=ih*AR;ky=(t+b)/2}}}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -2304,6 +2322,7 @@ var field=(function(){
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    if(now-(G&&G._t||0)>500){G=geo();G._t=now}
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);

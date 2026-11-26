@@ -1081,6 +1081,33 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 }
 @media (max-width:560px){.vis .stat{grid-template-columns:1fr!important}.vis .stat .k{margin-top:8px!important}}
 @media (max-width:1024px) and (min-width:561px){.vis .stat{grid-template-columns:auto minmax(0,1fr)!important;column-gap:32px}.vis .stat .v{min-width:4.6ch}.vis .stat .k{max-width:none!important}}
+/* v9 (client: programme rows too tall and clunky): a refined pipeline table */
+.prow{padding:clamp(18px,1.5vw,24px) 0!important;align-items:start}
+.pr-id{display:block!important}
+.pr-n{display:inline-block;width:2.4em;vertical-align:top;padding-top:.5em}
+.pr-id h3{display:inline-block;font-size:clamp(22px,1.55vw,30px)!important;font-weight:500!important;letter-spacing:-.018em!important;line-height:1.15!important;color:var(--bone)!important;margin:0}
+.pr-ind{display:block;margin:4px 0 0 calc(2.4 * 11px + .1em);font-size:14px!important;line-height:1.4;color:#9da3b8}
+.pr-id .pr-ind{margin-left:2.65em}
+.pr-d{font-size:15px!important;line-height:1.55!important;padding-top:.35em}
+.pr-st{padding-top:.6em}
+.pr-bar{height:2px!important;margin-top:0!important;background:rgba(var(--boner),.14)!important}
+.pr-bar b{border-right-color:rgba(2,1,8,.95)!important}
+.pr-meta{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-top:10px;flex-wrap:wrap}
+.pr-stl{margin:0!important;font-size:13.5px!important;color:rgba(var(--boner),.8)!important}
+.pr-st .lk2{margin:0!important;white-space:nowrap}
+/* one colour for every name at rest; the accent only while hovered */
+.prow:hover .pr-id h3{color:#59c7d4!important}
+.prow::after{opacity:.7}
+.pipe-h{padding:10px 0!important}
+@media (max-width:1024px){.pr-n{padding-top:.4em}}
+.pr-id h3{font-size:clamp(24px,1.55vw,30px)!important}
+.pr-st{padding-top:0!important}
+.pr-bar{margin-top:calc(.575 * clamp(24px,1.55vw,30px))!important}
+.pr-id{display:grid!important;grid-template-columns:2.4em minmax(0,1fr);column-gap:0;align-items:baseline}
+.pr-n{width:auto;padding-top:0!important;grid-row:1}
+.pr-id h3{grid-column:2}
+.pr-id .pr-ind{grid-column:2;margin:4px 0 0!important}
+@media (max-width:1024px){.pr-meta{flex-direction:column;align-items:flex-start;gap:6px}}
 </style>
 </head>
 </head>
@@ -1270,7 +1297,7 @@ function pipe(){return '<div class="pipe">'+
   return '<article class="prow"><div class="pr-id"><span class="lab pr-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="pr-ind">'+esc(c[1])+'</span></div>'+
    '<p class="pr-d">'+esc(c[4])+'</p>'+
    '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
-   '<span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></article>'}).join("")+'</div>'}
+   '<div class="pr-meta"><span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></div></article>'}).join("")+'</div>'}
 function team(){return '<div class="tg4">'+TEAM.map(function(p){
   return (function(){var m=p[0].split(/, (.+)/);return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(m[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(m[0])+'</h3><span class="lab">'+(m[1]?esc(m[1])+' · ':'')+esc(p[1])+'</span>'})()+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}

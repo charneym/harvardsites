@@ -11,7 +11,7 @@ function pipe(){return '<div class="pipe">'+
   return '<article class="prow"><div class="pr-id"><span class="lab pr-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="pr-ind">'+esc(c[1])+'</span></div>'+
    '<p class="pr-d">'+esc(c[4])+'</p>'+
    '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
-   '<span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></article>'}).join("")+'</div>'}
+   '<div class="pr-meta"><span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></div></article>'}).join("")+'</div>'}
 function team(){return '<div class="tg4">'+TEAM.map(function(p){
   return (function(){var m=p[0].split(/, (.+)/);return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(m[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(m[0])+'</h3><span class="lab">'+(m[1]?esc(m[1])+' · ':'')+esc(p[1])+'</span>'})()+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
 function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' '+ARR+'</span></a></li>'}).join("")+'</ul>'}

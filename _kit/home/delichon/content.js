@@ -4,7 +4,7 @@ var MAIL="office@delichon.uk";
 var TEL="+44 (0)1725 519405";
 /* the range, from delichon.uk (Foam-Karve, Delta, Trail, Hippocampe pages): [product, what it is] */
 var RANGE=[
- ["Foam-Karve custom seating","Individually shaped cushions for wheelchairs, buggies and home chairs, invented here in 1991 and widely used by NHS Wheelchair Services."],
+ ["Foam-Karve seating","Individually shaped cushions for wheelchairs, buggies and home chairs, invented here in 1991 and widely used by NHS Wheelchair Services."],
  ["Delta All-Terrain Buggy","A rugged, lightweight three-wheel buggy for woodland walks, beaches and country paths. Designed and made in the UK since 2007."],
  ["Delta Trail","A conversion kit that turns a Small, Medium or Large Delta into a cycle trailer, with a multi-axis linkage and a roll bar."],
  ["Hippocampe","The amphibious French beach wheelchair, from forest trails to the sea, with skis for the snow. Delichon is its UK distributor."]];
@@ -21,5 +21,5 @@ var SVC=["Assessments by appointment","Trial fit at the first visit","Free Delta
 var NEWS=[
  ["September 2026","Delichon exhibits at REHACARE 2026 in Düsseldorf","REHACARE exhibitor directory","https://www.rehacare.com/vis/v1/en/exhibitors/rehacare2026.3072956"],
  ["May 2026","Kidz to Adultz South at Farnborough: the whole range to try, and a free Delta check while you wait","Delichon events",WEB+"events/kidz-to-adultz-south"],
- ["February 2018","After 22 years on the farm, Delichon moves to its new, purpose-built HQ","Delichon news",WEB+"news/delichon-moves-to-new-hq"]];
+ ["February 2018","After 22 years on the farm, Delichon moves to its new, purpose-built HQ","Delichon news",WEB+"news/delichon-moves-to-new-hq"]];
 var SHEETS=[];

@@ -22,7 +22,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Polarizers · Retarders · Prisms · Lenses</span>'+
-   '<h2 class="txt" id="mani">Bernhard Halle founded his optical workshop in 1873, the year Ernst Abbe published his theory of the microscope. Its first products were <em>crystal optics for polarization microscopes.</em></h2></div>'+
+   '<h2 class="txt" id="mani">Bernhard Halle founded his optical workshop in 1873, the year Ernst Abbe published his theory of the microscope. Its first products were <em>crystal optics <span class="bhnb">for polarization microscopes.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1873</span><p class="k">the year Bernhard Halle founded his optical workshop</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">6</span><p class="k">product lines, from polarizers and retarders to opto-mechanics</p></div>'+

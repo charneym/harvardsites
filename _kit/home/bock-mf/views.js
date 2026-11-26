@@ -23,7 +23,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Seit 1966 in Lüdenscheid</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Ein weltweit operierendes</span> <span class="nw">Familienunternehmen,</span> <em><span class="nw">führend bei Anspitzmaschinen</span> <span class="nw">mit unterschiedlichen</span> <span class="nw">Technologien.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nwp">Ein Familienunternehmen,</span> <span class="nwp">weltweit tätig,</span> <em><span class="nwp">führend bei Anspitzmaschinen.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1966</span><p class="k">gegründet in Lüdenscheid, seither Maschinen für die Draht- und Rohrindustrie</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">11</span><p class="k">Baureihen zum Anspitzen, Hämmern und Richten von Draht, Stangen und Rohren</p></div>'+
@@ -36,8 +36,8 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Richten</span><span>Einführen</span><span>Anspitzen</span><span>Ziehen</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Erst wird</span> <span class="nw">das Ende gerichtet.</span></h2><p>Als Sonderausstattung richtet ein Richtwerk das Drahtende auf 1 bis 2 Meter. Das erleichtert das Anspitzen und ist besonders für dicke Stahldrähte zu empfehlen.</p></article>'+
-     '<article class="step"><h2><span class="nw">Zwischen</span> <span class="nw">die Kaliberwalzen.</span></h2><p>Das gerichtete Ende läuft zwischen zwei Walzen mit einer Reihe von Kalibern ein, beginnend beim größten. Individuelle Kalibrierungen sind möglich.</p></article>'+
-     '<article class="step"><h2><span class="nw">Kaliber</span> <span class="nw">für Kaliber dünner.</span></h2><p>Von Kaliber zu Kaliber wird der Querschnitt kleiner. Kann der Draht nicht gedreht werden, übernimmt bei den Typen (+ v) ein zusätzliches vertikales Walzenpaar.</p></article>'+
+     '<article class="step"><h2><span class="nw">Das Ende läuft</span> <span class="nw">in die Kaliber.</span></h2><p>Das gerichtete Ende läuft zwischen zwei Walzen mit einer Reihe von Kalibern ein, beginnend beim größten. Individuelle Kalibrierungen sind möglich.</p></article>'+
+     '<article class="step"><h2><span class="nw">Mit jedem Kaliber</span> <span class="nw">etwas dünner.</span></h2><p>Von Kaliber zu Kaliber wird der Querschnitt kleiner. Kann der Draht nicht gedreht werden, übernimmt bei den Typen (+ v) ein zusätzliches vertikales Walzenpaar.</p></article>'+
      '<article class="step"><h2><span class="nw">Bereit für</span> <span class="nw">den Ziehstein.</span></h2><p>Das Ergebnis ist die Ziehangel: ein Ende, das durch den Ziehstein passt, damit Draht, Stange oder Rohr auf der Ziehmaschine oder Ziehbank gezogen werden kann.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
@@ -49,12 +49,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="service" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Service</span><h2 class="d2 split"><span class="nw">Maßgeschneidert,</span> <em class="nw">aus einer Hand.</em></h2></div><p data-r>Neben der Produktion erstklassiger Maschinen für die Drahtbearbeitung bieten wir den kompletten Weg: von der technischen Zeichnung über die Fertigung bis zur Inbetriebnahme in Ihrem Werk.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Service</span><h2 class="d2 split"><span class="nw">Nach Maß gebaut,</span> <em class="nw">aus einer Hand.</em></h2></div><p data-r>Neben der Produktion erstklassiger Maschinen für die Drahtbearbeitung bieten wir den kompletten Weg: von der technischen Zeichnung über die Fertigung bis zur Inbetriebnahme in Ihrem Werk.</p></div>'+
    caps()+
   '</div></section>'+
 
   '<section class="sec dark" id="unternehmen" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Kompetenz in Draht-</span> <em class="nw">und Rohrbearbeitung.</em></h2></div><p data-r>Aus den Anfängen 1966 entwickelte sich ein weltweit tätiges Familienunternehmen mit Vertretungen in vielen Ländern und High-Tech-Produkten „Made in Germany“.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Unternehmen</span><h2 class="d2 split"><span class="nw">Kompetenz in</span> <em class="nw">Draht und Rohr.</em></h2></div><p data-r>Aus den Anfängen 1966 entwickelte sich ein weltweit tätiges Familienunternehmen mit Vertretungen in vielen Ländern und High-Tech-Produkten „Made in Germany“.</p></div>'+
    '<div class="engco">'+team()+
     '<div class="engpol"><span class="lab kick" data-r>Ihre Vorteile</span><ul>'+
      '<li data-r><b>Know-how</b>Ein Team, das planerisch, organisatorisch und technisch hochqualifiziert ausgebildet ist.</li>'+

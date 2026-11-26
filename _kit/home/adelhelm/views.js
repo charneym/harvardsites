@@ -35,7 +35,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Seit 1971 Lohnbeschichter</span>'+
-   '<h2 class="txt" id="mani">Wir beraten rundum: von der Werkstoffauswahl und dem beschichtungsgerechten Bauteildesign über Verpackung und Beschaffung bis zur fachgerechten Applikation. <em><span class="nw">Beschichtet einfach</span> <span class="nw">wirtschaftlicher.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Wir beraten rundum:</span> <span class="nw">von der Werkstoffauswahl</span> <span class="nw">über das Bauteildesign</span> <span class="nw">bis zur Applikation.</span> <em><span class="nw">Für Sie: konkreter</span> <span class="nw">Zusatznutzen inklusive.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1971</span><p class="k">entwickeln wir funktionale Oberflächen, heute mit einem Team aus Ingenieuren verschiedener Fachrichtungen</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">500 m²</span><p class="k">Sauber- und Reinräume der Klasse ISO 9/8 für die Medizintechnik</p></div>'+
@@ -56,12 +56,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="beschichtungen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Beschichtungen</span><h2 class="d2 split"><span class="nw">Breites Spektrum,</span> <em class="nw">punktgenaue Qualität.</em></h2></div><p data-r>Aus Polymer- und Fluorpolymerwerkstoffen wie PTFE, FEP, PFA, ETFE und ECTFE entstehen unter der Marke adcoat Hochleistungsschichten, mit denen Sie Aufwand und Kosten senken. Ob Einzelteil oder Serie: manuell, mit Beschichtungs- oder Roboteranlagen.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Beschichtungen</span><h2 class="d2 split"><span class="nw">Breites Spektrum,</span> <em class="nw">präzise Qualität.</em></h2></div><p data-r>Aus Polymer- und Fluorpolymerwerkstoffen wie PTFE, FEP, PFA, ETFE und ECTFE entstehen unter der Marke adcoat Hochleistungsschichten, mit denen Sie Aufwand und Kosten senken. Ob Einzelteil oder Serie: manuell, mit Beschichtungs- oder Roboteranlagen.</p></div>'+
    serv()+
   '</div></section>'+
 
   '<section class="sec dark2" id="medizintechnik" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Medizintechnik</span><h2 class="d2 split"><span class="nw">Die adcoat®</span> <em class="nw">ML-Line.</em></h2></div><p data-r>Ob Einmalinstrumente oder wiederverwendbare: Beschichtungen senken Beschaffungs- und Betriebskosten und mindern den Reinigungsaufwand. Gemeinsam mit renommierten Forschungsinstituten entstehen biokompatible, FDA-konforme Lösungen für die Life Science.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Medizintechnik</span><h2 class="d2 split"><span class="nw">Die Medical Line</span> <em class="nw">von adcoat®.</em></h2></div><p data-r>Ob Einmalinstrumente oder wiederverwendbare: Beschichtungen senken Beschaffungs- und Betriebskosten und mindern den Reinigungsaufwand. Gemeinsam mit renommierten Forschungsinstituten entstehen biokompatible, FDA-konforme Lösungen für die Life Science.</p></div>'+
    meds()+
    mats()+
   '</div></section>'+
@@ -77,7 +77,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="aktuelles" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Aktuelles</span><h2 class="d2 split"><span class="nw">Berichte und</span> <em class="nw">Informationen.</em></h2></div><p data-r>Messen, Zertifizierungen, Nachhaltigkeit und Neues aus dem Team der ADELHELM Unternehmensgruppe.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Aktuelles</span><h2 class="d2 split"><span class="nw">Neues aus</span> <em class="nw">der Gruppe.</em></h2></div><p data-r>Messen, Zertifizierungen, Nachhaltigkeit und Neues aus dem Team der ADELHELM Unternehmensgruppe.</p></div>'+
    news()+
   '</div></section>'+
   cta();

@@ -1,12 +1,11 @@
-/* ================= HERO FIELD (HOME_BRIEF update 2a): Charles Austen's own product render (charlesausten.com > Medical
-   pumps: the white bench vacuum unit with the CA lockup on its face), with its real alpha; the studio floor is faded with
-   a long elliptical falloff so no edge of the image can read as a box (DJ/DP). It breathes in a slow Ken Burns drift over
-   a soft navy glow with a faint logo-blue warmth under it. It moves on its own, so no pointer response (CZ). The headline
-   side stays quiet (DI). On phones it sits in the top band and fades into the ink above the text (CW). ================= */
+/* ================= HERO FIELD (REBRAND 2026-11-26): Charles Austen's own product image (charlesausten.com > Medical pumps:
+   the white bench vacuum unit with the CA lockup on its face, ffce19_ca98f7ea…png, 3000x1999 with alpha), as a clean cut-out
+   with its own floor reflection on a plain light studio ground. No glow, no wash. A very slow drift; no pointer response (CZ).
+   On phones it sits in the top band above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#0a1a2b";
+  var BG="#f6f8fa",BG2="#e7ecf1";  /* a plain light studio ground in their site's white and cool grey */
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
   /* DO: the open area right of the H1; its centre is held at 62-75% of the width and the subject is sized to fit with room both sides */
@@ -29,31 +28,15 @@ var field=(function(){
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
-    c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    c.setTransform(dpr,0,0,dpr,0,0);var bg=c.createLinearGradient(0,0,0,G.mob?G.bh:h);bg.addColorStop(0,BG);bg.addColorStop(1,BG2);c.fillStyle=bg;c.fillRect(0,0,w,h);
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low warm-graphite glow across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
-         render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.5,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(30,62,96,"+(.55*e).toFixed(3)+")");ag.addColorStop(.5,"rgba(17,40,64,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,26,43,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint logo-blue warmth under the unit, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*.5,py=y+dh*.66,pr=dw*.8;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(0,114,188,"+((.16+.05*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(0,114,188,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
-      if(!G.mob){
-        /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(7,19,32,.95)");lv.addColorStop(.6,"rgba(7,19,32,.55)");lv.addColorStop(1,"rgba(7,19,32,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(7,19,32,.6)");tv.addColorStop(1,"rgba(7,19,32,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(10,26,43,0)");bv.addColorStop(1,"rgba(10,26,43,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
-      }else{
-        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(7,19,32,.6)");tv2.addColorStop(1,"rgba(7,19,32,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
-        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(10,26,43,0)");mv.addColorStop(1,"rgba(10,26,43,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
-        c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
+      if(G.mob){
+        /* phones: the studio ground runs on under the text in the hero's own flat tone */
+        c.fillStyle=BG2;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}
     }

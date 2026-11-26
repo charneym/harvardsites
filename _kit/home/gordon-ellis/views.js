@@ -41,12 +41,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="divisions" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Divisions</span><h2 class="d2 split"><span class="nw">Four specialist businesses,</span> <em class="nw">one family.</em></h2></div><p data-r>Each one benefits from investment in the latest machinery, and each helps customers bring brand new products and concepts to market.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Divisions</span><h2 class="d2 split"><span class="nw">Four businesses,</span> <em class="nw">one family.</em></h2></div><p data-r>Each one benefits from investment in the latest machinery, and each helps customers bring brand new products and concepts to market.</p></div>'+
    divs()+
   '</div></section>'+
 
   '<section class="sec dark" id="healthcare" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Healthcare</span><h2 class="d2 split"><span class="nw">Living with independence,</span> <em class="nw">dignity and safety.</em></h2></div><p data-r>Our award-winning daily living aids were made possible by working closely with professionals and listening to our customers. They help people back into their homes sooner, with small adaptations rather than bigger, costlier equipment.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Healthcare</span><h2 class="d2 split"><span class="nw">Independent living,</span> <em class="nw">dignity and safety.</em></h2></div><p data-r>Our award-winning daily living aids were made possible by working closely with professionals and listening to our customers. They help people back into their homes sooner, with small adaptations rather than bigger, costlier equipment.</p></div>'+
    brands()+
    '<div class="act hc-act" data-r><a class="btn solid" href="'+GH+'" target="_blank" rel="noopener">Visit Gordon Ellis Healthcare '+ARR+'</a></div>'+
   '</div></section>'+

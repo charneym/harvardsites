@@ -1,0 +1,11 @@
+# bioref — BIOREF GmbH (home-only, batch 2026-11n)
+- Domain check: bioref.com names the company on every page; its Imprint (https://www.bioref.com/about-us/impressum) gives BIOREF GmbH, Freigerichter Str. 1, 63755 Alzenau, Registergericht Aschaffenburg HRB 2639, USt.IdNr. DE132076592. No newer site found.
+- Scope: liquid, ready-to-use quality controls for immunoassays (tumor markers, allergy IgEs, plasma proteins, CSF, cardiac markers, thyroid and fertility hormones, therapeutic drugs). No pathogen or toxin products.
+- Lead: Dr. Nils Bewarder, General manager (Imprint). Also named there: Dr. Ib Holzmeister (contact). Greeting: "Dear Dr. Bewarder".
+- Email: info@bioref.com (Imprint); bioref@t-online.de (Contact page). Phone +49 6023 32013 0.
+- Activity: exhibitor at MEDICA 2026, Düsseldorf: https://www.medica-tradefair.com/vis/v1/en/exhibitors/medica2026.3069842
+- Bad site: sparse Drupal page with a 960×234 slider, one paragraph of thin grey text, a duplicate nav in an empty grey footer band, "all rights reserved 2024".
+- Facts used: founded 1983 in Homburg/Saar, moved to Mömbris two years later, moved to a 1,300 m² facility in Alzenau in 2022; distributed internationally since 1996; used by kit manufacturers and EQA schemes; ISO 13485, certified by MDC GmbH; shelf life up to 5 years at −20 °C; stability at 4 °C from about 1 month (cardiac) to ≥12 months (bioref.com About Us / Products / Quality Management).
+- Palette: logo navy #2A5B94 / #30517E, orange outline #F58321 (from the live logo PNG and style.css).
+- Hero: crafted numpy render (home/bioref/render.py) of three glass vials of serum control with blue ribbed caps, echoing BIOREF's own slider photo. Unique to this site.
+- Logo: wordmark redrawn as SVG paths (Jost 600 outlines with an orange paint-order stroke).

@@ -1,0 +1,117 @@
+<!doctype html>
+<!-- Heim Electronic hero (HOME_BRIEF update 2c): a crafted render of the firm's real product, the High Power Laser Diode
+     Driver DL60-250 (heim-electronic.de > Produkte > Spezialnetzteile), modelled after the firm's own product photo:
+     a compact milled aluminium case with two M4 mounting holes, a labelled centre cover, two blue potted terminal bays
+     with nickel bus pads and four hex socket screws (+IN/GND, +OUT/-OUT), the CONTROL connector on its small board and
+     the status LED. Rendered with real alpha (no ground of its own, DJ/DP). Served over http from _kit; run by render.js. -->
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const q=new URLSearchParams(location.search),W=+q.get('w')||1400,H=+q.get('h')||1100;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.setClearColor(0x000000,0);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const S=new THREE.Scene();
+/* a dark studio: a deep ink room with a large soft box overhead, two strip lights and a faint magenta card (brand) */
+function studio(){const E=new THREE.Scene();const bm=new THREE.MeshBasicMaterial({color:0x2a2e36,side:THREE.BackSide});E.add(new THREE.Mesh(new THREE.SphereGeometry(50,32,16),bm));
+  const card=(w,h,c,i,x,y,z,lx,ly,lz)=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(lx,ly,lz);E.add(m)};
+  card(30,18,0xffffff,2.4,-4,30,6,0,0,0);
+  card(6,30,0xdfe9ff,3.2,-30,8,10,0,0,0);
+  card(5,26,0xffffff,2.6,28,10,-14,0,0,0);
+  card(40,3,0xffffff,1.2,0,6,-34,0,0,0);
+  card(14,10,0xff2d7f,1.4,22,2,22,0,0,0);
+  {const gc=document.createElement('canvas');gc.width=8;gc.height=256;const gg=gc.getContext('2d'),lg=gg.createLinearGradient(0,0,0,256);lg.addColorStop(0,'#ffffff');lg.addColorStop(.45,'#9aa0a8');lg.addColorStop(1,'#15171b');gg.fillStyle=lg;gg.fillRect(0,0,8,256);
+   const gt=new THREE.CanvasTexture(gc);gt.colorSpace=THREE.SRGBColorSpace;const m=new THREE.Mesh(new THREE.PlaneGeometry(60,30),new THREE.MeshBasicMaterial({map:gt,color:new THREE.Color(1.5,1.5,1.5),side:THREE.DoubleSide}));m.position.set(-4,-6,34);m.lookAt(0,0,0);E.add(m)}
+  card(20,10,0xffffff,1.6,-26,-4,-6,0,0,0);
+  return E}
+const pm=new THREE.PMREMGenerator(r);S.environment=pm.fromScene(studio(),0.02).texture;S.environmentIntensity=1.0;
+
+/* brushed aluminium: a fine anisotropic-looking grain via a noise bump map */
+function grain(){const c=document.createElement('canvas');c.width=1024;c.height=1024;const g=c.getContext('2d');g.fillStyle='#808080';g.fillRect(0,0,1024,1024);
+  for(let i=0;i<9000;i++){const y=Math.random()*1024,v=110+Math.random()*40|0;g.strokeStyle=`rgba(${v},${v},${v},.35)`;g.lineWidth=Math.random()*1.4;g.beginPath();g.moveTo(0,y);g.lineTo(1024,y+Math.random()*2-1);g.stroke()}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t}
+const GR=grain();
+const alu=new THREE.MeshPhysicalMaterial({color:0xc9ced4,metalness:1,roughness:.42,bumpMap:GR,bumpScale:.6,clearcoat:.0});
+const aluD=new THREE.MeshPhysicalMaterial({color:0xbcc1c8,metalness:1,roughness:.48,bumpMap:GR,bumpScale:.4});
+const pot=new THREE.MeshPhysicalMaterial({color:0x0b2a72,metalness:0,roughness:.12,clearcoat:1,clearcoatRoughness:.08});
+const nick=new THREE.MeshPhysicalMaterial({color:0xd6d9dc,metalness:1,roughness:.3});
+const zinc=new THREE.MeshPhysicalMaterial({color:0xdde1e6,metalness:1,roughness:.34});
+const dark=new THREE.MeshStandardMaterial({color:0x22262c,metalness:.6,roughness:.5});
+const pcb=new THREE.MeshPhysicalMaterial({color:0x1f5a35,roughness:.35,clearcoat:.6});
+const conn=new THREE.MeshStandardMaterial({color:0xf2efe6,roughness:.55});
+const gold=new THREE.MeshStandardMaterial({color:0xe0b45a,metalness:1,roughness:.3});
+
+/* the label, as on the firm's product photo */
+function label(){const c=document.createElement('canvas'),Wl=1800,Hl=1300;c.width=Wl;c.height=Hl;const g=c.getContext('2d');
+  g.fillStyle='#e9e7e1';g.fillRect(0,0,Wl,Hl);
+  g.fillStyle='#16181c';g.textAlign='center';g.textBaseline='middle';
+  const F=(w,s)=>g.font=`${w} ${s}px Arimo`;
+  F(700,92);g.fillText('LASER DIODE DRIVER',Wl/2,330);
+  F(700,190);g.fillText('DL60-250',Wl/2,560);
+  F(400,78);g.fillText('www.heim-electronic.de',Wl/2,760);
+  /* barcode strip along the lower edge */
+  let x=360;while(x<1440){const bw=[5,9,14,5,22][Math.random()*5|0];g.fillRect(x,960,bw,170);x+=bw+[6,9,12][Math.random()*3|0]}
+  /* terminal legends at the corners */
+  F(700,72);g.fillText('+IN',140,170);g.fillText('GND',Wl-160,170);g.fillText('-OUT',150,Hl-150);g.fillText('+OUT',Wl-170,Hl-150);
+  g.lineWidth=7;g.strokeStyle='#16181c';F(600,60);g.strokeRect(Wl/2-210,110,420,110);g.fillText('CONTROL',Wl/2,167);
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;return t}
+for(const w of [400,700]){const f=new FontFace('Arimo',`url(/node_modules/@fontsource/arimo/files/arimo-latin-${w}-normal.woff2)`,{weight:String(w)});await f.load();document.fonts.add(f)}
+console.log('font700',document.fonts.check('700 40px Arimo'),document.fonts.check('400 40px Arimo'));
+const lab=new THREE.MeshPhysicalMaterial({map:label(),roughness:.5,clearcoat:.25,clearcoatRoughness:.4});
+
+const M=new THREE.Group();S.add(M);
+/* units: mm/10. case 74 x 50 mm footprint */
+const L=7.4,D=5.0;
+function add(geo,mat,x,y,z,o={}){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=o.cs!==false;m.receiveShadow=true;if(o.r)m.rotation.set(...o.r);M.add(m);return m}
+/* base plate */
+add(new THREE.BoxGeometry(L-.1,.5,D-.1),aluD,0,.25,0);
+/* centre cover (label carrier) */
+const CW=3.7;
+add(new RoundedBoxGeometry(CW,1.55,D,6,.1),alu,0,.775,0);
+add(new THREE.PlaneGeometry(CW-.22,D-.3),lab,0,1.552,0,{r:[-Math.PI/2,0,0],cs:false});
+/* terminal bays either side: walls + blue potting + nickel pads + two screws each */
+function bay(sx){
+  const bx=sx*(CW/2+(L/2-CW/2)/2),bw=L/2-CW/2;
+  /* walls (front/back/outer) */
+  add(new RoundedBoxGeometry(bw,1.1,.32,4,.08),alu,bx,.55,D/2-.16);
+  add(new RoundedBoxGeometry(bw,1.1,.32,4,.08),alu,bx,.55,-D/2+.16);
+  add(new RoundedBoxGeometry(.3,1.1,D,4,.08),alu,sx*(L/2-.15),.55,0);
+  /* potting surface */
+  add(new THREE.BoxGeometry(bw-.3,.32,D-.64),pot,bx-sx*.0,.55+.16,0);
+  /* pads and screws */
+  [-1,1].forEach(sz=>{const z=sz*1.15;
+    add(new THREE.BoxGeometry(1.05,.06,1.0),nick,bx,.55+.35,z);
+    add(new THREE.CylinderGeometry(.36,.36,.36,48),zinc,bx,.55+.38+.18,z);
+    add(new THREE.CylinderGeometry(.31,.36,.06,48),zinc,bx,.55+.38+.39,z);
+    add(new THREE.CylinderGeometry(.15,.15,.08,6),dark,bx,.55+.38+.4,z,{cs:false});
+  });
+  /* M4 mounting hole through the outer lip */
+}
+bay(-1);bay(1);
+/* the CONTROL connector on its small board, back of the left bay, and the status LED */
+add(new THREE.BoxGeometry(.9,.08,.6),pcb,-CW/2-.62,1.28,-D/2+.1);
+add(new RoundedBoxGeometry(.75,.3,.42,3,.04),conn,-CW/2-.62,1.47,-D/2+.08);
+for(let i=0;i<6;i++)add(new THREE.BoxGeometry(.05,.05,.12),gold,-CW/2-.92+i*.12,1.49,-D/2+.32,{cs:false});
+const led=new THREE.MeshStandardMaterial({color:0x2a7a3a,emissive:0x7cff7a,emissiveIntensity:1.6,roughness:.2});
+add(new THREE.SphereGeometry(.09,24,16),led,CW/2+.55,.55+.36,D/2-.55,{cs:false});
+/* shadow catcher (real alpha) */
+const sh=new THREE.Mesh(new THREE.PlaneGeometry(40,40),new THREE.ShadowMaterial({opacity:.55}));sh.rotation.x=-Math.PI/2;sh.receiveShadow=true;S.add(sh);
+
+/* lights: soft key from top left, cool rim from the back right, warm magenta kicker (brand) low right */
+const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(-6,12,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-8,right:8,top:8,bottom:-8});key.shadow.radius=8;key.shadow.bias=-.0005;S.add(key);
+const rim=new THREE.DirectionalLight(0xbcd6ff,1.4);rim.position.set(8,5,-8);S.add(rim);
+const kick=new THREE.PointLight(0xff3d8a,30,30,1.6);kick.position.set(6,1.2,5);S.add(kick);
+
+M.rotation.y=+(q.get('ry')||-.52);
+const cam=new THREE.PerspectiveCamera(24,W/H,.1,200);
+const el=+(q.get('el')||.62),dist=+(q.get('d')||24);
+cam.position.set(0,Math.sin(el)*dist,Math.cos(el)*dist);cam.lookAt(0,.6,0);
+r.render(S,cam);window.DONE=true;
+</script></body></html>

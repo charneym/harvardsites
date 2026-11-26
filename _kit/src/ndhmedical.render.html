@@ -1,0 +1,69 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<script type="importmap">{"imports":{"three":"/home/user/harvardsites/_kit/node_modules/three/build/three.module.js","three/addons/":"/home/user/harvardsites/_kit/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+/* NDH Medical hero: a crafted render of their own product, a length of clear multi-lumen extruded medical tubing (one main lumen
+   and three small lumens) with a coextruded green stripe, laid in a loose loop with the cut end turned toward the viewer, after
+   the tubing on NDH's trade-show booth and its "Custom Extrusion Medical Tubing" panel. Transparent ground (real alpha). */
+import * as THREE from 'three';
+const P=new URLSearchParams(location.search);
+const W=+P.get('w')||2000,H=+P.get('h')||2000;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1);r.setSize(W,H);r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=+P.get('exp')||1.0;
+r.setClearColor(0x000000,0);r.localClippingEnabled=true;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);
+/* a dark studio: near-black green room, a large soft top box, tall strip lights, a faint green kicker (brand) */
+const es=new THREE.Scene();
+es.add(new THREE.Mesh(new THREE.BoxGeometry(20,20,20),new THREE.MeshBasicMaterial({color:0x050a07,side:THREE.BackSide})));
+function sb(w,h,x,y,z,c,i){const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(c).multiplyScalar(i),side:THREE.DoubleSide}));m.position.set(x,y,z);m.lookAt(0,0,0);es.add(m)}
+sb(14,7,0,9,1,0xffffff,+P.get('top')||1.5);
+sb(2.4,12,-8,1,3,0xffffff,+P.get('sl')||2.6);sb(5,8,-2,2,9,0xffffff,+P.get('fr')||0.7);
+sb(1.0,10,7.5,1,4,0xeef6ff,+P.get('sr')||2.0);
+sb(4,6,3,-1,-8,0x8fd14a,+P.get('kr')||1.4);
+sb(14,1.2,0,-7,3,0xffffff,.3);
+sc.environment=pm.fromScene(es,0.015).texture;
+sc.background=null;
+const cam=new THREE.PerspectiveCamera(+P.get('fov')||24,W/H,.1,200);
+cam.position.set(+P.get('cx')||0,+P.get('cy')||7,+P.get('cz')||22);cam.lookAt(0,+P.get('ly')||0,0);
+
+/* the extrusion profile (units: mm-ish; outer Ø 2.0 → scaled) */
+const R=+P.get('R')||1.0;
+function profile(){
+  const s=new THREE.Shape();s.absarc(0,0,R,0,Math.PI*2,false);
+  const hole=(x,y,rr)=>{const h=new THREE.Path();h.absarc(x,y,rr,0,Math.PI*2,true);s.holes.push(h)};
+  hole(0,.24*R,.47*R);hole(-.5*R,-.47*R,.2*R);hole(0,-.66*R,.2*R);hole(.5*R,-.47*R,.2*R);
+  return s;
+}
+/* path: a loose loop lying almost flat, the near end lifting and turning its cut face toward the camera */
+const pts=(P.get('pts')?JSON.parse(P.get('pts')):[[16,-2,-40],[13,-1.6,-26],[6,-1,-15],[-1,-.4,-6],[-3,0,1],[-1.6,.3,6],[0,.5,9]]).map(a=>new THREE.Vector3(a[0],a[1],a[2]));
+let PP=pts;
+if(P.get('coil')){ /* a loose coil lying on the bench, the free end lifting and turning toward the viewer */
+  const cr=+P.get('crad')||7,turns=+P.get('turns')||1.1,rise=+P.get('rise')||.9,ae=+P.get('ae')||.3,n=Math.ceil(turns*28);PP=[];
+  for(let i=0;i<=n;i++){const t=i/n,a=ae-(1-t)*turns*Math.PI*2,rr=cr*(1+.07*(1-t));PP.push(new THREE.Vector3(Math.cos(a)*rr,t*rise,Math.sin(a)*rr))}
+  const e=PP[PP.length-1],T=new THREE.Vector3(-Math.sin(ae),0,Math.cos(ae)),tl=+P.get('tl')||7,lift=+P.get('lift')||2.2,bend=+P.get('bend')||.15;
+  for(let k=1;k<=4;k++){const d=tl*k/4;const tt=T.clone().applyAxisAngle(new THREE.Vector3(0,1,0),bend*k/4);PP.push(e.clone().addScaledVector(tt,d).add(new THREE.Vector3(0,lift*(k/4)*(k/4),0)))}
+}
+const curve=new THREE.CatmullRomCurve3(PP,false,'centripetal');
+const S=+P.get('sc')||1;
+const g=new THREE.ExtrudeGeometry(profile(),{steps:1600,bevelEnabled:false,extrudePath:curve,curveSegments:64});
+g.scale(1,1,1);
+const tube=new THREE.MeshPhysicalMaterial({color:new THREE.Color(P.get('col')||'#f4fbf6'),metalness:0,roughness:+P.get('ro')||.12,transmission:+P.get('tr')||.96,thickness:+P.get('th')||.9,ior:1.5,
+  attenuationColor:new THREE.Color(0xd8efe0),attenuationDistance:+P.get('ad')||6,clearcoat:.6,clearcoatRoughness:.08,specularIntensity:1,side:THREE.DoubleSide});
+const grp=new THREE.Group();sc.add(grp);
+const cap=new THREE.MeshPhysicalMaterial({color:0xeaf6ee,roughness:+P.get('cr')||.3,transmission:+P.get('ct')||.55,thickness:.4,ior:1.5,clearcoat:1,clearcoatRoughness:.05,emissive:new THREE.Color(0x1d3a28),emissiveIntensity:+P.get('ce')||1,side:THREE.DoubleSide});
+const mesh=new THREE.Mesh(g,[cap,tube]);grp.add(mesh);
+/* coextruded stripe: a thin green band along the outer wall */
+const st=new THREE.Shape();const a0=Math.PI*(+P.get('a0')||.46),a1=Math.PI*(+P.get('a1')||.54);
+st.absarc(0,0,R+.012,a0,a1,false);st.absarc(0,0,R-.06,a1,a0,true);
+const sg=new THREE.ExtrudeGeometry(st,{steps:1600,bevelEnabled:false,extrudePath:curve,curveSegments:24});
+const stripe=new THREE.MeshPhysicalMaterial({color:0x1f9a4e,roughness:.35,clearcoat:.5,transmission:0,metalness:0});
+grp.add(new THREE.Mesh(sg,stripe));
+grp.scale.setScalar(S);
+grp.rotation.y=+P.get('ry')||0;grp.rotation.x=+P.get('rx')||0;
+/* key light from upper left for crisp highlights along the wall */
+const d1=new THREE.DirectionalLight(0xffffff,+P.get('kl')||1.6);d1.position.set(-6,10,8);sc.add(d1);
+const d2=new THREE.DirectionalLight(0xcfe9d6,.5);d2.position.set(8,2,-6);sc.add(d2);
+r.render(sc,cam);
+window.DONE=true;
+</script></body></html>

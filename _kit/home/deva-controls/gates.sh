@@ -1,38 +1,22 @@
 #!/bin/bash
-# sequential gate run for the S&S home-only build (HOME_BRIEF Gates), on #/ only
-cd "$(dirname "$0")/../.." || exit 1
-F=/home/user/harvardsites/deva-controls/index.html
-run(){ echo "=== $*"; timeout 600 node "$@" 2>&1 | tail -12; }
-run smoke.js $F
-run reveal-audit.js $F "#/" 1440 900
-run reveal-audit.js $F "#/" 390 844
-run anim-audit.js $F "#/" 1440 900
-run anim-audit.js $F "#/" 390 844
-run clip-audit.js $F "#/" 1440 900
-run clip-audit.js $F "#/" 390 844
-run overlay-audit.js $F "#/" 1440 900
-run masthead-audit.js $F "#/"
-run mixed-audit.js $F "#/"
-run polish-audit.js $F "#/"
-run loader-audit.js $F
-run unstyled-audit.js $F
-run cramped-audit.js deva-controls
-run hoverpad-audit.js deva-controls
-run split-audit.js $F "#/"
-run balance-audit.js $F "#/"
-run logo-audit.js $F "#/"
-run hero-audit.js $F "#/"
-run buildout-test.js $F
-run fit-audit.js $F
-(cd .. && echo '=== loader-contrast (root)' && node _kit/loader-contrast-audit.js deva-controls && echo LC-DONE)
-echo "=== ALL DONE"
-(cd .. && node _kit/tools/textclash.js deva-controls /tmp/claude-0/-home-user-harvardsites/791a5cd3-e888-5cf3-aad5-56dfd4de3771/scratchpad/tc_deva 2>&1 | tail -30)
-(cd .. && echo '=== entities' && node _kit/tools/entities.js deva-controls 2>&1 | tail -10)
-(cd .. && echo '=== contrast 1440' && node _kit/tools/contrast.js deva-controls 2>&1 | tail -10)
-(cd .. && echo '=== contrast 390' && node _kit/tools/contrast.js deva-controls 390 2>&1 | tail -10)
-(cd .. && echo '=== hidden 1440' && node _kit/tools/hidden.js deva-controls 2>&1 | tail -15)
-(cd .. && echo '=== hidden 390' && node _kit/tools/hidden.js deva-controls 390 2>&1 | tail -15)
-(cd .. && echo '=== orphans' && node _kit/tools/orphans.js deva-controls 2>&1 | tail -10)
-(cd .. && echo '=== squeeze 390' && node _kit/tools/squeeze.js deva-controls 2>&1 | tail -10)
-(cd .. && echo '=== squeeze 768' && node _kit/tools/squeeze.js deva-controls 768 2>&1 | tail -10)
+# Freek home-only gates (current standard: logo loader, pinned photo story)
+cd "$(dirname "$0")/../../.." || exit 1
+F=$PWD/deva-controls/index.html
+T=${1:-/tmp/claude-0/-home-user-harvardsites/56ca03b9-ee5a-5849-b017-dd96a50c3a79/scratchpad}
+echo '=== textclash'; node _kit/tools/textclash.js deva-controls "$T/tc" 2>&1 | tail -6
+echo '=== entities'; node _kit/tools/entities.js deva-controls 2>&1 | tail -4
+echo '=== contrast 1440'; node _kit/tools/contrast.js deva-controls 2>&1 | tail -6
+echo '=== contrast 390'; node _kit/tools/contrast.js deva-controls 390 2>&1 | tail -6
+echo '=== hidden 1440'; node _kit/tools/hidden.js deva-controls 2>&1 | tail -6
+echo '=== hidden 390'; node _kit/tools/hidden.js deva-controls 390 2>&1 | tail -6
+echo '=== squeeze 390'; node _kit/tools/squeeze.js deva-controls 390 2>&1 | tail -5
+echo '=== squeeze 768'; node _kit/tools/squeeze.js deva-controls 768 2>&1 | tail -5
+echo '=== orphans'; timeout 1500 node _kit/tools/orphans.js deva-controls 2>&1 | tail -10
+cd _kit
+echo '=== smoke'; timeout 600 node smoke.js $F 2>&1 | tail -6
+echo '=== clip 1440'; timeout 600 node clip-audit.js $F "#/" 1440 900 2>&1 | tail -6
+echo '=== clip 390'; timeout 600 node clip-audit.js $F "#/" 390 844 2>&1 | tail -6
+echo '=== buildout'; timeout 600 node buildout-test.js $F 2>&1 | tail -8
+echo '=== fit'; timeout 600 node fit-audit.js $F 2>&1 | tail -6
+echo '=== loader-contrast'; (cd .. && timeout 600 node _kit/loader-contrast-audit.js deva-controls 2>&1 | tail -6)
 echo '=== END'

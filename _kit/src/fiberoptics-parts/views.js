@@ -1,6 +1,6 @@
 /* ================= VIEWS (home only; nav items open build-out pages via _kit/lib/buildout.js, in-page links scroll) ================= */
 function platRows(){return '<div class="plat">'+PLAT.map(function(a){return '<div><span class="lab kick" data-r>'+esc(a[0])+'</span><h3 data-r>'+esc(a[1])+'</h3><p data-r>'+esc(a[2])+'</p></div>'}).join("")+'</div>'}
-function prodRows(){return '<ul class="pfr path">'+PRODUCTS.map(function(c){return '<li><span class="lab tg">'+esc(c[0])+'</span><h3>'+esc(c[1])+'<span class="loc">'+esc(c[2])+'</span></h3><p>'+esc(c[3])+'</p><a class="lab lk" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[1])+' on fiber-optics.com">Details '+ARR+'</a></li>'}).join("")+'</ul>'}
+function prodRows(){return '<ul class="pfr path">'+PRODUCTS.map(function(c){return '<li><span class="lab tg">'+esc(c[0])+'</span><div class="pn"><h3>'+esc(c[1])+'</h3><span class="loc">'+esc(c[2])+'</span></div><p>'+esc(c[3])+'</p><a class="lab lk" href="'+c[4]+'" target="_blank" rel="noopener" aria-label="'+esc(c[1])+' on fiber-optics.com">Details '+ARR+'</a></li>'}).join("")+'</ul>'}
 function appList(){return '<ul class="ind">'+APPS.map(function(a){return '<li>'+esc(a)+'</li>'}).join("")+'</ul>'}
 function planList(){return '<ol class="ftplan">'+PLAN.map(function(a,i){return '<li><span class="lab">0'+(i+1)+'</span><p>'+esc(a)+'</p></li>'}).join("")+'</ol>'}
 function teamGrid(){return '<ul class="ex ftt">'+TEAM.map(function(p){return '<li><h3>'+esc(p[0])+'</h3><p>'+esc(p[1])+'</p></li>'}).join("")+'</ul>'}

@@ -1,0 +1,10 @@
+# Neater Solutions Ltd (home-only concept, batch 2026-11n)
+- Domain: neater.co.uk (company name, Buxton address, phone and info@neater.co.uk on every page; Wix site). Companies House 03526590, incorporated 1998. No newer site found.
+- Activity: Companies House accounts filed 30 Mar 2026 and confirmation statement 24 Mar 2026 (https://find-and-update.company-information.service.gov.uk/company/03526590/filing-history); new 2026 Neater Arm Support K (NASK) launched on https://www.neater.co.uk/neater-arm-support; Medilink Midlands member (https://www.medilinkmidlands.com/member-profiles/neater-solutions-ltd/).
+- Lead: Jonathan Martin Michaelis, Director since incorporation (Companies House officers), "Jon Michaelis, Managing Director and founder" on neater.co.uk > Meet the Team (chartered engineer, FIMechE, Imperial College). He/him pronouns used on the team page.
+- Email: info@neater.co.uk (header, footer, NASK page). Tel +44 1298 930123. Address: 12 Burlington Road, Buxton, Derbyshire SK17 9AL.
+- Palette: logo mark purple #7F00C8 and wordmark deep purple #4E0079 (pixel-sampled from their logo PNGs), tagline grey; lavender-white #EDEBF1 ground; aubergine ink #1F0F33 for dark bands.
+- Logo: traced from their own logo PNG (e54e2a_1db6d63489514170b87e8371aa188d01.png) into filled SVG paths; tagline set in Questrial.
+- Hero: their own studio photo of the Neater Eater Robotic, https://static.wixstatic.com/media/7274b5_18a3758202d74ef2bd12c619d8925a11~mv2.jpeg (1024×683). Grey studio sweep fitted and subtracted so the backdrop equals the page ground exactly; opaque lossless webp 810×773, drawn at or below native size.
+- Story: SVG side elevation of the Neater Eater Robotic (set up, control: switch/touch screen/voice, scoop, to the mouth), from the NER product page.
+- Bad site: Wix page; boxed row of bevelled purple tab buttons under a wide-spaced logo, looping marquee "Neater Eater Robotic - Now with Voice Control!!", raw blue underlined phone/email links in the header, "Click for video with sound" pill over a blurred video; footer still "©2024".

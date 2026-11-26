@@ -31,8 +31,8 @@ def mark(uid, stripes=True):
             '<stop offset=".42" stop-color="#1f8f4c"/><stop offset=".7" stop-color="#6fb043"/><stop offset="1" stop-color="#b4d544"/></linearGradient>'
             '<clipPath id="c%s">%s</clipPath></defs><path fill="url(#g%s)" fill-rule="evenodd" clip-path="url(#c%s)" d="%s"/>') % (uid, uid, st, uid, uid, NDH)
 MEDTXT = '<text x="130" y="%s" text-anchor="middle" textLength="256" lengthAdjust="spacing" style="font-family:\'Cinzel\',Georgia,serif;font-weight:500;font-size:%spx" fill="%s">MEDICAL</text>'
-STACK = ('<svg class="plogo" viewBox="-4 -4 268 178" role="img" aria-label="NDH Medical">%s%s'
-         '<text x="130" y="164" text-anchor="middle" style="font-family:\'Libre Baskerville\',Georgia,serif;font-style:italic;font-size:17.5px" fill="#5fbf86">Working Together For Life</text></svg>') % (mark('p'), MEDTXT % (138, 36, '#c3c6c1'))
+STACK = ('<svg class="plogo" viewBox="-4 -4 268 190" role="img" aria-label="NDH Medical">%s%s'
+         '<text x="130" y="178" text-anchor="middle" style="font-family:\'Libre Baskerville\',Georgia,serif;font-style:italic;font-size:17.5px" fill="#5fbf86">Working Together For Life</text></svg>') % (mark('p'), MEDTXT % (138, 36, '#c3c6c1'))
 HORIZ = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 264 150" aria-hidden="true">%s%s</svg>') % (mark('h', False), MEDTXT % (143, 40, '#c3c6c1'))
 region('meta', '''<title>NDH Medical — custom medical tubing extrusion and contract manufacturing, St. Petersburg, Florida</title>
 <meta name="description" content="NDH Medical, Inc. is an ISO 13485:2016 certified contract medical device manufacturer in St. Petersburg, Florida: custom single-lumen, multi-lumen, coextruded, taper and braid-reinforced tubing, insert and injection molding, assembly and packaging.">

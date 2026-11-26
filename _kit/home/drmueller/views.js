@@ -26,7 +26,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Diabetesdiagnostik aus Freital<span class="nomob"> · inhabergeführt</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Unsere Leistung<span class="hm1"> für</span></span><span class="l"><span class="hm0">für </span>Ihre <em>Analysenqualität.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l la">Unsere Leistung</span> <span class="l lb">für</span> <span class="l lc">Ihre <em>Analysenqualität.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Dr. Müller Gerätebau entwickelt und produziert in Freital Analysegeräte und Verbrauchsmaterial für die Diabetesdiagnostik, vom klinischen Labor bis in die Hausarztpraxis.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/analysegeraete">Zu den Analysegeräten '+ARR+'</a><a class="btn" href="#/kontakt">Kontakt aufnehmen</a></div></div>'+
   '</section>'+

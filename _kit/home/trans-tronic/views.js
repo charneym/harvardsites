@@ -14,16 +14,17 @@ function caps(){var C=[
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<span class="lab eyebrow" data-r>Transformers and windings<span class="nomob"> · Chesterfield, England</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Wound to</span> <span class="l"><em class="nw">your specification.</em></span></h1>'+
+  '<section class="hero tth lt" id="hero" data-theme="light">'+
+   '<div class="tth-in"><span class="lab eyebrow" data-r>Transformers and windings<span class="nomob"> · Chesterfield, England</span></span>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Designed and wound</span> <span class="l nw">in Chesterfield.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>An ISO 9001 family run manufacturer of laminated, toroidal and ferrite transformers, chokes and custom coil windings, from prototype and development to volume production.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Request a quote</a></div></div>'+
+   '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Request a quote</a></div></div></div>'+
+   '<figure class="ttstrip" data-r><img src="coils.webp" width="2000" height="638" alt="Copper coil windings made by Trans-Tronic, photographed at the Chesterfield factory" decoding="async" fetchpriority="high"></figure>'+
   '</section>'+
 
-  '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
+  '<section class="sec mani dark lt" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Family run, made in England</span>'+
-   '<h2 class="txt" id="mani"><span class="nwp">From a standard transformer</span> <span class="nwp">to a custom specification,</span> <span class="nwp">we help with the design</span> <em><span class="nwp">and wind it in Chesterfield,</span> <span class="nwp">one-off or in volume.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nwp">From a standard transformer</span> <span class="nwp">to a custom specification,</span> <span class="nwp">we help with the design</span> <span><span class="nwp">and wind it in Chesterfield,</span> <span class="nwp">one-off or in volume.</span></span></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">3.5m</span><p class="k">components a year, and more, from our Chesterfield factory</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">11,000</span><p class="k">square feet of purpose built factory in Old Whittington</p></div>'+
@@ -32,7 +33,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">On the winding floor</span><h2 class="d3"><span class="nw">Anatomy of</span> <em class="nw">a toroid.</em></h2>'+
+   '<div class="story-l"><span class="lab kick">On the winding floor</span><h2 class="d3"><span class="nw">Anatomy of</span> <span class="nw">a toroid.</span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Core</span><span>Primary</span><span>Secondary</span><span>Fixing</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">It starts</span> <span class="nw">as a ring.</span></h2><p>Toroidal transformers have been designed and made here for nearly 40 years: up to 5 kVA to order, with a standard approved range from 15 VA to 1 kVA.</p></article>'+
@@ -43,19 +44,19 @@ function vHome(){
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark2" id="products" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Transformers, chokes</span> <em class="nw">and coil windings.</em></h2></div><p data-r>These are a representation of what we make at our Chesterfield site. Most of our work is to customer specifications, or to new designs developed with our technical team.</p></div>'+
+  '<section class="sec dark2 lt lt2" id="products" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Transformers, chokes</span> <span class="nw">and coil windings.</span></h2></div><p data-r>These are a representation of what we make at our Chesterfield site. Most of our work is to customer specifications, or to new designs developed with our technical team.</p></div>'+
    prods()+
    '<div class="qual mk"><span class="lab kick" data-r>Sectors</span><p class="cr" data-r><span>Aviation</span><span>Audio</span><span>Lighting</span><span>Automotive</span><span>Defence</span><span>Railways</span><span>Medical</span><span>Telecommunications</span><span>Instrumentation</span><span>Renewable energy</span><span>Oil and gas</span></p></div>'+
   '</div></section>'+
 
   '<section class="sec light" id="quality" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Quality</span><h2 class="d2 split"><span class="nw">Planned to be</span> <em class="nw">right first time.</em></h2></div><p data-r>Our goal is to maintain and continually improve performance in every area, especially quality, cost and delivery, through an effective quality system and approvals our customers can check.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Quality</span><h2 class="d2 split"><span class="nw">Planned to be</span> <span class="nw">right first time.</span></h2></div><p data-r>Our goal is to maintain and continually improve performance in every area, especially quality, cost and delivery, through an effective quality system and approvals our customers can check.</p></div>'+
    caps()+
   '</div></section>'+
 
-  '<section class="sec dark" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A family firm,</span> <em class="nw">grown by acquisition.</em></h2></div><p data-r>Trans-Tronic is family run, with a multi-skilled and flexible workforce, and supplies customers across the UK and around the world from Chesterfield.</p></div>'+
+  '<section class="sec dark lt" id="company" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A family firm,</span> <span class="nw">grown by acquisition.</span></h2></div><p data-r>Trans-Tronic is family run, with a multi-skilled and flexible workforce, and supplies customers across the UK and around the world from Chesterfield.</p></div>'+
    '<div class="engco">'+team()+
     '<div class="engpol"><span class="lab kick" data-r>Along the way</span><ul>'+
      '<li data-r><b>Antrim</b>Antrim Transformers of Northern Ireland, acquired in 2008, brought a UL and KEMA-KEUR approved standard toroid range.</li>'+
@@ -67,8 +68,8 @@ function vHome(){
     '</ul></div></div>'+
   '</div></section>'+
 
-  '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Next seen</span> <em class="nw">in Farnborough.</em></h2></div><p data-r>Trans-Tronic is listed as an exhibitor at Southern Manufacturing & Electronics, 2 to 4 February 2027. Each entry links to its source.</p></div>'+
+  '<section class="sec dark2 lt lt2" id="news" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Next seen</span> <span class="nw">in Farnborough.</span></h2></div><p data-r>Trans-Tronic is listed as an exhibitor at Southern Manufacturing & Electronics, 2 to 4 February 2027. Each entry links to its source.</p></div>'+
    news()+
   '</div></section>'+
   cta();
@@ -76,7 +77,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Send us</span> <em class="nw">your specification.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Send us</span> <span class="nw">your specification.</span></h2>'+
    '<p class="sub" data-r>From one prototype to thousands of parts, tell us the voltages, the power and the fixing, and our technical team will come back with a design and a quote.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Request a quote '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+

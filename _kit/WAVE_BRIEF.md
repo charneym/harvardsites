@@ -29,3 +29,12 @@ The client still sees "AI template" even with brand colours, because every site 
 7. Density: a real company page has content close together. Cut empty vertical padding by about 40% compared with the old template.
 8. Gates that assume a loader or story (loader, loader-contrast, story checks) don't apply once that component is removed. Say so in the report rather than re-adding the component. All other gates (overflow, squeeze, contrast, textclash, entities, orphans, buildout) still apply.
 Report adds "Structure:" (what replaced the loader, story and stat row).
+
+## COMPOSITION BASICS (client, 2026-11-26 — checked by eye, every hero and every photo)
+Things an ordinary visitor notices straight away:
+1. Direction: the subject's front (face, ports, logo, working end) points INTO the page, towards the text. If it faces away, swap sides (photo left, text right), crop differently or pick another photo. Never mirror a photo that has a logo or text on it.
+2. No confusing depth: no out-of-focus foreground blobs, no blurred parts crossing the subject, no fake reflections or floor shadows. Crop them out or choose a different photo.
+3. The photo has its own defined area (a grid column, a framed crop or a full-bleed band). It never slides under the text or pushes the text into a corner. Centre the text block vertically against the photo. No large empty corners and no dead band under the hero.
+4. Straight or gently angled subjects only. A diagonal that runs off the bottom edge looks accidental.
+5. Sharp: never shown larger than about 1.2x its native pixels. If the only photo is small, show it smaller inside a frame, not stretched as a hero.
+6. Before reporting, look at the hero at 1440 and 390 and ask: "Would a normal person think something is off here?" If so, fix it.

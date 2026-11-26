@@ -1,0 +1,74 @@
+<!doctype html><html><head><style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./build/three.module.js"}}</script></head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from './examples/jsm/geometries/RoundedBoxGeometry.js';
+import {RoomEnvironment} from './examples/jsm/environments/RoomEnvironment.js';
+const Q=new URLSearchParams(location.search);
+const W=+Q.get('w')||1400,H=+Q.get('h')||1200,TILT=+(Q.get('t')||34),RY=+(Q.get('ry')||-0.62),RX=+(Q.get('rx')||0.20);
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(2);r.setSize(W,H);r.setClearColor(0x000000,0);
+r.toneMapping=THREE.ACESFilmicToneMapping;r.toneMappingExposure=1.0;r.outputColorSpace=THREE.SRGBColorSpace;
+r.shadowMap.enabled=true;r.shadowMap.type=THREE.PCFSoftShadowMap;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const pm=new THREE.PMREMGenerator(r);
+sc.environment=pm.fromScene(new RoomEnvironment(),0.04).texture;
+const cam=new THREE.PerspectiveCamera(24,W/H,.1,100);
+/* materials: light grey powder-coated steel, white laminate top with a grey edge band, dark tilt mechanism */
+const coat=new THREE.MeshPhysicalMaterial({color:0xd3d6da,metalness:.35,roughness:.42,clearcoat:.35,clearcoatRoughness:.35,envMapIntensity:1.0});
+const coatD=new THREE.MeshPhysicalMaterial({color:0xb9bdc3,metalness:.4,roughness:.38,clearcoat:.3,envMapIntensity:1.0});
+const mech=new THREE.MeshPhysicalMaterial({color:0x2a2e36,metalness:.55,roughness:.42,clearcoat:.2,envMapIntensity:.9});
+const nc=document.createElement('canvas');nc.width=nc.height=512;const nx=nc.getContext('2d');nx.fillStyle='#9a9a9a';nx.fillRect(0,0,512,512);
+for(let i=0;i<9000;i++){nx.fillStyle='rgba('+(Math.random()<.5?'255,255,255':'0,0,0')+','+(Math.random()*.08).toFixed(3)+')';nx.fillRect(Math.random()*512,Math.random()*512,1+Math.random()*2,1+Math.random()*2)}
+const nt=new THREE.CanvasTexture(nc);nt.wrapS=nt.wrapT=THREE.RepeatWrapping;nt.repeat.set(3,3);
+const lam=new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:0,roughness:.55,roughnessMap:nt,clearcoat:.25,clearcoatRoughness:.4,envMapIntensity:.95});
+const edge=new THREE.MeshPhysicalMaterial({color:0x8d939b,metalness:.1,roughness:.5,envMapIntensity:.9});
+const rub=new THREE.MeshPhysicalMaterial({color:0x1b1e24,metalness:0,roughness:.7});
+const chrome=new THREE.MeshPhysicalMaterial({color:0xdfe3e8,metalness:1,roughness:.18});
+const G=new THREE.Group();sc.add(G);
+function box(w,h,d,m,x,y,z,rad=.006){const g=new THREE.Mesh(new RoundedBoxGeometry(w,h,d,4,rad),m);g.position.set(x,y,z);g.castShadow=g.receiveShadow=true;G.add(g);return g}
+/* base: two feet front-to-back joined by a crossbar, castors at the four ends */
+const FX=.30,FL=.66,FH=.045,FW=.06;
+for(const sx of [-1,1]){box(FW,FH,FL,coat,sx*FX,FH/2+.055,0);
+  for(const sz of [-1,1]){const z=sz*(FL/2-.05),x=sx*FX;
+    const fork=box(.034,.04,.05,coatD,x,.06,z,.004);
+    const wh=new THREE.Mesh(new THREE.CylinderGeometry(.028,.028,.022,32).rotateZ(Math.PI/2),rub);wh.position.set(x,.028,z+.012);wh.castShadow=true;G.add(wh);
+    const hub=new THREE.Mesh(new THREE.CylinderGeometry(.011,.011,.024,20).rotateZ(Math.PI/2),chrome);hub.position.copy(wh.position);G.add(hub);}}
+box(FX*2,.05,.07,coat,0,.055+.025,0);
+/* column: outer square tube, inner telescoping tube */
+box(.085,.50,.085,coat,0,.08+.25,0,.008);
+box(.072,.17,.072,coatD,0,.58+.085,0,.006);
+box(.11,.02,.11,coatD,0,.58,0,.004);
+/* tilt head: dark bracket arm under the top, pivot, gas spring, hand lever */
+const HY=.75;
+box(.13,.06,.12,mech,0,HY-.02,0,.01);
+const pv=new THREE.Mesh(new THREE.CylinderGeometry(.022,.022,.5,32).rotateZ(Math.PI/2),mech);pv.position.set(0,HY+.02,-.02);G.add(pv);
+for(const sx of [-1,1]){const k=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.02,32).rotateZ(Math.PI/2),chrome);k.position.set(sx*.25,HY+.02,-.02);G.add(k)}
+/* the top, tilted about the pivot */
+const T=new THREE.Group();T.position.set(0,HY+.02,-.02);G.add(T);T.rotation.x=TILT*Math.PI/180;
+const TW=.80,TD=.60,TT=.024;
+function tbox(w,h,d,m,x,y,z,rad=.004){const g=new THREE.Mesh(new RoundedBoxGeometry(w,h,d,4,rad),m);g.position.set(x,y,z);g.castShadow=g.receiveShadow=true;T.add(g);return g}
+tbox(TW,TT,TD,lam,0,.055,.04,.006);
+tbox(TW+.004,TT*.7,.006,edge,0,.055,.04+TD/2,.002);tbox(TW+.004,TT*.7,.006,edge,0,.055,.04-TD/2,.002);
+tbox(.006,TT*.7,TD,edge,TW/2,.055,.04,.002);tbox(.006,TT*.7,TD,edge,-TW/2,.055,.04,.002);
+/* pencil ledge on the front edge */
+tbox(TW*.86,.03,.016,coatD,0,.082,.04+TD/2-.004,.004);
+/* frame rails under the top */
+for(const sx of [-1,1])tbox(.035,.03,TD*.82,mech,sx*.25,.03,.04,.006);
+tbox(.54,.03,.035,mech,0,.03,.04-TD*.3,.006);
+/* hand lever on the right, releasing the brake */
+{const lv=new THREE.Mesh(new THREE.CylinderGeometry(.009,.009,.20,16),mech);lv.rotation.z=Math.PI/2;lv.position.set(.16,HY-.03,.04);G.add(lv);
+ const kn=new THREE.Mesh(new THREE.SphereGeometry(.02,24,16),mech);kn.position.set(.26,HY-.03,.04);G.add(kn);}
+/* shadow catcher */
+const sh=new THREE.Mesh(new THREE.PlaneGeometry(4,4),new THREE.ShadowMaterial({opacity:.26}));sh.rotation.x=-Math.PI/2;sh.receiveShadow=true;sc.add(sh);
+const key=new THREE.DirectionalLight(0xffffff,2.0);key.position.set(.8,5,1.6);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.radius=14;
+Object.assign(key.shadow.camera,{left:-1.5,right:1.5,top:1.5,bottom:-1.5,near:.5,far:10});key.shadow.bias=-.0005;sc.add(key);
+const rim=new THREE.DirectionalLight(0x2fb4ff,2.2);rim.position.set(-3,1.5,-3);sc.add(rim);
+const fl=new THREE.DirectionalLight(0xe8f0ff,.7);fl.position.set(3,1,4);sc.add(fl);
+sc.add(new THREE.AmbientLight(0x30405a,.35));
+G.rotation.y=RY;sh.rotation.z=0;
+G.position.y=-.45;sh.position.y=-.45;
+cam.position.set(0,+(Q.get('cy')||.55),3.4);cam.lookAt(0,-.03,0);cam.position.applyAxisAngle(new THREE.Vector3(1,0,0),-RX);cam.lookAt(0,-.03,0);
+r.render(sc,cam);window.DONE=true;
+</script></body></html>

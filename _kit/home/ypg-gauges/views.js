@@ -29,7 +29,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Go, No Go</span>'+
-   '<h2 class="txt" id="mani"><span class="nwp">Consistent manufacturing accuracy</span> <span class="nwp">starts with a gauge</span> <span class="nwp">that gives one answer,</span> <em><span class="nwp">fool-proof and cost-effective.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nwp">Consistent manufacturing accuracy</span> <span class="nwp">starts with a gauge</span> <span class="nwp">that gives one answer,</span> <em><span class="nwp">fool-proof</span> <span class="nw">and cost-effective.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1951</span><p class="k">founded in Hatfield, Doncaster, and family owned ever since</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">0068</span><p class="k">the UKAS laboratory number, first accredited in 1973</p></div>'+
@@ -55,7 +55,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="calibration" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Calibration and service</span><h2 class="d2 split"><span class="nw">Accredited,</span> <em class="nw">and on time.</em></h2></div><p data-r>A missed gauge delivery can stop a customer’s production. That is why calibration, certification and delivery get the same care as the gauges themselves.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Calibration and service</span><h2 class="d2 split"><span class="nw">UKAS accredited,</span> <em class="nw">and on time.</em></h2></div><p data-r>A missed gauge delivery can stop a customer’s production. That is why calibration, certification and delivery get the same care as the gauges themselves.</p></div>'+
    caps()+
    '<div class="qual"><span class="lab kick" data-r>Trusted by</span><p class="cr" data-r>'+CUST.map(function(c){return '<span>'+esc(c)+'</span>'}).join("")+'</p></div>'+
   '</div></section>'+

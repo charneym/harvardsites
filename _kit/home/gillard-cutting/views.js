@@ -31,7 +31,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Extrusion cutting<span class="nomob"> · Tewkesbury, England</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Every millimetre</span> <span class="l"><em class="nw">counts.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Every millimetre</span> <span class="l"><em class="nw">counts, every cut.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Since 1968, Gillard has designed and built extrusion cutters, caterpillar haul-offs and downstream equipment in England, for plastics, rubber, medical, food and mastic extrusion around the world.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/machines">Our machines '+ARR+'</a><a class="btn" href="#/trials">Free cutting trials</a></div></div>'+
   '</section>'+
@@ -51,9 +51,9 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Pull</span><span>Guide</span><span>Cut</span><span>Collect</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">A caterpillar</span> <span class="nw">takes the line.</span></h2><p>Twin belts, each driven by its own direct-drive AC servo motor, grip the extrusion and pull it steadily at line speed.</p></article>'+
-     '<article class="step"><h2><span class="nw">Through</span> <span class="nw">the guide bush.</span></h2><p>The extrusion feeds into the cutter through a guide bush sized to the product, from medical tubing up to 300 mm outer diameter.</p></article>'+
+     '<article class="step"><h2><span class="nw">Through the</span> <span class="nw">guide bush.</span></h2><p>The extrusion feeds into the cutter through a guide bush sized to the product, from medical tubing up to 300 mm outer diameter.</p></article>'+
      '<article class="step"><h2><span class="nw">One sweep,</span> <span class="nw">one clean cut.</span></h2><p>The Servo-Torq® fly knife slices across the bush face under servo control, at any rate from 1 to 2,000 cuts a minute, without stopping the line.</p></article>'+
-     '<article class="step"><h2><span class="nw">Collected,</span> <span class="nw">length after length.</span></h2><p>A conveyor supports the extrusion out of the cutter and carries each cut length away, separating any scrap from good product.</p></article>'+
+     '<article class="step"><h2><span class="nw">Collected, length</span> <span class="nw">after length.</span></h2><p>A conveyor supports the extrusion out of the cutter and carries each cut length away, separating any scrap from good product.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -75,7 +75,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Made in Tewkesbury,</span> <em class="nw">cutting since 1968.</em></h2></div><p data-r>Gillard &amp; Co. was founded in Maidenhead in 1968, incorporated as Peter Gillard &amp; Co. Limited in 1971, and has built its machines in Tewkesbury since 1990.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Made in Tewkesbury,</span> <em class="nw">since 1968.</em></h2></div><p data-r>Gillard &amp; Co. was founded in Maidenhead in 1968, incorporated as Peter Gillard &amp; Co. Limited in 1971, and has built its machines in Tewkesbury since 1990.</p></div>'+
    '<div class="engco">'+
     '<div class="engm"><span class="lab kick" data-r>Director</span><ul>'+
      '<li data-r><span class="nm">Christopher Gillard</span><span class="lab rl">Director and company secretary</span></li>'+

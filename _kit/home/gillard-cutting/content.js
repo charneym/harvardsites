@@ -18,5 +18,5 @@ var NEWS=[
  ["2025","The Servo-Torq® Eco-Cut™ combi cutter: top-level performance at an affordable price, in a compact footprint","Gillard · News",CP+"news/new-st-eco-cut-launch-in-2025"],
  ["In stock","New Servo-Torq® cutting machines in stock for immediate delivery, at special prices","Gillard · News",CP+"news/new-servo-torq-cutting-machines-in-stock"],
  ["Food","A ground-up redesign: the New Generation Servo-Torq® cutter for dog chews and dental sticks","Gillard · News",CP+"news/new-gen-servo-torq-single-dog-chew-cutter-arrives"],
- ["Plastics","The Spiral-Cut™ cutter, for right or left-handed spirals in plastic cable-wrap tubing","Gillard · News",CP+"news/new-servo-torq-spiral-cut-extrusion-cutter-is-launched"]];
+ ["Plastics","Spiral-Cut™: a cutter for right or left-handed spirals in cable-wrap tubing","Gillard · News",CP+"news/new-servo-torq-spiral-cut-extrusion-cutter-is-launched"]];
 var SHEETS=[];

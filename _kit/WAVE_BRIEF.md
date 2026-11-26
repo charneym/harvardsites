@@ -63,3 +63,6 @@ Reference for motion feel: any sent site, e.g. /desoutter/ or /lightel/. Referen
 
 ## CURRENT STANDARD (2026-11-26 evening): reference sites
 Client-approved quality references for the whole current standard (v3 structure, COMPOSITION BASICS, PREMIUM MOTION v4 with its CORRECTION, and the no-overlap story text rule): /drn-engineering/, /teknomedical/ and /charlesausten/. Grep their source (_kit/src/drn-engineering.v3.src.html plus drn-engineering.v4.js; _kit/home/teknomedical/) for the motion code and reuse it rather than reinventing. Earlier quality references in this brief are superseded for look and structure.
+
+## NAV MIRRORS THE REAL SITE (client, 2026-11-26)
+The header nav lists the company's real main menu items, as many as their current site has (not a fixed 4; group or shorten labels only if they won't fit, and use a menu on phones). Items with a matching home section get the normal build-out page. Items with no home section (e.g. Careers, Downloads, Service) still get a page: buildout.js already handles this. With no section found, it shows the route wipe, the page title and the "I'd build this out for you" concept note. Don't write content for those pages. Contact still scrolls to the contact block.

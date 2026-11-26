@@ -59,3 +59,4 @@ The client did NOT ask for new gimmicks. "Premium" means the same motion and pol
 - Keep the pinned story as in the sent sites, but with real photos (or a drawing in the brand colours if there are no usable photos), on the light theme.
 - The loader is the sent sites' logo loader (whole lockup, no counter).
 Reference for motion feel: any sent site, e.g. /desoutter/ or /lightel/. Reference for look: their own brand.
+11. Pinned story text never overlaps: the outgoing step text is fully gone before the incoming text appears, so a viewer who stops mid-scroll never sees ghosted double text. Photos may crossfade. Check frames at 10% increments through the pin.

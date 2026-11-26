@@ -21,7 +21,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Passion for Extrusion</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Wir vermessen</span> <span class="nw">Ihre Plastifiziereinheit,</span> <span class="nw">analysieren den Verschleiß</span> <span class="nw">und empfehlen</span> <span class="nw">das <em>bessere Design.</em></span></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Wir vermessen Schnecke</span> <span class="nw">und Zylinder,</span> <span class="nw">analysieren den Verschleiß</span> <span class="nw">und empfehlen</span> <span class="nw">das <em>bessere Design.</em></span></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">12–200</span><p class="k">mm Durchmesser: Schnecken und Zylinder, inklusive Vermessen und Zeichnungserstellung</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">12–60</span><p class="k">mm: Extruder mit Torquemotor, ohne Wasserkühlung</p></div>'+
@@ -33,9 +33,9 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">Schnecke und Zylinder</span><h2 class="d3"><span class="nw">Vom Messwert</span> <em class="nw">zur neuen Schnecke.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Messen</span><span>Analyse</span><span>Zeichnung</span><span>Fertigung</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2><span class="nw">Schnecke und Zylinder</span> <span class="nw">vermessen.</span></h2><p>Schnecken und Zylinder von 12 bis 200 mm werden vermessen: die Schnecke ebenso wie die Bohrung des Zylinders, in dem sie läuft.</p></article>'+
-     '<article class="step"><h2><span class="nw">Den Verschleiß</span> <span class="nw">analysieren.</span></h2><p>Verschleiß- und Optimierungsanalysen der Plastifiziereinheit zeigen, wo das Spiel zwischen Steg und Zylinder gewachsen ist und wo das Design besser werden kann.</p></article>'+
-     '<article class="step"><h2><span class="nw">Zeichnung und</span> <span class="nw">Design-Empfehlung.</span></h2><p>Aus Messung und Analyse entstehen die Zeichnung und eine Design-Empfehlung, mit technischer Beratung für die Optimierung.</p></article>'+
+     '<article class="step on"><h2><span class="nw">Erst messen:</span> <span class="nw">Schnecke und Zylinder.</span></h2><p>Schnecken und Zylinder von 12 bis 200 mm werden vermessen: die Schnecke ebenso wie die Bohrung des Zylinders, in dem sie läuft.</p></article>'+
+     '<article class="step"><h2><span class="nw">Verschleiß analysieren,</span> <span class="nw">Design optimieren.</span></h2><p>Verschleiß- und Optimierungsanalysen der Plastifiziereinheit zeigen, wo das Spiel zwischen Steg und Zylinder gewachsen ist und wo das Design besser werden kann.</p></article>'+
+     '<article class="step"><h2><span class="nw">Zeichnung und Empfehlung</span> <span class="nw">für das Design.</span></h2><p>Aus Messung und Analyse entstehen die Zeichnung und eine Design-Empfehlung, mit technischer Beratung für die Optimierung.</p></article>'+
      '<article class="step"><h2><span class="nw">Neu gefertigt,</span> <span class="nw">mit Microfinish.</span></h2><p>Die neue Schnecke wird hergestellt und geliefert. Das Microfinish-Verfahren veredelt die Oberfläche und minimiert die Polymeranhaftung.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+

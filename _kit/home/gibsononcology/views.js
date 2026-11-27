@@ -32,7 +32,7 @@ function partnersSec(){return '<section class="sec g-deep" id="partners" data-th
   partnerRows(false,more("#/partners","Partners and collaborators"))+'</div></section>'}
 
 /* letters of support: editorial pull quotes */
-function letter(L,big,two){return '<figure class="g-q'+(big?' big':'')+'"><span class="g-qm" aria-hidden="true">“</span><blockquote>'+L.q.map(function(t){return '<p>'+esc(t)+'</p>'}).join("")+(two?'<p>'+esc(L.q2)+'</p>':'')+'</blockquote>'+
+function letter(L,big,two){return '<figure class="g-q'+(big?' big':'')+'"><span class="g-qm" aria-hidden="true">“</span><blockquote>'+L.q.map(function(t){var h=esc(t);(L.hl||[]).forEach(function(k){h=h.replace(esc(k),'<strong>'+esc(k)+'</strong>')});return '<p>'+h+'</p>'}).join("")+(two?'<p>'+esc(L.q2)+'</p>':'')+'</blockquote>'+
   '<figcaption><b>'+esc(L.name)+'</b><span>'+esc(L.title)+'</span><time>'+esc(L.date)+'</time></figcaption></figure>'}
 function letters(full){return '<section class="sec light g-lt" id="letters" data-theme="light"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Letters of support</span><h2 class="d2">In their <em>own words.</em></h2></div><p>Excerpts from letters written to Gibson in September 2026 by the investigators studying its drugs.</p></div>'+

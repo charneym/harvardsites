@@ -38,7 +38,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Vacuum Innovations</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Large-aperture optics,</span> <span class="nw">high-intensity</span> <span class="nw">laser coatings</span> <span class="nw">and uniformity</span> <span class="nw">by design.</span> <em><span class="nw">Systems, parts and</span> <span class="nw">coatings, in one place.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Large-aperture optics</span> <span class="nw">and laser coatings,</span> <span class="nw">with uniformity</span> <span class="nw">by design.</span> <em><span class="nw">Systems, parts and</span> <span class="nw">coatings, in one place.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">2007</span><p class="k">founded by Dr. James Oliver, our president</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">600 mm</span><p class="k">largest optic we coat in-house, from 3 mm up</p></div>'+
@@ -101,7 +101,7 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Address</span>90 Ossian St.<br>Dansville, NY 14437</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/systems">Systems</a><br><a class="ul" href="#/coatings">Coatings</a><br><a class="ul" href="#/components">Components</a><br><a class="ul" href="#/workshops">Workshops</a><br><a class="ul" href="#/news">News</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/systems">Systems</a><br><a class="ul" href="#/coatings">Coatings</a><br><a class="ul" href="#/components">Parts</a><br><a class="ul" href="#/workshops">Workshops</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">We make</span>E-beam coating systems<br>Chamber components<br>Precision optical coatings</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 1000 214" aria-hidden="true"><text class="bmx" x="500" y="176" text-anchor="middle" textLength="980" lengthAdjust="spacing">INNOVATIONS</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Vacuum Innovations</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';

@@ -28,7 +28,7 @@ function viScene(o){
   g+='<g id="viL1"><text class="t s2" x="440" y="'+(mob?412:412)+'">'+(mob?'E-BEAM':'E-BEAM SOURCE')+'</text><text class="t" x="'+(mob?520:440)+'" y="48">'+(mob?'VACUUM':'CHAMBER UNDER VACUUM')+'</text></g>';
   g+='<g id="viL2"><text class="t s2" x="200" y="'+(mob?94:96)+'">'+(mob?'PLANETARY':'PLANETARY ROTATION')+'</text></g>';
   g+='<g id="viL3"><text class="t s2" x="150" y="'+(mob?290:284)+'">'+(mob?'MASK':'UNIFORMITY MASK')+'</text></g>';
-  g+='<g id="viL4"><text class="t s2" x="560" y="'+(mob?178:178)+'">'+(mob?'CRYSTAL':'CRYSTAL HEAD')+'</text></g>';
+  g+='<g id="viL4"><text class="t s2" x="610" y="'+(mob?238:232)+'" text-anchor="end">'+(mob?'CRYSTAL':'CRYSTAL HEAD')+'</text></g>';
   g+='<g id="lb1"><text class="a" x="20" y="508">1 · SOURCE</text></g>';
   g+='<g id="lb2"><text class="a" x="20" y="508">2 · ROTATE</text></g>';
   g+='<g id="lb3"><text class="a" x="20" y="508">3 · MASK</text></g>';

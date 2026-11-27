@@ -1,10 +1,10 @@
 /* ================= HERO FIELD: Hammerlit's own product render (HOME_BRIEF update 2a): the PMEF 6414 stainless-steel care cart
    with its yellow drawers and doors, from hammerlit.de (pmef_6414_1_.jpg, 3507x4960). Cut out of its white ground with real alpha
    (flood fill from the border, colour un-mixed at the edge) and shown at or below native resolution, standing on a soft floor
-   shadow with a faint blue glow behind it, in a very slow Ken Burns breath. On phones it sits in the top band above the text. ================= */
+   shadow (TOP-FIX: no glow behind it), in a very slow Ken Burns breath. On phones it sits in the top band above the text. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#0a1b2b";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var r=0;["#view .hero h1","#view .hero .eyebrow","#view .hero-foot p"].forEach(function(q){var e=document.querySelector(q);if(!e)return;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}});return r}
@@ -32,17 +32,8 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low slate glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the
-         baked render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(18,52,82,"+(.6*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(13,36,58,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,27,43,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint cool glow behind the balloon, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.62;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(0,160,227,"+((.07+.04*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(0,160,227,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
+      /* TOP-FIX 2026-11-27: their own product image is not relit; no ambient glow or halo around it */
       /* the floor: a soft contact shadow under the castors */
       var fy=y+dh*FL,fx=x+dw*.5;c.save();c.translate(fx,fy);c.scale(1,.11);
       var fs=c.createRadialGradient(0,0,0,0,0,dw*.62);fs.addColorStop(0,"rgba(0,4,10,"+(.62*e).toFixed(3)+")");fs.addColorStop(.6,"rgba(0,4,10,"+(.28*e).toFixed(3)+")");fs.addColorStop(1,"rgba(0,4,10,0)");
@@ -67,6 +58,10 @@ var field=(function(){
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   /* re-measure the headline once the web fonts and the title reveal have settled, so the 100px clearance holds (DP) */
   try{document.fonts.ready.then(function(){setTimeout(size,60)})}catch(_){}setTimeout(size,2600);setTimeout(size,6500);
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the object scrolls up 1:1 with the hero on desktop; 0 once the hero has left (footer echo) */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();

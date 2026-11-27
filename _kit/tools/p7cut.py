@@ -21,6 +21,12 @@ lab, n = ndimage.label(near)
 edge = set(np.unique(np.concatenate([lab[0], lab[-1], lab[:, 0], lab[:, -1]]))) - {0}
 bgm = np.isin(lab, list(edge))
 SH = np.zeros(A.shape[:2], bool)
+if '--holes' in a:  # enclosed background seen through the object (pure near-bg patches above a minimum area) is background too
+    hl, hn = ndimage.label(d < 5); mn = int(a[a.index('--holes')+1])
+    if hn:
+        hs = ndimage.sum(np.ones_like(hl), hl, range(1, hn + 1))
+        big = [k + 1 for k in range(hn) if hs[k] >= mn and (k + 1) not in edge]
+        bgm = bgm | np.isin(hl, big)
 if '--shadow' in a:  # the photo's own soft floor shadow: smooth, unsaturated pixels grown from the background; kept as a real (black, partial-alpha) shadow
     L = A.mean(2); sd = np.sqrt(np.maximum(ndimage.uniform_filter(L*L, 5) - ndimage.uniform_filter(L, 5)**2, 0))
     thr = float(a[a.index('--shadow')+1]); sdt = float(a[a.index('--sd')+1]) if '--sd' in a else 4

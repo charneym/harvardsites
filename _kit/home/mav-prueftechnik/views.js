@@ -26,7 +26,7 @@ function svc(){var S=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="820" alt="ClipGunTester CGT von MAV Prüftechnik mit Touch-Bedienteil" decoding="async" fetchpriority="high"><figcaption>ClipGunTester CGT</figcaption></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1397" height="902" alt="ClipGunTester CGT von MAV Prüftechnik mit Touch-Bedienteil" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>The Pulltester Company<span class="nomob"> · Berlin, seit 1962</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Was halten muss,</span> <span class="l acc">prüft MAV.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Seit 1962 entwickelt und fertigt MAV PRÜFTECHNIK in Berlin Prüfgeräte für Zug- und Druckkräfte: für Crimpverbindungen, Steckverbinder und vieles mehr. Entwickelt und hergestellt in Deutschland.</p>'+

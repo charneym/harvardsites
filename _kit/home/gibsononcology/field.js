@@ -18,6 +18,11 @@ var field=(function(){
     /* the helix: whole in frame, below the nav with headroom, centred in the open area right of the text */
     var ih=mob?Math.max(150,Math.min(h*.4-96,1310)):Math.min(h*.6,1310,(cw*.26)/AR),iw=ih*AR;
     var kx=mob?w*.5:side+cw*.71,ky=mob?86+ih*.5:Math.max(h*.52,110+ih*.5);
+    /* v7 (client: the helix ran down into the partner strip): on the home hero it spans the text block only, from just above the
+       eyebrow to a clear gap above the strip's rule, so the strip reads as the hero's footer under both columns */
+    if(!mob){var ey=document.querySelector(".hero .eyebrow"),hm=document.querySelector(".hero .g-hm");
+      if(ey&&hm){var sy=window.scrollY||0,t=Math.max(96,ey.getBoundingClientRect().top+sy-24),b=hm.getBoundingClientRect().top+sy-36;
+        if(b-t>160){ih=Math.min(b-t,1310,(cw*.26)/AR);iw=ih*AR;ky=(t+b)/2}}}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
@@ -25,6 +30,7 @@ var field=(function(){
   function frame(once){
     var now=performance.now();
     if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    if(now-(G&&G._t||0)>500){G=geo();G._t=now}
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);

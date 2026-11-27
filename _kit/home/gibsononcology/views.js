@@ -15,11 +15,9 @@ function targets(){return '<section class="sec dark g-tt" id="targets" data-them
   '<div class="g-tt-row">'+
    '<div class="g-tt-c"><h2 class="g-tt-w">TOPO 1</h2><span class="lab g-tt-l">Topoisomerase I</span><p>The enzyme that cuts DNA so it can unwind. Gibson’s drugs trap it on the cut, so the break cannot be resealed.</p></div>'+
    '<div class="g-tt-x" aria-hidden="true"><i></i><b>+</b><i></i></div>'+
-   '<div class="g-tt-c"><h2 class="g-tt-w">cMYC</h2><span class="lab g-tt-l">The largest human oncogene</span><p>Overexpressed, it drives cancer. Gibson’s drugs reduce that overexpression, a target that resisted drugs for decades.</p></div>'+
+   '<div class="g-tt-c"><h2 class="g-tt-w">cMYC</h2><span class="lab g-tt-l">The largest human oncogene</span><p>Overexpressed, it drives about 80% of human cancers. Gibson’s drugs reduce that overexpression, a target that resisted drugs for decades.</p></div>'+
   '</div>'+
-  '<div class="g-tt-foot">'+
-   '<div class="g-tt-80"><span class="g-tt-n">80%</span><p>of all human cancers are driven by cMYC, approximately.</p></div>'+
-   '<div class="g-tt-one"><h3>One molecule hits both.</h3><ul><li><b>LMP744</b><span>Intravenous</span></li><li><b>LMP400</b><span>Oral and intravenous</span></li><li><b>Azas</b><span>Next generation, 700+ compounds</span></li></ul></div>'+
+  '<div class="g-tt-mol"><h3>Each Gibson drug hits both targets.</h3><ul><li><b>LMP744</b><span>Intravenous</span></li><li><b>LMP400</b><span>Oral and intravenous</span></li><li><b>Azas</b><span>Next generation, 700+ compounds</span></li></ul></div>'+
   '</div></div></section>'}
 
 /* (b) proof of value: the four partners */
@@ -38,7 +36,7 @@ function letter(L,big,two){return '<figure class="g-q'+(big?' big':'')+'"><span 
   '<figcaption><b>'+esc(L.name)+'</b><span>'+esc(L.title)+'</span><time>'+esc(L.date)+'</time></figcaption></figure>'}
 function letters(full){return '<section class="sec light g-lt" id="letters" data-theme="light"><div class="wrap">'+
   '<div class="shead"><div><span class="lab kick">Letters of support</span><h2 class="d2">In their <em>own words.</em></h2></div><p>Excerpts from letters written to Gibson in September 2026 by the investigators studying its drugs.</p></div>'+
-  letter(LETTERS[0],true,full)+'<div class="g-q2">'+letter(LETTERS[1],false,full)+letter(LETTERS[2],false,full)+'</div></div></section>'}
+  '<div class="g-q3">'+LETTERS.slice(0,3).map(function(L){return letter(L,false,full)}).join("")+'</div></div></section>'}
 
 /* a full-bleed photograph, graded to the palette, with its own copy */
 function band(o){return '<section class="g-band '+(o.cls||"")+'" data-theme="dark"><div class="g-band-m" aria-hidden="true">'+img(o.img,"",o.w,o.h)+'</div>'+
@@ -66,8 +64,9 @@ function desigSec(){return '<section class="sec light g-split" id="designations"
 function marketStats(){return '<div class="g-mk" aria-label="Glioblastoma market">'+MARKET.slice(0,2).map(function(m,i){return '<div class="g-mk-c"><span class="g-mk-v">'+esc(m[0])+'</span><span class="g-mk-k">'+esc(m[1])+'</span></div>'+(i===0?'<div class="g-mk-a" aria-hidden="true">'+ARRS+'</div>':'')}).join("")+'</div>'}
 function deals(){return '<table class="g-dt"><thead><tr><th scope="col" class="lab">Date</th><th scope="col" class="lab">Acquirer / target</th><th scope="col" class="lab">Value</th></tr></thead><tbody>'+DEALS.map(function(d){return '<tr><td class="lab">'+esc(d[0])+'</td><th scope="row">'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</th><td>'+esc(d[3])+'</td></tr>'}).join("")+'</tbody></table>'}
 function investSec(){return '<section class="sec dark" id="investors" data-theme="dark"><div class="wrap">'+
-  '<div class="shead"><div><span class="lab kick">Investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2></div><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p></div>'+
-  marketStats()+'<div class="g-dl-w"><span class="lab g-sub">Recent brain-tumor transactions</span>'+deals()+'</div>'+
+  '<div class="g-iv"><div class="g-iv-l"><span class="lab kick">For investors</span><h2 class="d2">A market that will <em>double by 2035.</em></h2>'+marketStats()+'</div>'+
+  '<div class="g-iv-r"><p>Glioblastoma alone is a $3.2 billion market, and brain-tumor drugs have changed hands for up to $2.5 billion in the last six years.</p>'+
+  '<span class="lab g-sub">Recent brain-tumor transactions</span><ul class="g-dx">'+DEALS.map(function(d){return '<li><span class="lab">'+esc(d[0])+'</span><b>'+esc(d[1])+' <i>/</i> '+esc(d[2])+'</b><em>'+esc(d[3])+'</em></li>'}).join("")+'</ul></div></div>'+
   '<p class="g-src">Emergen Research (market, CAGR 7.8%); transaction values from Gibson’s investor presentation, November 2026.</p>'+
   '<div class="g-act">'+more("#/investors","Investor overview")+'</div></div></section>'}
 

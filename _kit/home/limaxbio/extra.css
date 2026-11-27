@@ -417,7 +417,7 @@ html body .hero.hx h1.d1.hero-h{font-size:clamp(46px,8vw,140px)!important;line-h
 
 /* v7 fixes */
 .gt{background:none!important;-webkit-text-fill-color:initial!important;color:inherit!important}
-.gt i{font-style:normal}.gt .gw{white-space:nowrap}
+.gt i{font-style:normal;text-shadow:0 2px 28px rgba(2,1,8,.6),0 0 2px rgba(2,1,8,.35)}.gt .gw{white-space:nowrap}
 html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 .ptile::after{background:#2fb5a5}
 .prow h3{transition:color .3s var(--eo),transform .4s var(--eo)}
@@ -439,6 +439,18 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 @media (max-width:860px){.hero-h .bm{display:block}.hero-h .bd{display:none}
  .hero-h,html body .hero.hx h1.d1.hero-h{font-size:clamp(34px,9.2vw,64px)!important}}
 @media (max-width:1024px){.tg4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* v12 (client: hero broke into "Engineering the / future / of / hydrogel therapeutics." in Safari, where the line split was measured
+   against the wrong metrics): the lines are written in the markup, desktop "Engineering the future / of hydrogel therapeutics.",
+   <=860 "Engineering the / future of / hydrogel therapeutics.", each unbreakable; the size is capped by the column width so the longest
+   line always fits (vw fallback, then container units where supported) */
+.hx-copy{container-type:inline-size}
+.hero-h .hm{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.hero-h .hl{display:block;white-space:nowrap}
+.hero-h .hmo{display:none}
+html body .hero.hx h1.d1.hero-h{font-size:min(clamp(40px, 4.7vw + 24px, 108px), (100vw - 96px) / 10.9)!important;font-size:min(clamp(40px, 4.7vw + 24px, 108px), 100cqw / 10.9)!important}
+@media (max-width:860px){.hero-h .hmo{display:block}.hero-h .hd{display:none}
+ html body .hero.hx h1.d1.hero-h{font-size:min(clamp(34px, 9.2vw, 64px), (100vw - 56px) / 9.9)!important;font-size:min(clamp(34px, 9.2vw, 64px), 100cqw / 9.9)!important}}
+
 /* tablet (squeeze): vision figures full width under the statement, figure beside its caption; contact details stacked */
 @media (max-width:1024px){
  .vis .wrap{grid-template-columns:1fr!important;row-gap:36px}
@@ -475,3 +487,21 @@ html body .hero.hx h1.d1.hero-h{line-height:1.04!important}
 .pr-id h3{grid-column:2}
 .pr-id .pr-ind{grid-column:2;margin:4px 0 0!important}
 @media (max-width:1024px){.pr-meta{flex-direction:column;align-items:flex-start;gap:6px}}
+/* v10 (client: stage lines looked like they sat between phases): four discrete, gapped segments, one per phase, header
+   labels centred over their segment, a dot on the current phase, and the phase named in each row (the header hides <=1024) */
+.pipe-axis{column-gap:6px}
+.pipe-axis .lab{text-align:center}
+.pr-seg{display:grid!important;grid-template-columns:repeat(4,1fr);column-gap:6px;height:3px!important;background:none!important;overflow:visible}
+.pr-seg b{position:relative;display:block;height:100%;border:0!important;border-radius:2px;background:rgba(var(--boner),.14)}
+.pr-seg b.on{background:var(--grad);background-size:400% 100%;background-position:calc(var(--k) * 33.333%) 0}
+.pr-seg b.cur{background:rgba(var(--boner),.14)}
+.pr-seg b.cur::before{content:"";position:absolute;left:0;top:0;bottom:0;width:50%;border-radius:2px 0 0 2px;background:var(--grad);background-size:800% 100%;background-position:calc(var(--k) * 28.571%) 0}
+.pr-seg b.cur::after{content:"";position:absolute;left:50%;top:50%;width:9px;height:9px;border-radius:50%;transform:translate(-50%,-50%);background:#8a4fd6;box-shadow:0 0 0 3px rgba(2,1,8,1)}
+.pr-seg b.cur[style*="--k:0"]::after{background:#44a3c5}
+.pr-ax{display:none}
+@media (max-width:1024px){.pr-ax{display:grid;grid-template-columns:repeat(4,1fr);column-gap:6px;margin-top:10px}
+.pr-ax span{text-align:center;font-family:var(--deco);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(157,163,184,.6);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-ax span.cur{color:rgba(var(--boner),.9)}}
+@media (min-width:1025px) and (max-width:1360px){.pipe-h,.prow{grid-template-columns:minmax(0,2.7fr) minmax(0,3.8fr) minmax(0,4.8fr)!important}.pipe-axis .lab{letter-spacing:.1em!important;font-size:10.5px!important}}
+.pipe-axis .lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+

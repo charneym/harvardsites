@@ -39,3 +39,12 @@ var PK="lmx";
   if(!ls.length||!window.ScrollTrigger||(pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)){setTimeout(wait,60);return}
   Array.prototype.forEach.call(ls,function(li){if(li.getBoundingClientRect().top<innerHeight)return;li.removeAttribute("data-r");gsap.killTweensOf(li);gsap.set(li,{opacity:0,y:24,overwrite:true});
     ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();
+/* v12 (client: the hero broke into "Engineering the / future / of / hydrogel therapeutics." in Safari, where SplitText measured the
+   lines): the hero's lines are written in the markup (.hm mask > .hl line); the template's hero entrance asks SplitText for lines,
+   so hand it those fixed lines instead of measuring. Only #pageTitle with .hl lines is affected. */
+(function(){var S=window.SplitText;if(!S||S.__lmxHero)return;S.__lmxHero=1;var c=S.create;
+  S.create=function(t,o){var el=typeof t==="string"?document.querySelector(t):t;
+    if(el&&el.id==="pageTitle"&&el.querySelector&&el.querySelector(".hl")){
+      var hl=[].slice.call(el.querySelectorAll(".hl")).filter(function(e){return e.offsetParent!==null});
+      if(hl.length)return {lines:hl,masks:[].slice.call(el.querySelectorAll(".hm")),revert:function(){}}}
+    return c.apply(this,arguments)}})();

@@ -1145,7 +1145,6 @@ html body .hero.hx h1.d1.hero-h{font-size:min(clamp(40px, 4.7vw + 24px, 108px), 
 .pr-ax span.cur{color:rgba(var(--boner),.9)}}
 @media (min-width:1025px) and (max-width:1360px){.pipe-h,.prow{grid-template-columns:minmax(0,2.7fr) minmax(0,3.8fr) minmax(0,4.8fr)!important}.pipe-axis .lab{letter-spacing:.1em!important;font-size:10.5px!important}}
 .pipe-axis .lab{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
 </style>
 </head>
 </head>
@@ -1828,7 +1827,16 @@ var PK="lmx";
 (function(){if(RM)return;var n=0;(function wait(){if(++n>900)return;var ls=document.querySelectorAll("#hero .pil li"),pre=document.getElementById("pre");
   if(!ls.length||!window.ScrollTrigger||(pre&&pre.getBoundingClientRect().bottom>innerHeight*.35)){setTimeout(wait,60);return}
   Array.prototype.forEach.call(ls,function(li){if(li.getBoundingClientRect().top<innerHeight)return;li.removeAttribute("data-r");gsap.killTweensOf(li);gsap.set(li,{opacity:0,y:24,overwrite:true});
-    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();/*</R:site>*/
+    ScrollTrigger.create({trigger:li,start:"top 94%",once:true,onEnter:function(){gsap.to(li,{opacity:1,y:0,duration:.8,ease:"power3.out",clearProps:"transform,opacity"})}})})})()})();
+/* v12 (client: the hero broke into "Engineering the / future / of / hydrogel therapeutics." in Safari, where SplitText measured the
+   lines): the hero's lines are written in the markup (.hm mask > .hl line); the template's hero entrance asks SplitText for lines,
+   so hand it those fixed lines instead of measuring. Only #pageTitle with .hl lines is affected. */
+(function(){var S=window.SplitText;if(!S||S.__lmxHero)return;S.__lmxHero=1;var c=S.create;
+  S.create=function(t,o){var el=typeof t==="string"?document.querySelector(t):t;
+    if(el&&el.id==="pageTitle"&&el.querySelector&&el.querySelector(".hl")){
+      var hl=[].slice.call(el.querySelectorAll(".hl")).filter(function(e){return e.offsetParent!==null});
+      if(hl.length)return {lines:hl,masks:[].slice.call(el.querySelectorAll(".hm")),revert:function(){}}}
+    return c.apply(this,arguments)}})();/*</R:site>*/
 
 /* ================= CONTENT (from the dossier; nothing invented) ================= */
 /*<R:content>*/var FONTS=['400 1em "Inter Tight"','500 1em "Inter Tight"','600 1em "Inter Tight"','700 1em "Inter Tight"','400 1em "Krona One"','300 1em "Montserrat"','400 1em "Montserrat"','500 1em "Montserrat"','600 1em "Montserrat"'];
@@ -2284,9 +2292,7 @@ function initView(k,first){var E=ENTRY;ENTRY=0;HERO_TL=[];
     if(k==="home"&&!RM){
       var mob=MOBILE();
       /* CR: the headline rises as whole lines; eyebrow, copy and buttons start while it is still settling */
-      /* v12: the hero's lines are fixed in the markup (.hm mask > .hl line), so nothing is measured; SplitText only as a fallback */
-      var hl=$$(".hl",t).filter(function(e){return e.offsetParent!==null});
-      var s=hl.length?{lines:hl,masks:$$(".hm",t)}:SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});
+      var s=SplitText.create(t,{type:"lines",mask:"lines",linesClass:"ln"});
       var hr=$$(".hero [data-r]",view);
       var paused=!!(first&&window._preShown);
       var htl=gsap.timeline({paused:paused,delay:paused?0:E+.1,onComplete:function(){unmask(s)}});

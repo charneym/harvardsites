@@ -7,10 +7,11 @@ function tiles(){return '<div class="ptile-g">'+PROPS.map(function(c){
   return '<div class="ptile"><span class="pm'+(/^[0-9&]/.test(c[0])?'':' word')+'">'+c[0]+(c[1]?'<small>'+esc(c[1])+'</small>':'')+'</span><h3>'+esc(c[2])+'</h3><p>'+esc(c[3])+'</p></div>'}).join("")+'</div>'}
 function pipe(){return '<div class="pipe">'+
   '<div class="pipe-h" aria-hidden="true"><span class="lab">Program</span><span class="lab">About</span><span class="pipe-axis">'+STAGES.map(function(s){return '<span class="lab">'+s+'</span>'}).join("")+'</span></div>'+
-  PROG.map(function(c,i){var pct=(c[3]/STAGES.length*100).toFixed(1);
+  PROG.map(function(c,i){
   return '<article class="prow"><div class="pr-id"><span class="lab pr-n">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(c[0])+'</h3><span class="pr-ind">'+esc(c[1])+'</span></div>'+
    '<p class="pr-d">'+esc(c[4])+'</p>'+
-   '<div class="pr-st"><div class="pr-bar" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+'"><i style="width:'+pct+'%"></i>'+STAGES.map(function(){return '<b></b>'}).join("")+'</div>'+
+   '<div class="pr-st"><div class="pr-bar pr-seg" role="img" aria-label="Stage: '+esc(STAGES[c[3]-1])+' ('+c[3]+' of '+STAGES.length+')">'+STAGES.map(function(s,k){return '<b class="'+(k<c[3]?'on':'')+(k===c[3]-1?' cur':'')+'" style="--k:'+k+'"></b>'}).join("")+'</div>'+
+   '<div class="pr-ax" aria-hidden="true">'+STAGES.map(function(s,k){return '<span'+(k===c[3]-1?' class="cur"':'')+'>'+s+'</span>'}).join("")+'</div>'+
    '<div class="pr-meta"><span class="pr-stl">'+esc(c[2])+'</span><a class="lab ul lk2" href="'+c[5]+'" target="_blank" rel="noopener">'+esc(c[6])+' '+ARR+'</a></div></div></article>'}).join("")+'</div>'}
 function team(){return '<div class="tg4">'+TEAM.map(function(p){
   return (function(){var m=p[0].split(/, (.+)/);return '<figure class="tm4"><div class="tm4-ph"><img src="'+p[3]+'" alt="'+esc(m[0])+'" width="480" height="600" loading="lazy" decoding="async"></div><figcaption><h3>'+esc(m[0])+'</h3><span class="lab">'+(m[1]?esc(m[1])+' · ':'')+esc(p[1])+'</span>'})()+(p[2]?'<p>'+esc(p[2])+'</p>':'')+'</figcaption></figure>'}).join("")+'</div>'}
@@ -21,7 +22,7 @@ var ICO={seal:'<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 6.5C24.2
  drug:'<svg viewBox="0 0 40 40" aria-hidden="true"><rect x="6" y="15" width="28" height="10" rx="5" transform="rotate(-45 20 20)"/><path d="M16.5 16.5l7 7"/></svg>'};
 /* the brand gradient across a phrase as solid per-letter colours (teal -> cyan -> blue -> violet), so it reads and measures as
    real text colour (a gradient clipped to text reads as transparent to contrast checks and some renderers) */
-function gtx(t){var S=[[47,181,165],[68,163,197],[58,123,213],[131,94,163],[138,79,214]],n=t.length-1;
+function gtx(t){/* v11 (client: hero gradient hard to read over the purple streaks): same hues, lifted toward white */var S=[[112,222,208],[128,200,236],[134,170,246],[178,150,232],[190,146,250]],n=t.length-1;
   function c(u){var k=Math.min(S.length-2,Math.floor(u*(S.length-1))),f=u*(S.length-1)-k,a=S[k],b=S[k+1];return "#"+[0,1,2].map(function(i){return ("0"+Math.round(a[i]+(b[i]-a[i])*f).toString(16)).slice(-2)}).join("")}
   return '<span class="gt">'+t.split(" ").map(function(w,wi,ws){var off=ws.slice(0,wi).join(" ").length+(wi?1:0);
     return '<span class="gw">'+w.split("").map(function(ch,ci){return '<i style="color:'+c((off+ci)/n)+'">'+ch+'</i>'}).join("")+'</span>'}).join(" ")+'</span>'}
@@ -30,7 +31,7 @@ function vHome(){
   '<section class="hero hx" id="hero" data-field data-theme="dark">'+
    '<div class="hx-copy">'+
     '<span class="lab eyebrow" data-r>Hydrogel technologies<span class="nomob"> · Boston, Massachusetts</span></span>'+
-    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1">Engineering the<span class="bm"></span> future<span class="bd"></span> of<span class="bm"></span> '+gtx('hydrogel therapeutics.')+'</h1>'+
+    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="hm"><span class="hl">Engineering the<span class="hd"> future</span></span></span><span class="hm hmo"><span class="hl">future of</span></span><span class="hm"><span class="hl"><span class="hd">of </span>'+gtx('hydrogel therapeutics.')+'</span></span></h1>'+
     '<i class="hrule" aria-hidden="true" data-r></i>'+
     '<div class="hx-foot"><p class="s" data-r>Tough, slug-inspired hydrogels that bond to wet, moving tissue in seconds, inside or outside the body.</p>'+
     '<div class="act" data-r><a class="btn solid" href="#/technology">Our technology '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+

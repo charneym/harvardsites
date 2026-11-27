@@ -901,6 +901,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 .sls{margin-top:clamp(64px,7vw,104px)}
 .mani .txt{max-width:36ch}
 .ftr .bigsvg{color:var(--bone)}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+.hero-h em{font-style:normal;font-weight:inherit;color:inherit}
 </style>
 </head>
 </head>
@@ -1153,7 +1155,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
 /*<R:field>*//* ================= HERO FIELD: a crafted render of Sacher Lasertechnik's real product (HOME_BRIEF update 2c): one Micron laser,
    their ultra stable micro tunable external cavity laser as pictured on sacher-laser.com (a stainless can on a gold TO header with
    gold pins), with a faint beam leaving the output window. Rasterised offline by render.py with real alpha, baked to hero.webp;
-   here it breathes in a slow Ken Burns drift with a faint warm glow at the window. It moves on its own, so no pointer response
+   here it breathes in a slow Ken Burns drift (TOP-FIX B: studio-lit, mirrored, no glow or beam). It moves on its own, so no pointer response
    (CZ). On phones it sits in the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
@@ -1186,17 +1188,16 @@ var field=(function(){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low deep-blue glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the
-         baked render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(14,52,96,"+(.6*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(9,34,66,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(7,26,51,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint warm glow at the output window, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.34;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(255,110,90,"+((.06+.04*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(255,110,90,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      /* TOP-FIX B 2026-11-27: no glow, beam or halo. A very faint neutral falloff on the ground, up and toward the key
+         side of the laser, at most ~3% brighter than the ink (no colour, no halo hugging the object) */
+      var fx=G.mob?w*.5:x+dw*.40,fy=G.mob?G.bh*.42:y+dh*.36,fr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
+      /* the render (render_b.py: studio key from the page's upper left, fill, rim; topfix_shadow.py bakes a soft cast
+         shadow) carries PX/PY of transparent margin, so the laser lands exactly where it sat before; mirrored so the
+         output window faces the headline */
+      var PX=120/1000,PY=120/1200;
+      c.globalAlpha=e;c.save();c.translate(x+dw*(1+PX),y-dh*PY);c.scale(-1,1);c.drawImage(img,0,0,dw*(1+2*PX),dh*(1+2*PY));c.restore();c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(4,15,32,.95)");lv.addColorStop(.6,"rgba(4,15,32,.55)");lv.addColorStop(1,"rgba(4,15,32,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);

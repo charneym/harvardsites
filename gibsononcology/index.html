@@ -2345,14 +2345,18 @@ var field=(function(){
         h1=hr&&hr.querySelector(".hero-h"),ld=hr&&hr.querySelector(".hero-foot .s");
       if(ey&&ac&&h1){var sy=window.scrollY||0,t=oy(ey)-sy,b=oy(ac)+ac.offsetHeight-sy,
           tr=Math.max(rr(h1),ld?rr(ld):0),cr=side+cw;
-        if(b-t>160&&cr-tr>120){ih=Math.min(b-t,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=(t+b)/2+sy;kx=(tr+cr)/2;dom=true}}}
+        if(b-t>160&&cr-tr>120){
+          /* v11 (client: helix looked small): up to 1.35x the text block's height, centred on it, but never within 104px of the
+             top (nav) or 40px of the partner strip's rule */
+          var sm=hr.querySelector(".g-hm"),st=sm?oy(sm)-sy:h,mid=(t+b)/2,half=Math.max((b-t)*.5,Math.min((b-t)*.675,mid-104,st-40-mid));
+          ih=Math.min(half*2,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=mid+sy;kx=(tr+cr)/2;dom=true}}}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h,dom:dom};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
-  var lastF=0;
+  var lastF=0,lastSY=-1;
   function frame(once){
     var now=performance.now();
-    if(!once&&running&&now-lastF<31){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;
+    var scY=window.scrollY||0;if(!once&&running&&now-lastF<31&&scY===lastSY){raf=requestAnimationFrame(function(){frame(false)});return}lastF=now;lastSY=scY;
     if(now-(G&&G._t||0)>500){G=geo();G._t=now}
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
@@ -2364,9 +2368,9 @@ var field=(function(){
     if(ok){
       /* a very slow breath and sway: ~2.5% scale and a degree of tilt over ~40s */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),q=Math.sin(t*Math.PI*2/56),sc=(1+.025*k)*(1+.03*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.ky-k*G.ih*.012-SP.v*G.ih*.05;
+      var sY=window.scrollY||0,dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.dom?G.ky-sY-k*G.ih*.012:G.ky-k*G.ih*.012-SP.v*G.ih*.05;  /* v11: on the desktop home hero the helix scrolls with the page */
       /* a deep teal glow painted across the WHOLE canvas, never inside the image rect alone (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.42:h*.52,ggr=Math.max(w,h)*.75;
+      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.42:G.dom?cy:h*.52,ggr=Math.max(w,h)*.75;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
       ag.addColorStop(0,"rgba(18,72,84,"+(.5*e).toFixed(3)+")");ag.addColorStop(.45,"rgba(10,40,50,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(7,20,26,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);

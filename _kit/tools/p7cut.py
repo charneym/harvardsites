@@ -43,9 +43,12 @@ if '--shadow' in a:  # the photo's own soft floor shadow: smooth, unsaturated pi
         SH[:cut] = False
 if '--erase' in a:  # a hand polygon (source px) that belongs to the floor (reflection/shadow), not the part
     from PIL import ImageDraw
-    pts = [float(v) for v in a[a.index('--erase')+1].split(',')]; m = Image.new('L', im.size, 0)
-    if '--mirror' in a: pts = [im.width - 1 - v if k % 2 == 0 else v for k, v in enumerate(pts)]
-    ImageDraw.Draw(m).polygon(list(zip(pts[::2], pts[1::2])), fill=255); E = np.asarray(m) > 0
+    m = Image.new('L', im.size, 0)
+    for ix in [k for k, v in enumerate(a) if v == '--erase']:
+        pts = [float(v) for v in a[ix+1].split(',')]
+        if '--mirror' in a: pts = [im.width - 1 - v if k % 2 == 0 else v for k, v in enumerate(pts)]
+        ImageDraw.Draw(m).polygon(list(zip(pts[::2], pts[1::2])), fill=255)
+    E = np.asarray(m) > 0
     SH = SH | (E & ~bgm); bgm = bgm | E
 if '--clear' in a:  # a hand polygon (source px) that is pure background: removed, not kept as shadow
     from PIL import ImageDraw
@@ -71,7 +74,7 @@ A2 = A * alpha[..., None]; alpha = alpha + sha * (1 - alpha); A2 = np.where(alph
 rgba = np.dstack([A2, alpha * 255]).astype(np.uint8)
 if HASA:
     rgba = np.asarray(im0.transpose(Image.FLIP_LEFT_RIGHT) if '--mirror' in a else im0).copy()
-o = Image.fromarray(rgba, 'RGBA'); o = o.crop(o.getbbox())
+o = Image.fromarray(rgba, 'RGBA'); BB = o.getbbox(); print('bbox', BB); o = o.crop(BB)
 if o.height > maxh: o = o.resize((round(o.width * maxh / o.height), maxh), Image.LANCZOS)
 W, H = o.size; P = round(max(W, H) * .12)
 PW, PH = W + 2 * P, H + 2 * P

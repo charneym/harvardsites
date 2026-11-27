@@ -886,6 +886,8 @@ html.seen #pre .plogo{animation:none}
 .vox .vn b{display:block;font-weight:600;color:var(--ink)}
 @media (max-width:1024px){.vox ul{grid-template-columns:1fr;row-gap:36px}.vox blockquote{max-width:56ch}}
 @media (max-width:860px){.vox{grid-template-columns:1fr;row-gap:20px}}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+.hero-h em{font-style:normal;font-weight:inherit;color:inherit}
 </style>
 </head>
 </head>
@@ -1702,8 +1704,8 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#04192a",AR=1;
-  img.decoding="async";img.onload=function(){ok=true;AR=img.naturalWidth/img.naturalHeight;G=geo();if(!running)frame(true)};img.src="hero.webp";
+  var BG="#04192a",AR=1,PAD=120;/* hero.webp carries PAD px of transparent margin with the cast shadow baked in (shadow.py) */
+  img.decoding="async";img.onload=function(){ok=true;AR=(img.naturalWidth-2*PAD)/(img.naturalHeight-2*PAD);G=geo();if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
@@ -1725,17 +1727,14 @@ var field=(function(){
       /* a very slow breath: grow ~3% and drift up a touch over ~40s, eased back and forth (never above native size) */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012-SP.v*G.ih*.06;
-      /* a low blue glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
-         render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.side+G.cw*.74,ggy=G.mob?G.bh*.42:h*.46,ggr=Math.max(w,h)*.78;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(0,120,190,"+(.5*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(8,44,72,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(4,25,42,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
-      /* a faint pale sheen breathing across the titanium */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/11),px=x+dw*(.4+.15*pu),py=y+dh*.4,pr=dw*.3;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(220,232,250,"+(.03+.03*pu).toFixed(3)+")");rg.addColorStop(1,"rgba(220,232,250,0)");
-      c.fillStyle=rg;c.fillRect(px-pr,py-pr,pr*2,pr*2);c.globalAlpha=1;
+      /* TOP-FIX B 2026-11-27: no blue glow and no sheen. Their real render is lit as shot (not relit); a very faint
+         neutral falloff up and toward the headline side (about 3% brighter than the ink, never coloured), and a wide,
+         soft cast shadow on an implied surface below (baked into hero.webp by shadow.py), so the cage sits rather than floats */
+      var fx=G.mob?w*.5:x+dw*.2,fy=G.mob?G.bh*.38:y+dh*.2,fr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
+      var PX=PAD/(img.naturalWidth-2*PAD),PY=PAD/(img.naturalHeight-2*PAD);
+      c.globalAlpha=e;c.drawImage(img,x-dw*PX,y-dh*PY,dw*(1+2*PX),dh*(1+2*PY));c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.66,0);lv.addColorStop(0,"rgba(2,16,28,.95)");lv.addColorStop(.62,"rgba(2,16,28,.6)");lv.addColorStop(1,"rgba(2,16,28,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);

@@ -97,7 +97,7 @@ function drawPad(c,x,y,w,k,S){
 
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,ok=true;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,ok=true;
   var BG="#062734";
   function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
   /* DO: the open area right of the H1; its centre is held at 62-75% of the width and the subject is sized to fit with room both sides */
@@ -124,7 +124,7 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% over ~44s, eased back and forth */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var S=G.iw*.5*sc*(G.mob?1:.9),dx=G.kx,dy=G.ky-k*G.ih*.008-SP.v*G.ih*.05;
+      var S=G.iw*.5*sc*(G.mob?1:.9),dx=G.kx,dy=G.ky-k*G.ih*.008+HY;
       /* a low glow in the logo blue painted across the WHOLE canvas, so nothing has an edge (DJ) */
       var ggx=G.kx,ggy=G.mob?G.bh*.5:G.ky,ggr=Math.max(w,h)*.7;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
@@ -149,6 +149,6 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   try{document.fonts.ready.then(function(){setTimeout(size,60)})}catch(_){}setTimeout(size,1800);setTimeout(size,4200);
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40;var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();

@@ -2101,7 +2101,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    Phones: in the top band above the text, fading into the ink before the copy (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#061a24";var IW=696,IH=1170;
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -2128,7 +2128,7 @@ var field=(function(){
     if(ok){
       /* a slow float: drift up and down a few px and sway half a degree, over ~14s */
       var k=Math.sin(t*Math.PI*2/14),k2=Math.sin(t*Math.PI*2/19+1),sc=1+.03*(1-e);
-      var dw=G.iw*sc,dh=G.ih*sc,cy=G.ky-k*G.ih*.008-SP.v*G.ih*.05+(1-e)*18;
+      var dw=G.iw*sc,dh=G.ih*sc,cy=G.ky-k*G.ih*.008+HY+(1-e)*18;
       c.save();c.translate(G.kx,cy);c.rotate(k2*.008);c.globalAlpha=e;c.drawImage(img,-dw/2,-dh/2,dw,dh);
       /* a faint studio light breathing across the glass and spheres */
       var pu=.5+.5*Math.sin(t*Math.PI*2/9),py=-dh*(.25-.5*pu),pr=dw*.6;
@@ -2152,7 +2152,7 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40;var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/
 

@@ -199,6 +199,9 @@ function story(sec){
   var figs=steps.map(function(s){return $("figure",s)}),txt=steps.map(function(s){return $(".st",s)}),
       caps=figs.map(function(f){return f&&$("figcaption",f)}),rail=$$(".rail li",sec),prog=$(".rail i",sec);
   if(txt.some(function(t){return !t}))return;
+  /* every story photo loads and decodes NOW (not lazily when its step first shows): a lazy photo that starts loading at its own step
+     change shows late and its load fires a ScrollTrigger refresh mid-change, which is what made the last photo flash on the first pass */
+  var simgs=$$("img",sec);simgs.forEach(function(im){try{im.loading="eager";im.decoding="sync"}catch(e){}if(im.decode)im.decode().catch(function(){})});
   MM.add(PINQ,function(){
     sec.classList.add("pinned");var cur=-1,instant=0;
     var all=figs.concat(txt,caps).filter(Boolean);
@@ -207,7 +210,8 @@ function story(sec){
        Step text + caption: the outgoing goes first (.3 s), then the incoming rises the same way, so two texts never show together. */
     /* every state change goes through a proxy object written to style directly: build.js's imgfx patch rewrites any gsap
        opacity/autoAlpha tween or set on a photo into "scale 1.035 -> 1", which made the photos grow ("jump bigger"). Here nothing scales. */
-    function put(e,a,y){if(!e)return;e.style.opacity=a>=1?"":String(+a.toFixed(4));e.style.visibility=a<=0?"hidden":"";e.style.transform=y?"translate3d(0,"+y.toFixed(2)+"px,0)":""}
+    /* photos are never visibility:hidden, only opacity 0, so the browser has them rasterised before their step (no blank first frame) */
+    function put(e,a,y){if(!e)return;e.style.opacity=a>=1?"":String(+a.toFixed(4));e.style.visibility=(a<=0&&e.tagName!=="FIGURE")?"hidden":"";if(e.tagName==="FIGURE")e.style.pointerEvents=a<=0?"none":"";e.style.transform=y?"translate3d(0,"+y.toFixed(2)+"px,0)":""}
     function fade(e,a1,y1,o){if(!e)return;if(e.__v4t)e.__v4t.kill();var cs=e.__v4s||{a:a1,y:0};
       var p={a:"a0" in o?o.a0:cs.a,y:"y0" in o?o.y0:cs.y};e.__v4s=p;put(e,p.a,p.y);
       e.__v4t=G.to(p,{a:a1,y:y1,duration:o.d,ease:o.e,delay:o.dl||0,onUpdate:function(){put(e,p.a,p.y)}})}
@@ -230,7 +234,7 @@ function story(sec){
     tl.eventCallback("onUpdate",function(){if(!sec.isConnected||ST.isRefreshing)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";show(Math.min(N-1,Math.floor(p*N*.9999)))});
     var st=ST.create({trigger:sec,start:function(){return "top top+="+hhs()},end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,
       onRefresh:function(s){/*after a refresh the story shows the step for the restored progress: the same step stays put, a new one changes softly*/tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)requestAnimationFrame(function(){c.call(tl)})},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
-    return function(){st.kill();tl.kill();all.forEach(function(e){if(e.__v4t)e.__v4t.kill();e.__v4s=null;e.style.opacity="";e.style.visibility="";e.style.transform="";e.style.zIndex=""});sec.classList.toggle("pinned",false);if(prog)prog.style.transform="";txt.concat(figs).forEach(function(t){if(t)t.removeAttribute("aria-hidden")});
+    return function(){st.kill();tl.kill();all.forEach(function(e){if(e.__v4t)e.__v4t.kill();e.__v4s=null;e.style.opacity="";e.style.visibility="";e.style.transform="";e.style.zIndex="";e.style.pointerEvents=""});sec.classList.toggle("pinned",false);if(prog)prog.style.transform="";txt.concat(figs).forEach(function(t){if(t)t.removeAttribute("aria-hidden")});
       rail.forEach(function(r){r.classList.toggle("on",false);r.classList.toggle("done",false)})}});
 }
 
@@ -260,23 +264,24 @@ function preload(){
     var t0=performance.now(),ready=false,tasks=[];
     $$("img").forEach(function(im){if(im.decode)tasks.push(im.decode().catch(function(){}))});
     Promise.all(tasks).then(function(){ready=true});setTimeout(function(){ready=true},1000);
+    /* the hero photo must be decoded before the exit, so it never pops in late (cap 2.5 s) */
+    var hi=photo&&$("img",photo),heroOK=!hi||!hi.decode;if(hi&&hi.decode){try{hi.loading="eager"}catch(e){}hi.decode().then(function(){heroOK=true},function(){heroOK=true})}
     var o={n:0};function upd(){bi.style.transform="scaleX("+o.n/100+")"}
     G.timeline().to(o,{n:88,duration:1,ease:"power2.out",onUpdate:upd},0);
-    (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
+    (function check(){var el=(performance.now()-t0)/1000;if((heroOK&&((ready&&el>=.95)||el>=1.15))||el>=2.5)exit();else requestAnimationFrame(check)})();
+    /* desoutter's exit, event for event (recorded on video 2026-11-27): the lockup, bar and line fade out IN PLACE (.3 s at .12;
+       desoutter's .wm char rise is hidden there, so nothing rises), the panel lifts from .42 (flow .85 s) over the still page,
+       the H1 lines and the hero visual start at .95, the header comes down after the loader (its CSS transform transition, v4.css). */
     function exit(){
       var mob=MOBILE();
-      var LK=L.children.length?Array.prototype.slice.call(L.children):[L];L.style.transition="none";
+      var LK=L.children.length?Array.prototype.slice.call(L.children):[L];
       var tl=G.timeline({onComplete:function(){pre.remove();endIntro();unlockScroll();G.set(hdr,{clearProps:"transform"});onS();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
-        /* desoutter: .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08): our logo is one lockup, so it rises out as one unit */
-        .to(LK,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in"},.08)
-        .to([bar,pl],{opacity:0,duration:.3,ease:"power2.in"},.12)
-        /* desoutter starts its hero visual at .95; our hero is a photo + H1 on a plain ground, so starting there leaves a blank page
-           while the panel lifts. The entrance starts WITH the lift (client, 2026-11-27): no empty frame between loader and site. */
-        .add(function(){photoIn(1.8)},mob?.62:.42)
-        .add(function(){if(W._heroIn)W._heroIn.play()},mob?.62:.42)
+        .to(LK.concat([bar,pl]),{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .add(function(){photoIn(1.8)},mob?1.0:.95)
+        .add(function(){if(W._heroIn)W._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
-        .to(hdr,{yPercent:0,duration:.7,ease:"silk"},mob?.75:.55);/* under the lifting panel, so it is already in place when the top is uncovered */
+        .to(hdr,{yPercent:0,duration:.7,ease:"silk"},.95);
     }
   }
 }

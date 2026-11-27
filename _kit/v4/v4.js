@@ -151,7 +151,7 @@ function initView(first){var E=ENTRY;ENTRY=0;HERO_TL=[];
 /* ================= AZ: GLOBAL REVEAL (verbatim) ================= */
 var RV_SEL="h1,h2,h3,h4,h5,h6,p,li,b,strong,small,span,blockquote,figcaption,dt,dd,tr,label,button,a[class],img,svg,figure,canvas,picture,video,.fld,[class*=card],[class*=stat],[class*=tile],[class*=eyebrow],[class*=kicker],[class*=label],[class*=lab],[class*=tag],[class*=btn],[class*=pill]";
 var RV_UNIT="li,tr,button,a,p,h1,h2,h3,h4,h5,h6,figure,blockquote,label,dt,dd,img,svg,canvas,picture,video,.fld";
-var RV_SKIP=".hero,.ph-head,#pageTitle,[data-v4-first],[data-v4-hero],#pre,.bo,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
+var RV_SKIP=".hero,.ph-head,#pageTitle,[data-v4-first],[data-v4-hero],[data-v4-story].pinned .steps,#pre,.bo,[aria-hidden=true],.sr-only,script,style,template,[data-norv]";
 var RV_LIVE=[];
 function rvMarks(root){var A=new Set(),K=new Set();
   $$("*",root).forEach(function(el){var t=G.getTweensOf(el);for(var i=0;i<t.length;i++){if(t[i].vars.repeat<0)continue;A.add(el);
@@ -205,26 +205,32 @@ function story(sec){
     /* the step change is TIME-based (client, 2026-11-27), triggered when the active step changes, never scrubbed:
        outgoing photo fades out (.6 s), incoming photo rises in from opacity 0 / y 24px (.9 s, "silk"); no scale, no blur.
        Step text + caption: the outgoing goes first (.3 s), then the incoming rises the same way, so two texts never show together. */
+    /* every state change goes through a proxy object written to style directly: build.js's imgfx patch rewrites any gsap
+       opacity/autoAlpha tween or set on a photo into "scale 1.035 -> 1", which made the photos grow ("jump bigger"). Here nothing scales. */
+    function put(e,a,y){if(!e)return;e.style.opacity=a>=1?"":String(+a.toFixed(4));e.style.visibility=a<=0?"hidden":"";e.style.transform=y?"translate3d(0,"+y.toFixed(2)+"px,0)":""}
+    function fade(e,a1,y1,o){if(!e)return;if(e.__v4t)e.__v4t.kill();var cs=e.__v4s||{a:a1,y:0};
+      var p={a:"a0" in o?o.a0:cs.a,y:"y0" in o?o.y0:cs.y};e.__v4s=p;put(e,p.a,p.y);
+      e.__v4t=G.to(p,{a:a1,y:y1,duration:o.d,ease:o.e,delay:o.dl||0,onUpdate:function(){put(e,p.a,p.y)}})}
+    function now(e,a){if(!e)return;if(e.__v4t)e.__v4t.kill();e.__v4s={a:a,y:0};put(e,a,0)}
     function show(n){var prev=cur;if(n===prev)return;cur=n;
       rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)});
       txt.concat(figs).forEach(function(t,k){if(!t)return;if(k%N===n)t.removeAttribute("aria-hidden");else t.setAttribute("aria-hidden","true")});
-      G.killTweensOf(all);
-      steps.forEach(function(s,j){if(j===n||j===prev)return;[figs[j],txt[j],caps[j]].forEach(function(e){if(e)G.set(e,{autoAlpha:0,y:0})})});
-      if(figs[n])G.set(figs[n],{zIndex:2});if(prev>=0&&figs[prev])G.set(figs[prev],{zIndex:1});
-      if(instant||prev<0){[figs[n],txt[n],caps[n]].forEach(function(e){if(e)G.set(e,{autoAlpha:1,y:0})});
-        if(prev>=0)[figs[prev],txt[prev],caps[prev]].forEach(function(e){if(e)G.set(e,{autoAlpha:0,y:0})});return}
-      if(figs[prev])G.to(figs[prev],{autoAlpha:0,duration:.6,ease:"power1.out"});
-      if(figs[n])G.fromTo(figs[n],{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.9,ease:"silk"});
-      [txt[prev],caps[prev]].forEach(function(e){if(e)G.to(e,{autoAlpha:0,duration:.3,ease:"power2.in"})});
-      [txt[n],caps[n]].forEach(function(e){if(e)G.fromTo(e,{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.9,ease:"silk",delay:.32})})}
-    steps.forEach(function(s,j){[figs[j],txt[j],caps[j]].forEach(function(e){if(e)G.set(e,{autoAlpha:j===0?1:0,y:0})})});show(0);
+      steps.forEach(function(s,j){if(j===n||j===prev)return;[figs[j],txt[j],caps[j]].forEach(function(e){now(e,0)})});
+      if(figs[n])figs[n].style.zIndex="2";if(prev>=0&&figs[prev])figs[prev].style.zIndex="1";
+      if(instant||prev<0){[figs[n],txt[n],caps[n]].forEach(function(e){now(e,1)});if(prev>=0)[figs[prev],txt[prev],caps[prev]].forEach(function(e){now(e,0)});return}
+      fade(figs[prev],0,0,{d:.6,e:"power1.out"});
+      fade(figs[n],1,0,{a0:0,y0:24,d:.9,e:"silk"});
+      [txt[prev],caps[prev]].forEach(function(e){fade(e,0,0,{d:.3,e:"power2.in"})});
+      [txt[n],caps[n]].forEach(function(e){fade(e,1,0,{a0:0,y0:24,d:.9,e:"silk",dl:.32})})}
+    steps.forEach(function(s,j){[figs[j],txt[j],caps[j]].forEach(function(e){now(e,j===0?1:0)})});show(0);
     /* desoutter homeScroll: an empty 1 s timeline scrubbed by the pin; its onUpdate drives the progress line and the active step */
     var tl=G.timeline();tl.to({},{duration:1});
-    tl.eventCallback("onUpdate",function(){if(!sec.isConnected)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";show(Math.min(N-1,Math.floor(p*N*.9999)))});
+    /* a ScrollTrigger refresh (lazy images loading, resize) renders this timeline at 0 while it measures, then restores it in onRefresh:
+       ignore those in-between renders, or the current photo would replay its entrance */
+    tl.eventCallback("onUpdate",function(){if(!sec.isConnected||ST.isRefreshing)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";show(Math.min(N-1,Math.floor(p*N*.9999)))});
     var st=ST.create({trigger:sec,start:function(){return "top top+="+hhs()},end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,
-      onRefresh:function(s){/*story keeps its state after ScrollTrigger.refresh (no replayed change)*/instant=1;tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl);instant=0},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
-    return function(){st.kill();tl.kill();G.killTweensOf(all);sec.classList.toggle("pinned",false);if(prog)prog.style.transform="";
-      G.set(all,{clearProps:"opacity,visibility,transform,zIndex"});txt.concat(figs).forEach(function(t){if(t)t.removeAttribute("aria-hidden")});
+      onRefresh:function(s){/*after a refresh the story shows the step for the restored progress: the same step stays put, a new one changes softly*/tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)requestAnimationFrame(function(){c.call(tl)})},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+    return function(){st.kill();tl.kill();all.forEach(function(e){if(e.__v4t)e.__v4t.kill();e.__v4s=null;e.style.opacity="";e.style.visibility="";e.style.transform="";e.style.zIndex=""});sec.classList.toggle("pinned",false);if(prog)prog.style.transform="";txt.concat(figs).forEach(function(t){if(t)t.removeAttribute("aria-hidden")});
       rail.forEach(function(r){r.classList.toggle("on",false);r.classList.toggle("done",false)})}});
 }
 
@@ -265,10 +271,12 @@ function preload(){
         /* desoutter: .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08): our logo is one lockup, so it rises out as one unit */
         .to(LK,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in"},.08)
         .to([bar,pl],{opacity:0,duration:.3,ease:"power2.in"},.12)
-        .add(function(){photoIn(1.8)},mob?1.0:.95)
-        .add(function(){if(W._heroIn)W._heroIn.play()},mob?1.0:.95)
+        /* desoutter starts its hero visual at .95; our hero is a photo + H1 on a plain ground, so starting there leaves a blank page
+           while the panel lifts. The entrance starts WITH the lift (client, 2026-11-27): no empty frame between loader and site. */
+        .add(function(){photoIn(1.8)},mob?.62:.42)
+        .add(function(){if(W._heroIn)W._heroIn.play()},mob?.62:.42)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)
-        .to(hdr,{yPercent:0,duration:.7,ease:"silk"},.95);
+        .to(hdr,{yPercent:0,duration:.7,ease:"silk"},mob?.75:.55);/* under the lifting panel, so it is already in place when the top is uncovered */
     }
   }
 }

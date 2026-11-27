@@ -102,8 +102,8 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Address</span>Kalvarijų g. 125-2<br>LT-08221 Vilnius, Lithuania</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/motion">Motion</a><br><a class="ul" href="#/optomechanics">Optomechanics</a><br><a class="ul" href="#/lasers">Lasers</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/shows">Shows</a></div>'+
-   '<div class="c"><span class="lab">We make</span>Motorised positioners<br>Optomechanics<br>DPSS lasers</div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/motion">Motion</a><br><a class="ul" href="#/optomechanics">Tables</a><br><a class="ul" href="#/lasers">Lasers</a><br><a class="ul" href="#/company">Company</a><br><a class="ul" href="#/shows">Shows</a></div>'+
+   '<div class="c"><span class="lab">We make</span>Motorised positioners<br>Tables<br>DPSS lasers</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 1000 214" aria-hidden="true"><text class="bmx" x="500" y="176" text-anchor="middle" textLength="980" lengthAdjust="spacing">standa</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Standa Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

@@ -6,7 +6,7 @@ function img(src,alt,w,h,cls){return '<img'+(cls?' class="'+cls+'"':'')+' src="'
 function more(href,t){return '<a class="g-more" href="'+href+'">'+esc(t)+' '+ARRS+'</a>'}
 /* the four partner marks, one tone, matched optical size (BW) */
 function plogo(p){return '<img class="g-logo '+p.lh+'" src="'+IMG+p.logo+'" width="'+p.lw+'" height="'+p.lhh+'" alt="'+esc(p.inst)+' logo" decoding="async">'}
-function heroMarks(){return '<div class="g-hm" data-r><span class="lab g-hm-l">Advancing Gibson’s drugs with their own resources</span><ul class="g-hm-row">'+
+function heroMarks(){return '<div class="g-hm" data-r><span class="lab g-hm-l">Advancing Gibson’s drugs<br class="g-hm-br"> with their own resources</span><ul class="g-hm-row">'+
   PARTNERS.map(function(p){return '<li>'+plogo(p)+'</li>'}).join("")+'</ul></div>'}
 
 /* (a) two commercially validated targets: the statement section */

@@ -9,6 +9,7 @@
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var fok=!document.fonts;if(document.fonts)document.fonts.ready.then(function(){fok=true;if(w){G=geo();G._t=performance.now();if(!running)frame(true)}});
   var BG="#07141a";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -20,14 +21,18 @@ var field=(function(){
     var kx=mob?w*.5:side+cw*.71,ky=mob?86+ih*.5:Math.max(h*.52,110+ih*.5);
     /* v9 (client: hero composition looked off): on the home hero the helix spans exactly the text block, from the eyebrow's top
        to the buttons' bottom, and is centred in the open area between the text's right edge and the content's right edge */
-    function rr(el){var m=0,tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,g=document.createRange();  /* the text's own right edge, not its block's */
+    /* v10: positions are read from layout, ignoring the entrance transforms (offsetTop chain), so the helix does not move while the
+       headline and buttons rise in; the text's right edge comes from its text runs (x is never transformed in the entrance) */
+    function rr(el){var m=0,tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,g=document.createRange();
       while((n=tw.nextNode())){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);var r=g.getBoundingClientRect();if(r.width>0&&r.right>m)m=r.right}return m}
+    function oy(el){var y=0;while(el){y+=el.offsetTop;el=el.offsetParent}return y}
+    var dom=false;
     if(!mob){var hr=document.querySelector(".hero"),ey=hr&&hr.querySelector(".eyebrow"),ac=hr&&hr.querySelector(".act"),
         h1=hr&&hr.querySelector(".hero-h"),ld=hr&&hr.querySelector(".hero-foot .s");
-      if(ey&&ac&&h1){var sy=window.scrollY||0,t=ey.getBoundingClientRect().top+sy,b=ac.getBoundingClientRect().bottom+sy,
+      if(ey&&ac&&h1){var sy=window.scrollY||0,t=oy(ey)-sy,b=oy(ac)+ac.offsetHeight-sy,
           tr=Math.max(rr(h1),ld?rr(ld):0),cr=side+cw;
-        if(b-t>160&&cr-tr>120){ih=Math.min(b-t,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=(t+b)/2;kx=(tr+cr)/2}}}
-    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
+        if(b-t>160&&cr-tr>120){ih=Math.min(b-t,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=(t+b)/2+sy;kx=(tr+cr)/2;dom=true}}}
+    return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h,dom:dom};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}
   var lastF=0;
@@ -38,6 +43,10 @@ var field=(function(){
     var t=RM?0:(now-t0)/1000;dim+=(dimT-dim)*.08;
     var e=sm(IN.v);cv.style.opacity=shown?String(.5+.5*dim):"";
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
+    /* v10: on the desktop home hero, draw the helix only once its place comes from the laid-out text with the real fonts,
+       so it never appears at a fallback size and then jumps */
+    var want=!G.mob&&!!document.querySelector(".hero .eyebrow");
+    if(want&&(!fok||!G.dom)&&now-t0<4000){if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});return}
     if(ok){
       /* a very slow breath and sway: ~2.5% scale and a degree of tilt over ~40s */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),q=Math.sin(t*Math.PI*2/56),sc=(1+.025*k)*(1+.03*(1-e));

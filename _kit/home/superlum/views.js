@@ -54,7 +54,7 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Drive</span><span>Emit</span><span>Spectrum</span><span>Deliver</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">A protected</span> <span class="nw">drive current.</span></h2><p>SLDs are extremely sensitive to surges and spikes of drive current, so each module runs on a Superlum current driver and temperature controller.</p></article>'+
-     '<article class="step"><h2><span class="nw">Amplified</span> <span class="nw">in one pass.</span></h2><p>In the chip, spontaneous emission is amplified along the waveguide in a single pass, with no laser cavity: high power in a single transverse mode.</p></article>'+
+     '<article class="step"><h2><span class="nw">Amplified in</span> <span class="nw">a single pass.</span></h2><p>In the chip, spontaneous emission is amplified along the waveguide in a single pass, with no laser cavity: high power in a single transverse mode.</p></article>'+
      '<article class="step"><h2><span class="nw">A broad,</span> <span class="nw">smooth spectrum.</span></h2><p>The result is low-coherence light with a wide spectrum, the property that OCT, interferometry and fibre sensing depend on.</p></article>'+
      '<article class="step"><h2><span class="nw">Into</span> <span class="nw">the fibre.</span></h2><p>Light leaves through single-mode, PM or multimode fibre in butterfly, DIL or miniBUT packages, with an optical isolator where high power makes feedback a risk.</p></article>'+
     '</div></div>'+
@@ -82,7 +82,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="company" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Big or small,</span> <span class="nw">commercial or academic.</span></h2></div><p data-r>A leading supplier of superluminescent diodes and modules in the Republic of Ireland, with personal attention to every project.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Every project,</span> <span class="nw">big or small.</span></h2></div><p data-r>A leading supplier of superluminescent diodes and modules in the Republic of Ireland, with personal attention to every project, commercial or academic.</p></div>'+
    co()+
   '</div></section>'+
   cta();
@@ -104,7 +104,7 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Address</span>Fota Point Enterprise Park<br>Carrigtwohill, Co. Cork, Ireland</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/slds">SLDs</a><br><a class="ul" href="#/sources">Light sources</a><br><a class="ul" href="#/applications">Applications</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/company">Company</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/slds">SLDs</a><br><a class="ul" href="#/sources">Light sources</a><br><a class="ul" href="#/applications">Markets</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/company">Company</a></div>'+
    '<div class="c"><span class="lab">Products</span>Superluminescent diodes<br>Optical amplifiers<br>Broadband light sources</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 1000 214" aria-hidden="true"><text class="bmx" x="500" y="176" text-anchor="middle" textLength="980" lengthAdjust="spacing">SUPERLUM</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Superlum Diodes Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';

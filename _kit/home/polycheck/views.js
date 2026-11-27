@@ -23,6 +23,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="light">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="646" alt="Polycheck allergy test strips in a colour-coded tray, held in two hands" decoding="async" fetchpriority="high"><figcaption>Polycheck allergy test strips</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>In vitro diagnostics<span class="nomob"> · Made in Germany</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Many allergens,</span><span class="l"><em>one serum sample.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Polycheck® multiparameter immunoassays quantify allergen-specific IgE and autoimmune IgG and IgA in a single test: up to 30 allergens from 200 µl of serum, read by a flatbed scanner and the Biocheck Imaging Software.</p>'+

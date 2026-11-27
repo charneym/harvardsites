@@ -5,7 +5,7 @@
    upscaled past its native size. Slow drift, no pointer (CZ). On phones it sits in the band above the eyebrow (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#ffffff",IW=1900,IH=856,TH=0;
   img.decoding="async";img.onload=function(){ok=true;IW=img.naturalWidth;IH=img.naturalHeight;size()};img.src="hero.webp";
   var TR_=0,trN=0;function textR(){if(trN--<=0||!TR_){trN=40;var m=0;["#hero .hero-h","#hero .s","#hero .eyebrow","#hero .act"].forEach(function(q){var el=document.querySelector(q);if(!el)return;var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),nd,r=document.createRange();while((nd=tw.nextNode())){if(!nd.nodeValue.trim())continue;r.selectNodeContents(nd);var b=r.getBoundingClientRect();if(b.width&&b.right>m)m=b.right}});if(m)TR_=m}return TR_||w*.5}
@@ -33,7 +33,7 @@ var field=(function(){
     c.setTransform(dpr,0,0,dpr,0,0);c.fillStyle=BG;c.fillRect(0,0,w,h);
     if(ok&&G){
       var k=.5-.5*Math.cos(t*Math.PI*2/36),sc=G.sc*(1+.018*k)*(1+.035*(1-e));
-      var dw=IW*sc,dh=IH*sc,cx=G.cx-k*dw*.008,cy=G.cy-k*dh*.03-SP.v*dh*.12+(1-e)*dh*.04;
+      var dw=IW*sc,dh=IH*sc,cx=G.cx-k*dw*.008,cy=G.cy-k*dh*.03+HY+(1-e)*dh*.04;
       c.save();c.translate(cx,cy);c.rotate(TH);c.globalAlpha=e;c.drawImage(img,-dw/2,-dh/2,dw,dh);c.restore();c.globalAlpha=1;
       if(G.mob){
         var mv=c.createLinearGradient(0,G.bh*.78,0,G.bh);mv.addColorStop(0,"rgba(255,255,255,0)");mv.addColorStop(1,"rgba(255,255,255,1)");c.fillStyle=mv;c.fillRect(0,G.bh*.78,w,G.bh*.22+1);
@@ -48,6 +48,10 @@ var field=(function(){
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   /* the headline settles after fonts load: re-measure once it has */
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setTimeout(size,400);setTimeout(size,2600)});
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the object scrolls up 1:1 with the hero on desktop; 0 once the hero has left (footer echo) */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.cx,G.cy]:[w/2,h/2]}};
 })();

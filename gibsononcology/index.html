@@ -2348,7 +2348,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false,drew=false;
   var fok=!document.fonts;if(document.fonts)document.fonts.ready.then(function(){fok=true;if(w){G=geo();G._t=performance.now();if(!running)frame(true)}});
   var BG="#07141a";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
@@ -2391,11 +2391,15 @@ var field=(function(){
     /* v10: on the desktop home hero, draw the helix only once its place comes from the laid-out text with the real fonts,
        so it never appears at a fallback size and then jumps */
     var want=!G.mob&&!!document.querySelector(".hero .eyebrow");
+    if(want&&!G.dom){G=geo();G._t=now}
     if(want&&(!fok||!G.dom)&&now-t0<4000){if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});return}
+    /* v12 (client: the helix had no entrance): on the desktop home hero its entrance starts on its first real frame, on every load
+       (a reload too, where the template's intro is instant): it rises ~6% of its height into place and fades in, with the headline */
+    if(want&&G.dom&&ok&&!drew){drew=true;if(!RM&&window.gsap){IN.v=0;gsap.to(IN,{v:1,duration:1.5,ease:"power3.out"});e=0}}
     if(ok){
       /* a very slow breath and sway: ~2.5% scale and a degree of tilt over ~40s */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),q=Math.sin(t*Math.PI*2/56),sc=(1+.025*k)*(1+.03*(1-e));
-      var sY=window.scrollY||0,dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.dom?G.ky-sY-k*G.ih*.012:G.ky-k*G.ih*.012-SP.v*G.ih*.05;  /* v11: on the desktop home hero the helix scrolls with the page */
+      var sY=window.scrollY||0,dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.dom?G.ky-sY-k*G.ih*.012+(1-e)*G.ih*.06:G.ky-k*G.ih*.012-SP.v*G.ih*.05;  /* v11: on the desktop home hero the helix scrolls with the page */
       /* a deep teal glow painted across the WHOLE canvas, never inside the image rect alone (DJ) */
       var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.42:G.dom?cy:h*.52,ggr=Math.max(w,h)*.75;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);

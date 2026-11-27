@@ -14,6 +14,7 @@ function caps(){var C=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="1107" alt="DIS FLX system with touchscreen control and safety guarding" decoding="async" fetchpriority="high"><figcaption>The DIS FLX system</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Optical registration<span class="nomob"> · New York · since 1999</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Every layer,</span> <span class="l">exactly where</span> <span class="l"><em>it belongs.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>DIS builds optical registration equipment for multilayer PC boards: cameras align every core, inductive weld heads bond the stack, and no pins go into the press.</p>'+

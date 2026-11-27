@@ -1,5 +1,7 @@
 # v4 starter kit
 
+> **MOTION FIX (2026-11-27).** All motion is now ported verbatim from the sites the client was already sent (/desoutter/, /lightel/, /viamed/, /sentec/): loader, Lenis, line/element/image reveals, parallax, hovers, the #xc/#xt route curtain, the pinned story (StoryFX). `v4.css` (injected by `build.sh`) holds the motion hooks. The table of hooks below the fold is updated; the old clip-path wipes, photo zoom/drift, slide-in strip and count-ups are gone. Migrating an existing site: `MIGRATE.md`.
+
 Build a concept home page to the current standard in `_kit/WAVE_BRIEF.md`: STRUCTURE v3, COMPOSITION BASICS, PREMIUM MOTION v4 with its CORRECTION, and the no-overlap story rule. You write content, tokens and page-specific CSS. The kit supplies the motion layer and the gates.
 
 The kit is distilled from the three approved references (/drn-engineering/, /teknomedical/, /charlesausten/). `/_v4demo/` is DRN's content rebuilt with the kit (throwaway, not linked anywhere). Its source is `_kit/home/_v4demo/v4.src.html`.
@@ -30,19 +32,17 @@ mkdir -p _kit/home/SLUG SLUG/img && cp _kit/v4/starter.html _kit/home/SLUG/v4.sr
 
 | Hook | Effect |
 |---|---|
-| `#pre > [data-v4-logo]` + `[data-v4-brand]` | Logo-lockup intro in ≤1.2 s: a clip-path unmask, then the logo lifts into the header logo. No counter. Plays once per session (`sessionStorage.v4intro`), only on a plain `#/` load. The head snippet adds `html.intro`. |
+| `#pre > [data-v4-logo]` | The sent sites' loader: the lockup fades and rises in as one unit, a progress bar fills, then the panel lifts away (flow, .85 s), the header drops in and the hero plays at .95 s. No counter. Full once per site per session; later loads get the short veil fade. |
 | `#hdr[data-v4-header]` | Gets `.solid` after 8px of scroll. CSS condenses `--hh` to `--hhs` and the logo shrinks. |
-| (always) | Lenis smooth scroll (`window.V4lenis`), the phone menu (`#burger`, `#mm`, `#burgerLab[data-open][data-close]`), and section routes `#/<key>`, which also handle the pin spacer. `#/more/*` belongs to buildout. |
-| `[data-v4-first]` | Hero plus fact strip. v4.js measures `--v4-vh` (innerHeight; on phones it ignores URL-bar resizes), and CSS sets the height to `--v4-vh - --hh`. The hero flexes, so the strip ends exactly at the fold. |
-| `[data-v4-hero]` | Its `h1` rises line by line out of a mask (SplitText lines). `[data-in]` items before the h1 start with it and the rest fade up after. |
-| `[data-v4-photo]` | The hero figure wipes in from the right (clip-path) while its img eases from 1.12 to 1.04. It then drifts slowly (1.04 to 1.09, 18 s, yoyo) and parallaxes on scroll. The figcaption slides up. |
-| `[data-v4-strip]` | The strip items slide up one after another. |
-| `[data-split]` | Headings rise line by line on scroll. One colour only: the CSS does not style lines. |
-| `[data-up]`, `[data-up="stagger"]` | Fade up on arrival, either the element or its children in turn. |
-| `[data-rv]` (+ `[data-px]`) | Clip-path reveal of an image frame (+ inner parallax at scale 1.08). |
-| `[data-count]` | Counts up once and keeps any prefix or suffix ("40+", "24 h"). Use only for genuinely notable figures. |
-| `section.story[data-v4-story]` | The pinned photo story. One markup: `.rail > i + li*` and `.steps > li.step > figure(.fi > img, figcaption) + .st(.num, h3, p)`. At ≥1024×620 it pins for `n×80%` of scroll, photos crossfade and zoom (1.14 to 1), and the rail fills. Step text and captions switch with a gap and are **never** visible two at once. Inactive steps get `aria-hidden`. Below that size it is a stacked sequence with reveals. buildout turns it into numbered steps on the sub-pages. |
-| hover (CSS) | `.card` lifts and its photo zooms. Nav links and `a.ul` draw their underline. |
+| (always) | Lenis (lerp .09) as `window.V4lenis`, the phone menu (clip-path circle, links rise), section routes `#/<key>` (1.5 s scroll). `#/more/*` belongs to buildout, whose curtain (#xc/#xt/#xlab; created if missing) now actually shows. |
+| `[data-v4-first]` | Hero plus fact strip, sized to one viewport (`--v4-vh`). |
+| `[data-v4-hero]` | h1 lines rise (silk 1.1 s), `[data-in]` follow (y 22, .9 s); the h1 drifts up and fades as the hero scrolls away (desktop). |
+| `[data-v4-photo]` | Fades in like the sent hero visual (filter opacity, 1.8 s). No wipe, no zoom, no drift. |
+| `[data-v4-strip]` | Fades in with the hero copy (no slide). `data-v4-strip="off"` removes it. |
+| `[data-split]` | Heading lines + words rise out of a mask (silk 1.15 s). |
+| everything else in `#view` + footer | The sent global reveal: headings line by line, text/cards/figures fade up 24px, images in a clipping frame fade from scale 1.06. `[data-up]`, `[data-rv]`, `[data-px]`, `[data-count]` are accepted but add nothing. |
+| `section.story[data-v4-story]` | Pinned for 2.8 viewports (scrub .6) at ≥1024×620; StoryFX crosses the steps over (never two at once) and dissolves the photos; captions switch like the steps. Stacked with reveals below that size. |
+| hover (v4.css) | Buttons fill from below and the arrow nudges; nav links and `a.ul` draw a line; cards: photo 1.035 + heading colour; news rows shift 6px and draw a rule. |
 
 Optional config goes before the `<!--@v4-->` marker: `<script>window.V4={secs:{key:"sectionId"},pinFrom:"(min-width:1100px) and (min-height:640px)",stepVh:90}</script>`. A `var SECS={...}` map works too, and buildout reads it.
 

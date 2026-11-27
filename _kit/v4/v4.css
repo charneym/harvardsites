@@ -1,0 +1,69 @@
+/* _kit/v4/v4.css: the motion hooks for _kit/v4/v4.js, PORTED from the sent sites (/desoutter/, /lightel/: _kit/src/desoutter.src.html).
+   build.sh injects this file at the end of <head>, after the site's own CSS, so every kit-built site gets it on rebuild.
+   Only motion and its hooks live here: loader, route curtain, phone menu, hover states. Colours come from the site's tokens (--brand, --paper, ...). */
+:root{--v4ease:cubic-bezier(.65,.05,.2,1);--v4eo:cubic-bezier(.22,.61,.36,1)}
+
+/* ---- preloader (desoutter #pre): the lockup fades and rises in as ONE unit, a progress bar, the site's line bottom-left; no counter ---- */
+html.intro #pre{display:block;position:fixed;inset:0;z-index:1200;background:var(--paper);pointer-events:none;animation:v4gone 0s 4s forwards}
+html.intro #pre [data-v4-logo]{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:0;clip-path:none;will-change:auto;
+  visibility:hidden;opacity:0;transform:translateY(14px);transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+html.intro #pre [data-v4-logo][style*="visible"]{opacity:1;transform:none}
+#pre .bar{position:absolute;left:var(--side);right:var(--side);bottom:calc(var(--side) + 92px);height:1px;background:var(--line)}
+#pre .bar i{position:absolute;inset:0;background:var(--brand);transform-origin:left;transform:scaleX(0)}
+#pre .pl{position:absolute;left:var(--side);bottom:calc(var(--side) + 10px);max-width:calc(100% - 2*var(--side) - 150px);font:500 15px/1.6 var(--body);color:var(--muted)}
+html.seen #pre [data-v4-logo],html.seen #pre .bar,html.seen #pre .pl{display:none}
+html.intro [data-v4-brand]{visibility:visible;animation:none}
+html.v4-wait [data-v4-hero] h1,html.v4-wait [data-v4-hero] [data-in],html.v4-wait [data-v4-photo],html.v4-wait [data-v4-strip]{animation:v4show 0s 4s forwards}
+
+/* ---- the fact strip: remove it on a site with data-v4-strip="off" on the element (or delete the element) ---- */
+[data-v4-strip="off"]{display:none!important}
+
+/* ---- route curtain (desoutter .xc/.xt): lib/buildout.js runs it; v4.js resets it with gsap.set(#xc,{y:0,yPercent:101}) ---- */
+#xc{position:fixed;inset:auto;top:0;bottom:0;left:0;width:100vw;z-index:950;pointer-events:none;background:var(--brand);transform:translateY(101%);will-change:transform}
+#xc::before{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--onBrand2,#fff);opacity:.8}
+#xt{position:fixed;inset:0;z-index:951;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:0 var(--side);visibility:hidden;color:var(--onBrand)}
+#xtt{display:block;font-family:var(--head);font-weight:var(--hw);font-size:clamp(54px,9vw,170px);line-height:1.05;letter-spacing:-.03em;color:var(--onBrand);overflow:hidden;padding:.16em .18em .3em}
+#xtt span{display:inline-block}
+#xlab{font:600 15px/1.5 var(--body);letter-spacing:.02em;color:var(--onBrand2)}
+
+/* ---- phone menu (desoutter .mm): v4.js opens it with a clip-path circle and raises the links ---- */
+html.v4m .mm{display:block;visibility:hidden;clip-path:circle(0px at calc(100% - 40px) 40px)}
+html.v4m .mm li{overflow:hidden}
+html.v4m .mm li a{will-change:transform}
+
+/* ---- hover states (desoutter): buttons fill from below and the arrow nudges; links draw their line; rows shift and draw a rule; photos zoom 1.035 ---- */
+.btn{position:relative;overflow:hidden;isolation:isolate;transition:color .35s var(--v4eo),border-color .35s var(--v4eo)}
+.btn::before{content:"";position:absolute;inset:0;background:var(--brandT);border-radius:inherit;transform:translateY(101%);transition:transform .45s var(--v4ease);z-index:-1}
+.btn:hover::before,.btn:focus-visible::before{transform:none}
+.btn:hover{background:transparent}
+.btn.solid::before,.nav a.btn::before{background:var(--brandD)}
+.btn.solid:hover,.nav a.btn:hover{background:var(--brand);border-color:var(--brandD)}
+.btn.inv::before{background:rgba(255,255,255,.14)}.btn.inv:hover{background:transparent}
+.btn.white::before{background:var(--brandT)}.btn.white:hover{background:#fff;border-color:#fff}
+.btn svg{transition:transform .35s var(--v4eo)}
+.btn:hover svg{transform:translateX(4px)}
+.nav a:not(.btn){position:relative;background:none}
+.nav a:not(.btn)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--brand);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--v4ease)}
+.nav a:not(.btn):hover::after,.nav a:not(.btn)[aria-current="page"]::after{transform:scaleX(1);transform-origin:left}
+a.ul{position:relative}
+a.ul:hover{animation:none}
+a.ul::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--brand);transform:scaleX(0);transform-origin:right;transition:transform .45s var(--v4ease)}
+a.ul:hover::after{transform:scaleX(1);transform-origin:left}
+@media (hover:hover){
+  .card:hover{transform:none;box-shadow:none}
+  .card img{transition:transform .45s var(--v4eo)}
+  .card:hover img{scale:1;transform:scale(1.035)}
+  .card h3{transition:color .25s ease-out}
+  .card:hover h3{color:var(--brand)}
+}
+.news li{position:relative}
+.news li::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .4s var(--v4eo)}
+.news li:not(:hover)::after{transform-origin:right}
+.news li:hover::after{transform:scaleX(1)}
+.news h3{transition:color .3s var(--v4eo),transform .4s var(--v4eo)}
+.news a:hover h3{color:var(--brand);transform:translateX(6px);text-decoration:none}
+.news .src svg{transition:transform .3s var(--v4eo)}
+.news a:hover .src svg{transform:translateX(5px)}
+
+/* ---- the pinned story: StoryFX drives the steps and photos; the rail keeps its colour change ---- */
+.story.pinned figure{will-change:translate,scale,filter}

@@ -12,7 +12,7 @@ function strip(x,id,lab){
 }
 function trScene(o){
   var g='',mob=o.mob,i;
-  g+='<svg class="issc'+(mob?' mob':'')+'" viewBox="'+(mob?'120 18 480 472':'20 18 680 472')+'" aria-hidden="true">';
+  g+='<svg class="issc'+(mob?' mob':'')+'" viewBox="'+(mob?'120 18 480 492':'20 18 680 492')+'" aria-hidden="true">';
   if(!mob)g+='<text class="t" x="40" y="40">LATERAL-FLOW TEST STRIP · SCHEMATIC</text>';
   g+='<path class="cup" d="M236 418H484L472 478H248Z"/><rect class="liq" id="isLq" x="242" y="430" width="236" height="44"/>';
   g+='<g id="isMain">'+strip(332,'isS0','')+'<rect class="fl" id="isFl" x="340" y="450" width="40" height="0"/>'+
@@ -25,7 +25,7 @@ function trScene(o){
      '<text class="lb" x="'+(mob?520:510)+'" y="'+(mob?412:404)+'">NG/ML</text></g>';
   g+='<text class="sl" id="isF" x="360" y="118" text-anchor="middle">F</text>';
   var C=mob?["DIP THE STRIP","THE SAMPLE FLOWS","READ BY EYE","F · X · N AT ONCE"]:["DIP: URINE, OR A DISSOLVED SAMPLE","LATERAL FLOW ALONG THE MEMBRANE","CONTROL AND TEST LINES, READ BY EYE","FENTANYL · XYLAZINE · NITAZENE, ONE TEST"];
-  for(i=0;i<4;i++)g+='<text class="cl" id="isC'+i+'" x="'+(mob?140:40)+'" y="'+(mob?488:486)+'">'+C[i]+'</text>';
+  for(i=0;i<4;i++)g+='<text class="cl" id="isC'+i+'" x="'+(mob?140:40)+'" y="'+(mob?504:502)+'">'+C[i]+'</text>';
   return g+'</svg>';
 }
 function scene(){return trScene({mob:MOBILE()?1:0})}

@@ -55,7 +55,7 @@ function vHome(){
   '<section class="sec light" id="products" data-theme="light"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Products</span><h2 class="d2 split"><span class="nw">Tests that see</span> <em class="nw">trace amounts.</em></h2></div><p data-r>Our diagnostics are hundreds of times more sensitive than the state of the art, for clinical care, harm reduction, forensic work and clinical trials. Made in the U.S.</p></div>'+
    caps()+
-   '<div class="qual"><span class="lab kick" data-r>Services</span><p class="cr" data-r><span>Lateral-flow development and manufacturing</span><span>Nanobody development</span></p></div>'+
+   '<div class="qual"><span class="lab kick" data-r>Services</span><p class="cr" data-r><span>Lateral-flow development</span><span>Contract manufacturing</span><span>Nanobody development</span></p></div>'+
   '</div></section>'+
 
   '<section class="sec dark" id="applications" data-theme="dark"><div class="wrap">'+
@@ -65,7 +65,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="team" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split"><span class="nw">Laboratory medicine,</span> <em class="nw">made portable.</em></h2></div><p data-r>A start-up diagnostic company focused on bringing high-performance diagnostics to the patient&#39;s side, starting with the rapid detection of emerging drug substances.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split"><span class="nw">Diagnostics,</span> <em class="nw">made portable.</em></h2></div><p data-r>A start-up diagnostic company focused on bringing high-performance diagnostics to the patient&#39;s side, starting with the rapid detection of emerging drug substances.</p></div>'+
    '<div class="engco">'+
     '<div class="engm"><span class="lab kick" data-r>Leadership</span><ul>'+
      '<li data-r><span class="nm">Dr. Ping Wang</span><span class="lab rl">Co-founder</span></li>'+

@@ -37,6 +37,7 @@ Build home-only per `_kit/HOME_BRIEF.md` on `_kit/src/firelight.src.html` (the t
    - **(b) Otherwise:** a crafted render of their actual product, with variant B lighting (see `_kit/TOPFIX_BRIEF.md` and `_kit/reports/topfix/RECIPE_NOTES.md`; reference /teknomedical/ and /rav-valve/):
      - neutral studio key, fill and rim; faint soft shadow; ~2–3% neutral falloff
      - no glow, halo, beam, bloom or coloured haze
+   - **Render quality bar:** a render must pass for a real product photograph of their actual product: correct proportions, seams, bevels, real materials and believable screens or labels. A simple CG box or toy-like model is not acceptable (iFAST, 2026-11-27, was sent back). If you can't reach that quality, use their clean own photo cut out, or pick another company.
    - **Never:**
      - framed or boxed photos (the client: "so out of place")
      - small photos blown up

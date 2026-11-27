@@ -26,7 +26,7 @@ run buildout-test.js $F
 run fit-audit.js $F
 (cd .. && echo '=== loader-contrast (root)' && node _kit/loader-contrast-audit.js drn-engineering && echo LC-DONE)
 echo "=== ALL DONE"
-(cd .. && node _kit/tools/textclash.js drn-engineering /tmp/claude-0/-home-user-harvardsites/39e3a7df-ea67-5a7d-b866-b95418b10e16/scratchpad/tc_drn-engineering 2>&1 | tail -30)
+(cd .. && node _kit/tools/textclash.js drn-engineering /tmp/claude-0/-home-user-harvardsites/6222e5dd-e8f9-5993-bf06-522711f60f53/scratchpad/tc_drn-engineering 2>&1 | tail -30)
 (cd .. && echo '=== entities' && node _kit/tools/entities.js drn-engineering 2>&1 | tail -10)
 (cd .. && echo '=== contrast 1440' && node _kit/tools/contrast.js drn-engineering 2>&1 | tail -10)
 (cd .. && echo '=== contrast 390' && node _kit/tools/contrast.js drn-engineering 390 2>&1 | tail -10)

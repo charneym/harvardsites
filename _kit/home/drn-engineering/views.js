@@ -28,7 +28,8 @@ function faq(){var Q=[
   return '<dl class="drq">'+Q.map(function(q){return '<div data-r><dt class="lab">'+esc(q[0])+'</dt><dd><b>'+esc(q[1])+'</b><span>'+esc(q[2])+'</span></dd></div>'}).join("")+'</dl>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="light">'+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="487" height="569" alt="A turned and threaded steel body made by DRN Engineering" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Precision CNC turned parts<span class="nomob"> · Luton, Bedfordshire</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Quality turned parts,</span></span> <span class="l"><span class="nw">made in Luton</span></span> <span class="l"><em><span class="nw">since 1982.</span></em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>A family company making precision CNC turned parts and machined components, from 3 mm to 65 mm diameter from the bar, on sliding head and fixed head lathes with sub-spindle and driven tooling.</p>'+

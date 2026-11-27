@@ -100,3 +100,63 @@ The camera faces the object head-on, so a real ground plane would be seen edge-o
   - a breathing pulse on any light
   - a beam
 - **Check by eye** at 1440, 1920 and 390, side by side with the version without lighting. The lit version should look like a product shot; if your first word for it is "glow", turn it down.
+
+## 6. Hero scroll behaviour (APPROVED RECIPE step 5; added 2026-11-27, live on /teknomedical/)
+
+**Problem.** The client asked "why does it not scroll up with the text". On desktop `#field` is `position:fixed`, and field.js drew the object at a constant screen position (only a small 5% parallax, quantised to 1/40 steps). The headline scrolled away while the object stayed put.
+
+**Rule: decide first.**
+- **OBJECT** (a discrete, nameable product, device, part, molecule or cell, render or cut-out photo, sitting beside the headline): it scrolls up with the text.
+- **BACKDROP** (an ambient field, particles, light, gradient flow, landscape, or a full-bleed scene behind the text): keep the template's fixed/fade behaviour.
+- **Mixed** (an object on a living field): only the object moves; the field stays fixed.
+
+Examples:
+- OBJECT: Tekno's endoscope; a single pump, sensor, implant or chip render; a cut-out device photo.
+- BACKDROP: a screen-filling light or particle field; a full-bleed graded lab, factory or landscape photo; a texture with no single subject.
+
+### The pattern (field.js only; no template change)
+
+The template already calls `field.setScroll(p)` on every `gsap.ticker` tick, through `fieldScroll()`, and the ticker runs `lenis.raf()` first. Moving the object inside `setScroll` and redrawing right there therefore puts it on the **same frame as Lenis**, so there's no jitter. The field's own 30fps rAF loop keeps animating and uses the same stored offset.
+
+1. Add a state variable next to the others:
+
+   ```js
+   var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0, ...
+   ```
+
+2. In `frame()`, add `HY` to the object's y. Drop the old `-SP.v*G.ih*.05` term:
+
+   ```js
+   // before
+   y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
+   // after
+   y=G.ky-dh*.5-k*G.ih*.008+HY;
+   ```
+
+   Anything that should travel with the object (its shadow, the neutral falloff from section 4) is computed from `x`/`y` and follows automatically. Ground fills and scrims stay screen-fixed.
+
+3. Replace `setScroll`:
+
+   ```js
+   setScroll:function(p){SP.v=p;
+     var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+     if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+     if(hy!==HY){HY=hy;frame(true)}},
+   ```
+
+- **1:1:** `hy` is the hero's top edge, so the object moves exactly with the page; the H1's own parallax drifts about 2% faster. A gentle 0.9× parallax (`hy=Math.min(0,b.top)*.9`) is acceptable, but then check that the object never overlaps the next section.
+- **Desktop only (`!G.mob`):** at ≤860px the template makes `#field` `position:absolute`, so it already scrolls natively. Offsetting there would move it twice.
+- **Offset 0 once the hero is off screen:** the footer echo (`footCopy`) copies `#field` around `field.focus()`, so the object must be back at home when the footer shows. The fixed canvas is covered by the opaque sections in between, so the jump is invisible.
+- **Build-out pages:** they have no `#view #hero`, so the offset is 0 and they behave as before.
+- **Sites whose field draws the object somewhere else** (a WebGL quad, a separate image layer): apply the same `hy` to that object's transform (`uniform`, `translate`) in the same ticker callback. Don't add a separate `window.addEventListener('scroll')`, which runs out of step with Lenis and jitters.
+
+**Check (Tekno, 1440×900).** Scroll 0/150/300/500/800 through the page and compare the H1's top with the object's bounding box from screenshot pixels:
+
+| Scroll (px) | H1 top (px) | Object top–bottom (px) |
+|---|---|---|
+| 0 | 306 | 376–579 |
+| 150 | 153 | 225–428 |
+| 300 | 0 | ≤90–279 |
+| 500 | — | off screen, with the text |
+
+No overlap with the manifesto section, the footer echo still shows the scope, and the phone layout is unchanged.

@@ -8,7 +8,7 @@ Scope (client's exact words: "i just need the home page initial top to look good
    - Headline in one colour: no italic accent-coloured second line.
 Do NOT change anything else: no motion, layout, sections, copy, story, loader, transitions, fonts or spacing. Work only in _kit/home/<site>/, then assemble.py, then build.js. Never hand-edit index.html. Diff the rebuilt page against the deployed one and make sure only colour and hero changed. Run the usual gates (entities, contrast, overflow 360/390/414, squeeze, orphans, textclash, buildout-test). Check the first screen by eye at 1440, 1920 and 390.
 
-## APPROVED RECIPE (client chose variant B, 2026-11-27). Reference: /teknomedical-b/ (_kit/home/teknomedical-b/: render_b.py, field.js, extra.css; diff it against _kit/home/teknomedical/)
+## APPROVED RECIPE (client chose variant B, 2026-11-27). Reference: /teknomedical/, where B is now live (_kit/home/teknomedical/: render_b.py, field.js, extra.css; the B copy /teknomedical-b/ was removed). Recipe details and code: _kit/reports/topfix/RECIPE_NOTES.md
 Per site, change ONLY the following. Use the triage row for the site in _kit/reports/topfix/triage.csv.
 1. **One-colour headline (every site):** the hero H1's emphasised second line has the same colour, style and weight as the first line (no italic, no accent colour). Use the same CSS approach as teknomedical's extra.css.
 2. **Brand colours (only where triage accent_ok = no/unclear, or ground clash = yes):** sample their real logo and live site, then set the colour tokens (acc/accL/accD, the related tints, story stroke colours, and the ground only if it clashes). For "unclear" (neutral or multicolour logo), keep the current accent unless it is clearly not in their brand. Text on buttons must stay readable.
@@ -20,7 +20,18 @@ Per site, change ONLY the following. Use the triage row for the site in _kit/rep
    - If the object's working end points away from the text and the render has no lettering, mirror it (as Tekno). Never mirror anything with text or a logo.
    - If the hero is a photo rather than a render, only remove glows or overlays; don't relight.
    - Keep the object's position and size.
-4. Nothing else changes: motion, loader, layout, copy, story geometry, sections and fonts stay as sent.
+4. Nothing else changes: motion, loader, layout, copy, story geometry, sections and fonts stay as sent (except step 5).
+5. **Hero scroll behaviour (conditional; client 2026-11-27: "why does it not scroll up with the text", then "sometimes it looks good [fixed], but here it doesn't"):**
+   - **OBJECT → it scrolls up with the text.** The hero visual is a discrete object: one product, device, instrument, part, molecule or cell, as a render or a cut-out photo, sitting in the open area beside the headline with ground around it.
+     - Desktop: offset its draw position by the hero's `getBoundingClientRect().top` (1:1 with the page) while the hero is on screen, and use 0 once the hero has left (so the footer echo still finds it).
+     - Phones: nothing to do. The template already makes `#field` `position:absolute` at ≤860px.
+     - Exact code: RECIPE_NOTES.md section 6.
+   - **BACKDROP → keep the template's fixed/fade behaviour.** The hero visual is ambient: an atmospheric field, light field, particles, gradient flow, landscape, or a full-bleed scene behind the text.
+   - **How to decide:** ask "could I put a box around the thing and name it?" and "would it look wrong if the text slid off while it stayed put?" If both answers are yes, it's an OBJECT. Examples:
+     - **OBJECT:** Tekno's rigid endoscope render (/teknomedical/); a single pump, sensor, catheter, implant or chip render on the right; a cut-out photo of their device.
+     - **BACKDROP:** a slow light or particle field filling the screen; a full-bleed graded photo of a lab, landscape or factory hall behind the text; a molecular or flow-field texture with no single subject.
+   - **Mixed** (an object floating on a living field): only the object scrolls; the field drawn behind it stays fixed.
+   - **Check at 1440:** scroll 0/150/300/500/800px. The object's top moves within a few px of the H1's movement, never overlaps the next section, no jitter, and the footer echo still shows the object.
 How: edit _kit/home/<slug>/ parts, then assemble.py, then build.js. If the site has no parts folder (has_parts=no), edit _kit/src/<slug>.src.html, then build.js. Never hand-edit <slug>/index.html.
 Check:
 - Diff against the deployed page. Only the H1 emphasis, colour tokens and hero field/render may differ.

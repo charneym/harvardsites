@@ -1188,7 +1188,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    behind the headline (DI). On phones the optic sits in the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#131415";
   /* the distal window and the scope axis in image units (render.py) */
   var TIP=[.9588,.1703],DIR=[.8403,-.4301];
@@ -1218,7 +1218,7 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
       /* TOP-FIX B 2026-11-27: a very faint neutral falloff on the ground, centred up and toward the key side of the optic,
          at most ~3% brighter than the graphite (no colour, no halo hugging the object) */
       var fx=G.mob?w*.5:x+dw*.42,fy=G.mob?G.bh*.42:y+dh*.38,fr=Math.max(w,h)*.62;
@@ -1246,7 +1246,14 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   try{document.fonts.ready.then(function(){setTimeout(size,60)})}catch(_){}setTimeout(size,1800);setTimeout(size,4200);
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+      /* SCROLL FIX 2026-11-27: the object scrolls up WITH the hero (1:1 with the page) instead of staying fixed on screen.
+         Desktop only (on phones the template already makes #field position:absolute, so it scrolls natively). While the
+         hero is off screen the offset is 0, so the object is back at home on the (covered) fixed canvas for the footer
+         echo (footCopy). Called from the template's gsap ticker right after lenis.raf, so we redraw on that same frame. */
+      var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+      if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+      if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/
 

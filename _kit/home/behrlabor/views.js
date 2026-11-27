@@ -14,6 +14,7 @@ function caps(){var C=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1190" height="1240" alt="behrosog 6 Neutralisierer mit Waschflaschen, Prozessabsaugsystem für die Kjeldahl-Analyse" decoding="async" fetchpriority="high"><figcaption>behrosog 6: Neutralisierer für die Kjeldahl-Prozessabsaugung</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Laborgeräte<span class="nomob"> · Düsseldorf · seit 1951</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Analytik, die man</span><span class="l">einfach bedient.</span><span class="l"><em>Made in Germany.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>behr Labor-Technik entwickelt und fertigt in Düsseldorf Geräte für die Lebens- und Futtermittel-, Umwelt- und Elementaranalytik, von der Probenahme bis zur vollautomatischen Auswertung.</p>'+

@@ -6,7 +6,7 @@ function caps(){var C=[
   ["Marine","<span class=\"nw\">Oceans, coasts</span> <span class=\"nw\">and ports</span>","Particle size, concentration and optical properties in situ, on CTDs, floats, gliders, AUVs and moorings down to 3000 m.",'<path d="M6 30C12 24 18 24 24 30S36 36 42 30S50 24 52 26"/><path class="a" d="M6 40C12 34 18 34 24 40S36 46 42 40"/>'],
   ["Freshwater","<span class=\"nw\">Rivers, lakes</span> <span class=\"nw\">and reservoirs</span>","Suspended sediment transport, profiled through the river column, from the Grand Canyon to the Danube.",'<path d="M10 8C18 20 14 30 24 38S40 46 46 50"/><path class="a" d="M18 8C26 20 22 30 32 38"/>'],
   ["Energy","<span class=\"nw\">Hydro, oil</span> <span class=\"nw\">and gas</span>","Acoustic backscatter for turbine protection in hydropower, and particle sizing of drill mud and brine on site.",'<path d="M30 6L16 32H28L24 50L40 22H28Z"/>'],
-  ["Environmental","<span class=\"nw\">Spills, blooms,</span> <span class=\"nw\">stormwater</span>","Oil spill response, harmful algal bloom monitoring and stormwater studies, from Deepwater Horizon to Fukushima.",'<circle cx="28" cy="28" r="18"/><path class="a" d="M20 28C24 22 32 22 36 28"/>']];
+  ["Environmental","<span class=\"nw\">Oil spills</span> <span class=\"nw\">and algal blooms</span>","Oil spill response, harmful algal bloom monitoring and stormwater studies, from Deepwater Horizon to Fukushima.",'<circle cx="28" cy="28" r="18"/><path class="a" d="M20 28C24 22 32 22 36 28"/>']];
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 /* how LISST works (sequoiasci.com > About, Product Overview, LISST-200X) */
 function svc(){var S=[
@@ -35,7 +35,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>We do particle intelligence</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">In 1995 Sequoia introduced</span> <span class="nw">the world\'s first</span> <span class="nw">submersible commercial instruments</span> <span class="nw">for particle intelligence.</span> <em><span class="nw">Sediment grains, algae,</span> <span class="nw">flocs, oil droplets,</span> <span class="nw">air bubbles.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">In 1995 Sequoia</span> <span class="nw">introduced</span> <span class="nw">the world\'s first</span> <span class="nw">submersible</span> <span class="nw">commercial instruments</span> <span class="nw">for particle</span> <span class="nw">intelligence.</span> <em><span class="nw">Sediment grains,</span> <span class="nw">algae, flocs,</span> <span class="nw">oil droplets,</span> <span class="nw">air bubbles.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1995</span><p class="k">the LISST-100, the first submersible laser-diffraction particle sizer on the market</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">40+</span><p class="k">types of sensors developed, prototyped or manufactured by Sequoia since then</p></div>'+
@@ -48,7 +48,7 @@ function vHome(){
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Laser</span><span>Scatter</span><span>Rings</span><span>Sizes</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">A laser beam</span> <span class="nw">crosses the water.</span></h2><p>The instrument sits in the water itself, in the ocean, a river or a lake, and sends a collimated laser beam through the open sample path.</p></article>'+
-     '<article class="step"><h2><span class="nw">Particles</span> <span class="nw">scatter the light.</span></h2><p>Each suspended particle scatters light forward at small angles. Large particles scatter at smaller angles, small ones wider.</p></article>'+
+     '<article class="step"><h2><span class="nw">Particles scatter</span> <span class="nw">the light.</span></h2><p>Each suspended particle scatters light forward at small angles. Large particles scatter at smaller angles, small ones wider.</p></article>'+
      '<article class="step"><h2><span class="nw">Rings catch</span> <span class="nw">every angle.</span></h2><p>A ring detector records the scattered light at 36 angles, from 0.039° to 13.8°, while the transmitted beam gives the attenuation.</p></article>'+
      '<article class="step"><h2><span class="nw">Out comes</span> <span class="nw">the size distribution.</span></h2><p>The angular pattern is inverted into a particle size distribution, 1 to 500 µm in 36 classes, with volume concentration at 0.1 µL/L resolution.</p></article>'+
     '</div></div>'+
@@ -67,7 +67,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="technology" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Laser In-situ Scattering</span> <em class="nw">and Transmissometry.</em></h2></div><p data-r>Most Sequoia instruments use lasers in one way or another; a few use LEDs or acoustics, and sometimes two methods work together.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Light scattered,</span> <em class="nw">measured in situ.</em></h2></div><p data-r>Most Sequoia instruments use lasers in one way or another; a few use LEDs or acoustics, and sometimes two methods work together.</p></div>'+
    svc()+
    '<div class="trn" data-r><span class="lab kick">New in 2026</span><p>NASA has awarded Sequoia a Phase I SBIR grant to develop a new in-situ hyperspectral volume scattering function sensor.</p><a class="ul" href="https://www.sequoiasci.com/about/news/" target="_blank" rel="noopener">Read the news</a></div>'+
   '</div></section>'+

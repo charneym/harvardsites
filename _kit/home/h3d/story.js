@@ -30,13 +30,13 @@ function tsScene(o){
        '<path class="xh" id="tsXh" d="M148 170V228H80M218 170V304H240"/><text class="ax" id="tsXl" x="160" y="386" text-anchor="middle">x · y · depth, per voxel</text>'+
        '<path class="cone" id="tsCn" d="M148 228L28 150M148 228L74 66"/><path class="cone2" id="tsCa" d="M28 150Q38 92 74 66"/>'+
        '<circle class="ip" id="tsA" r="6" cx="148" cy="228"/><circle class="ip" id="tsB" r="5" cx="218" cy="304"/>';
-    g+='<text class="ro" id="tsRo" x="40" y="452">0 keV</text><text class="ro2" id="tsRh" x="40" y="474">COUNTING</text>';
+    g+='<text class="ro" id="tsRo" x="40" y="452">10 keV</text><text class="ro2" id="tsRh" x="40" y="474">COUNTING</text>';
   }else{
-    g+='<text class="ro" id="tsRo" x="250" y="56">0 keV</text><text class="ro2" id="tsRh" x="460" y="56">COUNTING</text>';
+    g+='<text class="ro" id="tsRo" x="250" y="56">10 keV</text><text class="ro2" id="tsRh" x="460" y="56">COUNTING</text>';
   }
   /* the spectrum: axes, energy ticks, the region of interest around the peak, and the measured line */
   g+='<rect class="band" id="tsBand" x="'+(spX(640)).toFixed(1)+'" y="90" width="'+(spX(684)-spX(640)).toFixed(1)+'" height="350"/>';
-  [[0,"0"],[200,"200"],[400,"400"],[662,"662"]].forEach(function(r){var x=spX(r[0]);g+='<path class="gl" d="M'+x.toFixed(1)+' 90V440"/><text class="ax" x="'+x.toFixed(1)+'" y="'+(mob?470:462)+'" text-anchor="middle">'+r[1]+'</text>'});
+  [[200,"200"],[400,"400"],[662,"662"]].forEach(function(r){var x=spX(r[0]);g+='<path class="gl" d="M'+x.toFixed(1)+' 90V440"/><text class="ax" x="'+x.toFixed(1)+'" y="'+(mob?470:462)+'" text-anchor="middle">'+r[1]+'</text>'});
   g+='<path class="axl" d="M320 90V440H720"/><text class="ax" x="720" y="'+(mob?470:482)+'" text-anchor="end">'+(mob?'keV':'ENERGY · keV')+'</text>'+(mob?'':'<text class="ax" x="308" y="96" text-anchor="end">COUNTS</text>');
   g+='<path class="ms" id="tsMs" d="'+spPath()+'"/><circle class="hd" id="tsHd" r="5" cx="320" cy="400"/>';
   g+='<text class="bl" id="tsBl" x="'+(spX(662)-12).toFixed(1)+'" y="'+(SPY0-spH(662)-14).toFixed(1)+'" text-anchor="end">662 keV · Cs-137</text>';
@@ -63,7 +63,7 @@ function storyDraw(svg){
     var en=SPE*seg(p,.05,.68),x=spX(Math.max(10,en)),ci=Math.max(0,(en-10)/2),i0=Math.min(CU.length-1,Math.floor(ci)),i1=Math.min(CU.length-1,i0+1),f=(CU[i0]+(CU[i1]-CU[i0])*(ci-i0))/CT;
     E.ms.style.strokeDashoffset=(L*(1-f)).toFixed(1);op(E.ms,b*seg(p,.05,.08));
     E.hd.setAttribute("cx",x.toFixed(1));E.hd.setAttribute("cy",(SPY0-spH(Math.max(10,en))).toFixed(1));op(E.hd,b*seg(p,.05,.1)*(1-seg(p,.7,.74)));
-    var ts=Math.round(en)+" keV";if(p>=.52)ts="662 keV";if(ts!==lastT){lastT=ts;E.ro.textContent=ts}
+    var ts=Math.max(10,Math.round(en))+" keV";if(p>=.52)ts="662 keV";if(ts!==lastT){lastT=ts;E.ro.textContent=ts}
     var hs=p<.27?"COUNTING":p<.52?"3D READOUT":p<.77?"CS-137":"IMAGING";if(hs!==lastH){lastH=hs;E.rh.textContent=hs}
     op(E.bl,b*seg(p,.52,.58));op(E.band,b*seg(p,.77,.85)*.9);
     var w=[[0,.25],[.25,.5],[.5,.75],[.75,1.01]];

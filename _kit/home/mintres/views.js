@@ -65,12 +65,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="packages" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Optical beds and packages</span><h2 class="d2 split"><span class="nw">Assembled</span> <span class="nw">in the cleanroom.</span></h2></div><p data-r>Beyond the part itself: optical beds, substrates and sub-assemblies for opto-electronic laser systems.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Optical beds and packages</span><h2 class="d2 split"><span class="nw">Assembled in</span> <span class="nw">our cleanroom.</span></h2></div><p data-r>Beyond the part itself: optical beds, substrates and sub-assemblies for opto-electronic laser systems.</p></div>'+
    caps(PKG)+
   '</div></section>'+
 
   '<section class="sec dark" id="processes" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Processes</span><h2 class="d2 split"><span class="nw">Every process</span> <span class="nw">in-house.</span></h2></div><p data-r>Our processing and metrology are also open to third parties as a service.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Processes</span><h2 class="d2 split"><span class="nw">All our processes,</span> <span class="nw">done in-house.</span></h2></div><p data-r>Our processing and metrology are also open to third parties as a service.</p></div>'+
    caps(PRC)+chips("Also in-house",CATS)+
   '</div></section>'+
 

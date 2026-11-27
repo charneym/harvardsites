@@ -1,12 +1,12 @@
 /* ================= HERO FIELD: a crafted render of MED-Fibers' real product (HOME_BRIEF update 2c): one surgical laser
    fiber, the blue Tefzel jacket of their holmium / thulium fibers in a loose loop, rising to bare silica and the
    fire-polished Dome Tip Fiber(TM) with warm laser light at the tip (med-fibers.com product pages). Rasterised offline by
-   render.py with real alpha, baked to hero.webp; here it breathes in a slow Ken Burns drift with a soft warm glow at the
-   tip. It moves on its own, so no pointer response (CZ). On phones it sits in the top band and fades into the ink above
+   render.py with real alpha, baked to hero.webp; here it breathes in a slow Ken Burns drift. TOP-FIX B 2026-11-27: re-rendered by
+   render_b.py with neutral light only (no laser light, bloom or cone at the tip), a soft floor shadow baked in, no glow. It moves on its own, so no pointer response (CZ). On phones it sits in the top band and fades into the ink above
    the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#15161a";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
@@ -34,18 +34,14 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low deep-teal glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the
-         baked render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(40,44,56,"+(.6*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(28,30,38,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(21,22,26,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint cool glow behind the connector (the beam), breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.42;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(255,150,80,"+((.10+.05*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(255,150,80,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
+      /* TOP-FIX B: a very faint neutral falloff on the ground, up and toward the headline side (about 2-3%, never coloured) */
+      var fx=G.mob?w*.5:x+dw*.2,fy=G.mob?G.bh*.4:y+dh*.25,fr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
+      /* hero.webp carries PAD px of transparent margin with the soft floor shadow, so the fibre lands where the sent render put it */
+      var PX=100/1000,PY=100/1133;
+      c.globalAlpha=e;c.drawImage(img,x-dw*PX,y-dh*PY,dw*(1+2*PX),dh*(1+2*PY));c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(13,14,17,.95)");lv.addColorStop(.6,"rgba(13,14,17,.55)");lv.addColorStop(1,"rgba(13,14,17,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
@@ -63,6 +59,10 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the fibre scrolls up 1:1 with the hero on desktop (RECIPE_NOTES section 6), back home once the hero has left */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();

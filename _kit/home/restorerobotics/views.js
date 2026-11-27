@@ -16,7 +16,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1499" height="871" alt="A robotic surgical cautery hook instrument, rendered" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1423" height="923" alt="The working end of a robotic surgical cautery hook instrument, rendered" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Robotic instrument remanufacturing<span class="nomob"> · Henderson, Nevada</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Robotic instruments,</span> <span class="l">restored for reuse.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Restore Robotics holds FDA 510(k) clearances to remanufacture da Vinci Xi robotic instruments: a cost-effective, sustainable alternative to buying new.</p>'+

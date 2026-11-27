@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Restore Robotics hero (PROD_BRIEF 3b, render B; no sharp photo of their own instrument exists on restorerobotics.com):
-a crafted render of the product they remanufacture under FDA 510(k) K252926 (March 2026): a robotic Permanent Cautery
+a crafted render of the product they remanufacture under FDA 510(k) K252926 (March 2026), framed as a macro of its
+working end (coordinator review 2026-11-27: the full housing read as CG): a robotic Permanent Cautery
 Hook instrument for the da Vinci Xi system: the instrument housing (back end), the long 8 mm shaft, the insulated distal
 section and the L-shaped cautery hook. Unbranded, no lettering. Ray marched (signed distance fields) in numpy,
 orthographic, lit as a studio product shot per TOPFIX variant B (one neutral key strip from the page's upper left,
@@ -16,7 +17,7 @@ def nrm(v): return v/np.linalg.norm(v, axis=-1, keepdims=True)
 def n3(v): v = np.array(v, float); return v/np.linalg.norm(v)
 def sm(a, b, x): x = np.clip((x-a)/(b-a), 0, 1); return x*x*(3-2*x)
 A = n3((-0.86, 0.42, -0.30))                   # shaft axis: from the housing (lower right) to the tip (upper left)
-P = n3(np.array((0.0, 1.0, 0.35)) - np.dot((0.0, 1.0, 0.35), A)*A)
+P = n3(np.array((0.0, 1.0, 0.15)) - np.dot((0.0, 1.0, 0.15), A)*A)
 Q = np.cross(A, P)
 E = np.zeros(3)
 L_SH, R_SH = 1.55, 0.056
@@ -30,15 +31,47 @@ def rbox(p, c, hx, hy, hz, r):
     d = p - c
     q = np.stack([np.abs(d @ A) - hx, np.abs(d @ P) - hy, np.abs(d @ Q) - hz], -1)
     return np.linalg.norm(np.maximum(q, 0), axis=-1) + np.minimum(q.max(-1), 0) - r
-HC = E - A*0.46 + P*0.04
+HC = E - A*0.50 + P*0.02
+def hloc(p):
+    d = p - HC; return d @ A, d @ P, d @ Q           # along the axis (front = +), up, side
+def sd_body(p):
+    a, u, w = hloc(p)
+    t = np.clip((a + 0.40)/0.80, 0, 1)               # 0 at the back, 1 at the front
+    hl = 0.40; hh = 0.110 - 0.022*t*t; hw = 0.150 - 0.030*t*t   # a slight taper toward the shaft
+    q = np.stack([np.abs(a) - hl, np.abs(u) - hh, np.abs(w) - hw], -1)
+    d = np.linalg.norm(np.maximum(q, 0), axis=-1) + np.minimum(q.max(-1), 0) - 0.045
+    d = d + 0.0045*np.exp(-((u + 0.008)/0.0035)**2)                     # the parting line between upper and lower shell
+    inP = sm(0.30, 0.26, np.abs(a + 0.02))*sm(0.085, 0.075, np.abs(w))*(u > 0.08)
+    d = d + 0.005*inP                                                     # a shallow recessed panel on top (moulded, unbranded)
+    inT = sm(0.14, 0.12, np.abs(a - 0.16))*sm(0.035, 0.028, np.abs(u - 0.035))*(np.abs(w) > 0.12)
+    d = d + 0.0025*inT                                                    # moulded label areas on both sides, blank
+    return d
+def sd_buttons(p):
+    a, u, w = hloc(p)
+    ww = np.abs(w)
+    e = np.sqrt(((a + 0.17)/0.075)**2 + ((u - 0.01)/0.042)**2 + ((ww - 0.168)/0.022)**2)
+    return (e - 1)*0.022                                                  # the release buttons, one each side
+def sd_discs(p):
+    a, u, w = hloc(p)
+    dd = np.full(a.shape, 9.0)
+    for ac in (-0.27, -0.09, 0.09):
+        for wc in (-0.06, 0.06):
+            r2 = np.sqrt((a - ac)**2 + (w - wc)**2)
+            c = np.maximum(r2 - 0.045, np.abs(u + 0.145) - 0.012)
+            dd = np.minimum(dd, c)
+    for k in range(4):                                                    # the electrical contact pins
+        r2 = np.sqrt((a - 0.25 - k*0.03)**2 + w**2)
+        dd = np.minimum(dd, np.maximum(r2 - 0.008, np.abs(u + 0.14) - 0.014))
+    return dd
 def sd_housing(p):
-    b = rbox(p, HC, 0.38, 0.10, 0.13, 0.065)
-    nose = capsule_seg(p, E - A*0.08, E + A*0.07, 0.085)       # the collar where the shaft leaves the housing
-    disc = rbox(p, HC + P*0.165, 0.24, 0.01, 0.08, 0.018)        # the top release panel
-    return np.minimum(np.minimum(b, nose), disc)
+    nose = capsule_seg(p, E - A*0.10, E + A*0.07, 0.078)
+    return np.minimum(np.minimum(np.minimum(sd_body(p), nose), sd_buttons(p)), sd_discs(p))
 def sd_shaft(p):
     s, r, v = local(p)
-    R = np.where(s < L_SH, R_SH, np.where(s < L_SH + 0.03, R_SH + 0.004, R_SH - 0.008 - 0.026*np.clip((s - L_SH - 0.03)/0.2, 0, 1)))
+    R = np.where(s < L_SH, R_SH, np.where(s < L_SH + 0.012, R_SH + 0.005, np.where(s < L_SH + 0.018, R_SH + 0.001, np.where(s < L_SH + 0.03, R_SH + 0.005, R_SH - 0.008 - 0.026*np.clip((s - L_SH - 0.03)/0.2, 0, 1)))))
+    ang = np.arctan2(v @ Q, v @ P)
+    br = (s > L_SH - 0.45) & (s < L_SH - 0.004)
+    R = R + np.where(br, 0.0011*(np.abs(np.sin(ang*12 + s*260)) + np.abs(np.sin(ang*12 - s*260))) - 0.0011, 0)
     d = r - R
     return np.maximum(d, np.maximum(-s, s - (L_SH + 0.23)))
 TIP = E + A*(L_SH + 0.23)
@@ -49,10 +82,10 @@ def sd_hook(p):
 def parts(p): return sd_housing(p), sd_shaft(p), sd_hook(p)
 def sdf(p):
     a, b, c = parts(p); return np.minimum(np.minimum(a, b), c)
-ext = [HC + A*0.46 + P*0.2 + Q*0.2, HC - A*0.46 - P*0.2 - Q*0.2, HC - A*0.46 + P*0.25, HC + A*0.2 - P*0.2, H2 + P*0.03, TIP + A*0.13]
+ext = [E + A*(L_SH - 0.62) + P*0.07, E + A*(L_SH - 0.62) - P*0.07, H2 + P*0.03 + Q*0.02, TIP + A*0.15, TIP - P*0.06]
 X = [q[0] for q in ext]; Y = [q[1] for q in ext]
 cx, cy = (min(X)+max(X))/2, (min(Y)+max(Y))/2
-span = max((max(X)-min(X))/W*H, max(Y)-min(Y))*1.10
+span = max((max(X)-min(X))/W*H, max(Y)-min(Y))*1.06
 half_h = span/2; half_w = half_h*W/H
 ys, xs = np.mgrid[0:H, 0:W]
 px = cx + ((xs + .5)/W*2 - 1)*half_w; py = cy - ((ys + .5)/H*2 - 1)*half_h
@@ -95,9 +128,18 @@ metal = spec_m*F_m[:, None] + 0.012
 plastic = np.array((0.80, 0.81, 0.82))[None]*diff[:, None]*0.55 + spec_r*F_d[:, None]*0.9
 black = np.array((0.030, 0.031, 0.033))[None]*diff[:, None] + spec_m*(F_d*0.9 + 0.03)[:, None]
 grey = np.array((0.16, 0.165, 0.17))[None]*diff[:, None] + spec_r*(F_d*0.8 + 0.02)[:, None]
-lowH = isH & (((p - HC) @ P) < -0.02)
-plastic2 = np.array((0.20, 0.205, 0.21))[None]*diff[:, None] + spec_r*F_d[:, None]*0.9
-c = np.where(isH[:, None], np.where(lowH[:, None], plastic2, plastic), black)
+ha, hu, hw = hloc(p)
+isBtn = isH & (sd_buttons(p) <= m + 1e-5)
+isDisc = isH & (sd_discs(p) <= m + 1e-5)
+lowH = isH & (hu < -0.008) & ~isBtn & ~isDisc
+shell = np.array((0.80, 0.805, 0.80))[None]*diff[:, None]*0.55 + spec_r*F_d[:, None]*0.9
+under = np.array((0.11, 0.115, 0.12))[None]*diff[:, None] + spec_r*(F_d*0.8 + 0.02)[:, None]
+btn = np.array((0.36, 0.37, 0.38))[None]*diff[:, None] + spec_r*(F_d*0.8 + 0.03)[:, None]
+braidS = isS & (s > L_SH - 0.45) & (s < L_SH - 0.004)
+c = np.where(isH[:, None], np.where(lowH[:, None], under, shell), black)
+c = np.where(isBtn[:, None], btn, c)
+c = np.where(isDisc[:, None], metal*0.8, c)
+c = np.where(braidS[:, None], grey*0.62, c)
 c = np.where(isTipIns[:, None], grey, c)
 c = np.where((isK | isCollar)[:, None], metal, c)
 ao = np.ones(idx.size)
@@ -105,6 +147,9 @@ for k, hh in enumerate((0.01, 0.025, 0.05)): ao -= np.clip(hh - sdf(p + n*hh), 0
 c *= np.clip(ao, 0.35, 1)[:, None]
 col[idx] = c
 img = col.reshape(H, W, 3); a = alpha.reshape(H, W)
+ss = np.zeros(O.shape[0]); ss[idx] = s; ss = ss.reshape(H, W)
+fade = np.clip((ss - (L_SH - 0.62))/0.30, 0, 1); fade = fade*fade*(3 - 2*fade)
+a = a*np.where(alpha.reshape(H, W) > 0, fade, 1)
 if SS > 1: img = img.reshape(FH, SS, FW, SS, 3).mean((1, 3)); a = a.reshape(FH, SS, FW, SS).mean((1, 3))
 img = np.where(a[..., None] > 0, img/np.maximum(a[..., None], 1e-6), 0)
 img = img/(1+0.35*img)*1.3; img = np.clip(img, 0, 1)**(1/2.2)

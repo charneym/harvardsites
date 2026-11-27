@@ -8,7 +8,7 @@
    ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false,drew=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
   var fok=!document.fonts;if(document.fonts)document.fonts.ready.then(function(){fok=true;if(w){G=geo();G._t=performance.now();if(!running)frame(true)}});
   var BG="#07141a";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
@@ -53,23 +53,26 @@ var field=(function(){
     var want=!G.mob&&!!document.querySelector(".hero .eyebrow");
     if(want&&!G.dom){G=geo();G._t=now}
     if(want&&(!fok||!G.dom)&&now-t0<4000){if(!once&&running)raf=requestAnimationFrame(function(){frame(false)});return}
-    /* v12 (client: the helix had no entrance): on the desktop home hero its entrance starts on its first real frame, on every load
-       (a reload too, where the template's intro is instant): it rises up to 84px into place and fades in (1.7s), with the headline */
-    if(want&&G.dom&&ok&&!drew){drew=true;if(!RM&&window.gsap){IN.v=0;gsap.to(IN,{v:1,duration:1.7,ease:"power3.out"});e=0}}
+    /* v13 (client: the helix must enter exactly like the text and logos): on the desktop home hero it copies the hero entrance itself:
+       each frame it takes the eyebrow's current y offset and opacity from GSAP (the same timeline, ease and timing as the text and logos,
+       on first load and on reload), instead of any entrance of its own */
+    var my=0,ma=1;
+    if(want&&G.dom&&window.gsap){var me=document.querySelector(".hero .eyebrow");if(me){my=+gsap.getProperty(me,"y")||0;var o=gsap.getProperty(me,"opacity");ma=o===""||o==null?1:+o}}
+    var ea=want&&G.dom?ma:e;
     if(ok){
       /* a very slow breath and sway: ~2.5% scale and a degree of tilt over ~40s */
-      var k=.5-.5*Math.cos(t*Math.PI*2/40),q=Math.sin(t*Math.PI*2/56),sc=(1+.025*k)*(1+.03*(1-e));
-      var sY=window.scrollY||0,dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.dom?G.ky-sY-k*G.ih*.012+(1-e)*Math.min(G.ih*.2,84):G.ky-k*G.ih*.012-SP.v*G.ih*.05;  /* v11: on the desktop home hero the helix scrolls with the page */
+      var k=.5-.5*Math.cos(t*Math.PI*2/40),q=Math.sin(t*Math.PI*2/56),sc=(1+.025*k)*(want&&G.dom?1:(1+.03*(1-e)));
+      var sY=window.scrollY||0,dw=G.iw*sc,dh=G.ih*sc,cx=G.kx,cy=G.dom?G.ky-sY-k*G.ih*.012+my:G.ky-k*G.ih*.012-SP.v*G.ih*.05;  /* v11: on the desktop home hero the helix scrolls with the page */
       /* a deep teal glow painted across the WHOLE canvas, never inside the image rect alone (DJ) */
       var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.42:G.dom?cy:h*.52,ggr=Math.max(w,h)*.75;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(18,72,84,"+(.5*e).toFixed(3)+")");ag.addColorStop(.45,"rgba(10,40,50,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(7,20,26,0)");
+      ag.addColorStop(0,"rgba(18,72,84,"+(.5*ea).toFixed(3)+")");ag.addColorStop(.45,"rgba(10,40,50,"+(.28*ea).toFixed(3)+")");ag.addColorStop(1,"rgba(7,20,26,0)");
       c.fillStyle=ag;c.fillRect(0,0,w,h);
       /* the drug's own light, where it sits in the helix (~47% down the render) */
       var dx=cx+dw*.02,dy=cy-dh*.5+dh*.47,dr=dw*.9,pu=.5+.5*Math.sin(t*Math.PI*2/9);
-      var dg=c.createRadialGradient(dx,dy,0,dx,dy,dr);dg.addColorStop(0,"rgba(143,227,245,"+((.10+.05*pu)*e).toFixed(3)+")");dg.addColorStop(1,"rgba(143,227,245,0)");
+      var dg=c.createRadialGradient(dx,dy,0,dx,dy,dr);dg.addColorStop(0,"rgba(143,227,245,"+((.10+.05*pu)*ea).toFixed(3)+")");dg.addColorStop(1,"rgba(143,227,245,0)");
       c.fillStyle=dg;c.fillRect(dx-dr,dy-dr,dr*2,dr*2);
-      c.save();c.translate(cx,cy);c.rotate(q*.018);c.globalAlpha=e;c.drawImage(img,-dw*.5,-dh*.5,dw,dh);c.restore();c.globalAlpha=1;
+      c.save();c.translate(cx,cy);c.rotate(q*.018);c.globalAlpha=ea;c.drawImage(img,-dw*.5,-dh*.5,dw,dh);c.restore();c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.56,0);lv.addColorStop(0,"rgba(5,14,19,.96)");lv.addColorStop(.64,"rgba(5,14,19,.62)");lv.addColorStop(1,"rgba(5,14,19,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);

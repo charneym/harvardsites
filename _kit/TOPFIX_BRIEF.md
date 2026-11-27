@@ -7,3 +7,23 @@ Scope (client's exact words: "i just need the home page initial top to look good
    - Otherwise keep the render, but remove the glow / floating halo so it sits naturally.
    - Headline in one colour: no italic accent-coloured second line.
 Do NOT change anything else: no motion, layout, sections, copy, story, loader, transitions, fonts or spacing. Work only in _kit/home/<site>/, then assemble.py, then build.js. Never hand-edit index.html. Diff the rebuilt page against the deployed one and make sure only colour and hero changed. Run the usual gates (entities, contrast, overflow 360/390/414, squeeze, orphans, textclash, buildout-test). Check the first screen by eye at 1440, 1920 and 390.
+
+## APPROVED RECIPE (client chose variant B, 2026-11-27). Reference: /teknomedical-b/ (_kit/home/teknomedical-b/: render_b.py, field.js, extra.css; diff it against _kit/home/teknomedical/)
+Per site, change ONLY the following. Use the triage row for the site in _kit/reports/topfix/triage.csv.
+1. **One-colour headline (every site):** the hero H1's emphasised second line has the same colour, style and weight as the first line (no italic, no accent colour). Use the same CSS approach as teknomedical's extra.css.
+2. **Brand colours (only where triage accent_ok = no/unclear, or ground clash = yes):** sample their real logo and live site, then set the colour tokens (acc/accL/accD, the related tints, story stroke colours, and the ground only if it clashes). For "unclear" (neutral or multicolour logo), keep the current accent unless it is clearly not in their brand. Text on buttons must stay readable.
+3. **Hero light (B), every site with a render/canvas object:**
+   - Remove any glow, halo, beam, bloom or coloured ambient light around the object.
+   - Light the object like a studio product shot: one soft key light from the headline side giving real specular highlights, a low neutral fill, a dim rim on the far edge.
+   - Add a very faint, wide, soft cast shadow on an implied surface below (no hard edge, no reflection).
+   - Optionally add a neutral, barely perceptible ground falloff (≤ ~2–3% brighter, not centred on the object, never coloured).
+   - If the object's working end points away from the text and the render has no lettering, mirror it (as Tekno). Never mirror anything with text or a logo.
+   - If the hero is a photo rather than a render, only remove glows or overlays; don't relight.
+   - Keep the object's position and size.
+4. Nothing else changes: motion, loader, layout, copy, story geometry, sections and fonts stay as sent.
+How: edit _kit/home/<slug>/ parts, then assemble.py, then build.js. If the site has no parts folder (has_parts=no), edit _kit/src/<slug>.src.html, then build.js. Never hand-edit <slug>/index.html.
+Check:
+- Diff against the deployed page. Only the H1 emphasis, colour tokens and hero field/render may differ.
+- Gates: entities, contrast 1440/390, overflow 360/390/414 (scratch tools in _kit/tools), orphans, squeeze 390/768, textclash, buildout-test.
+- Screenshot the first screen BEFORE and AFTER at 1440 (wait 8s) into _kit/reports/topfix/done/<slug>-before.jpg and -after.jpg, and look at them by eye: B must not read as glowy, and the object must look lit, not pasted.
+Push each site to main as you finish it (git pull --rebase first).

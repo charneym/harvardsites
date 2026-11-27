@@ -9,7 +9,7 @@ var RR={L:[220,140,220,140],t:12,by:232,bx:40,gap:16,fx:384,fy:330};
 function rrScene(o){
   var g='',mob=o.mob,i;
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 150 520 316" aria-hidden="true"><defs>'+
-     '<pattern id="rrHt" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V9" stroke="rgba(242,245,245,.2)" stroke-width="1"/></pattern></defs>';
+     '<pattern id="rrHt" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V9" stroke="rgba(242,245,245,.2)" stroke-width="1"/></pattern><clipPath id="rrCl"><rect x="0" y="100" width="560" height="420"/></clipPath></defs><g clip-path="url(#rrCl)">';
   /* the saw (step 1) */
   g+='<g id="rrSw"><circle class="saw" r="22"/><path class="sawt" d=""/></g>';
   /* the Rotosort rack (step 2): four slots */
@@ -17,13 +17,14 @@ function rrScene(o){
   for(i=0;i<4;i++)g+='<path class="slot" d="M44 '+(316+i*28)+'H274"/>';g+='</g>';
   /* the four profile lengths, each with its two corner keys */
   for(i=0;i<4;i++)g+='<g id="rrP'+i+'" class="pr"><rect class="prf" x="'+(-RR.L[i]/2)+'" y="'+(-RR.t/2)+'" width="'+RR.L[i]+'" height="'+RR.t+'"/><rect class="key" x="'+(-RR.L[i]/2-8)+'" y="-4" width="10" height="8"/><rect class="key" x="'+(RR.L[i]/2-2)+'" y="-4" width="10" height="8"/></g>';
+  g+='</g>';
   /* the four welded corners (step 3) */
-  g+='<g id="rrWd">';[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(function(c){g+='<circle class="wd" cx="'+(RR.fx+c[0]*(RR.L[0]/2))+'" cy="'+(RR.fy+c[1]*(RR.L[1]/2))+'" r="9"/>'});g+='</g>';
+  g+='<g id="rrWd">';[[-1,-1],[1,-1],[1,1],[-1,1]].forEach(function(c){g+='<circle class="wd" cx="'+(RR.fx-(mob?34:0)+c[0]*(RR.L[0]/2))+'" cy="'+(RR.fy+c[1]*(RR.L[1]/2))+'" r="9"/>'});g+='</g>';
   var T=function(id,x,y,s,a){return '<text class="t" id="'+id+'" x="'+x+'" y="'+y+'"'+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'};
   g+=T("rrLb",40,RR.by-22,mob?"PROFIL":"ABSTANDHALTERPROFIL");
   g+=T("rrLk",40,RR.by+34,mob?"ECKWINKEL":"ECKWINKEL GESTECKT");
-  g+=T("rrLr",34,286,"ROTOSORT");
-  g+=T("rrLw",RR.fx,RR.fy+RR.L[1]/2+36,mob?"RAHMEN":"RAHMEN · ULTRASCHALLGESCHWEISST","middle");
+  if(!mob)g+=T("rrLr",34,286,"ROTOSORT");
+  g+=T("rrLw",RR.fx-(mob?34:0),RR.fy+RR.L[1]/2+36,mob?"RAHMEN":"RAHMEN · ULTRASCHALLGESCHWEISST","middle");
   var L=mob?["ROMILLO","ROTOSORT","ROWELDO"]:["ROMILLO · ZUSCHNITT UND ECKWINKELSTECKEN","SPACERBOT · INS ROTOSORT-KARUSSELL","ROWELDO · RAHMENMONTAGE, ULTRASCHALL"];
   for(i=0;i<3;i++)g+='<text class="t cl cap" id="rrC'+i+'" x="8" y="458">'+L[i]+'</text>';
   return g+'</svg>';
@@ -42,7 +43,8 @@ function storyDraw(svg){
   var scale=.48;/* the bar is long: it is shown at the same scale as the rack and frame by laying it in two rows */
   A=[[R.bx+110,R.by,0],[R.bx+290,R.by,0],[R.bx+110,R.by+0.0001,0],[R.bx+290,R.by,0]];
   var B=[[159,316,0],[129,344,0],[159,372,0],[129,400,0]];
-  var C=[[R.fx,R.fy-R.L[1]/2,0],[R.fx+R.L[0]/2,R.fy,90],[R.fx,R.fy+R.L[1]/2,0],[R.fx-R.L[0]/2,R.fy,90]];
+  var FX=svg.classList.contains("mob")?R.fx-34:R.fx;
+  var C=[[FX,R.fy-R.L[1]/2,0],[FX+R.L[0]/2,R.fy,90],[FX,R.fy+R.L[1]/2,0],[FX-R.L[0]/2,R.fy,90]];
   return function(p,bb){
     if(!svg.isConnected)return;
     /* 1: the bar comes in as one length (pieces 0..3 end to end at one tenth gaps closed), the saw cuts at three points, keys go in */

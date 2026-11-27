@@ -16,8 +16,8 @@ function vHome(){
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1512" height="1100" alt="Fächer aus folierten und pulverbeschichteten Sprossenprofilen in Holzdekoren und Farben" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Upgrading your glass<span class="nomob"> · seit 1982 in Langenzenn</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Der kompetente Partner</span></span> <span class="l"><span class="nw">für die Isolierglas­industrie.</span></span></h1>'+
-   '<div class="hero-foot"><p class="s" data-r>Wir bieten Produktionsanlagen zur Abstandhalter- und Sprossenverarbeitung, sind Systempartner für Fenstersprossen und zuverlässiger Lieferant für hochwertige Verbrauchsgüter rund um die Flachglasverarbeitung.</p>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Anlagen und Sprossen</span></span> <span class="l"><span class="nw">für Isolierglas.</span></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Der kompetente Partner für die Isolierglasindustrie: wir bieten Produktionsanlagen zur Abstandhalter- und Sprossenverarbeitung, sind Systempartner für Fenstersprossen und zuverlässiger Lieferant für hochwertige Verbrauchsgüter rund um die Flachglasverarbeitung.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/kontakt">Anfrage senden '+ARR+'</a><a class="btn" href="#/maschinen">Unsere Maschinen</a></div></div>'+
   '</section>'+
 
@@ -32,7 +32,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">Vollautomatisierung</span><h2 class="d3"><span class="nw">Ein Rahmen,</span> <span class="nw">vollautomatisch.</span></h2>'+
+   '<div class="story-l"><span class="lab kick">Vollautomatisierung</span><h2 class="d3"><span class="nw">Vom Profil</span> <span class="nw">zum fertigen Rahmen.</span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Romillo</span><span>Rotosort</span><span>Roweldo</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Zuschnitt und</span> <span class="nw">Eckwinkel.</span></h2><p>Die Romillo schneidet die Einzelstangen vollautomatisch zu und steckt die Eckwinkel, für alle gängigen geschweißten und gesteckten Profile.</p></article>'+
@@ -48,7 +48,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="sprossen" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Sprossensysteme</span><h2 class="d2 split"><span class="nw">Profile und Zubehör</span> <em class="nw">für Ihre Sprossenproduktion.</em></h2></div><p data-r>R&amp;R ist Ihr Systemlieferant: von Profilen über Verbindungstechnik bis zum Klapperschutz liefern wir alles, was die Sprossenproduktion braucht.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Sprossensysteme</span><h2 class="d2 split"><span class="nw">Sprossen, Profile</span> <em class="nw">und Zubehör.</em></h2></div><p data-r>R&amp;R ist Ihr Systemlieferant: von Profilen über Verbindungstechnik bis zum Klapperschutz liefern wir alles, was die Sprossenproduktion braucht.</p></div>'+
    dq(SPROS,"dq4")+
   '</div></section>'+
 
@@ -72,7 +72,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="kontakt" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Kontakt und Support</span>'+
-   '<h2 class="big split"><span class="nw">Sprechen</span> <em class="nw">Sie uns an.</em></h2>'+
+   '<h2 class="big split"><span class="nw">Sprechen Sie mit uns</span> <em class="nw">über Ihre Anlage.</em></h2>'+
    '<p class="sub" data-r>Sie suchen ein Produkt oder eine Lösung für Ihren Produktionsablauf, haben Fragen zu Ihrer Maschine oder brauchen Service oder ein Ersatzteil?</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">E-Mail schreiben '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Anrufen '+TELT+'</a></div>'+
    '<div class="cinfo">'+
@@ -84,7 +84,7 @@ function cta(){
 }
 function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
-   '<div class="c"><span class="lab">Adresse</span>Mühlsteig 57<br>90579 Langenzenn</div>'+
+   '<div class="c"><span class="lab">Adresse</span>Mühlsteig 57, 90579 Langenzenn</div>'+
    '<div class="c"><span class="lab">Kontakt</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="mailto:'+SMAIL+'">'+SMAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Seiten</span><a class="ul" href="#/maschinen">Maschinentechnik</a><br><a class="ul" href="#/sprossen">Sprossensysteme</a><br><a class="ul" href="#/outsourcing">Outsourcing</a><br><a class="ul" href="#/verbrauch">Verbrauchsgüter</a></div>'+
    '<div class="c"><span class="lab">Geschäftsführung</span>Roland Rottler, Stefan Rottler<br>Amtsgericht Fürth, HB-Nr. 2362</div>'+

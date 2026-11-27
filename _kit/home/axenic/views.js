@@ -32,8 +32,8 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1600" height="900" alt="An aXenic aXMD2150 gallium arsenide broadband optical modulator: a gold package with fibre boots, DC pins and an SMPM connector" decoding="async" fetchpriority="high"></figure></div>'+
-   '<span class="lab eyebrow" data-r>GaAs optical modulators<span class="nomob"> · NETPark, Durham</span></span>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1604" height="606" alt="An aXenic aXMD2150 gallium arsenide broadband optical modulator: a gold package with fibre boots, DC pins and an SMPM connector" decoding="async" fetchpriority="high"></figure></div>'+
+   '<span class="lab eyebrow" data-r>Gallium arsenide modulators<span class="nomob"> · NETPark, Durham</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Optical modulators,</span> <span class="l">built for space.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Gallium arsenide Mach-Zehnder and IQ modulators for satellite communications: small, light and fast, flat to 50 GHz, radiation-hard and stable without temperature control.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/modulators">Our modulators '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
@@ -50,7 +50,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">How a GaAs modulator works</span><h2 class="d3"><span class="nw">Light in,</span> <span class="nw">data out.</span></h2>'+
+   '<div class="story-l"><span class="lab kick">How our modulators work</span><h2 class="d3"><span class="nw">Light in,</span> <span class="nw">data out.</span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Split</span><span>Drive</span><span>Combine</span><span>Monitor</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">Two paths</span> <span class="nw">for the light.</span></h2><p>Light from the input fibre enters a gallium arsenide waveguide and divides equally between the two arms of a Mach-Zehnder interferometer.</p></article>'+
@@ -106,7 +106,7 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/modulators">Modulators</a><br><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/space">Space</a><br><a class="ul" href="#/news">News</a><br><a class="ul" href="#/careers">Careers</a></div>'+
    '<div class="c"><span class="lab">Certified</span>ISO 9001<br>ISO 14001<br>Cyber Essentials</div>'+
-  '</div><svg class="bigsvg" viewBox="0 0 1000 214" aria-hidden="true"><text class="bmx" x="500" y="176" text-anchor="middle" textLength="980" lengthAdjust="spacing">aXenic</text></svg>'+
+  '</div><svg class="bigsvg" viewBox="0 0 1000 214" aria-hidden="true"><text class="bmx" x="500" y="176" text-anchor="middle" textLength="980" lengthAdjust="spacing">a<tspan class="bx">X</tspan>enic</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 aXenic Ltd</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 

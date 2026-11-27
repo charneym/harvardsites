@@ -10,7 +10,7 @@ var SCW=760,SCH=520;
 function mzScene(o){
   var g='',mob=o.mob;
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
-  if(!mob)g+='<text class="t" x="20" y="30">GAAS MACH-ZEHNDER, SCHEMATIC</text>';
+  if(!mob)g+='<text class="t" x="20" y="30">MACH-ZEHNDER MODULATOR, SCHEMATIC</text>';
   /* step 1: the chip, the input waveguide and the two arms */
   g+='<g id="mzS"><path class="edge sCh" d="M150 150H590V370H150Z"/><path class="wg sIn" d="M40 260H180"/>'+
      '<path class="wg sAr" d="M180 260C220 260 230 190 270 190H470C510 190 520 260 560 260"/>'+
@@ -23,9 +23,9 @@ function mzScene(o){
   /* step 4: the tap and the monitor photodiode */
   g+='<g id="mzM"><path class="wg2 sTp" d="M620 260Q632 292 645 320"/><path class="edge sPd" d="M630 320H660V346H630Z"/></g>';
   /* labels, per step, >= 8px clear of every stroke (DR3) */
-  g+='<g id="mzL1"><text class="t s2" x="150" y="'+(mob?136:138)+'">'+(mob?'GAAS CHIP':'GAAS WAVEGUIDE CHIP')+'</text><text class="t" x="40" y="'+(mob?240:244)+'">IN</text></g>';
+  g+='<g id="mzL1"><text class="t s2" x="150" y="'+(mob?136:138)+'">'+(mob?'CHIP':'WAVEGUIDE CHIP')+'</text><text class="t" x="40" y="'+(mob?240:244)+'">IN</text></g>';
   g+='<g id="mzL2"><text class="t s2" x="472" y="'+(mob?128:124)+'">'+(mob?'RF':'RF ELECTRODES')+'</text></g>';
-  g+='<g id="mzL3"><text class="t s2" x="592" y="'+(mob?186:188)+'">'+(mob?'OUTPUT':'OUTPUT FOLLOWS RF')+'</text></g>';
+  g+='<g id="mzL3"><text class="t s2" x="600" y="'+(mob?186:188)+'">'+(mob?'OUTPUT':'OUTPUT FOLLOWS RF')+'</text></g>';
   g+='<g id="mzL4"><text class="t s2" x="600" y="'+(mob?378:372)+'">'+(mob?'MONITOR':'MONITOR PHOTODIODE')+'</text></g>';
   g+='<g id="lb1"><text class="a" x="20" y="508">1 · SPLIT</text></g>';
   g+='<g id="lb2"><text class="a" x="20" y="508">2 · DRIVE</text></g>';

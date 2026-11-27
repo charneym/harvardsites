@@ -1,0 +1,62 @@
+# Site editor for Gibson Oncology (Sveltia CMS).
+# Saving in the editor commits to the repository; GitHub Pages republishes in about a minute.
+backend:
+  name: github
+  repo: charneym/harvardsites
+  branch: main
+  commit_messages:
+    create: "gibsononcology: add {{slug}} (site editor)"
+    update: "gibsononcology: update {{slug}} (site editor)"
+    delete: "gibsononcology: delete {{slug}} (site editor)"
+    uploadMedia: "gibsononcology: upload {{path}} (site editor)"
+    deleteMedia: "gibsononcology: delete {{path}} (site editor)"
+
+site_url: https://charneym.github.io/harvardsites/gibsononcology/
+display_url: https://charneym.github.io/harvardsites/gibsononcology/
+
+media_folder: gibsononcology/img
+public_folder: img
+
+collections:
+  - name: news
+    label: News
+    description: News and events on the home page (latest three) and the News page.
+    files:
+      - name: news
+        label: News and events
+        file: gibsononcology/content/news.json
+        fields:
+          - name: news
+            label: News items
+            label_singular: news item
+            widget: list
+            add_to_top: true
+            collapsed: true
+            summary: "{{fields.date}} · {{fields.title}}"
+            hint: Newest first. The top three also appear on the home page.
+            fields:
+              - { name: date, label: Date, widget: string, hint: "As it should appear, e.g. November 27, 2026" }
+              - { name: title, label: Headline, widget: text }
+              - { name: source, label: Source, widget: string, required: false, hint: "Who published it, e.g. Business Wire" }
+              - { name: link, label: Link, widget: string, hint: "Full web address of the article" }
+
+  - name: team
+    label: Team
+    description: Leadership and board, shown on the home page and the Team page.
+    files:
+      - name: leadership
+        label: Leadership and board
+        file: gibsononcology/content/team.json
+        fields:
+          - name: leadership
+            label: People
+            label_singular: person
+            widget: list
+            collapsed: true
+            summary: "{{fields.name}} · {{fields.title}}"
+            hint: Shown in this order. Drag to reorder.
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: title, label: Title, widget: string }
+              - { name: board, label: Board member, widget: boolean, default: false }
+              - { name: photo, label: Photo, widget: image, hint: "Portrait, roughly 4:5 (e.g. 990 × 1238 px)" }

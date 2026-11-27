@@ -163,3 +163,11 @@ var EVID=[
  ["Phase 2 design","About 40 patients with first-time recurrent glioblastoma; a one-hour infusion daily for five days, with brain tissue analysed before and after"],
  ["Endpoints","Tumor regression first; then progression-free survival and overall survival. The FDA says the trial may qualify as a registration trial"]];
 var SHEETS=[];
+/* Editable content: news and leadership are kept in content/*.json, which the editor at admin/ saves.
+   The lists above are the fallback if those files can't be loaded (e.g. opened from disk). */
+window.BOOTWAIT=[(function(){if(!window.fetch||location.protocol==="file:")return null;
+  function j(u){return fetch(u,{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).catch(function(){return null})}
+  return Promise.all([j("content/news.json"),j("content/team.json")]).then(function(a){
+    var n=a[0]&&a[0].news,t=a[1]&&a[1].leadership;
+    if(n&&n.length)NEWS=n.filter(function(x){return x&&x.title}).map(function(x){return [x.date||"",x.title,x.source||"",x.link||"#"]});
+    if(t&&t.length)TEAM=t.filter(function(x){return x&&x.name}).map(function(x){return {name:x.name,title:x.title||"",b:x.board?1:0,img:String(x.photo||"").split("/").pop()}})})})()];

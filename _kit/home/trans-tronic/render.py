@@ -109,9 +109,9 @@ def env(d):
     thin = sm(0.1, 0.0, np.abs(x+0.7))*sm(-0.6, 0.1, y)*sm(-0.4, 0.3, z)
     low = sm(-0.25, -0.55, y)*sm(0.22, 0.05, np.abs(x-0.42))
     low2 = sm(-0.3, -0.6, y)*sm(0.3, 0.1, np.abs(x+0.5))
-    return low[..., None]*np.array([1.0, 0.96, 0.9])*2.4 + low2[..., None]*0.7 + base + key[..., None]*np.array([1.0, 0.97, 0.92])*3.0 + strip[..., None]*np.array([1.0, 0.97, 0.93])*2.6 \
-        + top[..., None]*np.array([0.95, 0.93, 0.9])*0.9 + rim[..., None]*np.array([1.0, 0.85, 0.6])*0.8 \
-        + floor[..., None]*np.array([0.4, 0.36, 0.3]) + thin[..., None]*2.2 + front[..., None]*np.array([0.95, 0.92, 0.88])*0.5
+    return low[..., None]*np.array([1.0, 0.99, 0.97])*2.4 + low2[..., None]*0.7 + base + key[..., None]*np.array([1.0, 0.99, 0.96])*3.0 + strip[..., None]*np.array([1.0, 0.97, 0.93])*2.6 \
+        + top[..., None]*np.array([0.95, 0.93, 0.9])*0.9 + rim[..., None]*0.6 \
+        + floor[..., None]*0.16 + thin[..., None]*2.2 + front[..., None]*np.array([0.95, 0.92, 0.88])*0.5
 Pl = P
 rr = np.sqrt(Pl[:, 0]**2+Pl[:, 2]**2)
 # turned finish: the brushing runs around the axis, so scatter normals along the axis direction (anisotropic)

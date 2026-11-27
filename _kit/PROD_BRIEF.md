@@ -38,6 +38,7 @@ Build home-only per `_kit/HOME_BRIEF.md` on `_kit/src/firelight.src.html` (the t
      - neutral studio key, fill and rim; faint soft shadow; ~2–3% neutral falloff
      - no glow, halo, beam, bloom or coloured haze
    - **Render quality bar:** a render must pass for a real product photograph of their actual product: correct proportions, seams, bevels, real materials and believable screens or labels. A simple CG box or toy-like model is not acceptable (iFAST, 2026-11-27, was sent back). If you can't reach that quality, use their clean own photo cut out, or pick another company.
+   - **Sourcing preference (2026-11-27, after 4 of the first 14 renders came back toy-like):** strongly prefer companies that have a usable product photo of their own. Use a render only when the product has rich real geometry (optics, machined metal, coils, mechanisms) that can pass for a photograph. Simple boxy devices (readers, cabinets, plain housings) with no usable photo mean you pick another company.
    - **Never:**
      - framed or boxed photos (the client: "so out of place")
      - small photos blown up

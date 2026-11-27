@@ -1,5 +1,5 @@
 #!/bin/bash
-# sequential gate run for the Gillard Cutting home-only build (v4) (HOME_BRIEF Gates), on #/ only
+# sequential gate run for the AIM home-only build (HOME_BRIEF Gates), on #/ only
 cd "$(dirname "$0")/../.." || exit 1
 F=/home/user/harvardsites/gillard-cutting/index.html
 run(){ echo "=== $*"; timeout 600 node "$@" 2>&1 | tail -12; }
@@ -26,7 +26,7 @@ run buildout-test.js $F
 run fit-audit.js $F
 (cd .. && echo '=== loader-contrast (root)' && node _kit/loader-contrast-audit.js gillard-cutting && echo LC-DONE)
 echo "=== ALL DONE"
-(cd .. && node _kit/tools/textclash.js gillard-cutting /tmp/claude-0/-home-user-harvardsites/8cccc22a-738c-52b0-a855-8d6e851e1bbf/scratchpad/tc 2>&1 | tail -30)
+(cd .. && node _kit/tools/textclash.js gillard-cutting /tmp/claude-0/-home-user-harvardsites/6222e5dd-e8f9-5993-bf06-522711f60f53/scratchpad/tc_gillard-cutting 2>&1 | tail -30)
 (cd .. && echo '=== entities' && node _kit/tools/entities.js gillard-cutting 2>&1 | tail -10)
 (cd .. && echo '=== contrast 1440' && node _kit/tools/contrast.js gillard-cutting 2>&1 | tail -10)
 (cd .. && echo '=== contrast 390' && node _kit/tools/contrast.js gillard-cutting 390 2>&1 | tail -10)
@@ -36,3 +36,5 @@ echo "=== ALL DONE"
 (cd .. && echo '=== squeeze 390' && node _kit/tools/squeeze.js gillard-cutting 2>&1 | tail -10)
 (cd .. && echo '=== squeeze 768' && node _kit/tools/squeeze.js gillard-cutting 768 2>&1 | tail -10)
 echo '=== END'
+echo '=== overflow 360/390/414'; node /home/user/harvardsites/_kit/home/gillard-cutting/overflow.js 2>&1 | tail -5
+echo '=== FINISHED'

@@ -12,8 +12,9 @@ function caps(){var C=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="934" height="690" alt="Eine Rolle klarer PET-Folie Polylux auf einem Kartonkern, Blick auf die Stirnseite mit den Folienlagen" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>HAGNER PET-Folien Polylux®<span class="nomob"> · Dornstetten</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Nicht die Verpackung.</span> <span class="l"><em>Ihr Produkt.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Nicht die Verpackung.</span></span> <span class="l"><span class="nw">Ihr Produkt.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>sicht-pack HAGNER extrudiert, kaschiert und konfektioniert in Dornstetten PET-Hartfolien für Tiefzieh- und Verpackungsanwendungen, in Rollen und Formaten.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/produkte">Zu den Produkten '+ARR+'</a><a class="btn" href="#/kontakt">Anfrage stellen</a></div></div>'+
   '</section>'+

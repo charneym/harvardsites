@@ -26,8 +26,9 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1107" height="968" alt="Deva CMM system pack: the black 030 servo amplifier with a handset on top and a green PCIe motion control card in front" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>CMM controllers and motion control<span class="nomob"> · Birkenhead, England</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Control for</span> <span class="l nw">the machines</span> <span class="l"><em class="nw">that measure.</em></span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Control for machines</span></span> <span class="l"><span class="nw">that measure.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Deva Electronic Controls designs and manufactures PC-based motion control and position measurement products in the UK: CMM controllers and retrofit hardware, encoder interfaces, vision and signal conversion, for OEMs and end-users worldwide.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/software">CMM software compatibility</a></div></div>'+
   '</section>'+

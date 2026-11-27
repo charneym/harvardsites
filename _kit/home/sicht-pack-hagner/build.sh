@@ -1,13 +1,2 @@
 #!/bin/bash
-# sicht-pack HAGNER home, v4: hand-written page on the v3 layout with the sent sites' motion. Inlines fonts, gsap, lenis, buildout and nssfix.
-set -e
-cd "$(dirname "$0")"
-python3 - <<'PY'
-import pathlib
-h=pathlib.Path('v4.src.html').read_text()
-n=pathlib.Path('../../lib/nssfix.js').read_text().rstrip('\n')
-assert h.count('<!--@nssfix-->')==1
-pathlib.Path('.v4.build.html').write_text(h.replace('<!--@nssfix-->',n))
-PY
-cd ../.. && node build.js home/sicht-pack-hagner/.v4.build.html ../sicht-pack-hagner/index.html
-rm -f home/sicht-pack-hagner/.v4.build.html
+cd "$(dirname "$0")" && python3 assemble.py && mkdir -p ../../../sicht-pack-hagner && cp hero-cut.webp ../../../sicht-pack-hagner/ && cd ../.. && node build.js src/sicht-pack-hagner.src.html ../sicht-pack-hagner/index.html

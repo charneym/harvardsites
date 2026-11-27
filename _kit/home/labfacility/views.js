@@ -14,10 +14,11 @@ function caps(){var C=[
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="light">'+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1121" height="857" alt="Labfacility IEC mineral insulated thermocouples with miniature plugs: Types K, J and T coiled, and a straight Type N probe" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Temperature &amp; process technology<span class="nomob"> · Bognor Regis</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Temperature sensors,</span> <span class="l nw">made in Britain</span> <span class="l nw">since 1971.</span></h1>'+
-   '<div class="hero-foot"><p class="s" data-r>Labfacility designs and manufactures thermocouples, resistance thermometers and thermocouple connectors, stocks thermocouple cable and supplies the instruments that read them, from two UK sites to over 85 countries.</p>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Temperature sensors,</span></span> <span class="l"><span class="nw">made in Britain.</span></span></h1>'+
+   '<div class="hero-foot"><p class="s" data-r>Since 1971, Labfacility has designed and manufactured thermocouples, resistance thermometers and thermocouple connectors. It stocks thermocouple cable and supplies the instruments that read them, from two UK sites to over 85 countries.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/products">Our products '+ARR+'</a><a class="btn" href="#/contact">Send an enquiry</a></div></div>'+
   '</section>'+
 

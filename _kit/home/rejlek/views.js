@@ -26,7 +26,6 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="827" alt="Kartenterminal mit Tastatur und Display aus der Rejlek-Fertigung" decoding="async" fetchpriority="high"><figcaption>Kartenterminal aus der Rejlek-Fertigung</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Metall und Kunststoff<span class="nomob"> · Auftragsfertigung aus Wien</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Vom Prototyp</span> <span class="l">bis zum Ende</span> <span class="l"><em>der Serie.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Spritzgussformen, Stanzwerkzeuge und Fertigungsanlagen aus eigener Entwicklung, und die Kunststoff- und Metallteile, die sie produzieren: für Medizintechnik, Automotive, Industrieelektronik und Maschinenbau.</p>'+

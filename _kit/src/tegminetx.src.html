@@ -1175,6 +1175,8 @@ html.bo-open #field{opacity:1!important;filter:brightness(1.1);-webkit-mask-imag
 @media (max-width:860px){.tm{grid-template-columns:1fr}.tm-ph{max-width:420px}.tm-o ul{grid-template-columns:1fr}}
 /* the hero render ends well clear of the headline; the scrim sits only behind the text */
 .hero.hx::before{background:linear-gradient(90deg,rgba(var(--inkr),.7) 0%,rgba(var(--inkr),.45) 32%,rgba(var(--inkr),0) 50%),linear-gradient(180deg,rgba(var(--inkr),0) 0%,rgba(var(--inkr),0) 66%,rgba(var(--inkr),.75) 100%)!important}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+html body .hero h1.hero-h em,html body .hero h1.hero-h .gt{background:none!important;color:inherit!important;-webkit-text-fill-color:currentColor!important;font-style:normal;font-weight:inherit;font-size:1em}
 </style>
 </head>
 </head>
@@ -1502,20 +1504,29 @@ function makeAb(cv){
   " float yw=.42*sin(T*.085)+TL;mat3 M=rx(.16+.06*sin(T*.06))*ry(yw);mat3 Mi=mat3(M[0].x,M[1].x,M[2].x,M[0].y,M[1].y,M[2].y,M[0].z,M[1].z,M[2].z);",
   " vec3 ro=Mi*vec3(uv,3.2)+vec3(0.,-.06,0.),rd=normalize(Mi*vec3(uv*.08,-1.));",
   " vec3 bmin=vec3(-.76,-.7,-.2),bmax=vec3(.76,.62,.2);vec3 iv=1./rd;vec3 t0=(bmin-ro)*iv,t1=(bmax-ro)*iv;vec3 tn=min(t0,t1),tf=max(t0,t1);float ta=max(max(tn.x,tn.y),tn.z),tb=min(min(tf.x,tf.y),tf.z);",
-  " if(tb>max(ta,0.)){",
-  "  float t=max(ta,0.);vec2 hs=vec2(-1.);float bm=9.;for(int i=0;i<90;i++){if(t>tb)break;vec3 pp=ro+rd*t;vec2 m=map(pp);bm=min(bm,bead(vec3(abs(pp.x),pp.y,pp.z)));if(m.x<.0012){hs=vec2(t,m.y);break;}t+=max(m.x*.9,.0015);}",
-  "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.85,.1,.4)),L3=normalize(vec3(-.62,.04,.78)),vw=vec3(0.,0.,1.);",
-  "  float pu=.8+.2*sin(T*.7);vec3 gc=vec3(.80,.93,1.);",
-  "  vec3 c=col+gc*exp(-max(bm,0.)*30.)*.22*pu;",
+  " float hs0=-1.;if(tb>max(ta,0.)){",
+  "  float t=max(ta,0.);vec2 hs=vec2(-1.);float bm=9.;for(int i=0;i<90;i++){if(t>tb)break;vec3 pp=ro+rd*t;vec2 m=map(pp);bm=min(bm,bead(vec3(abs(pp.x),pp.y,pp.z)));if(m.x<.0012){hs=vec2(t,m.y);hs0=t;break;}t+=max(m.x*.9,.0015);}",
+  /* TOP-FIX B 2026-11-27: lit like a studio product shot: one soft key from the headline side (upper left of the page) with
+     real specular highlights, a low neutral fill from the low front right, a dim rim on the far edge seen only at grazing
+     angles; no halo around the payloads, no pulse, no coloured light */
+  "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.55,-.25,.8)),LR=normalize(vec3(.8,.25,-.55)),vw=vec3(0.,0.,1.);",
+  "  vec3 c=col;",
   "  if(hs.x>0.){vec3 p=ro+rd*hs.x;vec3 n=M*nrm(p);float fr=pow(1.-max(dot(n,vw),0.),2.2);",
-  "   float df=max(dot(n,L1),0.),df2=max(dot(n,L2),0.);float s1=pow(max(dot(n,normalize(L1+vw)),0.),60.),s2=pow(max(dot(n,normalize(L2+vw)),0.),30.),s3=pow(max(dot(n,normalize(L3+vw)),0.),110.);",
-  "   vec3 rr=reflect(-vw,n);vec3 env=mix(vec3(.03,.06,.10),vec3(.66,.80,.93),smoothstep(-.2,.9,rr.y));",
-  "   if(hs.y<.5){vec3 base=vec3(.41,.63,.82);vec3 body=base*(.22+.72*df+.28*df2)+env*.42;float a=.58+.42*fr;",
-  "    c=mix(c+base*.14,body,a)+vec3(.74,.87,1.)*fr*.45+vec3(1.)*s1*1.3+vec3(.7,.84,1.)*s2*.5+vec3(.95,.98,1.)*s3*.9;}",
-  "   else{c=gc*(.78+.3*df)*pu+vec3(1.)*s1*.8+gc*fr*.4;}}",
+  "   float df=max(dot(n,L1),0.),df2=max(dot(n,L2),0.);vec3 hk=normalize(L1+vw);float s1=pow(max(dot(n,hk),0.),60.),sw=pow(max(dot(n,hk),0.),8.);",
+  "   float rim=pow(1.-max(dot(n,vw),0.),3.)*max(dot(n,LR),0.);",
+  "   vec3 rr=reflect(-vw,n);vec3 env=mix(vec3(.02),vec3(.62),smoothstep(-.2,.9,rr.y)*smoothstep(.6,-.4,rr.x));",
+  "   if(hs.y<.5){vec3 base=vec3(.41,.63,.82);vec3 body=base*(.07+.95*df+.2*df2)+env*.3;float a=.82+.18*fr;",
+  "    c=mix(c,body,a)+vec3(1.)*s1*1.25+vec3(1.)*sw*.2+vec3(.92)*rim*.6;}",
+  "   else{vec3 mt=vec3(.80,.80,.79);c=mt*(.07+.9*df+.2*df2)+env*.35+vec3(1.)*s1*1.1+vec3(.92)*rim*.6;}}",
   "  col=mix(col,c,IN);",
   " }",
-  " col=bg+(1.-exp(-max(col-bg,0.)*1.3))*(1.-bg);gl_FragColor=vec4(col,1.);}"].join("\n");
+  " col=bg+(1.-exp(-max(col-bg,0.)*1.3))*(1.-bg);",
+  /* a neutral ground falloff (about 2-3%, up and toward the key side, not centred on the object) and a very faint, wide,
+     soft cast shadow on an implied surface below, nudged away from the key; both outside the object only */
+  " vec2 fd=(uv-vec2(-.3,.28))/1.25;float out_=hs0<0.?1.:0.;",
+  " col+=vec3(.024)*IN*exp(-dot(fd,fd))*out_;",
+  " vec2 sd=(uv-vec2(.035,-.64))/vec2(.34,.05);col*=1.-.32*IN*exp(-dot(sd,sd)*1.2)*out_;",
+  " gl_FragColor=vec4(col,1.);}"].join("\n");
   function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(o));return o}
   var pr=gl.createProgram();try{gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr)}catch(e){if(window.console)console.warn(e);return null}
   if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return null;gl.useProgram(pr);
@@ -1527,7 +1538,7 @@ function makeAb(cv){
 }
 var field=(function(){
   var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,lastRaf=0,ema=16,slowN=0;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,mob=false;
   var G=makeAb(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
   function now(){return RM?9:(performance.now()-t0)/1000}
@@ -1535,7 +1546,7 @@ var field=(function(){
      on phones, in the band above the headline */
   function geo(){var cx,cy,sc,tl=0;if(mob){cx=w*.5;cy=h*(1-.215);sc=Math.min(h*.19,w*.42)}
     else{cx=w*.69;cy=h*.47;sc=Math.min(h*.56,w*.25)}
-    var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
+    var sy=mob?SP.v*h*.18:-HY;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
     var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
@@ -1551,7 +1562,11 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the conjugate scrolls up 1:1 with the hero on desktop (RECIPE_NOTES section 6), back home once the hero has left */
+    var hy=0,hr=!mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},
     running:function(){return running},focus:function(){var g=geo();return [g.cx/q,h-g.cy/q]}};
 })();/*</R:field>*/

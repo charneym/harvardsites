@@ -29,13 +29,14 @@ var field=(function(){
     var dom=false;
     if(!mob){var hr=document.querySelector(".hero"),ey=hr&&hr.querySelector(".eyebrow"),ac=hr&&hr.querySelector(".act"),
         h1=hr&&hr.querySelector(".hero-h"),ld=hr&&hr.querySelector(".hero-foot .s");
-      if(ey&&ac&&h1){var sy=window.scrollY||0,t=oy(ey)-sy,b=oy(ac)+ac.offsetHeight-sy,
+      if(ey&&ac&&h1){var t=oy(ey),b=oy(ac)+ac.offsetHeight,
           tr=Math.max(rr(h1),ld?rr(ld):0),cr=side+cw;
         if(b-t>160&&cr-tr>120){
-          /* v11 (client: helix looked small): up to 1.2x the text block's height, centred on it, but never within 124px of the
+          /* all in page coordinates (never the scroll position), so the size and place are fixed while scrolling.
+             v11 (client: helix looked small): up to 1.2x the text block's height, centred on it, but never within 124px of the
              top (nav) or 64px of the partner strip's rule */
-          var sm=hr.querySelector(".g-hm"),st=sm?oy(sm)-sy:h,mid=(t+b)/2,half=Math.max((b-t)*.5,Math.min((b-t)*.6,mid-124,st-64-mid));
-          ih=Math.min(half*2,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=mid+sy;kx=(tr+cr)/2;dom=true}}}
+          var sm=hr.querySelector(".g-hm"),st=sm?oy(sm):h,mid=(t+b)/2,half=Math.max((b-t)*.5,Math.min((b-t)*.6,mid-124,st-64-mid));
+          ih=Math.min(half*2,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=mid;kx=(tr+cr)/2;dom=true}}}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h,dom:dom};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}

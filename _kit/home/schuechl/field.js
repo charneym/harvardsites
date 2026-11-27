@@ -2,11 +2,11 @@
    machine of the UGM series, after the product photos on schuechl.de: the blue chamber door with two chamfered windows in riveted
    frames, lever, light-grey control column; through the windows the lit chamber, the tilted mixing cup and an amber resin stream
    running into the mould's funnel. Raymarched offline by render.js with real alpha, baked to hero.webp; here it holds still with a
-   very slow Ken Burns breath, a soft floor shadow and a faint warm glow from the chamber windows. On phones it sits in the top band
+   very slow Ken Burns breath, a soft floor shadow (TOP-FIX B: no glow around it). On phones it sits in the top band
    and fades into the ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#0a1322";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var r=0;["#view .hero h1","#view .hero .eyebrow","#view .hero-foot p"].forEach(function(q){var e=document.querySelector(q);if(!e)return;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}});return r}
@@ -34,20 +34,15 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low slate glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the
-         baked render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(24,42,72,"+(.6*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(15,28,50,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(10,19,34,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint cool glow behind the balloon, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.52;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(255,196,110,"+((.05+.025*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(255,196,110,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
-      /* a soft floor shadow under the plinth, so the machine stands rather than floats */
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
+      /* TOP-FIX B 2026-11-27: no glow. A very faint neutral falloff on the ground, up and toward the key (upper left)
+         side of the machine, at most ~3% brighter than the ink (no colour, no halo hugging the object) */
+      var lx=G.mob?w*.5:x+dw*.40,ly=G.mob?G.bh*.42:y+dh*.32,lr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(lx,ly,0,lx,ly,lr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
+      /* a soft floor shadow under the plinth, so the machine stands rather than floats (TOP-FIX B: softer) */
       c.save();c.translate(x+dw*.5,y+dh*.965);c.scale(1,.075);var fs=c.createRadialGradient(0,0,0,0,0,dw*.55);
-      fs.addColorStop(0,"rgba(2,5,10,"+(.75*e).toFixed(3)+")");fs.addColorStop(.6,"rgba(2,5,10,"+(.32*e).toFixed(3)+")");fs.addColorStop(1,"rgba(2,5,10,0)");
+      fs.addColorStop(0,"rgba(2,5,10,"+(.55*e).toFixed(3)+")");fs.addColorStop(.6,"rgba(2,5,10,"+(.22*e).toFixed(3)+")");fs.addColorStop(1,"rgba(2,5,10,0)");
       c.fillStyle=fs;c.fillRect(-dw,-dw,2*dw,2*dw);c.restore();
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       if(!G.mob){
@@ -69,6 +64,10 @@ var field=(function(){
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   /* re-measure the headline once the web fonts and the title reveal have settled, so the 100px clearance holds (DP) */
   try{document.fonts.ready.then(function(){setTimeout(size,60)})}catch(_){}setTimeout(size,2600);setTimeout(size,6500);
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the object scrolls up 1:1 with the hero on desktop; 0 once the hero has left (footer echo) */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();

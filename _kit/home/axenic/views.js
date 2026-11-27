@@ -18,7 +18,7 @@ function space(){return '<div class="caps nwc tst">'+SPACE.map(function(c){retur
 /* careers (axenic.co.uk > Careers: current opportunities) */
 var JOBS=[
  ["Production Technician","Assembly","Assembling high-speed optoelectronic devices to precise specifications, and improving the processes and inspection equipment behind them."],
- ["Optical Development Engineer","Development","Experimental builds, demonstrators and your own characterisation methods, guided by experts in the field."],
+ ["Development Engineer","Optical development","Experimental builds, demonstrators and your own characterisation methods, guided by experts in the field."],
  ["Test Engineer","Test","Testing and characterising high-speed devices from bare GaAs die to finished packages, and building the measurement hardware and software."]];
 function jobs(){return '<div class="caps nwc tst">'+JOBS.map(function(c){return '<div class="cap"><span class="lab" data-r>'+esc(c[1])+'</span><h3 data-r>'+esc(c[0])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 /* news (axenic.co.uk > News; FinSMEs, Oct 2025) */
@@ -56,18 +56,18 @@ function vHome(){
      '<article class="step on"><h2><span class="nw">Two paths</span> <span class="nw">for the light.</span></h2><p>Light from the input fibre enters a gallium arsenide waveguide and divides equally between the two arms of a Mach-Zehnder interferometer.</p></article>'+
      '<article class="step"><h2><span class="nw">The RF signal</span> <span class="nw">drives the arms.</span></h2><p>The RF signal runs along electrodes beside the arms. Through the linear electro-optic effect of GaAs it shifts the phase of the light, with under 5 V of drive.</p></article>'+
      '<article class="step"><h2><span class="nw">The arms</span> <span class="nw">combine.</span></h2><p>Back together, light in phase passes and light out of phase cancels, so the optical output follows the RF signal, flat to 50 GHz.</p></article>'+
-     '<article class="step"><h2><span class="nw">Watched,</span> <span class="nw">end to end.</span></h2><p>An output photodiode monitors the bias point, and the folded optics keep fibres and RF at opposite ends, which protects the integrity of the RF feed.</p></article>'+
+     '<article class="step"><h2><span class="nw">An eye on</span> <span class="nw">the bias point.</span></h2><p>An output photodiode monitors the bias point, and the folded optics keep fibres and RF at opposite ends, which protects the integrity of the RF feed.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
 
   '<section class="sec dark2" id="modulators" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Modulators</span><h2 class="d2 split"><span class="nw">Mach-Zehnder</span> <span class="nw">and IQ.</span></h2></div><p data-r>Compact folded-optics packages built on GaAs chips from industry-standard, high-volume foundry processes, with low size, weight and power.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Modulators</span><h2 class="d2 split"><span class="nw">Mach-Zehnder and</span> <span class="nw">IQ modulators.</span></h2></div><p data-r>Compact folded-optics packages built on GaAs chips from industry-standard, high-volume foundry processes, with low size, weight and power.</p></div>'+
    devs()+
   '</div></section>'+
 
   '<section class="sec light" id="technology" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Why gallium</span> <span class="nw">arsenide.</span></h2></div><p data-r>Originally developed for aerospace and defence, GaAs modulator technology brings the same robustness to every high-speed optical link.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">The case for</span> <span class="nw">gallium arsenide.</span></h2></div><p data-r>Originally developed for aerospace and defence, GaAs modulator technology brings the same robustness to every high-speed optical link.</p></div>'+
    tech()+apps()+
   '</div></section>'+
 

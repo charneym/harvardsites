@@ -983,6 +983,8 @@ body{font-size:16.5px}
 .scene .dx{fill:rgba(63,220,138,.22);stroke:#3fdc8a;stroke-width:1.6;opacity:0}
 .scene text.a{fill:var(--accL)}
 .rail span.done::before,.rail span.on::before{background:var(--accL);border-color:var(--accL)}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+.hero-h em{font-style:normal;font-weight:inherit;color:inherit}
 </style>
 </head>
 </head>
@@ -1227,7 +1229,7 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
 
 /*<R:field>*//* ================= HERO FIELD: a crafted render of Spectrogon's real product (HOME_BRIEF update 2c): a holographic reflection
    grating, gold coated (their standard above 750 nm), on a square crown-glass blank (50 x 50 x 10 mm is one of their standard
-   pulse-compression sizes). Ray-marched offline (render/grating.html): studio softboxes are diffracted by 1200 grooves/mm per the
+   pulse-compression sizes). Ray-marched offline (render/grating_b.html, TOP-FIX B neutral studio light): studio softboxes are diffracted by 1200 grooves/mm per the
    grating equation, so the spectrum sweeps across the gold. Output is real alpha with a soft contact shadow, so it sits on the page
    ink with no box (DP/DJ). Here it breathes in a very slow drift, with no pointer response. On phones it sits in the top band. ================= */
 var field=(function(){
@@ -1256,17 +1258,13 @@ var field=(function(){
       /* a very slow breath: grow ~3% and drift up a touch over ~40s, eased back and forth */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012-SP.v*G.ih*.06;
-      /* a low red-graphite glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the baked
-         render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.side+G.cw*.73,ggy=G.mob?G.ky:h*.46,ggr=G.mob?Math.max(40,h*.34-G.ky-24):Math.max(w,h)*.78;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(58,40,36,"+(.4*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(30,28,30,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(18,19,22,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);
-      /* the light in the waveguides breathes very gently */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*.52,py=y+dh*.5,pr=dw*.34;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(255,190,110,"+(.02+.025*pu).toFixed(3)+")");rg.addColorStop(1,"rgba(255,190,110,0)");
-      c.fillStyle=rg;c.fillRect(px-pr,py-pr,pr*2,pr*2);c.globalAlpha=1;
+      /* TOP-FIX B 2026-11-27: no glow. A very faint neutral falloff on the ground, up and toward the key (upper left)
+         side of the grating, at most ~3% brighter than the ink (no colour, no halo hugging the object) */
+      var fx=G.mob?w*.5:x+dw*.40,fy=G.mob?G.bh*.42:y+dh*.34,fr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
+      /* the render (render/grating_b.html: neutral studio key upper left, low fill, dim rim, a faint wide soft shadow) */
+      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
         var lv=c.createLinearGradient(0,0,G.side+G.cw*.66,0);[[0,.95],[.25,.92],[.42,.82],[.56,.62],[.68,.4],[.79,.2],[.89,.07],[1,0]].forEach(function(q){lv.addColorStop(q[0],"rgba(13,14,16,"+q[1]+")")});c.fillStyle=lv;c.fillRect(0,0,w,h);

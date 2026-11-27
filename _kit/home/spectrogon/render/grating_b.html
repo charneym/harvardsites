@@ -1,0 +1,101 @@
+<!doctype html><html><body style="margin:0;background:transparent">
+<canvas id="c"></canvas>
+<script>
+/* Offline render of Spectrogon's real product: a holographic reflection grating, gold coated (their standard for >750 nm),
+   on a square optical crown-glass blank (50 x 50 x 10 mm, one of their standard pulse-compression sizes). Ray-marched rounded
+   box; the grating face is lit by studio softboxes and diffracts them per the grating equation d(sin θm − sin θi) = mλ
+   (1200 gr/mm), so the spectrum sweeps across the gold. TOP-FIX B 2026-11-27: neutral studio only (key softbox upper left, low fill, dim rim), soft wide shadow. Output is premultiplied RGBA (real alpha) with a soft contact shadow. */
+var W=+(new URLSearchParams(location.search).get('w')||3200),H=+(new URLSearchParams(location.search).get('h')||2000);
+var cv=document.getElementById('c');cv.width=W;cv.height=H;
+var gl=cv.getContext('webgl',{premultipliedAlpha:true,preserveDrawingBuffer:true,alpha:true,antialias:false});
+var VS='attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
+var FS=`precision highp float;
+uniform vec2 R;uniform vec2 J;
+const vec3 HB=vec3(1.0,0.2,1.0);const float RB=0.022;
+mat3 rotY(float a){float c=cos(a),s=sin(a);return mat3(c,0.,-s,0.,1.,0.,s,0.,c);}
+mat3 rotX(float a){float c=cos(a),s=sin(a);return mat3(1.,0.,0.,0.,c,s,0.,-s,c);}
+const float ROT=0.62;
+float sdB(vec3 p){vec3 q=abs(p)-(HB*0.5-RB);return length(max(q,0.))+min(max(q.x,max(q.y,q.z)),0.)-RB;}
+float map(vec3 p){return sdB(rotY(-ROT)*p);}
+vec3 nrm(vec3 p){vec2 e=vec2(.0006,0.);return normalize(vec3(map(p+e.xyy)-map(p-e.xyy),map(p+e.yxy)-map(p-e.yxy),map(p+e.yyx)-map(p-e.yyx)));}
+vec3 spec(float l){ /* wavelength nm -> linear rgb */
+ float r=0.,g=0.,b=0.;
+ if(l<440.){r=-(l-440.)/60.;b=1.;}else if(l<490.){g=(l-440.)/50.;b=1.;}else if(l<510.){g=1.;b=-(l-510.)/20.;}
+ else if(l<580.){r=(l-510.)/70.;g=1.;}else if(l<645.){r=1.;g=-(l-645.)/65.;}else{r=1.;}
+ float f=l<420.?.3+.7*(l-380.)/40.:l>700.?.3+.7*(780.-l)/80.:1.;
+ return pow(max(vec3(r,g,b)*f,0.),vec3(2.2));}
+/* studio: a big softbox up-left-behind, a narrow strip right, faint warm bounce; the rest near-black */
+vec3 env(vec3 d){
+ vec3 c=vec3(.012,.012,.014)+vec3(.02,.019,.02)*max(d.y,0.);
+ vec3 s1=normalize(vec3(-.55,.78,-.3));float a1=dot(d,s1);c+=vec3(1.,.98,.95)*2.2*smoothstep(.93,.975,a1);
+ vec3 s2=normalize(vec3(.85,.42,.25));float a2=dot(d,s2);c+=vec3(.95,.97,1.)*1.1*smoothstep(.985,.995,a2)*smoothstep(.4,.0,abs(d.y-.42));
+ /* TOP-FIX B 2026-11-27: no coloured bounce; a low neutral frontal fill and a dim neutral rim from behind on the far (right) side */
+ c+=vec3(.20)*smoothstep(.4,.95,d.z)*exp(-pow((d.y-.05)/.22,2.));
+ c+=vec3(.55)*exp(-pow((d.x-.80)/.08,2.))*smoothstep(-.6,.2,d.y)*smoothstep(.3,-.4,d.z);
+ c+=vec3(.8,.85,.9)*.55*smoothstep(.18,.02,abs(d.y-.02))*smoothstep(-.2,.7,d.x); /* a low window band from the right, for the glass sides */
+ return c;}
+/* light samples for the diffraction: points on the two softboxes */
+vec3 grating(vec3 V,vec3 N,vec3 T,vec3 Bt){
+ vec3 acc=vec3(0.);
+ for(int i=0;i<36;i++){
+  float fi=float(i);
+  vec3 L;float I;
+  if(i<26){float a=fi*2.39996;float r=sqrt((fi+.5)/26.)*.16;L=normalize(normalize(vec3(-.55,.78,-.3))+vec3(cos(a)*r,sin(a)*r*.5,sin(a)*r));I=2.2/26.;}
+  else{float u=(fi-26.)/9.-.5;L=normalize(vec3(.85,.42+u*.55,.25));I=1.1/10.;}
+  vec3 H=L+V;float ut=dot(H,T);float ub=dot(H,Bt);
+  float lobe=exp(-ub*ub/(2.*.035*.035));
+  if(lobe<.001)continue;
+  for(int m=1;m<=2;m++){float lam=833.*abs(ut)/float(m);
+   if(lam>380.&&lam<780.){acc+=spec(lam)*I*lobe*(m==1?1.:.35);}}
+ }
+ return acc*4.2;}
+float fres(float c,float f0){return f0+(1.-f0)*pow(1.-c,5.);}
+void main(){
+ vec2 fc=gl_FragCoord.xy+J;vec2 uv=(fc-.5*R)/R.y;
+ vec3 ro=vec3(0.,1.25,2.15);vec3 ta=vec3(0.,-.16,0.);
+ vec3 ww=normalize(ta-ro),uu=normalize(cross(ww,vec3(0.,1.,0.))),vv=cross(uu,ww);
+ vec3 rd=normalize(uv.x*uu+uv.y*vv+1.5*ww);
+ float t=0.;bool hit=false;
+ for(int i=0;i<160;i++){float d=map(ro+rd*t);if(d<.00025){hit=true;break;}t+=d;if(t>8.)break;}
+ /* contact shadow on the (invisible) floor plane y=-.1 */
+ float ty=(-.1-ro.y)/rd.y;vec3 fp=ro+rd*ty;vec3 lp=rotY(-ROT)*fp;
+ vec2 q=abs(lp.xz)-HB.xz*.5;float od=length(max(q,0.))+min(max(q.x,q.y),0.);
+ /* TOP-FIX B: a very faint, wide, soft cast shadow (no hard core) */
+ float sh=.26*exp(-max(od,0.)*6.)*smoothstep(.55,-.06,od)+.14*exp(-max(od,0.)*2.2);
+ sh*=smoothstep(.42,.02,od);if(rd.y>=0.&&!false)sh=0.;sh=clamp(sh,0.,.85);
+ if(!hit){gl_FragColor=vec4(0.,0.,0.,sh);return;}
+ vec3 p=ro+rd*t;vec3 n=nrm(p);vec3 V=-rd;vec3 lpn=rotY(-ROT)*n;vec3 lpp=rotY(-ROT)*p;
+ vec3 col;
+ float cs=max(dot(n,V),0.);
+ if(lpn.y>.92){
+  /* grating face: gold, grooves run along the local z axis, so the dispersion axis is local x */
+  vec3 T=rotY(ROT)*vec3(1.,0.,0.),Bt=rotY(ROT)*vec3(0.,0.,1.);
+  vec3 gold=vec3(1.,.71,.29);
+  vec3 r=reflect(rd,n);
+  bool ca=abs(lpp.x)<.46&&abs(lpp.z)<.46; /* clear aperture: the ruled area; a narrow plain margin round it */
+  vec3 F=gold+(1.-gold)*pow(1.-cs,5.);
+  col=F*env(r)*(ca?.18:.9);
+  if(ca){col+=gold*.65*grating(V,n,T,Bt)+vec3(1.)*.18*grating(V,n,T,Bt)*.25;
+   float ln=.5+.5*sin(lpp.x*900.);col*=.97+.03*ln;}
+  col+=gold*.03;
+ }else{
+  /* the glass blank's sides: crown glass, dark with a green-grey body tint and fresnel reflections; ground edges glint */
+  vec3 r=reflect(rd,n);float F=fres(cs,.045);
+  vec3 body=vec3(.010,.020,.019)*(.6+.4*cs);
+  vec3 inner=env(refract(rd,n,.66))*vec3(.35,.55,.5)*.08;
+  col=body+inner+F*env(r)*1.2;
+  float edge=smoothstep(.0,.015,RB*1.0-min(abs(abs(lpp.y)-HB.y*.5+RB),1.))*0.;
+  col+=edge;
+ }
+ /* gentle tone map */
+ col=col/(1.+col*.55);col=pow(col,vec3(1./2.2));
+ gl_FragColor=vec4(col,1.);
+}`;
+function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(o));return o}
+var pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
+var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+var lo=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(lo);gl.vertexAttribPointer(lo,2,gl.FLOAT,false,0,0);
+gl.uniform2f(gl.getUniformLocation(pr,'R'),W,H);gl.uniform2f(gl.getUniformLocation(pr,'J'),0,0);
+gl.viewport(0,0,W,H);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.drawArrays(gl.TRIANGLES,0,3);
+window.DONE=true;
+</script></body></html>

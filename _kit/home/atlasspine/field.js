@@ -5,7 +5,7 @@
    ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#04192a",AR=1,PAD=120;/* hero.webp carries PAD px of transparent margin with the cast shadow baked in (shadow.py) */
   img.decoding="async";img.onload=function(){ok=true;AR=(img.naturalWidth-2*PAD)/(img.naturalHeight-2*PAD);G=geo();if(!running)frame(true)};img.src="hero.webp";
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
@@ -28,7 +28,7 @@ var field=(function(){
     if(ok){
       /* a very slow breath: grow ~3% and drift up a touch over ~40s, eased back and forth (never above native size) */
       var k=.5-.5*Math.cos(t*Math.PI*2/40),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012-SP.v*G.ih*.06;
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.012+HY;
       /* TOP-FIX B 2026-11-27: no blue glow and no sheen. Their real render is lit as shot (not relit); a very faint
          neutral falloff up and toward the headline side (about 3% brighter than the ink, never coloured), and a wide,
          soft cast shadow on an implied surface below (baked into hero.webp by shadow.py), so the cage sits rather than floats */
@@ -54,6 +54,10 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the hero object scrolls up 1:1 with the hero on desktop (RECIPE_NOTES section 6), back home once the hero has left */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();

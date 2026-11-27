@@ -15,7 +15,7 @@ function caps(){var C=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="782" alt="HPF Prüfsystem mit Monitor und Edelstahl-Prüfkopf" decoding="async" fetchpriority="high"><figcaption>Prüfsystem von HPF Elektronik</figcaption></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="900" height="1084" alt="HPF Blisterkontrollsystem EOK FA mit Monitor und Edelstahl-Prüfkopf" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Optoelektronische Kontrollsysteme<span class="nomob"> · Urbach</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Qualität im Blister,</span> <span class="l"><em class="nw">sichtbar gemacht.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Seit 1980 entwickelt HPF Elektronik in Urbach Kamera-, Riss- und Codelesesysteme für Verpackungslinien. Pharma-, Food- und Kosmetikunternehmen weltweit setzen sie ein.</p>'+

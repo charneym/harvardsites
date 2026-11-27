@@ -9,7 +9,6 @@ function team(){return '<section class="mh"><div class="mh-group"><p class="mh-l
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1217" height="1240" alt="SL-300GBT, oblique view" decoding="async" fetchpriority="high"><figcaption>SL-300GBT</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Vacuum &amp; atmospheric automation<span class="nomob"> · St. Petersburg, Florida</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">From a dream</span> <span class="l"><em>to a design.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Hine Automation designs and manufactures vacuum and atmospheric automation systems and robotic components: load locks, cluster systems, EFEMs, robots, aligners and elevators for semiconductor, solar and flat panel display OEMs worldwide.</p>'+

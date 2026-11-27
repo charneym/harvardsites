@@ -7,11 +7,11 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="1216" alt="myPatch-sl wearable Holter patch" decoding="async" fetchpriority="high"><figcaption>myPatch-sl, the wearable Holter patch</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Ambulatory ECG monitoring<span class="nomob"> · Los Angeles, California</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Holter monitoring</span> <span class="l"><em>patients forget</em></span> <span class="l"><em>they are wearing.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>The myPatch®sl is a waterproof, FDA-cleared patch Holter that records two channels of ECG for up to 14 days. Designed and made in the USA by DMS-Service, a woman-owned Holter specialist in Los Angeles.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/product">See how it works '+ARR+'</a><a class="btn" href="#/contact">Talk to sales</a></div></div>'+
+   '<p class="lab hcap" data-r>The myPatch®sl recorder on its adult electrode. Product photograph: DMS-Service.</p>'+
   '</section>'+
 
   '<section class="sec mani dark" id="overview" data-theme="dark"><div class="wrap">'+

@@ -67,7 +67,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="technology" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Big-lab results,</span> <em class="nw">compact instruments.</em></h2></div><p data-r>Proven surface science methods, made to fit the chamber, the bench and the budget you already have.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Big-lab results,</span> <em class="nw">made compact.</em></h2></div><p data-r>Proven surface science methods, made to fit the chamber, the bench and the budget you already have.</p></div>'+
    svc()+
    '<div class="trn" data-r><span class="lab kick">New in 2026</span><p>Monochromator X-ray source anodes are now re-tipped with copper and a diamond disc, which carries heat away about five times better than copper.</p><a class="ul" href="https://www.rbdinstruments.com/blog/10-610-monochromator-x-ray-source-re-tipping-service/" target="_blank" rel="noopener">Read about re-tipping</a></div>'+
   '</div></section>'+

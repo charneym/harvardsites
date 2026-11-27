@@ -29,7 +29,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1600" height="1000" alt="A Vacuum Innovations four-position rotary crystal head: a machined body with a carousel of gold quartz crystals and two cooling tubes" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1476" height="983" alt="A Vacuum Innovations four-position rotary crystal head: a machined body with a carousel of gold quartz crystals and two cooling tubes" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Optical coating systems<span class="nomob"> · Dansville, New York</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Coating chambers,</span> <span class="l">built by coaters.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Custom e-beam deposition systems, components for your chamber, and precision optical coatings made in-house, backed by over 30 years in optical coating technology.</p>'+

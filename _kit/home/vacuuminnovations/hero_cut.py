@@ -34,6 +34,9 @@ B[..., 3] = np.where(al > 40, al, al * e)
 rows = np.where((al > 230).sum(1) > 6)[0]; yb = rows.max() + 10
 v = np.clip(1 - (yy - yb) / (h * .16), 0, 1); v = v * v * (3 - 2 * v)
 B[..., 3] = B[..., 3] * np.where(yy > yb, v, 1)
+# the cooling tubes run out of frame at the top right: fade everything over the top and right strips so they trail off
+fr = np.clip(np.minimum((w - 1 - xx) / (w * .12), yy / (h * .12)), 0, 1); fr = fr * fr * (3 - 2 * fr)
+B[..., 3] = B[..., 3] * fr
 out = Image.fromarray(B.clip(0, 255).astype(np.uint8), 'RGBA')
 out.save('hero-cut.webp', quality=90, method=6)
 print('asset', out.size)

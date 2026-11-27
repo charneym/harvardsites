@@ -83,7 +83,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Planning</span> <em class="nw">your next order?</em></h2>'+
+   '<h2 class="big split"><span class="nw">Planning your</span> <em class="nw">next order?</em></h2>'+
    '<p class="sub" data-r>Call or email us to find the right control or linearity set for your analyzer, or to set up a standing order.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email AUDIT '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+

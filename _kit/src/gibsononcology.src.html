@@ -1558,7 +1558,17 @@ p.act{margin-bottom:0}
 }
 /* v8 (client review 3) */
 /* hero: the partner strip is the hero's footer, its rule across the full content width under text and helix */
-@media (min-width:861px){.hero .g-hm{max-width:none!important}.hero .g-hm-row{justify-content:flex-start;gap:20px clamp(40px,4.4vw,72px)}}
+/* v9 hero strip: one rule across the content width; the label in a left column, the four logos spread evenly across the rest,
+   matched in optical size and centred on one line */
+@media (min-width:1101px){
+ .hero .g-hm{display:grid!important;grid-template-columns:minmax(0,3fr) minmax(0,9fr);column-gap:var(--gap);align-items:center;max-width:none!important}
+ .hero .g-hm-l{margin:0!important;max-width:24ch;line-height:1.75}
+ .hero .g-hm-row{flex-wrap:nowrap!important;justify-content:space-between!important;align-items:center!important;gap:0 32px!important}
+ .hero .g-hm-row li{align-items:center!important}
+ .hero .g-hm .l-ninds{height:30px!important}.hero .g-hm .l-mayo{height:25px!important}.hero .g-hm .l-duke{height:40px!important}.hero .g-hm .l-cn{height:27px!important}
+}
+@media (min-width:1600px){.hero .g-hm .l-ninds{height:36px!important}.hero .g-hm .l-mayo{height:30px!important}.hero .g-hm .l-duke{height:48px!important}.hero .g-hm .l-cn{height:32px!important}}
+@media (min-width:861px) and (max-width:1100px){.hero .g-hm{max-width:none!important}.hero .g-hm-row{justify-content:space-between!important;align-items:center!important}}
 /* pipeline: no hover rule, no grey track; the status sits right of its marker; name and bar block centred in the row */
 .g-pr::after{display:none!important}
 .g-bar-t{display:none!important}
@@ -2124,11 +2134,15 @@ var field=(function(){
     /* the helix: whole in frame, below the nav with headroom, centred in the open area right of the text */
     var ih=mob?Math.max(150,Math.min(h*.4-96,1310)):Math.min(h*.6,1310,(cw*.26)/AR),iw=ih*AR;
     var kx=mob?w*.5:side+cw*.71,ky=mob?86+ih*.5:Math.max(h*.52,110+ih*.5);
-    /* v7 (client: the helix ran down into the partner strip): on the home hero it spans the text block only, from just above the
-       eyebrow to a clear gap above the strip's rule, so the strip reads as the hero's footer under both columns */
-    if(!mob){var ey=document.querySelector(".hero .eyebrow"),hm=document.querySelector(".hero .g-hm");
-      if(ey&&hm){var sy=window.scrollY||0,t=Math.max(96,ey.getBoundingClientRect().top+sy-24),b=hm.getBoundingClientRect().top+sy-36;
-        if(b-t>160){ih=Math.min(b-t,1310,(cw*.26)/AR);iw=ih*AR;ky=(t+b)/2}}}
+    /* v9 (client: hero composition looked off): on the home hero the helix spans exactly the text block, from the eyebrow's top
+       to the buttons' bottom, and is centred in the open area between the text's right edge and the content's right edge */
+    function rr(el){var m=0,tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),n,g=document.createRange();  /* the text's own right edge, not its block's */
+      while((n=tw.nextNode())){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);var r=g.getBoundingClientRect();if(r.width>0&&r.right>m)m=r.right}return m}
+    if(!mob){var hr=document.querySelector(".hero"),ey=hr&&hr.querySelector(".eyebrow"),ac=hr&&hr.querySelector(".act"),
+        h1=hr&&hr.querySelector(".hero-h"),ld=hr&&hr.querySelector(".hero-foot .s");
+      if(ey&&ac&&h1){var sy=window.scrollY||0,t=ey.getBoundingClientRect().top+sy,b=ac.getBoundingClientRect().bottom+sy,
+          tr=Math.max(rr(h1),ld?rr(ld):0),cr=side+cw;
+        if(b-t>160&&cr-tr>120){ih=Math.min(b-t,1310,(cr-tr)*.8/AR);iw=ih*AR;ky=(t+b)/2;kx=(tr+cr)/2}}}
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
   function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=document.documentElement.clientWidth||innerWidth;h=innerHeight;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);G=geo();if(!running)frame(true)}

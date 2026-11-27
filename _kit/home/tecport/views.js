@@ -78,7 +78,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="history" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>History</span><h2 class="d2 split"><span class="nw">Milestones</span> <span class="nw">since 1997.</span></h2></div><p data-r>From DLP windows and infrared coatings to cold plasma on plastics, and now at the trade fairs of the photonics world.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>History</span><h2 class="d2 split"><span class="nw">From 1997</span> <span class="nw">to today.</span></h2></div><p data-r>From DLP windows and infrared coatings to cold plasma on plastics, and now at the trade fairs of the photonics world.</p></div>'+
    news()+
   '</div></section>'+
   cta();

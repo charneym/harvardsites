@@ -19,7 +19,7 @@ function vHome(){
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Quality finishing at competitive prices</span>'+
-   '<h2 class="txt" id="mani"><span class="nwp">The most appropriate,</span> <span class="nwp">cost-effective finish</span> <span class="nwp">on every product,</span> <span class="nwp">and long-lasting</span> <span class="nwp">relationships</span> <span class="nwp">with our customers.</span></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nwp">The most appropriate,</span> <span class="nwp">cost-effective finish</span> <span class="nwp">on every product,</span> <span class="nwp">and customers</span> <span class="nwp">who stay for years.</span></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">15</span><p class="k">wet paint booths, two of them back-to-back online-to-oven</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">30,000 sq ft</span><p class="k">across two sites on the Southfield Industrial Estate, Glenrothes</p></div>'+
@@ -31,7 +31,7 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">On the online-to-oven line</span><h2 class="d3"><span class="nw">Painted, cured,</span> <span class="nw">inspected, packed.</span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Prepare</span><span>Paint</span><span>Cure</span><span>Inspect</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2><span class="nw">Prepared</span> <span class="nw">before painting.</span></h2><p>Parts are wash cleaned, chemically stripped or shot blasted before painting, so the finish keys to a clean surface.</p></article>'+
+     '<article class="step on"><h2><span class="nw">Cleaned and blasted</span> <span class="nw">before painting.</span></h2><p>Parts are wash cleaned, chemically stripped or shot blasted before painting, so the finish keys to a clean surface.</p></article>'+
      '<article class="step"><h2><span class="nw">Painted</span> <span class="nw">by hand.</span></h2><p>Fifteen purpose-built booths and more than 20 experienced wet painters, for cosmetic and protective finishes.</p></article>'+
      '<article class="step"><h2><span class="nw">Cured</span> <span class="nw">online.</span></h2><p>Two of the booths are back-to-back online-to-oven, so components are painted and cured in large volumes.</p></article>'+
      '<article class="step"><h2><span class="nw">Checked,</span> <span class="nw">every item.</span></h2><p>Every item that goes through the process gets a rigorous manual inspection before it is packed.</p></article>'+
@@ -45,12 +45,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="space" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Space coatings</span><h2 class="d2 split"><span class="nw">The approved UK applicator</span> <em class="nw">for MAP Space Coatings.</em></h2></div><p data-r>Eurospray has coated satellite components for a number of years. In 2025 the French specialist MAP Space Coatings certified Eurospray as the first official application partner for its high-performance coatings for satellites and launchers.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Space coatings</span><h2 class="d2 split"><span class="nw">The approved</span> <span class="nw">UK applicator</span> <em><span class="nw">for MAP</span> <span class="nw">Space Coatings.</span></em></h2></div><p data-r>Eurospray has coated satellite components for a number of years. In 2025 the French specialist MAP Space Coatings certified Eurospray as the first official application partner for its high-performance coatings for satellites and launchers.</p></div>'+
    dq([["Coatings","MAP’s white and black coatings","For thermal or conductive applications, applied throughout the British Isles."],["Track record","The James Webb Space Telescope","Parts of its Mid-Infrared Instrument (the Spectrometer Pre-Optics) were painted in Glenrothes with a space coating, working with the Royal Observatory Edinburgh."]])+
   '</div></section>'+
 
   '<section class="sec light" id="sectors" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Sectors</span><h2 class="d2 split"><span class="nw">Finishes for rail, defence,</span> <em class="nw">automotive and more.</em></h2></div><p data-r>Working in partnership with clients including Aston Martin, Jaguar, Ford, BAE Systems and Honeywell, we often develop finishes our customers had not considered.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Sectors</span><h2 class="d2 split"><span class="nw">Rail, defence,</span> <em class="nw">automotive and more.</em></h2></div><p data-r>Working in partnership with clients including Aston Martin, Jaguar, Ford, BAE Systems and Honeywell, we often develop finishes our customers had not considered.</p></div>'+
    sec()+
   '</div></section>'+
 
@@ -60,7 +60,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Latest</span> <em class="nw">from Eurospray.</em></h2></div><p data-r>Each entry links to its source.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Latest news</span> <em class="nw">from Eurospray.</em></h2></div><p data-r>Each entry links to its source.</p></div>'+
    news()+
   '</div></section>'+
   cta();

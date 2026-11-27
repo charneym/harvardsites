@@ -13,7 +13,7 @@ function euScene(o){
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 150 520 316" aria-hidden="true"><defs>'+
      '<pattern id="euHt" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V9" stroke="rgba(242,245,249,.2)" stroke-width="1"/></pattern>'+
      '<pattern id="euBl" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r=".9" fill="rgba(20,25,32,.35)"/><circle cx="4.5" cy="4.2" r=".7" fill="rgba(20,25,32,.25)"/></pattern>'+
-     '<linearGradient id="euPt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3f97da"/><stop offset=".55" stop-color="#0e71b8"/><stop offset="1" stop-color="#0a4f82"/></linearGradient></defs>';
+     '<linearGradient id="euPt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3f97da"/><stop offset=".55" stop-color="#0e71b8"/><stop offset="1" stop-color="#0a4f82"/></linearGradient><clipPath id="euCl"><rect x="0" y="150" width="520" height="316"/></clipPath></defs>';
   /* stations */
   g+='<g class="stn"><rect class="zb" x="'+U.bx0+'" y="'+(U.ry+14)+'" width="'+(U.bx1-U.bx0)+'" height="'+(U.ph+40)+'"/>'+
      '<rect class="zp" x="'+U.px0+'" y="'+(U.ry+14)+'" width="'+(U.px1-U.px0)+'" height="'+(U.ph+40)+'"/>'+
@@ -22,10 +22,12 @@ function euScene(o){
   /* the overhead conveyor rail */
   g+='<path class="rail" d="M0 '+U.ry+'H520"/>';
   /* three parts on hooks */
+  g+='<g clip-path="url(#euCl)">';
   for(i=0;i<3;i++)g+='<g id="euP'+i+'"><path class="hk" d="M0 0V18"/><g transform="translate('+(-U.pw/2)+' 18)">'+
-     '<rect class="raw" width="'+U.pw+'" height="'+U.ph+'"/><rect class="bl" width="'+U.pw+'" height="'+U.ph+'"/><rect class="pt" width="'+U.pw+'" height="'+U.ph+'"/>'+
+     '<rect class="raw" width="'+U.pw+'" height="'+U.ph+'"/><rect class="bl" width="'+U.pw+'" height="'+U.ph+'"/><rect class="ptc" width="'+U.pw+'" height="'+U.ph+'"/>'+
      '<circle class="hole" cx="'+(U.pw/2)+'" cy="22" r="7"/><rect class="hole" x="12" y="48" width="'+(U.pw-24)+'" height="26"/>'+
      '<path class="ok" d="M'+(U.pw/2-10)+' '+(U.ph+16)+'l7 7l14 -16"/></g></g>';
+  g+='</g>';
   /* the spray gun in the booth */
   g+='<g id="euGn"><path class="gun" d="M0 0h-22v10h-14v8h14v4h22z"/><path class="mist" d="M2 2l34 -14M2 6l36 0M2 10l34 14"/></g>';
   var T=function(id,x,y,s,a){return '<text class="t" id="'+id+'" x="'+x+'" y="'+y+'"'+(a?' text-anchor="'+a+'"':'')+'>'+s+'</text>'};
@@ -41,7 +43,7 @@ function scene(){return euScene({mob:MOBILE()?1:0})}
 function euE(u){u=u<0?0:u>1?1:u;return u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2}
 function storyDraw(svg){
   var U=EU,Q=function(s){return svg.querySelector(s)};
-  var P=[0,1,2].map(function(k){var g=Q("#euP"+k);return {g:g,bl:g.querySelector(".bl"),pt:g.querySelector(".pt"),ok:g.querySelector(".ok")}});
+  var P=[0,1,2].map(function(k){var g=Q("#euP"+k);return {g:g,bl:g.querySelector(".bl"),pt:g.querySelector(".ptc"),ok:g.querySelector(".ok")}});
   var E={gn:Q("#euGn"),hw:Q("#euHw"),C:[0,1,2,3].map(function(k){return Q("#euC"+k)})};
   function op(el,v){if(el)el.style.opacity=Math.max(0,Math.min(1,v)).toFixed(3)}
   function cl(v){return v<0?0:v>1?1:v}

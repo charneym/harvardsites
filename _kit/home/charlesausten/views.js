@@ -16,16 +16,16 @@ function caps(){var C=[
   return '<div class="caps six">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="light">'+
+  '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>OEM pump manufacturer<span class="nomob"> · Byfleet, Surrey</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Diaphragm and</span> <span class="l">vacuum pumps,</span> <span class="l">built in Britain.</span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Diaphragm and</span> <span class="l">vacuum pumps,</span> <span class="l"><em>built in Britain.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Charles Austen Pumps designs and builds OEM pumps for air, gas and liquids, for IVD analysers, autoclaves and medical suction, drink dispense and environmental equipment, with everything from tool making to assembly in house.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/technology">Explore the technology '+ARR+'</a><a class="btn" href="#/contact">Make an enquiry</a></div></div>'+
   '</section>'+
 
-  '<section class="sec mani dark blueband" id="about" data-theme="dark"><div class="wrap">'+
+  '<section class="sec mani dark" id="about" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Family owned since 1954</span>'+
-   '<h2 class="txt" id="mani">Our founder is widely believed to have built the first compact diaphragm pump, from left-over army boot leather. We have refined the principle ever since.</h2></div>'+
+   '<h2 class="txt" id="mani">Our founder is widely believed to have built the first compact diaphragm pump, from left-over army boot leather. <em>We have refined the principle ever since.</em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">1919</span><p class="k">the year Charles Austen built his first compact diaphragm pump</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">50+</span><p class="k">years supplying pumps to the medical industry</p></div>'+
@@ -33,8 +33,8 @@ function vHome(){
    '</div>'+
   '</div></section>'+
 
-  '<section class="story" id="story" data-theme="light"><div class="story-pin">'+
-   '<div class="story-l"><span class="lab kick">How a diaphragm pump works</span><h2 class="d3"><span class="nw">One sealed</span> <span class="nw">chamber, flexing.</span></h2>'+
+  '<section class="story" id="story" data-theme="dark"><div class="story-pin">'+
+   '<div class="story-l"><span class="lab kick">How a diaphragm pump works</span><h2 class="d3"><span class="nw">One sealed</span> <span class="nw">chamber, <em>flexing.</em></span></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Intake</span><span>Exhaust</span><span>Sealed</span></div>'+
     '<div class="steps">'+
      '<article class="step on"><h2>Drawn in.</h2><p>An eccentric on the motor shaft pulls the connecting rod down. The diaphragm flexes away from the head, the inlet valve opens and air or gas is drawn into the chamber.</p></article>'+
@@ -45,17 +45,17 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="technology" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Six principles,</span> <span class="nw">invented in house.</span></h2></div><p data-r>Charles Austen Pumps invents all of its own pump technology and invests in R&amp;D to design, develop and prove each new product, so our engineers know every element of the pumps we make.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Technology</span><h2 class="d2 split"><span class="nw">Six principles,</span> <em><span class="nw">invented in house.</span></em></h2></div><p data-r>Charles Austen Pumps invents all of its own pump technology and invests in R&amp;D to design, develop and prove each new product, so our engineers know every element of the pumps we make.</p></div>'+
    caps()+
   '</div></section>'+
 
-  '<section class="sec dark2" id="pumps" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Pumps</span><h2 class="d2 split"><span class="nw">Off the shelf,</span> <span class="nw">or built for you.</span></h2></div><p data-r>Our ranges cover vacuum, pressure and liquid duty for five divisions. When no standard unit fits, we design and manufacture a bespoke pump one to one with your team.</p></div>'+
+  '<section class="sec dark2" id="pumps" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Pumps</span><h2 class="d2 split"><span class="nw">Off the shelf,</span> <em><span class="nw">or built for you.</span></em></h2></div><p data-r>Our ranges cover vacuum, pressure and liquid duty for five divisions. When no standard unit fits, we design and manufacture a bespoke pump one to one with your team.</p></div>'+
    prods()+
   '</div></section>'+
 
-  '<section class="sec dark blueband" id="capabilities" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">From the first tool</span> <span class="nw">to the serial number.</span></h2></div><p data-r>A vertically integrated designer and manufacturer of specialist pumps, with every process covered by ISO 9001:2015, so we control the quality and reliability of each pump from start to finish.</p></div>'+
+  '<section class="sec dark" id="capabilities" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Capabilities</span><h2 class="d2 split"><span class="nw">From the first tool</span> <em><span class="nw">to the serial number.</span></em></h2></div><p data-r>A vertically integrated designer and manufacturer of specialist pumps, with every process covered by ISO 9001:2015, so we control the quality and reliability of each pump from start to finish.</p></div>'+
    '<div class="ev"><span class="lab kick" data-r>In house</span><dl>'+
     '<div data-r><dt class="lab">Product development</dt><dd>Client-focused design projects with our own engineers and R&amp;D</dd></div>'+
     '<div data-r><dt class="lab">Tooling and machining</dt><dd>CNC machining and EDM for fast, viable tooling</dd></div>'+
@@ -66,12 +66,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="heritage" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Heritage</span><h2 class="d2 split"><span class="nw">A century of pumps</span> <span class="nw">where it mattered.</span></h2></div><p data-r>From the laboratory to Everest, the Apollo programme and the first IVF birth, Charles Austen pumps have been specified for work that could not fail. A few moments from our history.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Heritage</span><h2 class="d2 split"><span class="nw">A century of pumps</span> <em><span class="nw">where it mattered.</span></em></h2></div><p data-r>From the laboratory to Everest, the Apollo programme and the first IVF birth, Charles Austen pumps have been specified for work that could not fail. A few moments from our history.</p></div>'+
    hist()+
   '</div></section>'+
 
-  '<section class="sec dark2" id="news" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Products, projects</span> <span class="nw">and shows.</span></h2></div><p data-r>New products, completed projects and where to meet us; each entry links to its source.</p></div>'+
+  '<section class="sec dark2" id="news" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Products, projects</span> <em><span class="nw">and shows.</span></em></h2></div><p data-r>New products, completed projects and where to meet us; each entry links to its source.</p></div>'+
    news()+
   '</div></section>'+
   cta();
@@ -79,7 +79,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Tell us what</span> <span class="nw">it needs to pump.</span></h2>'+
+   '<h2 class="big split"><span class="nw">Tell us what</span> <em><span class="nw">it needs to pump.</span></em></h2>'+
    '<p class="sub" data-r>Speak to our engineers about an OEM pump, a bespoke design or a range enquiry, and we will be in touch as soon as possible.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email an enquiry '+ARR+'</a><a class="btn" href="tel:'+TEL+'">Call '+TELT+'</a></div>'+
    '<div class="cinfo">'+
@@ -90,7 +90,7 @@ function cta(){
   '</div></section>';
 }
 function footer(){
-  return '<footer class="ftr blueband" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
+  return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Headquarters</span>Charles Austen Pumps Ltd<br>100 Royston Road, Byfleet, Surrey KT14 7NY</div>'+
    '<div class="c"><span class="lab">Enquiries</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/technology">Technology</a><br><a class="ul" href="#/pumps">Pumps</a><br><a class="ul" href="#/capabilities">Capabilities</a><br><a class="ul" href="#/heritage">Heritage</a></div>'+

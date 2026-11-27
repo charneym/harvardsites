@@ -11,7 +11,7 @@ var SMW=[212,222,232,268,278,288];               /* conductor heights inside the
 function smScene(o){
   var g='',k,mob=o.mob,T=SMY-SMR,B=SMY+SMR;
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true">';
-  g+='<defs><linearGradient id="smMet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="1"/><stop offset=".4" stop-color="#c9d4de" stop-opacity="1"/><stop offset=".55" stop-color="#8c9fb2" stop-opacity="1"/><stop offset="1" stop-color="#d8e6ef" stop-opacity="1"/></linearGradient></defs>';
+  g+='<defs><linearGradient id="smMet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f6f8" stop-opacity=".95"/><stop offset=".4" stop-color="#9fb1c1" stop-opacity=".9"/><stop offset=".55" stop-color="#5d7083" stop-opacity=".9"/><stop offset="1" stop-color="#6ccbef" stop-opacity=".85"/></linearGradient></defs>';
   /* ---- base: the connector, the jacket and the contacts, drawn in with the section ---- */
   g+='<g id="smBase">';
   g+='<path class="jk sD" d="M96 '+T+'H700A'+SMR+' '+SMR+' 0 0 1 700 '+B+'H96Z"/>';

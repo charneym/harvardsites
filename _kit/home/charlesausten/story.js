@@ -10,8 +10,8 @@ var CAP={x0:150,x1:450,yh:140,yb:230,yd:238,cx:300,cy:410,r:22,D0:16};
 function caScene(o){
   var g='',mob=o.mob,i,P=CAP;
   g+='<svg class="'+(mob?"mob":"")+'" viewBox="0 0 '+SCW+' '+SCH+'" aria-hidden="true"><defs>'+
-    '<linearGradient id="caBd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f2328" stop-opacity=".05"/><stop offset=".5" stop-color="#1f2328" stop-opacity=".02"/><stop offset="1" stop-color="#1f2328" stop-opacity=".04"/></linearGradient>'+
-    '<pattern id="caHt" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" stroke="#b3bcc6" stroke-width="1"/></pattern></defs>';
+    '<linearGradient id="caBd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f5f7" stop-opacity=".16"/><stop offset=".5" stop-color="#f3f5f7" stop-opacity=".06"/><stop offset="1" stop-color="#f3f5f7" stop-opacity=".12"/></linearGradient>'+
+    '<pattern id="caHt" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V7" stroke="#5a6f86" stroke-width="1"/></pattern></defs>';
   g+='<text class="t" x="20" y="30">'+(mob?"DIAPHRAGM PUMP":"DIAPHRAGM PUMP, IN SECTION")+'</text>';
   /* the head, with its two port channels */
   g+='<path class="body" d="M150 140H450V230H150Z"/>';

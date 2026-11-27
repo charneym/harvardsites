@@ -16,7 +16,7 @@ function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
    '<span class="lab eyebrow" data-r>Neuro product development<span class="nomob"> · Nazareth, Israel</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Democratizing</span><span class="l">neuro</span><span class="l">technologies.</span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Democratizing</span><span class="l">neuro</span><span class="l"><em>technologies.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>SensoMedical designs, qualifies and manufactures the electrodes, wearables and active implants that turn neuroscience research into commercial products, all under one roof. Its <span class="nw">Wovyn Depth Electrode</span> received FDA 510(k) clearance in April 2026.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/approach">How we build it '+ARR+'</a><a class="btn" href="#/products">The products</a></div></div>'+
   '</section>'+

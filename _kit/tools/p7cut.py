@@ -31,12 +31,22 @@ if '--shadow' in a:  # the photo's own soft floor shadow: smooth, unsaturated pi
         if not nb.any(): break
         g |= nb
     SH = g & ~bgm; bgm = g
+    if '--floor' in a:  # keep only the floor part of the photo's shadow (a backdrop shadow would float on the dark ground)
+        fgm = ~bgm; ys = np.where(fgm.any(1))[0]; yb = ys.max() if len(ys) else A.shape[0]
+        cut = int(yb - float(a[a.index('--floor')+1]) * (yb - ys.min()))
+        SH[:cut] = False
 if '--erase' in a:  # a hand polygon (source px) that belongs to the floor (reflection/shadow), not the part
     from PIL import ImageDraw
     pts = [float(v) for v in a[a.index('--erase')+1].split(',')]; m = Image.new('L', im.size, 0)
     if '--mirror' in a: pts = [im.width - 1 - v if k % 2 == 0 else v for k, v in enumerate(pts)]
     ImageDraw.Draw(m).polygon(list(zip(pts[::2], pts[1::2])), fill=255); E = np.asarray(m) > 0
     SH = SH | (E & ~bgm); bgm = bgm | E
+if '--clear' in a:  # a hand polygon (source px) that is pure background: removed, not kept as shadow
+    from PIL import ImageDraw
+    pts = [float(v) for v in a[a.index('--clear')+1].split(',')]; m = Image.new('L', im.size, 0)
+    if '--mirror' in a: pts = [im.width - 1 - v if k % 2 == 0 else v for k, v in enumerate(pts)]
+    ImageDraw.Draw(m).polygon(list(zip(pts[::2], pts[1::2])), fill=255); E = np.asarray(m) > 0
+    SH = SH & ~E; bgm = bgm | E
 fg = ~bgm
 fg = ndimage.binary_opening(fg, iterations=1)
 lab2, n2 = ndimage.label(fg)
@@ -60,11 +70,12 @@ if o.height > maxh: o = o.resize((round(o.width * maxh / o.height), maxh), Image
 W, H = o.size; P = round(max(W, H) * .12)
 PW, PH = W + 2 * P, H + 2 * P
 sil = Image.new('L', (PW, PH), 0); sil.paste(o.split()[3], (P, P))
-sq = sil.resize((PW, max(1, round(PH * .55))), Image.LANCZOS)
-sh = Image.new('L', (PW, PH), 0)
-sh.paste(sq, (round(PW * .035), round(P + H * .40 + (PH * .45 - P) * 0) ))
-# keep the shadow's base aligned under the object's base
-sh = Image.new('L', (PW, PH), 0); top = P + H - round(H * .55) + round(H * .06); sh.paste(sq.crop((0, round(P * .55), PW, round(P * .55) + round(H * .55))), (round(PW * .035), top))
+if '--tall' in a:  # an upright object: a flat floor shadow from its base footprint only (bottom 14%), squashed onto the floor
+    base = sil.crop((0, P + round(H * .86), PW, P + H)); bh = max(1, round(H * .05))
+    sh = Image.new('L', (PW, PH), 0); sh.paste(base.resize((PW, bh), Image.LANCZOS), (round(PW * .02), P + H - round(bh * .55)))
+else:
+    sq = sil.resize((PW, max(1, round(PH * .55))), Image.LANCZOS)
+    sh = Image.new('L', (PW, PH), 0); top = P + H - round(H * .55) + round(H * .06); sh.paste(sq.crop((0, round(P * .55), PW, round(P * .55) + round(H * .55))), (round(PW * .035), top))
 sh = sh.filter(ImageFilter.GaussianBlur(PW * .022))
 sa = np.asarray(sh).astype(np.float32) / 255 * .34
 c = Image.fromarray(np.dstack([np.zeros((PH, PW, 3)), np.clip(sa, 0, 1) * 255]).astype(np.uint8), 'RGBA')

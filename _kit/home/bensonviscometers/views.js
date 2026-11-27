@@ -34,7 +34,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="1240" height="1048" alt="Benson clinical viscometer with its sample tube tray" decoding="async" fetchpriority="high"><figcaption>Benson clinical viscometer with sample tray</figcaption></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1459" height="1134" alt="Benson clinical viscometer with its sample tube tray" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Clinical viscometers<span class="nomob"> · Pembroke Dock, Wales</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Clinical viscometers,</span><span class="l"><em>crafted in the UK.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Trusted by laboratories, hospitals, research facilities, clinics and universities worldwide: the BV1 and BV200 measure plasma, serum and whole blood viscosity, accurately and fast.</p>'+

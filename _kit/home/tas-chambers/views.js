@@ -25,7 +25,7 @@ function news(){return '<ul class="nws news-l">'+NEWS.map(function(n){
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-photo.webp" width="930" height="1240" alt="TAS Series 3 humidity test chamber" decoding="async" fetchpriority="high"><figcaption>Series 3 humidity chamber</figcaption></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1084" height="1352" alt="TAS Series 3 humidity test chamber" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Environmental test chambers<span class="nomob"> · since 1969</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Test chambers,</span> <span class="l"><em class="nw">made in Worthing.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Temperature Applied Sciences designs and builds environmental test chambers and simulation equipment: thermal and climatic chambers, test rooms, thermal shock, altitude and thermal vacuum systems, with hire, service and calibration.</p>'+

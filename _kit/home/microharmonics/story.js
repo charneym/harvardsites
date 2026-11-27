@@ -32,7 +32,7 @@ function tsScene(o){
   }
   /* the S-parameters: S21 (insertion loss) near the top, S12 (isolation) far below */
   g+='<rect class="band" id="tsBand" x="'+spX(222).toFixed(1)+'" y="90" width="'+(spX(330)-spX(222)).toFixed(1)+'" height="350"/>';
-  [[0,"0"],[-10,"−10"],[-20,"−20"],[-30,"−30"]].forEach(function(r){var y=spY(r[0]);g+='<path class="gl" d="M320 '+y.toFixed(1)+'H720"/><text class="ax" x="308" y="'+(y+4).toFixed(1)+'" text-anchor="end">'+r[1]+'</text>'});
+  [[0,""],[-10,"−10"],[-20,"−20"],[-30,"−30"]].forEach(function(r){var y=spY(r[0]);g+='<path class="gl" d="M320 '+y.toFixed(1)+'H720"/><text class="ax" x="308" y="'+(y+4).toFixed(1)+'" text-anchor="end">'+r[1]+'</text>'});
   [[240,"240"],[280,"280"],[320,"320"]].forEach(function(r){g+='<text class="ax" x="'+spX(r[0]).toFixed(1)+'" y="'+(mob?470:462)+'" text-anchor="middle">'+r[1]+'</text>'});
   g+='<path class="axl" d="M320 90V440H720"/><text class="ax" x="720" y="'+(mob?500:482)+'" text-anchor="end">'+(mob?'GHz':'FREQUENCY · GHz')+'</text>'+(mob?'':'<text class="ax" x="308" y="76" text-anchor="end">dB</text>');
   g+='<path class="ms" id="tsMs" d="'+spPath(s21)+'"/><path class="ms ms2" id="tsMs2" d="'+spPath(s12)+'"/><circle class="hd" id="tsHd" r="5" cx="320" cy="100"/>';

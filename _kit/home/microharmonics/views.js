@@ -6,7 +6,7 @@ function caps(){var C=[
   ["Test and measurement","<span class=\"nw\">Clean signals</span> <span class=\"nw\">on the bench</span>","Isolators suppress standing waves in sensitive millimeter-wave instrumentation, from vector network analysis to THz sources.",'<rect x="8" y="14" width="40" height="28"/><path class="a" d="M14 32L22 22L30 30L42 20"/>'],
   ["Telecommunications","<span class=\"nw\">Two signals,</span> <span class=\"nw\">one link</span>","Orthomode transducers combine orthogonal polarizations, doubling the data a 142 GHz link can carry in demonstrations with VDI and Keysight.",'<path d="M10 40L28 14L46 40"/><path class="a" d="M18 40H38"/>'],
   ["Radar and security","<span class=\"nw\">Radar, scanners,</span> <span class=\"nw\">portal security</span>","Compact range radar, imaging, portal security scanners and chemical and bio-agent detection all run through waveguide components.",'<path d="M8 44A26 26 0 0 1 48 44"/><path class="a" d="M28 44L42 22"/>'],
-  ["Science and space","<span class=\"nw\">Atmospheres,</span> <span class=\"nw\">plasmas, stars</span>","NASA uses them in earth and planetary atmospheric observation; they also serve plasma diagnostics at ITER, spectroscopy and radio astronomy.",'<circle cx="28" cy="28" r="16"/><path class="a" d="M8 34Q28 18 48 26"/>']];
+  ["Science and space","<span class=\"nw\">Earth, planets</span> <span class=\"nw\">and plasmas</span>","NASA uses them in earth and planetary atmospheric observation; they also serve plasma diagnostics at ITER, spectroscopy and radio astronomy.",'<circle cx="28" cy="28" r="16"/><path class="a" d="M8 34Q28 18 48 26"/>']];
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 /* what makes the products different (microharmonics.com > Home, Isolators, About) */
 function svc(){var S=[
@@ -49,7 +49,7 @@ function vHome(){
     '<div class="steps">'+
      '<article class="step on"><h2><span class="nw">The signal</span> <span class="nw">enters the guide.</span></h2><p>A millimeter-wave signal travels down the rectangular waveguide toward a magnetized ferrite element.</p></article>'+
      '<article class="step"><h2><span class="nw">Ferrite turns</span> <span class="nw">the polarization.</span></h2><p>The ferrite rotates the wave\'s polarization, and the stepped twist hands it to the output port with the lowest insertion loss in the industry.</p></article>'+
-     '<article class="step"><h2><span class="nw">Reflections</span> <span class="nw">are absorbed.</span></h2><p>A wave coming back is rotated the same way again, arrives in the wrong orientation and is absorbed, so standing waves never reach the source.</p></article>'+
+     '<article class="step"><h2><span class="nw">Reflected waves</span> <span class="nw">are absorbed.</span></h2><p>A wave coming back is rotated the same way again, arrives in the wrong orientation and is absorbed, so standing waves never reach the source.</p></article>'+
      '<article class="step"><h2><span class="nw">Every unit,</span> <span class="nw">full band, tested.</span></h2><p>Each isolator is measured across its whole waveguide band on a vector network analyzer, and the customer gets that data at no extra cost.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
@@ -61,7 +61,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="applications" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Applications</span><h2 class="d2 split"><span class="nw">Wherever</span> <em class="nw">waves are short.</em></h2></div><p data-r>Our waveguide components serve commercial and government systems, from the lab bench to the next generation of wireless links.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Applications</span><h2 class="d2 split"><span class="nw">Wherever waves</span> <em class="nw">are short.</em></h2></div><p data-r>Our waveguide components serve commercial and government systems, from the lab bench to the next generation of wireless links.</p></div>'+
    caps()+
    '<div class="qual"><span class="lab kick" data-r>Also used in</span><p class="cr" data-r><span>Imaging</span><span>Biomaterial analysis</span><span>Biomedical systems</span><span>High-frequency data links</span><span>Covert communication</span></p></div>'+
   '</div></section>'+
@@ -73,7 +73,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Engineers,</span> <em class="nw">talking to engineers.</em></h2></div><p data-r>Direct engineering support is part of every order. The team behind the products has decades of millimeter- and submillimeter-wave design between them.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Engineers talking</span> <em class="nw">to engineers.</em></h2></div><p data-r>Direct engineering support is part of every order. The team behind the products has decades of millimeter- and submillimeter-wave design between them.</p></div>'+
    '<div class="engco">'+
     '<div class="engm"><span class="lab kick" data-r>Leadership</span><ul>'+
      '<li data-r><span class="nm">Diane Kees</span><span class="lab rl">Chief Executive and Operations Officer</span></li>'+

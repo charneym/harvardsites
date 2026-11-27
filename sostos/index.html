@@ -1167,6 +1167,8 @@ html.bo-open #field{opacity:1!important;filter:brightness(1.1);-webkit-mask-imag
 @media (max-width:860px){.hero.hx .hx-foot{margin-top:40px}}
 /* masthead summaries are one short line here: no clamp, so no glyph overhang is clipped (clip-audit) */
 .mh .mh-sum{display:block;overflow:visible;-webkit-line-clamp:unset}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+html body .hero h1.hero-h em,html body .hero h1.hero-h .gt{background:none!important;color:inherit!important;-webkit-text-fill-color:currentColor!important;font-style:normal;font-weight:inherit;font-size:1em}
 </style>
 </head>
 </head>
@@ -2072,24 +2074,32 @@ function makeStrip(cv){
   " vec3 ro=Mi*vec3(uv,3.2)+vec3(0.,.05,0.),rd=normalize(Mi*vec3(uv*.08,-1.));",
   /* ray / bounding box (object space) */
   " vec3 bmin=vec3(-4.*SP-.03,-.40,-.14),bmax=vec3(4.*SP+.03,.47,.14);vec3 iv=1./rd;vec3 t0=(bmin-ro)*iv,t1=(bmax-ro)*iv;vec3 tn=min(t0,t1),tf=max(t0,t1);float ta=max(max(tn.x,tn.y),tn.z),tb=min(min(tf.x,tf.y),tf.z);",
-  " if(tb>max(ta,0.)){",
+  " float ob=0.;if(tb>max(ta,0.)){",
   "  float t=max(ta,0.);vec2 hs=vec2(-1.);for(int i=0;i<48;i++){if(t>tb)break;vec2 m=mapS(ro+rd*t);if(m.x<.0015){hs=vec2(t,m.y);break;}t+=max(m.x,.003);}",
   "  vec3 lmin=vec3(-4.*SP,-.38,-.09),lmax=vec3(4.*SP,-.03,.09);vec3 u0=(lmin-ro)*iv,u1=(lmax-ro)*iv;vec3 un=min(u0,u1),uf=max(u0,u1);float la=max(max(un.x,un.y),un.z),lb=min(min(uf.x,uf.y),uf.z);float tl=max(la-.12,0.),tlb=lb+.12,dm=9.,di=0.;vec2 hl2=vec2(-1.);for(int i=0;i<34;i++){if(tl>tlb)break;vec2 m=mapL(ro+rd*tl);if(m.x<dm){dm=m.x;di=m.y;}if(m.x<.0015){hl2=vec2(tl,m.y);break;}tl+=max(m.x,.003);}",
-  "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.85,.1,.4)),vw=vec3(0.,0.,1.);",
-  /* what is behind the shell: the glowing reaction mix, or the ground with a soft blue bloom near each tip */
-  "  float lv=lvl(di)*(.88+.12*sin(T*.5+di*1.7));vec3 gc=mix(vec3(.13,.36,.86),vec3(.52,.84,1.),lv*.7);",
-  "  vec3 behind=col+gc*exp(-max(dm,0.)*26.)*.30*lv;",
-  "  if(hl2.x>0.){vec3 p=ro+rd*hl2.x;vec3 n=M*nL(p);float fr=pow(1.-max(dot(n,vw),0.),2.);float lv2=lvl(hl2.y)*(.88+.12*sin(T*.5+hl2.y*1.7));vec3 g=mix(vec3(.13,.36,.86),vec3(.52,.84,1.),lv2*.7);",
-  "   behind=g*(.55+.75*lv2)*(.7+.5*fr)+vec3(.9,.97,1.)*pow(max(dot(n,normalize(L1+vw)),0.),40.)*.5;}",
-  "  vec3 c=behind;",
+  /* TOP-FIX B 2026-11-27: lit like a studio product shot: one soft key from the headline side (upper left of the page) with
+     real specular highlights, a low neutral fill, a dim rim on the far edge at grazing angles; the reaction mix is a blue
+     liquid lit by that light (no glow, no bloom, no pulse), the polypropylene is neutral */
+  "  vec3 L1=normalize(vec3(-.5,.75,.55)),L2=normalize(vec3(.55,-.25,.8)),LR=normalize(vec3(.8,.25,-.55)),vw=vec3(0.,0.,1.);",
+  "  vec3 behind=col;",
+  "  if(hl2.x>0.){vec3 p=ro+rd*hl2.x;vec3 n=M*nL(p);float fr=pow(1.-max(dot(n,vw),0.),2.);float lv2=lvl(hl2.y);vec3 g=mix(vec3(.14,.36,.84),vec3(.38,.62,.95),lv2*.6);",
+  "   float dl=max(dot(n,L1),0.);behind=g*(.10+.95*dl+.15*max(dot(n,L2),0.))+vec3(1.)*pow(max(dot(n,normalize(L1+vw)),0.),40.)*.55+vec3(.9)*fr*.08;}",
+  "  vec3 c=behind;if(hs.x>0.||hl2.x>0.)ob=1.;",
   "  if(hs.x>0.&&(hl2.x<0.||hs.x<hl2.x+.4)){vec3 p=ro+rd*hs.x;vec3 n=M*nS(p);float fr=pow(1.-max(dot(n,vw),0.),2.5);",
-  "   float df=max(dot(n,L1),0.),df2=max(dot(n,L2),0.);float s1=pow(max(dot(n,normalize(L1+vw)),0.),70.),s2=pow(max(dot(n,normalize(L2+vw)),0.),36.);vec3 L3=normalize(vec3(-.62,.04,.78));float s3=pow(max(dot(n,normalize(L3+vw)),0.),120.);",
-  "   vec3 rr=reflect(-vw,n);vec3 env=mix(vec3(.03,.05,.11),vec3(.70,.80,.96),smoothstep(-.2,.9,rr.y));",
-  "   if(hs.y<.5){float a=.05+.7*fr;vec3 tint=vec3(.80,.88,1.)*(.18+.45*df+.2*df2)+env*.55;c=mix(behind,tint,a)+behind*.12+vec3(1.)*s1*1.1+vec3(.65,.8,1.)*s2*.5+vec3(.95,.98,1.)*s3*.9;}",
-  "   else{float a=.16+.6*fr;vec3 fro=vec3(.84,.90,1.)*(.16+.5*df+.2*df2)+env*.5;c=mix(behind,fro,a)+vec3(1.)*s1*1.+vec3(.95,.98,1.)*s3*.7;}}",
+  "   float df=max(dot(n,L1),0.),df2=max(dot(n,L2),0.);vec3 hk=normalize(L1+vw);float s1=pow(max(dot(n,hk),0.),70.),sw=pow(max(dot(n,hk),0.),22.);",
+  "   float rim=pow(1.-max(dot(n,vw),0.),3.)*max(dot(n,LR),0.);",
+  "   vec3 rr=reflect(-vw,n);vec3 env=mix(vec3(.02),vec3(.62),smoothstep(-.2,.9,rr.y)*smoothstep(.6,-.4,rr.x));float ks=exp(-pow((rr.x+.5)/.13,2.))*smoothstep(-.6,.2,rr.y);",
+  "   if(hs.y<.5){float a=.03+.45*fr;vec3 tint=behind*1.15+vec3(.86)*(.05+.3*df+.08*df2)+env*.3;c=mix(behind,tint,a)+vec3(1.)*ks*.55+vec3(1.)*s1*1.3+vec3(.9)*rim*.6;}",
+  "   else{float a=.3+.55*fr;vec3 fro=vec3(.86)*(.12+.65*df+.15*df2)+env*.4;c=mix(behind,fro,a)+env*(.06+.4*fr)*.5+vec3(1.)*ks*.35+vec3(1.)*s1*1.+vec3(.9)*rim*.5;}}",
   "  col=mix(col,c,IN);",
   " }",
-  " col=bg+(1.-exp(-max(col-bg,0.)*1.3))*(1.-bg);gl_FragColor=vec4(col,1.);}"].join("\n");
+  " col=bg+(1.-exp(-max(col-bg,0.)*1.3))*(1.-bg);",
+  /* a neutral ground falloff (about 2-3%, up and toward the key side, not centred on the object) and a very faint, wide,
+     soft cast shadow on an implied surface below, nudged away from the key; both outside the object only */
+  " vec2 fd=(uv-vec2(-.6,.3))/1.6;float out_=ob>0.?0.:1.;",
+  " col+=vec3(.024)*IN*exp(-dot(fd,fd))*out_;",
+  " vec2 sd=(uv-vec2(.05,-.50))/vec2(.95,.055);col*=1.-.32*IN*exp(-dot(sd,sd)*1.2)*out_;",
+  " gl_FragColor=vec4(col,1.);}"].join("\n");
   function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(o));return o}
   var pr=gl.createProgram();try{gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr)}catch(e){if(window.console)console.warn(e);return null}
   if(!gl.getProgramParameter(pr,gl.LINK_STATUS))return null;gl.useProgram(pr);
@@ -2101,7 +2111,7 @@ function makeStrip(cv){
 }
 var field=(function(){
   var cv=$("#field"),w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false,lastF=0,q=1,slow=0,warmN=0,startT=-9e9,lastRaf=0,ema=16,slowN=0;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},mob=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,mob=false;
   var G=makeStrip(cv);
   if(!G){cv.style.display="none";var bg=document.querySelector(".fieldbg");if(bg)bg.classList.add("still")}
   function now(){return RM?9:(performance.now()-t0)/1000}
@@ -2109,7 +2119,7 @@ var field=(function(){
      in the band above the headline */
   function geo(){var cx,cy,sc,tl;if(mob){cx=w*.5;cy=h*(1-.225);sc=Math.min(h*.2,w*.44);tl=0}
     else{cx=w*.705;cy=h*.5;sc=Math.min(h*.6,w*.255);tl=0}
-    var sy=SP.v*h*.18;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
+    var sy=mob?SP.v*h*.18:-HY;return {cx:cx*q,cy:(cy+sy)*q,sc:sc*q,tl:tl}}
   function size(){w=document.documentElement.clientWidth||innerWidth;h=innerHeight;mob=w<861;
     var dpr=Math.min(window.devicePixelRatio||1,1.5);q=Math.min(dpr,mob?1.25:1.05)*(slow?.8:1);cv.width=Math.max(2,Math.round(w*q));cv.height=Math.max(2,Math.round(h*q));if(!running)frame(true)}
   function frame(once){
@@ -2125,7 +2135,11 @@ var field=(function(){
   function start(){if(running||document.hidden)return;running=true;if(startT<0)startT=performance.now();if(RM){frame(true);running=false;return}raf=requestAnimationFrame(function(){frame(false)})}
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the strip scrolls up 1:1 with the hero on desktop (RECIPE_NOTES section 6), back home once the hero has left */
+    var hy=0,hr=!mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},
     running:function(){return running},focus:function(){var g=geo();return [g.cx/q,h-g.cy/q]}};
 })();

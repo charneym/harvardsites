@@ -6,17 +6,17 @@ What the client gets after migrating:
 
 | Before (v4) | After (the sent sites) |
 |---|---|
-| Logo clip-path wipe that lifts into the header | Lockup fades and rises in as one unit, progress bar, panel lifts away (flow .85 s), header drops in, hero plays at .95 s. No counter. Once per site per session, then a .5 s veil. |
+| Logo clip-path wipe that lifts into the header | Lockup fades and rises in as one unit, progress bar, lockup rises out (desoutter's char tween as one unit), panel lifts away (flow .85 s), header drops in, hero plays at .95 s. No counter. Once per site per session, then a .5 s veil. |
 | Nav click: no visible wipe (GSAP read the CSS `translateY(101%)` as a fixed `y`, so the curtain stopped one viewport down) | Full-screen curtain with the page name rising letter by letter (`gsap.set(#xc,{y:0,yPercent:101})`, `#xlab` label) |
 | Photos wipe in with clip-path, inner parallax, hero drift | Global reveal: text and cards fade up 24px, headings rise line by line, framed images fade from scale 1.06. Hero photo fades in. Only parallax: the hero h1 drifts up and fades. |
-| Story: photo crossfade + zoom 1.14 → 1 | StoryFX steps cross over (never two at once); photos switch cleanly at the step boundary (new one fades in on top over 0.1 of a step, opacity only, no zoom or blur, never a ghosted double exposure); pinned 2.8 viewports, scrub .6. check.js story fails if two photos are mid-fade. |
+| Story: photo crossfade + zoom 1.14 → 1, scrubbed | desoutter's pin (2.8 viewports, scrub .6). Step changes are TIME-based: outgoing photo fades .6 s, incoming rises from y 24 over .9 s (silk); text the same, the new text after the old is gone. No scale, no blur, no ghost at a settled position (check.js fails on two photos mid-fade). |
 | Strip slides in | Strip fades with the hero copy. Remove per site with `data-v4-strip="off"`. |
 | Lenis lerp .1 | lerp .09, lagSmoothing(120,33); eases `flow` / `silk` |
 | Hovers: lift + shadow, bg colour swap | Button fill from below + arrow nudge, drawn underlines, photo 1.035, rows shift 6px |
 
 ## A. Kit-built sites (`_kit/home/SLUG/v4.src.html` with an `<!--@v4-->` marker)
 
-Nothing to edit. `build.sh` now injects `v4.css` and the loader classes into `<head>`, and adds `CustomEase` and `storyfx` to the `@libs` marker.
+Nothing to edit. `build.sh` now injects `v4.css` and the loader classes into `<head>`, and adds `CustomEase` to the `@libs` marker.
 
 ```bash
 git pull --rebase
@@ -37,7 +37,7 @@ Optional, per site, in the source:
 
 These carry their own motion script. Replace it with the kit's:
 
-1. **Libs.** The `@libs` marker must be `gsap ScrollTrigger SplitText CustomEase lenis storyfx buildout` (keep `fit`, etc. if present).
+1. **Libs.** The `@libs` marker must be `gsap ScrollTrigger SplitText CustomEase lenis buildout` (keep `fit`, etc. if present).
 2. **Script.** Delete the site's own motion code (loader, Lenis, reveals, story, menu, route curtain wiring). Put `<!--@v4-->` after the libs and `<!--@nssfix-->` after that. Build with `_kit/v4/build.sh SLUG`. If the page has its own assembler, inline `_kit/v4/v4.js` in a `<script>` instead.
 3. **Head.** Before `</head>`, add the loader-class snippet and `<style>` + the contents of `_kit/v4/v4.css`. `build.sh` does this for you: copy its `HEAD=` block if you assemble the page by other means.
 4. **Hooks** (add the attributes; no content changes):
@@ -50,7 +50,7 @@ These carry their own motion script. Replace it with the kit's:
    - section routes: `var SECS={navKey:"sectionId"}` (buildout reads it).
    - `#xc/#xt/#xtt` can stay or go: `v4.js` creates any that are missing, plus `#xlab`.
 5. **CSS.** Delete the site's clip-path reveal rules, `[data-rv]` wipe styles, story zoom rules and any `#xc{transform:...}` that is not `translateY(101%)`. Keep the look.
-6. **Gates.** `_kit/v4/gates.sh SLUG`. Then compare against /desoutter/ by eye: the loader at 0.2–2.5 s, a nav click at 0.3/0.6/0.9/1.3 s, a mid-entry scroll reveal, and the story steps. Scripts: `node _kit/v4/motionshot.js desoutter OUT/desoutter; node _kit/v4/motionshot.js SLUG OUT/SLUG; cd OUT && python3 ../_kit/v4/motioncompare.py desoutter SLUG` (sheets for eurospray: `_kit/reports/motion-fix/`).
+6. **Gates.** `_kit/v4/gates.sh SLUG`. Then compare against /desoutter/ by eye: the loader at 0.2–2.5 s, a nav click at 0.3/0.6/0.9/1.3 s, a mid-entry scroll reveal, and the story steps. Frame sheets at the same timestamps: `node _kit/v4/motionframes.js desoutter OUT/desoutter; node _kit/v4/motionframes.js SLUG OUT/SLUG; python3 _kit/v4/motionsheet.py OUT/desoutter OUT/SLUG OUT/sheets` (loader fresh + repeat 0.8–2.0 s every 100 ms, nav 0.9–2.0 s, story change every 150 ms for 1.2 s). Spacing: `node _kit/v4/spacing.js SLUG` (empty li/p, touching blocks). Eurospray's sheets: `_kit/reports/motion-fix/v2/`.
 
 ## Notes
 - The loader's session key is per site (`<slug>-pre`), because all sites share one origin.

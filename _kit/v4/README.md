@@ -1,6 +1,6 @@
 # v4 starter kit
 
-> **MOTION FIX (2026-11-27).** All motion is now ported verbatim from the sites the client was already sent (/desoutter/, /lightel/, /viamed/, /sentec/): loader, Lenis, line/element/image reveals, parallax, hovers, the #xc/#xt route curtain, the pinned story (StoryFX). `v4.css` (injected by `build.sh`) holds the motion hooks. The table of hooks below the fold is updated; the old clip-path wipes, photo zoom/drift, slide-in strip and count-ups are gone. Migrating an existing site: `MIGRATE.md`.
+> **MOTION FIX (2026-11-27).** All motion is now ported verbatim from the sites the client was already sent (/desoutter/, /lightel/, /viamed/, /sentec/): loader, Lenis, line/element/image reveals, parallax, hovers, the #xc/#xt route curtain, the pinned story (desoutter's pin; time-based soft step changes). `v4.css` (injected by `build.sh`) holds the motion hooks. The table of hooks below the fold is updated; the old clip-path wipes, photo zoom/drift, slide-in strip and count-ups are gone. Migrating an existing site: `MIGRATE.md`.
 
 Build a concept home page to the current standard in `_kit/WAVE_BRIEF.md`: STRUCTURE v3, COMPOSITION BASICS, PREMIUM MOTION v4 with its CORRECTION, and the no-overlap story rule. You write content, tokens and page-specific CSS. The kit supplies the motion layer and the gates.
 
@@ -32,7 +32,7 @@ mkdir -p _kit/home/SLUG SLUG/img && cp _kit/v4/starter.html _kit/home/SLUG/v4.sr
 
 | Hook | Effect |
 |---|---|
-| `#pre > [data-v4-logo]` | The sent sites' loader: the lockup fades and rises in as one unit, a progress bar fills, then the panel lifts away (flow, .85 s), the header drops in and the hero plays at .95 s. No counter. Full once per site per session; later loads get the short veil fade. |
+| `#pre > [data-v4-logo]` | The sent sites' loader: the lockup fades and rises in as one unit, a progress bar fills, then the lockup rises out (yPercent -120, .38 s power3.in, desoutter's char tween as one unit), the panel lifts away (flow, .85 s), the header drops in and the hero plays at .95 s. No counter. Full once per site per session; later loads get the short veil fade. |
 | `#hdr[data-v4-header]` | Gets `.solid` after 8px of scroll. CSS condenses `--hh` to `--hhs` and the logo shrinks. |
 | (always) | Lenis (lerp .09) as `window.V4lenis`, the phone menu (clip-path circle, links rise), section routes `#/<key>` (1.5 s scroll). `#/more/*` belongs to buildout, whose curtain (#xc/#xt/#xlab; created if missing) now actually shows. |
 | `[data-v4-first]` | Hero plus fact strip, sized to one viewport (`--v4-vh`). |
@@ -41,7 +41,7 @@ mkdir -p _kit/home/SLUG SLUG/img && cp _kit/v4/starter.html _kit/home/SLUG/v4.sr
 | `[data-v4-strip]` | Fades in with the hero copy (no slide). `data-v4-strip="off"` removes it. |
 | `[data-split]` | Heading lines + words rise out of a mask (silk 1.15 s). |
 | everything else in `#view` + footer | The sent global reveal: headings line by line, text/cards/figures fade up 24px, images in a clipping frame fade from scale 1.06. `[data-up]`, `[data-rv]`, `[data-px]`, `[data-count]` are accepted but add nothing. |
-| `section.story[data-v4-story]` | Pinned for 2.8 viewports (scrub .6) at ≥1024×620; StoryFX crosses the steps over (never two at once); photos change at the step boundary (the new one fades in on top over 0.1 of a step, opacity only), so a settled position never shows two photos; captions switch like the steps. check.js fails on two photos mid-fade. Stacked with reveals below that size. |
+| `section.story[data-v4-story]` | Pinned for 2.8 viewports (scrub .6) at ≥1024×620, progress line + rail as on desoutter. The step change is time-based when the active step changes: outgoing photo fades out .6 s, incoming rises from y 24 / opacity 0 over .9 s (silk), no scale or blur; text and caption the same, the new one only after the old is gone. Stacked with reveals below that size. check.js fails on two photos mid-fade at a settled position. |
 | hover (v4.css) | Buttons fill from below and the arrow nudges; nav links and `a.ul` draw a line; cards: photo 1.035 + heading colour; news rows shift 6px and draw a rule. |
 
 Optional config goes before the `<!--@v4-->` marker: `<script>window.V4={secs:{key:"sectionId"},pinFrom:"(min-width:1100px) and (min-height:640px)",stepVh:90}</script>`. A `var SECS={...}` map works too, and buildout reads it.

@@ -9,9 +9,9 @@
      - headings [data-split]: lines + words rise out of a mask (silk 1.15 s)                                               <- splitReveal()
      - every other element: the sent global reveal (rvView): headings line by line, text/cards/figures fade up 24 px,
        images in a clipping frame fade from scale 1.06; batched on scroll, failsafe after 2.5 s                           <- rvView()
-     - the pinned story: ScrollTrigger pin for 2.8 viewports, scrub .6, StoryFX (_kit/storyfx.js) for the steps
-       (stacked steps cross over and NEVER overlap); photos change at the step boundary like desoutter's scene:
-       the new one fades in on top over 0.1 of a step, opacity only (no zoom, no blur, no ghosted in-between)              <- story()
+     - the pinned story: desoutter's pin (2.8 viewports, scrub .6, progress line, rail on/done). The step change is TIME-based:
+       outgoing photo fades out .6 s, incoming rises from y 24 / opacity 0 over .9 s ("silk"); the step text does the same,
+       the new text only once the old one is gone (never two at once)                                                   <- story()
      - the route curtain #xc/#xt/#xtt/#xlab used by lib/buildout.js: gsap.set(#xc,{y:0,yPercent:101}) as the sent sites do
      - the phone menu: clip-path circle opening (flow .9 s), links rise (silk .9 s, stagger .05)                          <- openMenu()
    Hover states are CSS (_kit/v4/v4.css, injected by build.sh).
@@ -192,38 +192,40 @@ function failsafe(){setTimeout(function(){rvFail();HERO_TL.forEach(function(t){i
   $$("[data-v4-hero] [data-in], [data-v4-hero] h1, [data-v4-hero] h1 *, [data-v4-strip]").forEach(function(el){var cs=getComputedStyle(el);if(+cs.opacity<.99&&!G.getTweensOf(el).some(function(w){return !w.paused()&&w.progress()<1})&&!(el.parentElement&&G.getTweensOf(el.parentElement).some(function(w){return !w.paused()&&w.progress()<1}))){G.killTweensOf(el);G.set(el,{opacity:1,y:0,yPercent:0})}});
   $$("[data-v4-hero] h1 .ln-mask").forEach(function(m){m.style.overflow="visible";m.style.clipPath="none"})},2500)}
 
-/* ================= PINNED STORY (verbatim homeScroll mechanics + StoryFX, photos as its figures) ================= */
+/* ================= PINNED STORY (desoutter's homeScroll pin; time-based step changes) ================= */
 var MM=G.matchMedia();
-function clamp(v){return v<0?0:v>1?1:v}
-function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
-function out(t){return 1-Math.pow(1-t,3)}
 function story(sec){
-  var steps=$$(".steps > .step",sec),N=steps.length;if(N<2||!W.StoryFX)return;
+  var steps=$$(".steps > .step",sec),N=steps.length;if(N<2)return;
   var figs=steps.map(function(s){return $("figure",s)}),txt=steps.map(function(s){return $(".st",s)}),
       caps=figs.map(function(f){return f&&$("figcaption",f)}),rail=$$(".rail li",sec),prog=$(".rail i",sec);
   if(txt.some(function(t){return !t}))return;
   MM.add(PINQ,function(){
-    sec.classList.add("pinned");var cur=-1;
-    function setStep(n){if(n===cur)return;cur=n;rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)});
-      txt.concat(figs).forEach(function(t,k){if(!t)return;if(k%N===n)t.removeAttribute("aria-hidden");else t.setAttribute("aria-hidden","true")})}
-    /* captions are text: they switch exactly like StoryFX's stacked steps (T=.2), so two are never visible at once */
-    var T=.2;function capUpd(p){var q=p*N;caps.forEach(function(c,j){if(!c)return;var t=q-j,se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
-      c.style.visibility=(se>0&&sx<1)?"":"hidden";c.style.opacity=(out(se)*(1-ease(sx))).toFixed(3)})}
-    /* photos change cleanly at the step boundary, like desoutter's scene: the incoming photo fades in ON TOP over the first PF of its step
-       (opacity only: no scale, no blur), the outgoing one stays still underneath and is hidden once the new one is fully in.
-       At the boundary itself only the outgoing photo shows, so no settled position is a double exposure. */
-    var PF=.1;function figUpd(p){var q=p*N;figs.forEach(function(f,j){if(!f)return;var t=q-j,a=j===0?1:clamp(t/PF),nx=q-(j+1),gone=j<N-1&&nx>=PF;
-      var o=gone?0:a;f.style.visibility=o>0?"":"hidden";f.style.opacity=o>=1?"":o.toFixed(3)})}
+    sec.classList.add("pinned");var cur=-1,instant=0;
+    var all=figs.concat(txt,caps).filter(Boolean);
+    /* the step change is TIME-based (client, 2026-11-27), triggered when the active step changes, never scrubbed:
+       outgoing photo fades out (.6 s), incoming photo rises in from opacity 0 / y 24px (.9 s, "silk"); no scale, no blur.
+       Step text + caption: the outgoing goes first (.3 s), then the incoming rises the same way, so two texts never show together. */
+    function show(n){var prev=cur;if(n===prev)return;cur=n;
+      rail.forEach(function(r,j){r.classList.toggle("on",j===n);r.classList.toggle("done",j<n)});
+      txt.concat(figs).forEach(function(t,k){if(!t)return;if(k%N===n)t.removeAttribute("aria-hidden");else t.setAttribute("aria-hidden","true")});
+      G.killTweensOf(all);
+      steps.forEach(function(s,j){if(j===n||j===prev)return;[figs[j],txt[j],caps[j]].forEach(function(e){if(e)G.set(e,{autoAlpha:0,y:0})})});
+      if(figs[n])G.set(figs[n],{zIndex:2});if(prev>=0&&figs[prev])G.set(figs[prev],{zIndex:1});
+      if(instant||prev<0){[figs[n],txt[n],caps[n]].forEach(function(e){if(e)G.set(e,{autoAlpha:1,y:0})});
+        if(prev>=0)[figs[prev],txt[prev],caps[prev]].forEach(function(e){if(e)G.set(e,{autoAlpha:0,y:0})});return}
+      if(figs[prev])G.to(figs[prev],{autoAlpha:0,duration:.6,ease:"power1.out"});
+      if(figs[n])G.fromTo(figs[n],{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.9,ease:"silk"});
+      [txt[prev],caps[prev]].forEach(function(e){if(e)G.to(e,{autoAlpha:0,duration:.3,ease:"power2.in"})});
+      [txt[n],caps[n]].forEach(function(e){if(e)G.fromTo(e,{autoAlpha:0,y:24},{autoAlpha:1,y:0,duration:.9,ease:"silk",delay:.32})})}
+    steps.forEach(function(s,j){[figs[j],txt[j],caps[j]].forEach(function(e){if(e)G.set(e,{autoAlpha:j===0?1:0,y:0})})});show(0);
+    /* desoutter homeScroll: an empty 1 s timeline scrubbed by the pin; its onUpdate drives the progress line and the active step */
     var tl=G.timeline();tl.to({},{duration:1});
-    var fx=W.StoryFX({section:sec,figs:[],steps:txt});
-    tl.eventCallback("onUpdate",function(){if(!sec.isConnected)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);figUpd(p);capUpd(p)});
-    setStep(0);figUpd(0);capUpd(0);
+    tl.eventCallback("onUpdate",function(){if(!sec.isConnected)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";show(Math.min(N-1,Math.floor(p*N*.9999)))});
     var st=ST.create({trigger:sec,start:function(){return "top top+="+hhs()},end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,
-      onRefresh:function(s){/*story keeps its scrubbed state after ScrollTrigger.refresh*/tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
-    return function(){st.kill();tl.kill();sec.classList.remove("pinned");if(prog)prog.style.transform="";
-      var P=["visibility","translate","scale","filter","opacity","transition","will-change"];
-      figs.concat(txt,caps).forEach(function(e){if(!e)return;P.forEach(function(k){e.style.removeProperty(k)});e.removeAttribute("aria-hidden");$$("*",e).forEach(function(k){P.forEach(function(q){k.style.removeProperty(q)})})});
-      rail.forEach(function(r){r.classList.remove("on","done")})}});
+      onRefresh:function(s){/*story keeps its state after ScrollTrigger.refresh (no replayed change)*/instant=1;tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl);instant=0},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
+    return function(){st.kill();tl.kill();G.killTweensOf(all);sec.classList.toggle("pinned",false);if(prog)prog.style.transform="";
+      G.set(all,{clearProps:"opacity,visibility,transform,zIndex"});txt.concat(figs).forEach(function(t){if(t)t.removeAttribute("aria-hidden")});
+      rail.forEach(function(r){r.classList.toggle("on",false);r.classList.toggle("done",false)})}});
 }
 
 /* ================= PRELOADER / RELOAD VEIL (verbatim choreography; the lockup moves as one unit; no counter) ================= */
@@ -257,9 +259,12 @@ function preload(){
     (function check(){var el=(performance.now()-t0)/1000;if((ready&&el>=.95)||el>=1.15)exit();else requestAnimationFrame(check)})();
     function exit(){
       var mob=MOBILE();
+      var LK=L.children.length?Array.prototype.slice.call(L.children):[L];L.style.transition="none";
       var tl=G.timeline({onComplete:function(){pre.remove();endIntro();unlockScroll();G.set(hdr,{clearProps:"transform"});onS();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
-        .to((L.children.length?Array.prototype.slice.call(L.children):[L]).concat([bar,pl]),{opacity:0,duration:.3,ease:"power2.in"},.12)
+        /* desoutter: .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08): our logo is one lockup, so it rises out as one unit */
+        .to(LK,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in"},.08)
+        .to([bar,pl],{opacity:0,duration:.3,ease:"power2.in"},.12)
         .add(function(){photoIn(1.8)},mob?1.0:.95)
         .add(function(){if(W._heroIn)W._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)

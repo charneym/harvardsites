@@ -14,10 +14,10 @@ for _ in range(3):h=re.sub(r'<!--@inc\s+([^ >]+)\s*-->',lambda m:(src.parent/m.g
 assert h.count('<!--@v4-->')==1,'need exactly one <!--@v4-->'
 assert h.count('<!--@nssfix-->')==1,'need exactly one <!--@nssfix-->'
 h=h.replace('<!--@v4-->','<script>'+(K/'v4/v4.js').read_text()+'</script>')
-# MOTION FIX: the sent sites' libs (CustomEase for the flow/silk eases, storyfx for the pinned story) ...
+# MOTION FIX: the sent sites' libs (CustomEase for the flow/silk eases) ...
 def libs(m):
   L=m.group(1).split()
-  for x,after in (('CustomEase','SplitText'),('storyfx','lenis')):
+  for x,after in (('CustomEase','SplitText'),):
     if x not in L:L.insert(L.index(after)+1 if after in L else len(L),x)
   return '<!--@libs '+' '.join(L)+'-->'
 h=re.sub(r'<!--@libs\s+([^>]*?)\s*-->',libs,h,count=1)

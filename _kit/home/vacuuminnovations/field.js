@@ -1,4 +1,4 @@
-/* ================= HERO FIELD: a plain graphite ground. The hero visual is a photo of the front door of one of Vacuum Innovations’ own coating chambers (hero_cut.py), cut out
+/* ================= HERO FIELD: a plain graphite ground. The hero visual is a studio render of Vacuum Innovations’ own rotary crystal head (render_vi.py, hero_cut.py), cut out
    and placed in the hero (.hero-ph), so it scrolls with the text (step 5). The footer echo copies this canvas. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,shown=false,BG="#121619";

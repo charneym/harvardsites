@@ -7,7 +7,7 @@
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
-  var BG="#071b20";
+  var BG="#131415";
   /* the distal window and the scope axis in image units (render.py) */
   var TIP=[.9588,.1703],DIR=[.8403,-.4301];
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
@@ -37,37 +37,16 @@ var field=(function(){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low deep-teal glow, painted across the WHOLE canvas (never inside the image rect alone), so no edge of the
-         baked render can read as a pasted box (DJ) */
-      var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(8,58,66,"+(.6*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(7,38,44,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(7,27,32,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
-      /* a faint teal glow behind the optic, breathing every ~9s */
-      var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.55;
-      var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(0,150,170,"+((.09+.04*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(0,150,170,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
-      c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
-      /* the light leaving the distal window: a soft cool glow and a short beam along the axis, fading out (additive) */
-      var be=e*sm((t-.6)/1.6)*(.88+.12*Math.sin(t*Math.PI*2/7));
-      if(be>.01){
-        var tx=x+dw*TIP[0],ty=y+dh*TIP[1],ux=DIR[0],uy=DIR[1],rl=Math.min(dw*.22,Math.max(40,(G.Rf-tx)*.9));
-        c.save();c.globalCompositeOperation="lighter";
-        var gg=c.createRadialGradient(tx,ty,0,tx,ty,dw*.07);gg.addColorStop(0,"rgba(255,248,225,"+(.55*be).toFixed(3)+")");gg.addColorStop(.35,"rgba(160,230,240,"+(.18*be).toFixed(3)+")");gg.addColorStop(1,"rgba(95,211,226,0)");
-        c.fillStyle=gg;c.fillRect(tx-dw*.07,ty-dw*.07,dw*.14,dw*.14);
-        var sp=.16,a0=Math.atan2(uy,ux),gb=c.createRadialGradient(tx,ty,0,tx,ty,rl);
-        gb.addColorStop(0,"rgba(255,246,220,"+(.30*be).toFixed(3)+")");gb.addColorStop(.4,"rgba(170,232,242,"+(.10*be).toFixed(3)+")");gb.addColorStop(1,"rgba(95,211,226,0)");
-        c.fillStyle=gb;c.beginPath();c.moveTo(tx,ty);c.arc(tx,ty,rl,a0-sp,a0+sp);c.closePath();c.fill();
-        c.restore();
-      }
+      /* TOP-FIX 2026-11-27: no glow or halo; the render is mirrored so the optic's tip faces into the page, toward the headline */
+      c.globalAlpha=e;c.save();c.translate(x+dw,y);c.scale(-1,1);c.drawImage(img,0,0,dw,dh);c.restore();c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(4,18,22,.95)");lv.addColorStop(.6,"rgba(4,18,22,.55)");lv.addColorStop(1,"rgba(4,18,22,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(4,18,22,.6)");tv.addColorStop(1,"rgba(4,18,22,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(7,27,32,0)");bv.addColorStop(1,"rgba(7,27,32,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
+        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(11,12,13,.95)");lv.addColorStop(.6,"rgba(11,12,13,.55)");lv.addColorStop(1,"rgba(11,12,13,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(11,12,13,.6)");tv.addColorStop(1,"rgba(11,12,13,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
+        var bv=c.createLinearGradient(0,h*.7,0,h);bv.addColorStop(0,"rgba(19,20,21,0)");bv.addColorStop(1,"rgba(19,20,21,.85)");c.fillStyle=bv;c.fillRect(0,h*.7,w,h*.3+1);
       }else{
-        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(4,18,22,.6)");tv2.addColorStop(1,"rgba(4,18,22,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
-        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(7,27,32,0)");mv.addColorStop(1,"rgba(7,27,32,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
+        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(11,12,13,.6)");tv2.addColorStop(1,"rgba(11,12,13,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
+        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(19,20,21,0)");mv.addColorStop(1,"rgba(19,20,21,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

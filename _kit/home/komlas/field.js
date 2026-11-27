@@ -44,14 +44,14 @@ var field=(function(){
       var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.48,ggr=Math.max(w,h)*.7;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
       ag.addColorStop(0,"rgba(16,26,84,"+(.55*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(10,16,56,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(7,11,42,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
+      /* ambient glow removed (topfix) */
       /* a faint cool glow behind the crystal, breathing every ~9s */
       var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*LX,py=y+dh*LY,pr=dw*.55;
       var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(120,140,220,"+((.07+.035*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(120,140,220,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
+      /* rim glow removed (topfix) */
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       /* the beam, drawn on once and then pulsing (additive, never reaching the headline side) */
-      var mb=e*sm((t-1.0)/1.4),mo=e*sm((t-2.0)/1.4);
+      var mb=0,mo=0; /* beam removed (topfix) */
       if(mb>.01){
         var P=function(q){return [x+dw*q[0],y+dh*q[1]]},l=P(BL),r=P(BR),lf=P(BLF),rf=P(BRF);
         var lin=function(a2,b2,f){return [a2[0]+(b2[0]-a2[0])*f,a2[1]+(b2[1]-a2[1])*f]};

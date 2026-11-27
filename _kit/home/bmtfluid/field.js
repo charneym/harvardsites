@@ -43,11 +43,11 @@ var field=(function(){
       /* a broad slate halo across the WHOLE canvas (never inside the image rect alone), so no edge can read as a box (DJ) */
       var gr=Math.max(w,h)*.75,ag=c.createRadialGradient(G.kx,G.ky,0,G.kx,G.ky,gr);
       ag.addColorStop(0,"rgba(58,72,86,"+(.55*e).toFixed(3)+")");ag.addColorStop(.5,"rgba(38,49,59,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(22,28,35,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
+      /* ambient glow removed (topfix) */
       /* a faint magenta rim glow behind the right side of the valve, breathing every ~10s */
       var pu=.5+.5*Math.sin(t*Math.PI*2/10),px=x+dw*.72,py=y+dh*.45,pr=dw*.7;
       var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(236,0,140,"+((.10+.04*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(236,0,140,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
+      /* rim glow removed (topfix) */
       /* a soft contact shadow under the body */
       var sx=x+dw*.5,sy=y+dh*.97,sr=dw*.5;c.save();c.translate(sx,sy);c.scale(1,.16);var sg=c.createRadialGradient(0,0,0,0,0,sr);sg.addColorStop(0,"rgba(5,7,10,"+(.55*e).toFixed(3)+")");sg.addColorStop(1,"rgba(5,7,10,0)");c.fillStyle=sg;c.fillRect(-sr,-sr,sr*2,sr*2);c.restore();
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;

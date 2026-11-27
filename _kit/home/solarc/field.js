@@ -42,11 +42,11 @@ var field=(function(){
       var ggx=G.mob?w*.5:G.kx,ggy=G.mob?G.bh*.45:h*.5,ggr=Math.max(w,h)*.7;
       var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
       ag.addColorStop(0,"rgba(60,57,47,"+(.55*e).toFixed(3)+")");ag.addColorStop(.5,"rgba(37,35,29,"+(.3*e).toFixed(3)+")");ag.addColorStop(1,"rgba(21,20,15,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
+      /* ambient glow removed (topfix) */
       /* a faint sun-yellow warmth behind the module (the SOLARC logo yellow), breathing every ~9s */
       var pu=.5+.5*Math.sin(t*Math.PI*2/9),px=x+dw*RING[0],py=y+dh*RING[1],pr=dw*.6;
       var rg=c.createRadialGradient(px,py,0,px,py,pr);rg.addColorStop(0,"rgba(251,201,8,"+((.08+.035*pu)*e).toFixed(3)+")");rg.addColorStop(1,"rgba(251,201,8,0)");
-      c.fillStyle=rg;c.fillRect(0,0,w,h);
+      /* rim glow removed (topfix) */
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */

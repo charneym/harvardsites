@@ -10,7 +10,8 @@
      - every other element: the sent global reveal (rvView): headings line by line, text/cards/figures fade up 24 px,
        images in a clipping frame fade from scale 1.06; batched on scroll, failsafe after 2.5 s                           <- rvView()
      - the pinned story: ScrollTrigger pin for 2.8 viewports, scrub .6, StoryFX (_kit/storyfx.js) for the steps
-       (stacked steps cross over and NEVER overlap) and for the photos (its figure cross-dissolve: no zoom-pumping)        <- story()
+       (stacked steps cross over and NEVER overlap); photos change at the step boundary like desoutter's scene:
+       the new one fades in on top over 0.1 of a step, opacity only (no zoom, no blur, no ghosted in-between)              <- story()
      - the route curtain #xc/#xt/#xtt/#xlab used by lib/buildout.js: gsap.set(#xc,{y:0,yPercent:101}) as the sent sites do
      - the phone menu: clip-path circle opening (flow .9 s), links rise (silk .9 s, stagger .05)                          <- openMenu()
    Hover states are CSS (_kit/v4/v4.css, injected by build.sh).
@@ -208,10 +209,15 @@ function story(sec){
     /* captions are text: they switch exactly like StoryFX's stacked steps (T=.2), so two are never visible at once */
     var T=.2;function capUpd(p){var q=p*N;caps.forEach(function(c,j){if(!c)return;var t=q-j,se=j===0?1:clamp(t/T),sx=j===N-1?0:clamp((t-(1-T))/T);
       c.style.visibility=(se>0&&sx<1)?"":"hidden";c.style.opacity=(out(se)*(1-ease(sx))).toFixed(3)})}
+    /* photos change cleanly at the step boundary, like desoutter's scene: the incoming photo fades in ON TOP over the first PF of its step
+       (opacity only: no scale, no blur), the outgoing one stays still underneath and is hidden once the new one is fully in.
+       At the boundary itself only the outgoing photo shows, so no settled position is a double exposure. */
+    var PF=.1;function figUpd(p){var q=p*N;figs.forEach(function(f,j){if(!f)return;var t=q-j,a=j===0?1:clamp(t/PF),nx=q-(j+1),gone=j<N-1&&nx>=PF;
+      var o=gone?0:a;f.style.visibility=o>0?"":"hidden";f.style.opacity=o>=1?"":o.toFixed(3)})}
     var tl=G.timeline();tl.to({},{duration:1});
-    var fx=W.StoryFX({section:sec,figs:figs.filter(Boolean),steps:txt});
-    tl.eventCallback("onUpdate",function(){if(!sec.isConnected)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);capUpd(p)});
-    setStep(0);capUpd(0);
+    var fx=W.StoryFX({section:sec,figs:[],steps:txt});
+    tl.eventCallback("onUpdate",function(){if(!sec.isConnected)return;var p=tl.progress();if(prog)prog.style.transform="scaleX("+p+")";setStep(Math.min(N-1,Math.floor(p*N*.9999)));fx(p);figUpd(p);capUpd(p)});
+    setStep(0);figUpd(0);capUpd(0);
     var st=ST.create({trigger:sec,start:function(){return "top top+="+hhs()},end:function(){return "+="+Math.round(innerHeight*2.8)},pin:true,animation:tl,
       onRefresh:function(s){/*story keeps its scrubbed state after ScrollTrigger.refresh*/tl.progress(s.progress);var c=tl.eventCallback("onUpdate");if(c)c.call(tl)},scrub:.6,anticipatePin:1,invalidateOnRefresh:true});
     return function(){st.kill();tl.kill();sec.classList.remove("pinned");if(prog)prog.style.transform="";

@@ -1,7 +1,8 @@
 // node _kit/v4/check.js SLUG [only]   (from anywhere; SLUG = folder with index.html at the repo root)
 // The v4 checks the older gates do not cover. Exit 1 on any failure. only = first|story|upscale|overflow (comma list) to run a subset.
 //  first    (a) the first screen (hero + fact strip) ends exactly at the viewport bottom: no band, no overflow, at 1440x900, 1920x1080, 390x844
-//  story    (b) at no scroll position in the pinned story is more than one step text visible: every 5% of the pin (settled), plus a 1% sweep of the timeline
+//  story    (b) at no scroll position in the pinned story is more than one step text visible: every 5% of the pin (settled), plus a 1% sweep of the timeline;
+//              and no two story photos are both mid-fade (opacity 0.15-0.85) at any of the 21 settled positions (no ghosted double exposure)
 //  upscale  (c) no image renders above 1.2x its native pixels (object-fit cover/contain and transforms included), at 1440, 1920, 390, scrolled through the page
 //  overflow no element sticks out to the right at 360, 390, 414
 const { chromium } = require('playwright'); const path = require('path');
@@ -71,11 +72,15 @@ async function scrollTo(p, y, wait = 900) {
         for (let x = e; x && x !== document.body; x = x.parentElement) { const c = getComputedStyle(x); if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.02) return false; } return true; });
       const caps = [...sec.querySelectorAll('.step figcaption, .spcap')].filter(e => { const r = e.getBoundingClientRect(); if (r.height < 2 || r.bottom < 0 || r.top > innerHeight) return false;
         for (let x = e; x && x !== document.body; x = x.parentElement) { const c = getComputedStyle(x); if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.02) return false; } return true; });
-      return { n: els.length, vis: Math.max(vis.length, caps.length) };
+      /* photos: two story images both mid-fade (effective opacity 0.15-0.85) = a ghosted double exposure */
+      const eff = e => { let o = 1; for (let x = e; x && x !== document.body; x = x.parentElement) { const c = getComputedStyle(x); if (c.display === 'none' || c.visibility === 'hidden') return 0; o *= +c.opacity; const fm = /opacity\(([\d.]+)(%?)\)/.exec(c.filter || ''); if (fm) o *= fm[2] ? +fm[1] / 100 : +fm[1]; } return o; };
+      const mid = [...sec.querySelectorAll('.step img, .pstep img')].map(eff).filter(o => o > 0.15 && o < 0.85).length;
+      return { n: els.length, vis: Math.max(vis.length, caps.length), mid };
     });
-    let worst = 0, n = 0, at = [];
-    for (let k = 0; k <= 20; k++) { const y = Math.round(info.start + (info.end - info.start) * k / 20); await scrollTo(p, y, 1200); const c = await count(); n = c.n; if (c.vis > 1) at.push(k * 5 + '%'); worst = Math.max(worst, c.vis); }
+    let worst = 0, n = 0, at = [], ghost = [];
+    for (let k = 0; k <= 20; k++) { const y = Math.round(info.start + (info.end - info.start) * k / 20); await scrollTo(p, y, 1200); const c = await count(); n = c.n; if (c.vis > 1) at.push(k * 5 + '%'); if (c.mid > 1) ghost.push(k * 5 + '%'); worst = Math.max(worst, c.vis); }
     say(worst <= 1, `story ${w}x${h}: ${n} step texts, at most ${worst} text/caption visible at once across 21 settled scroll positions${at.length ? ' (overlap at ' + at.join(', ') + ')' : ''}`);
+    say(!ghost.length, `story ${w}x${h}: no two story photos mid-fade (opacity 0.15-0.85) at once across 21 settled positions${ghost.length ? ' (ghosted at ' + ghost.join(', ') + ')' : ''}`);
     /* the scrubbed timeline itself, every 1%, so in-between (still easing) frames are covered too */
     await scrollTo(p, Math.round((info.start + info.end) / 2), 1200);
     const sweep = await p.evaluate(() => {

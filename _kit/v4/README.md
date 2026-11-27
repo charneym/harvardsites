@@ -41,7 +41,7 @@ mkdir -p _kit/home/SLUG SLUG/img && cp _kit/v4/starter.html _kit/home/SLUG/v4.sr
 | `[data-v4-strip]` | Fades in with the hero copy (no slide). `data-v4-strip="off"` removes it. |
 | `[data-split]` | Heading lines + words rise out of a mask (silk 1.15 s). |
 | everything else in `#view` + footer | The sent global reveal: headings line by line, text/cards/figures fade up 24px, images in a clipping frame fade from scale 1.06. `[data-up]`, `[data-rv]`, `[data-px]`, `[data-count]` are accepted but add nothing. |
-| `section.story[data-v4-story]` | Pinned for 2.8 viewports (scrub .6) at ≥1024×620; StoryFX crosses the steps over (never two at once) and dissolves the photos; captions switch like the steps. Stacked with reveals below that size. |
+| `section.story[data-v4-story]` | Pinned for 2.8 viewports (scrub .6) at ≥1024×620; StoryFX crosses the steps over (never two at once); photos change at the step boundary (the new one fades in on top over 0.1 of a step, opacity only), so a settled position never shows two photos; captions switch like the steps. check.js fails on two photos mid-fade. Stacked with reveals below that size. |
 | hover (v4.css) | Buttons fill from below and the arrow nudges; nav links and `a.ul` draw a line; cards: photo 1.035 + heading colour; news rows shift 6px and draw a rule. |
 
 Optional config goes before the `<!--@v4-->` marker: `<script>window.V4={secs:{key:"sectionId"},pinFrom:"(min-width:1100px) and (min-height:640px)",stepVh:90}</script>`. A `var SECS={...}` map works too, and buildout reads it.

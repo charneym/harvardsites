@@ -9,7 +9,7 @@ What the client gets after migrating:
 | Logo clip-path wipe that lifts into the header | Lockup fades and rises in as one unit, progress bar, panel lifts away (flow .85 s), header drops in, hero plays at .95 s. No counter. Once per site per session, then a .5 s veil. |
 | Nav click: no visible wipe (GSAP read the CSS `translateY(101%)` as a fixed `y`, so the curtain stopped one viewport down) | Full-screen curtain with the page name rising letter by letter (`gsap.set(#xc,{y:0,yPercent:101})`, `#xlab` label) |
 | Photos wipe in with clip-path, inner parallax, hero drift | Global reveal: text and cards fade up 24px, headings rise line by line, framed images fade from scale 1.06. Hero photo fades in. Only parallax: the hero h1 drifts up and fades. |
-| Story: photo crossfade + zoom 1.14 → 1 | StoryFX: steps cross over (never two at once), photos dissolve (no zoom-pumping), pinned 2.8 viewports, scrub .6 |
+| Story: photo crossfade + zoom 1.14 → 1 | StoryFX steps cross over (never two at once); photos switch cleanly at the step boundary (new one fades in on top over 0.1 of a step, opacity only, no zoom or blur, never a ghosted double exposure); pinned 2.8 viewports, scrub .6. check.js story fails if two photos are mid-fade. |
 | Strip slides in | Strip fades with the hero copy. Remove per site with `data-v4-strip="off"`. |
 | Lenis lerp .1 | lerp .09, lagSmoothing(120,33); eases `flow` / `silk` |
 | Hovers: lift + shadow, bg colour swap | Button fill from below + arrow nudge, drawn underlines, photo 1.035, rows shift 6px |

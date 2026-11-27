@@ -12,7 +12,8 @@ function caps(){var C=[
   return '<div class="caps">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+esc(c[0])+'</span><h3 data-r>'+esc(c[1])+'</h3><p data-r>'+esc(c[2])+'</p></div>'}).join("")+'</div>'}
 function vHome(){
   return ''+
-  '<section class="hero" id="hero" data-field data-theme="dark">'+
+  '<section class="hero blackband" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1006" height="969" alt="A polished stainless vessel with welded branches and a flanged port, made by EBP" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>EBP Manufacturing Solutions<span class="nomob"> · Woking, since 1966</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Making challenging</span></span> <span class="l"><span class="nw">products cost effective.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Europe’s most experienced electron beam welding specialist, with X-ray and non-destructive testing, hard metal CNC machining and design for manufacture under one roof in Woking.</p>'+

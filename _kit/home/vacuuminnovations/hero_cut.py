@@ -38,5 +38,20 @@ B[..., 3] = B[..., 3] * np.where(yy > yb, v, 1)
 fr = np.clip(np.minimum((w - 1 - xx) / (w * .12), yy / (h * .12)), 0, 1); fr = fr * fr * (3 - 2 * fr)
 B[..., 3] = B[..., 3] * fr
 out = Image.fromarray(B.clip(0, 255).astype(np.uint8), 'RGBA')
+# feather the floor matte: everything faint (floor tone and soft shadows) is blurred wide and faded out with the distance
+# from the solid object, so no edge of the shadow-catcher plane can show anywhere (coordinator review)
+from scipy import ndimage as nd
+B = np.array(out).astype(np.float32); al = B[..., 3]
+solid = al > 200
+fl = np.where(solid, 0, np.minimum(al, 120))
+fl = np.array(Image.fromarray(fl.astype(np.uint8)).filter(ImageFilter.GaussianBlur(28))).astype(np.float32)
+dist = nd.distance_transform_edt(~solid)
+k = np.clip(1 - dist / 140, 0, 1); k = k * k * (3 - 2 * k)
+soft = np.clip(al, 0, 255) * (al > 200) + np.where(al > 200, 0, np.maximum(fl * k, np.where(dist < 3, al, 0)))
+B[..., 3] = soft
+hh = al.shape[0]; yy2 = np.arange(hh)[:, None]
+bf = np.clip((hh - 1 - yy2) / (hh * .1), 0, 1); bf = bf * bf * (3 - 2 * bf)
+B[..., 3] = B[..., 3] * bf
+out = Image.fromarray(B.clip(0, 255).astype(np.uint8), 'RGBA')
 out.save('hero-cut.webp', quality=90, method=6)
 print('asset', out.size)

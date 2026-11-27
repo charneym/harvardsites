@@ -30,7 +30,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1874" height="1374" alt="Two gold-plated opto-electronic packages with Mintres optical beds and sub-mounts inside, gold pins along their sides, a second package and its fibre behind" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1289" height="1005" alt="A gold-plated opto-electronic package with a Mintres optical bed and sub-mount inside, two rows of gold pins and a flange with two mounting holes" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Diamond and ceramics<span class="nomob"> · Cuijk, the Netherlands</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">Heat spreading,</span> <span class="l">in diamond and ceramic.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>CVD diamond, aluminium nitride and aluminium oxide heat spreaders, and optical beds and packages for opto-electronics: shaped, coated and assembled in our own cleanrooms.</p>'+

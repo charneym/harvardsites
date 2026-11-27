@@ -1,4 +1,4 @@
-/* ================= HERO FIELD: a plain deep-navy ground. The hero visual is their own photograph of two gold opto-electronic packages with Mintres optical beds (hero_cut.py), cut out
+/* ================= HERO FIELD: a plain deep-navy ground. The hero visual is their own photograph of a gold opto-electronic package with a Mintres optical bed (hero_cut.py), cut out
    and placed in the hero (.hero-ph), so it scrolls with the text (step 5). The footer echo copies this canvas. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,shown=false,BG="#08162a";

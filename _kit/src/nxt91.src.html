@@ -910,6 +910,8 @@ div.mh-row{grid-template-columns:minmax(0,4fr) minmax(0,3fr) minmax(0,5fr) 24px}
 #pre .mk .nxl path:nth-child(3){fill:#c42a33!important}
 #pre .mk .nxl{opacity:1!important;visibility:visible!important}
 @media (max-width:860px){.np li{grid-template-columns:1fr!important;row-gap:8px}.np .lk{justify-self:start}}
+/* TOP-FIX 2026-11-27: the hero headline in one colour and one style (no italic accent second line) */
+.hero-h em{font-style:normal;font-weight:inherit;color:inherit}
 </style>
 </head>
 </head>
@@ -1148,11 +1150,11 @@ function unmask(s){if(!s)return;(s.masks||[]).forEach(function(m){m.style.overfl
    wafer whose colours are real thin-film interference (render.py: Fresnel reflectance of a ~120-250 nm film on Si, CIE
    colour matching), the deposition non-uniformity showing as the blue-to-gold shift NXT's systems map
    (nxt91.com > OLED > Xelas SCAN: x-y mappings). Baked to hero.webp with real alpha; here it breathes in a slow Ken Burns
-   drift, and a measurement spot steps through a standard wafer map, each measured point staying as a faint dot. It moves
+   drift, and a measurement steps through a standard wafer map, each measured point staying as a faint dot (TOP-FIX B: no probe beam). It moves
    on its own, so no pointer response (CZ). On phones it sits in the top band and fades into the ink above the text (CW). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
-  var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;
+  var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
   var BG="#06111d";
   /* wafer top-face ellipse in image units (render.py) */
   var WX=.5,WY=400/820,WRX=530/1200,WRY=275/820;
@@ -1185,32 +1187,25 @@ var field=(function(){
     if(ok){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
-      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008-SP.v*G.ih*.05;
-      /* a low blue glow across the WHOLE canvas (never inside the image rect alone), so no edge can read as a box (DJ) */
-      var ggx=G.kx,ggy=G.mob?G.bh*.45:h*.5,ggr=Math.max(w,h)*.7;
-      var ag=c.createRadialGradient(ggx,ggy,0,ggx,ggy,ggr);
-      ag.addColorStop(0,"rgba(10,48,78,"+(.55*e).toFixed(3)+")");ag.addColorStop(.55,"rgba(8,32,54,"+(.28*e).toFixed(3)+")");ag.addColorStop(1,"rgba(6,17,29,0)");
-      c.fillStyle=ag;c.fillRect(0,0,w,h);
+      var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
+      /* TOP-FIX B 2026-11-27: no glow. A very faint neutral falloff on the ground, up and toward the key (upper left)
+         side of the wafer, at most ~3% brighter than the ink (no colour, no halo hugging the object) */
+      var lx=G.mob?w*.5:x+dw*.40,ly=G.mob?G.bh*.42:y+dh*.30,lr=Math.max(w,h)*.62;
+      var fo=c.createRadialGradient(lx,ly,0,lx,ly,lr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      c.fillStyle=fo;c.fillRect(0,0,w,h);
       c.globalAlpha=e;c.drawImage(img,x,y,dw,dh);c.globalAlpha=1;
       /* the measurement: a spot steps through the wafer map; measured points stay as faint dots */
       var be=e*sm((t-.8)/1.4);
       if(be>.01){
         var cx=x+dw*WX,cy=y+dh*WY,rx=dw*WRX,ry=dh*WRY,ct=RM?PTS.length*STEP:(t%CYC),idx=Math.min(PTS.length-1,Math.floor(ct/STEP)),ph=(ct-idx*STEP)/STEP,fade=1-sm((ct-PTS.length*STEP-1.5)/2);
-        c.save();c.globalCompositeOperation="lighter";
+        c.save();  /* TOP-FIX B: normal compositing (no additive light) */
         var dr=Math.max(1.4,dw*.0032);
         for(var i=0;i<=idx;i++){
           var px=cx+PTS[i][0]*rx,py=cy+PTS[i][1]*ry,a=(i<idx||ct>=PTS.length*STEP?1:sm(ph*3))*.75*be*fade;
           if(a<.01)continue;
           c.fillStyle="rgba(235,248,255,"+a.toFixed(3)+")";c.beginPath();c.ellipse(px,py,dr,dr*.55,0,0,Math.PI*2);c.fill();
         }
-        if(ct<PTS.length*STEP){
-          /* the probe light: a soft vertical column from above onto the current point, with a small bright footprint */
-          var q=PTS[idx],sx=cx+q[0]*rx,sy=cy+q[1]*ry,pulse=sm(ph*4)*(1-sm((ph-.7)/.3)),bt=Math.max(G.top-20,y-dh*.18);
-          var cg=c.createLinearGradient(0,bt,0,sy);cg.addColorStop(0,"rgba(180,230,255,0)");cg.addColorStop(1,"rgba(180,230,255,"+(.26*pulse*be).toFixed(3)+")");
-          c.fillStyle=cg;var bw=Math.max(3,dw*.008);c.beginPath();c.moveTo(sx-bw*.35,bt);c.lineTo(sx+bw*.35,bt);c.lineTo(sx+bw,sy);c.lineTo(sx-bw,sy);c.closePath();c.fill();
-          var fr=dw*.035,fg=c.createRadialGradient(sx,sy,0,sx,sy,fr);fg.addColorStop(0,"rgba(255,255,255,"+(.7*pulse*be).toFixed(3)+")");fg.addColorStop(1,"rgba(255,255,255,0)");
-          c.fillStyle=fg;c.beginPath();c.ellipse(sx,sy,fr,fr*.55,0,0,Math.PI*2);c.fill();
-        }
+        /* TOP-FIX B 2026-11-27: the probe light column and its bright footprint are no longer drawn (no beam or glow) */
         c.restore();
       }
       if(!G.mob){
@@ -1231,7 +1226,11 @@ var field=(function(){
   function stop(){running=false;cancelAnimationFrame(raf)}
   var rzT;addEventListener("resize",function(){clearTimeout(rzT);rzT=setTimeout(size,120)});size();
   try{document.fonts.ready.then(function(){setTimeout(size,60)})}catch(_){}setTimeout(size,1800);setTimeout(size,4200);
-  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=Math.round(p*40)/40},
+  return {start:start,stop:stop,once:function(){frame(true)},setScroll:function(p){SP.v=p;
+    /* TOP-FIX step 5 (2026-11-27): the object scrolls up 1:1 with the hero on desktop; 0 once the hero has left (footer echo) */
+    var hy=0,hr=G&&!G.mob?document.querySelector("#view #hero"):null;
+    if(hr){var b=hr.getBoundingClientRect();if(b.bottom>0)hy=Math.min(0,b.top)}
+    if(hy!==HY){HY=hy;frame(true)}},
     intro:function(d){if(RM){IN.v=1;return}IN.v=0;gsap.to(IN,{v:1,duration:d,ease:"power2.out"})},setDim:function(d){dimT=d},snapDim:function(d){dim=dimT=d},running:function(){return running},focus:function(){return G?[G.kx,G.ky]:[w/2,h/2]}};
 })();/*</R:field>*/
 
@@ -1553,7 +1552,7 @@ function preload(){
       var tl=gsap.timeline({onComplete:function(){pre.remove();unlockScroll();gsap.set("#hdr",{clearProps:"transform"});hdrTheme();failsafe()}});
       tl.to(o,{n:100,duration:.25,ease:"power1.out",onUpdate:upd},0)
         .to(wm.chars,{yPercent:-120,opacity:0,duration:.38,ease:"power3.in",stagger:.012},.08)
-        .to(["#pre .mk","#pre .cnt","#pre .bar","#pre .pl"],{opacity:0,duration:.3,ease:"power2.in"},.12)
+        .to("#pre .mk",{y:-64,opacity:0,duration:.62,ease:"power3.in"},.04).to(["#pre .cnt","#pre .bar","#pre .pl"],{y:-24,opacity:0,duration:.4,ease:"power2.in"},.1)
         .add(function(){field.intro(2);field.start()},mob?1.0:.95).fromTo("#field",{filter:"opacity(0)"},{filter:"opacity(1)",duration:1.8,ease:"power2.out",clearProps:"filter"},mob?1.0:.95)
         .add(function(){if(window._heroIn)window._heroIn.play()},mob?1.0:.95)
         .to(pre,{yPercent:-100,duration:.85,ease:"flow"},mob?.62:.42)

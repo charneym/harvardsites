@@ -15,6 +15,7 @@ function caps(){var C=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
+   '<div class="hero-ph"><figure data-r><img src="hero-photo.jpg" width="626" height="272" alt="Gelbe RAV-Kugelhähne mit Handrad in der Werkshalle in Hattingen" decoding="async" fetchpriority="high"><figcaption>Kugelhähne für die Gasindustrie, in der Werkshalle in Hattingen</figcaption></figure></div>'+
    '<span class="lab eyebrow" data-r>Kugelhähne und Industriearmaturen<span class="nomob"> · Hattingen</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">Präzise Kugelhähne,</span> <span class="l"><em class="nw">weltweit im Einsatz.</em></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>RAV Armaturen fertigt in Hattingen Armaturen für sicherheitsrelevante Industrieanlagen und außerordentlich präzise Kugelhähne: für die Petrochemie, die Gasindustrie und den Pipelinebau.</p>'+

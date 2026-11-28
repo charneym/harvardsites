@@ -6,7 +6,7 @@ var TC="https://tomco.com.au/";
 var PRODS=[
  ["Pulsed","Standard pulsed amplifiers","Alpha series from 10 kHz, 250 W to 4 kW peak at up to 20% duty, with low power CW operation built in.",TC+"our-products/standard-pulsed-amplifiers/"],
  ["Resonance","Amplifiers for NMR, MRI and EPR","Single and multi-channel systems for NMR, MRI, EPR, ESR, ENDOR, TRASE and NQR, with very fast pulse rise and fall times.",TC+"our-products/amplifiers-for-magnetic-resonance/"],
- ["Dual band","TwinPulse400 and BT02000-DualChannel","Two channels in one system for NMR; the TwinPulse400 is a drop-in replacement for Herley/AMT 3900 amplifiers.",TC+"our-products/amplifiers-for-magnetic-resonance/"],
+ ["Dual band","Dual band amplifiers for NMR","TwinPulse400 and the new BT02000-DualChannel put two channels in one system; the TwinPulse400 is a drop-in replacement for Herley/AMT 3900 amplifiers.",TC+"our-products/amplifiers-for-magnetic-resonance/"],
  ["Accelerators","Amplifiers for particle accelerators","Narrowband and broadband systems from 1 MHz to 1.3 GHz, driving superconducting cavities, RFQs, klystrons, ion sources and beam kickers.",TC+"our-products/amplifiers-for-particle-accelerators/"],
  ["CW","Standard CW amplifiers","Continuous wave systems for plasma, ultrasonics and industrial heating.",TC+"our-products/standard-cw-amplifiers/"],
  ["Radar","Amplifiers for radar systems","High power systems for atmospheric and ionospheric radar and communications.",TC+"our-products/amplifiers-for-radar-systems/"],

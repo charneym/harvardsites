@@ -18,8 +18,8 @@ var TEAM=[
  {name:"Alison Piotrowski",title:"Director and Company Secretary",sum:"Director and company secretary of R & A Engineering Ltd."}];
 /* news: each row links out to its source. [date, title, source, url] */
 var NEWS=[
+ ["Jun 2025","ISO 9001:2015 certificate reissued by NQA, valid until July 2028","R & A · ISO certificate",DP+"wp-content/uploads/2025/08/64910-R-A-Engineering-Limited-13-06-2025.pdf"],
  ["Jan 2025","A second Citizen Miyano ABX has arrived, due to increased demand","R & A · News",DP+"second-citizen-miyano-abx-has-arrived/"],
  ["Sep 2024","A brand new machining centre: the DN Solutions DNM 4500","R & A · News",DP+"brand-new-machining-centre/"],
- ["May 2024","Graduation day: Nick and Will earn First Class and Upper Second Class degrees","R & A · News",DP+"graduation-day/"],
- ["Feb 2023","Gold Standard: Customer Service Supplier of the Year 2022 from Nordson Dage","R & A · News",DP+"supplier-of-the-year-2022/"]];
+ ["May 2024","Graduation day: Nick and Will earn First Class and Upper Second Class degrees","R & A · News",DP+"graduation-day/"]];
 var SHEETS=[];

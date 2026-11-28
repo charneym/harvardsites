@@ -3,7 +3,7 @@ function hist(){var H=[
   ["1985","R & A Engineering is established as a family partnership, making precision machined components."],
   ["2005","After twenty years as a partnership, R & A Engineering becomes a limited company."],
   ["2014","The move to Farmbrough Close, Aylesbury: a 10,000 square foot facility with room to grow."],
-  ["2025","Demand brings a second Citizen Miyano ABX, after a DN Solutions DNM 4500 in 2024."]];
+  ["2025","Demand brings a second Citizen Miyano ABX, and NQA reissues the ISO 9001:2015 certificate to 2028."]];
   return '<ol class="sg-tl">'+H.map(function(h){return '<li data-r><span class="y">'+esc(h[0])+'</span><p>'+esc(h[1])+'</p></li>'}).join("")+'</ol>'}
 function team(){
   return '<div class="mh"><div class="mh-group"><p class="mh-label">Directors</p><ul class="mh-list">'+TEAM.map(function(p){
@@ -27,7 +27,7 @@ function faq(){var Q=[
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="722" height="650" alt="A precision machined waveguide part with a round flange and a rectangular mounting plate, yellow passivated, made by R &amp; A Engineering" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="716" height="648" alt="A precision machined waveguide part with a round flange and a rectangular mounting plate, yellow passivated, made by R &amp; A Engineering" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Subcontract CNC machining<span class="nomob"> · Aylesbury, Buckinghamshire · since 1985</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Precision machined</span></span> <span class="l"><span class="nw">in Aylesbury.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>A family-run subcontract machining company since 1985, making high-quality precision components by CNC milling and CNC turning in a 10,000 square foot facility in Buckinghamshire.</p>'+

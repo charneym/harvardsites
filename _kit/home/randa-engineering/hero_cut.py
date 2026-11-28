@@ -10,10 +10,12 @@ R,G,B=A[...,0],A[...,1],A[...,2]; L=A.mean(-1)
 import os; sys.path.insert(0,os.path.dirname(os.path.abspath(__file__))); from shape import mask
 obj=mask(W,H)
 # defringe: near the outline, pale neutral pixels are the white sweep, not the part
-edge=obj&~nd.binary_erosion(obj,iterations=5)
+edge=obj&~nd.binary_erosion(obj,iterations=12)
 Lm=A.mean(-1);chm=np.maximum(R,G)-B
-obj=obj&~(edge&(Lm>228)&(chm<26))
-obj=nd.binary_opening(obj,iterations=1)
+obj=obj&~(edge&(Lm>212)&(chm<34))
+obj=nd.binary_opening(obj,iterations=2); obj=nd.binary_closing(obj,iterations=2); obj=nd.binary_fill_holes(obj)
+# smooth the outline: blur the mask and re-threshold, so the edge runs clean like a photographed silhouette
+obj=nd.gaussian_filter(obj.astype(float),2.2)>0.5
 a=Image.fromarray((obj*255).astype(np.uint8)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.9))
 a=np.asarray(a).astype(float)/255
 yy=np.arange(H)[:,None]*np.ones((1,W))

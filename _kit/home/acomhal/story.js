@@ -14,7 +14,7 @@ function acScene(o){
   /* the stem cell */
   g+='<g id="acCell"><path class="cell" d="M350 270m-182 0a182 150 0 1 0 364 0a182 150 0 1 0-364 0"/>'+
      '<circle class="nuc" cx="350" cy="270" r="40"/>'+
-     '<text class="cd lbl" x="'+(mob?124:48)+'" y="104">GLIOBLASTOMA STEM CELL</text></g>';
+     '<text class="cd lbl" x="'+(mob?124:48)+'" y="104">'+(mob?'STEM CELL':'GLIOBLASTOMA STEM CELL')+'</text></g>';
   /* the microtubule: two rails with rungs */
   g+='<g id="acMt"><path class="mt" d="M196 244H504"/><path class="mt" d="M196 262H504"/>';
   for(i=0;i<13;i++){var x=200+i*24;g+='<path class="mtr" d="M'+x+' 244V262"/>'}
@@ -23,11 +23,11 @@ function acScene(o){
   for(i=0;i<4;i++){var p=GRIP[i];
     g+='<g id="acG'+i+'"><path class="grip" d="M'+p[0]+' '+p[1]+'C'+(p[0]-16)+' '+(p[1]+(p[1]>253?26:-26))+' '+(p[0]+16)+' '+(p[1]+(p[1]>253?26:-26))+' '+p[0]+' '+(p[1]+(p[1]>253?34:-34))+'"/>'+
        '<circle class="gripn" cx="'+p[0]+'" cy="'+(p[1]+(p[1]>253?34:-34))+'" r="7"/></g>'}
-  g+='<text class="cd cxl" id="acCxL" x="'+(mob?124:48)+'" y="176">CONNEXIN43 TAILS</text>';
+  g+='<text class="cd cxl" id="acCxL" x="'+(mob?124:48)+'" y="176">'+(mob?'CX43 TAILS':'CONNEXIN43 TAILS')+'</text>';
   /* the JM2 peptides */
   for(i=0;i<4;i++){var p2=GRIP[i];
     g+='<g id="acJ'+i+'"><rect class="jm" x="'+(p2[0]-13)+'" y="'+(p2[1]+(p2[1]>253?52:-66))+'" width="26" height="14" rx="4"/></g>'}
-  g+='<text class="cd jml" id="acJmL" x="'+(mob?124:48)+'" y="456">JM2 PEPTIDE</text>';
+  g+='<text class="cd jml" id="acJmL" x="'+(mob?124:48)+'" y="456">'+(mob?'JM2':'JM2 PEPTIDE')+'</text>';
   /* break marks for the final step */
   for(i=0;i<3;i++){var bx=250+i*100;
     g+='<path class="brk" id="acB'+i+'" d="M'+bx+' '+(372+i*8)+'l24 24M'+(bx+24)+' '+(372+i*8)+'l-24 24"/>'}

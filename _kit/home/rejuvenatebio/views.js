@@ -96,7 +96,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Interested in</span> <em><span class="nw">one-time</span> <span class="nw">gene therapy?</span></em></h2>'+
+   '<h2 class="big split"><span class="nw">Interested in</span> <em><span class="nw">a one-time</span> <span class="nw">gene therapy?</span></em></h2>'+
    '<p class="sub" data-r>For partners, investors and veterinarians: write to the Rejuvenate Bio team.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email us '+ARR+'</a><a class="btn" href="#/pipeline">The pipeline</a></div>'+
    '<div class="cinfo">'+

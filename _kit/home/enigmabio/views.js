@@ -104,7 +104,7 @@ function footer(){
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/trial">The 4R trial</a><br><a class="ul" href="#/platform">Platform</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
    '<div class="c"><span class="lab">PET imaging biomarkers</span>For researchers and clinicians working on neurodegenerative disease.</div>'+
-  '</div><svg class="bigsvg" viewBox="0 0 900 62" aria-hidden="true"><text x="450" y="52" text-anchor="middle" style="font-family:\'Archivo\',Arial,sans-serif;font-weight:600;font-size:52px;letter-spacing:.14em">ENIGMA</text></svg>'+
+  '</div><svg class="bigsvg" viewBox="0 0 900 62" aria-hidden="true"><defs><mask id="engapF" maskUnits="userSpaceOnUse" x="0" y="0" width="900" height="62"><rect x="0" y="0" width="900" height="62" fill="#fff"/><rect x="0" y="27" width="900" height="8" fill="#000"/></mask></defs><text x="450" y="52" text-anchor="middle" mask="url(#engapF)" style="font-family:\'Archivo\',Arial,sans-serif;font-weight:600;font-size:52px;letter-spacing:.14em">ENIGMA</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Enigma Biomedical</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 

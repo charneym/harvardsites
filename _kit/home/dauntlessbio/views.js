@@ -5,12 +5,12 @@
 function caps(){var C=[
   ["One antigen, two jobs","<span class=\"nw\">CD155 feeds</span> <span class=\"nw\">the tumour</span>","Beyond promoting tumour growth and invasion, CD155 suppresses anti-tumour immunity through several checkpoint pathways. Hitting it does two things at once.",'<circle cx="28" cy="28" r="17"/><path class="a" d="M28 11v34M11 28h34"/>'],
   ["Expression","<span class=\"nw\">More than</span> <span class=\"nw\">60% of cases</span>","CD155 is expressed in more than 60% of breast cancers, across triple-negative, HER2-positive and HER2-low disease, and high expression tracks with advanced stage and poor survival.",'<rect x="8" y="30" width="9" height="18"/><rect class="a" x="22" y="16" width="9" height="32"/><rect x="36" y="24" width="9" height="24"/>'],
-  ["Potency","<span class=\"nw\">Sub-nanomolar,</span> <span class=\"nw\">and selective</span>","Conjugated to clinically validated payloads, our antibodies reached sub-nanomolar potency in vitro with strict selectivity for CD155-positive tumours.",'<path d="M10 46C10 46 20 14 28 14s18 32 18 32"/><path class="a" d="M8 46h40"/><circle class="a" cx="28" cy="22" r="3"/>'],
+  ["Potency","<span class=\"nw\">Sub-nanomolar potency,</span> <span class=\"nw\">strictly selective</span>","Conjugated to clinically validated payloads, our antibodies reached sub-nanomolar potency in vitro with strict selectivity for CD155-positive tumours.",'<path d="M10 46C10 46 20 14 28 14s18 32 18 32"/><path class="a" d="M8 46h40"/><circle class="a" cx="28" cy="22" r="3"/>'],
   ["Translation","<span class=\"nw\">A clear path</span> <span class=\"nw\">to the clinic</span>","The antibodies cross-react with non-human primate CD155, which gives a clear path to translational safety studies.",'<path d="M8 44h40"/><path class="a" d="M12 44V20M24 44V12M36 44V26"/><circle cx="36" cy="26" r="3"/>']];
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+c[0]+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+c[2]+'</p></div>'}).join("")+'</div>'}
 function svc(){var S=[
   ["Optimise the lead antibodies","Aim 1 of the Phase I: refine the lead antibodies for drug-like properties while keeping both the immune-blocking function and the non-human primate cross-reactivity."],
-  ["Build and characterise the conjugates","Aim 2: generate CD155-targeted conjugates with clinically validated payloads and characterise them across breast cancer models with varying CD155 expression."],
+  ["Build the conjugates","Aim 2: generate CD155-targeted conjugates with clinically validated payloads and characterise them across breast cancer models with varying CD155 expression."],
   ["Prove it in vivo","Aim 3: establish efficacy, pharmacokinetics and tolerability in xenograft models, setting the benchmarks a candidate has to clear to advance."],
   ["Toward an IND","The seed round funds lead optimisation, in vivo work and non-GLP toxicity studies in preparation for an IND filing; Phase II would take the lead into IND-enabling development."]];
   return '<ul class="svl">'+S.map(function(s,i){return '<li data-r><span class="lab ix">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p></li>'}).join("")+'</ul>'}
@@ -54,7 +54,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="target" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>The target</span><h2 class="d2 split"><span class="nw">CD155 is sitting there</span> <em class="nw">unexploited.</em></h2></div><p data-r>HER2- and TROP2-directed conjugates help, but heterogeneous antigen expression, fast resistance and no durable immune engagement cap what they can do. CD155 is a clinically unexploited antigen whose own biology answers all three.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>The target</span><h2 class="d2 split"><span class="nw">CD155 is sitting there,</span> <em class="nw">clinically unexploited.</em></h2></div><p data-r>HER2- and TROP2-directed conjugates help, but heterogeneous antigen expression, fast resistance and no durable immune engagement cap what they can do. CD155 is a clinically unexploited antigen whose own biology answers all three.</p></div>'+
    caps()+
    '<div class="qual"><span class="lab kick" data-r>Expressed across</span><p class="cr" data-r><span>Triple-negative breast cancer</span><span>HER2-positive</span><span>HER2-low</span></p></div>'+
   '</div></section>'+
@@ -84,7 +84,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Partnering,</span> <em class="nw">investing, joining?</em></h2>'+
+   '<h2 class="big split"><span class="nw">Partnering, investing,</span> <em class="nw">or joining us?</em></h2>'+
    '<p class="sub" data-r>Email us. We are glad to talk about the programme, the seed round or a role here.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Dauntless '+ARR+'</a><a class="btn" href="#/programme">See the programme</a></div>'+
    '<div class="cinfo">'+

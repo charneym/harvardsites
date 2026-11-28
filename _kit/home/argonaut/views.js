@@ -82,7 +82,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark" id="news" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">Orders</span> <em class="nw">and papers.</em></h2></div><p data-r>Each item links to its source.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>News</span><h2 class="d2 split"><span class="nw">In the lab,</span> <em class="nw">in the papers.</em></h2></div><p data-r>Each item links to its source.</p></div>'+
    news()+
   '</div></section>'+
   cta();

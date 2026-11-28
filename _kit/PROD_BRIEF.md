@@ -15,6 +15,13 @@ In the client's words: "their site must ACTUALLY BE BAD / NEED A NEW SITE. SERIO
 - Record at least 3 quoted or observed pieces of evidence and keep the screenshot (outside the repo, or in the work dir). The coordinator spot-checks these screenshots.
 - The company must also be **real and active**: recent news, a grant, a trade fair, a product launch or hiring in the last ~18 months, with a source. Its CEO, founder or MD must be nameable, with a real email address.
 
+
+## 0b. Update 2026-11-28 (client): English-speaking countries only, more industrial
+- **Countries: US, UK, Ireland, Canada, Australia, New Zealand ONLY.** The client found non-English recipients opened and clicked less. No DACH, other EU or other countries.
+- **Who:** the earlier verticals (medtech, diagnostics, biotech tools, photonics, sensors, scientific and lab instruments) PLUS small precision and industrial manufacturers (machines, machined or turned parts, components, process equipment, test rigs). Small industrial firms are where the photo-ready, genuinely bad sites are. Aim for roughly half industrial and half the other verticals.
+- Everything else is unchanged. §0 stays strict: their current site must be ACTUALLY bad; dated-but-competent sites are dropped. A sourced named leader is required, and the company's own published generic email is OK (flagged). An own product photo, or a render that passes for one (rich geometry only), is required.
+- Check `_kit/sourcing/registry.csv` by domain and slug first; ~1,500 companies were screened on 2026-11-27 and are recorded there.
+
 ## 1. Who
 - Small and early-stage **biotech, medtech, diagnostics, photonics/lasers, sensors, lab instruments and deep-tech** companies. The sent mix was mostly these plus some precision-industrial firms, so industrial is fine but must not dominate.
 - Countries: as in the sent batch (US, UK, DE/AT/CH and other EU). Keep their language on non-English sites.

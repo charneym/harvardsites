@@ -1,27 +1,27 @@
-/* ================= HERO FIELD: a crafted render of XapHe's actual science (PROD_BRIEF 0c, biotech): one HAWC
-   nanoparticle, the peptide-condensed particle their platform makes (xaphe.co.uk/technology: "~100 nm", a
-   polydispersity index "consistently less than 0.06", "HAWC can complex any size or number of nucleic acids").
-   A coarse-grained model of peptide chains with nucleic acid strands wound through it, rasterised offline by
-   render_b.py with neutral studio light (key upper left, low fill, dim rim) and screen-space ambient occlusion, no
-   glow; hero.webp carries plain transparent padding (a particle in suspension casts no floor shadow). A slow Ken
-   Burns breath; it scrolls up with the hero on desktop (step 5). On phones it sits in the top band above the text.
-   ================= */
+/* ================= HERO FIELD: a crafted render of Hijack Bio's actual science (PROD_BRIEF 0c, biotech): one
+   engineered bacterium, the living therapy itself (hijack.bio: "environmentally aware targeted biogenic drug delivery
+   systems"; Innovate UK 10171810: "programmable, modular living therapies", replacing injected insulin, which is
+   already "produced by bacteria or yeast", with a daily pill). A studio model: a pitted cell body with surface
+   receptors, pili and two trailing flagella, rasterised offline by render_b.py with neutral studio light (key upper
+   left, low fill, dim rim), no glow; hero.webp carries plain transparent padding (a cell in suspension casts no floor
+   shadow). A slow Ken Burns breath; it scrolls up with the hero on desktop (step 5). On phones it sits in the top band
+   above the text. ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},HY=0,G=null,img=new Image(),ok=false;
-  var BG="#04112f";
+  var BG="#1b2626";
   img.decoding="async";img.onload=function(){ok=true;if(!running)frame(true)};img.src="hero.webp";
   function h1r(){var e=document.querySelector("#view h1")||document.querySelector("h1"),r=0;if(!e)return 0;try{var tw=document.createTreeWalker(e,4),n,g=document.createRange();while(n=tw.nextNode()){if(!n.nodeValue.trim())continue;g.selectNodeContents(n);[].forEach.call(g.getClientRects(),function(b){if(b.width>0&&b.right>r)r=b.right})}}catch(_){}return r}
   /* DO: the open area right of the H1; its centre is held at 62-75% of the width and the subject is sized to fit with room both sides */
   var HR=0;function OA(){var L=Math.max(HR+Math.max(120,w*.07),w*.47),R=w-Math.max(48,w*.045),cx=Math.min(Math.max((L+R)/2,w*.62),w*.75);return {cx:cx,half:Math.min(cx-L,R-cx)}}
   function sm(x){x=x<0?0:x>1?1:x;return x*x*(3-2*x)}
-  var AR=921/841;  /* render aspect (w/h) */
+  var AR=864/409;  /* render aspect (w/h) */
   function geo(){
     var side=Math.max(Math.min(72,Math.max(16,w*.042)),(w-1320)/2),cw=w-2*side,mob=w<861;
     var ey=mob?document.querySelector("#view .hero .eyebrow"):null,eyT=ey?ey.getBoundingClientRect().top+(window.scrollY||0):h*.45;
     var A=mob?null:OA(),top=mob?80:Math.max(108,h*.13),bot=mob?Math.max(250,eyT-22):h-Math.max(40,h*.06);
     var U=mob?bot+18:h;
-    var ih=mob?Math.min((bot-top)*.9,w*.88/AR):Math.min(bot-top,2*A.half/AR*.96)*.80,iw=ih*AR;  /* the round particle is held clear of the headline, with ground around it */
+    var ih=mob?Math.min((bot-top)*.9,w*.88/AR):Math.min(bot-top,2*A.half/AR*.96)*.92,iw=ih*AR;  /* the long cell is sized to the open area, with ground around it */
     var kx=mob?w*.5:A.cx,ky=(top+bot)/2;
     return {mob:mob,side:side,cw:cw,U:U,ih:ih,iw:iw,kx:kx,ky:ky,bh:mob?U:h};
   }
@@ -43,16 +43,16 @@ var field=(function(){
       var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
       c.fillStyle=fo;c.fillRect(0,0,w,h);
       /* hero.webp carries PAD px of transparent margin, so the particle lands where the unpadded render would */
-      var PX=120/921,PY=120/841;
+      var PX=120/864,PY=120/409;
       c.globalAlpha=e;c.drawImage(img,x-dw*PX,y-dh*PY,dw*(1+2*PX),dh*(1+2*PY));c.globalAlpha=1;
       if(!G.mob){
         /* the headline side stays quiet (DI): an ink wash from the left, a soft top and base */
-        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(2,12,32,.95)");lv.addColorStop(.6,"rgba(2,12,32,.55)");lv.addColorStop(1,"rgba(2,12,32,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
-        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(2,12,32,.6)");tv.addColorStop(1,"rgba(2,12,32,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
-        var bv=c.createLinearGradient(0,h*.86,0,h);bv.addColorStop(0,"rgba(4,17,47,0)");bv.addColorStop(1,"rgba(4,17,47,.6)");c.fillStyle=bv;c.fillRect(0,h*.86,w,h*.14+1);
+        var lv=c.createLinearGradient(0,0,G.side+G.cw*.54,0);lv.addColorStop(0,"rgba(16,23,23,.95)");lv.addColorStop(.6,"rgba(16,23,23,.55)");lv.addColorStop(1,"rgba(16,23,23,0)");c.fillStyle=lv;c.fillRect(0,0,w,h);
+        var tv=c.createLinearGradient(0,0,0,h*.2);tv.addColorStop(0,"rgba(16,23,23,.6)");tv.addColorStop(1,"rgba(16,23,23,0)");c.fillStyle=tv;c.fillRect(0,0,w,h*.2);
+        var bv=c.createLinearGradient(0,h*.86,0,h);bv.addColorStop(0,"rgba(27,38,38,0)");bv.addColorStop(1,"rgba(27,38,38,.6)");c.fillStyle=bv;c.fillRect(0,h*.86,w,h*.14+1);
       }else{
-        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(2,12,32,.6)");tv2.addColorStop(1,"rgba(2,12,32,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
-        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(4,17,47,0)");mv.addColorStop(1,"rgba(4,17,47,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
+        var tv2=c.createLinearGradient(0,0,0,74);tv2.addColorStop(0,"rgba(16,23,23,.6)");tv2.addColorStop(1,"rgba(16,23,23,0)");c.fillStyle=tv2;c.fillRect(0,0,w,74);
+        var mv=c.createLinearGradient(0,G.bh-46,0,G.bh);mv.addColorStop(0,"rgba(27,38,38,0)");mv.addColorStop(1,"rgba(27,38,38,1)");c.fillStyle=mv;c.fillRect(0,G.bh-46,w,47);
         c.fillStyle=BG;c.fillRect(0,G.bh,w,h-G.bh+1);
       }
       if(!shown){shown=true;requestAnimationFrame(function(){requestAnimationFrame(function(){cv.classList.add("ready")})})}

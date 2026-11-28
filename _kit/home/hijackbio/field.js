@@ -38,9 +38,9 @@ var field=(function(){
       /* a very slow breath: push in ~3% and drift up a touch over ~44s, eased back and forth (scaled about the image centre) */
       var k=.5-.5*Math.cos(t*Math.PI*2/44),sc=(1+.03*k)*(1+.035*(1-e));
       var dw=G.iw*sc,dh=G.ih*sc,x=G.kx-dw*.5,y=G.ky-dh*.5-k*G.ih*.008+HY;
-      /* TOP-FIX B: a very faint neutral falloff on the ground, up and toward the headline side (about 2-3%, never coloured) */
-      var fx=G.mob?w*.5:x+dw*.2,fy=G.mob?G.bh*.4:y+dh*.25,fr=Math.max(w,h)*.62;
-      var fo=c.createRadialGradient(fx,fy,0,fx,fy,fr);fo.addColorStop(0,"rgba(255,255,255,"+(.03*e).toFixed(4)+")");fo.addColorStop(.55,"rgba(255,255,255,"+(.011*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
+      /* TOP-FIX B, flat variant (coordinator, 2026-11-28): the ground carries only a straight 2-3% neutral falloff
+         across the whole canvas, from the key side down. No radial, so there is no disc behind the subject. */
+      var fo=c.createLinearGradient(0,0,w*.55,h);fo.addColorStop(0,"rgba(255,255,255,"+(.026*e).toFixed(4)+")");fo.addColorStop(1,"rgba(255,255,255,0)");
       c.fillStyle=fo;c.fillRect(0,0,w,h);
       /* hero.webp carries PAD px of transparent margin, so the particle lands where the unpadded render would */
       var PX=120/864,PY=120/409;

@@ -27,7 +27,7 @@ def capsule_pts(n):
         r=np.sqrt(max(BR*BR-d*d,0))
         P.append([x,np.sin(th)*r,np.cos(th)*r])
     return np.array(P)
-REC=capsule_pts(46)
+REC=capsule_pts(74)
 # pili: short hair-like projections; flagella: two long trailing helices from the -x pole
 def catmull(P,n):
     P=np.vstack([P[0]*2-P[1],P,P[-1]*2-P[-2]]);out=[]
@@ -45,7 +45,7 @@ for k,(amp,ph,drift) in enumerate([(.115,0.0,.10),(.095,2.2,-.13)]):
         pts.append([x,np.sin(t*15.0+ph)*amp*(.40+.60*t)+drift*t*.5,np.cos(t*15.0+ph)*amp*(.40+.60*t)+drift*t])
     FLA.append(catmull(np.array(pts),4))
 PIL=[]
-for i in range(16):
+for i in range(34):
     th=rng.uniform(0,2*np.pi);x=rng.uniform(-BL*.85,BL*.95)
     n=np.array([0,np.sin(th),np.cos(th)])
     t2=nrm(np.cross(n,[1,0,0]))*rng.choice([-1,1])
@@ -66,7 +66,10 @@ def scene(p,want=False):
     for (f,ax_,ph_) in ((47.,(1.,.37,-.62),0.),(61.,(-.44,1.,.29),1.7),(83.,(.21,-.58,1.),3.1)):
         a_=np.array(ax_);a_=a_/np.linalg.norm(a_);pit+=np.sin(p@a_*f+ph_)
     pit*=np.sin(p[:,0]*29.+1.1)
-    body=body-.0016*pit
+    fine=np.zeros(len(p))
+    for (f,ax_,ph_) in ((131.,(.73,-.31,.61),.6),(167.,(-.22,.86,.46),2.4)):
+        a_=np.array(ax_);a_=a_/np.linalg.norm(a_);fine+=np.sin(p@a_*f+ph_)
+    body=body-.0021*pit-.00075*fine
     # receptors
     d=np.linalg.norm(p[:,None,:]-REC[None],axis=-1).min(1)-.030
     rec=d
@@ -82,7 +85,7 @@ def scene(p,want=False):
     if not want:return out*.85
     m=np.zeros(len(p),int);m[rec<=out+1e-4]=1;m[pil<=out+1e-4]=2;m[fl<=out+1e-4]=3
     return out*.85,m
-ax=np.radians(-13);az=np.radians(-18)
+ax=np.radians(-15);az=np.radians(-33)
 Rx=np.array([[1,0,0],[0,np.cos(ax),-np.sin(ax)],[0,np.sin(ax),np.cos(ax)]])
 Rz=np.array([[np.cos(az),-np.sin(az),0],[np.sin(az),np.cos(az),0],[0,0,1]])
 M=Rz@Rx
@@ -100,7 +103,7 @@ def env(d):
     c+=np.exp(-((y-.05)/.25)**2)*sm(.4,.95,z)*.18
     c+=sm(-.2,-.9,y)*.02
     return np.stack([c,c*.995,c*.985],1)
-CAM=np.array([.30,.34,4.2]);TGT=np.array([-.28,-.02,0]);FOV=.30
+CAM=np.array([.26,.30,4.2]);TGT=np.array([-.34,-.02,0]);FOV=.30
 fw=nrm(TGT-CAM);rt=nrm(np.cross(fw,[0,1,0]));up=np.cross(rt,fw)
 def shade(u,v):
     n=len(u);rd=nrm(fw[None]+u[:,None]*rt[None]*FOV+v[:,None]*up[None]*FOV)

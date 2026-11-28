@@ -35,9 +35,9 @@ function evid(){return '<ul class="nws">'+EVID.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1200" height="1260" alt="An IgG monoclonal antibody, the class of ABS-2103 (illustrative render)" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1072" height="1191" alt="An IgG monoclonal antibody, the class of ABS-2103 (illustrative render)" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Autoimmune disease<span class="nomob"> · Houston and Cambridge</span></span>'+
-   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">For the patients</span> <span class="l">treatment leaves behind.</span></h1>'+
+   '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">When treatment</span> <span class="l">falls short.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Autoimmunity BioSolutions is developing ABS-2103, an antibody against a genetically elevated immune protein, to help patients respond to the treatments they already receive.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/story">How it works '+ARR+'</a><a class="btn" href="#/contact">Contact us</a></div></div>'+
   '</section>'+

@@ -59,7 +59,7 @@ def sdf(p):
     return np.concatenate([sdf1(p[i:i+6000]) for i in range(0,p.shape[0],6000)])
 ex=(CEN[:,None,:]+np.array([[sx,sy,sz] for sx in (-.24,.24) for sy in (-.24,.24) for sz in (-.24,.24)])[None]).reshape(-1,3)@RI.T
 cx,cy=(ex[:,0].min()+ex[:,0].max())/2,(ex[:,1].min()+ex[:,1].max())/2
-span=max((ex[:,0].max()-ex[:,0].min())*H/W,(ex[:,1].max()-ex[:,1].min()))*1.0;half_h=span/2;half_w=half_h*W/H
+span=max((ex[:,0].max()-ex[:,0].min())*H/W,(ex[:,1].max()-ex[:,1].min()))*1.14;half_h=span/2;half_w=half_h*W/H
 ys,xs=np.mgrid[0:H,0:W]
 px=cx+((xs+.5)/W*2-1)*half_w;py=cy-((ys+.5)/H*2-1)*half_h
 O=np.stack([px,py,np.full(px.shape,3.0)],-1).reshape(-1,3);D=np.array((0,0,-1.0))
@@ -69,7 +69,7 @@ for i in range(170):
     if idx.size==0:break
     p=O[idx]+D*t[idx,None];d=sdf(p);t[idx]+=d
     h=d<0.0004;hit[idx[h]]=True;act[idx[h]]=False;act[idx[t[idx]>4.6]]=False
-print('hits',hit.sum())
+print('hits',hit.sum());_hm=hit.reshape(H,W);print('border',_hm[0].any(),_hm[-1].any(),_hm[:,0].any(),_hm[:,-1].any())
 KEY=n3((-0.80,0.52,0.30));RIM=n3((0.85,0.25,-0.45));FIL=n3((0.5,-0.1,0.86))
 idx=np.nonzero(hit)[0];p=O[idx]+D*t[idx,None];e=0.0007
 n=nrm(np.stack([sdf(p+np.array((e,0,0)))-sdf(p-np.array((e,0,0))),sdf(p+np.array((0,e,0)))-sdf(p-np.array((0,e,0))),sdf(p+np.array((0,0,e)))-sdf(p-np.array((0,0,e)))],-1))

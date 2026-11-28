@@ -5,41 +5,41 @@
    Antigen (TAA)"), so this page does the same: the visible copy never names it, although the NIH abstract does.
    The hero model is rendered from published crystallographic coordinates. Nothing else is claimed. */
 function caps(){var C=[
-  ["One antigen, two jobs","<span class=\"nw\">The antigen feeds</span> <span class=\"nw\">the tumour</span>","Beyond promoting tumour growth and invasion, it suppresses anti-tumour immunity through several checkpoint pathways. Hitting it does two things at once.",'<circle cx="28" cy="28" r="17"/><path class="a" d="M28 11v34M11 28h34"/>'],
+  ["One antigen, two jobs","<span class=\"nw\">The antigen feeds</span> <span class=\"nw\">the tumor</span>","Beyond promoting tumor growth and invasion, it suppresses anti-tumor immunity through several checkpoint pathways. Hitting it does two things at once.",'<circle cx="28" cy="28" r="17"/><path class="a" d="M28 11v34M11 28h34"/>'],
   ["Expression","<span class=\"nw\">More than</span> <span class=\"nw\">60% of cases</span>","The antigen is expressed in more than 60% of breast cancers, across triple-negative, HER2-positive and HER2-low disease, and high expression tracks with advanced stage and poor survival.",'<rect x="8" y="30" width="9" height="18"/><rect class="a" x="22" y="16" width="9" height="32"/><rect x="36" y="24" width="9" height="24"/>'],
-  ["Potency","<span class=\"nw\">Potent in vitro,</span> <span class=\"nw\">and selective</span>","Conjugated to clinically validated payloads, our antibodies reached sub-nanomolar potency in vitro with strict selectivity for antigen-positive tumours.",'<path d="M10 46C10 46 20 14 28 14s18 32 18 32"/><path class="a" d="M8 46h40"/><circle class="a" cx="28" cy="22" r="3"/>'],
+  ["Potency","<span class=\"nw\">Potent in vitro,</span> <span class=\"nw\">and selective</span>","Conjugated to clinically validated payloads, our antibodies reached sub-nanomolar potency in vitro with strict selectivity for antigen-positive tumors.",'<path d="M10 46C10 46 20 14 28 14s18 32 18 32"/><path class="a" d="M8 46h40"/><circle class="a" cx="28" cy="22" r="3"/>'],
   ["Translation","<span class=\"nw\">A clear path</span> <span class=\"nw\">to the clinic</span>","The antibodies cross-react with the non-human primate form of the antigen, which gives a clear path to translational safety studies.",'<path d="M8 44h40"/><path class="a" d="M12 44V20M24 44V12M36 44V26"/><circle cx="36" cy="26" r="3"/>']];
   return '<div class="caps c4">'+C.map(function(c){return '<div class="cap"><svg viewBox="0 0 56 56" aria-hidden="true">'+c[3]+'</svg><span class="lab" data-r>'+c[0]+'</span><h3 data-r>'+c[1]+'</h3><p data-r>'+c[2]+'</p></div>'}).join("")+'</div>'}
 function svc(){var S=[
-  ["Optimise the lead antibodies","Aim 1 of the Phase I: refine the lead antibodies for drug-like properties while keeping both the immune-blocking function and the non-human primate cross-reactivity."],
-  ["Build the conjugates","Aim 2: generate antigen-targeted conjugates with clinically validated payloads and characterise them across breast cancer models with varying antigen expression."],
+  ["Optimize the lead antibodies","Aim 1 of the Phase I: refine the lead antibodies for drug-like properties while keeping both the immune-blocking function and the non-human primate cross-reactivity."],
+  ["Build the conjugates","Aim 2: generate antigen-targeted conjugates with clinically validated payloads and characterize them across breast cancer models with varying antigen expression."],
   ["Prove it in vivo","Aim 3: establish efficacy, pharmacokinetics and tolerability in xenograft models, setting the benchmarks a candidate has to clear to advance."],
-  ["Toward an IND","The seed round funds lead optimisation, in vivo work and non-GLP toxicity studies in preparation for an IND filing; Phase II would take the lead into IND-enabling development."]];
+  ["Toward an IND","The seed round funds lead optimization, in vivo work and non-GLP toxicity studies in preparation for an IND filing; Phase II would take the lead into IND-enabling development."]];
   return '<ul class="svl">'+S.map(function(s,i){return '<li data-r><span class="lab ix">0'+(i+1)+'</span><h3>'+esc(s[0])+'</h3><p>'+esc(s[1])+'</p></li>'}).join("")+'</ul>'}
 function hist(){var H=[
   ["Today","A private preclinical oncology company in San Diego, led and advised by a team of researchers and industry veterans."],
-  ["Aug 2026","The National Cancer Institute awards $400,000 under SBIR Phase I to take the programme toward clinical translation."],
-  ["Next","Lead optimisation, in vivo efficacy and non-GLP toxicity studies, in preparation for an IND filing."]];
+  ["Aug 2026","The National Cancer Institute awards $400,000 under SBIR Phase I to take the program toward clinical translation."],
+  ["Next","Lead optimization, in vivo efficacy and non-GLP toxicity studies, in preparation for an IND filing."]];
   return '<ol class="hst">'+H.map(function(h){return '<li data-r><span class="yr">'+h[0]+'</span><p>'+esc(h[1])+'</p></li>'}).join("")+'</ol>'}
 function news(){return '<ul class="nws news-l">'+NEWS.map(function(n){
   return '<li><a href="'+n[3]+'" target="_blank" rel="noopener"><span class="lab dt">'+esc(n[0])+'</span><h3>'+esc(n[1])+'</h3><span class="lab src">'+esc(n[2])+' <svg viewBox="0 0 18 10" aria-hidden="true"><path d="M0 5h16M12 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.2"/></svg></span></a></li>'}).join("")+'</ul>'}
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero.webp" width="693" height="555" alt="Space-filling model of the tumour-associated antigen the conjugate targets, rendered from published crystallographic coordinates, its three domains coloured" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero.webp" width="693" height="555" alt="Space-filling model of the tumor-associated antigen the conjugate targets, rendered from published crystallographic coordinates, its three domains colored" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Preclinical oncology<span class="nomob"> · San Diego, California</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l nw">An antibody that</span> <span class="l"><em class="nw">does two jobs.</em></span></h1>'+
-   '<div class="hero-foot"><p class="s" data-r>Dauntless Biotherapeutics is building an antibody-drug conjugate to a tumour-associated antigen: it kills the tumour cell it binds, and it lifts the immune suppression that same antigen drives.</p>'+
+   '<div class="hero-foot"><p class="s" data-r>Dauntless Biotherapeutics is building an antibody-drug conjugate to a tumor-associated antigen: it kills the tumor cell it binds, and it lifts the immune suppression that same antigen drives.</p>'+
    '<div class="act" data-r><a class="btn solid" href="#/approach">Our approach '+ARR+'</a><a class="btn" href="#/contact">Talk to us</a></div></div>'+
   '</section>'+
 
   '<section class="sec mani dark" id="intro" data-theme="dark"><div class="wrap">'+
    '<div class="mani-in"><span class="lab kick" data-r>Cancers of unmet need</span>'+
-   '<h2 class="txt" id="mani"><span class="nw">Antibody-drug conjugates</span> <span class="nw">work until the antigen</span> <span class="nw">runs out or the tumour</span> <span class="nw">learns to hide.</span> <em><span class="nw">We picked an antigen</span> <span class="nw">that can do neither.</span></em></h2></div>'+
+   '<h2 class="txt" id="mani"><span class="nw">Antibody-drug conjugates</span> <span class="nw">work until the antigen</span> <span class="nw">runs out or the tumor</span> <span class="nw">learns to hide.</span> <em><span class="nw">We picked an antigen</span> <span class="nw">that can do neither.</span></em></h2></div>'+
    '<div class="stats">'+
     '<div class="stat"><span class="ln2"></span><span class="v">60%</span><p class="k">of breast cancers express the antigen, including triple-negative, HER2-positive and HER2-low disease</p></div>'+
     '<div class="stat"><span class="ln2"></span><span class="v">42,000</span><p class="k">deaths a year in the United States from metastatic breast cancer, the leading cause of cancer death in women</p></div>'+
-    '<div class="stat"><span class="ln2"></span><span class="v">$400k</span><p class="k">NCI SBIR Phase I award, August 2026, to take the programme toward clinical translation</p></div>'+
+    '<div class="stat"><span class="ln2"></span><span class="v">$400k</span><p class="k">NCI SBIR Phase I award, August 2026, to take the program toward clinical translation</p></div>'+
    '</div>'+
   '</div></section>'+
 
@@ -47,10 +47,10 @@ function vHome(){
    '<div class="story-l"><span class="lab kick">How it works</span><h2 class="d3"><span class="nw">Bind, kill,</span> <em class="nw">then let go.</em></h2>'+
     '<div class="rail" aria-hidden="true"><i class="prog" id="rprog"></i><span class="on">Suppress</span><span>Bind</span><span>Deliver</span><span>Release</span></div>'+
     '<div class="steps">'+
-     '<article class="step on"><h2><span class="nw">The antigen holds</span> <span class="nw">the immune system off.</span></h2><p>On the tumour cell, the antigen engages checkpoint receptors on T and NK cells, suppressing the anti-tumour response while it drives growth and invasion.</p></article>'+
+     '<article class="step on"><h2><span class="nw">The antigen holds</span> <span class="nw">the immune system off.</span></h2><p>On the tumor cell, the antigen engages checkpoint receptors on T and NK cells, suppressing the anti-tumor response while it drives growth and invasion.</p></article>'+
      '<article class="step"><h2><span class="nw">The antibody</span> <span class="nw">takes the site.</span></h2><p>Our antibodies occupy that interaction, blocking the immune suppression — and they cross-react with the non-human primate form of the antigen, which keeps the safety path clear.</p></article>'+
      '<article class="step"><h2><span class="nw">The payload</span> <span class="nw">goes in with it.</span></h2><p>Conjugated to clinically validated ADC payloads, the same antibody carries cytotoxic drug into the cell it binds: sub-nanomolar potency in vitro, with strict selectivity for the antigen.</p></article>'+
-     '<article class="step"><h2><span class="nw">The brakes</span> <span class="nw">come off.</span></h2><p>Direct tumour killing and the reversal of immune suppression in one molecule. In breast cancer xenograft models, that combination induced tumour regression across payload classes.</p></article>'+
+     '<article class="step"><h2><span class="nw">The brakes</span> <span class="nw">come off.</span></h2><p>Direct tumor killing and the reversal of immune suppression in one molecule. In breast cancer xenograft models, that combination induced tumor regression across payload classes.</p></article>'+
     '</div></div>'+
    '<div class="story-r"><div class="scene" id="scene">'+scene()+'</div></div>'+
   '</div></section>'+
@@ -61,10 +61,10 @@ function vHome(){
    '<div class="qual"><span class="lab kick" data-r>Expressed across</span><p class="cr" data-r><span>Triple-negative breast cancer</span><span>HER2-positive</span><span>HER2-low</span></p></div>'+
   '</div></section>'+
 
-  '<section class="sec dark" id="programme" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Programme</span><h2 class="d2 split"><span class="nw">Three aims</span> <em class="nw">between here and an IND.</em></h2></div><p data-r>The Phase I plan is specific: optimise the leads, build and characterise the conjugates, then show efficacy, pharmacokinetics and tolerability in vivo.</p></div>'+
+  '<section class="sec dark" id="program" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Program</span><h2 class="d2 split"><span class="nw">Three aims</span> <em class="nw">between here and an IND.</em></h2></div><p data-r>The Phase I plan is specific: optimize the leads, build and characterize the conjugates, then show efficacy, pharmacokinetics and tolerability in vivo.</p></div>'+
    svc()+
-   '<div class="trn" data-r><span class="lab kick">Partnering and investment</span><p>We are running a seed round to fund lead optimisation, in vivo work and non-GLP toxicity studies ahead of an IND filing. Whether you are interested in partnering, investing or a career here, we would be glad to hear from you.</p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
+   '<div class="trn" data-r><span class="lab kick">Partnering and investment</span><p>We are running a seed round to fund lead optimization, in vivo work and non-GLP toxicity studies ahead of an IND filing. Whether you are interested in partnering, investing or a career here, we would be glad to hear from you.</p><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
   '</div></section>'+
 
   '<section class="sec dark2" id="about" data-theme="dark"><div class="wrap">'+
@@ -87,8 +87,8 @@ function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
    '<h2 class="big split"><span class="nw">Partnering, investing,</span> <em class="nw">or joining us?</em></h2>'+
-   '<p class="sub" data-r>Email us. We are glad to talk about the programme, the seed round or a role here.</p>'+
-   '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Dauntless '+ARR+'</a><a class="btn" href="#/programme">See the programme</a></div>'+
+   '<p class="sub" data-r>Email us. We are glad to talk about the program, the seed round or a role here.</p>'+
+   '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Dauntless '+ARR+'</a><a class="btn" href="#/program">See the program</a></div>'+
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Based in</span><p data-r><span>Dauntless Biotherapeutics, Inc.</span><br><span>6868 Nancy Ridge Drive</span><br><span>San Diego, California 92121</span></p></div>'+
     '<div><span class="lab" data-r>Email</span><p data-r><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></p></div>'+
@@ -100,14 +100,14 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Based in</span>Dauntless Biotherapeutics, Inc., 6868 Nancy Ridge Drive, San Diego, California 92121</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">Our approach</a><br><a class="ul" href="#/programme">Programme</a><br><a class="ul" href="#/about">About</a><br><a class="ul" href="#/funding">Funding</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">Our approach</a><br><a class="ul" href="#/program">The program</a><br><a class="ul" href="#/about">About</a><br><a class="ul" href="#/funding">Funding</a></div>'+
    '<div class="c"><span class="lab">Leveraging the power of antibodies</span>To treat cancers of unmet need.</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 62" aria-hidden="true"><text x="450" y="52" text-anchor="middle" style="font-family:\'Jost\',Arial,sans-serif;font-weight:400;font-size:50px;letter-spacing:.09em">DAUNTLESS</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Dauntless Biotherapeutics, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }
 
 /* ================= ROUTER: one route; #/<section> scrolls to that section (build-out pages: lib/buildout.js) ================= */
-var SECS={intro:"intro",story:"story",approach:"approach",programme:"programme",about:"about",funding:"funding",contact:"contact"};
+var SECS={intro:"intro",story:"story",approach:"approach",program:"program",about:"about",funding:"funding",contact:"contact"};
 function route(h){
   var p=(h||"").replace(/^#\/?/,"").split("/").filter(Boolean);
   return {k:"home",v:vHome,sec:p.length?(SECS[p[0]]||null):null,t:"Dauntless Biotherapeutics — Antibody-drug conjugates for cancers of unmet need",x:"Home"};

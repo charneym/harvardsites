@@ -1,24 +1,24 @@
 /* The story scene: the mechanism of their ADC, in the terms of NIH 1R43CA306683 (the antigen "suppresses
-   anti-tumour immunity through multiple checkpoint pathways ... delivers tumour-directed cytotoxicity while restoring
-   anti-tumour immunity"; "sub-nanomolar potency in vitro"; "induced tumour regression in breast cancer xenograft models").
-   ONE figure: a tumour cell on the left, an immune cell on the right, the antigen between them.
+   anti-tumor immunity through multiple checkpoint pathways ... delivers tumor-directed cytotoxicity while restoring
+   anti-tumor immunity"; "sub-nanomolar potency in vitro"; "induced tumor regression in breast cancer xenograft models").
+   ONE figure: a tumor cell on the left, an immune cell on the right, the antigen between them.
    Their site keeps the antigen undisclosed, so the labels here say ANTIGEN and CHECKPOINT rather than naming either.
-   Step 1: the antigen on the tumour surface reaches across to the checkpoint receptor on the immune cell; that cell dims.
+   Step 1: the antigen on the tumor surface reaches across to the checkpoint receptor on the immune cell; that cell dims.
    Step 2: the antibody arrives and takes that site, so the reach is broken.
-   Step 3: the payload travels down the antibody into the tumour cell.
-   Step 4: the tumour cell breaks up and the immune cell lights up again. Schematic, not to scale. */
+   Step 3: the payload travels down the antibody into the tumor cell.
+   Step 4: the tumor cell breaks up and the immune cell lights up again. Schematic, not to scale. */
 function dlScene(o){
   var g='',mob=o.mob;
   g+='<svg class="dlsc'+(mob?' mob':'')+'" viewBox="'+(mob?'40 0 560 520':'0 0 640 520')+'" aria-hidden="true">';
   if(!mob)g+='<text class="t" x="16" y="26">MECHANISM · SCHEMATIC, NOT TO SCALE</text>';
-  /* tumour cell (left) */
+  /* tumor cell (left) */
   g+='<g id="dlTum"><path class="cell tum" d="M60 300m-96 0a96 100 0 1 0 192 0a96 100 0 1 0-192 0"/>'+
      '<circle class="nuc" cx="46" cy="300" r="34"/>'+
      '<path class="frag" id="dlFr1" d="M18 232L-10 196"/><path class="frag" id="dlFr2" d="M92 376L124 414"/><path class="frag" id="dlFr3" d="M10 372L-20 404"/></g>';
   /* immune cell (right) */
   g+='<g id="dlImm"><path class="cell imm" d="M560 300m-76 0a76 78 0 1 0 152 0a76 78 0 1 0-152 0"/>'+
      '<circle class="nuc im" cx="572" cy="300" r="26"/></g>';
-  /* the antigen on the tumour (three stacked domains, the binding one at the tip) and the checkpoint receptor */
+  /* the antigen on the tumor (three stacked domains, the binding one at the tip) and the checkpoint receptor */
   g+='<g id="dlCd"><rect class="dom d3d" x="150" y="286" width="42" height="28" rx="6"/>'+
      '<rect class="dom d2d" x="196" y="286" width="42" height="28" rx="6"/>'+
      '<rect class="dom d1d" x="242" y="282" width="46" height="36" rx="8"/>'+
@@ -31,9 +31,9 @@ function dlScene(o){
      '<circle class="pay p1" cx="270" cy="116" r="8"/><circle class="pay p2" cx="330" cy="116" r="8"/></g>'+
      '<text class="cd adcl" id="dlAbL" x="300" y="92" text-anchor="middle">ADC</text>';
   g+='<path class="drop" id="dlDrop" d="M300 206V282"/><circle class="pay moving" id="dlPay" cx="300" cy="206" r="8"/>';
-  var C=mob?["THE ANTIGEN HOLDS THE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOUR KILLED, BRAKES OFF"]
+  var C=mob?["THE ANTIGEN HOLDS THE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOR KILLED, BRAKES OFF"]
            :["THE ANTIGEN ENGAGES THE CHECKPOINT AND THE IMMUNE CELL STANDS DOWN","THE ANTIBODY OCCUPIES THE SITE AND BREAKS THE REACH",
-             "THE CONJUGATED PAYLOAD IS CARRIED INTO THE TUMOUR CELL","DIRECT KILLING, AND THE IMMUNE SUPPRESSION REVERSED"];
+             "THE CONJUGATED PAYLOAD IS CARRIED INTO THE TUMOR CELL","DIRECT KILLING, AND THE IMMUNE SUPPRESSION REVERSED"];
   for(var i=0;i<4;i++)g+='<text class="cl" id="dlC'+i+'" x="'+(mob?56:16)+'" y="506">'+C[i]+'</text>';
   return g+'</svg>';
 }
@@ -61,11 +61,11 @@ function storyDraw(svg){
     var ad=seg(p,.28,.40);
     ab.style.transform="translateY("+(-120*(1-ad)).toFixed(1)+"px)";op(ab,b*seg(p,.26,.34));
     op(abl,b*seg(p,.34,.42));
-    /* the payload runs down into the tumour cell */
+    /* the payload runs down into the tumor cell */
     var pd=seg(p,.52,.68);
     drop.style.strokeDashoffset=(LD*(1-pd)).toFixed(1);op(drop,b*seg(p,.50,.54)*(1-seg(p,.72,.80)));
     pay.setAttribute("cy",(206+(94)*pd).toFixed(1));op(pay,b*seg(p,.50,.54)*(1-seg(p,.68,.74)));
-    /* the tumour cell breaks up */
+    /* the tumor cell breaks up */
     fr.forEach(function(el,k){var u=seg(p,.76+k*.03,.86+k*.03);el.style.strokeDashoffset=(LF[k]*(1-u)).toFixed(1);op(el,b*u)});
     tum.style.setProperty("--dim",(1-0.45*seg(p,.76,.92)).toFixed(3));
     var w=[[0,.25],[.25,.5],[.5,.75],[.75,1.01]];

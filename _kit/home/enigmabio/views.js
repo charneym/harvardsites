@@ -89,7 +89,7 @@ function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
    '<h2 class="big split"><span class="nw">Running a study?</span> <em class="nw">Let\'s talk tracers.</em></h2>'+
-   '<p class="sub" data-r>Email us about the Users Group, tracer supply for a trial, or the 4R programme.</p>'+
+   '<p class="sub" data-r>Email us about the Users Group, tracer supply for a trial, or the 4R program.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Enigma '+ARR+'</a><a class="btn" href="#/platform">See the platform</a></div>'+
    '<div class="cinfo">'+
     '<div><span class="lab" data-r>Based in</span><p data-r><span>Enigma Biomedical</span><br><span>308 N. Peters Road, Suite 201</span><br><span>Knoxville, Tennessee 37922</span></p></div>'+

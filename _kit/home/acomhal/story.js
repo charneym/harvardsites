@@ -14,23 +14,23 @@ function acScene(o){
   /* the stem cell */
   g+='<g id="acCell"><path class="cell" d="M350 270m-182 0a182 150 0 1 0 364 0a182 150 0 1 0-364 0"/>'+
      '<circle class="nuc" cx="350" cy="270" r="40"/>'+
-     '<text class="cd lbl" x="196" y="150">GLIOBLASTOMA STEM CELL</text></g>';
+     '<text class="cd lbl" x="'+(mob?124:48)+'" y="104">GLIOBLASTOMA STEM CELL</text></g>';
   /* the microtubule: two rails with rungs */
   g+='<g id="acMt"><path class="mt" d="M196 244H504"/><path class="mt" d="M196 262H504"/>';
   for(i=0;i<13;i++){var x=200+i*24;g+='<path class="mtr" d="M'+x+' 244V262"/>'}
-  g+='<text class="cd mtl" x="196" y="228">MICROTUBULE</text></g>';
+  g+='<text class="cd mtl" x="'+(mob?124:48)+'" y="140">MICROTUBULE</text></g>';
   /* the connexin43 tails gripping it */
   for(i=0;i<4;i++){var p=GRIP[i];
     g+='<g id="acG'+i+'"><path class="grip" d="M'+p[0]+' '+p[1]+'C'+(p[0]-16)+' '+(p[1]+(p[1]>253?26:-26))+' '+(p[0]+16)+' '+(p[1]+(p[1]>253?26:-26))+' '+p[0]+' '+(p[1]+(p[1]>253?34:-34))+'"/>'+
        '<circle class="gripn" cx="'+p[0]+'" cy="'+(p[1]+(p[1]>253?34:-34))+'" r="7"/></g>'}
-  g+='<text class="cd cxl" id="acCxL" x="504" y="330" text-anchor="end">CONNEXIN43 TAILS</text>';
+  g+='<text class="cd cxl" id="acCxL" x="'+(mob?124:48)+'" y="176">CONNEXIN43 TAILS</text>';
   /* the JM2 peptides */
   for(i=0;i<4;i++){var p2=GRIP[i];
     g+='<g id="acJ'+i+'"><rect class="jm" x="'+(p2[0]-13)+'" y="'+(p2[1]+(p2[1]>253?52:-66))+'" width="26" height="14" rx="4"/></g>'}
-  g+='<text class="cd jml" id="acJmL" x="196" y="400">JM2 PEPTIDE</text>';
+  g+='<text class="cd jml" id="acJmL" x="'+(mob?124:48)+'" y="456">JM2 PEPTIDE</text>';
   /* break marks for the final step */
   for(i=0;i<3;i++){var bx=250+i*100;
-    g+='<path class="brk" id="acB'+i+'" d="M'+bx+' '+(150+i*8)+'l26 26M'+(bx+26)+' '+(150+i*8)+'l-26 26"/>'}
+    g+='<path class="brk" id="acB'+i+'" d="M'+bx+' '+(372+i*8)+'l24 24M'+(bx+24)+' '+(372+i*8)+'l-24 24"/>'}
   var C=mob?["THE CELL SURVIVES TREATMENT","CX43 TAILS HOLD THE MICROTUBULE","JM2 TAKES THOSE SITES","THE CELL CANNOT HOLD"]
            :["THE STEM CELL SURVIVES CHEMOTHERAPY AND RADIATION","CONNEXIN43 TAILS HOLD THE MICROTUBULE FROM INSIDE",
              "JM2, A CX43 MIMETIC PEPTIDE, TAKES THOSE BINDING SITES","THE GRIP RELEASES AND THE STEM CELL DIES"];

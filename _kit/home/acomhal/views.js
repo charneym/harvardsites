@@ -74,10 +74,15 @@ function vHome(){
 
   '<section class="sec dark2" id="pipeline" data-theme="dark"><div class="wrap">'+
    '<div class="shead"><div><span class="lab kick" data-r>Pipeline</span><h2 class="d2 split"><span class="nw">Glioblastoma first,</span> <em class="nw">then the rest.</em></h2></div><p data-r>The lead programme is glioblastoma. The same connexin43 approach has been studied in breast cancer under an earlier award, and our research programme lists other aggressive, chemo-resistant cancers.</p></div>'+
+   pipeline()+
+   '<div class="qual"><span class="lab kick" data-r>Based in</span><p class="cr" data-r><span>Roanoke, Virginia</span><span>Preclinical stage</span></p></div>'+
+  '</div></section>'+
+
+  '<section class="sec dark" id="team" data-theme="dark"><div class="wrap">'+
+   '<div class="shead"><div><span class="lab kick" data-r>Team</span><h2 class="d2 split"><span class="nw">A small group</span> <em class="nw">on one mechanism.</em></h2></div><p data-r>Acomhal Research is a preclinical-stage biopharmaceutical company in Roanoke, Virginia, developing targeted therapies for treatment-resistant cancers.</p></div>'+
    '<div class="engco">'+
     '<div class="engm"><span class="lab kick" data-r>Leadership</span>'+team()+'</div>'+
-    '<div class="engpol"><span class="lab kick" data-r>Where the work is</span>'+pipeline()+'</div></div>'+
-   '<div class="qual"><span class="lab kick" data-r>Based in</span><p class="cr" data-r><span>Roanoke, Virginia</span><span>Preclinical stage</span></p></div>'+
+    '<div class="engpol"><span class="lab kick" data-r>Named on</span><p class="tnote" data-r>The five names above are listed under Our Leadership on acomhal.com. Titles are not published there; Samy Lamouille is the principal investigator on all three NCI awards.</p></div></div>'+
   '</div></section>'+
 
   '<section class="sec dark" id="news" data-theme="dark"><div class="wrap">'+
@@ -89,7 +94,7 @@ function vHome(){
 function cta(){
   return '<section class="sec light cta" id="contact" data-theme="light"><div class="wrap">'+
    '<span class="lab kick" data-r>Contact</span>'+
-   '<h2 class="big split"><span class="nw">Partnering,</span> <em class="nw">or want the data?</em></h2>'+
+   '<h2 class="big split"><span class="nw">Want to partner,</span> <em class="nw">or see the data?</em></h2>'+
    '<p class="sub" data-r>Email us about the glioblastoma programme, the vector work, or investment.</p>'+
    '<div class="act" data-r><a class="btn solid" href="mailto:'+MAIL+'">Email Acomhal '+ARR+'</a><a class="btn" href="#/programme">See the programme</a></div>'+
    '<div class="cinfo">'+
@@ -103,7 +108,7 @@ function footer(){
   return '<footer class="ftr" data-theme="dark" data-field><canvas class="fcv" aria-hidden="true"></canvas><div class="cols">'+
    '<div class="c"><span class="lab">Based in</span>Acomhal Research, Inc., 709 S Jefferson Street, Roanoke, Virginia 24016</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">'+MAIL+'</a></div>'+
-   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">The science</a><br><a class="ul" href="#/programme">Programme</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/news">Funding</a></div>'+
+   '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/science">The science</a><br><a class="ul" href="#/programme">The programme</a><br><a class="ul" href="#/pipeline">Pipeline</a><br><a class="ul" href="#/news">Funding</a></div>'+
    '<div class="c"><span class="lab">Advancing care, inspiring hope</span>Targeted therapies for treatment-resistant cancers.</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 900 62" aria-hidden="true"><text x="450" y="52" text-anchor="middle" style="font-family:\'Source Sans 3\',Arial,sans-serif;font-weight:600;font-size:54px;letter-spacing:.01em">Acomhal Research</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 Acomhal Research, Inc.</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';

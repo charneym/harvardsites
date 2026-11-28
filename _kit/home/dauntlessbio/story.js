@@ -1,9 +1,10 @@
-/* The story scene: the mechanism of their CD155-targeted ADC, in the terms of NIH 1R43CA306683 ("CD155 suppresses
+/* The story scene: the mechanism of their ADC, in the terms of NIH 1R43CA306683 (the antigen "suppresses
    anti-tumour immunity through multiple checkpoint pathways ... delivers tumour-directed cytotoxicity while restoring
    anti-tumour immunity"; "sub-nanomolar potency in vitro"; "induced tumour regression in breast cancer xenograft models").
-   ONE figure: a tumour cell on the left, an immune cell on the right, CD155 between them.
-   Step 1: CD155 on the tumour surface reaches across to the checkpoint receptor on the immune cell; that cell dims.
-   Step 2: the antibody arrives and takes the CD155 site, so the reach is broken.
+   ONE figure: a tumour cell on the left, an immune cell on the right, the antigen between them.
+   Their site keeps the antigen undisclosed, so the labels here say ANTIGEN and CHECKPOINT rather than naming either.
+   Step 1: the antigen on the tumour surface reaches across to the checkpoint receptor on the immune cell; that cell dims.
+   Step 2: the antibody arrives and takes that site, so the reach is broken.
    Step 3: the payload travels down the antibody into the tumour cell.
    Step 4: the tumour cell breaks up and the immune cell lights up again. Schematic, not to scale. */
 function dlScene(o){
@@ -17,21 +18,21 @@ function dlScene(o){
   /* immune cell (right) */
   g+='<g id="dlImm"><path class="cell imm" d="M560 300m-76 0a76 78 0 1 0 152 0a76 78 0 1 0-152 0"/>'+
      '<circle class="nuc im" cx="572" cy="300" r="26"/></g>';
-  /* CD155 on the tumour (three stacked domains, D1 at the tip) and the checkpoint receptor on the immune cell */
+  /* the antigen on the tumour (three stacked domains, the binding one at the tip) and the checkpoint receptor */
   g+='<g id="dlCd"><rect class="dom d3d" x="150" y="286" width="42" height="28" rx="6"/>'+
      '<rect class="dom d2d" x="196" y="286" width="42" height="28" rx="6"/>'+
      '<rect class="dom d1d" x="242" y="282" width="46" height="36" rx="8"/>'+
-     '<text class="cd" x="169" y="266">CD155</text></g>';
+     '<text class="cd" x="163" y="266">ANTIGEN</text></g>';
   g+='<g id="dlTig"><path class="rec" d="M484 300h-60"/><rect class="dom tig" x="400" y="284" width="30" height="32" rx="7"/>'+
-     '<text class="cd tg" x="415" y="266" text-anchor="middle">TIGIT</text></g>';
+     '<text class="cd tg" x="415" y="266" text-anchor="middle">CHECKPOINT</text></g>';
   g+='<path class="link" id="dlLink" d="M288 300H400"/>';
   /* the antibody: a Y that comes down onto the D1 domain */
   g+='<g id="dlAb"><path class="ab" d="M300 150v44M300 150l-30-34M300 150l30-34"/><circle class="abn" cx="300" cy="196" r="7"/>'+
      '<circle class="pay p1" cx="270" cy="116" r="8"/><circle class="pay p2" cx="330" cy="116" r="8"/></g>'+
      '<text class="cd adcl" id="dlAbL" x="300" y="92" text-anchor="middle">ADC</text>';
   g+='<path class="drop" id="dlDrop" d="M300 206V282"/><circle class="pay moving" id="dlPay" cx="300" cy="206" r="8"/>';
-  var C=mob?["CD155 HOLDS THE IMMUNE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOUR KILLED, BRAKES OFF"]
-           :["CD155 ENGAGES THE CHECKPOINT AND THE IMMUNE CELL STANDS DOWN","THE ANTIBODY OCCUPIES THE SITE AND BREAKS THE REACH",
+  var C=mob?["THE ANTIGEN HOLDS THE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOUR KILLED, BRAKES OFF"]
+           :["THE ANTIGEN ENGAGES THE CHECKPOINT AND THE IMMUNE CELL STANDS DOWN","THE ANTIBODY OCCUPIES THE SITE AND BREAKS THE REACH",
              "THE CONJUGATED PAYLOAD IS CARRIED INTO THE TUMOUR CELL","DIRECT KILLING, AND THE IMMUNE SUPPRESSION REVERSED"];
   for(var i=0;i<4;i++)g+='<text class="cl" id="dlC'+i+'" x="'+(mob?56:16)+'" y="506">'+C[i]+'</text>';
   return g+'</svg>';

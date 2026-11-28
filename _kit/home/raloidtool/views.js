@@ -28,7 +28,7 @@ function news(){return '<ul class="nws">'+NEWS.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1600" height="1100" alt="A precision-machined steel compression mould for brake linings: a lower die block with three lining pockets, four chrome guide pillars, the upper punch plate raised on them, cap screws, lifting eyebolts and braided heater leads" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1790" height="1195" alt="A precision-machined steel compression mould for brake linings: a lower die block with three lining pockets, four chrome guide pillars, the upper punch plate raised on them, cap screws, lifting eyebolts and braided heater leads" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Friction-material equipment<span class="nomob"> · Mechanicville, New York</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">The machines that</span> <span class="l">make brake linings.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Presses, batch and conveyor ovens, contour grinders, gauging and clamping systems and production tooling for friction-material makers, and a full machine shop. Family-owned and operated since 1945.</p>'+

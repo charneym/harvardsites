@@ -28,7 +28,7 @@ function dlScene(o){
   /* the antibody: a Y that comes down onto the D1 domain */
   g+='<g id="dlAb"><path class="ab" d="M300 150v44M300 150l-30-34M300 150l30-34"/><circle class="abn" cx="300" cy="196" r="7"/>'+
      '<circle class="pay p1" cx="270" cy="116" r="8"/><circle class="pay p2" cx="330" cy="116" r="8"/></g>'+
-     '<text class="cd ab" id="dlAbL" x="300" y="92" text-anchor="middle">ADC</text>';
+     '<text class="cd adcl" id="dlAbL" x="300" y="92" text-anchor="middle">ADC</text>';
   g+='<path class="drop" id="dlDrop" d="M300 206V282"/><circle class="pay moving" id="dlPay" cx="300" cy="206" r="8"/>';
   var C=mob?["CD155 HOLDS THE IMMUNE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOUR KILLED, BRAKES OFF"]
            :["CD155 ENGAGES THE CHECKPOINT AND THE IMMUNE CELL STANDS DOWN","THE ANTIBODY OCCUPIES THE SITE AND BREAKS THE REACH",

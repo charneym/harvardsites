@@ -25,7 +25,7 @@ function plant(){return '<ul class="pfr pipe np">'+PLANT.map(function(c){
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1500" height="879" alt="Four precision machined aerospace parts made by T&amp;T Precision: a curved frame with bracket pads, a pocketed plate with a through window, a long rail with studs, and a stepped bar" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1500" height="868" alt="Four precision machined aerospace parts made by T&amp;T Precision: a curved frame with bracket pads, a pocketed plate with a through window, a long rail with studs, and a stepped bar" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Design and precision engineering<span class="nomob"> · Cork, Ireland · since 1996</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l"><span class="nw">Precision parts,</span></span> <span class="l"><span class="nw">designed and made.</span></span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Precision machined components to customer specification, from one-off prototypes to batch production, for aerospace, medical device, food and drug and plastics manufacturers.</p>'+

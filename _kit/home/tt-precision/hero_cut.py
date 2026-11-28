@@ -2,7 +2,8 @@
 # (twohigprecision.com, wp-content/uploads/2025/08/part3.jpg, 2351x1763). OpenCV GrabCut at 1400px wide, seeded with a rectangle
 # and the image border as sure background and the strongly bluish-grey ground as probable background; every part kept
 # (components over 0.4% of the frame), holes that show the ground (the pocket window) restored as background.
-# A soft synthetic contact shadow. Usage: python3 hero_cut.py out.webp [preview.jpg]
+# Edge band defringed against the ground colour, each outline traced as a simplified polygon
+# (approxPolyDP, 4.5px) and rendered 4x supersampled. A faint synthetic contact shadow. Usage: python3 hero_cut.py out.webp [preview.jpg]
 import sys, numpy as np, cv2
 from PIL import Image, ImageFilter
 from scipy import ndimage as nd
@@ -56,11 +57,27 @@ o_full=cv2.resize(obj.astype(np.uint8)*255,(FW,FH),interpolation=cv2.INTER_LINEA
 o_full=nd.gaussian_filter(o_full.astype(float),2.0)
 obj=o_full>127
 H,W=FH,FW; A=cv2.cvtColor(full,cv2.COLOR_BGR2RGB).astype(float)
-a=Image.fromarray((obj*255).astype(np.uint8)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(1.1)); a=np.asarray(a).astype(float)/255
+# defringe: in an 8px band inside the edge, drop pixels that are the ground's colour (bluish grey, close to the row ground)
+side=np.concatenate([A[:,:int(W*.03)],A[:,-int(W*.03):]],1); rowg=np.median(side,1)
+dg=np.sqrt(((A-rowg[:,None,:])**2).sum(2)); band=obj&~nd.binary_erosion(obj,iterations=8)
+obj=obj&~(band&(dg<34)&(A[...,2]>=A[...,0]-4))
+obj=nd.binary_opening(obj,iterations=3)
+# outlines: each part traced as a simplified polygon (straight edges straight, lumps on the curves removed), holes kept
+# (the window), and rendered 4x supersampled for a clean anti-aliased edge
+cs,hier=cv2.findContours(obj.astype(np.uint8),cv2.RETR_CCOMP,cv2.CHAIN_APPROX_NONE)
+SS=4; big=np.zeros((H*SS,W*SS),np.uint8)
+for k,c in enumerate(cs):
+  ar=cv2.contourArea(c)
+  if ar<400: continue
+  hole=hier[0][k][3]>=0
+  ap=cv2.approxPolyDP(c,4.5 if not hole else 2.5,True)
+  cv2.fillPoly(big,[(ap.astype(np.int32)*SS+SS//2)],0 if hole else 255,lineType=cv2.LINE_8)
+a=np.asarray(Image.fromarray(big).resize((W,H),Image.BOX)).astype(float)/255
+obj=a>0.5
 fp=Image.fromarray((obj*255).astype(np.uint8))
 sh1=np.asarray(fp.transform(fp.size,Image.AFFINE,(1,0,-3,0,1,-8)).filter(ImageFilter.GaussianBlur(10))).astype(float)/255
 sh2=np.asarray(fp.transform(fp.size,Image.AFFINE,(1,0,-10,0,1,-30)).filter(ImageFilter.GaussianBlur(34))).astype(float)/255
-sh=np.clip(0.45*sh1+0.4*sh2,0,0.75)
+sh=np.clip(0.22*sh1+0.18*sh2,0,0.35)
 al=a+sh*(1-a); col=np.where(al[...,None]>0,(A*a[...,None])/np.maximum(al[...,None],1e-6),0)
 o=Image.fromarray(np.dstack([np.clip(col,0,255),al*255]).astype(np.uint8),'RGBA'); o=o.crop(o.getbbox()); pad=40
 o2=Image.new('RGBA',(o.width+2*pad,o.height+2*pad),(0,0,0,0)); o2.paste(o,(pad,pad))

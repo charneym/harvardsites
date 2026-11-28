@@ -58,7 +58,7 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec dark2" id="presses" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Presses</span><h2 class="d2 split"><span class="nw">Moulding</span> <span class="nw">and bonding.</span></h2></div><p data-r>Positive mould presses, hydraulic press systems and bonding presses for segment, drum, disc and block brakes.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Presses</span><h2 class="d2 split"><span class="nw">Presses for moulding</span> <span class="nw">and bonding.</span></h2></div><p data-r>Positive mould presses, hydraulic press systems and bonding presses for segment, drum, disc and block brakes.</p></div>'+
    devs()+
   '</div></section>'+
 
@@ -73,12 +73,12 @@ function vHome(){
   '</div></section>'+
 
   '<section class="sec light" id="machining" data-theme="light"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Machine shop</span><h2 class="d2 split"><span class="nw">Machined</span> <span class="nw">to drawing.</span></h2></div><p data-r>The same shop that builds our machines makes parts to drawing, from one-offs to production runs.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Machine shop</span><h2 class="d2 split"><span class="nw">Parts machined</span> <span class="nw">to drawing.</span></h2></div><p data-r>The same shop that builds our machines makes parts to drawing, from one-offs to production runs.</p></div>'+
    caps(MCH)+
   '</div></section>'+
 
   '<section class="sec dark2" id="company" data-theme="dark"><div class="wrap">'+
-   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">Family-owned</span> <span class="nw">since 1945.</span></h2></div><p data-r>Three generations of building equipment and tooling in Mechanicville, New York.</p></div>'+
+   '<div class="shead"><div><span class="lab kick" data-r>Company</span><h2 class="d2 split"><span class="nw">A family business</span> <span class="nw">since 1945.</span></h2></div><p data-r>Three generations of building equipment and tooling in Mechanicville, New York.</p></div>'+
    caps(CO)+
   '</div></section>'+
   cta();

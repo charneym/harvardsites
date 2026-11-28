@@ -16,6 +16,24 @@ In the client's words: "their site must ACTUALLY BE BAD / NEED A NEW SITE. SERIO
 - The company must also be **real and active**: recent news, a grant, a trade fair, a product launch or hiring in the last ~18 months, with a source. Its CEO, founder or MD must be nameable, with a real email address.
 
 
+
+## 0c. CURRENT TARGET (client, 2026-11-28, overrides §0b and §1)
+- **English only:** companies in the US, UK, Ireland, Canada, Australia or New Zealand, with English-language sites. Nothing else.
+- **Who, in priority order:**
+  1. Small **biotech, medtech and diagnostics startups** with verified recent funding (SPEC §2/§2c): seed, Series A, SBIR/STTR Phase II, NIH/NSF, Innovate UK and similar, disclosed and within ~6–12 months. This is the client's core.
+  2. Small **photonics, lab/scientific instrument and sensor companies** (like batch 1: Trestle, H3D, Brimrose, Cybel, ClydeHSI, Cryogenic, StaClear), with own-company activity within ~18 months.
+  3. **Some private equity** (≈15–20% of output) per SPEC §2b: small or lower-middle-market buyout/growth firms with a genuinely bad site, a sourced recent deal or fund, and a named managing partner. NO search funds or holdcos.
+- **NOT:** generic machine shops, CNC subcontractors, job shops or component fabricators (the client called the 11-28 round of those "really bad sites").
+- Every rule from the client's earlier advice still applies:
+  - the current site must ACTUALLY be bad
+  - invent nothing
+  - one-colour two-line H1
+  - real brand colours
+  - no glow
+  - the hero scrolls with the text
+  - own product photo cut out (TAS style) or a render that passes for a photo; for biotech, a crafted render of their actual science/product as in the original sent sites
+  - a sourced named leader with a published email (generic OK, flagged)
+
 ## 0b. Update 2026-11-28 (client): English-speaking countries only, more industrial
 - **Countries: US, UK, Ireland, Canada, Australia, New Zealand ONLY.** The client found non-English recipients opened and clicked less. No DACH, other EU or other countries.
 - **Who:** the earlier verticals (medtech, diagnostics, biotech tools, photonics, sensors, scientific and lab instruments) PLUS small precision and industrial manufacturers (machines, machined or turned parts, components, process equipment, test rigs). Small industrial firms are where the photo-ready, genuinely bad sites are. Aim for roughly half industrial and half the other verticals.

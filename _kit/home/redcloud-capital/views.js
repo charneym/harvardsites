@@ -79,7 +79,7 @@ function footer(){
    '<div class="c"><span class="lab">Office</span>1225 17th Street, Suite 2725<br>Denver, CO 80202</div>'+
    '<div class="c"><span class="lab">Contact</span><a class="ul" href="mailto:'+MAIL+'">Email</a><br><a class="ul" href="tel:'+TEL+'">'+TELT+'</a></div>'+
    '<div class="c"><span class="lab">Explore</span><a class="ul" href="#/approach">Approach</a><br><a class="ul" href="#/criteria">Criteria</a><br><a class="ul" href="#/investments">Investments</a><br><a class="ul" href="#/team">Team</a><br><a class="ul" href="#/news">News</a></div>'+
-   '<div class="c"><span class="lab">Photograph</span>Redcloud Peak, San Juan Mountains, by Mitchtobin, <a class="ul" href="https://commons.wikimedia.org/wiki/File:Sanjuan14ers-8.jpg" target="_blank" rel="noopener">CC BY-SA 4.0</a></div>'+
+   '<div class="c"><span class="lab">Criteria</span>$4–15MM EBITDA<br>Control transactions</div>'+
   '</div><svg class="bigsvg" viewBox="0 0 520 60" aria-hidden="true"><text x="260" y="50" text-anchor="middle" style="font-family:\'Archivo Black\',\'Arial Black\',sans-serif;font-size:54px;letter-spacing:.04em">REDCLOUD</text></svg>'+
   '<div class="legal"><span class="lab">© 2026 RedCloud Capital, LLC</span><span class="lab">Concept website</span><a class="lab ul" href="#main" id="toTop">Back to top ↑</a></div></footer>';
 }

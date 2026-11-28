@@ -1,4 +1,4 @@
-# RedCloud Capital hero: see hero_grade.txt (source rc_src.jpg = Wikimedia Commons Sanjuan14ers-8.jpg by Mitchtobin, CC BY-SA 4.0, 3840px)
+# RedCloud Capital hero: see hero_grade.txt (source rc_src.jpg = Unsplash photo adCwfzZVTk4 "A mountain range at sunset" by Andres Molina, Breckenridge, Colorado; Unsplash License)
 # Generic hero grader (HOME_BRIEF 2026-11-20 rephoto). Crops a real photo, grades it toward the site palette and lays it
 # into a 16:9 ink canvas, right of `x0`, with its left/top/bottom edges feathered into the ink (DI, DJ).
 # usage: python3 -I grade_hero.py src.jpg out.jpg '{"crop":[l,t,r,b],"x0":0.42,"ink":"#0b1221","sh":"#0b1a3a","hi":"#d8e2f4",

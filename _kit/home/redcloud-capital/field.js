@@ -1,10 +1,9 @@
-/* ================= HERO FIELD: real photography (HOME_BRIEF update 2026-11-20 part 2, PRINCIPLES DG/DI/DJ). The trail up to
-   the red summit of Redcloud Peak (14,034 ft) in Colorado's San Juan Mountains, September 2018: photograph "Sanjuan14ers-8"
-   by Mitchtobin, Wikimedia Commons, CC BY-SA 4.0 (credited in the footer). The firm shares the peak's name and is based in
-   Denver. Graded offline by grade.py into a 16:9 ink canvas (hero.jpg, settings in hero_grade.txt): the photo sits right of
-   ~30% with its left, top and bottom edges feathered into the page ink, so no seam shows at any width. Drawn here with a
-   slow Ken Burns drift; an ink scrim keeps the headline and lede side quiet. On phones the subject sits in the top band
-   and fades into the ink before the text. No pointer response (CZ). ================= */
+/* ================= HERO FIELD: real photography (HOME_BRIEF (b) and update 2026-11-20 part 2, PRINCIPLES DG/DI/DJ). A red cloud
+   over a Colorado ridgeline at sunset near Breckenridge: Unsplash photo adCwfzZVTk4, "A mountain range at sunset", by Andres
+   Molina (Unsplash License, no attribution required). The firm is RedCloud, based in Denver. Graded offline by grade.py into
+   a 16:9 ink canvas (hero.jpg, settings in hero_grade.txt): the photo sits right of ~30% with its left, top and bottom edges
+   feathered into the page ink, so no seam shows at any width. Slow Ken Burns drift; an ink scrim keeps the headline side
+   quiet; on phones the subject sits in the top band and fades into the ink. No pointer response (CZ). ================= */
 var field=(function(){
   var cv=$("#field"),c=cv.getContext("2d"),dpr=1,w=0,h=0,running=false,raf=0,t0=performance.now(),shown=false;
   var IN={v:1},dim=1,dimT=1,SP={v:0},G=null,img=new Image(),ok=false;

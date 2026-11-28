@@ -17,7 +17,7 @@ function xpScene(o){
   g+='<path class="mem2 sD" d="M30 '+(MY+14)+'H243C243 '+(MY+86)+' 337 '+(MY+86)+' 337 '+(MY+14)+'H463C463 '+(MY+78)+' 557 '+(MY+78)+' 557 '+(MY+14)+'H730"/>';
   g+='<g class="lt"><text class="t" x="'+(mob?560:620)+'" y="'+(MY-24)+'">OUTSIDE</text><text class="t" x="'+(mob?560:620)+'" y="'+(MY+56)+'">CYTOPLASM</text></g>';
   /* the clathrin coat on the left pit only (the right route is uncoated) */
-  var cl='';for(i=0;i<=8;i++){var a=Math.PI*(i/8),x=290-60*Math.cos(a),y=MY+96*Math.sin(a)*.78;cl+='M'+x.toFixed(1)+' '+y.toFixed(1)+'l'+(Math.cos(a)*-11).toFixed(1)+' '+(Math.sin(a)*11).toFixed(1)}
+  var cl='M243 '+(MY+6)+'C243 '+(MY+84)+' 337 '+(MY+84)+' 337 '+(MY+6);
   g+='<path id="xpC" class="cl" d="'+cl+'"/>';
   /* step 1: loose strands, then the condensed particle above the membrane */
   var st='';
@@ -26,9 +26,11 @@ function xpScene(o){
   g+='<g id="xpS" class="st">'+st+'</g>';
   function particle(cx,cy,r,id){
     var p='<g id="'+id+'" class="np"><circle class="sh" cx="'+cx+'" cy="'+cy+'" r="'+r+'"/>';
-    for(i=0;i<3;i++){var a=i*2.1,rr=r*.62;p+='<path class="cg" d="M'+(cx-rr*Math.cos(a)).toFixed(1)+' '+(cy-rr*Math.sin(a)*.6).toFixed(1)+'q'+(rr*.8).toFixed(1)+' '+(rr*(i%2?.7:-.7)).toFixed(1)+' '+(2*rr*Math.cos(a)).toFixed(1)+' '+(2*rr*Math.sin(a)*.6).toFixed(1)+'"/>'}
+    for(var k=0;k<3;k++){var a=k*2.1,rr=r*.66,st=r*.30,d2='M'+(cx-rr*Math.cos(a)).toFixed(1)+' '+(cy-rr*Math.sin(a)*.62).toFixed(1);
+      for(i=1;i<=4;i++){d2+='q'+(st*.5*Math.cos(a)-st*.55*Math.sin(a)*(i%2?1:-1)).toFixed(1)+' '+(st*.5*Math.sin(a)*.62+st*.55*Math.cos(a)*(i%2?1:-1)).toFixed(1)+' '+(st*Math.cos(a)).toFixed(1)+' '+(st*Math.sin(a)*.62).toFixed(1)}
+      p+='<path class="cg" d="'+d2+'"/>'}
     return p+'</g>'}
-  g+=particle(150,150,34,"xpP");
+  g+=particle(150,148,42,"xpP");
   /* step 2: the two particles entering, one in each route */
   g+=particle(290,MY+44,26,"xpE1");
   g+=particle(510,MY+40,26,"xpE2");
@@ -60,8 +62,8 @@ function storyDraw(svg){
     if(!svg.isConnected)return;
     if(b!==lastB){lastB=b;draw(E.base,b);op(E.t0,b);op(E.lt,b)}
     /* step 1: loose strands, condensed into one particle */
-    op(E.S,b*seg(p,.04,.14)*(1-ease(seg(p,.2,.3))));
-    op(E.P,b*seg(p,.24,.32)*(1-seg(p,.4,.46)));
+    op(E.S,b*seg(p,.04,.12)*(1-ease(seg(p,.15,.24))));
+    op(E.P,b*seg(p,.18,.26)*(1-seg(p,.4,.46)));
     op(E.L1,b*seg(p,.14,.22)*(1-seg(p,.31,.36)));
     /* step 2: the coat on the left route, both particles entering */
     draw(E.cl,b*ease(seg(p,.42,.54))*(1-seg(p,.72,.78)));

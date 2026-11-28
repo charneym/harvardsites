@@ -27,8 +27,8 @@ function dlScene(o){
   g+='<path class="link" id="dlLink" d="M288 300H400"/>';
   /* the antibody: a Y that comes down onto the D1 domain */
   g+='<g id="dlAb"><path class="ab" d="M300 150v44M300 150l-30-34M300 150l30-34"/><circle class="abn" cx="300" cy="196" r="7"/>'+
-     '<circle class="pay p1" cx="270" cy="116" r="8"/><circle class="pay p2" cx="330" cy="116" r="8"/>'+
-     '<text class="cd ab" x="300" y="92" text-anchor="middle">ADC</text></g>';
+     '<circle class="pay p1" cx="270" cy="116" r="8"/><circle class="pay p2" cx="330" cy="116" r="8"/></g>'+
+     '<text class="cd ab" id="dlAbL" x="300" y="92" text-anchor="middle">ADC</text>';
   g+='<path class="drop" id="dlDrop" d="M300 206V282"/><circle class="pay moving" id="dlPay" cx="300" cy="206" r="8"/>';
   var C=mob?["CD155 HOLDS THE IMMUNE CELL OFF","THE ANTIBODY TAKES THE SITE","THE PAYLOAD GOES IN","TUMOUR KILLED, BRAKES OFF"]
            :["CD155 ENGAGES THE CHECKPOINT AND THE IMMUNE CELL STANDS DOWN","THE ANTIBODY OCCUPIES THE SITE AND BREAKS THE REACH",
@@ -40,7 +40,7 @@ function scene(){return dlScene({mob:MOBILE()?1:0})}
 function storyDraw(svg){
   var q=function(s){return svg.querySelector(s)};
   var tum=q("#dlTum"),imm=q("#dlImm"),cd=q("#dlCd"),tig=q("#dlTig"),link=q("#dlLink"),ab=q("#dlAb"),
-      drop=q("#dlDrop"),pay=q("#dlPay"),fr=[q("#dlFr1"),q("#dlFr2"),q("#dlFr3")];
+      drop=q("#dlDrop"),pay=q("#dlPay"),abl=q("#dlAbL"),fr=[q("#dlFr1"),q("#dlFr2"),q("#dlFr3")];
   var cap=[0,1,2,3].map(function(k){return q("#dlC"+k)});
   var LL=link.getTotalLength();link.style.strokeDasharray=LL+" "+LL;
   var LD=drop.getTotalLength();drop.style.strokeDasharray=LD+" "+LD;drop.style.strokeDashoffset=LD;
@@ -59,6 +59,7 @@ function storyDraw(svg){
     /* the antibody comes down and sits on D1 */
     var ad=seg(p,.28,.40);
     ab.style.transform="translateY("+(-120*(1-ad)).toFixed(1)+"px)";op(ab,b*seg(p,.26,.34));
+    op(abl,b*seg(p,.34,.42));
     /* the payload runs down into the tumour cell */
     var pd=seg(p,.52,.68);
     drop.style.strokeDashoffset=(LD*(1-pd)).toFixed(1);op(drop,b*seg(p,.50,.54)*(1-seg(p,.72,.80)));

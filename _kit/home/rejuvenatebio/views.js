@@ -34,7 +34,7 @@ function evid(){return '<ul class="nws">'+EVID.map(function(n){return '<li><a hr
 function vHome(){
   return ''+
   '<section class="hero" id="hero" data-field data-theme="dark">'+
-   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="1400" height="1300" alt="An adeno-associated virus capsid, the liver-tropic vector of Rejuvenate Bio’s gene therapies (illustrative render)" decoding="async" fetchpriority="high"></figure></div>'+
+   '<div class="hero-ph"><figure data-r><img src="hero-cut.webp" width="992" height="1080" alt="An adeno-associated virus capsid, the liver-tropic vector of Rejuvenate Bio’s gene therapies (illustrative render)" decoding="async" fetchpriority="high"></figure></div>'+
    '<span class="lab eyebrow" data-r>Gene therapy<span class="nomob"> · San Diego, California</span></span>'+
    '<h1 class="d1 hero-h" id="pageTitle" tabindex="-1"><span class="l">One treatment</span> <span class="l">for chronic disease.</span></h1>'+
    '<div class="hero-foot"><p class="s" data-r>Rejuvenate Bio develops one-time, liver-directed gene therapies for chronic, age-related disease: in companion animals first, and in people.</p>'+

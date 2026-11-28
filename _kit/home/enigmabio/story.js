@@ -22,7 +22,7 @@ function enScene(o){
     g+='<g id="enB'+i+'">'+
        '<rect class="b3" x="'+BX[i]+'" y="'+(BY0-h3)+'" width="'+BW_+'" height="'+h3+'"/>'+
        '<rect class="b4" x="'+BX[i]+'" y="'+(BY0-BH)+'" width="'+BW_+'" height="'+h4+'"/>'+
-       '<text class="dl" x="'+(BX[i]+BW_/2)+'" y="'+(BY0+26)+'" text-anchor="middle">'+DIS[i][0]+'</text></g>';
+       '<text class="dl" x="'+(BX[i]+BW_/2)+'" y="'+(BY0+38)+'" text-anchor="middle">'+DIS[i][0]+'</text></g>';
   }
   /* the 4R-predominant pair, which the tracer is made for */
   g+='<g id="enMark"><rect class="mk4" x="'+(BX[2]-10)+'" y="'+(BY0-BH-18)+'" width="'+(BX[3]+BW_+10-(BX[2]-10))+'" height="'+(BH+30)+'" rx="6"/>'+
